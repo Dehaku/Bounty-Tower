@@ -1,0 +1,157 @@
+:::0.0.0.8::
+2/20/14
+Added an Airstrike for testing purposes for future features. (lshift+lmb)
+
+
+1/24/14
+Figured out bug where items would become invisible
+
+1/12/2014 and below.
+Haven't updated in awhile the log in awhile, Lots of new goodies.
+Actually fixed the path finding problem this time around.
+The transitional map now reads from the world map, so you can now head off to interesting building formations or some such.
+Critters and items are now saved and loaded during map movement.
+Got a small graphics "Spit shine" from Enemby.
+
+
+11/15/2013
+Took alot of messing around, But we now have a fast, clean, and accurate transitional map movement through the chunks.
+
+11/12/2013
+Finished up the Squad Creation Menu, You can now create new Squaddies, and distribute the stats accordingly.
+Added a button to allow you to choose where to land you squad.
+
+Too much has gone by for me to recall it all.
+11/8/2013
+Fixed zombies going after Food items and eating them, rather than going after humans.
+Fixed path finding problem causing critters to walk through walls.
+Fixed embarressing PI Error.
+Cleaned up some code structures.
+Zone Selection now spawns the amount of Zombies it displays
+Added base for Squad Creation in the Main Menu.
+
+
+
+:::0.0.0.7:::
+Moved everything over to SFML 2.0 to fix the Windows 7 AMD problem.
+
+
+
+
+
+:::0.0.0.6:::
+::Added
+The NPC's now have a manager like the Items, But a bit more advanced to handle items on spawn, and tags.
+For the moment, There's a Vision Feature to test out the grounds on it, You can only see what critters see.
+::Fixes
+ Critters will now use Modded Weapons.
+::Removed
+::Bugs
+::Special Thanks
+(Moosader)
+SneakySnake
+ Showing me unsigned long long, Which will help prevent id problems in the future.
+TheBuzzSaw
+ Helping with Angles
+unlikelyhero
+ Help with C++ Random
+Catalyst
+ Help with C++ Random
+
+
+
+
+
+:::0.0.0.5:::
+::Added
+Added Skills.Train(), Skills now gain XP when they are used.
+Fixed some odd movement problems, And slowed down the speed of movement.
+Implemented a item system, which reads through all the entries in items.txt, creates an item class with the information, and puts it into
+ a new global item class, This allows automation of all item management by the system, Not to mention Moddability.
+Also did the same with the images, But not as spectacular.
+Debug Item Spawn Menu(Hold Tab, Click Button, Receive Modded Bacon).
+Critters now go and eat/drink if they are hungry/thirsty, even if they have a weapon and enemies nearby.
+Changed how critters are able to move, It now has a much more precise speed increment.(Although this made the path finding lines a bit wonky)
+
+::Fixes
+The vision process for critters used to be a cos sin rotation infront of them, 180 degrees, and every iteration of that function, would have
+ a trace that ran from the critter, to that radius. 
+ 180 degrees, at a 200 distance, with the occasional overlapping of pixels, multiplied by NPC count. It became expensive quick.
+ But now it checks the distance between the two, then checks to the angle from the target, to the critter, if the angle is within the current
+ view angle of the critter, it can be seen. So only about 5 checks, multiplied by NPC count.
+Critters no longer go faster while Path Finding.
+Critters will not shoot at stuff unless they are close enough.
+Fixed the Turret, It will now protect the base, Be warned It's not as intelligent as normal critters.
+Fixed the zoom feature(-,+)
+
+
+
+::Removed
+::Bugs
+::Special Thanks
+(Moosader)
+DarkYuan
+ Preventing me from making a ton of .txt files.
+unlikelyhero
+ Helping with strings.
+miguelishawt
+ General Information.
+
+
+
+
+
+:::0.0.0.4:::
+::Added
+Waves of zombies come, Increasing amount as time goes on.
+Humans will fire at zombies now, If they have a gun in their possession.
+Humans will swing at zombies if they have a sword.
+Humans will shoot far, swing close, if they have both weapons.
+Sword damage: 10+Strength.
+Gun damage: 100+perception.
+Gun Accuracy improved by Dexterity.
+Agility effects attack speed.
+Critter's stats show on the HUD.
+::Fixes
+Entity.HasWeapon("") now properly checks if you have the specified weapon.
+Fixed random crash on Local Test Setup, It was some misplaced randomization logic.
+::Removed
+Shinobi Hax0r.
+::Bugs
+
+
+
+
+
+:::0.0.0.3:::
+::Added
+Crude Tile class, Works great for drawing, Not sure about the eventual world building algorithums.
+Decent Button Method, Highly useful.
+Creatures can now naturally path around for their targets.
+Created an Inventory Check for weapons in the creatures.
+Added a better management system for finding Vector Id's.
+Creatures will now keep eating/drinking until they are full.
+You can now press c with a critter selected to set the camera to follow them.
+
+::Fixes
+Fixed a speed bug that doubled a creatures speed while they were path finding.
+"Fixed" the distance check a bit more, Still not perfect, but alot more accurate now.
+Set only tiles within the view to be drawn, tripled the FPS.
+Finally fixed the cursed distance function, It properly reads the correct distance on a perfect orbit.
+Took a long time, There is now a proper gravity method.
+
+
+::Removed
+Removed the auto smoothener for graphics, Things are much more crisp now.
+
+::Bugs
+Localtest randomly freezes on startup.
+Critters still go faster while path finding than their normal speed.
+
+::To-Do
+Add a knowledge database into each creature, to see if they know where something is or not.
+Create an automatic Image Manager that will load up all images in the gfx folder, for easier management.
+Create a random function for a circle circlerand(min,max,radius)
+Rearrange the brain of the creatures to directly link their target to the searches, instead of a search per item, Probably
+ use a string to seperate Item and NPC.
+Add the ability to follow multiple critters with your camera at once, Most likely average the total positions and set the camera there.
