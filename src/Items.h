@@ -276,14 +276,14 @@ class cItemManager
         getdir(dir,files);
         for(unsigned int i = 0; i < files.size(); i++)
         {
-            string line("saves\\maps\\");
+            string line("saves/maps/");
             string ending(files[i]);
             line.append(ending);
             if( remove(line.c_str()) != 0 ){}
         } */
 
 
-        std::ifstream Input("data\\items.txt"); // TODO: Have this read from an Items folder, and read from all .txt files in it, Allowing greater compability between mods.
+        std::ifstream Input("data/items.txt"); // TODO: Have this read from an Items folder, and read from all .txt files in it, Allowing greater compability between mods.
         if(Input.is_open())
         {
             int stuffs;
@@ -389,10 +389,10 @@ void zSaveItem(int planet, sf::Vector2i Region, item &object){
 
     using namespace std;
     ofstream File; // Start to Load Map
-    string newline("data\\maps\\Planet");
+    string newline("data/maps/Planet");
     stringstream newconvert;
     newline.append("500");
-    newline.append("\\stuff");
+    newline.append("/stuff");
     newconvert << "x";
     newconvert << Region.x;
     newconvert << "y";
@@ -415,13 +415,13 @@ void zSaveItem(int planet, sf::Vector2i Region, item &object){
     } // End to Load Map
     else
     {
-        string line("data\\maps\\Planet500");
+        string line("data/maps/Planet500");
     stringstream convert;
     //convert << planet;
     line.append(convert.str());
     convert.clear();
     galaxy_mkdir(line);
-    line.append("\\stuff");
+    line.append("/stuff");
     convert << "x";
     convert << Region.x;
     convert << "y";
@@ -443,13 +443,13 @@ void zSaveItem(int planet, sf::Vector2i Region, item &object){
 
 void SaveItem(int planet, sf::Vector2i Region, item &Critter){ // I already did all the work once, Imma be lazy for some time.
     using namespace std;
-    string line("data\\maps\\Planet");
+    string line("data/maps/Planet");
     stringstream convert;
     convert << planet;
     line.append(convert.str());
     convert.clear();
     galaxy_mkdir(line);
-    line.append("\\stuff");
+    line.append("/stuff");
     convert << "x";
     convert << Region.x;
     convert << "y";
@@ -484,13 +484,13 @@ void SaveItem(int planet, sf::Vector2i Region, item &Critter){ // I already did 
 
 std::string LoadItems(sf::Vector2i WorldPos, std::string Direction, int planet = 500){
 
-    std::string line("data\\maps\\Planet");
+    std::string line("data/maps/Planet");
     std::stringstream convert;
     convert << planet;
     line.append(convert.str());
     convert.clear();
     galaxy_mkdir(line);
-    line.append("\\stuff");
+    line.append("/stuff");
     convert << "x";
     convert << WorldPos.x;
     convert << "y";

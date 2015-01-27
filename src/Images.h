@@ -60,12 +60,12 @@ class cImageManager {
 
     void InitializeImages(){
         using namespace std;
-        string dir = string(".//data//gfx");
+        string dir = string("./data/gfx");
         vector<string> files = vector<string>();
         getdir(dir,files);
         for(unsigned int i = 0; i < files.size(); i++)
         {
-            string line("data\\gfx\\");
+            string line("data/gfx/");
             string ending(files[i]);
             if(files[i] != "." && files[i] != "..")
             {

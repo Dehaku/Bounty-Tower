@@ -3595,9 +3595,9 @@ int main(){
     /*sf::Image icon;
     icon.LoadFromFile("gfx/icon.tga");
     App.SetIcon(32,32,icon.GetPixelsPtr());
-    if (!Images.LoadFromFile("gfx\\Images.tga"))return EXIT_FAILURE;
+    if (!Images.LoadFromFile("gfx/Images.tga"))return EXIT_FAILURE;
     sf::Image Aim;
-    if (!Aim.LoadFromFile("gfx\\Aim.tga"))return EXIT_FAILURE;*/
+    if (!Aim.LoadFromFile("gfx/Aim.tga"))return EXIT_FAILURE;*/
     }
 
     imagemanager.InitializeImages();

@@ -2091,13 +2091,13 @@ class cNpcManager
         getdir(dir,files);
         for(unsigned int i = 0; i < files.size(); i++)
         {
-            string line("saves\\maps\\");
+            string line("saves/maps/");
             string ending(files[i]);
             line.append(ending);
             if( remove(line.c_str()) != 0 ){}
         } */
 
-        std::ifstream Input("data\\npcs.txt"); // TODO: Have this read from an Items folder, and read from all .txt files in it, Allowing greater compability between mods.
+        std::ifstream Input("data/npcs.txt"); // TODO: Have this read from an Items folder, and read from all .txt files in it, Allowing greater compability between mods.
         if(Input.is_open())
         {
             int stuffs;
@@ -2302,13 +2302,13 @@ std::set<int> NPCTrace(int xa, int ya, int xb, int yb,int id, std::set<int> exce
 
 void SaveNPC(int planet, sf::Vector2i Region, NPC &Critter){
     using namespace std;
-    string line("data\\maps\\Planet");
+    string line("data/maps/Planet");
     stringstream convert;
     convert << planet;
     line.append(convert.str());
     convert.clear();
     galaxy_mkdir(line);
-    line.append("\\npc");
+    line.append("/npc");
     convert << "x";
     convert << Region.x;
     convert << "y";
@@ -2692,13 +2692,13 @@ void BuildStartingCritters(int ZedAmount = 0){
 
 std::string LoadCritters(sf::Vector2i WorldPos, std::string Direction, int planet = 500){
 
-    std::string line("data\\maps\\Planet");
+    std::string line("data/maps/Planet");
     std::stringstream convert;
     convert << planet;
     line.append(convert.str());
     convert.clear();
     galaxy_mkdir(line);
-    line.append("\\npc");
+    line.append("/npc");
     convert << "x";
     convert << WorldPos.x;
     convert << "y";

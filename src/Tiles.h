@@ -283,7 +283,7 @@ void zGenerateChunk(std::string type, int planet, sf::Vector2i Cords, sf::Vector
 
     using namespace std; // Start Saving Map
     debug("Saving current map to file...");
-    string line("data\\maps\\map");
+    string line("data/maps/map");
     stringstream convert;
     convert << planet;
     convert << Cords.x;
@@ -543,13 +543,13 @@ void GenerateChunk(std::string type, int planet, sf::Vector2i Cords, sf::Vector2
 
     using namespace std; // Start Saving Map
     //debug("Saving current map to file...");
-    string line("data\\maps\\Planet");
+    string line("data/maps/Planet");
     stringstream convert;
     convert << planet;
     line.append(convert.str());
     convert.clear();
     galaxy_mkdir(line);
-    line.append("\\map");
+    line.append("/map");
     convert << "x";
     convert << Cords.x;
     convert << "y";
@@ -671,7 +671,7 @@ void GenerateWorld(int RegionSize = 100,int PlanetNum = 500){
 void SaveMap(int planet, int xcord, int ycord, int xpos, int ypos){
     using namespace std; // Start to Save Map
     cout << "Saving current map to file...\n";
-    string line("saves\\maps\\map");
+    string line("saves/maps/map");
     stringstream convert;
     convert << planet;
     convert << xpos;
@@ -695,7 +695,7 @@ void SaveMap(int planet, int xcord, int ycord, int xpos, int ypos){
 bool LoadMap(int planet, int xcord, int ycord, int xpos, int ypos){
     using namespace std;
     fstream File; // Start to Load Map
-    string newline("saves\\maps\\map");
+    string newline("saves/maps/map");
     stringstream newconvert;
     newconvert << planet;
     newconvert << xcord;
