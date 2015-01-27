@@ -51,8 +51,8 @@ int ReadPathY(int pathfinderID,int pathLocation);
 //-----------------------------------------------------------------------------
 void InitializePathfinder (void)
 {
-	for (int x = 0; x < numberPeople+1; x++)
-		pathBank [x] = (int*) malloc(4);
+	for (auto & elem : pathBank)
+		elem = (int*) malloc(4);
 }
 
 
@@ -62,9 +62,9 @@ void InitializePathfinder (void)
 //-----------------------------------------------------------------------------
 void EndPathfinder (void)
 {
-	for (int x = 0; x < numberPeople+1; x++)
+	for (auto & elem : pathBank)
 	{
-		free (pathBank [x]);
+		free (elem);
 	}
 }
 

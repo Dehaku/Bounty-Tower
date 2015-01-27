@@ -504,9 +504,9 @@ std::set<std::string> StringFindSetChaos(std::string Stringy,std::string Term,st
         {
         }
     }
-    for(std::set<std::string>::iterator i = Returns.begin(); i != Returns.end(); i++)
+    for(const auto & Return : Returns)
     {
-        std::cout << *i << std::endl;
+        std::cout << Return << std::endl;
     }
     return Returns;
 }

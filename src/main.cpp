@@ -67,7 +67,7 @@ std::vector<NPC> *Selection;
 
 item * ListGet(std::list<item> &List, int Position)
 {
-    std::list<item>::iterator i = List.begin();
+    auto i = List.begin();
     std::advance(i, Position);
     return &(*i);
 }
@@ -175,8 +175,8 @@ int getdir (std::string dir, std::vector<std::string> &files){
     using namespace std;
     DIR *dp;
     struct dirent *dirp;
-    if((dp  = opendir(dir.c_str())) == NULL){cout << "Error(" << errno << ") opening " << dir << endl;  return errno;}
-    while ((dirp = readdir(dp)) != NULL)
+    if((dp  = opendir(dir.c_str())) == nullptr){cout << "Error(" << errno << ") opening " << dir << endl;  return errno;}
+    while ((dirp = readdir(dp)) != nullptr)
     {files.push_back(string(dirp->d_name));}
     closedir(dp);
     return 0;
@@ -187,7 +187,7 @@ int getdir (std::string dir, std::vector<std::string> &files){
 void UnpointItems(std::list<item> &Items){
 
     //for(int i = 0; i != Items.size(); i++)
-    for(std::list<item>::iterator i = Items.begin(); i != Items.begin(); i++)
+    for(auto i = Items.begin(); i != Items.begin(); i++)
     {
         if((*i).ToDelete)
         {
@@ -198,7 +198,7 @@ void UnpointItems(std::list<item> &Items){
                 std::cout << "Job Point: " << &UniFact[0].JobList[t].pItem << "/" << UniFact[0].JobList[t].pItem << ", Item Point: " << &(*i) << "/" << &(*i) << std::endl;
                 fSleep(1);
 
-                if(UniFact[0].JobList[t].pItem != NULL && (&(*i)) != NULL)
+                if(UniFact[0].JobList[t].pItem != nullptr && (&(*i)) != nullptr)
                 {
 
 
@@ -219,7 +219,7 @@ void UnpointItems(std::list<item> &Items){
                     if(ID1 == ID2)//if(UniFact[0].JobList[t].pItem != NULL && &(*i) != NULL && UniFact[0].JobList[t].pItem == &(*i)) //if(ID1 == ID2)
                     {
                         std::cout << "Match! \n";
-                        UniFact[0].JobList[t].pItem = NULL;
+                        UniFact[0].JobList[t].pItem = nullptr;
                         //fSleep(1);
                     }
                 }
@@ -253,8 +253,8 @@ bool RemoveItem(int Id){
 void UpdateItem(){
     if(Debug){ std::cout << "Pre Item \n";}
     std::list<item>::iterator Me;
-    std::list<item>::iterator startlist = worlditems.begin();
-    std::list<item>::iterator endlist = worlditems.end();
+    auto startlist = worlditems.begin();
+    auto endlist = worlditems.end();
 
     for( Me = startlist; Me != endlist; ++Me )
     {
@@ -270,7 +270,7 @@ void UpdateItem(){
                     Me->prodratetimer = 0;
                     std::string s;
                     s = Me->produce;
-                    char *a=new char[s.size()+1];a[s.size()]=0;memcpy(a,s.c_str(),s.size());
+                    auto a=new char[s.size()+1];a[s.size()]=0;memcpy(a,s.c_str(),s.size());
                     bool FindEmpty = false;
                     int x;
                     int y;
@@ -1152,7 +1152,7 @@ void UpdateNPC(){
         EndPos = 0;
 
         //for(int i = 0; i != Me->inventory.size(); i++)
-        for(std::list<item>::iterator i = Me->inventory.begin(); i != Me->inventory.begin(); i++)
+        for(auto i = Me->inventory.begin(); i != Me->inventory.begin(); i++)
         {
             if((*i).InsidePart != "")
             {
@@ -1186,7 +1186,7 @@ void UpdateNPC(){
 
                 PartNumber = StringFindNumber(WorkingLine,"[DigestsBlood:");
                 PartItem = GetItemPtrfromVector(Me->inventory,"Blood");
-                if(PartNumber != 0 && PartItem != NULL)
+                if(PartNumber != 0 && PartItem != nullptr)
                 {
 
                     float WorkAmount = PartItem->amount;
@@ -1211,7 +1211,7 @@ void UpdateNPC(){
                 PartNumber = StringFindNumber(WorkingLine,"[DigestsFlesh:");
                 PartItem = GetItemPtrfromVectorVarSearch(Me->inventory,"MassFlesh");
                 //if(PartItem != NULL) PartItem->HasInternalUse++; // This is designed to keep items from being ejected until they are completely useless to a critter, I.E. Items with multiple Food Mass's.
-                if(PartNumber != 0 && PartItem != NULL && PartItem->MassFlesh > 0) // TODO: Make sure the item is in THIS PART before digesting it!
+                if(PartNumber != 0 && PartItem != nullptr && PartItem->MassFlesh > 0) // TODO: Make sure the item is in THIS PART before digesting it!
                 {
                     //std::cout << "HasInternalUse: " << PartItem->HasInternalUse << std::endl;
                     float WorkAmount = PartItem->MassFlesh;
@@ -1238,7 +1238,7 @@ void UpdateNPC(){
                 PartNumber = StringFindNumber(WorkingLine,"[DigestsVeggy:");
                 PartItem = GetItemPtrfromVectorVarSearch(Me->inventory,"MassVeggy");
                 //if(PartItem != NULL) PartItem->HasInternalUse++; // This is designed to keep items from being ejected until they are completely useless to a critter, I.E. Items with multiple Food Mass's.
-                if(PartNumber != 0 && PartItem != NULL && PartItem->MassVeggy > 0) // TODO: Make sure the item is in THIS PART before digesting it!
+                if(PartNumber != 0 && PartItem != nullptr && PartItem->MassVeggy > 0) // TODO: Make sure the item is in THIS PART before digesting it!
                 {
                     //std::cout << "HasInternalUse: " << PartItem->HasInternalUse << std::endl;
                     float WorkAmount = PartItem->MassVeggy;
@@ -1263,7 +1263,7 @@ void UpdateNPC(){
                 PartNumber = StringFindNumber(WorkingLine,"[DigestsWater:");
                 PartItem = GetItemPtrfromVectorVarSearch(Me->inventory,"MassWater");
                 //if(PartItem != NULL) PartItem->HasInternalUse++; // This is designed to keep items from being ejected until they are completely useless to a critter, I.E. Items with multiple Food Mass's.
-                if(PartNumber != 0 && PartItem != NULL && PartItem->MassWater > 0) // TODO: Make sure the item is in THIS PART before digesting it!
+                if(PartNumber != 0 && PartItem != nullptr && PartItem->MassWater > 0) // TODO: Make sure the item is in THIS PART before digesting it!
                 {
                     //std::cout << "HasInternalUse: " << PartItem->HasInternalUse << std::endl;
                     float WorkAmount = PartItem->MassWater;
@@ -1315,7 +1315,7 @@ void UpdateNPC(){
                     //std::vector<item> * Inv = &Me->inventory;
 
                     //for(int i = 0; i != Me->inventory.size(); i++)
-                    for(std::list<item>::iterator i = Me->inventory.begin(); i != Me->inventory.begin(); i++)
+                    for(auto i = Me->inventory.begin(); i != Me->inventory.begin(); i++)
                     {
                         bool FoundIt = false;
                         if((*i).InsidePart == "" && (*i).MassFlesh > 0 && ConsumeFlesh) // Awww yeeessss, We gonna eat some flesh with our Orafice!
@@ -1608,9 +1608,9 @@ void UpdateNPC(){
                             Attacked = true;
                             std::set<int> Tarz;
                             Tarz = Me->Melee(1,1,GridSize);
-                            for(std::set<int>::iterator it = Tarz.begin(); it != Tarz.end(); ++it)
+                            for(const auto & elem : Tarz)
                             {
-                                npclist.at(*it).modhealth(-(randz(Mel.mindam,Mel.maxdam)+Me->Skills.strength));
+                                npclist.at(elem).modhealth(-(randz(Mel.mindam,Mel.maxdam)+Me->Skills.strength));
                                 if(Me->HasTag("[CanLearn:"))
                                 {
                                     Me->Skills.Train("strength");
@@ -1639,9 +1639,9 @@ void UpdateNPC(){
                             if(ids.size() != 0)
                             {
                                 try{
-                                    for(std::set<int>::iterator it = ids.begin(); it != ids.end(); ++it)
+                                    for(const auto & id : ids)
                                     {
-                                        if(npclist.at(*it).cbaseid == Me->cbaseid)
+                                        if(npclist.at(id).cbaseid == Me->cbaseid)
                                         {
                                             Friendly = true;
                                         }
@@ -1674,14 +1674,14 @@ void UpdateNPC(){
                                     {
                                         try
                                         {
-                                            for(std::set<int>::iterator it = ids.begin(); it != ids.end(); ++it)
+                                            for(const auto & id : ids)
                                             {
-                                                npclist.at(*it).modhealth(-(randz(Ran.mindam,Ran.maxdam)+Me->Skills.perception));
+                                                npclist.at(id).modhealth(-(randz(Ran.mindam,Ran.maxdam)+Me->Skills.perception));
                                                 if(Me->HasTag("[CanLearn:"))
                                                 {
                                                     Me->Skills.Train("perception");
                                                 }
-                                                Effectz.CreateCircle(npclist.at(*it).xpos,npclist.at(*it).ypos,5,Red);
+                                                Effectz.CreateCircle(npclist.at(id).xpos,npclist.at(id).ypos,5,Red);
                                             }
                                         }catch (std::exception& e){}
                                         cText.CreateText(Me->xpos,Me->ypos,11,Red,"Bang!");
@@ -1839,7 +1839,7 @@ void UpdateNPC(){
                 if(Me->target == "Food")
                 {// Compress this later by simply directly linking the target towards the search, Probably need a bool for Item or NPC to simplfy it.
                     item* Item = FindClosestItemPtr(Me->xpos,Me->ypos,"Food");
-                    if(Item != NULL)
+                    if(Item != nullptr)
                     {
                         if(Item->MassFlesh > 0)
                         {
@@ -1933,7 +1933,7 @@ void UpdateNPC(){
                         debug(AddString("Starting Job ", NumbertoString(i)) );
                         //if(!Deleting) Deleter++;
                         //Con(AddString(Me->name,JobList[i].Type));
-                        if(UniFact[0].JobList[i].pItem == NULL && UniFact[0].JobList[i].Type == "PickUp") // Deleting objectless pickup jobs.
+                        if(UniFact[0].JobList[i].pItem == nullptr && UniFact[0].JobList[i].Type == "PickUp") // Deleting objectless pickup jobs.
                         {// Deleting objectless pickup jobs.
                             UniFact[0].JobList[i].ToDelete = true;
                             break;
@@ -1941,10 +1941,10 @@ void UpdateNPC(){
 
 
 
-                        if((UniFact[0].JobList[i].pWorker == NULL && Me->HasJob == false && UniFact[0].JobList[i].ToDelete == false) || (UniFact[0].JobList[i].pWorker != NULL && UniFact[0].JobList[i].pWorker->id == Me->id && UniFact[0].JobList[i].ToDelete == false))
+                        if((UniFact[0].JobList[i].pWorker == nullptr && Me->HasJob == false && UniFact[0].JobList[i].ToDelete == false) || (UniFact[0].JobList[i].pWorker != nullptr && UniFact[0].JobList[i].pWorker->id == Me->id && UniFact[0].JobList[i].ToDelete == false))
                         {
                             debug("Comparitive Success");
-                            if(UniFact[0].JobList[i].pWorker == NULL)
+                            if(UniFact[0].JobList[i].pWorker == nullptr)
                             {
                                 std::cout << Me->name << " has job: " << Me->HasJob << ", and yet :";
                                 UniFact[0].JobList[i].pWorker = &npclist.at(IntegerIterator); // Not sure if this is technically better or worse than repointing every frame.
@@ -1963,7 +1963,7 @@ void UpdateNPC(){
                                 item* InvWood = GetItemPtrfromVector(Me->inventory, "Wood");
                                 item* WldWood = GetItemPtrfromVector(worlditems, "Wood");
 
-                                if(InvWood != NULL)
+                                if(InvWood != nullptr)
                                 {
                                 Con("Success! I have Wood!");
                                 int x = UniFact[0].JobList[i].WorkPos.x;
@@ -2022,7 +2022,7 @@ void UpdateNPC(){
 
                                 }
 
-                                else if(WldWood != NULL)
+                                else if(WldWood != nullptr)
                                 {
 
                                 Con("Partial Success! World has Wood!");
@@ -2054,7 +2054,7 @@ void UpdateNPC(){
 
 
 
-                            else if(UniFact[0].JobList[i].pItem != NULL)
+                            else if(UniFact[0].JobList[i].pItem != nullptr)
                             {
                                 debug("Starting pItem != NULL");
 
@@ -2087,7 +2087,7 @@ void UpdateNPC(){
 
 
 
-                                UniFact[0].JobList[i].pItem = NULL;
+                                UniFact[0].JobList[i].pItem = nullptr;
                                 UniFact[0].JobList[i].ToDelete = true;
                                 UniFact[0].JobList[i].pWorker->HasJob = false;
                                 UnpointItems(worlditems);
@@ -2111,7 +2111,7 @@ void UpdateNPC(){
                                 debug("Post WoodSpawn");
 
                                 UniFact[0].JobList[i].pItem->ToDelete = true;
-                                UniFact[0].JobList[i].pItem = NULL;
+                                UniFact[0].JobList[i].pItem = nullptr;
                                 UniFact[0].JobList[i].ToDelete = true;
                                 UniFact[0].JobList[i].pWorker->HasJob = false;
                                 debug("Post ToDelete");
@@ -2547,7 +2547,7 @@ void UpdateNPC(){
             {
                 if(GetItemVectorId(Me->TargetId) != -1)
                 {
-                    std::list<item>::iterator ItemItr = worlditems.begin();
+                    auto ItemItr = worlditems.begin();
                     std::advance(ItemItr,GetItemVectorId(Me->TargetId));
 
                     //if(Math.Closeish(Me->xpos,Me->ypos,worlditems.at(GetItemVectorId(Me->TargetId)).xpos,worlditems.at(GetItemVectorId(Me->TargetId)).ypos) <= Me->reach && worlditems.at(GetItemVectorId(Me->TargetId)).Pickupable == true)
@@ -3119,31 +3119,31 @@ void DrawStuffsXXX(){
 
 cItem * GetGlobalItem( std::string strtype ){
     if(Debug){ std::cout << "Getting" << strtype << " \n";}
-    for(int i=0; i<itemmanager.GlobalItem.size(); i++)
+    for(auto & elem : itemmanager.GlobalItem)
     {
-        if( itemmanager.GlobalItem[i].name == strtype )
+        if( elem.name == strtype )
         {
             if(Debug){ std::cout << "Found" << strtype << " \n";}
-            return &itemmanager.GlobalItem[i];
+            return &elem;
         }
     }
     if(Debug){ std::cout << "Didn't Find" << strtype << " \n";}
 
-    return NULL;
+    return nullptr;
 }
 
 NPC * GetCritter( int id ){
     if(Debug){ std::cout << "Getting critter(" << id << ") \n";}
-    for(int i=0; i<npclist.size(); i++)
+    for(auto & elem : npclist)
     {
-        if( npclist[i].id == id )
+        if( elem.id == id )
         {
             if(Debug){ std::cout << "Found critter(" << id << ") \n";}
-            return &npclist[i];
+            return &elem;
         }
     }
     if(Debug){ std::cout << "Didn't Find critter(" << id << ") \n";}
-    return NULL;
+    return nullptr;
 }
 
 
@@ -3382,14 +3382,14 @@ void OldMenuPopUp() // TODO: Add functionality to allow you to press 1-9 to acti
     {
         Effectz.CreateSquare(GC.MenuPos.x,GC.MenuPos.y,GC.MenuPos.x+100,(GC.MenuPos.y+(itemmanager.GlobalItem.size()*10))+5,White);
         int iY = 0;
-        for(std::vector<cItem>::iterator i = itemmanager.GlobalItem.begin(); i != itemmanager.GlobalItem.end(); i++)
+        for(auto & elem : itemmanager.GlobalItem)
         {
             Effectz.CreateLine(GC.MenuPos.x,(GC.MenuPos.y+(iY*11))+8,GC.MenuPos.x+90,(GC.MenuPos.y+(iY*11))+8,3,Black,1,Yellow);
-            cText.CreateText(GC.MenuPos.x,GC.MenuPos.y+(iY*11),11,Cyan,i->name);
+            cText.CreateText(GC.MenuPos.x,GC.MenuPos.y+(iY*11),11,Cyan,elem.name);
             int Butt = CreateButton(Math.Vec(GC.MenuPos.x+90, (GC.MenuPos.y+(iY*11))+5 ),5,Red);
             if(ButtonClicked(Butt))
             {
-                SpawnItem(i->name,GC.MenuPos.x,GC.MenuPos.y);
+                SpawnItem(elem.name,GC.MenuPos.x,GC.MenuPos.y);
                 fSleep(0.2);
             }
             iY++;
@@ -3400,14 +3400,14 @@ void OldMenuPopUp() // TODO: Add functionality to allow you to press 1-9 to acti
     {
         Effectz.CreateSquare(GC.MenuPos.x,GC.MenuPos.y,GC.MenuPos.x+100,(GC.MenuPos.y+(npcmanager.GlobalCritter.size()*10))+5,White);
         int iY = 0;
-        for(std::vector<NPC>::iterator i = npcmanager.GlobalCritter.begin(); i != npcmanager.GlobalCritter.end(); i++)
+        for(auto & elem : npcmanager.GlobalCritter)
         {
             Effectz.CreateLine(GC.MenuPos.x,(GC.MenuPos.y+(iY*11))+8,GC.MenuPos.x+90,(GC.MenuPos.y+(iY*11))+8,3,Black,1,Yellow);
-            cText.CreateText(GC.MenuPos.x,GC.MenuPos.y+(iY*11),11,Cyan,i->name);
+            cText.CreateText(GC.MenuPos.x,GC.MenuPos.y+(iY*11),11,Cyan,elem.name);
             int Butt = CreateButton(Math.Vec(GC.MenuPos.x+90, (GC.MenuPos.y+(iY*11))+5 ),5,Red);
             if(ButtonClicked(Butt))
             {
-                SpawnCritter(i->name,GC.MenuPos.x,GC.MenuPos.y);
+                SpawnCritter(elem.name,GC.MenuPos.x,GC.MenuPos.y);
                 fSleep(0.2);
                 break;
             }
@@ -3550,7 +3550,7 @@ int main(){
 
     try
     {
-        if(GetItemPtrfromVector(worlditems,"Wood") != NULL) item TestItem = *GetItemPtrfromVector(worlditems,"Wood");
+        if(GetItemPtrfromVector(worlditems,"Wood") != nullptr) item TestItem = *GetItemPtrfromVector(worlditems,"Wood");
     }catch (std::exception& e) { std::cout << "Something went wrong in \n"; }
 
 
@@ -4028,11 +4028,11 @@ int main(){
             if(Debug)cText.CreateText((currentx-2)*GridSize,(currenty+1)*GridSize,11,Red,"Debug On");
             if(Key.lctrl && Key.LMB){Boom(MousePos.x,MousePos.y,10,50);}
 
-            for(std::list<item>::iterator i = worlditems.begin(); i != worlditems.end(); i++)
+            for(auto & worlditem : worlditems)
             {
-                if(Math.Closeish(MousePos.x,MousePos.y,(*i).xpos,(*i).ypos) <= 10)
+                if(Math.Closeish(MousePos.x,MousePos.y,(worlditem).xpos,(worlditem).ypos) <= 10)
                 {
-                    std::cout << "Found; " << (*i).name << std::endl;
+                    std::cout << "Found; " << (worlditem).name << std::endl;
                     //fSleep(2);
                 }
             }
@@ -4082,9 +4082,9 @@ int main(){
                 GC.MenuType = "NULL";
                 GC.MenuPos = sf::Vector2f(-10000,-10000);
                 GC.MenuEndPos = sf::Vector2f(-10000,-10000);
-                MenuPtrCon.pItem = NULL;
-                MenuPtrCon.pNPC = NULL;
-                MenuPtrCon.pTile = NULL;
+                MenuPtrCon.pItem = nullptr;
+                MenuPtrCon.pNPC = nullptr;
+                MenuPtrCon.pTile = nullptr;
                 Con("Closing DebugMenus Due To Lack of Key Presses");
             }
             //                       if(Key.lshift && Key.z){GC.ZombieSwarmLocal();}
@@ -4291,7 +4291,7 @@ int main(){
 
 
                 //for(int i = 0; i != worlditems.size(); i++) worlditems.at(i).ypos += -640;
-                for(std::list<item>::iterator i = worlditems.begin(); i != worlditems.end(); i++) (*i).ypos += -640;
+                for(auto & worlditem : worlditems) (worlditem).ypos += -640;
 
                 for(int i = 0; i != UniFact[0].JobList.size(); i++) UniFact[0].JobList[i].WorkPos.y += -640;
 
@@ -4322,7 +4322,7 @@ int main(){
                 }
 
                 //for(int i = 0; i != worlditems.size(); i++) worlditems.at(i).ypos += 640;
-                for(std::list<item>::iterator i = worlditems.begin(); i != worlditems.end(); i++) (*i).ypos += 640;
+                for(auto & worlditem : worlditems) (worlditem).ypos += 640;
 
                 for(int i = 0; i != UniFact[0].JobList.size(); i++) UniFact[0].JobList[i].WorkPos.y += 640;
 
@@ -4352,7 +4352,7 @@ int main(){
                 }
 
                 //for(int i = 0; i != worlditems.size(); i++) worlditems.at(i).xpos += -640;
-                for(std::list<item>::iterator i = worlditems.begin(); i != worlditems.end(); i++) (*i).xpos += -640;
+                for(auto & worlditem : worlditems) (worlditem).xpos += -640;
 
                 for(int i = 0; i != UniFact[0].JobList.size(); i++) UniFact[0].JobList[i].WorkPos.x += -640;
 
@@ -4385,7 +4385,7 @@ int main(){
                 }
 
                 //for(int i = 0; i != worlditems.size(); i++) worlditems.at(i).xpos += 640;
-                for(std::list<item>::iterator i = worlditems.begin(); i != worlditems.end(); i++) (*i).xpos += 640;
+                for(auto & worlditem : worlditems) (worlditem).xpos += 640;
 
                 for(int i = 0; i != UniFact[0].JobList.size(); i++) UniFact[0].JobList[i].WorkPos.x += 640;
 
@@ -4543,104 +4543,104 @@ int main(){
                 */
 
                 //for(int i = 0; i != worlditems.size(); i++)
-                for(std::list<item>::iterator i = worlditems.begin(); i != worlditems.end(); i++)
+                for(auto & worlditem : worlditems)
                 {
 
 
 
 
-                    if((*i).xpos > 1920 && (*i).ypos < 640)
+                    if((worlditem).xpos > 1920 && (worlditem).ypos < 640)
                     {
-                        (*i).xpos = (*i).xpos-640-640-640;
-                        (*i).ypos = (*i).ypos;
-                        SaveItem(500,sf::Vector2i(currentregionx+2,currentregiony-1),(*i));
-                        (*i).ToDelete = true;
+                        (worlditem).xpos = (worlditem).xpos-640-640-640;
+                        (worlditem).ypos = (worlditem).ypos;
+                        SaveItem(500,sf::Vector2i(currentregionx+2,currentregiony-1),(worlditem));
+                        (worlditem).ToDelete = true;
                     }
-                    else if((*i).xpos > 1920 && (*i).ypos > 1280)
+                    else if((worlditem).xpos > 1920 && (worlditem).ypos > 1280)
                     {
-                        (*i).xpos = (*i).xpos-640-640-640;
-                        (*i).ypos = (*i).ypos-640-640;
-                        SaveItem(500,sf::Vector2i(currentregionx+2,currentregiony+1),(*i));
-                        (*i).ToDelete = true;
-                    }
-
-                    else if((*i).xpos < 0 && (*i).ypos > 1280)
-                    {
-                        (*i).xpos = (*i).xpos+640;
-                        (*i).ypos = (*i).ypos-640-640;
-                        SaveItem(500,sf::Vector2i(currentregionx-2,currentregiony+1),(*i));
-                        (*i).ToDelete = true;
-                    }
-                    else if((*i).xpos < 0 && (*i).ypos < 640)
-                    {
-                        (*i).xpos = (*i).xpos+640;
-                        (*i).ypos = (*i).ypos;
-                        SaveItem(500,sf::Vector2i(currentregionx-2,currentregiony-1),(*i));
-                        (*i).ToDelete = true;
+                        (worlditem).xpos = (worlditem).xpos-640-640-640;
+                        (worlditem).ypos = (worlditem).ypos-640-640;
+                        SaveItem(500,sf::Vector2i(currentregionx+2,currentregiony+1),(worlditem));
+                        (worlditem).ToDelete = true;
                     }
 
+                    else if((worlditem).xpos < 0 && (worlditem).ypos > 1280)
+                    {
+                        (worlditem).xpos = (worlditem).xpos+640;
+                        (worlditem).ypos = (worlditem).ypos-640-640;
+                        SaveItem(500,sf::Vector2i(currentregionx-2,currentregiony+1),(worlditem));
+                        (worlditem).ToDelete = true;
+                    }
+                    else if((worlditem).xpos < 0 && (worlditem).ypos < 640)
+                    {
+                        (worlditem).xpos = (worlditem).xpos+640;
+                        (worlditem).ypos = (worlditem).ypos;
+                        SaveItem(500,sf::Vector2i(currentregionx-2,currentregiony-1),(worlditem));
+                        (worlditem).ToDelete = true;
+                    }
 
-                    else if((*i).ypos < 0 && (*i).xpos > 1280)
+
+                    else if((worlditem).ypos < 0 && (worlditem).xpos > 1280)
                     {
-                        (*i).xpos = (*i).xpos-640-640;
-                        (*i).ypos = (*i).ypos+640;
-                        SaveItem(500,sf::Vector2i(currentregionx+1,currentregiony-2),(*i));
-                        (*i).ToDelete = true;
+                        (worlditem).xpos = (worlditem).xpos-640-640;
+                        (worlditem).ypos = (worlditem).ypos+640;
+                        SaveItem(500,sf::Vector2i(currentregionx+1,currentregiony-2),(worlditem));
+                        (worlditem).ToDelete = true;
                     }
-                    else if((*i).ypos < 0 && (*i).xpos < 640)
+                    else if((worlditem).ypos < 0 && (worlditem).xpos < 640)
                     {
-                        (*i).xpos = (*i).xpos;
-                        (*i).ypos = (*i).ypos+640;
-                        SaveItem(500,sf::Vector2i(currentregionx-1,currentregiony-2),(*i));
-                        (*i).ToDelete = true;
+                        (worlditem).xpos = (worlditem).xpos;
+                        (worlditem).ypos = (worlditem).ypos+640;
+                        SaveItem(500,sf::Vector2i(currentregionx-1,currentregiony-2),(worlditem));
+                        (worlditem).ToDelete = true;
                     }
 
-                    else if((*i).ypos > 1920 && (*i).xpos > 1280)
+                    else if((worlditem).ypos > 1920 && (worlditem).xpos > 1280)
                     {
-                        (*i).xpos = (*i).xpos-640-640;
-                        (*i).ypos = (*i).ypos-640-640-640;
-                        SaveItem(500,sf::Vector2i(currentregionx+1,currentregiony+2),(*i));
-                        (*i).ToDelete = true;
+                        (worlditem).xpos = (worlditem).xpos-640-640;
+                        (worlditem).ypos = (worlditem).ypos-640-640-640;
+                        SaveItem(500,sf::Vector2i(currentregionx+1,currentregiony+2),(worlditem));
+                        (worlditem).ToDelete = true;
                     }
-                    else if((*i).ypos > 1920 && (*i).xpos < 640)
+                    else if((worlditem).ypos > 1920 && (worlditem).xpos < 640)
                     {
-                        (*i).xpos = (*i).xpos;
-                        (*i).ypos = (*i).ypos-640-640-640;
-                        SaveItem(500,sf::Vector2i(currentregionx-1,currentregiony+2),(*i));
-                        (*i).ToDelete = true;
+                        (worlditem).xpos = (worlditem).xpos;
+                        (worlditem).ypos = (worlditem).ypos-640-640-640;
+                        SaveItem(500,sf::Vector2i(currentregionx-1,currentregiony+2),(worlditem));
+                        (worlditem).ToDelete = true;
                     }
 
 
                     //HAGGINABAGGINA  Some reason, When a critter is saved, It'll have more than 640 for it's position, This is unacceptable.
 
-                    else if((*i).xpos > 1920)
+                    else if((worlditem).xpos > 1920)
                     {
-                        (*i).xpos = (*i).xpos-640-640-640;
-                        (*i).ypos = (*i).ypos-640;
-                        SaveItem(500,sf::Vector2i(currentregionx+2,currentregiony),(*i));
-                        (*i).ToDelete = true;
+                        (worlditem).xpos = (worlditem).xpos-640-640-640;
+                        (worlditem).ypos = (worlditem).ypos-640;
+                        SaveItem(500,sf::Vector2i(currentregionx+2,currentregiony),(worlditem));
+                        (worlditem).ToDelete = true;
                     }
-                    else if((*i).ypos > 1920)
+                    else if((worlditem).ypos > 1920)
                     {
-                        (*i).xpos = (*i).xpos-640;
-                        (*i).ypos = (*i).ypos-640-640-640;
-                        SaveItem(500,sf::Vector2i(currentregionx,currentregiony+2),(*i));
-                        (*i).ToDelete = true;
+                        (worlditem).xpos = (worlditem).xpos-640;
+                        (worlditem).ypos = (worlditem).ypos-640-640-640;
+                        SaveItem(500,sf::Vector2i(currentregionx,currentregiony+2),(worlditem));
+                        (worlditem).ToDelete = true;
                     }
-                    else if((*i).xpos < 0)
+                    else if((worlditem).xpos < 0)
                     {
-                        (*i).xpos = (*i).xpos+640;
-                        (*i).ypos = (*i).ypos-640;
-                        SaveItem(500,sf::Vector2i(currentregionx-2,currentregiony),(*i));
-                        (*i).ToDelete = true;
+                        (worlditem).xpos = (worlditem).xpos+640;
+                        (worlditem).ypos = (worlditem).ypos-640;
+                        SaveItem(500,sf::Vector2i(currentregionx-2,currentregiony),(worlditem));
+                        (worlditem).ToDelete = true;
                     }
-                    else if((*i).ypos < 0)
+                    else if((worlditem).ypos < 0)
                     {
-                        (*i).xpos = (*i).xpos-640;
-                        (*i).ypos = (*i).ypos+640;
-                        SaveItem(500,sf::Vector2i(currentregionx,currentregiony-2),(*i));
+                        (worlditem).xpos = (worlditem).xpos-640;
+                        (worlditem).ypos = (worlditem).ypos+640;
+                        SaveItem(500,sf::Vector2i(currentregionx,currentregiony-2),(worlditem));
 
-                        (*i).ToDelete = true;
+                        (worlditem).ToDelete = true;
                     }
 
 
@@ -4775,7 +4775,7 @@ int main(){
                 Setage.insert(2);
                 Setage.insert(1);
                 Setage.insert(3);
-                for(std::set<int>::iterator i = Setage.begin(); i != Setage.end(); i++){ std::cout << *i << "\n"; }
+                for(const auto & elem : Setage){ std::cout << elem << "\n"; }
             }
 
             if(testbool1)
@@ -5853,9 +5853,9 @@ int main(){
 
         if(GC.MenuEndPos == sf::Vector2f(-10000,-10000))
         {
-            GC.MenuPtrCon.pItem = NULL;
-            GC.MenuPtrCon.pNPC = NULL;
-            GC.MenuPtrCon.pTile = NULL;
+            GC.MenuPtrCon.pItem = nullptr;
+            GC.MenuPtrCon.pNPC = nullptr;
+            GC.MenuPtrCon.pTile = nullptr;
             GC.MenuPtrCon.pVecItem.clear();
             GC.MenuPtrCon.pVecNPC.clear();
             GC.MenuPtrCon.pVecTile.clear();
@@ -5871,9 +5871,9 @@ int main(){
             GC.MenuType = "NULL";
             GC.MenuPos = sf::Vector2f(-10000,-10000);
             GC.MenuEndPos = sf::Vector2f(-10000,-10000);
-            GC.MenuPtrCon.pItem = NULL;
-            GC.MenuPtrCon.pNPC = NULL;
-            GC.MenuPtrCon.pTile = NULL;
+            GC.MenuPtrCon.pItem = nullptr;
+            GC.MenuPtrCon.pNPC = nullptr;
+            GC.MenuPtrCon.pTile = nullptr;
             Con("Closing Menus Due To Outside Clicking");
         }
 

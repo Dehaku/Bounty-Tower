@@ -261,9 +261,9 @@ class MenuPointerContainer
     Tile * pTile;
     MenuPointerContainer()
     {
-        pItem = NULL;
-        pNPC = NULL;
-        pTile = NULL;
+        pItem = nullptr;
+        pNPC = nullptr;
+        pTile = nullptr;
     }
 };
 MenuPointerContainer MenuPtrCon;
@@ -862,14 +862,14 @@ void MenuPopUp() // TODO: Add functionality to allow you to press 1-9 to activat
         GC.MenuEndPos = sf::Vector2f(GC.MenuPos.x+100,(GC.MenuPos.y+(itemmanager.GlobalItem.size()*10))+5);
         Effectz.CreateSquare(GC.MenuPos.x,GC.MenuPos.y,GC.MenuEndPos.x,GC.MenuEndPos.y,White);
         int iY = 0;
-        for(std::vector<cItem>::iterator i = itemmanager.GlobalItem.begin(); i != itemmanager.GlobalItem.end(); i++)
+        for(auto & elem : itemmanager.GlobalItem)
         {
             Effectz.CreateLine(GC.MenuPos.x,(GC.MenuPos.y+(iY*11))+8,GC.MenuPos.x+90,(GC.MenuPos.y+(iY*11))+8,3,Black,1,Yellow);
-            cText.CreateText(GC.MenuPos.x,GC.MenuPos.y+(iY*11),11,Cyan,i->name);
+            cText.CreateText(GC.MenuPos.x,GC.MenuPos.y+(iY*11),11,Cyan,elem.name);
             int Butt = CreateButton(Math.Vec(GC.MenuPos.x+90, (GC.MenuPos.y+(iY*11))+5 ),5,Red);
             if(ButtonClicked(Butt))
             {
-                SpawnItem(i->name,GC.MenuPos.x,GC.MenuPos.y);
+                SpawnItem(elem.name,GC.MenuPos.x,GC.MenuPos.y);
                 fSleep(0.2);
             }
             iY++;
@@ -881,14 +881,14 @@ void MenuPopUp() // TODO: Add functionality to allow you to press 1-9 to activat
         GC.MenuEndPos = sf::Vector2f(GC.MenuPos.x+100,(GC.MenuPos.y+(npcmanager.GlobalCritter.size()*10))+5);
         Effectz.CreateSquare(GC.MenuPos.x,GC.MenuPos.y,GC.MenuEndPos.x,GC.MenuEndPos.y,White);
         int iY = 0;
-        for(std::vector<NPC>::iterator i = npcmanager.GlobalCritter.begin(); i != npcmanager.GlobalCritter.end(); i++)
+        for(auto & elem : npcmanager.GlobalCritter)
         {
             Effectz.CreateLine(GC.MenuPos.x,(GC.MenuPos.y+(iY*11))+8,GC.MenuPos.x+90,(GC.MenuPos.y+(iY*11))+8,3,Black,1,Yellow);
-            cText.CreateText(GC.MenuPos.x,GC.MenuPos.y+(iY*11),11,Cyan,i->name);
+            cText.CreateText(GC.MenuPos.x,GC.MenuPos.y+(iY*11),11,Cyan,elem.name);
             int Butt = CreateButton(Math.Vec(GC.MenuPos.x+90, (GC.MenuPos.y+(iY*11))+5 ),5,Red);
             if(ButtonClicked(Butt))
             {
-                SpawnCritter(i->name,GC.MenuPos.x,GC.MenuPos.y);
+                SpawnCritter(elem.name,GC.MenuPos.x,GC.MenuPos.y);
                 fSleep(0.2);
                 break;
             }
@@ -987,9 +987,9 @@ void RightMouseButtonContextMenu()
         }
 
 
-        for(std::list<item>::iterator i = worlditems.begin(); i != worlditems.end(); i++)
+        for(auto & worlditem : worlditems)
         {
-            if(Math.Closeish(MousePos.x,MousePos.y,(*i).xpos,(*i).ypos) <= 10)
+            if(Math.Closeish(MousePos.x,MousePos.y,(worlditem).xpos,(worlditem).ypos) <= 10)
             {
                 GC.MenuType = "ItemRMB";
 
@@ -1006,7 +1006,7 @@ void RightMouseButtonContextMenu()
                 */
 
 
-                GC.MenuPtrCon.pVecItem.push_back(&(*i));
+                GC.MenuPtrCon.pVecItem.push_back(&(worlditem));
 
                 //GC.MenuPtrCon.pItem = &worlditems[i];
                 //MenuPopUp();

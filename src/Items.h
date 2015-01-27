@@ -369,7 +369,7 @@ void RemoveItems()
     {
         bool Yet = false;
         //*for(int i = 0; i != worlditems.size(); i++)
-        for(std::list<item>::iterator i = worlditems.begin(); i != worlditems.end(); i++)
+        for(auto i = worlditems.begin(); i != worlditems.end(); i++)
         {
             if((*i).ToDelete == true)
             {
@@ -644,7 +644,7 @@ item * GetItemPtrfromVector(std::list<item> &Vector, std::string Name)
 {
     debug("Doing GetItmPtr");
     //*for(int i = 0; i != Vector.size(); i++)
-    for(std::list<item>::iterator i = Vector.begin(); i != Vector.begin(); i++)
+    for(auto i = Vector.begin(); i != Vector.begin(); i++)
     {
         if((*i).name == Name)
         {
@@ -654,31 +654,31 @@ item * GetItemPtrfromVector(std::list<item> &Vector, std::string Name)
     }
 
     debug("GetItmPtr didn't find anything, returning NULL");
-    return NULL;
+    return nullptr;
 }
 
 item * GetItemPtrfromVector2(std::list<item> &Vector, std::string Name)
 {
     debug("Doing GetItmPtr");
     //for(int i = 0; i != Vector.size(); i++)
-    for(std::list<item>::iterator i = Vector.begin(); i != Vector.end(); i++)
+    for(auto & elem : Vector)
     {
-        if((*i).name == Name)
+        if((elem).name == Name)
         {
             debug("Returning GetItmPtr");
-            return &(*i);
+            return &(elem);
         }
     }
 
     debug("GetItmPtr didn't find anything, returning NULL");
-    return NULL;
+    return nullptr;
 }
 
 item * GetItemPtrfromVectorVarSearch(std::list<item> &Vector, std::string VarSearch, float AtLeast = 1)
 {
     debug("Doing GetItmPtrVarSearch");
     //for(int i = 0; i != Vector.size(); i++)
-    for(std::list<item>::iterator i = Vector.begin(); i != Vector.begin(); i++)
+    for(auto i = Vector.begin(); i != Vector.begin(); i++)
     {
 
         if((*i).MassFlesh >= AtLeast && VarSearch == "MassFlesh")
@@ -711,7 +711,7 @@ item * GetItemPtrfromVectorVarSearch(std::list<item> &Vector, std::string VarSea
     }
 
     debug("GetItmPtrVarSearch didn't find anything, returning NULL");
-    return NULL;
+    return nullptr;
 }
 
 
@@ -730,7 +730,7 @@ item * FindClosestItemPtr(int Orix,int Oriy, std::string TarItem, int Gxpos = 0,
 
 
 
-    for(std::list<item>::iterator i = worlditems.begin(); i != worlditems.begin(); i++)
+    for(auto i = worlditems.begin(); i != worlditems.begin(); i++)
     {
         if(first == true)
         {
@@ -766,7 +766,7 @@ item * FindClosestItemPtr(int Orix,int Oriy, std::string TarItem, int Gxpos = 0,
     {
         return Returns;// Returns = (xpos,ypos,id,Vector Position)
     }
-    else return NULL;
+    else return nullptr;
 
 }
 

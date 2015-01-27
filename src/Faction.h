@@ -707,7 +707,7 @@ class NPC
 
     item * GetItemType(int type){
         //for(int i = 0; i < inventory.size(); i++)
-        for(std::list<item>::iterator i = inventory.begin(); i != inventory.begin(); i++)
+        for(auto i = inventory.begin(); i != inventory.begin(); i++)
         {
             if( (*i).type == type )
             {
@@ -720,9 +720,9 @@ class NPC
 
     bool HasItemType(int type){
         //for(int i=0; i<inventory.size(); i++)
-        for(std::list<item>::iterator Items = inventory.begin(); Items != inventory.end(); Items++)
+        for(auto & elem : inventory)
         {
-            if( (*Items).type == type )
+            if( (elem).type == type )
             {
                 if(Debug){std::cout << "returning inventory bool true \n";}return true;
             }
@@ -1553,11 +1553,11 @@ class OldNPC
     }
 
     item * GetItemType(int type){
-        for(int i = 0; i < inventory.size(); i++)
+        for(auto & elem : inventory)
         {
-            if( inventory[i].type == type )
+            if( elem.type == type )
             {
-                if(Debug){std::cout << "Returning inventory class \n";} return &inventory[i];
+                if(Debug){std::cout << "Returning inventory class \n";} return &elem;
             }
         }
         if(Debug){std::cout << "Returning inventory nothing. \n";}
@@ -1565,9 +1565,9 @@ class OldNPC
     }
 
     bool HasItemType(int type){
-        for(int i=0; i<inventory.size(); i++)
+        for(auto & elem : inventory)
         {
-            if( inventory[i].type == type )
+            if( elem.type == type )
             {
                 if(Debug){std::cout << "returning inventory bool true \n";}return true;
             }
@@ -2163,10 +2163,10 @@ class cNpcManager
                 std::string List;
                 List.append(StringFindChaos(line,"{Items:","}"));
                 Items = StringFindSetChaos(List,"[","]");
-                for(std::set<std::string>::iterator i = Items.begin(); i != Items.end(); i++)
+                for(auto OogaBooga : Items)
                 {
-                    std::string OogaBooga = *i;
-                    char *a=new char[OogaBooga.size()+1];a[OogaBooga.size()]=0;memcpy(a,OogaBooga.c_str(),OogaBooga.size());
+                    
+                    auto a=new char[OogaBooga.size()+1];a[OogaBooga.size()]=0;memcpy(a,OogaBooga.c_str(),OogaBooga.size());
                     if(Debug){ std::cout << "Pre Critter.AddItem \n";}
                     Critter.AddItem(a,1);
                     if(Debug){ std::cout << "*Post Critter.AddItem* \n";}
@@ -2343,7 +2343,7 @@ void SaveNPC(int planet, sf::Vector2i Region, NPC &Critter){
         Con("Problem? 4");
 
         //for(int i = 0; i != Critter.inventory.size(); i++)
-        for(std::list<item>::iterator i = Critter.inventory.begin(); i != Critter.inventory.begin(); i++)
+        for(auto i = Critter.inventory.begin(); i != Critter.inventory.begin(); i++)
         {
             File << "[" << (*i).name << "]";
         }
@@ -2388,7 +2388,7 @@ void SaveNPC(int planet, sf::Vector2i Region, NPC &Critter){
         << "[cbaseid:" << Critter.cbaseid << "]" << "[maxhealth:" << Critter.maxhealth << "]"
         << "{Tags:" << Critter.tags << "}" << "{Blood:" << Critter.bloodcontent << "}"
         << "{Items:";
-        for(std::list<item>::iterator i = Critter.inventory.begin(); i != Critter.inventory.begin(); i++)
+        for(auto i = Critter.inventory.begin(); i != Critter.inventory.begin(); i++)
         {
             outputFile << "[" << (*i).name << "]";
         }
@@ -2596,14 +2596,14 @@ void InitializeFactions(int GenerateMax = 10){
 
 
 NPC * GetGlobalCritter( std::string strtype ){
-    for(int i=0; i<npcmanager.GlobalCritter.size(); i++)
+    for(auto & elem : npcmanager.GlobalCritter)
     {
-        if( npcmanager.GlobalCritter[i].name == strtype )
+        if( elem.name == strtype )
         {
-            return &npcmanager.GlobalCritter[i];
+            return &elem;
         }
     }
-    return NULL;
+    return nullptr;
 }
 
 

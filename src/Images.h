@@ -65,11 +65,11 @@ class cImageManager {
         string dir = string("./data/gfx");
         vector<string> files = vector<string>();
         getdir(dir,files);
-        for(unsigned int i = 0; i < files.size(); i++)
+        for(auto & file : files)
         {
             string line("data/gfx/");
-            string ending(files[i]);
-            if(files[i] != "." && files[i] != "..")
+            string ending(file);
+            if(file != "." && file != "..")
             {
                 line.append(ending);
                 cImageHolder image;
@@ -77,7 +77,7 @@ class cImageManager {
                 sf::Vector2u Size = image.Image.getSize();
                 //std::cout << Size.x << " : " << Size.y << std::endl;
 
-                std::string namebit = files[i];
+                std::string namebit = file;
                 image.name = namebit;
                 image.Image.setSmooth(false);
                 GlobalImage.push_back(image);

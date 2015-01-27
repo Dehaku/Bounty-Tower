@@ -46,9 +46,9 @@ class GalaxyController
 
         MenuPointerContainer()
         {
-            pItem = NULL;
-            pNPC = NULL;
-            pTile = NULL;
+            pItem = nullptr;
+            pNPC = nullptr;
+            pTile = nullptr;
         }
     };
     MenuPointerContainer MenuPtrCon;
@@ -70,9 +70,9 @@ class GalaxyController
 
     void Wave(){
         bool FoundAny = false;
-        for(std::vector<NPC>::iterator i = npclist.begin(); i != npclist.end(); i++)
+        for(auto & elem : npclist)
         {
-            if(i->HasTag("[EatsFlesh:") && i->health > 0)
+            if(elem.HasTag("[EatsFlesh:") && elem.health > 0)
             {
                 FoundAny = true;
             }

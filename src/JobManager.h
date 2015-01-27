@@ -85,9 +85,9 @@ class PointerContainer
     Tile * pTile;
     PointerContainer()
     {
-        pItem = NULL;
-        pNPC = NULL;
-        pTile = NULL;
+        pItem = nullptr;
+        pNPC = nullptr;
+        pTile = nullptr;
     }
 };
 
@@ -113,8 +113,8 @@ class Job
 
     Job()
     {
-        pItem = NULL;
-        pWorker = NULL;
+        pItem = nullptr;
+        pWorker = nullptr;
 
         CompletionProgress = 0;
         CompletionTimer = 1000;

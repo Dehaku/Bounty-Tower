@@ -118,7 +118,7 @@ void DrawJobList(int DrawXPos, int DrawYPos)
 
                 //cText.CreateText(DrawXPos,DrawYPos+(YVariance*10),11,sf::Color::Yellow,AddString(UniFact[i].JobList[t].Type," "),UniFact[i].JobList[t].Name);
 
-                if(UniFact[i].JobList[t].pItem != NULL && UniFact[i].JobList[t].pWorker != NULL)
+                if(UniFact[i].JobList[t].pItem != nullptr && UniFact[i].JobList[t].pWorker != nullptr)
                 {
                     debug("First condition");
                     std::string Name = UniFact[i].JobList[t].pWorker->name;
@@ -128,12 +128,12 @@ void DrawJobList(int DrawXPos, int DrawYPos)
 
                     cText.CreateText(DrawXPos,DrawYPos+(YVariance*10),11,sf::Color::Yellow,AddString(UniFact[i].JobList[t].pWorker->name, UniFact[i].JobList[t].Name," "),UniFact[i].JobList[t].pItem->name); // ,JobList.at(i).pItem.name
                 }
-                else if(UniFact[i].JobList[t].pItem != NULL)
+                else if(UniFact[i].JobList[t].pItem != nullptr)
                 {
                     debug("Second condition");
                     cText.CreateText(DrawXPos,DrawYPos+(YVariance*10),11,sf::Color::Yellow,AddString(UniFact[i].JobList[t].Name," "),UniFact[i].JobList[t].pItem->name); // ,JobList.at(i).pItem.name
                 }
-                else if(UniFact[i].JobList[t].pWorker != NULL)
+                else if(UniFact[i].JobList[t].pWorker != nullptr)
                 {
                     debug("Third condition");
                     cText.CreateText(DrawXPos,DrawYPos+(YVariance*10),11,sf::Color::Yellow,AddString(UniFact[i].JobList[t].pWorker->name,UniFact[i].JobList[t].Type," "),UniFact[i].JobList[t].Name);
