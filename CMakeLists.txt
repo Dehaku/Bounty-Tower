@@ -8,13 +8,18 @@ elseif("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
     set(USING_CLANG TRUE)
 endif()
 
+# OS specific configuration
+if(UNIX)
+    add_definitions(-DGALAXY_LINUX)
+endif()
+
 # For GCC and Clang, enable C++14 support and add some other flags
 if(USING_GCC OR USING_CLANG)
   add_compile_options(-std=c++14 -w)
 endif()
 
 set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/CMake/Modules)
-find_package(SFML 2 COMPONENTS audio system REQUIRED)
+find_package(SFML 2 COMPONENTS graphics window audio system REQUIRED)
 include_directories(${SFML_INCLUDE_DIR})
 
 file(GLOB_RECURSE SOURCE_FILES src/*)

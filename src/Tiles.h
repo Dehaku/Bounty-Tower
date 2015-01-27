@@ -301,7 +301,7 @@ void zGenerateChunk(std::string type, int planet, sf::Vector2i Cords, sf::Vector
         {
             for(int x = 0; x != ChunkSize; x++)
             {
-                outputFile << vChunk[i][t][0].ID << " ";
+                outputFile << vChunk[i][t][0].ID << " ";
             }
             outputFile << endl;
         }
@@ -548,10 +548,7 @@ void GenerateChunk(std::string type, int planet, sf::Vector2i Cords, sf::Vector2
     convert << planet;
     line.append(convert.str());
     convert.clear();
-    char *a=new char[line.size()+1];
-    a[line.size()]=0;
-    memcpy(a,line.c_str(),line.size());
-    mkdir(a);
+    galaxy_mkdir(line);
     line.append("\\map");
     convert << "x";
     convert << Cords.x;
@@ -639,7 +636,7 @@ void GenerateChunk(std::string type, int planet, sf::Vector2i Cords, sf::Vector2
             {
                 for( int t = 0; t != ChunkSize; t++)
                 {
-                    outputFile << vChunk[i][t][x].ID << " ";
+                    outputFile << vChunk[i][t][x].ID << " ";
                 }
                 outputFile << endl;
             }

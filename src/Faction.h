@@ -2307,10 +2307,7 @@ void SaveNPC(int planet, sf::Vector2i Region, NPC &Critter){
     convert << planet;
     line.append(convert.str());
     convert.clear();
-    char *a=new char[line.size()+1];
-    a[line.size()]=0;
-    memcpy(a,line.c_str(),line.size());
-    mkdir(a);
+    galaxy_mkdir(line);
     line.append("\\npc");
     convert << "x";
     convert << Region.x;
@@ -2700,10 +2697,7 @@ std::string LoadCritters(sf::Vector2i WorldPos, std::string Direction, int plane
     convert << planet;
     line.append(convert.str());
     convert.clear();
-    char *a=new char[line.size()+1];
-    a[line.size()]=0;
-    memcpy(a,line.c_str(),line.size());
-    mkdir(a);
+    galaxy_mkdir(line);
     line.append("\\npc");
     convert << "x";
     convert << WorldPos.x;

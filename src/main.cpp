@@ -13,7 +13,9 @@
 #include <dirent.h>
 #include <math.h>
 #include <memory.h>
+#ifndef GALAXY_LINUX
 #include <windows.h>
+#endif
 #include <time.h>
 // *#include "Weaponry.h"
 // *#include "keys.h"
@@ -103,6 +105,9 @@ void SpawnCritter(std::string Object, int xpos, int ypos);
 
 std::string GetClipboardText()
 {
+#ifdef GALAXY_LINUX
+    return "Not implemented.";
+#else
   // Try opening the clipboard
   if (! OpenClipboard(NULL)) Con("ClipError1");
 
@@ -126,6 +131,7 @@ std::string GetClipboardText()
   CloseClipboard();
 
   return text;
+#endif
 }
 
 
@@ -4140,10 +4146,10 @@ int main(){
             if(Key.lshift == true && Key.right == true){ currentx++;currentx++;currentx++;currentx++;PlyAct=true;}//Sprite.Move( 100 * ElapsedTime, 0);
             if(Key.lshift == true && Key.up == true){    currenty--;currenty--;currenty--;currenty--;PlyAct=true;}//Sprite.Move(0, -100 * ElapsedTime);
             if(Key.lshift == true && Key.down == true){  currenty++;currenty++;currenty++;currenty++;PlyAct=true;}//Sprite.Move(0,  100 * ElapsedTime);
-            if(Key.comma == true && Key.lshift == true && currentz <= gridz-1){  currentz++;PlyAct=true; Sleep(0.1f);} //Sprite.Move(0, -100 * ElapsedTime);
-            if(Key.period == true && Key.lshift == true && currentz >= 1){  currentz--;PlyAct=true; Sleep(0.1f);} //Sprite.Move(0,  100 * ElapsedTime);
-            if(Key.comma == true && Key.rshift == true && currentz <= gridz-1){  currentz++;PlyAct=true; Sleep(0.1f);} //Sprite.Move(0, -100 * ElapsedTime);
-            if(Key.period == true && Key.rshift == true && currentz >= 1){  currentz--;PlyAct=true; Sleep(0.1f);} //Sprite.Move(0,  100 * ElapsedTime);
+            if(Key.comma == true && Key.lshift == true && currentz <= gridz-1){  currentz++;PlyAct=true; fSleep(0.1f);} //Sprite.Move(0, -100 * ElapsedTime);
+            if(Key.period == true && Key.lshift == true && currentz >= 1){  currentz--;PlyAct=true; fSleep(0.1f);} //Sprite.Move(0,  100 * ElapsedTime);
+            if(Key.comma == true && Key.rshift == true && currentz <= gridz-1){  currentz++;PlyAct=true; fSleep(0.1f);} //Sprite.Move(0, -100 * ElapsedTime);
+            if(Key.period == true && Key.rshift == true && currentz >= 1){  currentz--;PlyAct=true; fSleep(0.1f);} //Sprite.Move(0,  100 * ElapsedTime);
             if(MyTarget == -1){Globals.Following = false;} else if(Key.c){Globals.Following = true;}
             if(Globals.Following){View1.setCenter(npclist.at(MyTarget).xpos,npclist.at(MyTarget).ypos);}
 

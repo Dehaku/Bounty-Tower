@@ -19,11 +19,21 @@
 #include <dirent.h>
 #include <math.h>
 #include <memory.h>
+#ifdef GALAXY_LINUX
+#include <sys/stat.h>
+#else
 #include <windows.h>
+#endif
 #include <time.h>
 
 
-
+void galaxy_mkdir(std::string const & name) {
+#ifdef GALAXY_LINUX
+    mkdir(name.c_str(), 0755);
+#else
+    _mkdir(name.c_str());
+#endif
+}
 
 
 

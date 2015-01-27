@@ -420,10 +420,7 @@ void zSaveItem(int planet, sf::Vector2i Region, item &object){
     //convert << planet;
     line.append(convert.str());
     convert.clear();
-    char *a=new char[line.size()+1];
-    a[line.size()]=0;
-    memcpy(a,line.c_str(),line.size());
-    mkdir(a);
+    galaxy_mkdir(line);
     line.append("\\stuff");
     convert << "x";
     convert << Region.x;
@@ -451,10 +448,7 @@ void SaveItem(int planet, sf::Vector2i Region, item &Critter){ // I already did 
     convert << planet;
     line.append(convert.str());
     convert.clear();
-    char *a=new char[line.size()+1];
-    a[line.size()]=0;
-    memcpy(a,line.c_str(),line.size());
-    mkdir(a);
+    galaxy_mkdir(line);
     line.append("\\stuff");
     convert << "x";
     convert << Region.x;
@@ -495,10 +489,7 @@ std::string LoadItems(sf::Vector2i WorldPos, std::string Direction, int planet =
     convert << planet;
     line.append(convert.str());
     convert.clear();
-    char *a=new char[line.size()+1];
-    a[line.size()]=0;
-    memcpy(a,line.c_str(),line.size());
-    mkdir(a);
+    galaxy_mkdir(line);
     line.append("\\stuff");
     convert << "x";
     convert << WorldPos.x;
