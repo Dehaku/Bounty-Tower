@@ -222,7 +222,7 @@ int CloseishS(int orix,int tarx){
     int num = xnum;
     if(num < 0){ num -= num*2;}
     return num;
-};
+}
 
 class Math
 {

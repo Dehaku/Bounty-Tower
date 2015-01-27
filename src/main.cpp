@@ -166,7 +166,7 @@ int randzorz(int min, int max){
     if(min == max){return min;}// It will crash if it tries to randomize the same two numbers.
     //num = sf::Randomizer::Random(min, max);
     return num;
-};
+}
 
 
 
@@ -2815,7 +2815,7 @@ void UpdateNPC(){
 
 
 
-};
+}
 
 
 
@@ -2949,7 +2949,7 @@ void DrawNPCs(){
         //}
     }
     debug("Done drawing NPCs");
-};
+}
 
 bool DrawStuffsDone = true;
 
@@ -2968,7 +2968,7 @@ void DrawItems(){
         //}
     }
     debug("Done Drawing Items");
-};
+}
 
 void LightTrail(int x, int y, int z){
     int curx = x;
@@ -2981,7 +2981,7 @@ void LightTrail(int x, int y, int z){
     if(cury < 0){ cury = 0;}
     if(curz < 0){ curz = 0;}
     sunmap[curz][curx][cury] = 255;
-};
+}
 
 class MiniMenu{
     public:
@@ -3092,7 +3092,7 @@ void DrawStuffs(){
 
 
     DrawStuffsDone = true;
-};
+}
 
 void DrawStuffsXXX(){
 
@@ -3114,7 +3114,7 @@ void DrawStuffsXXX(){
     vButtonList.clear();
 
     DrawStuffsDone = true;
-};
+}
 
 
 cItem * GetGlobalItem( std::string strtype ){

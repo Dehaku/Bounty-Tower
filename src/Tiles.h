@@ -692,7 +692,7 @@ void SaveMap(int planet, int xcord, int ycord, int xpos, int ypos){
             outputFile << Tiles[i][t][30].ID << endl;
         }
     }
-};
+}
 
 void LoadMap(int planet, int xcord, int ycord, int xpos, int ypos){
     using namespace std;

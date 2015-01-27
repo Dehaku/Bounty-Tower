@@ -15,7 +15,7 @@ endif()
 
 # For GCC and Clang, enable C++14 support and add some other flags
 if(USING_GCC OR USING_CLANG)
-  add_compile_options(-std=c++14)
+  add_compile_options(-std=c++14 -pedantic)
 endif()
 
 # For now
