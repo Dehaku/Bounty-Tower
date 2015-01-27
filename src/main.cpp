@@ -154,7 +154,7 @@ std::string RandomWindowName()
 }
 
 
-sf::RenderWindow App(sf::VideoMode(Rez.x, Rez.y, 32), RandomWindowName());
+sf::RenderWindow App;
 
 
 
@@ -3540,6 +3540,7 @@ int main(){
 }*/}
 
     }
+    App.create(sf::VideoMode(Rez.x, Rez.y, 32), RandomWindowName());
 
     cText.LoadFont();
 
