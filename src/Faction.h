@@ -1049,7 +1049,7 @@ class NPC
         else {return false;}
     }
 
-    int AddItem(char *itemname, int amount){// TODO: Set this to optionally receive an item class instead, Will be useful for modded weapons and ect.
+    int AddItem(std::string const & itemname, int amount){// TODO: Set this to optionally receive an item class instead, Will be useful for modded weapons and ect.
          if(Debug){ std::cout << "Pre var in AddItem" << " \n";}
          cItem var = *GetGlobalItem(itemname);
          if(Debug){ std::cout << "Post var in AddItem" << " \n";}
