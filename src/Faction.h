@@ -503,10 +503,10 @@ class NPC
     short regtemp;
     short temp;
     short breathmax;
-    short maxhunger;
+    long maxhunger;
     float hunger;
     short nutrition;
-    short maxthirst;
+    long maxthirst;
     float thirst;
     short maxstamina;
     short stamina;
