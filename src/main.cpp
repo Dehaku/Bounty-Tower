@@ -2906,7 +2906,6 @@ int DrawPlanets(){
 
 int DrawNPCs(){
     std::vector<NPC>::iterator zit;
-    int anglez = zit->angle;
     for(zit = npclist.begin(); zit != npclist.end(); ++zit )
     {
         //if(zit->xpos/GridSize > currentx-27 && zit->xpos/GridSize < currentx+26 && zit->ypos/GridSize > currenty-20 && zit->ypos/GridSize < currenty+20)
