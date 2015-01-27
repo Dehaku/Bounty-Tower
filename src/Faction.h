@@ -840,10 +840,10 @@ class NPC
 
     void breath(){};
 
-    void sethealth(int amount){health = amount;}
-    bool modhealth(int amount){health += amount;if(health < 1){health = 0;return false;} else{return true;}}
+    void sethealth(float amount){health = amount;}
+    bool modhealth(float amount){health += amount;if(health < 1){health = 0;return false;} else{return true;}}
 
-    void fillhunger(int amount){hunger += amount; if(hunger > maxhunger){hunger = maxhunger;}};
+    void fillhunger(float amount){hunger += amount; if(hunger > maxhunger){hunger = maxhunger;}};
     void fillthirst(int amount){thirst += amount; if(thirst > maxthirst){thirst = maxthirst;}};
 
     std::string getname(){return name;}
@@ -920,7 +920,7 @@ class NPC
     }
 
 
-    float bloodwork(std::string aliment, int amount){ // Returns the final altered value of the altered 'aliment'
+    float bloodwork(std::string aliment, float amount){ // Returns the final altered value of the altered 'aliment'
 
         size_t tStart;
         aliment = AddString("[", aliment, ":"); // Doing this so the rest of the code is much, much simplier.
