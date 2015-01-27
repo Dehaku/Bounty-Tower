@@ -14,6 +14,7 @@ class cTextList
     int ypos;
     sf::Color Color;
     sf::Text sString;
+    sf::Font font;
     int Size;
     bool Shadow;
     bool Bold;
@@ -81,7 +82,7 @@ class cTextList
         if(int3 != -6698){convert3 << int3;
         line1.append(convert3.str());}
 
-        sf::Text Textz(line1);
+        sf::Text Textz(line1, font);
 
         Textz.setCharacterSize(Size);
         if(Bold == true){
@@ -115,6 +116,7 @@ class cTextList
 }
 
     cTextList(){
+        font.loadFromFile("resources/fonts/sansation.ttf");
     Size = 11;
     }
 
