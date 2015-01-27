@@ -1088,12 +1088,12 @@ void UpdateNPC(){
                 std::string WorkingLine;
 
                 WorkingLine.append(Me->Body.BodyParts,SearchPos,EndPos-SearchPos);
-                float PartNumber = NULL;
+                float PartNumber = 0;
 
                 std::string PartString = "";
 
                 PartNumber = StringFindNumber(WorkingLine,"[Walk:");
-                if(PartNumber != NULL)
+                if(PartNumber != 0)
                 {
 
                     if(PartsWalkSpeed != 0)
@@ -1108,28 +1108,28 @@ void UpdateNPC(){
                 }
 
                 PartNumber = StringFindNumber(WorkingLine,"[NutritionExtraction:");
-                if(PartNumber != NULL)
+                if(PartNumber != 0)
                 {
                     GlobalNutritionPercentage += PartNumber;
                 }
 
                 PartNumber = StringFindNumber(WorkingLine,"[DigestsBlood:");
-                if(PartNumber != NULL)
+                if(PartNumber != 0)
                 {
                     ConsumeBlood = true;
                 }
                 PartNumber = StringFindNumber(WorkingLine,"[DigestsFlesh:");
-                if(PartNumber != NULL)
+                if(PartNumber != 0)
                 {
                     ConsumeFlesh = true;
                 }
                 PartNumber = StringFindNumber(WorkingLine,"[DigestsVeggy:");
-                if(PartNumber != NULL)
+                if(PartNumber != 0)
                 {
                     ConsumeVeggy = true;
                 }
                 PartNumber = StringFindNumber(WorkingLine,"[DigestsWater:");
-                if(PartNumber != NULL)
+                if(PartNumber != 0)
                 {
                     ConsumeWater = true;
                 }
@@ -1170,7 +1170,7 @@ void UpdateNPC(){
 
                 WorkingLine.append(Me->Body.BodyParts,SearchPos,EndPos-SearchPos);
 
-                float PartNumber = NULL;
+                float PartNumber = 0;
                 std::string PartString = "";
                 item* PartItem;
 
@@ -1182,7 +1182,7 @@ void UpdateNPC(){
 
                 PartNumber = StringFindNumber(WorkingLine,"[DigestsBlood:");
                 PartItem = GetItemPtrfromVector(Me->inventory,"Blood");
-                if(PartNumber != NULL && PartItem != NULL)
+                if(PartNumber != 0 && PartItem != NULL)
                 {
 
                     float WorkAmount = PartItem->amount;
@@ -1207,7 +1207,7 @@ void UpdateNPC(){
                 PartNumber = StringFindNumber(WorkingLine,"[DigestsFlesh:");
                 PartItem = GetItemPtrfromVectorVarSearch(Me->inventory,"MassFlesh");
                 //if(PartItem != NULL) PartItem->HasInternalUse++; // This is designed to keep items from being ejected until they are completely useless to a critter, I.E. Items with multiple Food Mass's.
-                if(PartNumber != NULL && PartItem != NULL && PartItem->MassFlesh > 0) // TODO: Make sure the item is in THIS PART before digesting it!
+                if(PartNumber != 0 && PartItem != NULL && PartItem->MassFlesh > 0) // TODO: Make sure the item is in THIS PART before digesting it!
                 {
                     //std::cout << "HasInternalUse: " << PartItem->HasInternalUse << std::endl;
                     float WorkAmount = PartItem->MassFlesh;
@@ -1234,7 +1234,7 @@ void UpdateNPC(){
                 PartNumber = StringFindNumber(WorkingLine,"[DigestsVeggy:");
                 PartItem = GetItemPtrfromVectorVarSearch(Me->inventory,"MassVeggy");
                 //if(PartItem != NULL) PartItem->HasInternalUse++; // This is designed to keep items from being ejected until they are completely useless to a critter, I.E. Items with multiple Food Mass's.
-                if(PartNumber != NULL && PartItem != NULL && PartItem->MassVeggy > 0) // TODO: Make sure the item is in THIS PART before digesting it!
+                if(PartNumber != 0 && PartItem != NULL && PartItem->MassVeggy > 0) // TODO: Make sure the item is in THIS PART before digesting it!
                 {
                     //std::cout << "HasInternalUse: " << PartItem->HasInternalUse << std::endl;
                     float WorkAmount = PartItem->MassVeggy;
@@ -1259,7 +1259,7 @@ void UpdateNPC(){
                 PartNumber = StringFindNumber(WorkingLine,"[DigestsWater:");
                 PartItem = GetItemPtrfromVectorVarSearch(Me->inventory,"MassWater");
                 //if(PartItem != NULL) PartItem->HasInternalUse++; // This is designed to keep items from being ejected until they are completely useless to a critter, I.E. Items with multiple Food Mass's.
-                if(PartNumber != NULL && PartItem != NULL && PartItem->MassWater > 0) // TODO: Make sure the item is in THIS PART before digesting it!
+                if(PartNumber != 0 && PartItem != NULL && PartItem->MassWater > 0) // TODO: Make sure the item is in THIS PART before digesting it!
                 {
                     //std::cout << "HasInternalUse: " << PartItem->HasInternalUse << std::endl;
                     float WorkAmount = PartItem->MassWater;
@@ -1352,7 +1352,7 @@ void UpdateNPC(){
                 }
 
                 PartNumber = StringFindNumber(WorkingLine,"[BloodPumpRate:"); // TODO: Do this right.
-                if(PartNumber != NULL)
+                if(PartNumber != 0)
                 {
                     float Blood = StringFindNumber(Me->bloodcontent,"[Nutrients:");
                     if(Blood > PartNumber)
@@ -1430,7 +1430,7 @@ void UpdateNPC(){
 
 
 
-        sf::Vector2f PathFindWorkPos(NULL,NULL);
+        sf::Vector2f PathFindWorkPos(0,0);
 
 
         float TempXpos = Me->xpos;
@@ -2446,7 +2446,7 @@ void UpdateNPC(){
 
                         int Previous = -1;
 
-                    if(PathFindWorkPos.x != NULL)
+                    if(PathFindWorkPos.x != 0)
                     {
                         Previous = walkability[abs(PathFindWorkPos.x/20)][abs(PathFindWorkPos.y/20)];
                         walkability[abs(PathFindWorkPos.x/20)][abs(PathFindWorkPos.y/20)] = walkable;
@@ -2456,7 +2456,7 @@ void UpdateNPC(){
 
                         Con("Done MyFindPath");
 
-                        if(PathFindWorkPos.x != NULL)
+                        if(PathFindWorkPos.x != 0)
                         {
                             walkability[abs(PathFindWorkPos.x/20)][abs(PathFindWorkPos.y/20)] = Previous;
                         }
@@ -2638,7 +2638,7 @@ void UpdateNPC(){
                     if(randz(0,20) < 3)
                     {
                         int Previous = -1;
-                        if(PathFindWorkPos.x != NULL)
+                        if(PathFindWorkPos.x != 0)
                         {
                             Previous = walkability[abs(PathFindWorkPos.x/20)][abs(PathFindWorkPos.y/20)];
                             walkability[abs(PathFindWorkPos.x/20)][abs(PathFindWorkPos.y/20)] = walkable;
@@ -2647,7 +2647,7 @@ void UpdateNPC(){
                         Me->PathFinding.MyFindPath(Me->xpos,Me->ypos,Me->TargetPos.x,Me->TargetPos.y);
                         Con("Pre Walkability setting?");
 
-                        if(PathFindWorkPos.x != NULL)
+                        if(PathFindWorkPos.x != 0)
                         {
                             walkability[abs(PathFindWorkPos.x/20)][abs(PathFindWorkPos.y/20)] = Previous;
                         }
@@ -2676,7 +2676,7 @@ void UpdateNPC(){
 
                     int Previous = -1;
 
-                    if(PathFindWorkPos.x != NULL)
+                    if(PathFindWorkPos.x != 0)
                     {
                         Previous = walkability[abs(PathFindWorkPos.x/20)][abs(PathFindWorkPos.y/20)];
                         walkability[abs(PathFindWorkPos.x/20)][abs(PathFindWorkPos.y/20)] = walkable;
@@ -2689,7 +2689,7 @@ void UpdateNPC(){
 
                     Con("Post ReadPath");
 
-                    if(PathFindWorkPos.x != NULL)
+                    if(PathFindWorkPos.x != 0)
                     {
                             walkability[abs(PathFindWorkPos.x/20)][abs(PathFindWorkPos.y/20)] = Previous;
                     }

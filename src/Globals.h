@@ -339,7 +339,7 @@ int StringFindNumber(std::string Stringy,std::string Term){
             return Returns;
         }
     }
-    return NULL;
+    return 0;
 }
 
 std::string StringFindString(std::string Stringy,std::string Term){
