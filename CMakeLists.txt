@@ -20,7 +20,7 @@ endif()
 
 # For now
 if(USING_CLANG)
-    add_compile_options(-Wno-absolute-value -Wno-logical-op-parentheses)
+    add_compile_options(-Wno-absolute-value)
 endif()
 
 set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/CMake/Modules)

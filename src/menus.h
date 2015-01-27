@@ -497,7 +497,7 @@ void MenuPopUp() // TODO: Add functionality to allow you to press 1-9 to activat
                 if(GC.MenuPtrCon.pItem->Pickupable) cText.CreateText(GC.MenuPos.x+2,GC.MenuPos.y+(iY*13),12,White,AddString(GC.MenuPtrCon.pItem->name, " - PickUp"));
                 else cText.CreateText(GC.MenuPos.x+2,GC.MenuPos.y+(iY*13),12,White,AddString(GC.MenuPtrCon.pItem->name, " - xPickUpx, Cannot be picked up."));
                 int Butt = CreateSquareButton(Math.Vec(GC.MenuPos.x+BRD, (GC.MenuPos.y+(iY*13))+MBD ),BS,BSY,ButCol,"Makes someone pickup this item.");
-                if(SquareButtonClicked(Butt) && GC.MenuPtrCon.pItem->Pickupable || Key.num1Time == 1 && GC.MenuPtrCon.pItem->Pickupable)
+                if((SquareButtonClicked(Butt) && GC.MenuPtrCon.pItem->Pickupable) || (Key.num1Time == 1 && GC.MenuPtrCon.pItem->Pickupable))
                 {
 
                     for(int i = 0; i != UniFact.size(); i++)
@@ -526,7 +526,7 @@ void MenuPopUp() // TODO: Add functionality to allow you to press 1-9 to activat
                 if(!GC.MenuPtrCon.pItem->Pickupable) cText.CreateText(GC.MenuPos.x+2,GC.MenuPos.y+(iY*13),12,White,AddString(GC.MenuPtrCon.pItem->name, " - ChopDown"));
                 else cText.CreateText(GC.MenuPos.x+2,GC.MenuPos.y+(iY*13),12,White,AddString(GC.MenuPtrCon.pItem->name, " - xChopDownx, Cannot be chopped up."));
                 int Butt = CreateSquareButton(Math.Vec(GC.MenuPos.x+BRD, (GC.MenuPos.y+(iY*13))+MBD ),BS,BSY,ButCol,"Makes someone seek and destroy this item.");
-                if(SquareButtonClicked(Butt) && !GC.MenuPtrCon.pItem->Pickupable || Key.num1Time == 1 && !GC.MenuPtrCon.pItem->Pickupable)
+                if((SquareButtonClicked(Butt) && !GC.MenuPtrCon.pItem->Pickupable) || (Key.num1Time == 1 && !GC.MenuPtrCon.pItem->Pickupable))
                 {
 
 

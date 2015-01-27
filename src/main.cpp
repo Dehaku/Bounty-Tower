@@ -1941,7 +1941,7 @@ void UpdateNPC(){
 
 
 
-                        if(UniFact[0].JobList[i].pWorker == NULL && Me->HasJob == false  && UniFact[0].JobList[i].ToDelete == false || UniFact[0].JobList[i].pWorker != NULL && UniFact[0].JobList[i].pWorker->id == Me->id && UniFact[0].JobList[i].ToDelete == false)
+                        if((UniFact[0].JobList[i].pWorker == NULL && Me->HasJob == false && UniFact[0].JobList[i].ToDelete == false) || (UniFact[0].JobList[i].pWorker != NULL && UniFact[0].JobList[i].pWorker->id == Me->id && UniFact[0].JobList[i].ToDelete == false))
                         {
                             debug("Comparitive Success");
                             if(UniFact[0].JobList[i].pWorker == NULL)
@@ -2543,7 +2543,7 @@ void UpdateNPC(){
             {
             //if(Me->NeedsPath == false){if(Me->target != "None"){ Me->DirMove(Me->TargetPos);}}
             }
-            if(Me->target != "None" && Me->AtTarget || Me->target != "None" && Math.Closeish(Me->xpos,Me->ypos,Me->TargetPos.x,Me->TargetPos.y) <= Me->size)
+            if((Me->target != "None" && Me->AtTarget) || (Me->target != "None" && Math.Closeish(Me->xpos,Me->ypos,Me->TargetPos.x,Me->TargetPos.y) <= Me->size))
             {
                 if(GetItemVectorId(Me->TargetId) != -1)
                 {
@@ -2841,9 +2841,9 @@ void DrawTiles(){
     {
         for( int t = 0; t <= gridx-1; t++)
         {
-            if(Globals.Following == true && i > (npclist.at(MyTarget).xpos/GridSize)-27 && i < (npclist.at(MyTarget).xpos/GridSize)+26 || i > currentx-27 && i < currentx+26)
+            if((Globals.Following == true && i > (npclist.at(MyTarget).xpos/GridSize)-27 && i < (npclist.at(MyTarget).xpos/GridSize)+26) || (i > currentx-27 && i < currentx+26))
             {
-                if(Globals.Following == true && t > (npclist.at(MyTarget).ypos/GridSize)-21 && t < (npclist.at(MyTarget).ypos/GridSize)+20 || t > currenty-21 && t < currenty+20)
+                if((Globals.Following == true && t > (npclist.at(MyTarget).ypos/GridSize)-21 && t < (npclist.at(MyTarget).ypos/GridSize)+20) || (t > currenty-21 && t < currenty+20))
                 {
                     sf::Sprite Tile;
                     if( groundmap[currentz][i][t] == 1 )
