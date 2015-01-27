@@ -23,6 +23,7 @@
 #include <sys/stat.h>
 #else
 #include <windows.h>
+#include <direct.h>
 #endif
 #include <time.h>
 
