@@ -3959,7 +3959,7 @@ int main(){
         Key.Update();
         sf::Vector2f MouseStagnationCheck = MousePos;
         // For some reason, I have to manually modify the positions.
-        MousePos = App.mapPixelToCoords(sf::Vector2i( (sf::Mouse::getPosition().x-App.getPosition().x)-8 , (sf::Mouse::getPosition().y-App.getPosition().y)-30 ));
+        MousePos = App.mapPixelToCoords(sf::Mouse::getPosition(App));
         if(MouseStagnationCheck == MousePos) MouseStagnation++;
         else MouseStagnation = 0;
         //std::cout << MouseStagnation;
