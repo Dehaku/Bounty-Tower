@@ -38,6 +38,7 @@ class cImageManager {
                 return &GlobalImage.at(i).Image;
             }
         }
+        throw std::runtime_error("GetImage: Couldn't find image.");
     }
 
     sf::Texture GetvImage(std::string Input){
@@ -55,6 +56,7 @@ class cImageManager {
                 return GlobalImage.at(i).Image;
             }
         }
+        throw std::runtime_error("GetvImage: Couldn't find image.");
     }
 
 

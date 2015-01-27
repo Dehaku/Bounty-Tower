@@ -77,7 +77,7 @@ item * ListGet(std::list<item> &List, int Position)
 
 //class cItem;
 //int randz(int min, int max);
-int DrawStuffs();
+void DrawStuffs();
 //std::vector<int> NnGTrace(int xa, int ya, int xb, int yb,int id, std::vector<int> exceptions = std::vector<int>());
 
 int GetItemVectorId(int id);
@@ -198,7 +198,7 @@ void UnpointItems(std::list<item> &Items){
                 std::cout << "Job Point: " << &UniFact[0].JobList[t].pItem << "/" << UniFact[0].JobList[t].pItem << ", Item Point: " << &(*i) << "/" << &(*i) << std::endl;
                 fSleep(1);
 
-                if(UniFact[0].JobList[t].pItem != NULL && &(*i) != NULL)
+                if(UniFact[0].JobList[t].pItem != NULL && (&(*i)) != NULL)
                 {
 
 
@@ -247,9 +247,10 @@ bool RemoveItem(int Id){
         return true;
     }
     else if(TempInt == 0){return false;}
+    throw std::runtime_error("Couldn't return anything sensible");
 }
 
-bool UpdateItem(){
+void UpdateItem(){
     if(Debug){ std::cout << "Pre Item \n";}
     std::list<item>::iterator Me;
     std::list<item>::iterator startlist = worlditems.begin();
@@ -579,6 +580,7 @@ std::vector<int> npcTrace(int xa, int ya, int xb, int yb,int id, std::vector<int
         if(Key.period){Effectz.CreateCircle(xpos,ypos,1,White);}
         }*/
         }
+    throw std::runtime_error("npcTrace: couldn't return a value");
 }
 
 
@@ -620,7 +622,7 @@ class Remover
     public:
     std::vector<int> IDs;
 
-    bool Do(){
+    void Do(){
         std::vector<int>::iterator Val;
         for ( Val = IDs.begin(); Val != IDs.end(); ++Val )
         {
@@ -740,7 +742,7 @@ bool UpdatePlanet(){
 */
 std::vector<goo> Goos;
 
-bool UpdateGoo(){
+void UpdateGoo(){
         int Marked = 0;
         bool Absorbed = false;
         int AbsorbedID = -1;
@@ -836,7 +838,7 @@ bool UpdateGoo(){
     }
 }
 
-bool IgnoreMe(){
+void IgnoreMe(){
 
 /*
 
@@ -979,6 +981,7 @@ bool RemoveNPC(char *NPCname, int Id){
     if(zit->health <= 0 || zit->HasSpawned == false || zit->alive == false){location = zit; TempInt = 1;}}
     if(TempInt == 1){TempInt = 0;npclist.erase(location);return true;}
     else if(TempInt == 0){return false;}
+    throw std::runtime_error("RemoveNPC: Couldn't return anything sensible.");
 }
 
 std::vector<int> FindClosestItem(int Orix,int Oriy, std::string TarItem, int Gxpos = 0, int Gypos = 0, int Rxpos = 0, int Rypos = 0){
@@ -1022,7 +1025,7 @@ std::vector<int> FindClosestItem(int Orix,int Oriy, std::string TarItem, int Gxp
     Returns.push_back(closVect);
     return Returns;// Returns = (xpos,ypos,id,Vector Position)
     }
-
+    throw std::runtime_error("FindClosestItem: Couldn't return anything!");
 }
 
 std::set<int> NpcList(int exceptions = -1){
@@ -1041,6 +1044,7 @@ std::set<int> NpcList(int exceptions = -1){
     }
     if(Debug){std::cout << "Post For NpcList \n";}
     if(Returns.size() != 0){return Returns;}
+    throw std::runtime_error("NpcList: Couldn't return anything!");
 }
 
 void UpdateNPC(){
@@ -2824,13 +2828,13 @@ void UpdateNPC(){
 
 
 
-sf::Vector2f FindNearestTemplate(sf::Vector2f Ori){
+/*sf::Vector2f FindNearestTemplate(sf::Vector2f Ori){
 
 
 
-}
+}*/
 
-int DrawTiles(){
+void DrawTiles(){
     int z = currentz;
     int iTS = GridSize;
     for (int i = 0; i <= gridy-1; i++)
@@ -2904,7 +2908,7 @@ int DrawPlanets(){
 }
 */
 
-int DrawNPCs(){
+void DrawNPCs(){
     std::vector<NPC>::iterator zit;
     for(zit = npclist.begin(); zit != npclist.end(); ++zit )
     {
@@ -2949,7 +2953,7 @@ int DrawNPCs(){
 
 bool DrawStuffsDone = true;
 
-int DrawItems(){
+void DrawItems(){
     //App.setActive(true);
 
     std::list<item>::iterator zit;
@@ -2966,7 +2970,7 @@ int DrawItems(){
     debug("Done Drawing Items");
 };
 
-int LightTrail(int x, int y, int z){
+void LightTrail(int x, int y, int z){
     int curx = x;
     int cury = y;
     int curz = z;
@@ -2990,7 +2994,7 @@ class MiniMenu{
     int height;
     int buttons;
 
-    bool Draw(){
+    void Draw(){
 
     /*int Px = Position.x;
     int Py = Position.y;
@@ -3014,7 +3018,7 @@ class MiniMenu{
 
 std::vector<MiniMenu> menus;
 
-bool CreateMiniMenu(int x, int y, std::string type){
+void CreateMiniMenu(int x, int y, std::string type){
     std::vector<MiniMenu>::iterator Menu;
     if(type == "SpawnMenu")
     {
@@ -3036,7 +3040,7 @@ void DisplayChat(sf::Vector2f Position){
     }
 }
 
-int DrawStuffs(){
+void DrawStuffs(){
 
     //sf::Context context;
     //App.setActive(true);
@@ -3090,7 +3094,7 @@ int DrawStuffs(){
     DrawStuffsDone = true;
 };
 
-int DrawStuffsXXX(){
+void DrawStuffsXXX(){
 
     sf::Context context;
     App.setActive(false);

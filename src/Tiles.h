@@ -692,7 +692,7 @@ void SaveMap(int planet, int xcord, int ycord, int xpos, int ypos){
     }
 };
 
-bool LoadMap(int planet, int xcord, int ycord, int xpos, int ypos){
+void LoadMap(int planet, int xcord, int ycord, int xpos, int ypos){
     using namespace std;
     fstream File; // Start to Load Map
     string newline("saves/maps/map");
@@ -1165,7 +1165,7 @@ void TilesGoRight(){
 
 
 
-bool BuildLocalfromWorld(sf::Vector2i WorldPos)
+void BuildLocalfromWorld(sf::Vector2i WorldPos)
 {
     debug("Starting BLfW");
     GenerateChunk(WorldMap[WorldPos.x-1][WorldPos.y-1].Type,currentplanet,sf::Vector2i(WorldPos.x-1,WorldPos.y-1));

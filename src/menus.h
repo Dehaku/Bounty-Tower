@@ -26,7 +26,7 @@ class button
     sf::Color TextColor;
     int id;
 
-    bool DrawButton(){
+    void DrawButton(){
         if(BeenPressed == true)
         {
             //Effectz.CreateCircle(vPos.x,vPos.y,iSize,sf::Color(Color.r/2,Color.g/2,Color.b/2),2,White);
@@ -48,7 +48,7 @@ class button
         Effectz.DrawEffects();
     }
 
-    bool OldDrawButton(){
+    void OldDrawButton(){
         if(BeenPressed == true)
         {
             Effectz.CreateCircle(vPos.x,vPos.y,iSize,sf::Color(Color.r/2,Color.g/2,Color.b/2),2,White);
@@ -89,7 +89,7 @@ class squarebutton
     sf::Color TextColor;
     int id;
 
-    bool DrawButton(){
+    void DrawButton(){
         if(BeenPressed == true)
         {
             //Effectz.CreateCircle(vPos.x,vPos.y,iSize,sf::Color(Color.r/2,Color.g/2,Color.b/2),2,White);
@@ -120,7 +120,7 @@ class squarebutton
         Effectz.DrawEffects();
     }
 
-    bool OldDrawButton(){
+    void OldDrawButton(){
         if(BeenPressed == true)
         {
             //Effectz.CreateCircle(vPos.x,vPos.y,iSize,sf::Color(Color.r/2,Color.g/2,Color.b/2),2,White);
@@ -154,7 +154,7 @@ class Buttons
 {
     public:
 
-    bool ButtonPressed(){
+    void ButtonPressed(){
         std::vector<button>::iterator i;
         for(i = vButtonList.begin(); i != vButtonList.end(); i++)
         {
@@ -171,7 +171,7 @@ class SquareButtons
 {
     public:
 
-    bool ButtonPressed(){
+    void ButtonPressed(){
         std::vector<squarebutton>::iterator i;
         for(i = vSquareButtonList.begin(); i != vSquareButtonList.end(); i++)
         {

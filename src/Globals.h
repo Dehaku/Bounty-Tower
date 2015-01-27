@@ -469,6 +469,8 @@ std::string StringFindChaos(std::string Stringy,std::string Term,std::string End
             return Returns;
         }
     }
+
+    throw std::runtime_error("StringFindChaos: Couldn't find chaos");
 }
 
 std::set<std::string> StringFindSetChaos(std::string Stringy,std::string Term,std::string Ending){

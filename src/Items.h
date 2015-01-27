@@ -96,8 +96,8 @@ class item
     int LiquidContainMax;
     int ObjectContainMax;
     int ContainAmount;
-    int chargecell(int amount) {cellcharge += amount;}
-    int soulcell(int soultype) {chargecell(soultype * 10);}
+    void chargecell(int amount) {cellcharge += amount;}
+    void soulcell(int soultype) {chargecell(soultype * 10);}
     bool getid(int idz) {if(idz == id){ return true;} else {return false;}}
     //void useitem(){UseItem(name.c_str());}
     bool boolname(char *cakezebra){
@@ -130,7 +130,7 @@ class item
 
     //bool SetImg(int istrx,int istry,int iendx,int iendy){img.SetSubRect(sf::IntRect(istrx, istry, iendx, iendy));}
 
-    bool DrawImg()
+    void DrawImg()
     {
         img.setPosition(xpos,ypos);
         //img.setScale(Globals.Scalex,Globals.Scaley);

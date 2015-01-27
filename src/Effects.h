@@ -39,7 +39,7 @@ class Effects
         sf::Color maincolor;
         sf::Color seccolor;
 
-        bool DrawMe(){
+        void DrawMe(){
             /*//sf::Shape Line = sf::Shape::Line(StartPos.x,StartPos.y,EndPos.x,EndPos.y, size, maincolor, outline, seccolor);
             sf::Vertex Line[2] = {StartPos,EndPos};
             //Line.setFillColor(maincolor);
@@ -74,7 +74,7 @@ class Effects
         sf::Color maincolor;
         sf::Color seccolor;
 
-        bool DrawMe(){
+        void DrawMe(){
         //sf::Shape Circle = sf::Shape::Circle(Pos.x,Pos.y,size, maincolor, outline, seccolor);
         sf::CircleShape Circle;
         Circle.setRadius(size);
@@ -97,7 +97,7 @@ class Effects
         sf::Color maincolor;
         sf::Color seccolor;
 
-        bool DrawMe(){
+        void DrawMe(){
             //sf::Shape Square = sf::Shape::Rectangle(StartPos.x,StartPos.y,EndPos.x,EndPos.y, maincolor, outline, seccolor);
             sf::RectangleShape rectangle;
             rectangle.setSize(sf::Vector2f(100, 50));
@@ -125,7 +125,7 @@ class Effects
         sf::Color maincolor;
         sf::Color seccolor;
 
-        bool DrawMe(){
+        void DrawMe(){
             //sf::Shape Line = sf::Shape::Line(StartPos.x,StartPos.y,EndPos.x,EndPos.y, size, maincolor, outline, seccolor);
             sf::Vertex Line[2] = {StartPos,EndPos};
             //Line.setFillColor(maincolor);
@@ -157,7 +157,7 @@ class Effects
     std::vector<cBeam> Beams;
     std::vector<cSquare> Squares;
 
-    bool CreateLine(int Sxpos, int Sypos, int Expos, int Eypos, int Size, sf::Color MainColor, float Outline = 0, sf::Color SecondaryColor = sf::Color(0,0,0), bool Fades = false, int Fadesrate = 255)
+    void CreateLine(int Sxpos, int Sypos, int Expos, int Eypos, int Size, sf::Color MainColor, float Outline = 0, sf::Color SecondaryColor = sf::Color(0,0,0), bool Fades = false, int Fadesrate = 255)
     {
         cLine evar;
         evar.StartPos = sf::Vector2f(Sxpos,Sypos);
@@ -171,7 +171,7 @@ class Effects
         Lines.push_back(evar);
     }
 
-    bool CreateBeam(int Sxpos, int Sypos, int Expos, int Eypos, int Size, sf::Color MainColor, float Outline = 0, sf::Color SecondaryColor = sf::Color(0,0,0), bool Fades = false, int Fadesrate = 255)
+    void CreateBeam(int Sxpos, int Sypos, int Expos, int Eypos, int Size, sf::Color MainColor, float Outline = 0, sf::Color SecondaryColor = sf::Color(0,0,0), bool Fades = false, int Fadesrate = 255)
     {
         cBeam evar;
         evar.StartPos = sf::Vector2f(Sxpos,Sypos);
@@ -185,7 +185,7 @@ class Effects
         Beams.push_back(evar);
     }
 
-    bool CreateSquare(int Sxpos, int Sypos, int Expos, int Eypos, sf::Color MainColor, float Outline = 0, sf::Color SecondaryColor = sf::Color(0,0,0))
+    void CreateSquare(int Sxpos, int Sypos, int Expos, int Eypos, sf::Color MainColor, float Outline = 0, sf::Color SecondaryColor = sf::Color(0,0,0))
     {
         cSquare evar;
         evar.StartPos = sf::Vector2f(Sxpos,Sypos);
@@ -196,7 +196,7 @@ class Effects
         Squares.push_back(evar);
     }
 
-    bool CreateCircle(int xpos, int ypos, int Size, sf::Color MainColor, float Outline = 0, sf::Color SecondaryColor = sf::Color(0,0,0))
+    void CreateCircle(int xpos, int ypos, int Size, sf::Color MainColor, float Outline = 0, sf::Color SecondaryColor = sf::Color(0,0,0))
     {
      cCircle evar; evar.Pos = sf::Vector2f(xpos,ypos); evar.size = Size;
      evar.outline = Outline; evar.maincolor = MainColor; evar.seccolor = SecondaryColor;
@@ -204,7 +204,7 @@ class Effects
     }
 
 
-    bool DrawEffects()
+    void DrawEffects()
     {
         if(true == true){
         std::vector<cCircle>::iterator effectz;

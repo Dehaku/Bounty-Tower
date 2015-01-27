@@ -197,7 +197,7 @@ class NPC
 
         std::string BodyParts;
 
-        bool BodyPartFind(std::string Part, int amount){
+        void BodyPartFind(std::string Part, int amount){
 
             size_t LinePosOne;
             LinePosOne = BodyParts.find(Part);
@@ -324,8 +324,8 @@ class NPC
 	    int MyyPath;
 	    std::vector<int> xPa;
 	    std::vector<int> yPa;
-        void EndMem(){ free (MypathBank[1]); }
-        bool MyFindPath(int Sx, int Sy, int Ex, int Ey){
+        void EndMem(){ free (MypathBank[0]); }
+        void MyFindPath(int Sx, int Sy, int Ex, int Ey){
             xPa.clear();
             yPa.clear();
             debug("Pathfind status");
@@ -395,7 +395,7 @@ class NPC
 	        return y;
         }
 
-        bool MyReadPath(int pathfinderID,int currentX,int currentY,int pixelsPerFrame){
+        void MyReadPath(int pathfinderID,int currentX,int currentY,int pixelsPerFrame){
 	        int ID = 1; //redundant, but makes the following easier to read
             //If a path has been found for the pathfinder	...
             if (MypathStatus == AStarFound)
@@ -519,7 +519,7 @@ class NPC
 
 
 
-    bool EffectStats()
+    void EffectStats()
     {
         maxhealth = Skills.endurance*0.8;
         regenrate = Skills.endurance/10;
@@ -545,7 +545,7 @@ class NPC
         int perceptionxp;
         int agilityxp;
 
-        bool Train(std::string skill, int amount = 1, int skillgain = 1){
+        void Train(std::string skill, int amount = 1, int skillgain = 1){
             if(skill == "agility"){agilityxp+=amount;if(agilityxp >= 100){agility+=skillgain; agilityxp = 0;}}
             if(skill == "charisma"){charismaxp+=amount;if(charismaxp >= 100){charisma+=skillgain; charismaxp = 0;}}
             if(skill == "intelligence"){intelligencexp+=amount;if(intelligencexp >= 100){intelligence+=skillgain; intelligencexp = 0;}}
@@ -715,6 +715,7 @@ class NPC
             }
         }
         if(Debug){std::cout << "Returning inventory nothing. \n";}
+        throw std::runtime_error("GetItemType: Couldn't get item type.");
     }
 
     bool HasItemType(int type){
@@ -736,7 +737,7 @@ class NPC
         App.draw(img);
     }
 
-    bool Move(sf::Vector2f Tar){
+    void Move(sf::Vector2f Tar){
         bool Above = false;
         bool Right = false;
         bool AtTargetx = false;
@@ -763,7 +764,7 @@ class NPC
         angle = (180/PI)*(atan2f(xpos-Tar.x,ypos-Tar.y));
     }
 
-    bool DirMove(sf::Vector2f Tar){
+    void DirMove(sf::Vector2f Tar){
         bool Above = false;
         bool Right = false;
         bool AtTargetx = false;
@@ -815,7 +816,7 @@ class NPC
 
     }
 
-    bool MomMove()
+    void MomMove()
     {
         xpos += (Momentum.x/size);
         ypos += (Momentum.y/size);
@@ -824,26 +825,26 @@ class NPC
         Momentum.y = Math.Clamp((Momentum.y-AirPressure),0,9999999);
     }
 
-    bool MoveNorth(){ypos = ypos -= moverate;};
-    bool MoveNorthEast(){ypos = ypos -= moverate;xpos = xpos += moverate;};
-    bool MoveEast(){xpos = xpos += moverate;};
-    bool MoveSouthEast(){ypos = ypos += moverate;xpos = xpos += moverate;};
-    bool MoveSouth(){ypos = ypos += moverate;};
-    bool MoveSouthWest(){ypos = ypos += moverate;xpos = xpos -= moverate;};
-    bool MoveWest(){xpos = xpos -= moverate;};
-    bool MoveNorthWest(){ypos = ypos -= moverate;xpos = xpos -= moverate;};
+    void MoveNorth(){ypos = ypos -= moverate;};
+    void MoveNorthEast(){ypos = ypos -= moverate;xpos = xpos += moverate;};
+    void MoveEast(){xpos = xpos += moverate;};
+    void MoveSouthEast(){ypos = ypos += moverate;xpos = xpos += moverate;};
+    void MoveSouth(){ypos = ypos += moverate;};
+    void MoveSouthWest(){ypos = ypos += moverate;xpos = xpos -= moverate;};
+    void MoveWest(){xpos = xpos -= moverate;};
+    void MoveNorthWest(){ypos = ypos -= moverate;xpos = xpos -= moverate;};
 
     bool IsHungry(){ if(AllowedFood == false){return false;}  if(hunger < (maxhunger*0.40)){return true;}else{return false;}  }
     bool IsThirsty(){ if(AllowedDrink == false){return false;}  if(thirst < (maxthirst*0.40)){return true;}else{return false;}  }
     bool IsHurt(){  if(health < (maxhealth*0.60)){return true;}else{return false;}  }
 
-    bool breath(){};
+    void breath(){};
 
-    int sethealth(int amount){health = amount;}
+    void sethealth(int amount){health = amount;}
     bool modhealth(int amount){health += amount;if(health < 1){health = 0;return false;} else{return true;}}
 
-    int fillhunger(int amount){hunger += amount; if(hunger > maxhunger){hunger = maxhunger;}};
-    int fillthirst(int amount){thirst += amount; if(thirst > maxthirst){thirst = maxthirst;}};
+    void fillhunger(int amount){hunger += amount; if(hunger > maxhunger){hunger = maxhunger;}};
+    void fillthirst(int amount){thirst += amount; if(thirst > maxthirst){thirst = maxthirst;}};
 
     std::string getname(){return name;}
 
@@ -872,7 +873,7 @@ class NPC
         else return false;
     }
 
-    bool Tag(std::string tag, int amount){
+    void Tag(std::string tag, int amount){
         using namespace std;
         size_t found;
         found = tags.find(tag);
@@ -1049,7 +1050,7 @@ class NPC
         else {return false;}
     }
 
-    int AddItem(std::string const & itemname, int amount){// TODO: Set this to optionally receive an item class instead, Will be useful for modded weapons and ect.
+    void AddItem(std::string const & itemname, int amount){// TODO: Set this to optionally receive an item class instead, Will be useful for modded weapons and ect.
          if(Debug){ std::cout << "Pre var in AddItem" << " \n";}
          cItem var = *GetGlobalItem(itemname);
          if(Debug){ std::cout << "Post var in AddItem" << " \n";}
@@ -1161,8 +1162,8 @@ class OldNPC
 	    int MyyPath;
 	    std::vector<int> xPa;
 	    std::vector<int> yPa;
-        void EndMem(){ free (MypathBank[1]); }
-        bool MyFindPath(int Sx, int Sy, int Ex, int Ey){
+        void EndMem(){ free (MypathBank[0]); }
+        void MyFindPath(int Sx, int Sy, int Ex, int Ey){
             xPa.clear();
             yPa.clear();
             MypathStatus = FindPath(1,Sx,Sy,Ex,Ey);
@@ -1223,7 +1224,7 @@ class OldNPC
 	        return y;
         }
 
-        bool MyReadPath(int pathfinderID,int currentX,int currentY,int pixelsPerFrame){
+        void MyReadPath(int pathfinderID,int currentX,int currentY,int pixelsPerFrame){
 	        int ID = 1; //redundant, but makes the following easier to read
             //If a path has been found for the pathfinder	...
             if (MypathStatus == AStarFound)
@@ -1367,7 +1368,7 @@ class OldNPC
         int leftfoot; // lf
     };
 
-    bool EffectStats()
+    void EffectStats()
     {
         maxhealth = Skills.endurance*0.8;
         regenrate = Skills.endurance/10;
@@ -1393,7 +1394,7 @@ class OldNPC
         int perceptionxp;
         int agilityxp;
 
-        bool Train(std::string skill, int amount = 1, int skillgain = 1){
+        void Train(std::string skill, int amount = 1, int skillgain = 1){
             if(skill == "agility"){agilityxp+=amount;if(agilityxp >= 100){agility+=skillgain; agilityxp = 0;}}
             if(skill == "charisma"){charismaxp+=amount;if(charismaxp >= 100){charisma+=skillgain; charismaxp = 0;}}
             if(skill == "intelligence"){intelligencexp+=amount;if(intelligencexp >= 100){intelligence+=skillgain; intelligencexp = 0;}}
@@ -1560,6 +1561,7 @@ class OldNPC
             }
         }
         if(Debug){std::cout << "Returning inventory nothing. \n";}
+        throw std::runtime_error("GetItemType: Couldn't get item type.");
     }
 
     bool HasItemType(int type){
@@ -1580,7 +1582,7 @@ class OldNPC
         App.draw(img);
     }
 
-    bool Move(sf::Vector2f Tar){
+    void Move(sf::Vector2f Tar){
         bool Above = false;
         bool Right = false;
         bool AtTargetx = false;
@@ -1607,7 +1609,7 @@ class OldNPC
         angle = (180/PI)*(atan2f(xpos-Tar.x,ypos-Tar.y));
     }
 
-    bool DirMove(sf::Vector2f Tar){
+    void DirMove(sf::Vector2f Tar){
         bool Above = false;
         bool Right = false;
         bool AtTargetx = false;
@@ -1658,26 +1660,26 @@ class OldNPC
         //ypos += y/steps;
     }
 
-    bool MoveNorth(){ypos = ypos -= moverate;};
-    bool MoveNorthEast(){ypos = ypos -= moverate;xpos = xpos += moverate;};
-    bool MoveEast(){xpos = xpos += moverate;};
-    bool MoveSouthEast(){ypos = ypos += moverate;xpos = xpos += moverate;};
-    bool MoveSouth(){ypos = ypos += moverate;};
-    bool MoveSouthWest(){ypos = ypos += moverate;xpos = xpos -= moverate;};
-    bool MoveWest(){xpos = xpos -= moverate;};
-    bool MoveNorthWest(){ypos = ypos -= moverate;xpos = xpos -= moverate;};
+    void MoveNorth(){ypos = ypos -= moverate;};
+    void MoveNorthEast(){ypos = ypos -= moverate;xpos = xpos += moverate;};
+    void MoveEast(){xpos = xpos += moverate;};
+    void MoveSouthEast(){ypos = ypos += moverate;xpos = xpos += moverate;};
+    void MoveSouth(){ypos = ypos += moverate;};
+    void MoveSouthWest(){ypos = ypos += moverate;xpos = xpos -= moverate;};
+    void MoveWest(){xpos = xpos -= moverate;};
+    void MoveNorthWest(){ypos = ypos -= moverate;xpos = xpos -= moverate;};
 
     bool IsHungry(){ if(AllowedFood == false){return false;}  if(hunger < (maxhunger*0.40)){return true;}else{return false;}  }
     bool IsThirsty(){ if(AllowedDrink == false){return false;}  if(thirst < (maxthirst*0.40)){return true;}else{return false;}  }
     bool IsHurt(){  if(health < (maxhealth*0.60)){return true;}else{return false;}  }
 
-    bool breath(){};
+    void breath(){};
 
-    int sethealth(int amount){health = amount;}
+    void sethealth(int amount){health = amount;}
     bool modhealth(int amount){health += amount;if(health < 1){health = 0;return false;} else{return true;}}
 
-    int fillhunger(int amount){hunger += amount; if(hunger > maxhunger){hunger = maxhunger;}};
-    int fillthirst(int amount){thirst += amount; if(thirst > maxthirst){thirst = maxthirst;}};
+    void fillhunger(int amount){hunger += amount; if(hunger > maxhunger){hunger = maxhunger;}};
+    void fillthirst(int amount){thirst += amount; if(thirst > maxthirst){thirst = maxthirst;}};
 
     std::string getname(){return name;}
 
@@ -1706,7 +1708,7 @@ class OldNPC
         else return false;
     }
 
-    bool Tag(std::string tag, int amount){
+    void Tag(std::string tag, int amount){
         using namespace std;
         size_t found;
         found = tags.find(tag);
@@ -1752,7 +1754,7 @@ class OldNPC
 
     }
 
-    bool bloodwork(std::string aliment,int amount){
+    void bloodwork(std::string aliment,int amount){
         using namespace std;
         size_t found;
         found=bloodcontent.find(aliment);
@@ -1809,7 +1811,7 @@ class OldNPC
         else {return false;}
     }
 
-    int AddItem(char *itemname, int amount){// TODO: Set this to optionally receive an item class instead, Will be useful for modded weapons and ect.
+    void AddItem(char *itemname, int amount){// TODO: Set this to optionally receive an item class instead, Will be useful for modded weapons and ect.
          if(Debug){ std::cout << "Pre var in AddItem" << " \n";}
          cItem var = *GetGlobalItem(itemname);
          if(Debug){ std::cout << "Post var in AddItem" << " \n";}
@@ -2492,6 +2494,7 @@ int FactionMembers(std::string FactionName)
             return UniFact[i].Members;
         }
     }
+    throw std::runtime_error("FactionMembers: Couldn't return anything");
 }
 
 float FactionAggression(std::string FactionName)
@@ -2503,6 +2506,7 @@ float FactionAggression(std::string FactionName)
             return UniFact[i].Aggressiveness;
         }
     }
+    throw std::runtime_error("FactionAggression: Couldn't return anything");
 }
 
 int FactionTerritories(std::string FactionName)
@@ -2514,6 +2518,7 @@ int FactionTerritories(std::string FactionName)
             return UniFact[i].Territories.size();
         }
     }
+    throw std::runtime_error("FactionTerritories: Couldn't return anything");
 }
 
 float FactionPower(std::string FactionName)
@@ -2540,6 +2545,7 @@ float FactionPower(std::string FactionName)
             return TenantPower;
         }
     }
+    throw std::runtime_error("FactionPower: Couldn't return anything");
 }
 
 int FactionPopulation()
@@ -2841,7 +2847,7 @@ std::string LoadCritters(sf::Vector2i WorldPos, std::string Direction, int plane
         return line;
 }
 
-bool Boom(int xpos, int ypos, int damage, int size){
+void Boom(int xpos, int ypos, int damage, int size){
     Effectz.CreateCircle(xpos,ypos,size,sf::Color(255,0,0,150),0,sf::Color(0,0,0));
     std::vector<NPC>::iterator Me;
     for( Me = npclist.begin(); Me != npclist.end(); ++Me ){

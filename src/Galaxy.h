@@ -54,7 +54,7 @@ class GalaxyController
     MenuPointerContainer MenuPtrCon;
 
 
-    bool AddvPlanet()
+    void AddvPlanet()
     {
         unsigned short Grid[32][32][32];
 
@@ -98,7 +98,7 @@ class GalaxyController
         }
     }
 
-    bool Time(int Modify){
+    void Time(int Modify){
         if(timetilltick >= TickTimer)
         {
             timetilltick = 0;
@@ -107,7 +107,7 @@ class GalaxyController
         timetilltick += timescalez;
     }
 
-    bool BuildLocal(std::string Type = "Test", int ZedAmount = 0){ // TODO: Replace this with a Class containing Critter types and amounts, Probably inventories as well, Or start up premade critters.
+    void BuildLocal(std::string Type = "Test", int ZedAmount = 0){ // TODO: Replace this with a Class containing Critter types and amounts, Probably inventories as well, Or start up premade critters.
         if(Type == "Test")
         {
             if(Debug) std::cout << "Building Lightmap\n";
@@ -318,7 +318,7 @@ class GalaxyController
 
 
 
-    bool BuildLocalTest(){
+    void BuildLocalTest(){
         if(Debug) std::cout << "Building Lightmap\n";
         int z = currentz;
         for (int i = 0; i <= gridy-1; i++)
@@ -414,7 +414,7 @@ class GalaxyController
 
   }
 
-    bool ZombieSwarmLocal(int num = 5){
+    void ZombieSwarmLocal(int num = 5){
         std::vector<NPC>::iterator zit;
         if(true == true)
         {
@@ -457,7 +457,7 @@ class GalaxyController
         }
     }
 */
-    bool BuildMainMenu(){
+    void BuildMainMenu(){
         //Effectz.CreateSquare(-1000,-1000,10000,10000,Cyan);
         sf::Sprite Sprt;
         Sprt.setTexture(*imagemanager.GetImage("Main.png"));
@@ -465,7 +465,7 @@ class GalaxyController
         App.draw(Sprt);
     }
 
-    bool BuildTileTest(){// Build the galaxy.
+    void BuildTileTest(){// Build the galaxy.
     //for(int gx = 0; gx != 100; gx++){
         // for(int gy = 0; gy != 100; gy++){
             // for(int rx = 0; rx != 100; rx++){
@@ -490,7 +490,7 @@ class GalaxyController
 
     }
 
-    bool BuildWorldTest(){
+    void BuildWorldTest(){
         debug("Worlding it up. ");
         InitalizeWorldTiles();
         debug("Factioning it up. \n");

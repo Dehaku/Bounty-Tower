@@ -19,17 +19,17 @@ class cTextList
     bool Shadow;
     bool Bold;
 
-    bool Setup(){
+    void Setup(){
         sString.setColor(Color);
         sString.setCharacterSize(Size);
 
         if(Bold == true)
         {
-            sString.Bold;
+            sString.setStyle(sf::Text::Bold);
         }
         sString.setPosition(xpos,ypos);
     }
-    bool DrawMe(){
+    void DrawMe(){
     if(Shadow == true){
 
 
@@ -43,7 +43,7 @@ class cTextList
     }
     std::vector<cTextList> textlist;
 
-    bool CreateText(int xpos,int ypos, int SizeMe, sf::Color color, std::string stringvalue1, std::string String1 = "", float int1 = -6698, std::string stringvalue2 = "", std::string String2 = "", float int2 = -6698, std::string stringvalue3 = "", std::string String3 = "", float int3 = -6698, int Shadow = 1, int NULL3 = 0){
+    void CreateText(int xpos,int ypos, int SizeMe, sf::Color color, std::string stringvalue1, std::string String1 = "", float int1 = -6698, std::string stringvalue2 = "", std::string String2 = "", float int2 = -6698, std::string stringvalue3 = "", std::string String3 = "", float int3 = -6698, int Shadow = 1, int NULL3 = 0){
     int Size = SizeMe;
     bool Bold = true;
 
@@ -55,28 +55,22 @@ class cTextList
         stringstream convert2;
         stringstream convert3;
 
-        stringvalue1;
         line1.append(stringvalue1);
 
-        String1;
         line1.append(String1);
 
         if(int1 != -6698){convert1 << int1;
         line1.append(convert1.str());}
 
-        stringvalue2;
         line1.append(stringvalue2);
 
-        String2;
         line1.append(String2);
 
         if(int2 != -6698){convert2 << int2;
         line1.append(convert2.str());}
 
-        stringvalue3;
         line1.append(stringvalue3);
 
-        String3;
         line1.append(String3);
 
         if(int3 != -6698){convert3 << int3;
@@ -86,7 +80,7 @@ class cTextList
 
         Textz.setCharacterSize(Size);
         if(Bold == true){
-            Textz.Bold;
+            Textz.setStyle(sf::Text::Bold);
         }
 
         //if(shadow == true){Textz.SetText(line1);Textz.SetColor(sf::Color(0,0,0));Textz.SetPosition(xpos+1,ypos+1);App.Draw(Textz);}
@@ -103,7 +97,7 @@ class cTextList
 
 }
 
-    bool DrawTextz()
+    void DrawTextz()
 {
 
         std::vector<cTextList>::iterator textz;

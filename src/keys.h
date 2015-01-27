@@ -157,7 +157,7 @@ class Ke
     int yTime;
     int zTime;
 
-    bool Update(){
+    void Update(){
 
         if(InFocus)
         {
