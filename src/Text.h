@@ -116,7 +116,7 @@ class cTextList
 }
 
     cTextList(){
-        font.loadFromFile("resources/fonts/sansation.ttf");
+        font.loadFromFile("data/fonts/sansation.ttf");
     Size = 11;
     }
 
