@@ -470,7 +470,8 @@ std::string StringFindChaos(std::string Stringy,std::string Term,std::string End
         }
     }
 
-    throw std::runtime_error("StringFindChaos: Couldn't find chaos");
+    // If we couldn't find chaos, we just return an empty string
+    return "";
 }
 
 std::set<std::string> StringFindSetChaos(std::string Stringy,std::string Term,std::string Ending){
