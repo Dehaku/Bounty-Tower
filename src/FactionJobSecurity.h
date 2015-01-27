@@ -49,8 +49,8 @@ void DigWall(sf::Vector2f Pos)
         if(UniFact[i].PlayerControlled)
         {
             Job job;
-            std::cout << "Tile clicked: " << Tiles[abs(Pos.x/20)][abs(Pos.y/20)][6].ID << std::endl;
-            if(Tiles[abs(Pos.x/20)][abs(Pos.y/20)][30].ID == 1008)
+            std::cout << "Tile clicked: " << Tiles[abs_to_index(Pos.x/20)][abs_to_index(Pos.y/20)][6].ID << std::endl;
+            if(Tiles[abs_to_index(Pos.x/20)][abs_to_index(Pos.y/20)][30].ID == 1008)
             {
                 job.Name = "DigNaturalWall";
                 job.Type = "Dig";
@@ -80,9 +80,9 @@ void RMBMenuTile(sf::Vector2f Pos)
         {
             Job job;
             //job.pItem = &pItem;
-            //groundmap[abs(Pos.x/20)][abs(Pos.y/20)]
+            //groundmap[abs_to_index(Pos.x/20)][abs_to_index(Pos.y/20)]
             Con("Dafuqe \n");
-            if(Tiles[abs(Pos.x/20)][abs(Pos.y/20)][30].ID != 1010)
+            if(Tiles[abs_to_index(Pos.x/20)][abs_to_index(Pos.y/20)][30].ID != 1010)
             {
                 job.Name = "BuildWoodWall";
                 job.Type = "Build";

@@ -23,11 +23,6 @@ if(USING_GCC OR USING_CLANG)
   endif()
 endif()
 
-# For now
-if(USING_CLANG)
-    add_compile_options(-Wno-absolute-value)
-endif()
-
 set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/CMake/Modules)
 find_package(SFML 2 COMPONENTS graphics window audio system REQUIRED)
 include_directories(${SFML_INCLUDE_DIR})

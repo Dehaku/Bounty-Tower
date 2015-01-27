@@ -193,7 +193,7 @@ class GalaxyController
                     for(int i = 0; i != 5; i++)
                     {
                         int Tx,Ty = randz(0,2000);
-                        if(Tiles[abs(Tx/20)][abs(Ty/20)][30].ID == 1001 || Tiles[abs(Tx/20)][abs(Ty/20)][30].ID == 1003)
+                        if(Tiles[abs_to_index(Tx/20)][abs_to_index(Ty/20)][30].ID == 1001 || Tiles[abs_to_index(Tx/20)][abs_to_index(Ty/20)][30].ID == 1003)
                         {
                             SpawnItem("Fruit Tree",Tx,Ty);
                         }

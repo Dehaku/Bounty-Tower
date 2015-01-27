@@ -578,7 +578,7 @@ void GenerateChunk(std::string type, int planet, sf::Vector2i Cords, sf::Vector2
 
         for (int t = Cords.y*ChunkSize; t != (Cords.y*ChunkSize)+ChunkSize; t++)
         {
-            image.setPixel(i,t,vChunk[abs(XX)][abs(YY)][0].WorldColor);
+            image.setPixel(i,t,vChunk[abs_to_index(XX)][abs_to_index(YY)][0].WorldColor);
             YY++;
         }
         YY = 0;

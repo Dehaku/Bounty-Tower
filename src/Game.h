@@ -27,6 +27,14 @@
 #endif
 #include <time.h>
 
+using std::abs;
+
+/// Get the absolute of a numeric value,
+/// converted to size_t, suitable for indexing
+template <typename T>
+size_t abs_to_index(T value) {
+    return static_cast<size_t>(std::abs(value));
+}
 
 void galaxy_mkdir(std::string const & name) {
 #ifdef GALAXY_LINUX

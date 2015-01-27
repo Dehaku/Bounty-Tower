@@ -278,7 +278,7 @@ void UpdateItem(){
                     {
                         x = randz(Me->xpos-10,Me->xpos+10);
                         y = randz(Me->ypos-10,Me->ypos+10);
-                        if(Tiles[abs(x/GridSize)][abs(y/GridSize)][30].Walkable == true)
+                        if(Tiles[abs_to_index(x/GridSize)][abs_to_index(y/GridSize)][30].Walkable == true)
                         {
                             FindEmpty = true;
                         }
@@ -479,7 +479,7 @@ bool gridposTrace(int xa, int ya, int xb, int yb,int id,sf::Vector2f Target){ //
         bool Kill = false;
         std::vector<NPC>::iterator Me;
         int Count = 0;
-        if(groundmap[currentz][abs(x/GridSize)][abs(y/GridSize)] == 10){
+        if(groundmap[currentz][abs_to_index(x/GridSize)][abs_to_index(y/GridSize)] == 10){
         if(Key.period && id == MyTargetid){Effectz.CreateLine(x,y,xa,ya,1,Blue);}
              break; }// Stops the trace if it hits a wall.
         sf::Vector2f Pos(abs(x/GridSize),abs(y/GridSize));
@@ -508,7 +508,7 @@ bool gridposTrace(int xa, int ya, int xb, int yb,int id,sf::Vector2f Target){ //
         bool Kill = false;
         std::vector<NPC>::iterator Me;
         int Count = 0;
-        if(Tiles[abs(x/GridSize)][abs(y/GridSize)][30].ID == 1010)
+        if(Tiles[abs_to_index(x/GridSize)][abs_to_index(y/GridSize)][30].ID == 1010)
         {
             if(Key.period && id == MyTargetid){Effectz.CreateLine(x,y,xa,ya,1,Blue);}
             //std::cout << "Shoulda Broke. " << std::endl;
@@ -1767,7 +1767,7 @@ void UpdateNPC(){
                 {
                     Me->xpos-=shake;
                 }
-                if(groundmap[currentz][abs(Me->xpos/GridSize)][abs(Me->ypos/GridSize)] == 10)
+                if(groundmap[currentz][abs_to_index(Me->xpos/GridSize)][abs_to_index(Me->ypos/GridSize)] == 10)
                 {
                     Me->xpos = TempXpos;
                     Me->ypos = TempYpos;
@@ -1831,7 +1831,7 @@ void UpdateNPC(){
                 }
                 if(Me->target == "Wander" && Me->HasTarget == true)
                 { // TODO: Make sure this isn't needed anymore, Then delete it.
-                    if(groundmap[currentz][abs(Me->TargetPos.x/GridSize)][abs(Me->TargetPos.y/GridSize)] == 10)
+                    if(groundmap[currentz][abs_to_index(Me->TargetPos.x/GridSize)][abs_to_index(Me->TargetPos.y/GridSize)] == 10)
                     {
                         Me->HasTarget = false;
                     }
@@ -2008,9 +2008,9 @@ void UpdateNPC(){
                                     if(UniFact[0].JobList[i].CompletionProgress >= UniFact[0].JobList[i].CompletionTimer)
 
                                     {
-                                        Tiles[abs(x/20)][abs(y/20)][30].Wall();
-                                        //Tiles[abs(x/20)][abs(y/20)][30].ID = 1010;
-                                        //Tiles[abs(x/20)][abs(y/20)][30].Img.setTexture( *imagemanager.GetImage("Wall.png"));
+                                        Tiles[abs_to_index(x/20)][abs_to_index(y/20)][30].Wall();
+                                        //Tiles[abs_to_index(x/20)][abs_to_index(y/20)][30].ID = 1010;
+                                        //Tiles[abs_to_index(x/20)][abs_to_index(y/20)][30].Img.setTexture( *imagemanager.GetImage("Wall.png"));
                                         InvWood->ToDelete = true;
                                         UniFact[0].JobList[i].ToDelete = true;
                                         UniFact[0].JobList[i].pWorker->HasJob = false;
@@ -2162,7 +2162,7 @@ void UpdateNPC(){
                                     if(UniFact[0].JobList[i].CompletionProgress >= UniFact[0].JobList[i].CompletionTimer)
 
                                     {
-                                        Tiles[abs(PathFindWorkPos.x/20)][abs(PathFindWorkPos.y/20)][30].Stone();
+                                        Tiles[abs_to_index(PathFindWorkPos.x/20)][abs_to_index(PathFindWorkPos.y/20)][30].Stone();
                                         debug("Spawning Rocks");
                                         int TAR = randz(3,8); // Throw away random
                                         for(int z = 0; z != TAR; z++)
@@ -2212,7 +2212,7 @@ void UpdateNPC(){
                         int ystuff = (gridy*GridSize)/4;
                         Me->TargetPos = sf::Vector2f(randz(700,1300), randz(700,1300));
                         Me->HasTarget = true;
-                        if(groundmap[currentz][abs(Me->TargetPos.x/GridSize)][abs(Me->TargetPos.y/GridSize)] != 10)
+                        if(groundmap[currentz][abs_to_index(Me->TargetPos.x/GridSize)][abs_to_index(Me->TargetPos.y/GridSize)] != 10)
                         {
                             FindEmpty = true;
                         }
@@ -2411,7 +2411,7 @@ void UpdateNPC(){
                             }
                         }
                     }
-                    sunmap[currentz][abs(Me->xpos/GridSize)][abs(Me->ypos/GridSize)] = 255;
+                    sunmap[currentz][abs_to_index(Me->xpos/GridSize)][abs_to_index(Me->ypos/GridSize)] = 255;
                     for (int i = 0; i <= gridy-1; i++)
                     { // Vision Stuffs;
                         for( int t = 0; t <= gridx-1; t++)
@@ -2452,8 +2452,8 @@ void UpdateNPC(){
 
                     if(PathFindWorkPos.x != 0)
                     {
-                        Previous = walkability[abs(PathFindWorkPos.x/20)][abs(PathFindWorkPos.y/20)];
-                        walkability[abs(PathFindWorkPos.x/20)][abs(PathFindWorkPos.y/20)] = walkable;
+                        Previous = walkability[abs_to_index(PathFindWorkPos.x/20)][abs_to_index(PathFindWorkPos.y/20)];
+                        walkability[abs_to_index(PathFindWorkPos.x/20)][abs_to_index(PathFindWorkPos.y/20)] = walkable;
                     }
 
                         Me->PathFinding.MyFindPath(Me->xpos,Me->ypos,Me->TargetPos.x,Me->TargetPos.y); // TODO: This causes a crash for some reason.
@@ -2462,7 +2462,7 @@ void UpdateNPC(){
 
                         if(PathFindWorkPos.x != 0)
                         {
-                            walkability[abs(PathFindWorkPos.x/20)][abs(PathFindWorkPos.y/20)] = Previous;
+                            walkability[abs_to_index(PathFindWorkPos.x/20)][abs_to_index(PathFindWorkPos.y/20)] = Previous;
                         }
 
                         Con("Done MyFindPath x2");
@@ -2644,8 +2644,8 @@ void UpdateNPC(){
                         int Previous = -1;
                         if(PathFindWorkPos.x != 0)
                         {
-                            Previous = walkability[abs(PathFindWorkPos.x/20)][abs(PathFindWorkPos.y/20)];
-                            walkability[abs(PathFindWorkPos.x/20)][abs(PathFindWorkPos.y/20)] = walkable;
+                            Previous = walkability[abs_to_index(PathFindWorkPos.x/20)][abs_to_index(PathFindWorkPos.y/20)];
+                            walkability[abs_to_index(PathFindWorkPos.x/20)][abs_to_index(PathFindWorkPos.y/20)] = walkable;
                         }
 
                         Me->PathFinding.MyFindPath(Me->xpos,Me->ypos,Me->TargetPos.x,Me->TargetPos.y);
@@ -2653,7 +2653,7 @@ void UpdateNPC(){
 
                         if(PathFindWorkPos.x != 0)
                         {
-                            walkability[abs(PathFindWorkPos.x/20)][abs(PathFindWorkPos.y/20)] = Previous;
+                            walkability[abs_to_index(PathFindWorkPos.x/20)][abs_to_index(PathFindWorkPos.y/20)] = Previous;
                         }
 
                         Con("Post Walkability");
@@ -2682,8 +2682,8 @@ void UpdateNPC(){
 
                     if(PathFindWorkPos.x != 0)
                     {
-                        Previous = walkability[abs(PathFindWorkPos.x/20)][abs(PathFindWorkPos.y/20)];
-                        walkability[abs(PathFindWorkPos.x/20)][abs(PathFindWorkPos.y/20)] = walkable;
+                        Previous = walkability[abs_to_index(PathFindWorkPos.x/20)][abs_to_index(PathFindWorkPos.y/20)];
+                        walkability[abs_to_index(PathFindWorkPos.x/20)][abs_to_index(PathFindWorkPos.y/20)] = walkable;
                     }
 
                     Con("Post WorkPos.x");
@@ -2695,7 +2695,7 @@ void UpdateNPC(){
 
                     if(PathFindWorkPos.x != 0)
                     {
-                            walkability[abs(PathFindWorkPos.x/20)][abs(PathFindWorkPos.y/20)] = Previous;
+                            walkability[abs_to_index(PathFindWorkPos.x/20)][abs_to_index(PathFindWorkPos.y/20)] = Previous;
                     }
 
 
@@ -2918,7 +2918,7 @@ void DrawNPCs(){
             {
                 int anglez = zit->angle; //TODO: Add Galactic & Regional filters
                 // zit->img.setRotation( -anglez+90 );
-                //int Alph = sunmap[currentz][abs(zit->xpos/GridSize)][abs(zit->ypos/GridSize)];
+                //int Alph = sunmap[currentz][abs_to_index(zit->xpos/GridSize)][abs_to_index(zit->ypos/GridSize)];
 
                 if(zit->name == "Azabul")
                 {
@@ -2961,7 +2961,7 @@ void DrawItems(){
     {
         //if(zit->xpos/GridSize > currentx-27 && zit->xpos/GridSize < currentx+26 && zit->ypos/GridSize > currenty-20 && zit->ypos/GridSize < currenty+20)
         //{
-            int Alph = sunmap[currentz][abs(zit->xpos/GridSize)][abs(zit->ypos/GridSize)];
+            int Alph = sunmap[currentz][abs_to_index(zit->xpos/GridSize)][abs_to_index(zit->ypos/GridSize)];
             zit->img.setColor(sf::Color(255,255,255,255));
             zit->img.setScale(Globals.Scalex,Globals.Scaley);
             zit->DrawImg();
@@ -3248,14 +3248,14 @@ void OldMenuPopUp() // TODO: Add functionality to allow you to press 1-9 to acti
                 if(ButtonClicked(Butt))
                 {
 
-                    if(Tiles[abs(GC.MenuPos.x/GridSize) ][ abs(GC.MenuPos.y/GridSize) ][30].ID != 1010)
+                    if(Tiles[abs_to_index(GC.MenuPos.x/GridSize) ][abs_to_index(GC.MenuPos.y/GridSize) ][30].ID != 1010)
                     {
-                        Tiles[abs(GC.MenuPos.x/GridSize) ][ abs(GC.MenuPos.y/GridSize) ][30].Wall();
+                        Tiles[abs_to_index(GC.MenuPos.x/GridSize) ][abs_to_index(GC.MenuPos.y/GridSize) ][30].Wall();
                         fSleep(0.2);
                     }
                     else
                     {
-                        Tiles[abs(GC.MenuPos.x/GridSize) ][ abs(GC.MenuPos.y/GridSize) ][30].Stone();
+                        Tiles[abs_to_index(GC.MenuPos.x/GridSize) ][abs_to_index(GC.MenuPos.y/GridSize) ][30].Stone();
                         fSleep(0.2);
                     }
 
@@ -4273,7 +4273,7 @@ int main(){
 
             if(Key.lctrlTime > 10)
             {
-                int Variable = Tiles[abs(MousePos.x/20)][abs(MousePos.y/20)][30].ID;
+                int Variable = Tiles[abs_to_index(MousePos.x/20)][abs_to_index(MousePos.y/20)][30].ID;
                 cText.CreateText(MousePos.x,MousePos.y,11,sf::Color::Red,"","",Variable);
             }
 
@@ -4663,7 +4663,7 @@ int main(){
                 MyTargetid = -1;
             }
 
-            if(MyTarget != -1 && Key.RMB && Tiles[abs(MousePos.x/GridSize) ][ abs(MousePos.y/GridSize) ][30].ID != 1010)
+            if(MyTarget != -1 && Key.RMB && Tiles[abs_to_index(MousePos.x/GridSize) ][abs_to_index(MousePos.y/GridSize) ][30].ID != 1010)
             {// Giving Orders
                 npclist.at(MyTarget).TargetPos = MousePos;
                 npclist.at(MyTarget).action = "Orders";
@@ -5217,8 +5217,8 @@ int main(){
             }
             else
             {
-                ID = WorldMap[abs(MousePos.x/20)][abs(MousePos.y/20)].ID;
-                Infected = WorldMap[abs(MousePos.x/20)][abs(MousePos.y/20)].Infected;
+                ID = WorldMap[abs_to_index(MousePos.x/20)][abs_to_index(MousePos.y/20)].ID;
+                Infected = WorldMap[abs_to_index(MousePos.x/20)][abs_to_index(MousePos.y/20)].Infected;
             }
             debug("Pre-World HUD");
             int HUDZ = 0;
@@ -5290,7 +5290,7 @@ int main(){
                 {
                     if(i == 0)
                     {
-                        if(WorldMap[abs(GC.MenuPos.x/20)][abs(GC.MenuPos.y/20)].ID == 0)
+                        if(WorldMap[abs_to_index(GC.MenuPos.x/20)][abs_to_index(GC.MenuPos.y/20)].ID == 0)
                         {
                             //Effectz.CreateLine(GC.MenuPos.x,(GC.MenuPos.y+(iY*11))+8,GC.MenuPos.x+90,(GC.MenuPos.y+(iY*11))+8,3,Black,1,Yellow);
                             cText.CreateText(GC.MenuPos.x+2,GC.MenuPos.y+(iY*11),11,Cyan,"Enter City");
@@ -5304,9 +5304,9 @@ int main(){
                                 currentregiony = abs(GC.MenuPos.y/20);
                                 GC.Phase = "Local";
 
-                                //GC.BuildLocal("City", WorldMap[abs(GC.MenuPos.x/20)][abs(GC.MenuPos.y/20)].Infected);
+                                //GC.BuildLocal("City", WorldMap[abs_to_index(GC.MenuPos.x/20)][abs_to_index(GC.MenuPos.y/20)].Infected);
                                 BuildLocalfromWorld(sf::Vector2i(abs(GC.MenuPos.x/20),abs(GC.MenuPos.y/20)));
-                                BuildStartingCritters(WorldMap[abs(GC.MenuPos.x/20)][abs(GC.MenuPos.y/20)].Infected);
+                                BuildStartingCritters(WorldMap[abs_to_index(GC.MenuPos.x/20)][abs_to_index(GC.MenuPos.y/20)].Infected);
                                 SpawnItem("Sword",990,1020);
 
                                 SpawnItem("Gun",1010,1020);
@@ -5321,7 +5321,7 @@ int main(){
                                     int Tx = randz(50,1950);
                                     int Ty = randz(50,1950);
                                     Con(Tx,false);Con(":",false);Con(Ty,false);
-                                    if(Tiles[abs(Tx/20)][abs(Ty/20)][30].ID == 1001 || Tiles[abs(Tx/20)][abs(Ty/20)][30].ID == 1003)
+                                    if(Tiles[abs_to_index(Tx/20)][abs_to_index(Ty/20)][30].ID == 1001 || Tiles[abs_to_index(Tx/20)][abs_to_index(Ty/20)][30].ID == 1003)
                                     {
                                         Con(", Is Plantable.");
                                         SpawnItem("Fruit Tree",Tx,Ty);
@@ -5672,7 +5672,7 @@ int main(){
             }
             if(Selected.size() > 0)
             {
-                if(Key.RMB && Tiles[abs(MousePos.x/GridSize) ][ abs(MousePos.y/GridSize) ][30].ID != 1010)
+                if(Key.RMB && Tiles[abs_to_index(MousePos.x/GridSize) ][abs_to_index(MousePos.y/GridSize) ][30].ID != 1010)
                 {
                     for(int i = 0; i != Selected.size(); i++)
                     {

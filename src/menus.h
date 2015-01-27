@@ -724,14 +724,14 @@ void MenuPopUp() // TODO: Add functionality to allow you to press 1-9 to activat
                 if(SquareButtonClicked(Butt) || Key.num3Time == 1)
                 {
 
-                    if(Tiles[abs(GC.MenuPos.x/GridSize) ][ abs(GC.MenuPos.y/GridSize) ][30].ID != 1010)
+                    if(Tiles[abs_to_index(GC.MenuPos.x/GridSize) ][abs_to_index(GC.MenuPos.y/GridSize) ][30].ID != 1010)
                     {
-                        Tiles[abs(GC.MenuPos.x/GridSize) ][ abs(GC.MenuPos.y/GridSize) ][30].Wall();
+                        Tiles[abs_to_index(GC.MenuPos.x/GridSize) ][abs_to_index(GC.MenuPos.y/GridSize) ][30].Wall();
                         fSleep(0.2);
                     }
                     else
                     {
-                        Tiles[abs(GC.MenuPos.x/GridSize) ][ abs(GC.MenuPos.y/GridSize) ][30].Stone();
+                        Tiles[abs_to_index(GC.MenuPos.x/GridSize) ][abs_to_index(GC.MenuPos.y/GridSize) ][30].Stone();
                         fSleep(0.2);
                     }
 
