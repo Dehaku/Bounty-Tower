@@ -3541,9 +3541,12 @@ int main(){
 
     }
 
+    cText.LoadFont();
+
 
 
     //TimeTest();
+
 
 
 

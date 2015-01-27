@@ -109,11 +109,14 @@ class cTextList
         textlist.clear();
 }
 
-    cTextList(){
+    void LoadFont() {
         if (!font.loadFromFile("data/fonts/sansation.ttf")) {
             throw std::runtime_error("Failed to load font!");
         }
-    Size = 11;
+    }
+
+    cTextList() {
+        Size = 11;
     }
 
 };
