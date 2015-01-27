@@ -15,7 +15,7 @@ endif()
 
 # For GCC and Clang, enable C++14 support and add some other flags
 if(USING_GCC OR USING_CLANG)
-  add_compile_options(-std=c++14 -w)
+  add_compile_options(-std=c++14)
 endif()
 
 set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/CMake/Modules)
