@@ -158,6 +158,8 @@ class xTile{
         WorldColor = sf::Color(0,0,0,255);
         Health = 10;
         DeathID = ID;
+    }
+    void initImage() {
         Img = imagemanager.GetImage("City.png");
     }
 };
