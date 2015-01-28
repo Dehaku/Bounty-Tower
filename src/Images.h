@@ -3,37 +3,35 @@
 
 #include "Game.h"
 
-
-
-
-
 extern int getdir(std::string dir, std::vector<std::string> &files);
 
-class cImageHolder{
-    public:
+class cImageHolder
+{
+public:
     sf::Texture Image;
     std::string name;
     cImageHolder()
     {
-
     }
 };
 
-class cImageManager {
-    public:
+class cImageManager
+{
+public:
     std::vector<cImageHolder> GlobalImage;
 
-    sf::Texture * GetImage(std::string Input){
-        for(int i = 0; i != GlobalImage.size(); i++)
+    sf::Texture *GetImage(std::string Input)
+    {
+        for (int i = 0; i != GlobalImage.size(); i++)
         {
-            if(GlobalImage.at(i).name == Input)
+            if (GlobalImage.at(i).name == Input)
             {
                 return &GlobalImage.at(i).Image;
             }
         }
-        for(int i = 0; i != GlobalImage.size(); i++)
+        for (int i = 0; i != GlobalImage.size(); i++)
         {
-            if(GlobalImage.at(i).name == "Error.bmp")
+            if (GlobalImage.at(i).name == "Error.bmp")
             {
                 return &GlobalImage.at(i).Image;
             }
@@ -41,17 +39,18 @@ class cImageManager {
         throw std::runtime_error("GetImage: Couldn't find image.");
     }
 
-    sf::Texture GetvImage(std::string Input){
-        for(int i = 0; i != GlobalImage.size(); i++)
+    sf::Texture GetvImage(std::string Input)
+    {
+        for (int i = 0; i != GlobalImage.size(); i++)
         {
-            if(GlobalImage.at(i).name == Input)
+            if (GlobalImage.at(i).name == Input)
             {
                 return GlobalImage.at(i).Image;
             }
         }
-        for(int i = 0; i != GlobalImage.size(); i++)
+        for (int i = 0; i != GlobalImage.size(); i++)
         {
-            if(GlobalImage.at(i).name == "Error.bmp")
+            if (GlobalImage.at(i).name == "Error.bmp")
             {
                 return GlobalImage.at(i).Image;
             }
@@ -59,17 +58,17 @@ class cImageManager {
         throw std::runtime_error("GetvImage: Couldn't find image.");
     }
 
-
-    void InitializeImages(){
+    void InitializeImages()
+    {
         using namespace std;
         string dir = string("./data/gfx");
         vector<string> files = vector<string>();
-        getdir(dir,files);
-        for(auto & file : files)
+        getdir(dir, files);
+        for (auto &file : files)
         {
             string line("data/gfx/");
             string ending(file);
-            if(file != "." && file != "..")
+            if (file != "." && file != "..")
             {
                 line.append(ending);
                 cImageHolder image;
@@ -87,7 +86,7 @@ class cImageManager {
     cImageManager()
     {
     }
-}; cImageManager imagemanager;
-
+};
+cImageManager imagemanager;
 
 #endif // IMAGES_H_INCLUDED

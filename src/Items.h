@@ -4,8 +4,6 @@
 //#include "Globals.h"
 //#include "Faction.h"
 
-
-
 //#include "FactionJobSecurity.h"
 #include "Game.h"
 
@@ -14,7 +12,7 @@ extern sf::RenderWindow App;
 class NPC;
 class item
 {
-    public:
+public:
     bool ToDelete;
     bool Pickupable;
     sf::Sprite img;
@@ -23,9 +21,9 @@ class item
     std::string name;
     std::string inventor;
     std::string Contains;
-    std::string InsidePart; // This is to only be filled with a part name if it is put inside a creature, otherwise, it is to be left blank. This item is ment to be put inside a critters inventory, All inventory checks are to ignore instances where this has more than .size() = 0, Opposite is true for items contained in critter.
+    std::string
+        InsidePart; // This is to only be filled with a part name if it is put inside a creature, otherwise, it is to be left blank. This item is ment to be put inside a critters inventory, All inventory checks are to ignore instances where this has more than .size() = 0, Opposite is true for items contained in critter.
     int HasInternalUse;
-
 
     int range;
     int age;
@@ -45,7 +43,8 @@ class item
     int imgendy;
     bool IsWeapon;
     int type; // 0 = none, 1 = melee weapon, 2 = ranged weapon, 3 = thrown weapon, 4 = food, 5 = water, 6 = cell, 7 = Ore, 8 = Digging Tool, 9 = Cutting Tool, 10 = Fishing Tool, 11 = Liquid Container, 12 = Plant, 13 = ?
-    std::string usedskill; // 0 = none, 1 = hand gun, 2 = rifle, 3 = slash, 4 = blunt, 5 = pierce
+    std::string
+        usedskill; // 0 = none, 1 = hand gun, 2 = rifle, 3 = slash, 4 = blunt, 5 = pierce
     float amount;
     int celltype; // 0 None 1 Chem 2 Solar 3 Nuclear 4 Soul 5 Magic
     int cellcharge;
@@ -96,48 +95,84 @@ class item
     int LiquidContainMax;
     int ObjectContainMax;
     int ContainAmount;
-    void chargecell(int amount) {cellcharge += amount;}
-    void soulcell(int soultype) {chargecell(soultype * 10);}
-    bool getid(int idz) {if(idz == id){ return true;} else {return false;}}
+    void chargecell(int amount)
+    {
+        cellcharge += amount;
+    }
+    void soulcell(int soultype)
+    {
+        chargecell(soultype * 10);
+    }
+    bool getid(int idz)
+    {
+        if (idz == id)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
     //void useitem(){UseItem(name.c_str());}
-    bool boolname(char *cakezebra){
-        if(cakezebra == name){return true;}
+    bool boolname(char *cakezebra)
+    {
+        if (cakezebra == name)
+        {
+            return true;
+        }
         return false;
     }
 
-    char getname(){
+    char getname()
+    {
         //const char painiscupcake;
         //painiscupcake = name.c_str();
         //PaintDesktop()
         return *name.c_str();
     }
 
-    void printInfo(){
-
+    void printInfo()
+    {
 
         using namespace std;
-        cout << "Name: " << name.c_str() << " (" << id <<  ") " << endl;
+        cout << "Name: " << name.c_str() << " (" << id << ") " << endl;
         cout << "Weight: " << weight << endl;
         cout << "Value: " << value << endl;
-        if(UseCell == true) {cout << "celltype is: " << celltype << endl;}
-        if(UseCell == true) {cout << "cellcharge is: " << cellcharge << endl;}
-        if(ammotype > 0) {cout << "MaxClip: " << maxclip << endl;}
-        if(ammotype > 0) {cout << "Current Clip: " << currentclip << endl;}
+        if (UseCell == true)
+        {
+            cout << "celltype is: " << celltype << endl;
+        }
+        if (UseCell == true)
+        {
+            cout << "cellcharge is: " << cellcharge << endl;
+        }
+        if (ammotype > 0)
+        {
+            cout << "MaxClip: " << maxclip << endl;
+        }
+        if (ammotype > 0)
+        {
+            cout << "Current Clip: " << currentclip << endl;
+        }
         cout << "Min Damage: " << mindam << endl;
         cout << "Max Damage: " << maxdam << endl;
-        if(IsMagic == true) {cout << " *Magical* " << endl;}
+        if (IsMagic == true)
+        {
+            cout << " *Magical* " << endl;
+        }
     }
 
     //bool SetImg(int istrx,int istry,int iendx,int iendy){img.SetSubRect(sf::IntRect(istrx, istry, iendx, iendy));}
 
     void DrawImg()
     {
-        img.setPosition(xpos,ypos);
+        img.setPosition(xpos, ypos);
         //img.setScale(Globals.Scalex,Globals.Scaley);
         App.draw(img);
     }
 
-    void spawn(int gposx,int gposy,int rposx,int rposy,int posx,int posy)
+    void spawn(int gposx, int gposy, int rposx, int rposy, int posx, int posy)
     {
         gxpos = 100;
         gypos = 100;
@@ -147,7 +182,8 @@ class item
         ypos = posy;
     }
 
-    void PrintConsoleInfo(){
+    void PrintConsoleInfo()
+    {
         using namespace std;
         cout << "Name: " << name << endl;
         cout << "cBaseId: " << cbaseid << endl;
@@ -158,9 +194,10 @@ class item
         cout << "Ypos: " << ypos << endl;
     }
 
-    item(){ // start of constructor
+    item()
+    { // start of constructor
         ToDelete = false;
-        TargetPos = sf::Vector2f(-1,-1);
+        TargetPos = sf::Vector2f(-1, -1);
         id = Globals.globalid++;
         name = "";
         weight = 0;
@@ -169,7 +206,8 @@ class item
         age = 0;
         amount = 1;
 
-        HasInternalUse = 0; // This may be a little confusing, This is so the item can stay inside without being ejected because one function doesn't need it.
+        HasInternalUse =
+            0; // This may be a little confusing, This is so the item can stay inside without being ejected because one function doesn't need it.
 
         hungervalue = 0;
         thirstvalue = 0;
@@ -226,51 +264,43 @@ class item
     ~item()
     {
         //UnpointItem(this);
-
     }
-
 };
 item myitem;
 
-
-
-
-
 class cItem : public item
 {
-    public:
-
-
+public:
     cItem()
     {
-
     }
 };
 
-
-cItem * GetGlobalItem( std::string strtype );
+cItem *GetGlobalItem(std::string strtype);
 
 //std::vector<item> worlditems;
 std::list<item> worlditems;
 
 class cItemManager
 {
-    public:
+public:
     std::vector<cItem> GlobalItem;
     std::vector<item> AddedItems;
 
-    void AddItems(){
+    void AddItems()
+    {
         std::vector<item>::iterator Me;
-        for(Me = AddedItems.begin();Me != AddedItems.end();Me++)
+        for (Me = AddedItems.begin(); Me != AddedItems.end(); Me++)
         {
             worlditems.push_back(*Me);
         }
         AddedItems.clear();
     }
 
-    void InitializeItems(){
+    void InitializeItems()
+    {
 
-       /*using namespace std;  I'll be using this soon enough, It'll allow the program to surf through the folder, and create all the stuff it needs.
+        /*using namespace std;  I'll be using this soon enough, It'll allow the program to surf through the folder, and create all the stuff it needs.
         string dir = string(".//data//items");
         vector<string> files = vector<string>();
         getdir(dir,files);
@@ -282,81 +312,92 @@ class cItemManager
             if( remove(line.c_str()) != 0 ){}
         } */
 
-
-        std::ifstream Input("data/items.txt"); // TODO: Have this read from an Items folder, and read from all .txt files in it, Allowing greater compability between mods.
-        if(Input.is_open())
+        std::ifstream Input(
+            "data/items.txt"); // TODO: Have this read from an Items folder, and read from all .txt files in it, Allowing greater compability between mods.
+        if (Input.is_open())
         {
             int stuffs;
-            while(Input.good())
+            while (Input.good())
             {
                 std::string line;
-                getline (Input,line);
+                getline(Input, line);
                 cItem Item;
                 Item.name = "Debuggery";
-                Item.name = StringFindString(line,"[name:");
+                Item.name = StringFindString(line, "[name:");
 
-                Item.hungervalue = StringFindNumber(line,"[hungervalue:");
-                Item.thirstvalue = StringFindNumber(line,"[thirstvalue:");
+                Item.hungervalue = StringFindNumber(line, "[hungervalue:");
+                Item.thirstvalue = StringFindNumber(line, "[thirstvalue:");
 
+                Item.MassGlass = StringFindNumber(line, "[MassGlass:");
+                Item.MassFlesh = StringFindNumber(line, "[MassFlesh:");
+                Item.MassMetal = StringFindNumber(line, "[MassMetal:");
+                Item.MassOil = StringFindNumber(line, "[MassOil:");
+                Item.MassPlastic = StringFindNumber(line, "[MassPlastic:");
+                Item.MassVeggy = StringFindNumber(line, "[MassVeggy:");
+                Item.MassWater = StringFindNumber(line, "[MassWater:");
 
-                Item.MassGlass = StringFindNumber(line,"[MassGlass:");
-                Item.MassFlesh = StringFindNumber(line,"[MassFlesh:");
-                Item.MassMetal = StringFindNumber(line,"[MassMetal:");
-                Item.MassOil = StringFindNumber(line,"[MassOil:");
-                Item.MassPlastic = StringFindNumber(line,"[MassPlastic:");
-                Item.MassVeggy = StringFindNumber(line,"[MassVeggy:");
-                Item.MassWater = StringFindNumber(line,"[MassWater:");
-
-                Item.Pickupable = Booleanize(StringFindNumber(line,"[Pickupable:"));
-                Item.type = StringFindNumber(line,"[type:");
-                Item.cbaseid = StringFindNumber(line,"[baseid:");
-                Item.produces = Booleanize(StringFindNumber(line,"[produces:"));
-                Item.prodrate = StringFindNumber(line,"[prodrate:");
-                Item.produce = StringFindString(line,"[produce:");
-                Item.mindam = StringFindNumber(line,"[mindam:");
-                Item.maxdam = StringFindNumber(line,"[maxdam:");
-                Item.range = StringFindNumber(line,"[range:");
-                Item.IsWeapon = Booleanize(StringFindNumber(line,"[IsWeapon:"));
-                std::string Imagery = StringFindString(line,"[image:");
+                Item.Pickupable =
+                    Booleanize(StringFindNumber(line, "[Pickupable:"));
+                Item.type = StringFindNumber(line, "[type:");
+                Item.cbaseid = StringFindNumber(line, "[baseid:");
+                Item.produces =
+                    Booleanize(StringFindNumber(line, "[produces:"));
+                Item.prodrate = StringFindNumber(line, "[prodrate:");
+                Item.produce = StringFindString(line, "[produce:");
+                Item.mindam = StringFindNumber(line, "[mindam:");
+                Item.maxdam = StringFindNumber(line, "[maxdam:");
+                Item.range = StringFindNumber(line, "[range:");
+                Item.IsWeapon =
+                    Booleanize(StringFindNumber(line, "[IsWeapon:"));
+                std::string Imagery = StringFindString(line, "[image:");
                 std::vector<cImageHolder>::iterator i;
-                for(i = imagemanager.GlobalImage.begin(); i != imagemanager.GlobalImage.end(); i++)
+                for (i = imagemanager.GlobalImage.begin();
+                     i != imagemanager.GlobalImage.end(); i++)
                 {
-                    if(i->name == Imagery)
+                    if (i->name == Imagery)
                     {
                         Item.img.setTexture(i->Image);
                         sf::IntRect Tempz = Item.img.getTextureRect();
-                        sf::Vector2f Size(Tempz.height,Tempz.width);
-                        if(Debug){std::cout << "TextRect: " << Tempz.height << ":" << Tempz.width << std::endl;}
+                        sf::Vector2f Size(Tempz.height, Tempz.width);
+                        if (Debug)
+                        {
+                            std::cout << "TextRect: " << Tempz.height << ":"
+                                      << Tempz.width << std::endl;
+                        }
                         //sf::Vector2u Size = Item.img.getSize();
 
                         //Item.img.SetSubRect(sf::IntRect(0, 0, i->Image.GetWidth(),i->Image.GetHeight()));
-                        Item.img.setOrigin(Size.x/2,Size.y/2);
+                        Item.img.setOrigin(Size.x / 2, Size.y / 2);
                     }
                 }
                 //Item.img.setTexture( *imagemanager.GetImage(Imagery) );
-                if(Item.name != "Debuggery"){GlobalItem.push_back(Item);}
-            }
-        }
-        for(int i = 0; i != GlobalItem.size(); i++)
-        {
-            for(int t = 0; t != GlobalItem.size(); t++)
-            {
-                if(i != t)
+                if (Item.name != "Debuggery")
                 {
-                    if(GlobalItem[i].cbaseid == GlobalItem[t].cbaseid)
-                    {
-                        std::cout << " \n \n cbaseid Conflict Detected between " << GlobalItem[i].name << " and " << GlobalItem[t].name << ", cbaseid: " << GlobalItem[i].cbaseid << std::endl;
-                    }
-
+                    GlobalItem.push_back(Item);
                 }
             }
         }
-
+        for (int i = 0; i != GlobalItem.size(); i++)
+        {
+            for (int t = 0; t != GlobalItem.size(); t++)
+            {
+                if (i != t)
+                {
+                    if (GlobalItem[i].cbaseid == GlobalItem[t].cbaseid)
+                    {
+                        std::cout << " \n \n cbaseid Conflict Detected between "
+                                  << GlobalItem[i].name << " and "
+                                  << GlobalItem[t].name
+                                  << ", cbaseid: " << GlobalItem[i].cbaseid
+                                  << std::endl;
+                    }
+                }
+            }
+        }
     }
 
     cItemManager()
     {
-
     }
 };
 
@@ -365,27 +406,28 @@ cItemManager itemmanager;
 void RemoveItems()
 {
     bool Done = false;
-    while(Done == false)
+    while (Done == false)
     {
         bool Yet = false;
         //*for(int i = 0; i != worlditems.size(); i++)
-        for(auto i = worlditems.begin(); i != worlditems.end(); i++)
+        for (auto i = worlditems.begin(); i != worlditems.end(); i++)
         {
-            if((*i).ToDelete == true)
+            if ((*i).ToDelete == true)
             {
                 worlditems.erase(i);
                 Yet = true;
                 break;
             }
         }
-        if(Yet == false)
+        if (Yet == false)
         {
             Done = true;
         }
     }
 }
 
-void zSaveItem(int planet, sf::Vector2i Region, item &object){
+void zSaveItem(int planet, sf::Vector2i Region, item &object)
+{
 
     using namespace std;
     ofstream File; // Start to Load Map
@@ -405,10 +447,12 @@ void zSaveItem(int planet, sf::Vector2i Region, item &object){
     File.open(newline.c_str(), fstream::in | fstream::ate);
     debug("looking for file...");
 
-    if(File.is_open())
+    if (File.is_open())
     {
         File << std::endl;
-        File << "[name:" << object.name << "]" << "[xpos:" << object.xpos << "]" << "[ypos:" << object.ypos << "]";
+        File << "[name:" << object.name << "]"
+             << "[xpos:" << object.xpos << "]"
+             << "[ypos:" << object.ypos << "]";
         Con("Added", false);
         Con(object.name);
         File.close();
@@ -416,32 +460,30 @@ void zSaveItem(int planet, sf::Vector2i Region, item &object){
     else
     {
         string line("data/maps/Planet500");
-    stringstream convert;
-    //convert << planet;
-    line.append(convert.str());
-    convert.clear();
-    galaxy_mkdir(line);
-    line.append("/stuff");
-    convert << "x";
-    convert << Region.x;
-    convert << "y";
-    convert << Region.y;
-    line.append(convert.str());
-    string ending(".item");
-    line.append(ending);
-    Con(line);
+        stringstream convert;
+        //convert << planet;
+        line.append(convert.str());
+        convert.clear();
+        galaxy_mkdir(line);
+        line.append("/stuff");
+        convert << "x";
+        convert << Region.x;
+        convert << "y";
+        convert << Region.y;
+        line.append(convert.str());
+        string ending(".item");
+        line.append(ending);
+        Con(line);
 
+        ofstream outputFile(line.c_str());
 
-
-    ofstream outputFile(line.c_str());
-
-    outputFile << "[" << object.name << "," << object.xpos << "," << object.ypos << "]";
+        outputFile << "[" << object.name << "," << object.xpos << ","
+                   << object.ypos << "]";
     }
-
 }
 
-
-void SaveItem(int planet, sf::Vector2i Region, item &Critter){ // I already did all the work once, Imma be lazy for some time.
+void SaveItem(int planet, sf::Vector2i Region, item &Critter)
+{ // I already did all the work once, Imma be lazy for some time.
     using namespace std;
     string line("data/maps/Planet");
     stringstream convert;
@@ -458,16 +500,17 @@ void SaveItem(int planet, sf::Vector2i Region, item &Critter){ // I already did 
     string ending(".item");
     line.append(ending);
 
-
     ofstream File;
     File.open(line.c_str(), fstream::in | fstream::ate);
     debug("looking for file...");
 
-    if(File.is_open())
+    if (File.is_open())
     {
         //File << std::endl;
         File << std::endl;
-        File << "[name:" << Critter.name << "]" << "[xpos:" << Critter.xpos << "]" << "[ypos:" << Critter.ypos << "]";
+        File << "[name:" << Critter.name << "]"
+             << "[xpos:" << Critter.xpos << "]"
+             << "[ypos:" << Critter.ypos << "]";
         //Con("Added", false);
         //Con(object.name);
         File.close();
@@ -476,13 +519,15 @@ void SaveItem(int planet, sf::Vector2i Region, item &Critter){ // I already did 
     {
         ofstream outputFile(line.c_str());
 
-        outputFile << "[name:" << Critter.name << "]" << "[xpos:" << Critter.xpos << "]" << "[ypos:" << Critter.ypos << "]";
+        outputFile << "[name:" << Critter.name << "]"
+                   << "[xpos:" << Critter.xpos << "]"
+                   << "[ypos:" << Critter.ypos << "]";
     }
 }
 
-
-
-std::string LoadItems(sf::Vector2i WorldPos, std::string Direction, int planet = 500){
+std::string LoadItems(sf::Vector2i WorldPos, std::string Direction,
+                      int planet = 500)
+{
 
     std::string line("data/maps/Planet");
     std::stringstream convert;
@@ -500,66 +545,69 @@ std::string LoadItems(sf::Vector2i WorldPos, std::string Direction, int planet =
     line.append(ending);
 
     std::ifstream Input(line.c_str());
-        if(Input.is_open())
+    if (Input.is_open())
+    {
+        int stuffs;
+        while (Input.good())
         {
-            int stuffs;
-            while(Input.good())
+            std::string line;
+            getline(Input, line);
+            item Critter;
+
+            Critter.name = "Debuggery";
+
+            Critter.name = StringFindString(line, "[name:");
+            if (Critter.name != "Debuggery")
+                Critter = *GetGlobalItem(Critter.name);
+            Critter.xpos = StringFindNumber(line, "[xpos:");
+            Critter.ypos = StringFindNumber(line, "[ypos:");
+            std::cout << "Xpos: " << Critter.xpos << "Ypos: " << Critter.ypos
+                      << std::endl;
+
+            if (Direction == "TopLeft")
             {
-                std::string line;
-                getline (Input,line);
-                item Critter;
+            }
+            if (Direction == "Top")
+            {
+                Critter.xpos += 640;
+            }
+            if (Direction == "TopRight")
+            {
+                Critter.xpos += 640;
+                Critter.xpos += 640;
+            }
+            if (Direction == "Right")
+            {
+                Critter.xpos += 640;
+                Critter.xpos += 640;
+                Critter.ypos += 640;
+            }
+            if (Direction == "BottomRight")
+            {
+                Critter.xpos += 640;
+                Critter.xpos += 640;
+                Critter.ypos += 640;
+                Critter.ypos += 640;
+            }
+            if (Direction == "Bottom")
+            {
+                Critter.xpos += 640;
+                Critter.ypos += 640;
+                Critter.ypos += 640;
+            }
+            if (Direction == "BottomLeft")
+            {
+                Critter.ypos += 640;
+                Critter.ypos += 640;
+            }
+            if (Direction == "Left")
+            {
+                Critter.ypos += 640;
+            }
+            std::cout << "Xpos: " << Critter.xpos << "Ypos: " << Critter.ypos
+                      << std::endl;
 
-                Critter.name = "Debuggery";
-
-
-                Critter.name = StringFindString(line,"[name:");
-                if(Critter.name != "Debuggery") Critter = *GetGlobalItem(Critter.name);
-                Critter.xpos = StringFindNumber(line,"[xpos:");
-                Critter.ypos = StringFindNumber(line,"[ypos:");
-                std::cout << "Xpos: " << Critter.xpos << "Ypos: " << Critter.ypos << std::endl;
-
-                if(Direction == "TopLeft"){}
-                if(Direction == "Top")
-                {
-                    Critter.xpos += 640;
-                }
-                if(Direction == "TopRight")
-                {
-                    Critter.xpos += 640;
-                    Critter.xpos += 640;
-                }
-                if(Direction == "Right")
-                {
-                    Critter.xpos += 640;
-                    Critter.xpos += 640;
-                    Critter.ypos += 640;
-                }
-                if(Direction == "BottomRight")
-                {
-                    Critter.xpos += 640;
-                    Critter.xpos += 640;
-                    Critter.ypos += 640;
-                    Critter.ypos += 640;
-                }
-                if(Direction == "Bottom")
-                {
-                    Critter.xpos += 640;
-                    Critter.ypos += 640;
-                    Critter.ypos += 640;
-                }
-                if(Direction == "BottomLeft")
-                {
-                    Critter.ypos += 640;
-                    Critter.ypos += 640;
-                }
-                if(Direction == "Left")
-                {
-                    Critter.ypos += 640;
-                }
-                std::cout << "Xpos: " << Critter.xpos << "Ypos: " << Critter.ypos << std::endl;
-
-
-                /*std::string Imagery = StringFindString(line,"[Image:");
+            /*std::string Imagery = StringFindString(line,"[Image:");
                 std::vector<cImageHolder>::iterator i;
                 if(Debug){ std::cout << "Pre Imagery \n";}
                 for(i = imagemanager.GlobalImage.begin(); i != imagemanager.GlobalImage.end(); i++)
@@ -570,32 +618,45 @@ std::string LoadItems(sf::Vector2i WorldPos, std::string Direction, int planet =
                     }
                 }*/
 
-                if(Critter.name != "Debuggery"){worlditems.push_back(Critter);}
-
+            if (Critter.name != "Debuggery")
+            {
+                worlditems.push_back(Critter);
             }
         }
-        return line;
+    }
+    return line;
 }
 
-
-
-
-void SpawnItem(std::string Object, int xpos, int ypos){
-    if(Debug){ std::cout << "Spawning" << Object << " \n";}
+void SpawnItem(std::string Object, int xpos, int ypos)
+{
+    if (Debug)
+    {
+        std::cout << "Spawning" << Object << " \n";
+    }
     int i = 0;
     cItem var;
-    if(Debug){ std::cout << "Pre var in SpawnItem" << " \n";}
+    if (Debug)
+    {
+        std::cout << "Pre var in SpawnItem"
+                  << " \n";
+    }
     var = *GetGlobalItem(Object);
-    if(Debug){ std::cout << "Post var in SpawnItem" << " \n";}
+    if (Debug)
+    {
+        std::cout << "Post var in SpawnItem"
+                  << " \n";
+    }
 
     var.id = Globals.globalid++;
     var.xpos = xpos;
     var.ypos = ypos;
     itemmanager.AddedItems.push_back(var);
-    if(Debug){ std::cout << "Done Spawning. \n";}
+    if (Debug)
+    {
+        std::cout << "Done Spawning. \n";
+    }
 
-
-     /*bool searching = true;
+    /*bool searching = true;
     while( searching )
     {
         if( itemmanager.GlobalItem[i].name == Object && t != itemmanager.GlobalItem.end())
@@ -606,7 +667,6 @@ void SpawnItem(std::string Object, int xpos, int ypos){
     i++;
     t++;
     }*/
-
 
     /*for(i = itemmanager.GlobalItem.begin(); i != itemmanager.GlobalItem.end(); i++)
     {
@@ -623,10 +683,11 @@ void SpawnItem(std::string Object, int xpos, int ypos){
     }*/
 }
 
-void RefreshImages(){ // PANIC
-    for(int i = 0; i != worlditems.size(); i++)
+void RefreshImages()
+{ // PANIC
+    for (int i = 0; i != worlditems.size(); i++)
     {
-        for(int t = 0; t != itemmanager.GlobalItem.size(); t++)
+        for (int t = 0; t != itemmanager.GlobalItem.size(); t++)
         {
             //if(worlditems.at(i).name == itemmanager.GlobalItem.at(t).name)
             {
@@ -637,16 +698,13 @@ void RefreshImages(){ // PANIC
     Con("Done");
 }
 
-
-
-
-item * GetItemPtrfromVector(std::list<item> &Vector, std::string Name)
+item *GetItemPtrfromVector(std::list<item> &Vector, std::string Name)
 {
     debug("Doing GetItmPtr");
     //*for(int i = 0; i != Vector.size(); i++)
-    for(auto i = Vector.begin(); i != Vector.begin(); i++)
+    for (auto i = Vector.begin(); i != Vector.begin(); i++)
     {
-        if((*i).name == Name)
+        if ((*i).name == Name)
         {
             debug("Returning GetItmPtr");
             return &(*i);
@@ -657,13 +715,13 @@ item * GetItemPtrfromVector(std::list<item> &Vector, std::string Name)
     return nullptr;
 }
 
-item * GetItemPtrfromVector2(std::list<item> &Vector, std::string Name)
+item *GetItemPtrfromVector2(std::list<item> &Vector, std::string Name)
 {
     debug("Doing GetItmPtr");
     //for(int i = 0; i != Vector.size(); i++)
-    for(auto & elem : Vector)
+    for (auto &elem : Vector)
     {
-        if((elem).name == Name)
+        if ((elem).name == Name)
         {
             debug("Returning GetItmPtr");
             return &(elem);
@@ -674,67 +732,65 @@ item * GetItemPtrfromVector2(std::list<item> &Vector, std::string Name)
     return nullptr;
 }
 
-item * GetItemPtrfromVectorVarSearch(std::list<item> &Vector, std::string VarSearch, float AtLeast = 1)
+item *GetItemPtrfromVectorVarSearch(std::list<item> &Vector,
+                                    std::string VarSearch, float AtLeast = 1)
 {
     debug("Doing GetItmPtrVarSearch");
     //for(int i = 0; i != Vector.size(); i++)
-    for(auto i = Vector.begin(); i != Vector.begin(); i++)
+    for (auto i = Vector.begin(); i != Vector.begin(); i++)
     {
 
-        if((*i).MassFlesh >= AtLeast && VarSearch == "MassFlesh")
+        if ((*i).MassFlesh >= AtLeast && VarSearch == "MassFlesh")
         {
             debug("Returning GetItmPtrVarSearch");
             return &(*i);
         }
-        if((*i).MassVeggy >= AtLeast && VarSearch == "MassVeggy")
+        if ((*i).MassVeggy >= AtLeast && VarSearch == "MassVeggy")
         {
             debug("Returning GetItmPtrVarSearch");
             return &(*i);
         }
-        if((*i).MassWater >= AtLeast && VarSearch == "MassWater")
+        if ((*i).MassWater >= AtLeast && VarSearch == "MassWater")
         {
             debug("Returning GetItmPtrVarSearch");
             return &(*i);
         }
-        if((*i).MassMetal >= AtLeast && VarSearch == "MassMetal")
+        if ((*i).MassMetal >= AtLeast && VarSearch == "MassMetal")
         {
             debug("Returning GetItmPtrVarSearch");
             return &(*i);
         }
-        if((*i).MassPlastic >= AtLeast && VarSearch == "MassPlastic")
+        if ((*i).MassPlastic >= AtLeast && VarSearch == "MassPlastic")
         {
             debug("Returning GetItmPtrVarSearch");
             return &(*i);
         }
-
-
     }
 
     debug("GetItmPtrVarSearch didn't find anything, returning NULL");
     return nullptr;
 }
 
-
-
-item * FindClosestItemPtr(int Orix,int Oriy, std::string TarItem, int Gxpos = 0, int Gypos = 0, int Rxpos = 0, int Rypos = 0){
+item *FindClosestItemPtr(int Orix, int Oriy, std::string TarItem, int Gxpos = 0,
+                         int Gypos = 0, int Rxpos = 0, int Rypos = 0)
+{
     //std::vector<item>::iterator Items;
     // This will be difficult, go through all the items, and find the closest one, Silly old self, Watch how it's done.
-    int closx = -1000000;// Make sure the default starting number is far beyond being the closest one.
+    int closx =
+        -1000000; // Make sure the default starting number is far beyond being the closest one.
     int closy = -1000000;
     int Closid;
     int closVect;
     int VectPos;
     bool first = true;
 
-    item * Returns;
+    item *Returns;
 
-
-
-    for(auto i = worlditems.begin(); i != worlditems.begin(); i++)
+    for (auto i = worlditems.begin(); i != worlditems.begin(); i++)
     {
-        if(first == true)
+        if (first == true)
         {
-            if((*i).name == TarItem)
+            if ((*i).name == TarItem)
             {
                 closx = (*i).xpos;
                 closy = (*i).ypos;
@@ -746,11 +802,11 @@ item * FindClosestItemPtr(int Orix,int Oriy, std::string TarItem, int Gxpos = 0,
         }
         else
         {
-            if((*i).name == TarItem)
+            if ((*i).name == TarItem)
             {
-                int one = Math.Closeish(Orix,Oriy,(*i).xpos,(*i).ypos);
-                int two = Math.Closeish(Orix,Oriy,closx,closy);
-                if(one < two)
+                int one = Math.Closeish(Orix, Oriy, (*i).xpos, (*i).ypos);
+                int two = Math.Closeish(Orix, Oriy, closx, closy);
+                if (one < two)
                 {
                     closx = (*i).xpos;
                     closy = (*i).ypos;
@@ -762,14 +818,12 @@ item * FindClosestItemPtr(int Orix,int Oriy, std::string TarItem, int Gxpos = 0,
         }
         VectPos++;
     }
-    if(first != true)
+    if (first != true)
     {
-        return Returns;// Returns = (xpos,ypos,id,Vector Position)
+        return Returns; // Returns = (xpos,ypos,id,Vector Position)
     }
-    else return nullptr;
-
+    else
+        return nullptr;
 }
-
-
 
 #endif // ITEMS_H_INCLUDED

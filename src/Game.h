@@ -31,12 +31,13 @@ using std::abs;
 
 /// Get the absolute of a numeric value,
 /// converted to size_t, suitable for indexing
-template <typename T>
-size_t abs_to_index(T value) {
+template <typename T> size_t abs_to_index(T value)
+{
     return static_cast<size_t>(std::abs(value));
 }
 
-inline void galaxy_mkdir(std::string const & name) {
+inline void galaxy_mkdir(std::string const &name)
+{
 #ifdef GALAXY_LINUX
     mkdir(name.c_str(), 0755);
 #else
@@ -44,17 +45,11 @@ inline void galaxy_mkdir(std::string const & name) {
 #endif
 }
 
-
-
-
 class item;
 class NPC;
 class Tile;
 
 class GalaxyController;
-
-
-
 
 #include "Globals.h"
 #include "Images.h"
@@ -72,8 +67,5 @@ class GalaxyController;
 #include "Galaxy.h"
 
 #include "menus.h"
-
-
-
 
 #endif // GAME_H_INCLUDED

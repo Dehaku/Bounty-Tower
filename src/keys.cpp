@@ -3,7 +3,3 @@
 #include <SFML/Window.hpp>
 
 bool plat = true;
-
-
-
-

@@ -12,38 +12,35 @@ class Tile;
 
 //class Faction;
 
-
 class MyItem
 {
-    public:
+public:
     std::string Name;
     MyItem()
     {
-        int Random = randz(1,2);
-        if(Random == 1) Name = "Tool";
-        if(Random == 2) Name = "Weapon";
+        int Random = randz(1, 2);
+        if (Random == 1)
+            Name = "Tool";
+        if (Random == 2)
+            Name = "Weapon";
     }
 };
 std::vector<MyItem> MyItemList;
 
-
-
 class ItemContainer
 {
-    public:
-    MyItem * TheItemPtr;
+public:
+    MyItem *TheItemPtr;
     ItemContainer()
     {
-
     }
 };
 
 std::vector<ItemContainer> IC;
 
-
 void InsertItems()
 {
-    for(int i = 0; i != 10; i++)
+    for (int i = 0; i != 10; i++)
     {
         MyItem TheItem;
         MyItemList.push_back(TheItem);
@@ -52,37 +49,35 @@ void InsertItems()
 
 void InsertItemsIntoContainers()
 {
-    for(int i = 0; i != MyItemList.size(); i++)
+    for (int i = 0; i != MyItemList.size(); i++)
     {
         ItemContainer ItemHolder;
         ItemHolder.TheItemPtr = &MyItemList[i];
         IC.push_back(ItemHolder);
-
     }
 }
 
 void PrintIC()
 {
-    for(int i = 0; i != IC.size(); i++)
+    for (int i = 0; i != IC.size(); i++)
     {
         //std::cout << IC[i].TheItemPtr->Name << std::endl;
     }
 }
 
-
-void RunItAll(){
+void RunItAll()
+{
     InsertItems();
     InsertItemsIntoContainers();
     PrintIC();
 }
 
-
 class PointerContainer
 {
-    public:
-    item * pItem;
-    NPC * pNPC;
-    Tile * pTile;
+public:
+    item *pItem;
+    NPC *pNPC;
+    Tile *pTile;
     PointerContainer()
     {
         pItem = nullptr;
@@ -93,14 +88,14 @@ class PointerContainer
 
 class Job
 {
-    public:
+public:
     std::string Name;
     int Priority;
     float CompletionTimer;
     float CompletionProgress;
     std::string Type;
-    item * pItem;
-    NPC * pWorker;
+    item *pItem;
+    NPC *pWorker;
     //Tile * pTile;
     sf::Vector2i WorkPos;
     sf::Vector2i WorkplacePos;
@@ -127,12 +122,5 @@ class Job
 //std::vector<Job> JobList;
 
 //extern std::vector<Faction> UniFact;
-
-
-
-
-
-
-
 
 #endif // JOBMANAGER_H_INCLUDED
