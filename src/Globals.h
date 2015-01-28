@@ -9,6 +9,15 @@ bool Debug = false;
 bool InFocus = true;
 float PI = 3.141;
 
+const double G = 6.67;
+bool DrawStuffsDone = true;
+
+std::vector<std::string> chatboxlist;
+
+std::vector<NPC> *Selection;
+
+
+
 sf::Vector2f RMBHeldPos;
 
 sf::RenderTexture renderTexture;
