@@ -707,7 +707,7 @@ class NPC
 
     item * GetItemType(int type){
         //for(int i = 0; i < inventory.size(); i++)
-        for(auto i = inventory.begin(); i != inventory.begin(); i++)
+        for(auto i = inventory.begin(); i != inventory.end(); i++)
         {
             if( (*i).type == type )
             {
@@ -715,6 +715,7 @@ class NPC
             }
         }
         if(Debug){std::cout << "Returning inventory nothing. \n";}
+        return NULL;
         throw std::runtime_error("GetItemType: Couldn't get item type.");
     }
 
@@ -2165,7 +2166,7 @@ class cNpcManager
                 Items = StringFindSetChaos(List,"[","]");
                 for(auto OogaBooga : Items)
                 {
-                    
+
                     auto a=new char[OogaBooga.size()+1];a[OogaBooga.size()]=0;memcpy(a,OogaBooga.c_str(),OogaBooga.size());
                     if(Debug){ std::cout << "Pre Critter.AddItem \n";}
                     Critter.AddItem(a,1);
@@ -2494,6 +2495,7 @@ int FactionMembers(std::string FactionName)
             return UniFact[i].Members;
         }
     }
+    return 0;
     throw std::runtime_error("FactionMembers: Couldn't return anything");
 }
 
@@ -2506,6 +2508,7 @@ float FactionAggression(std::string FactionName)
             return UniFact[i].Aggressiveness;
         }
     }
+    return 0;
     throw std::runtime_error("FactionAggression: Couldn't return anything");
 }
 
@@ -2518,6 +2521,7 @@ int FactionTerritories(std::string FactionName)
             return UniFact[i].Territories.size();
         }
     }
+    return 0;
     throw std::runtime_error("FactionTerritories: Couldn't return anything");
 }
 
@@ -2545,6 +2549,7 @@ float FactionPower(std::string FactionName)
             return TenantPower;
         }
     }
+    return 0;
     throw std::runtime_error("FactionPower: Couldn't return anything");
 }
 

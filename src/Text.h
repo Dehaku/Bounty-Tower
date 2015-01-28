@@ -26,7 +26,7 @@ class cTextList
         if(Bold == true)
         {
             sString.setStyle(sf::Text::Bold);
-        }
+        } 
         sString.setPosition(xpos,ypos);
     }
     void DrawMe(){
@@ -109,7 +109,7 @@ class cTextList
         textlist.clear();
 }
 
-    void LoadFont() {
+    void LoadFont() { 
         if (!font.loadFromFile("data/fonts/sansation.ttf")) {
             throw std::runtime_error("Failed to load font!");
         }

@@ -1591,9 +1591,10 @@ void UpdateNPC(){
                 }
                 item Ran;
                 bool bRan = Me->HasItemType(2);
-                if(bRan)
+                if(bRan == true)
                 {
                     Ran = *Me->GetItemType(2);
+                    debug("Fish n Chips");
                 }
                 bool Attacked = false;
                 try{
@@ -3540,7 +3541,7 @@ int main(){
 }*/}
 
     }
-    App.create(sf::VideoMode(Rez.x, Rez.y, 32), RandomWindowName());
+    App.create(sf::VideoMode(Rez.x, Rez.y, 32), "test");
 
     cText.LoadFont();
 
