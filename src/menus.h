@@ -50,26 +50,6 @@ public:
         Effectz.DrawEffects();
     }
 
-    void OldDrawButton()
-    {
-        if (BeenPressed == true)
-        {
-            Effectz.CreateCircle(
-                vPos.x, vPos.y, iSize,
-                sf::Color(Color.r / 2, Color.g / 2, Color.b / 2), 2, White);
-        }
-        else if (Math.Closeish(MousePos.x, MousePos.y, vPos.x, vPos.y) < iSize)
-        {
-            Effectz.CreateCircle(vPos.x, vPos.y, iSize, Color, 2, White);
-        }
-        else
-        {
-            Effectz.CreateCircle(vPos.x, vPos.y, iSize, Color, 1, Black);
-        }
-        cText.CreateText(vPos.x + 10, vPos.y - (TextSize / 2), TextSize,
-                         TextColor, sForwardText);
-        Effectz.DrawEffects();
-    }
 
     button()
     {
@@ -133,24 +113,6 @@ public:
         Effectz.DrawEffects();
     }
 
-    void OldDrawButton()
-    {
-        if (BeenPressed == true)
-        {
-            //Effectz.CreateCircle(vPos.x,vPos.y,iSize,sf::Color(Color.r/2,Color.g/2,Color.b/2),2,White);
-        }
-        else if (Math.Closeish(MousePos.x, MousePos.y, vPos.x, vPos.y) < iSizex)
-        {
-            //Effectz.CreateCircle(vPos.x,vPos.y,iSize,Color,2,White);
-        }
-        else
-        {
-            //Effectz.CreateCircle(vPos.x,vPos.y,iSize,Color,1,Black);
-        }
-        cText.CreateText(vPos.x + 10, vPos.y - (TextSize / 2), TextSize,
-                         TextColor, sForwardText);
-        Effectz.DrawEffects();
-    }
 
     squarebutton()
     {
@@ -192,6 +154,7 @@ public:
                      i->vPos.y - i->iSizey, i->vPos.y + i->iSizey))
             {
                 std::cout << "Button Click!\n";
+                // Is this never called? Is this class useless?
             }
         }
     }
@@ -250,7 +213,6 @@ bool SquareButtonClicked(int id)
     {
         if (i->id == id)
         {
-            //if(Math.Closeish(MousePos.x,MousePos.y,i->vPos.x,i->vPos.y) < i->iSizex && (Key.LMBTime == 1 || Key.LMBTime > 20) )
             if (AABB(MousePos, i->vPos.x - i->iSizex, i->vPos.x + i->iSizex,
                      i->vPos.y - i->iSizey, i->vPos.y + i->iSizey) &&
                 (Key.LMBTime == 1 || Key.LMBTime > 20))
@@ -299,8 +261,6 @@ MenuPopUp() // TODO: Add functionality to allow you to press 1-9 to activate the
     if (GC.MenuType == "Orbital Drop")
     {
 
-        //std::cout << "AABB:" << AABB(100,100,80,120,80,120) << std::endl;
-
         int Options = 8;
         GC.MenuEndPos = sf::Vector2f(GC.MenuPos.x + 150,
                                      (GC.MenuPos.y + (Options * 13)) + 5);
@@ -319,8 +279,6 @@ MenuPopUp() // TODO: Add functionality to allow you to press 1-9 to activate the
 
             if (i == 0)
             {
-
-                //Effectz.CreateLine(GC.MenuPos.x,(GC.MenuPos.y+(iY*13))+8,GC.MenuPos.x+90,(GC.MenuPos.y+(iY*13))+8,3,Black,1,Yellow);
                 Effectz.CreateLine(GC.MenuPos.x,
                                    (GC.MenuPos.y + (iY * 13)) + 13,
                                    GC.MenuPos.x + 90,
@@ -360,8 +318,6 @@ MenuPopUp() // TODO: Add functionality to allow you to press 1-9 to activate the
     if (GC.MenuType == "BuildStructure")
     {
 
-        //std::cout << "AABB:" << AABB(100,100,80,120,80,120) << std::endl;
-
         int Options = 8;
         GC.MenuEndPos = sf::Vector2f(GC.MenuPos.x + 150,
                                      (GC.MenuPos.y + (Options * 13)) + 5);
@@ -380,8 +336,6 @@ MenuPopUp() // TODO: Add functionality to allow you to press 1-9 to activate the
 
             if (i == 0)
             {
-
-                //Effectz.CreateLine(GC.MenuPos.x,(GC.MenuPos.y+(iY*13))+8,GC.MenuPos.x+90,(GC.MenuPos.y+(iY*13))+8,3,Black,1,Yellow);
                 Effectz.CreateLine(GC.MenuPos.x,
                                    (GC.MenuPos.y + (iY * 13)) + 13,
                                    GC.MenuPos.x + 90,
@@ -394,15 +348,12 @@ MenuPopUp() // TODO: Add functionality to allow you to press 1-9 to activate the
                     BS, BSY, ButCol, "Makes a Wall!");
                 if (SquareButtonClicked(Butt) || Key.num1Time == 1)
                 {
-                    std::cout << "Blarg? \n";
                     RMBMenuTile(GC.MenuPos);
                 }
             }
 
             if (i == 1)
             {
-
-                //Effectz.CreateLine(GC.MenuPos.x,(GC.MenuPos.y+(iY*13))+8,GC.MenuPos.x+90,(GC.MenuPos.y+(iY*13))+8,3,Black,1,Yellow);
                 Effectz.CreateLine(GC.MenuPos.x,
                                    (GC.MenuPos.y + (iY * 13)) + 13,
                                    GC.MenuPos.x + 90,
@@ -415,7 +366,6 @@ MenuPopUp() // TODO: Add functionality to allow you to press 1-9 to activate the
                     BS, BSY, ButCol, "Digs out a natural wall.");
                 if (SquareButtonClicked(Butt) || Key.num1Time == 1)
                 {
-                    std::cout << "Dig Blarg? \n";
                     DigWall(GC.MenuPos);
                 }
             }
@@ -426,7 +376,6 @@ MenuPopUp() // TODO: Add functionality to allow you to press 1-9 to activate the
 
     if (GC.MenuType == "BlankRMB")
     {
-        //std::cout << "AABB:" << AABB(100,100,80,120,80,120) << std::endl;
 
         int Options = 8;
         GC.MenuEndPos = sf::Vector2f(GC.MenuPos.x + 150,
@@ -519,8 +468,6 @@ MenuPopUp() // TODO: Add functionality to allow you to press 1-9 to activate the
 
     if (GC.MenuType == "CritterRMB")
     {
-
-        std::cout << "Critter Menu! \n";
         GC.MenuPos = sf::Vector2f(-10000, -10000);
         GC.MenuEndPos = sf::Vector2f(-10000, -10000);
         GC.MenuType = "NULL";
@@ -528,7 +475,6 @@ MenuPopUp() // TODO: Add functionality to allow you to press 1-9 to activate the
 
     if (GC.MenuType == "ItemContext")
     {
-        //std::cout << "AABB:" << AABB(100,100,80,120,80,120) << std::endl;
 
         int Options = 8;
         GC.MenuEndPos = sf::Vector2f(GC.MenuPos.x + 150,
@@ -548,8 +494,6 @@ MenuPopUp() // TODO: Add functionality to allow you to press 1-9 to activate the
 
             if (i == 0)
             {
-
-                //Effectz.CreateLine(GC.MenuPos.x,(GC.MenuPos.y+(iY*13))+8,GC.MenuPos.x+90,(GC.MenuPos.y+(iY*13))+8,3,Black,1,Yellow);
                 Effectz.CreateLine(GC.MenuPos.x,
                                    (GC.MenuPos.y + (iY * 13)) + 13,
                                    GC.MenuPos.x + 90,
@@ -590,8 +534,6 @@ MenuPopUp() // TODO: Add functionality to allow you to press 1-9 to activate the
 
             if (i == 1)
             {
-
-                //Effectz.CreateLine(GC.MenuPos.x,(GC.MenuPos.y+(iY*13))+8,GC.MenuPos.x+90,(GC.MenuPos.y+(iY*13))+8,3,Black,1,Yellow);
                 Effectz.CreateLine(GC.MenuPos.x,
                                    (GC.MenuPos.y + (iY * 13)) + 13,
                                    GC.MenuPos.x + 90,
@@ -637,14 +579,6 @@ MenuPopUp() // TODO: Add functionality to allow you to press 1-9 to activate the
 
     if (GC.MenuType == "ItemRMB")
     {
-
-        std::cout << "Item Menu! \n";
-        //GC.MenuPos = sf::Vector2f(-10000,-10000);
-        //GC.MenuEndPos = sf::Vector2f(-10000,-10000);
-        //GC.MenuType = "NULL";
-
-        //std::cout << "AABB:" << AABB(100,100,80,120,80,120) << std::endl;
-
         int Options = 8;
         GC.MenuEndPos = sf::Vector2f(GC.MenuPos.x + 150,
                                      (GC.MenuPos.y + (Options * 13)) + 5);
@@ -658,15 +592,6 @@ MenuPopUp() // TODO: Add functionality to allow you to press 1-9 to activate the
         int MBD = 8;             // MoveButtonDown
         sf::Color ButCol = Cyan; // ButtonColor.
 
-        /*
-        //----------
-
-        GC.MenuType = "ItemContext";
-        //GC.MenuPtrCon.pItem = GC.MenuPtrCon.pItem;
-        return;
-
-        //----------
-        */
 
         for (int i = 0; i != GC.MenuPtrCon.pVecItem.size(); i++)
         {
@@ -686,17 +611,10 @@ MenuPopUp() // TODO: Add functionality to allow you to press 1-9 to activate the
                 GC.MenuPtrCon.pItem = GC.MenuPtrCon.pVecItem[i];
                 GC.MenuPtrCon.pVecItem.clear();
                 return;
-                //GC.MenuPos = sf::Vector2f(-10000,-10000);
-                //GC.MenuType = "NULL";
-
-                //fSleep(0.2);
-                //break;
             }
 
             if (i == -1)
             {
-
-                //Effectz.CreateLine(GC.MenuPos.x,(GC.MenuPos.y+(iY*13))+8,GC.MenuPos.x+90,(GC.MenuPos.y+(iY*13))+8,3,Black,1,Yellow);
                 Effectz.CreateLine(GC.MenuPos.x,
                                    (GC.MenuPos.y + (iY * 13)) + 13,
                                    GC.MenuPos.x + 90,
@@ -724,7 +642,6 @@ MenuPopUp() // TODO: Add functionality to allow you to press 1-9 to activate the
 
     if (GC.MenuType == "DebugFunctions")
     {
-        //std::cout << "AABB:" << AABB(100,100,80,120,80,120) << std::endl;
 
         int Options = 8;
         GC.MenuEndPos = sf::Vector2f(GC.MenuPos.x + 150,
@@ -744,8 +661,6 @@ MenuPopUp() // TODO: Add functionality to allow you to press 1-9 to activate the
 
             if (i == 0)
             {
-
-                //Effectz.CreateLine(GC.MenuPos.x,(GC.MenuPos.y+(iY*13))+8,GC.MenuPos.x+90,(GC.MenuPos.y+(iY*13))+8,3,Black,1,Yellow);
                 Effectz.CreateLine(GC.MenuPos.x,
                                    (GC.MenuPos.y + (iY * 13)) + 13,
                                    GC.MenuPos.x + 90,
@@ -773,8 +688,6 @@ MenuPopUp() // TODO: Add functionality to allow you to press 1-9 to activate the
             }
             if (i == 1)
             {
-
-                //Effectz.CreateLine(GC.MenuPos.x,(GC.MenuPos.y+(iY*13))+8,GC.MenuPos.x+90,(GC.MenuPos.y+(iY*13))+8,3,Black,1,Yellow);
                 Effectz.CreateLine(GC.MenuPos.x,
                                    (GC.MenuPos.y + (iY * 13)) + 13,
                                    GC.MenuPos.x + 90,
@@ -1168,23 +1081,8 @@ void RightMouseButtonContextMenu()
                               (worlditem).ypos) <= 10)
             {
                 GC.MenuType = "ItemRMB";
-
-                /*
-                //------------
-                GC.MenuType = "ItemContext";
-                GC.MenuPtrCon.pItem = &(*i);
-
-
-                MenuPopUp();
-                return;
-                //------------
-                */
-
                 GC.MenuPtrCon.pVecItem.push_back(&(worlditem));
 
-                //GC.MenuPtrCon.pItem = &worlditems[i];
-                //MenuPopUp();
-                //return;
             }
         }
         if (GC.MenuPtrCon.pVecItem.size() != 0)
@@ -1193,55 +1091,10 @@ void RightMouseButtonContextMenu()
             return;
         }
 
-        /*
-
-        for(int i = 0; i != worlditems.size(); i++)
-        {
-            if(Math.Closeish(MousePos.x,MousePos.y,worlditems[i].xpos,worlditems[i].ypos) <= 10)
-            {
-                GC.MenuType = "ItemRMB";
-
-                GC.MenuPtrCon.pItem = &worlditems[i];
-                MenuPopUp();
-                return;
-            }
-        }
-
-        */
-
         GC.MenuType = "BlankRMB";
         MenuPopUp();
     }
 }
 
-/*
-class Menus
-{
-  public:
-  int size;
-  sf::Vector2f Pos;
-  sf::Color Color;
-  int buttoncount;
-  class Button
-  {
-    public:
-    sf::Vector2f Pos;
-    sf::Color Color;
-    int size;
-  };
-
-
-  bool ButtonClicked()
-  {
-    if(Key.LMB){//Add Closish to it soon
-        for(i = 0; i != buttoncount; i++){
-        if(MousePos.x == Pos.x && MousePos.y == Pos.y){}
-        }
-    }
-  }
-
-};
-
-*/
 
 #endif // MENUS_H_INCLUDED

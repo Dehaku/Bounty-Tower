@@ -60,7 +60,7 @@ int main() {
 
 */
 
-std::vector<NPC> *Selection;
+
 
 item *ListGet(std::list<item> &List, int Position)
 {
@@ -72,14 +72,9 @@ item *ListGet(std::list<item> &List, int Position)
 //-- Prototypes
 //
 
-//class cItem;
-//int randz(int min, int max);
 void DrawStuffs();
-//std::vector<int> NnGTrace(int xa, int ya, int xb, int yb,int id, std::vector<int> exceptions = std::vector<int>());
 
 int GetItemVectorId(int id);
-
-//std::vector<int> npcTrace(int xa, int ya, int xb, int yb,int id, std::vector<int> exceptions);
 
 void SpawnItem(std::string Object, int xpos, int ypos);
 void SpawnCritter(std::string Object, int xpos, int ypos);
@@ -87,7 +82,6 @@ void SpawnCritter(std::string Object, int xpos, int ypos);
 //
 //-- Prototypes
 
-//bool Text(int xpos,int ypos,sf::Color color, std::string stringvalue1, std::string String1, int int1, std::string stringvalue2, std::string String2, int int2, std::string stringvalue3, std::string String3, int int3, int Shadow, int NULL2, int NULL3);
 
 // Problem/Bug: Pathfinding only works in 2d space... I have no idea, http://www.reddit.com/r/gamedev/comments/14rfsv/a_pathfinding_in_3d_space/c7fzd4q
 // Problem/Bug: Pathfinding doesn't work on goals that involve unwalkable tiles, I.E. Removing Walls and such, Perhaps have the seeking position be one of the eight adjacunt?, if[i-1] yadda = Walkable, then set that as the position?
@@ -126,7 +120,6 @@ std::string GetClipboardText()
 #endif
 }
 
-sf::Image Images;
 
 // Create the main rendering window
 std::string RandomWindowName()
@@ -384,64 +377,6 @@ void UpdateItem()
     }
 }
 
-std::vector<std::string> chatboxlist;
-
-/*
-class planet
-{
-    public:
-
-    sf::Sprite img;
-    std::string name;
-    sf::Vector2f Pos;
-    int gxpos;
-    int gypos;
-    float angle;
-    int id;
-    float density;
-    float mass;
-    float anglez;
-    sf::Vector2f speed;
-    int imgstrx;
-    int imgstry;
-    int imgendx;
-    int imgendy;
-    sf::Vector2f Delta;
-
-    planet(){
-        id = Globals.globalid++;
-        //img.SetImage(Images);
-        density = 100;
-        //mass = randz(10,200);
-        //speed = sf::Vector2f(randz(-10,10),randz(-10,10));
-        speed = sf::Vector2f(0,0);
-    }
-
-    //bool SetImg(int istrx,int istry,int iendx,int iendy){if(iendx == 0 || iendy == 0){img.SetSubRect(sf::IntRect(imgstrx, imgstry, imgendx, imgendy));}else{img.SetSubRect(sf::IntRect(istrx, istry, iendx, iendy));}}
-
-    //bool SetImgSun(){img.SetSubRect(sf::IntRect(20, 100, 39, 119));}
-    //bool SetImgPlanet(){img.SetSubRect(sf::IntRect(0, 100, 19, 119));}
-
-    void spawn(int gposx,int gposy,int posx,int posy){gxpos = 100;gypos = 100;Pos.x = posx;Pos.y = posy;}
-
-    //bool DrawImg(){img.SetPosition(Pos.x,Pos.y); img.SetCenter(10.5,10.5); App.Draw(img);}
-
-};
-
-std::vector<planet> Planets;
-
-
-
-int AddPlanet(char *Planetname, int Unused = 0){
-    std::string thingeh;
-    thingeh = Planetname;
-    std::vector<planet>::iterator zit;
-if(thingeh == "Planet"){planet var; var.name = "Planet";  Planets.push_back(var); return Globals.globalid-1;}
-// TODO: Fix Laterif(thingeh == "Baccon"){planet var; var.name = "Baccon"; var.mass = 100; var.img.Scale(var.mass/100,var.mass/100); Planets.push_back(var); return globalid-1;}
-// TODO: Fix Laterif(thingeh == "Planet Z"){planet var; var.name = "Planet Z"; var.mass = 10000; var.img.Scale(var.mass/100,var.mass/100); Planets.push_back(var); return globalid-1;}
-// TODO: Fix Laterif(thingeh == "Sun"){ planet var;  var.name = "Sun"; var.mass = 1000; var.img.Scale(var.mass/100,var.mass/100); Planets.push_back(var); return globalid-1;}
-}
-*/
 
 std::vector<int> NnGTrace(int xa, int ya, int xb, int yb, int id,
                           std::vector<int> exceptions)
@@ -526,35 +461,6 @@ std::vector<int> NnGTrace(int xa, int ya, int xb, int yb, int id,
     }
     return VectorID;
 }
-
-/*
-
-bool gridposTrace(int xa, int ya, int xb, int yb,int id,sf::Vector2f Target){ // Looking in a straight line for a specific spot, Walls block vision.
-
-    int dx = xb - xa, dy = yb - ya, steps, k;
-    float xIncrement, yIncrement, x = xa, y = ya;
-    if(abs(dx) > abs(dy)) steps = abs(dx);
-    else steps = abs(dy);
-    xIncrement = dx / (float) steps;
-    yIncrement = dy / (float) steps;
-
-    for(int k = 0; k < steps; k++){
-        x += xIncrement;
-        y += yIncrement;
-        bool Kill = false;
-        std::vector<NPC>::iterator Me;
-        int Count = 0;
-        if(groundmap[currentz][abs_to_index(x/GridSize)][abs_to_index(y/GridSize)] == 10){
-        if(Key.period && id == MyTargetid){Effectz.CreateLine(x,y,xa,ya,1,Blue);}
-             break; }// Stops the trace if it hits a wall.
-        sf::Vector2f Pos(abs(x/GridSize),abs(y/GridSize));
-        sf::Vector2f Tar(abs(Target.x/GridSize),abs(Target.y/GridSize));
-        if(Pos == Tar){  return true;} // Returns true and stops searching.
-    if(Key.period && id == MyTargetid){Effectz.CreateLine(x,y,xa,ya,1,Blue);}
-    }
-    return false; // Returns false if the target was never found.
-}
-*/
 
 bool gridposTrace(int xa, int ya, int xb, int yb, int id, sf::Vector2f Target)
 { // Looking in a straight line for a specific spot, Walls block vision.
@@ -675,287 +581,8 @@ std::vector<int> npcTrace(int xa, int ya, int xb, int yb, int id,
     throw std::runtime_error("npcTrace: couldn't return a value");
 }
 
-class goo
-{
-public:
-    sf::Sprite img;
-    std::string name;
-    sf::Vector2f Pos;
-    int gxpos;
-    int gypos;
-    float angle;
-    int id;
-    float density;
-    float mass;
-    float anglez;
-    sf::Vector2f speed;
-    int imgstrx;
-    int imgstry;
-    int imgendx;
-    int imgendy;
-    sf::Vector2f Delta;
 
-    goo()
-    {
-        id = Globals.globalid++;
-        density = 100;
-        //mass = randz(10,200);
-        //speed = sf::Vector2f(randz(-10,10),randz(-10,10));
-        speed = sf::Vector2f(0, 0);
-    }
-    void spawn(int gposx, int gposy, int posx, int posy)
-    {
-        gxpos = 100;
-        gypos = 100;
-        Pos.x = posx;
-        Pos.y = posy;
-    }
-};
-
-class Remover
-{
-public:
-    std::vector<int> IDs;
-
-    void Do()
-    {
-        std::vector<int>::iterator Val;
-        for (Val = IDs.begin(); Val != IDs.end(); ++Val)
-        {
-            //RemovePlanet(Val);
-        }
-    }
-};
-/*
-bool RemovePlanet(int Id){
-    int TempInt = 0;
-    std::vector<planet>::iterator zit;
-    std::vector<planet>::iterator location;
-    for ( zit = Planets.begin(); zit != Planets.end(); ++zit ) {
-    if(zit->id == Id){location = zit; TempInt = 1;}}
-    if(TempInt == 1){TempInt = 0;Planets.erase(location);return true;}
-    else if(TempInt == 0){return false;}
-}
-*/
-const double G = 6.67;
-/*
-bool UpdatePlanet(){
-        int Marked = 0;
-        bool Absorbed = false;
-        int AbsorbedID = -1;
-        std::vector<planet>::iterator Me;
-        if(true == true){
-
-        for( Me = Planets.begin(); Me != Planets.end(); ++Me ){
-
-
-
-                std::vector<planet>::iterator It;
-                int xx = 0;
-                int yy = 0;
-                float tempx = 0;
-                float tempy = 0;
-                bool Friction = false;
-                for( It = Planets.begin(); It != Planets.end(); ++It ){
-
-                    if(Me->id != It->id && Math.Closeish(Me->Pos.x,Me->Pos.y,It->Pos.x,It->Pos.y) > ((It->mass/10) + (Me->mass/10) )){// Arbitrary number to prevent chaos when two objects get closer, Needs better method.
-                    float diffX = Me->Pos.x - It->Pos.x;
-	        		float diffY = Me->Pos.y - It->Pos.y;
-	        		//Determine the distance between two bodies
-	        		float distance = sqrt((diffX * diffX) + (diffY * diffY));
-	        		//Determine the net gravitational force between the two
-	        		float Fnet = ((G * It->mass * Me->mass)) / (distance * distance);
-	        		//Determine the angle from a to b in 2-Dimensional space
-	        		float theta = atan2(diffY, diffX);
-	        		//Determine the total acceleration
-	        		float accel = Fnet / Me->mass;
-		        	//Find acceleration from vector components
-                    tempx += -(accel * cos(theta));
-                    tempy += -(accel * sin(theta));
-
-                }
-
-                    if(Me->id != It->id && Math.Closeish(Me->Pos.x,Me->Pos.y,It->Pos.x,It->Pos.y) < ((It->mass/10) + (Me->mass/10) )){// Arbitrary number to prevent chaos when two objects get closer, Needs better method.
-                    Friction = true;
-                    float X = (Me->speed.x + It->speed.x)/2;
-                    float Y = (Me->speed.y + It->speed.y)/2;
-                    if(Me->name != "Sun"){
-                    Me->speed.y = Y;
-                    It->speed.y = Y;
-                    Me->speed.x = X;
-                    It->speed.x = X;}
-                }
-
-
-                    if(It->id != Me->id && It->name != "Sun"){
-
-                        if(true == true){
-
-                    if(Math.Closeish(Me->Pos.x,Me->Pos.y,It->Pos.x,It->Pos.y) < ( ((Me->mass/10)/2)+((It->mass/10)/2) )){
-                       if(Absorbed == false){
-                       std::cout<<"My current mass:"<<Me->mass<<" It's current mass"<<It->mass<<std::endl;
-                       Me->mass += It->mass;
-                       std::cout<<"My new mass:"<<Me->mass<<std::endl;
-                       Me->speed += It->speed/(Me->mass*Me->mass);
-                       Marked = It->id;
-                       Absorbed = true;
-                       AbsorbedID = It->id;
-                       // TODO: Fix LaterMe->img.SetScale(Me->mass/100,Me->mass/100);
-
-                       }
-                        }
-                        }
-                    }
-                }
-
-                //if(Friction == false){
-                Me->speed.x += tempx;
-                Me->speed.y += tempy;
-                // }
-                if(Friction){
-
-                }
-                //Me->speed.x += -Me->speed.x/10;
-                //Me->speed.y += -Me->speed.y/10;
-
-
-                    if(Key.space){
-                    // TODO: Fix LatercText.CreateText(Me->Pos.x,Me->Pos.y+10,11,White,"Force:","x:",xx," ","       ",yy," ","",xx+yy,1,0);
-                    // TODO: Fix LatercText.CreateText(Me->Pos.x,Me->Pos.y+20,11,White,"Speed:","x:",Me->speed.x*100," y:","",Me->speed.y*100,"","",-6698,1,0);
-                    // TODO: Fix LatercText.CreateText(Me->Pos.x,Me->Pos.y+30,11,Yellow,"Mass:","",Me->mass);
-                    // TODO: Fix LatercText.CreateText(Me->Pos.x,Me->Pos.y+40,11,Yellow,"Delta:","x:",Me->Delta.x*1000," y:","",Me->Delta.y*1000,"","",-6698,1,0);
-                    }
-
-        }//End of For
-        if(Absorbed == true){RemovePlanet(AbsorbedID);}
-        //RemovePlanet(Marked);
-
-        }
-    for( Me = Planets.begin(); Me != Planets.end(); ++Me ){
-            if(Me->name != "Sun"){Me->Pos += Me->speed;}
-    }
-}
-*/
-std::vector<goo> Goos;
-
-void UpdateGoo()
-{
-    int Marked = 0;
-    bool Absorbed = false;
-    int AbsorbedID = -1;
-    std::vector<goo>::iterator Me;
-    if (true == true)
-    {
-
-        for (Me = Goos.begin(); Me != Goos.end(); ++Me)
-        {
-
-            std::vector<goo>::iterator It;
-            int xx = 0;
-            int yy = 0;
-            float tempx = 0;
-            float tempy = 0;
-            bool Friction = false;
-            for (It = Goos.begin(); It != Goos.end(); ++It)
-            {
-
-                if (Me->id != It->id &&
-                    Math.Closeish(Me->Pos.x, Me->Pos.y, It->Pos.x, It->Pos.y) >
-                        ((It->mass / 10) + (Me->mass / 10)))
-                { // Arbitrary number to prevent chaos when two objects get closer, Needs better method.
-                    float diffX = Me->Pos.x - It->Pos.x;
-                    float diffY = Me->Pos.y - It->Pos.y;
-                    //Determine the distance between two bodies
-                    float distance = sqrt((diffX * diffX) + (diffY * diffY));
-                    //Determine the net gravitational force between the two
-                    float Fnet =
-                        ((G * It->mass * Me->mass)) / (distance * distance);
-                    //Determine the angle from a to b in 2-Dimensional space
-                    float theta = atan2(diffY, diffX);
-                    //Determine the total acceleration
-                    float accel = Fnet / Me->mass;
-                    //Find acceleration from vector components
-                    tempx += -(accel * cos(theta));
-                    tempy += -(accel * sin(theta));
-                }
-
-                if (Me->id != It->id &&
-                    Math.Closeish(Me->Pos.x, Me->Pos.y, It->Pos.x, It->Pos.y) <
-                        ((It->mass / 10) + (Me->mass / 10)))
-                { // Arbitrary number to prevent chaos when two objects get closer, Needs better method.
-                    Friction = true;
-                    float X = (Me->speed.x + It->speed.x) / 2;
-                    float Y = (Me->speed.y + It->speed.y) / 2;
-                    if (Me->name != "Sun")
-                    {
-                        Me->speed.y = Y;
-                        It->speed.y = Y;
-                        Me->speed.x = X;
-                        It->speed.x = X;
-                    }
-                }
-
-                if (It->id != Me->id && It->name != "Sun")
-                {
-
-                    if (true == true)
-                    {
-
-                        if (Math.Closeish(Me->Pos.x, Me->Pos.y, It->Pos.x,
-                                          It->Pos.y) <
-                            (((Me->mass / 10) / 2) + ((It->mass / 10) / 2)))
-                        {
-                            if (Absorbed == false)
-                            {
-                                std::cout << "My current mass:" << Me->mass
-                                          << " It's current mass" << It->mass
-                                          << std::endl;
-                                Me->mass += It->mass;
-                                std::cout << "My new mass:" << Me->mass
-                                          << std::endl;
-                                Me->speed += It->speed / (Me->mass * Me->mass);
-                                Marked = It->id;
-                                Absorbed = true;
-                                AbsorbedID = It->id;
-                                // TODO: Fix Later    Me->img.SetScale(Me->mass/100,Me->mass/100);
-                            }
-                        }
-                    }
-                }
-            }
-
-            //if(Friction == false){
-            Me->speed.x += tempx;
-            Me->speed.y += tempy;
-            // }
-            if (Friction)
-            {
-            }
-            //Me->speed.x += -Me->speed.x/10;
-            //Me->speed.y += -Me->speed.y/10;
-
-            if (Key.space)
-            {
-                // TODO: Fix LatercText.CreateText(Me->Pos.x,Me->Pos.y+10,11,White,"Force:","x:",xx," ","       ",yy," ","",xx+yy,1,0);
-                // TODO: Fix Later  cText.CreateText(Me->Pos.x,Me->Pos.y+20,11,White,"Speed:","x:",Me->speed.x*100," y:","",Me->speed.y*100,"","",-6698,1,0);
-                // TODO: Fix LatercText.CreateText(Me->Pos.x,Me->Pos.y+30,11,Yellow,"Mass:","",Me->mass);
-                // TODO: Fix LatercText.CreateText(Me->Pos.x,Me->Pos.y+40,11,Yellow,"Delta:","x:",Me->Delta.x*1000," y:","",Me->Delta.y*1000,"","",-6698,1,0);
-            }
-
-        } //End of For
-        //if(Absorbed == true){RemovePlanet(AbsorbedID);}
-        //RemovePlanet(Marked);
-    }
-    for (Me = Goos.begin(); Me != Goos.end(); ++Me)
-    {
-        if (Me->name != "Sun")
-        {
-            Me->Pos += Me->speed;
-        }
-    }
-}
-
-void IgnoreMe()
+void PlanetLogic()
 {
 
     /*
@@ -3290,11 +2917,6 @@ void UpdateNPC()
         std::cout << "Post NPC\n";
 }
 
-/*sf::Vector2f FindNearestTemplate(sf::Vector2f Ori){
-
-
-
-}*/
 
 void DrawTiles()
 {
@@ -3369,20 +2991,6 @@ void DrawTiles()
         }
     }
 }
-/*
-int DrawPlanets(){
-
-    std::vector<planet>::iterator Me;
-    for(Me = Planets.begin(); Me != Planets.end(); ++Me ){
-    if(Me->Pos.x/GridSize > currentx-27 && Me->Pos.x/GridSize < currentx+26 && Me->Pos.y/GridSize > currenty-20 && Me->Pos.y/GridSize < currenty+20){
-    Effectz.CreateCircle(Me->Pos.x,Me->Pos.y,Me->mass/10,Cyan,0,White);
-    // TODO: Fix LaterMe->DrawImg();
-    }
-
-    }
-
-}
-*/
 
 void DrawNPCs()
 {
@@ -3435,7 +3043,7 @@ void DrawNPCs()
     debug("Done drawing NPCs");
 }
 
-bool DrawStuffsDone = true;
+
 
 void DrawItems()
 {
@@ -3488,54 +3096,6 @@ void LightTrail(int x, int y, int z)
     sunmap[curz][curx][cury] = 255;
 }
 
-class MiniMenu
-{
-public:
-    sf::Vector2f Position;
-    sf::Color Outline;
-    sf::Color Background;
-    sf::Color TextColor;
-    std::string Title;
-    int width;
-    int height;
-    int buttons;
-
-    void Draw()
-    {
-
-        /*int Px = Position.x;
-    int Py = Position.y;
-    sf::Shape Square1 = sf::Shape::Rectangle(Px-2,Py-2,(Px+width)+2,(Py+height)+2, Outline);
-    App.Draw(Square1);
-    sf::Shape Square = sf::Shape::Rectangle(Px,Py,Px+width,Py+height, Background);
-    App.Draw(Square);*/
-    }
-
-    MiniMenu()
-    {
-        height = (buttons + 2) * 2;
-        width = 100;
-        Outline = sf::Color(255, 255, 255, 200);
-        Background = sf::Color(155, 155, 155, 150);
-        TextColor = sf::Color(255, 255, 255, 255);
-    }
-};
-
-std::vector<MiniMenu> menus;
-
-void CreateMiniMenu(int x, int y, std::string type)
-{
-    std::vector<MiniMenu>::iterator Menu;
-    if (type == "SpawnMenu")
-    {
-        MiniMenu var;
-        var.Position = sf::Vector2f(x, y);
-        var.buttons = 4;
-        var.width = 50;
-        var.Title = "Spawn Menu";
-        menus.push_back(var);
-    }
-}
 
 void DisplayChat(sf::Vector2f Position)
 {
@@ -3599,28 +3159,6 @@ void DrawStuffs()
     DrawStuffsDone = true;
 }
 
-void DrawStuffsXXX()
-{
-
-    sf::Context context;
-    App.setActive(false);
-    DrawNewTiles();
-
-    //DrawPlanets();
-    DrawItems();
-    DrawNPCs();
-    Effectz.DrawEffects();
-    //    DrawPlanets();//Remove this one, Reenable previous
-    cText.DrawTextz();
-    std::vector<button>::iterator i;
-    for (i = vButtonList.begin(); i != vButtonList.end(); i++)
-    {
-        i->DrawButton();
-    }
-    vButtonList.clear();
-
-    DrawStuffsDone = true;
-}
 
 cItem *GetGlobalItem(std::string strtype)
 {
@@ -3695,415 +3233,6 @@ void RemoveNPCs()
     }
 }
 
-void
-OldMenuPopUp() // TODO: Add functionality to allow you to press 1-9 to activate the menu buttons.
-{
-
-    if (GC.MenuPos.x == -10000)
-    {
-        GC.MenuPos = MousePos;
-    }
-
-    if (GC.MenuType == "DebugFunctions")
-    {
-        int Options = 8;
-        Effectz.CreateSquare(GC.MenuPos.x, GC.MenuPos.y, GC.MenuPos.x + 100,
-                             (GC.MenuPos.y + (Options * 10)) + 5,
-                             sf::Color::White);
-        int iY = 0;
-        for (int i = 0; i != Options; i++)
-        {
-
-            if (i == 0)
-            {
-
-                Effectz.CreateLine(GC.MenuPos.x, (GC.MenuPos.y + (iY * 11)) + 8,
-                                   GC.MenuPos.x + 90,
-                                   (GC.MenuPos.y + (iY * 11)) + 8, 3, Black, 1,
-                                   Yellow);
-                cText.CreateText(GC.MenuPos.x, GC.MenuPos.y + (iY * 11), 11,
-                                 Cyan, "Close Menu");
-                int Butt = CreateButton(
-                    Math.Vec(GC.MenuPos.x + 90, (GC.MenuPos.y + (iY * 11)) + 5),
-                    5, Red);
-                if (ButtonClicked(Butt))
-                {
-
-                    std::list<item>::iterator Item;
-                    for (Item = worlditems.begin(); Item != worlditems.end();
-                         Item++)
-                    {
-                        GC.MenuPos = sf::Vector2f(-10000, -10000);
-                        GC.MenuType = "NULL";
-                    }
-
-                    fSleep(0.2);
-                    break;
-                }
-            }
-            if (i == 1)
-            {
-
-                Effectz.CreateLine(GC.MenuPos.x, (GC.MenuPos.y + (iY * 11)) + 8,
-                                   GC.MenuPos.x + 90,
-                                   (GC.MenuPos.y + (iY * 11)) + 8, 3, Black, 1,
-                                   Yellow);
-                cText.CreateText(GC.MenuPos.x, GC.MenuPos.y + (iY * 11), 11,
-                                 Cyan, "Missile Strike");
-                int Butt = CreateButton(
-                    Math.Vec(GC.MenuPos.x + 90, (GC.MenuPos.y + (iY * 11)) + 5),
-                    5, Red);
-                if (ButtonClicked(Butt))
-                {
-
-                    Effectz.CreateSquare(GC.MenuPos.x - 10, GC.MenuPos.y - 2,
-                                         GC.MenuPos.x + 10, GC.MenuPos.y + 2,
-                                         sf::Color::Black);
-                    Effectz.CreateSquare(GC.MenuPos.x - 2, GC.MenuPos.y - 10,
-                                         GC.MenuPos.x + 2, GC.MenuPos.y + 10,
-                                         sf::Color::Black);
-                    item Var;
-                    Var = *GetGlobalItem("Missile");
-                    Var.TargetPos = sf::Vector2f(MousePos);
-                    Var.xpos = GC.MenuPos.x - 200;
-                    Var.ypos = GC.MenuPos.y - 200;
-                    Var.zpos = 100;
-                    worlditems.push_back(Var);
-
-                    GC.MenuPos = sf::Vector2f(-10000, -10000);
-                    GC.MenuType = "NULL";
-
-                    fSleep(0.2);
-                    break;
-                }
-            }
-
-            if (i == 2)
-            {
-
-                Effectz.CreateLine(GC.MenuPos.x, (GC.MenuPos.y + (iY * 11)) + 8,
-                                   GC.MenuPos.x + 90,
-                                   (GC.MenuPos.y + (iY * 11)) + 8, 3, Black, 1,
-                                   Yellow);
-                cText.CreateText(GC.MenuPos.x, GC.MenuPos.y + (iY * 11), 11,
-                                 Cyan, "Shift Wall/Stone");
-                int Butt = CreateButton(
-                    Math.Vec(GC.MenuPos.x + 90, (GC.MenuPos.y + (iY * 11)) + 5),
-                    5, Red);
-                if (ButtonClicked(Butt))
-                {
-
-                    if (Tiles[abs_to_index(GC.MenuPos.x / GridSize)]
-                             [abs_to_index(GC.MenuPos.y / GridSize)][30].ID !=
-                        1010)
-                    {
-                        Tiles[abs_to_index(GC.MenuPos.x / GridSize)]
-                             [abs_to_index(GC.MenuPos.y / GridSize)][30].Wall();
-                        fSleep(0.2);
-                    }
-                    else
-                    {
-                        Tiles[abs_to_index(GC.MenuPos.x / GridSize)]
-                             [abs_to_index(GC.MenuPos.y / GridSize)][30]
-                                 .Stone();
-                        fSleep(0.2);
-                    }
-
-                    Con("TODO: Make this a Toggle Mode");
-
-                    GC.MenuPos = sf::Vector2f(-10000, -10000);
-                    GC.MenuType = "NULL";
-
-                    fSleep(0.2);
-                    break;
-                }
-            }
-
-            if (i == 3)
-            {
-
-                Effectz.CreateLine(GC.MenuPos.x, (GC.MenuPos.y + (iY * 11)) + 8,
-                                   GC.MenuPos.x + 90,
-                                   (GC.MenuPos.y + (iY * 11)) + 8, 3, Black, 1,
-                                   Yellow);
-                cText.CreateText(GC.MenuPos.x, GC.MenuPos.y + (iY * 11), 11,
-                                 Cyan, "Spawn Zombie Horde");
-                int Butt = CreateButton(
-                    Math.Vec(GC.MenuPos.x + 90, (GC.MenuPos.y + (iY * 11)) + 5),
-                    5, Red);
-                if (ButtonClicked(Butt))
-                {
-
-                    GC.ZombieSwarmLocal();
-
-                    GC.MenuPos = sf::Vector2f(-10000, -10000);
-                    GC.MenuType = "NULL";
-
-                    fSleep(0.2);
-                    break;
-                }
-            }
-
-            if (i == 4)
-            {
-
-                Effectz.CreateLine(GC.MenuPos.x, (GC.MenuPos.y + (iY * 11)) + 8,
-                                   GC.MenuPos.x + 90,
-                                   (GC.MenuPos.y + (iY * 11)) + 8, 3, Black, 1,
-                                   Yellow);
-                cText.CreateText(GC.MenuPos.x, GC.MenuPos.y + (iY * 11), 11,
-                                 Cyan, "Print NPC's ConsoleInfo");
-                int Butt = CreateButton(
-                    Math.Vec(GC.MenuPos.x + 90, (GC.MenuPos.y + (iY * 11)) + 5),
-                    5, Red);
-                if (ButtonClicked(Butt))
-                {
-
-                    std::vector<NPC>::iterator zit;
-                    for (zit = npclist.begin(); zit != npclist.end(); ++zit)
-                    {
-                        if (zit->alive == true)
-                        {
-                            zit->PrintConsoleInfo();
-                        }
-                    }
-
-                    GC.MenuPos = sf::Vector2f(-10000, -10000);
-                    GC.MenuType = "NULL";
-
-                    fSleep(0.2);
-                    break;
-                }
-            }
-
-            if (i == 5)
-            {
-
-                Effectz.CreateLine(GC.MenuPos.x, (GC.MenuPos.y + (iY * 11)) + 8,
-                                   GC.MenuPos.x + 90,
-                                   (GC.MenuPos.y + (iY * 11)) + 8, 3, Black, 1,
-                                   Yellow);
-                cText.CreateText(GC.MenuPos.x, GC.MenuPos.y + (iY * 11), 11,
-                                 Cyan, "Give Everyone Zombification");
-                int Butt = CreateButton(
-                    Math.Vec(GC.MenuPos.x + 90, (GC.MenuPos.y + (iY * 11)) + 5),
-                    5, Red);
-                if (ButtonClicked(Butt))
-                {
-
-                    std::vector<NPC>::iterator zit;
-                    for (zit = npclist.begin(); zit != npclist.end(); ++zit)
-                    {
-                        zit->bloodwork("Zombification", 100);
-                    }
-
-                    GC.MenuPos = sf::Vector2f(-10000, -10000);
-                    GC.MenuType = "NULL";
-
-                    fSleep(0.2);
-                    break;
-                }
-            }
-
-            if (i == 6)
-            {
-
-                Effectz.CreateLine(GC.MenuPos.x, (GC.MenuPos.y + (iY * 11)) + 8,
-                                   GC.MenuPos.x + 90,
-                                   (GC.MenuPos.y + (iY * 11)) + 8, 3, Black, 1,
-                                   Yellow);
-                cText.CreateText(GC.MenuPos.x, GC.MenuPos.y + (iY * 11), 11,
-                                 Cyan, "Delete all critters");
-                int Butt = CreateButton(
-                    Math.Vec(GC.MenuPos.x + 90, (GC.MenuPos.y + (iY * 11)) + 5),
-                    5, Red);
-                if (ButtonClicked(Butt))
-                {
-                    for (int i = 0; i != npclist.size(); i++)
-                    {
-                        npclist.at(i).ToDelete = true;
-                    }
-                }
-            }
-
-            if (i == 7)
-            {
-
-                Effectz.CreateLine(GC.MenuPos.x, (GC.MenuPos.y + (iY * 11)) + 8,
-                                   GC.MenuPos.x + 90,
-                                   (GC.MenuPos.y + (iY * 11)) + 8, 3, Black, 1,
-                                   Yellow);
-                cText.CreateText(GC.MenuPos.x, GC.MenuPos.y + (iY * 11), 11,
-                                 Cyan, "Starve all critters");
-                int Butt = CreateButton(
-                    Math.Vec(GC.MenuPos.x + 90, (GC.MenuPos.y + (iY * 11)) + 5),
-                    5, Red);
-                if (ButtonClicked(Butt))
-                {
-                    for (int i = 0; i != npclist.size(); i++)
-                    {
-                        npclist.at(i).hunger = 50;
-                    }
-                }
-            }
-
-            iY++;
-        }
-    }
-
-    if (GC.MenuType == "DebugItemSpawn")
-    {
-        Effectz.CreateSquare(
-            GC.MenuPos.x, GC.MenuPos.y, GC.MenuPos.x + 100,
-            (GC.MenuPos.y + (itemmanager.GlobalItem.size() * 10)) + 5, White);
-        int iY = 0;
-        for (auto &elem : itemmanager.GlobalItem)
-        {
-            Effectz.CreateLine(
-                GC.MenuPos.x, (GC.MenuPos.y + (iY * 11)) + 8, GC.MenuPos.x + 90,
-                (GC.MenuPos.y + (iY * 11)) + 8, 3, Black, 1, Yellow);
-            cText.CreateText(GC.MenuPos.x, GC.MenuPos.y + (iY * 11), 11, Cyan,
-                             elem.name);
-            int Butt = CreateButton(
-                Math.Vec(GC.MenuPos.x + 90, (GC.MenuPos.y + (iY * 11)) + 5), 5,
-                Red);
-            if (ButtonClicked(Butt))
-            {
-                SpawnItem(elem.name, GC.MenuPos.x, GC.MenuPos.y);
-                fSleep(0.2);
-            }
-            iY++;
-        }
-    }
-
-    if (GC.MenuType == "DebugCritterSpawn")
-    {
-        Effectz.CreateSquare(
-            GC.MenuPos.x, GC.MenuPos.y, GC.MenuPos.x + 100,
-            (GC.MenuPos.y + (npcmanager.GlobalCritter.size() * 10)) + 5, White);
-        int iY = 0;
-        for (auto &elem : npcmanager.GlobalCritter)
-        {
-            Effectz.CreateLine(
-                GC.MenuPos.x, (GC.MenuPos.y + (iY * 11)) + 8, GC.MenuPos.x + 90,
-                (GC.MenuPos.y + (iY * 11)) + 8, 3, Black, 1, Yellow);
-            cText.CreateText(GC.MenuPos.x, GC.MenuPos.y + (iY * 11), 11, Cyan,
-                             elem.name);
-            int Butt = CreateButton(
-                Math.Vec(GC.MenuPos.x + 90, (GC.MenuPos.y + (iY * 11)) + 5), 5,
-                Red);
-            if (ButtonClicked(Butt))
-            {
-                SpawnCritter(elem.name, GC.MenuPos.x, GC.MenuPos.y);
-                fSleep(0.2);
-                break;
-            }
-            iY++;
-        }
-    }
-
-    if (GC.MenuType == "CritterContext")
-    {
-        int Options = 2;
-        Effectz.CreateSquare(GC.MenuPos.x, GC.MenuPos.y, GC.MenuPos.x + 100,
-                             (GC.MenuPos.y + (Options * 10)) + 5, White);
-        int iY = 0;
-        for (int i = 0; i != Options; i++)
-        {
-
-            if (i == 0)
-            {
-
-                Effectz.CreateLine(GC.MenuPos.x, (GC.MenuPos.y + (iY * 11)) + 8,
-                                   GC.MenuPos.x + 90,
-                                   (GC.MenuPos.y + (iY * 11)) + 8, 3, Black, 1,
-                                   Yellow);
-                cText.CreateText(GC.MenuPos.x, GC.MenuPos.y + (iY * 11), 11,
-                                 Cyan, "Close Menu");
-                int Butt = CreateButton(
-                    Math.Vec(GC.MenuPos.x + 90, (GC.MenuPos.y + (iY * 11)) + 5),
-                    5, Red);
-                if (ButtonClicked(Butt))
-                {
-
-                    std::list<item>::iterator Item;
-                    for (Item = worlditems.begin(); Item != worlditems.end();
-                         Item++)
-                    {
-                        GC.MenuPos = sf::Vector2f(-10000, -10000);
-                        GC.MenuType = "NULL";
-                    }
-
-                    fSleep(0.2);
-                    break;
-                }
-            }
-            if (i == 1)
-            {
-
-                Effectz.CreateLine(GC.MenuPos.x, (GC.MenuPos.y + (iY * 11)) + 8,
-                                   GC.MenuPos.x + 90,
-                                   (GC.MenuPos.y + (iY * 11)) + 8, 3, Black, 1,
-                                   Yellow);
-                cText.CreateText(GC.MenuPos.x, GC.MenuPos.y + (iY * 11), 11,
-                                 Cyan, "PickUp");
-                int Butt = CreateButton(
-                    Math.Vec(GC.MenuPos.x + 90, (GC.MenuPos.y + (iY * 11)) + 5),
-                    5, Red);
-                if (ButtonClicked(Butt))
-                {
-
-                    std::list<item>::iterator Item;
-                    for (Item = worlditems.begin(); Item != worlditems.end();
-                         Item++)
-                    {
-                        if (Math.Closeish(GC.MenuPos.x, GC.MenuPos.y,
-                                          Item->xpos, Item->ypos) <= 10)
-                        {
-                            if (Item->Pickupable == true)
-                            {
-                                npclist.at(GetNpcVectorId(MyTargetid)).action =
-                                    "Pickup";
-                                npclist.at(GetNpcVectorId(MyTargetid)).target =
-                                    Item->name;
-                                npclist.at(GetNpcVectorId(MyTargetid))
-                                    .TargetId = Item->id;
-                                npclist.at(GetNpcVectorId(MyTargetid))
-                                    .TargetPos =
-                                    sf::Vector2f(Item->xpos, Item->ypos);
-                                GC.MenuPos = sf::Vector2f(-10000, -10000);
-                                GC.MenuType = "NULL";
-                            }
-                        }
-                    }
-
-                    fSleep(0.2);
-                    break;
-                }
-            }
-
-            iY++;
-        }
-
-        if (MyTarget == -1 && GC.MenuType == "CritterContext")
-        {
-            GC.MenuPos = sf::Vector2f(-10000, -10000);
-            GC.MenuType = "NULL";
-            Con("Closing Menu due to No Target && CritterContext");
-        }
-    }
-}
-
-void CocainizeWater(std::vector<item> &Items)
-{
-    for (int i = 0; i != Items.size(); i++)
-    {
-        if (Items[i].name == "Water")
-        {
-            Items[i].name = "Cocaine";
-        }
-    }
-}
 
 int main()
 {
@@ -4149,21 +3278,10 @@ int main()
     }
 }*/}
     }
-    App.create(sf::VideoMode(Rez.x, Rez.y, 32), "test");
+    App.create(sf::VideoMode(Rez.x, Rez.y, 32), RandomWindowName());
 
     cText.LoadFont();
 
-    //TimeTest();
-
-    try
-    {
-        if (GetItemPtrfromVector(worlditems, "Wood") != nullptr)
-            item TestItem = *GetItemPtrfromVector(worlditems, "Wood");
-    }
-    catch (std::exception &e)
-    {
-        std::cout << "Something went wrong in \n";
-    }
 
     bool Paused = false;
     //Debug = true;
@@ -4172,23 +3290,16 @@ int main()
     App.setFramerateLimit(30); // 0 is unlimited
     sf::View Planetary(Center, HalfSize);
     int aim = 1; // Used for vectors and controls
-    for (int i = 0; i != 360; i++)
-    {
-        int x = 100;
-        int y = 100;
-        int Orbitpathx = cosf(x * PI / 180);
-        int Orbitpathy = sinf(y * PI / 180);
-        //std::cout << Orbitpathx << " : " << Orbitpathy << std::endl;
-    }
 
-    //RunItAll();
+
 
     App.setVerticalSyncEnabled(true);
 
-    //sf::Thread GenChunk(&GenerateChunk, "Building", abs(500), sf::Vector2i(50,50), sf::Vector2i(500,500));
     sf::Thread ThreadDrawStuffs(&DrawItems);
-    //std::thread CDrawstuffs(DrawStuffs);
 
+
+
+    // Various temporary variables used for testing.
     int testage = 0;
     int testage2 = 0;
     float Xxx = 0;                      // global
@@ -4199,6 +3310,7 @@ int main()
     float Degrees = randz(.0f, 359.0f); // global
     int radius = 200;
     int testbool1 = false;
+
     View1.zoom(2);
     if (true == false)
     { // TODO: Fix this icon crap.
@@ -4214,278 +3326,23 @@ int main()
     itemmanager.InitializeItems();
     npcmanager.InitializeCritters();
 
+    // Building the players faction, This is temporary.
     PF.Name = "The Alphas";
     PF.PlayerControlled = true;
     PF.Initialized = true;
     UniFact.push_back(PF);
     ConFact = &UniFact[0];
 
+    // Setting the initial game phase.
     GC.Phase = "MainMenu";
-    //    if(GC.Phase == "Solar")GC.BuildSolarTest();
-    if (GC.Phase == "Local")
-        GC.BuildLocalTest();
-    if (GC.Phase == "MainMenu")
-        GC.BuildMainMenu();
 
-    if (GC.Phase == "Goo")
-    {   // TODO: Obvious...
-        //GC.BuildGooTest();
-    }
-
-    // ----------------------------------------
-    // 1 dirt 3 grass 6 sand 7 stone 10 wall 20 dirtchannel 52 deepwater 53 lava
-    // ----------------------------------------
-
+    // These are old iterators I made to allow things to be done in the main loop, They need to be moved into their own files and functions.
     std::vector<NPC>::iterator zit;
     std::vector<item>::iterator zitz;
 
-    if (true == true)
-    { // Dirty crash prevention method
-        NPC debuger;
-        debuger.cbaseid = -1337;
-        debuger.name = "debug";
-        debuger.xpos = -19921120;
-        debuger.ypos = -19921120;
-        debuger.size = 1;
-        //npclist.push_back(debuger);
-    }
-
+    // For A*
     InitializePathfinder();
 
-    // Start game loop
-
-    std::cout << "Original NPC Sizeof: " << sizeof(NPC)
-              << ", Vs New NPC: " << sizeof(OldNPC)
-              << ", Diff: " << sizeof(NPC) - sizeof(OldNPC) << std::endl;
-    std::cout << "item Sizeof: " << sizeof(item) << std::endl;
-    std::cout << "Tile Sizeof: " << sizeof(Tile) << std::endl;
-
-    /*
-    std::string Stringy = "[Canadian:Bacon:4:Lyfe:GotThat?:Cheese]";
-
-
-    std::vector<std::string> Buffitout = StringFindElements(Stringy,":");
-    for(int i = 0; i != Buffitout.size(); i++)
-    {
-        std::cout << Buffitout[i] << std::endl;
-    }
-    std::cout << "Was that satisfactory, Master? \n";
-    */
-
-    /*
-    std::vector<float> TestCrit = NumericSplitter(360,125);
-    for(int i = 0; i != TestCrit.size(); i++)
-    {
-
-
-        std::cout << ": " << TestCrit[i] << ": ";
-        int QuickNum = randz(0,100);
-        if(QuickNum <= TestCrit[i]){ std::cout << "Crit Happened! "; }
-        std::cout << "QuickNum: " << QuickNum << std::endl;
-    }
-    std::cout << "\n Is this what you desired, Master? \n";
-    */
-
-    std::cout << "Checkout MaskBlt()! \n";
-    /*
-
-    sf::Image img;
-    img.createMaskFromColor();
-
-    http://en.sfml-dev.org/forums/index.php?topic=7427.msg49921#msg49921
-
-    */
-
-    /*
-
-    NPC Critter;
-    Critter = *GetGlobalCritter("Human");
-
-    Critter.AddItem("Water", 5);
-
-    for(int i = 0; i != Critter.inventory.size(); i++)
-    {
-        std::cout << "Item: " << Critter.inventory[i].name << std::endl;
-    }
-    std::cout << "============================ \n";
-
-
-
-
-    std::vector<item*> VecItems;
-
-
-
-    item* Crack;
-
-    //GetItemPtrfromVector2( Crack );
-
-
-    Crack = GetItemPtrfromVector2(Critter.inventory,"Water");
-
-    VecItems.push_back(Crack);
-
-    //Crack->name = "Cocainium";
-    VecItems[0]->name = "Cocainium";
-
-    CocainizeWater(Critter.inventory);
-
-    std::cout <<  " / " << &Critter.inventory[1] << " : " << VecItems[1] << " / " << &VecItems[1] << std::endl;
-
-    for(int i = 0; i != Critter.inventory.size(); i++)
-    {
-        std::cout << "Item: " << Critter.inventory[i].name << std::endl;
-    }
-
-    Job jobbery;
-    jobbery.pItem = VecItems[0];
-
-    //Critter.AddItem("Water", 5);
-
-    UniFact[0].JobList.push_back(jobbery);
-    UniFact[0].JobList.push_back(jobbery);
-    UniFact[0].JobList.push_back(jobbery);
-
-    std::cout << "VecItems: " << VecItems[0] << "; Joblist pItem: " << UniFact[0].JobList[0].pItem << std::endl;
-
-
-
-    int Numbed = 500;
-
-    std::cout << "Numbed: " << Numbed << "; " << &Numbed;
-    int * NumPtr;
-    NumPtr = &Numbed;
-    std::cout << ", NumPtr: " << NumPtr << "; " << &NumPtr;
-
-
-    */
-
-    /*
-
-    NPC Critter;
-    Critter = *GetGlobalCritter("Human");
-
-    Critter.AddItem("Water", 1);
-    Critter.AddItem("Gun", 1);
-    Critter.AddItem("Wood", 1);
-    Critter.AddItem("Sword", 1);
-    Critter.AddItem("Fruit Tree", 1);
-
-    //for(int i = 0; i != Critter.inventory.size(); i++)
-    for(std::list<item>::iterator i = Critter.inventory.begin(); i != Critter.inventory.end(); i++)
-    {
-        std::cout << "Item: " << (*i).name << std::endl;
-    }
-    std::cout << "============================ \n";
-
-
-
-
-    std::vector<item*> VecItems;
-
-    item* Crack;
-    Crack = GetItemPtrfromVector2(Critter.inventory,"Wood");
-    //VecItems.push_back(Crack);
-    //VecItems.push_back(&Critter.inventory[1]);
-    std::vector<item>::iterator Itz;
-//    Itz = Critter.inventory.begin();
-    Itz++;
-//    Critter.inventory.erase(Itz);
-
-    //VecItems[0]->name = "Cocainium";
-
-    //CocainizeWater(Critter.inventory);
-
-    std::cout <<  " / " << &Critter.inventory[1] << " : " << VecItems[0] << " / " << &VecItems[0] << std::endl;
-    std::cout <<  " / " << Critter.inventory[1].name << " : " << VecItems[0]->name << " / Crack(Wood): " << Crack->name << std::endl;
-
-    for(int i = 0; i != Critter.inventory.size(); i++)
-    {
-        std::cout << "Item: " << Critter.inventory[i].name << std::endl;
-    }
-    std::cout << "Vec[0]" << VecItems[0]->name << std::endl;
-    struct InterTrack
-    {
-        std::vector<item>::iterator Iter;
-        int VecPos;
-    };
-
-    InterTrack IT;
-    IT.Iter = Critter.inventory.begin();
-    std::vector<item>::iterator Wood = Critter.inventory.begin();
-
-
-    for(int i = 0; i != Critter.inventory.size(); i++)
-    {
-        if(Critter.inventory[i].name == "Wood")
-        {
-            IT.VecPos = i;
-            break; //Wood = Critter.inventory.at(i);
-        }
-        else
-        {
-            IT.Iter++;
-            Wood++;
-        }
-    }
-
-
-
-    std::cout << "Iter: " << IT.Iter->name;
-    std::vector<item>::iterator Iter = Critter.inventory.begin();
-    //for(std::vector<item>::iterator i = )
-    Iter++;
-
-    Critter.inventory.erase(Iter);
-    IT.Iter--;
-    std::cout << "Iter: " << IT.Iter->name << "/" << IT.VecPos;
-    std::cout << "Vec[0]" << VecItems[0]->name << std::endl;
-
-
-
-
-
-    std::cout << "=============List========= \n";
-    std::list<item> ItemList;
-
-    item var = *GetGlobalItem("Wood");
-    ItemList.push_back(var);
-    var = *GetGlobalItem("Sword");
-    ItemList.push_back(var);
-    var = *GetGlobalItem("Gun");
-    ItemList.push_back(var);
-    var = *GetGlobalItem("Water");
-    ItemList.push_back(var);
-
-
-    item* Ptr;
-    for(std::list<item>::iterator i = ItemList.begin(); i != ItemList.end(); i++)
-    {
-        std::cout << i->name << std::endl;
-        if(i->name == "Gun") Ptr = &(*i);
-    }
-    std::cout << "=============vListv========= \n";
-    Ptr->name = "Cocainium";
-    std::cout << Ptr->name << std::endl;
-    std::list<item>::iterator I = ItemList.begin();
-    I++;
-    ItemList.erase(I);
-    std::cout << Ptr->name << std::endl;
-
-    std::cout << "=============^List^========= \n";
-
-    for(std::list<item>::iterator i = ItemList.begin(); i != ItemList.end(); i++)
-    {
-        std::cout << i->name << std::endl;
-        //if(i->name == "Gun") Ptr = &(*i);
-    }
-    std::cout << "=============List========= \n";
-
-
-    */
-
-    //bool ToggleMe = true;
-    //std::cout << "Toggling True: " << Toggle(ToggleMe);
 
     while (App.isOpen())
     {
@@ -4558,7 +3415,7 @@ int main()
             MouseStagnation++;
         else
             MouseStagnation = 0;
-        //std::cout << MouseStagnation;
+
         Globals.TopLeft = sf::Vector2f(View1.getCenter().x - HalfSize.x,
                                        View1.getCenter().y - HalfSize.y);
         Globals.TopRight = sf::Vector2f(View1.getCenter().x + HalfSize.x,
@@ -5580,7 +4437,6 @@ int main()
         } //=============================================================================*End of Solar*========================================================================
         if (GC.Phase == "Test")
         {
-            UpdateGoo();
             int testmonkey = testage;
             if (Key.up)
                 testage++;

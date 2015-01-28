@@ -3001,7 +3001,6 @@ public:
                 getline(Input, line);
                 NPC Critter;
                 Critter.name = "Debuggery";
-                /*attacktimer = 0; attacktimerint = 25; TODO: Not a clue if I should let these be moddable.*/
 
                 //hungerrate = 1; // TODO: Should these be modded? Or only effected by Diseases/Bionics ect.
                 //thirstrate = 1;
