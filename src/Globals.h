@@ -282,7 +282,7 @@ public:
 
     int DistanceTrace(int xa, int ya, int xb, int yb)
     { // Highly inaccurate
-        int dx = xb - xa, dy = yb - ya, steps, k;
+        int dx = xb - xa, dy = yb - ya, steps;
         float xIncrement, yIncrement, x = xa, y = ya;
         if (abs(dx) > abs(dy))
             steps = abs(dx);
@@ -353,7 +353,6 @@ public:
         int yanchor = ypos; // global
         float Degrees = 0;
         int Ran = randz(0, 360);
-        bool Found = false;
         for (int Turns = -1; Turns != Ran; Turns++)
         {
             Xxx = xanchor + cosf(Degrees * PI / 180) * radius;

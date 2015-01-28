@@ -574,7 +574,6 @@ void GenerateChunk(std::string type, int planet, sf::Vector2i Cords,
     if (true == false)
     {
         sf::Image image;
-        int Size = Grids * Grids;
         image.create(ChunkSize * 100, ChunkSize * 100, sf::Color(0, 0, 0, 255));
         int XX = 0;
         int YY = 0;

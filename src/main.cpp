@@ -381,7 +381,7 @@ void UpdateItem()
 std::vector<int> NnGTrace(int xa, int ya, int xb, int yb, int id,
                           std::vector<int> exceptions)
 { //.at(0) = Item/NPC(23/69) .at(1) = id
-    int dx = xb - xa, dy = yb - ya, steps, k;
+    int dx = xb - xa, dy = yb - ya, steps;
     float xIncrement, yIncrement, x = xa, y = ya;
     if (abs(dx) > abs(dy))
         steps = abs(dx);
@@ -398,7 +398,6 @@ std::vector<int> NnGTrace(int xa, int ya, int xb, int yb, int id,
         {
             Effectz.CreateCircle(x, y, 1, Blue);
         }
-        bool Kill = false;
         int Count = 0;
         if (true == true)
         { // Merely doing this so I can reuse the same code, but for items, Hehe.
@@ -465,7 +464,7 @@ std::vector<int> NnGTrace(int xa, int ya, int xb, int yb, int id,
 bool gridposTrace(int xa, int ya, int xb, int yb, int id, sf::Vector2f Target)
 { // Looking in a straight line for a specific spot, Walls block vision.
 
-    int dx = xb - xa, dy = yb - ya, steps, k;
+    int dx = xb - xa, dy = yb - ya, steps;
     float xIncrement, yIncrement, x = xa, y = ya;
     if (abs(dx) > abs(dy))
         steps = abs(dx);
@@ -478,9 +477,7 @@ bool gridposTrace(int xa, int ya, int xb, int yb, int id, sf::Vector2f Target)
     {
         x += xIncrement;
         y += yIncrement;
-        bool Kill = false;
         std::vector<NPC>::iterator Me;
-        int Count = 0;
         if (Tiles[abs_to_index(x / GridSize)][abs_to_index(y / GridSize)][30]
                 .ID == 1010)
         {
@@ -511,7 +508,7 @@ std::vector<int> npcTrace(int xa, int ya, int xb, int yb, int id,
                           std::vector<int> exceptions = std::vector<int>())
 {
 
-    int dx = xb - xa, dy = yb - ya, steps, k;
+    int dx = xb - xa, dy = yb - ya, steps;
     float xIncrement, yIncrement, x = xa, y = ya;
     if (abs(dx) > abs(dy))
         steps = abs(dx);
@@ -1038,8 +1035,6 @@ void UpdateNPC()
                         //*GetItemPtrfromVector(Me->inventory,"Blood").amount = 0;
                         PartItem->ToDelete = true;
                         //Add Food to everyone, Make sure they go hungry to eat it, Figure out a way to Eject the empty item, Or do water! Everyone starts with water.
-                        float Nutr =
-                            WorkAmount * 100; // TODO: Figure this out better.
                         //Me->bloodwork("Nutrients",Nutr*PercentageBuff(GlobalNutritionPercentage));
                     }
                 }
@@ -1069,8 +1064,6 @@ void UpdateNPC()
                     if (PartItem->MassVeggy <= 0)
                     {
                         PartItem->ToDelete = true;
-                        float Nutr =
-                            WorkAmount * 100; // TODO: Figure this out better.
                         //Me->bloodwork("Nutrients",Nutr*PercentageBuff(GlobalNutritionPercentage));
                     }
                 }
@@ -1100,8 +1093,6 @@ void UpdateNPC()
                     if (PartItem->MassWater <= 0)
                     {
                         PartItem->ToDelete = true;
-                        float Nutr =
-                            WorkAmount * 100; // TODO: Figure this out better.
                         //Me->bloodwork("Nutrients",Nutr*PercentageBuff(GlobalNutritionPercentage));
                     }
                 }
@@ -2163,8 +2154,6 @@ void UpdateNPC()
                         bool FindEmpty = false;
                         while (FindEmpty == false)
                         {
-                            int xstuff = (gridx * GridSize) / 4;
-                            int ystuff = (gridy * GridSize) / 4;
                             Me->TargetPos = sf::Vector2f(randz(700, 1300),
                                                          randz(700, 1300));
                             Me->HasTarget = true;
@@ -3001,7 +2990,6 @@ void DrawNPCs()
         //{
         if (zit->HasSpawned == true)
         {
-            int anglez = zit->angle; //TODO: Add Galactic & Regional filters
             // zit->img.setRotation( -anglez+90 );
             //int Alph = sunmap[currentz][abs_to_index(zit->xpos/GridSize)][abs_to_index(zit->ypos/GridSize)];
 
@@ -3054,8 +3042,6 @@ void DrawItems()
     {
         //if(zit->xpos/GridSize > currentx-27 && zit->xpos/GridSize < currentx+26 && zit->ypos/GridSize > currenty-20 && zit->ypos/GridSize < currenty+20)
         //{
-        int Alph = sunmap[currentz][abs_to_index(
-            zit->xpos / GridSize)][abs_to_index(zit->ypos / GridSize)];
         zit->img.setColor(sf::Color(255, 255, 255, 255));
         zit->img.setScale(Globals.Scalex, Globals.Scaley);
         zit->DrawImg();
@@ -3289,7 +3275,6 @@ int main()
     bool PlyAct = false;
     App.setFramerateLimit(30); // 0 is unlimited
     sf::View Planetary(Center, HalfSize);
-    int aim = 1; // Used for vectors and controls
 
 
 

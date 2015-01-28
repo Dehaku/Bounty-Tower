@@ -54,11 +54,9 @@ public:
 
     void AddvPlanet()
     {
-        unsigned short Grid[32][32][32];
 
         //long long unsigned int Rawr = (sizeof(vChunk)*10000);
         std::cout << (32 * 32) * 32 << std::endl;
-        short Cake;
 
         //std::cout << "Grid: " << (sizeof(vChunk)*1000000) << " vs Tile:" << Rawr << std::endl;
         //std::cout << "Grid: " << (sizeof(Grid)) << " vs Tile:" << sizeof(xTile) << std::endl;
@@ -120,7 +118,6 @@ public:
         {
             if (Debug)
                 std::cout << "Building Lightmap\n";
-            int z = currentz;
             for (int i = 0; i != gridy; i++)
             {
                 for (int t = 0; t != gridx; t++)
@@ -189,7 +186,6 @@ public:
 
             if (true == true)
             {
-                int testnum = 0;
                 if (Debug)
                 {
                     std::cout << "PreInt\n";
@@ -292,7 +288,6 @@ public:
 
             if (true == true)
             {
-                int testnum = 0;
                 if (Debug)
                 {
                     std::cout << "PreInt\n";
@@ -357,7 +352,6 @@ public:
     {
         if (Debug)
             std::cout << "Building Lightmap\n";
-        int z = currentz;
         for (int i = 0; i <= gridy - 1; i++)
         {
             for (int t = 0; t <= gridx - 1; t++)
@@ -427,7 +421,6 @@ public:
 
         if (true == true)
         {
-            int testnum = 0;
             if (Debug)
             {
                 std::cout << "PreInt\n";
@@ -669,10 +662,6 @@ public:
                                     //std::cout << "Tenant's Power: " << TenantPower << ", Invader's Power: " << InvaderPower << std::endl;
                                     if (InvaderPower > TenantPower)
                                     {
-                                        int Members = UniFact[z].Members;
-                                        int Loss =
-                                            Members /
-                                            UniFact[z].Territories.size();
                                         //UniFact[z].Members = Loss;
                                         //if(Members > 0) UniFact[i].Members = randz(UniFact[i].Members/16,UniFact[i].Members/4);
 

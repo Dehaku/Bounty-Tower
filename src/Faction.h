@@ -1108,7 +1108,7 @@ public:
             ypos -= yy;
         }
 
-        int dx = Tar.x - xpos, dy = Tar.y - ypos, steps, k;
+        int dx = Tar.x - xpos, dy = Tar.y - ypos, steps;
         float xIncrement, yIncrement, x = xpos, y = ypos;
         if (abs(dx) > abs(dy))
             steps = abs(dx);
@@ -2420,7 +2420,7 @@ public:
             ypos -= yy;
         }
 
-        int dx = Tar.x - xpos, dy = Tar.y - ypos, steps, k;
+        int dx = Tar.x - xpos, dy = Tar.y - ypos, steps;
         float xIncrement, yIncrement, x = xpos, y = ypos;
         if (abs(dx) > abs(dy))
             steps = abs(dx);
@@ -2778,15 +2778,12 @@ NPC NPCz;
 
 void SetTestage()
 {
-
-    clock_t sInital = clock();
     std::set<NPC> TestSet;
     for (int n = 0; n != 500; n++)
     {
         NPC npc;
         TestSet.insert(npc);
     }
-    clock_t sCreation = clock();
     int sJohns = 0;
     std::set<NPC>::iterator it;
     for (it = TestSet.begin(); it != TestSet.end(); it++)
@@ -2821,7 +2818,6 @@ void SetTestage()
         }
         //else Con(it->name);
     }
-    clock_t sFinished = clock();
 }
 
 void TimeTest()
@@ -2849,7 +2845,6 @@ void TimeTest()
 
     //
 
-    unsigned long long Int64 = 0;
     clock_t Start = clock();
 
     for (unsigned int i = 0; i != 100; i++)
@@ -2994,7 +2989,6 @@ public:
             "data/npcs.txt"); // TODO: Have this read from an Items folder, and read from all .txt files in it, Allowing greater compability between mods.
         if (Input.is_open())
         {
-            int stuffs;
             while (Input.good())
             {
                 std::string line;
@@ -3233,7 +3227,7 @@ std::set<int> NPCTrace(int xa, int ya, int xb, int yb, int id,
                        std::set<int> exceptions = std::set<int>())
 { //.at(0) = Item/NPC(23/69) .at(1) = id
 
-    int dx = xb - xa, dy = yb - ya, steps, k;
+    int dx = xb - xa, dy = yb - ya, steps;
     float xIncrement, yIncrement, x = xa, y = ya;
     if (abs(dx) > abs(dy))
         steps = abs(dx);
@@ -3252,7 +3246,6 @@ std::set<int> NPCTrace(int xa, int ya, int xb, int yb, int id,
         {
             Effectz.CreateCircle(x, y, 1, Blue);
         }
-        bool Kill = false;
         int Count = 0;
         if (true == true)
         { // Merely doing this so I can reuse the same code, but for items, Hehe.
@@ -3626,7 +3619,6 @@ void SpawnCritter(std::string Object, int xpos, int ypos)
     {
         std::cout << "Spawning" << Object << " \n";
     }
-    int i = 0;
     NPC var;
     var = *GetGlobalCritter(Object);
     // var.ReCreate();
@@ -3677,7 +3669,6 @@ void BuildStartingCritters(int ZedAmount = 0)
 
     if (true == true)
     {
-        int testnum = 0;
         if (Debug)
         {
             std::cout << "PreInt\n";
@@ -3741,7 +3732,6 @@ std::string LoadCritters(sf::Vector2i WorldPos, std::string Direction,
     std::ifstream Input(line.c_str());
     if (Input.is_open())
     {
-        int stuffs;
         while (Input.good())
         {
             std::string line;

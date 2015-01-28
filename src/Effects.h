@@ -228,7 +228,6 @@ public:
             std::vector<cCircle>::iterator effectz;
             std::vector<cCircle>::iterator remova;
             int remover = 0;
-            int removerz = 0;
             for (effectz = Circles.begin(); effectz != Circles.end(); ++effectz)
             {
 

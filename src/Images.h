@@ -73,7 +73,6 @@ public:
                 line.append(ending);
                 cImageHolder image;
                 image.Image.loadFromFile(line);
-                sf::Vector2u Size = image.Image.getSize();
                 //std::cout << Size.x << " : " << Size.y << std::endl;
 
                 std::string namebit = file;

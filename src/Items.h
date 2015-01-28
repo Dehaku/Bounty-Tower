@@ -316,7 +316,6 @@ public:
             "data/items.txt"); // TODO: Have this read from an Items folder, and read from all .txt files in it, Allowing greater compability between mods.
         if (Input.is_open())
         {
-            int stuffs;
             while (Input.good())
             {
                 std::string line;
@@ -547,7 +546,6 @@ std::string LoadItems(sf::Vector2i WorldPos, std::string Direction,
     std::ifstream Input(line.c_str());
     if (Input.is_open())
     {
-        int stuffs;
         while (Input.good())
         {
             std::string line;
@@ -633,7 +631,6 @@ void SpawnItem(std::string Object, int xpos, int ypos)
     {
         std::cout << "Spawning" << Object << " \n";
     }
-    int i = 0;
     cItem var;
     if (Debug)
     {
