@@ -366,7 +366,8 @@ public:
                 x = tileSize * x + .5 * tileSize;
                 return x;
             }
-            throw std::runtime_error("MyReadPathX: Couldn't return a meaningful value!");
+            throw std::runtime_error(
+                "MyReadPathX: Couldn't return a meaningful value!");
         }
 
         //-----------------------------------------------------------------------------
@@ -388,7 +389,8 @@ public:
                 y = tileSize * y + .5 * tileSize;
                 return y;
             }
-            throw std::runtime_error("MyReadPathY: Couldn't return a meaningful value!");
+            throw std::runtime_error(
+                "MyReadPathY: Couldn't return a meaningful value!");
         }
 
         void MyReadPath(int pathfinderID, int currentX, int currentY,
@@ -1649,7 +1651,8 @@ public:
                 x = tileSize * x + .5 * tileSize;
                 return x;
             }
-            throw std::runtime_error("MyReadPathX: Couldn't return a meaningful value!");
+            throw std::runtime_error(
+                "MyReadPathX: Couldn't return a meaningful value!");
         }
 
         //-----------------------------------------------------------------------------
@@ -1678,7 +1681,8 @@ public:
                 y = tileSize * y + .5 * tileSize;
                 return y;
             }
-            throw std::runtime_error("MyReadPathY: Couldn't return a meaningful value!");
+            throw std::runtime_error(
+                "MyReadPathY: Couldn't return a meaningful value!");
         }
 
         void MyReadPath(int pathfinderID, int currentX, int currentY,

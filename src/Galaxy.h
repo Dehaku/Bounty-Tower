@@ -299,7 +299,8 @@ public:
                         sf::Vector2f vPos = Math.CircleRandz(1000,1000,180);
                         SpawnCritter("Human",vPos.x,vPos.y);
                     }*/
-                    for (size_t count = 0; count != Squady.Squad.size(); count++)
+                    for (size_t count = 0; count != Squady.Squad.size();
+                         count++)
                     {
                         sf::Vector2f vPos = Math.CircleRandz(1000, 1000, 180);
                         //SpawnCritter("Human",vPos.x,vPos.y);
@@ -554,7 +555,8 @@ public:
             debug(AddString("BeginningFaction", UniFact[i].Name));
 
             if (UniFact[i].Territories.size() != 0 &&
-                static_cast<size_t>(UniFact[i].Members) <= UniFact[i].Territories.size() / 2)
+                static_cast<size_t>(UniFact[i].Members) <=
+                    UniFact[i].Territories.size() / 2)
             {
                 if (randz(1, 100) <= UniFact[i].Members * 4)
                 {

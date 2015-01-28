@@ -4651,7 +4651,8 @@ int main()
 
                     Squady.MakeSquadPoints += LeftOvers + 100;
                     Squady.SquadMates--;
-                    if (static_cast<size_t>(Squady.Aim) == Squady.Squad.size() - 1)
+                    if (static_cast<size_t>(Squady.Aim) ==
+                        Squady.Squad.size() - 1)
                         Squady.Aim--;
                     Squady.Squad.pop_back();
                 }
