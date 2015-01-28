@@ -512,7 +512,7 @@ public:
     }
 
     void BuildTileTest()
-    {   // Build the galaxy.
+    { // Build the galaxy.
         //for(int gx = 0; gx != 100; gx++){
         // for(int gy = 0; gy != 100; gy++){
         // for(int rx = 0; rx != 100; rx++){

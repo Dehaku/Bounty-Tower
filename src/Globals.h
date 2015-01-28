@@ -16,8 +16,6 @@ std::vector<std::string> chatboxlist;
 
 std::vector<NPC> *Selection;
 
-
-
 sf::Vector2f RMBHeldPos;
 
 sf::RenderTexture renderTexture;

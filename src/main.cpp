@@ -60,8 +60,6 @@ int main() {
 
 */
 
-
-
 item *ListGet(std::list<item> &List, int Position)
 {
     auto i = List.begin();
@@ -81,7 +79,6 @@ void SpawnCritter(std::string Object, int xpos, int ypos);
 
 //
 //-- Prototypes
-
 
 // Problem/Bug: Pathfinding only works in 2d space... I have no idea, http://www.reddit.com/r/gamedev/comments/14rfsv/a_pathfinding_in_3d_space/c7fzd4q
 // Problem/Bug: Pathfinding doesn't work on goals that involve unwalkable tiles, I.E. Removing Walls and such, Perhaps have the seeking position be one of the eight adjacunt?, if[i-1] yadda = Walkable, then set that as the position?
@@ -119,7 +116,6 @@ std::string GetClipboardText()
     return text;
 #endif
 }
-
 
 // Create the main rendering window
 std::string RandomWindowName()
@@ -377,7 +373,6 @@ void UpdateItem()
     }
 }
 
-
 std::vector<int> NnGTrace(int xa, int ya, int xb, int yb, int id,
                           std::vector<int> exceptions)
 { //.at(0) = Item/NPC(23/69) .at(1) = id
@@ -549,7 +544,7 @@ std::vector<int> npcTrace(int xa, int ya, int xb, int yb, int id,
     }
 
     if (true == false)
-    { // Old complex version of tracing
+    {   // Old complex version of tracing
         /*
 
         This could be used if you need more/less sensitive detection, but for general detection, Just use the one above.
@@ -577,7 +572,6 @@ std::vector<int> npcTrace(int xa, int ya, int xb, int yb, int id,
     }
     throw std::runtime_error("npcTrace: couldn't return a value");
 }
-
 
 void PlanetLogic()
 {
@@ -2906,7 +2900,6 @@ void UpdateNPC()
         std::cout << "Post NPC\n";
 }
 
-
 void DrawTiles()
 {
     int z = currentz;
@@ -3031,8 +3024,6 @@ void DrawNPCs()
     debug("Done drawing NPCs");
 }
 
-
-
 void DrawItems()
 {
     //App.setActive(true);
@@ -3081,7 +3072,6 @@ void LightTrail(int x, int y, int z)
     }
     sunmap[curz][curx][cury] = 255;
 }
-
 
 void DisplayChat(sf::Vector2f Position)
 {
@@ -3144,7 +3134,6 @@ void DrawStuffs()
 
     DrawStuffsDone = true;
 }
-
 
 cItem *GetGlobalItem(std::string strtype)
 {
@@ -3219,7 +3208,6 @@ void RemoveNPCs()
     }
 }
 
-
 int main()
 {
     if (true == false)
@@ -3268,7 +3256,6 @@ int main()
 
     cText.LoadFont();
 
-
     bool Paused = false;
     //Debug = true;
 
@@ -3276,13 +3263,9 @@ int main()
     App.setFramerateLimit(30); // 0 is unlimited
     sf::View Planetary(Center, HalfSize);
 
-
-
     App.setVerticalSyncEnabled(true);
 
     sf::Thread ThreadDrawStuffs(&DrawItems);
-
-
 
     // Various temporary variables used for testing.
     int testage = 0;
@@ -3298,7 +3281,7 @@ int main()
 
     View1.zoom(2);
     if (true == false)
-    { // TODO: Fix this icon crap.
+    {   // TODO: Fix this icon crap.
         /*sf::Image icon;
     icon.LoadFromFile("gfx/icon.tga");
     App.SetIcon(32,32,icon.GetPixelsPtr());
@@ -3327,7 +3310,6 @@ int main()
 
     // For A*
     InitializePathfinder();
-
 
     while (App.isOpen())
     {

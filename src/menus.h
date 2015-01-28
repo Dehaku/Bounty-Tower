@@ -50,7 +50,6 @@ public:
         Effectz.DrawEffects();
     }
 
-
     button()
     {
         BeenPressed = false;
@@ -112,7 +111,6 @@ public:
                          TextColor, sForwardText);
         Effectz.DrawEffects();
     }
-
 
     squarebutton()
     {
@@ -591,7 +589,6 @@ MenuPopUp() // TODO: Add functionality to allow you to press 1-9 to activate the
         int BSY = 5;             // ButtonSize;
         int MBD = 8;             // MoveButtonDown
         sf::Color ButCol = Cyan; // ButtonColor.
-
 
         for (int i = 0; i != GC.MenuPtrCon.pVecItem.size(); i++)
         {
@@ -1082,7 +1079,6 @@ void RightMouseButtonContextMenu()
             {
                 GC.MenuType = "ItemRMB";
                 GC.MenuPtrCon.pVecItem.push_back(&(worlditem));
-
             }
         }
         if (GC.MenuPtrCon.pVecItem.size() != 0)
@@ -1095,6 +1091,5 @@ void RightMouseButtonContextMenu()
         MenuPopUp();
     }
 }
-
 
 #endif // MENUS_H_INCLUDED
