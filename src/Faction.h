@@ -353,9 +353,9 @@ public:
         int MyReadPathX(int pathfinderID, int xpathLocation)
         {
             pathfinderID = 1;
-            int x;
             if (xpathLocation <= MypathLength)
             {
+                int x;
                 //Read coordinate from bank
                 //x = MypathBank[pathfinderID] [xpathLocation*2-2];
                 //Like... Yo bo... Ty this instead.
@@ -371,8 +371,9 @@ public:
                 //sprites that are centered -- i.e., with the midHandle command.
                 //Otherwise you will want to adjust this.
                 x = tileSize * x + .5 * tileSize;
+                return x;
             }
-            return x;
+            throw std::runtime_error("MyReadPathX: Couldn't return a meaningful value!");
         }
 
         //-----------------------------------------------------------------------------
@@ -382,9 +383,9 @@ public:
         int MyReadPathY(int pathfinderID, int ypathLocation)
         {
             pathfinderID = 1;
-            int y;
             if (ypathLocation <= MypathLength)
             {
+                int y;
                 //Read coordinate from bank
                 //y = MypathBank[pathfinderID] [ypathLocation*2-1];
                 try
@@ -399,8 +400,9 @@ public:
                 //sprites that are centered -- i.e., with the midHandle command.
                 //Otherwise you will want to adjust this.
                 y = tileSize * y + .5 * tileSize;
+                return y;
             }
-            return y;
+            throw std::runtime_error("MyReadPathY: Couldn't return a meaningful value!");
         }
 
         void MyReadPath(int pathfinderID, int currentX, int currentY,
@@ -1647,9 +1649,9 @@ public:
         int MyReadPathX(int pathfinderID, int xpathLocation)
         {
             pathfinderID = 1;
-            int x;
             if (xpathLocation <= MypathLength)
             {
+                int x;
                 //Read coordinate from bank
                 //x = MypathBank[pathfinderID] [xpathLocation*2-2];
                 //Like... Yo bo... Ty this instead.
@@ -1665,8 +1667,9 @@ public:
                 //sprites that are centered -- i.e., with the midHandle command.
                 //Otherwise you will want to adjust this.
                 x = tileSize * x + .5 * tileSize;
+                return x;
             }
-            return x;
+            throw std::runtime_error("MyReadPathX: Couldn't return a meaningful value!");
         }
 
         //-----------------------------------------------------------------------------
@@ -1676,9 +1679,9 @@ public:
         int MyReadPathY(int pathfinderID, int ypathLocation)
         {
             pathfinderID = 1;
-            int y;
             if (ypathLocation <= MypathLength)
             {
+                int y;
                 //Read coordinate from bank
                 //y = MypathBank[pathfinderID] [ypathLocation*2-1];
                 try
@@ -1693,8 +1696,9 @@ public:
                 //sprites that are centered -- i.e., with the midHandle command.
                 //Otherwise you will want to adjust this.
                 y = tileSize * y + .5 * tileSize;
+                return y;
             }
-            return y;
+            throw std::runtime_error("MyReadPathY: Couldn't return a meaningful value!");
         }
 
         void MyReadPath(int pathfinderID, int currentX, int currentY,

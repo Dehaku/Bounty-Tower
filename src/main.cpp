@@ -762,7 +762,7 @@ std::vector<int> FindClosestItem(int Orix, int Oriy, std::string TarItem,
     int closy = -1000000;
     int Closid;
     int closVect;
-    int VectPos;
+    int VectPos = 0;
     bool first = true;
     for (Items = worlditems.begin(); Items != worlditems.end(); ++Items)
     {

@@ -204,7 +204,7 @@ public:
                     Con("Hunting for Trees 1");
                     for (int i = 0; i != 5; i++)
                     {
-                        int Tx, Ty = randz(0, 2000);
+                        int Tx = randz(0, 2000), Ty = randz(0, 2000);
                         if (Tiles[abs_to_index(Tx / 20)][abs_to_index(
                                 Ty / 20)][30].ID == 1001 ||
                             Tiles[abs_to_index(Tx / 20)][abs_to_index(

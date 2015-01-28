@@ -777,8 +777,6 @@ item *FindClosestItemPtr(int Orix, int Oriy, std::string TarItem, int Gxpos = 0,
         -1000000; // Make sure the default starting number is far beyond being the closest one.
     int closy = -1000000;
     int Closid;
-    int closVect;
-    int VectPos;
     bool first = true;
 
     item *Returns;
@@ -792,7 +790,6 @@ item *FindClosestItemPtr(int Orix, int Oriy, std::string TarItem, int Gxpos = 0,
                 closx = (*i).xpos;
                 closy = (*i).ypos;
                 Closid = (*i).id;
-                closVect = VectPos;
                 first = false;
                 Returns = &(*i);
             }
@@ -808,12 +805,10 @@ item *FindClosestItemPtr(int Orix, int Oriy, std::string TarItem, int Gxpos = 0,
                     closx = (*i).xpos;
                     closy = (*i).ypos;
                     Closid = (*i).id;
-                    closVect = VectPos;
                     Returns = &(*i);
                 }
             }
         }
-        VectPos++;
     }
     if (first != true)
     {

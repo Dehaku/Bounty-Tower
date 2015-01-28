@@ -592,20 +592,20 @@ void ReadPath(int pathfinderID, int currentX, int currentY, int pixelsPerFrame)
 //-----------------------------------------------------------------------------
 int ReadPathX(int pathfinderID, int pathLocation)
 {
-    int x;
     if (pathLocation <= pathLength[pathfinderID])
     {
 
         //Read coordinate from bank
-        x = pathBank[pathfinderID][pathLocation * 2 - 2];
+        int x = pathBank[pathfinderID][pathLocation * 2 - 2];
 
         //Adjust the coordinates so they align with the center
         //of the path square (optional). This assumes that you are using
         //sprites that are centered -- i.e., with the midHandle command.
         //Otherwise you will want to adjust this.
         x = tileSize * x + .5 * tileSize;
+        return x;
     }
-    return x;
+    throw std::runtime_error("ReadPathX: Couldn't return a meaningful value!");
 }
 
 //-----------------------------------------------------------------------------
@@ -614,20 +614,20 @@ int ReadPathX(int pathfinderID, int pathLocation)
 //-----------------------------------------------------------------------------
 int ReadPathY(int pathfinderID, int pathLocation)
 {
-    int y;
     if (pathLocation <= pathLength[pathfinderID])
     {
 
         //Read coordinate from bank
-        y = pathBank[pathfinderID][pathLocation * 2 - 1];
+        int y = pathBank[pathfinderID][pathLocation * 2 - 1];
 
         //Adjust the coordinates so they align with the center
         //of the path square (optional). This assumes that you are using
         //sprites that are centered -- i.e., with the midHandle command.
         //Otherwise you will want to adjust this.
         y = tileSize * y + .5 * tileSize;
+        return y;
     }
-    return y;
+    throw std::runtime_error("ReadPathY: Couldn't return a meaningful value!");
 }
 
 #endif // ASTARLIBRARY_H_INCLUDED
