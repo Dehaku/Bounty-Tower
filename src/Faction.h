@@ -336,13 +336,16 @@ public:
             MypathLength = pathLength[1];
             //MypathBank[1] = (int*) realloc (pathBank[1],pathLength[1]*8);
             Con("Pathfind stuff");
-            for (int Stuff = 0; Stuff != MypathLength; ++Stuff)
+            for (int i = 0; i != MypathLength; ++i)
             {
-                //MypathBank[1] [Stuff*2-2] = pathBank[1] [Stuff*2-2];
-                yPa.push_back(pathBank[1][Stuff * 2 - 1]);
-                //std::cout << "*Added*:" << xPa.at(Stuff-1)<<std::endl;
-                //MypathBank[1] [Stuff*2-1] = pathBank[1] [Stuff*2-1];
-                xPa.push_back(pathBank[1][Stuff * 2 - 2]);
+                if (i >= 1)
+                {
+                    yPa.push_back(pathBank[1][i * 2 - 1]);
+                }
+                if (i >= 2)
+                {
+                    xPa.push_back(pathBank[1][i * 2 - 2]);
+                }
             }
             Con("Pathfind stuff - Complete");
         }
