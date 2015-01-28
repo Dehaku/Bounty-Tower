@@ -620,7 +620,7 @@ void GenerateChunk(std::string type, int planet, sf::Vector2i Cords,
     //debug("Writting map to file...");
     for (int x = 0; x != ChunkSize; x++)
     {
-        int ID = vChunk[0][0][x].ID;
+        auto ID = vChunk[0][0][x].ID;
         bool Same = true;
         for (int i = 0; i != ChunkSize; i++)
         {
@@ -810,7 +810,7 @@ void DrawWorldTiles()
             }
             if (WorldMap[i][t].Owner != "")
             {
-                for (int z = 0; z != UniFact.size(); z++)
+                for (size_t z = 0; z != UniFact.size(); z++)
                 {
                     if (WorldMap[i][t].Owner == UniFact[z].Name)
                     {

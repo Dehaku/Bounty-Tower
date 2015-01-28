@@ -49,7 +49,7 @@ void InsertItems()
 
 void InsertItemsIntoContainers()
 {
-    for (int i = 0; i != MyItemList.size(); i++)
+    for (size_t i = 0; i != MyItemList.size(); i++)
     {
         ItemContainer ItemHolder;
         ItemHolder.TheItemPtr = &MyItemList[i];
@@ -59,7 +59,7 @@ void InsertItemsIntoContainers()
 
 void PrintIC()
 {
-    for (int i = 0; i != IC.size(); i++)
+    for (size_t i = 0; i != IC.size(); i++)
     {
         //std::cout << IC[i].TheItemPtr->Name << std::endl;
     }

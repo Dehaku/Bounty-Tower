@@ -514,7 +514,7 @@ MenuPopUp() // TODO: Add functionality to allow you to press 1-9 to activate the
                     (Key.num1Time == 1 && GC.MenuPtrCon.pItem->Pickupable))
                 {
 
-                    for (int i = 0; i != UniFact.size(); i++)
+                    for (size_t i = 0; i != UniFact.size(); i++)
                     {
                         if (UniFact[i].PlayerControlled)
                         {
@@ -555,7 +555,7 @@ MenuPopUp() // TODO: Add functionality to allow you to press 1-9 to activate the
                     (Key.num1Time == 1 && !GC.MenuPtrCon.pItem->Pickupable))
                 {
 
-                    for (int i = 0; i != UniFact.size(); i++)
+                    for (size_t i = 0; i != UniFact.size(); i++)
                     {
                         if (UniFact[i].PlayerControlled)
                         {
@@ -590,7 +590,7 @@ MenuPopUp() // TODO: Add functionality to allow you to press 1-9 to activate the
         int MBD = 8;             // MoveButtonDown
         sf::Color ButCol = Cyan; // ButtonColor.
 
-        for (int i = 0; i != GC.MenuPtrCon.pVecItem.size(); i++)
+        for (size_t i = 0; i != GC.MenuPtrCon.pVecItem.size(); i++)
         {
 
             Effectz.CreateLine(GC.MenuPos.x, (GC.MenuPos.y + (iY * 13)) + 13,
@@ -610,7 +610,7 @@ MenuPopUp() // TODO: Add functionality to allow you to press 1-9 to activate the
                 return;
             }
 
-            if (i == -1)
+            if (/*i == -1*/ false) // `i` can't be -1
             {
                 Effectz.CreateLine(GC.MenuPos.x,
                                    (GC.MenuPos.y + (iY * 13)) + 13,
@@ -872,7 +872,7 @@ MenuPopUp() // TODO: Add functionality to allow you to press 1-9 to activate the
                     BS, BSY, ButCol);
                 if (SquareButtonClicked(Butt) || Key.num7Time == 1)
                 {
-                    for (int i = 0; i != npclist.size(); i++)
+                    for (size_t i = 0; i != npclist.size(); i++)
                     {
                         npclist.at(i).ToDelete = true;
                     }
@@ -895,7 +895,7 @@ MenuPopUp() // TODO: Add functionality to allow you to press 1-9 to activate the
                     BS, BSY, ButCol);
                 if (SquareButtonClicked(Butt) || Key.num8Time == 1)
                 {
-                    for (int i = 0; i != npclist.size(); i++)
+                    for (size_t i = 0; i != npclist.size(); i++)
                     {
                         npclist.at(i).hunger = 50;
                     }
@@ -1061,7 +1061,7 @@ void RightMouseButtonContextMenu()
         1) // This is the RightMouseButton's context menu for Tiles/Critters/Items, This will probably be rather robust
     {
 
-        for (int i = 0; i != npclist.size(); i++)
+        for (size_t i = 0; i != npclist.size(); i++)
         {
             if (Math.Closeish(MousePos.x, MousePos.y, npclist[i].xpos,
                               npclist[i].ypos) <= npclist[i].size)

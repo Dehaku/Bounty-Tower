@@ -174,7 +174,7 @@ void UnpointItems(std::list<item> &Items)
             std::cout << "JobList size: " << UniFact[0].JobList.size()
                       << std::endl;
 
-            for (int t = 0; t != UniFact[0].JobList.size(); t++)
+            for (size_t t = 0; t != UniFact[0].JobList.size(); t++)
             {
                 std::cout << "Job Point: " << &UniFact[0].JobList[t].pItem
                           << "/" << UniFact[0].JobList[t].pItem
@@ -869,7 +869,6 @@ void UpdateNPC()
 
         float PartsWalkSpeed = 0;
         float GlobalNutritionPercentage = 100;
-        bool ConsumeBlood = false;
         bool ConsumeFlesh = false;
         bool ConsumeVeggy = false;
         bool ConsumeWater = false;
@@ -916,7 +915,6 @@ void UpdateNPC()
                 PartNumber = StringFindNumber(WorkingLine, "[DigestsBlood:");
                 if (PartNumber != 0)
                 {
-                    ConsumeBlood = true;
                 }
                 PartNumber = StringFindNumber(WorkingLine, "[DigestsFlesh:");
                 if (PartNumber != 0)
@@ -1106,7 +1104,7 @@ void UpdateNPC()
                                   << std::endl;
                     //NPC Critter;
 
-                    for (int i = 0; i != StrVec.size(); i++)
+                    for (size_t i = 0; i != StrVec.size(); i++)
                     {
                         if (Debug)
                             std::cout << StrVec[i] << std::endl;
@@ -1500,7 +1498,7 @@ void UpdateNPC()
                                     Me->xpos, Me->ypos, Targ.x, Targ.y, Me->id);
                                 if (ids.size() != 0)
                                 {
-                                    for (int Ta = 0; Ta != ids.size(); Ta++)
+                                    for (size_t Ta = 0; Ta != ids.size(); Ta++)
                                     {
                                         try
                                         {
@@ -1790,7 +1788,7 @@ void UpdateNPC()
                         Me->target == "Wander" && Me->Faction == "The Alphas")
                     {
                         debug("Preforming Job Routine; ");
-                        for (int i = 0; i != UniFact[0].JobList.size(); i++)
+                        for (size_t i = 0; i != UniFact[0].JobList.size(); i++)
                         {
                             debug(
                                 AddString("Starting Job ", NumbertoString(i)));
@@ -2187,7 +2185,6 @@ void UpdateNPC()
                 { // Attack nearby Hostiles.
                     int closx = -100000;
                     int closy = -100000;
-                    int ClosID = -1;
                     bool FoundOne = false;
                     if (Me->HasTag("[ZombieHater:"))
                     {
@@ -2202,7 +2199,6 @@ void UpdateNPC()
                                 {
                                     closx = zitz->xpos;
                                     closy = zitz->ypos;
-                                    ClosID = zitz->id;
                                     first = false;
                                     FoundOne = true;
                                 }
@@ -2220,7 +2216,6 @@ void UpdateNPC()
                                     {
                                         closx = zitz->xpos;
                                         closy = zitz->ypos;
-                                        ClosID = zitz->id;
                                     }
                                 }
                             }
@@ -3081,7 +3076,7 @@ void DisplayChat(sf::Vector2f Position)
             (Position.y - ((ChatBox.ChatStorage.size() + 1) * 10)),
             sf::Color(0, 0, 0, 100), 2, sf::Color::Cyan);
 
-    for (int i = 0; i != ChatBox.ChatStorage.size(); i++)
+    for (size_t i = 0; i != ChatBox.ChatStorage.size(); i++)
     {
         cText.CreateText(
             Position.x,
@@ -3277,7 +3272,6 @@ int main()
     int yanchor = 0;                    // global
     float Degrees = randz(.0f, 359.0f); // global
     int radius = 200;
-    int testbool1 = false;
 
     View1.zoom(2);
     if (true == false)
@@ -3414,14 +3408,14 @@ int main()
 
         if (Key.gTime == 1)
         { // Fling all critters south.
-            for (int i = 0; i != npclist.size(); i++)
+            for (size_t i = 0; i != npclist.size(); i++)
             {
                 npclist[i].Momentum = sf::Vector2f(0, 100);
             }
         }
         if (Key.hTime == 1)
         { // Fling all critters north.
-            for (int i = 0; i != npclist.size(); i++)
+            for (size_t i = 0; i != npclist.size(); i++)
             {
                 npclist[i].Momentum = sf::Vector2f(0, -100);
             }
@@ -3592,7 +3586,7 @@ int main()
                 npclist.push_back(Critter);
             }
 
-            for (int i = 0; i != npclist.size(); i++)
+            for (size_t i = 0; i != npclist.size(); i++)
             {
                 if (npclist[i].name == "Azabul")
                 {
@@ -3811,7 +3805,7 @@ int main()
                 TilesGoUp();
                 currenty = 33;
 
-                for (int i = 0; i != npclist.size(); i++)
+                for (size_t i = 0; i != npclist.size(); i++)
                 {
                     npclist.at(i).ypos += -640;
                     npclist.at(i).TargetPos.y += -640;
@@ -3821,7 +3815,7 @@ int main()
                 for (auto &worlditem : worlditems)
                     (worlditem).ypos += -640;
 
-                for (int i = 0; i != UniFact[0].JobList.size(); i++)
+                for (size_t i = 0; i != UniFact[0].JobList.size(); i++)
                     UniFact[0].JobList[i].WorkPos.y += -640;
 
                 Transitioning = true;
@@ -3855,7 +3849,7 @@ int main()
             {
                 TilesGoDown();
                 currenty = 63;
-                for (int i = 0; i != npclist.size(); i++)
+                for (size_t i = 0; i != npclist.size(); i++)
                 {
                     npclist.at(i).ypos += 640;
                     npclist.at(i).TargetPos.y += 640;
@@ -3865,7 +3859,7 @@ int main()
                 for (auto &worlditem : worlditems)
                     (worlditem).ypos += 640;
 
-                for (int i = 0; i != UniFact[0].JobList.size(); i++)
+                for (size_t i = 0; i != UniFact[0].JobList.size(); i++)
                     UniFact[0].JobList[i].WorkPos.y += 640;
 
                 Transitioning = true;
@@ -3899,7 +3893,7 @@ int main()
             {
                 TilesGoLeft();
                 currentx = 33;
-                for (int i = 0; i != npclist.size(); i++)
+                for (size_t i = 0; i != npclist.size(); i++)
                 {
                     npclist.at(i).xpos += -640;
                     npclist.at(i).TargetPos.x += -640;
@@ -3909,7 +3903,7 @@ int main()
                 for (auto &worlditem : worlditems)
                     (worlditem).xpos += -640;
 
-                for (int i = 0; i != UniFact[0].JobList.size(); i++)
+                for (size_t i = 0; i != UniFact[0].JobList.size(); i++)
                     UniFact[0].JobList[i].WorkPos.x += -640;
 
                 Transitioning = true;
@@ -3946,7 +3940,7 @@ int main()
                 Con("Ending GoRight");
                 currentx = 63;
                 Con("Starting GoRight with NPC's and Items");
-                for (int i = 0; i != npclist.size(); i++)
+                for (size_t i = 0; i != npclist.size(); i++)
                 {
                     npclist.at(i).xpos += 640;
                     npclist.at(i).TargetPos.x += 640;
@@ -3956,7 +3950,7 @@ int main()
                 for (auto &worlditem : worlditems)
                     (worlditem).xpos += 640;
 
-                for (int i = 0; i != UniFact[0].JobList.size(); i++)
+                for (size_t i = 0; i != UniFact[0].JobList.size(); i++)
                     UniFact[0].JobList[i].WorkPos.x += 640;
 
                 Con("Done GoRight with NPC's and Items");
@@ -3990,7 +3984,7 @@ int main()
 
             if (Transitioning == true)
             {
-                for (int i = 0; i != npclist.size(); i++)
+                for (size_t i = 0; i != npclist.size(); i++)
                 {
 
                     if (npclist.at(i).xpos > 1920 && npclist.at(i).ypos < 640)
@@ -4404,7 +4398,6 @@ int main()
         } //=============================================================================*End of Solar*========================================================================
         if (GC.Phase == "Test")
         {
-            int testmonkey = testage;
             if (Key.up)
                 testage++;
             if (Key.down)
@@ -4413,10 +4406,6 @@ int main()
                 testage2++;
             if (Key.left)
                 testage2--;
-            if (Key.rshift)
-                testbool1 = true;
-            if (Key.lshift)
-                testbool1 = false;
             if (Key.pad2)
                 radius++;
             if (Key.pad8)
@@ -4467,11 +4456,6 @@ int main()
                 {
                     std::cout << elem << "\n";
                 }
-            }
-
-            if (testbool1)
-            {
-                testmonkey = atan2(testage, testage2);
             }
 
             if (Key.left == true)
@@ -4667,7 +4651,7 @@ int main()
 
                     Squady.MakeSquadPoints += LeftOvers + 100;
                     Squady.SquadMates--;
-                    if (Squady.Aim == Squady.Squad.size() - 1)
+                    if (static_cast<size_t>(Squady.Aim) == Squady.Squad.size() - 1)
                         Squady.Aim--;
                     Squady.Squad.pop_back();
                 }
@@ -4799,7 +4783,7 @@ int main()
                 Squady.Aim--;
                 if (Squady.Aim < 0)
                     Squady.Aim = 0;
-                if (Squady.Aim > Squady.Squad.size() - 1)
+                if (static_cast<size_t>(Squady.Aim) > Squady.Squad.size() - 1)
                     Squady.Aim = Squady.Squad.size() - 1;
                 fSleep(0.2);
             }
@@ -4815,7 +4799,7 @@ int main()
                 Squady.Aim++;
                 if (Squady.Aim < 0)
                     Squady.Aim = 0;
-                if (Squady.Aim > Squady.Squad.size() - 1)
+                if (static_cast<size_t>(Squady.Aim) > Squady.Squad.size() - 1)
                     Squady.Aim = Squady.Squad.size() - 1;
                 fSleep(0.2);
             }
@@ -5705,7 +5689,7 @@ int main()
                 bool FoundAny = false;
                 sf::Vector2f S = Globals.HeldClickPos;
                 sf::Vector2f E = MousePos;
-                for (int i = 0; i != npclist.size(); i++)
+                for (size_t i = 0; i != npclist.size(); i++)
                 {
                     //if(npclist[i].xpos >= S.x && npclist[i].xpos <= E.x)
                     if (Inbetween(S.x, E.x, npclist[i].xpos) == true)
@@ -5727,7 +5711,7 @@ int main()
                 }
             }
 
-            for (int i = 0; i != Selected.size(); i++)
+            for (size_t i = 0; i != Selected.size(); i++)
             {
                 NPC Var;
                 Var = *GetCritter(Selected[i]);
@@ -5741,9 +5725,9 @@ int main()
                     Tiles[abs_to_index(MousePos.x / GridSize)][abs_to_index(
                         MousePos.y / GridSize)][30].ID != 1010)
                 {
-                    for (int i = 0; i != Selected.size(); i++)
+                    for (size_t i = 0; i != Selected.size(); i++)
                     {
-                        for (int t = 0; t != npclist.size(); t++)
+                        for (size_t t = 0; t != npclist.size(); t++)
                         {
                             if (npclist[t].id == Selected[i])
                             {

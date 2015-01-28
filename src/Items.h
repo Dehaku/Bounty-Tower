@@ -376,9 +376,9 @@ public:
                 }
             }
         }
-        for (int i = 0; i != GlobalItem.size(); i++)
+        for (size_t i = 0; i != GlobalItem.size(); i++)
         {
-            for (int t = 0; t != GlobalItem.size(); t++)
+            for (size_t t = 0; t != GlobalItem.size(); t++)
             {
                 if (i != t)
                 {
@@ -682,9 +682,9 @@ void SpawnItem(std::string Object, int xpos, int ypos)
 
 void RefreshImages()
 { // PANIC
-    for (int i = 0; i != worlditems.size(); i++)
+    for (size_t i = 0; i != worlditems.size(); i++)
     {
-        for (int t = 0; t != itemmanager.GlobalItem.size(); t++)
+        for (size_t t = 0; t != itemmanager.GlobalItem.size(); t++)
         {
             //if(worlditems.at(i).name == itemmanager.GlobalItem.at(t).name)
             {
@@ -776,7 +776,6 @@ item *FindClosestItemPtr(int Orix, int Oriy, std::string TarItem, int Gxpos = 0,
     int closx =
         -1000000; // Make sure the default starting number is far beyond being the closest one.
     int closy = -1000000;
-    int Closid;
     bool first = true;
 
     item *Returns;
@@ -789,7 +788,6 @@ item *FindClosestItemPtr(int Orix, int Oriy, std::string TarItem, int Gxpos = 0,
             {
                 closx = (*i).xpos;
                 closy = (*i).ypos;
-                Closid = (*i).id;
                 first = false;
                 Returns = &(*i);
             }
@@ -804,7 +802,6 @@ item *FindClosestItemPtr(int Orix, int Oriy, std::string TarItem, int Gxpos = 0,
                 {
                     closx = (*i).xpos;
                     closy = (*i).ypos;
-                    Closid = (*i).id;
                     Returns = &(*i);
                 }
             }

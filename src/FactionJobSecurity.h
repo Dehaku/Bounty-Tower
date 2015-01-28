@@ -17,7 +17,7 @@ void RMBMenuItem(item &pItem)
     job.pItem = &pItem;
     JobList.push_back(job);
     */
-    for (int i = 0; i != UniFact.size(); i++)
+    for (size_t i = 0; i != UniFact.size(); i++)
     {
         if (UniFact[i].PlayerControlled)
         {
@@ -41,7 +41,7 @@ void RMBMenuItem(item &pItem)
 
 void DigWall(sf::Vector2f Pos)
 {
-    for (int i = 0; i != UniFact.size(); i++)
+    for (size_t i = 0; i != UniFact.size(); i++)
     {
         if (UniFact[i].PlayerControlled)
         {
@@ -70,7 +70,7 @@ void DigWall(sf::Vector2f Pos)
 
 void RMBMenuTile(sf::Vector2f Pos)
 {
-    for (int i = 0; i != UniFact.size(); i++)
+    for (size_t i = 0; i != UniFact.size(); i++)
     {
         if (UniFact[i].PlayerControlled)
         {
@@ -103,11 +103,11 @@ void RMBMenuTile(sf::Vector2f Pos)
 void DrawJobList(int DrawXPos, int DrawYPos)
 {
     int YVariance = 1;
-    for (int i = 0; i != UniFact.size(); i++)
+    for (size_t i = 0; i != UniFact.size(); i++)
     {
         if (UniFact[i].PlayerControlled)
         {
-            for (int t = 0; t != UniFact[i].JobList.size(); t++)
+            for (size_t t = 0; t != UniFact[i].JobList.size(); t++)
             {
 
                 //cText.CreateText(DrawXPos,DrawYPos+(YVariance*10),11,sf::Color::Yellow,AddString(UniFact[i].JobList[t].Type," "),UniFact[i].JobList[t].Name);
@@ -175,7 +175,7 @@ void RemoveJobs(std::vector<Job> &JobList)
     while (Done == false)
     {
         bool Yet = false;
-        for (int i = 0; i != JobList.size(); i++)
+        for (size_t i = 0; i != JobList.size(); i++)
         {
             if (JobList.at(i).ToDelete == true)
             {

@@ -355,17 +355,10 @@ public:
             pathfinderID = 1;
             if (xpathLocation <= MypathLength)
             {
-                int x;
                 //Read coordinate from bank
                 //x = MypathBank[pathfinderID] [xpathLocation*2-2];
                 //Like... Yo bo... Ty this instead.
-                try
-                {
-                    x = xPa.at(xpathLocation);
-                }
-                catch (std::exception &e)
-                {
-                }
+                int x = xPa.at(xpathLocation);
                 //Adjust the coordinates so they align with the center
                 //of the path square (optional). This assumes that you are using
                 //sprites that are centered -- i.e., with the midHandle command.
@@ -385,16 +378,9 @@ public:
             pathfinderID = 1;
             if (ypathLocation <= MypathLength)
             {
-                int y;
                 //Read coordinate from bank
                 //y = MypathBank[pathfinderID] [ypathLocation*2-1];
-                try
-                {
-                    y = yPa.at(ypathLocation);
-                }
-                catch (std::exception &e)
-                {
-                }
+                int y = yPa.at(ypathLocation);
                 //Adjust the coordinates so they align with the center
                 //of the path square (optional). This assumes that you are using
                 //sprites that are centered -- i.e., with the midHandle command.
@@ -1037,15 +1023,12 @@ public:
 
     void DirMove(sf::Vector2f Tar)
     {
-        bool Above = false;
-        bool Right = false;
         bool AtTargetx = false;
         bool AtTargety = false;
         bool CloseX = false;
         bool CloseY = false;
         if (Tar.x < xpos)
         {
-            Right = false;
         }
         else if (Tar.x == xpos)
         {
@@ -1053,12 +1036,10 @@ public:
         }
         else
         {
-            Right = true;
         }
 
         if (Tar.y < ypos)
         {
-            Above = false;
         }
         else if (Tar.y == ypos)
         {
@@ -1066,7 +1047,6 @@ public:
         }
         else
         {
-            Above = true;
         }
 
         if (AtTargetx == true && AtTargety == true)
@@ -1138,40 +1118,40 @@ public:
 
     void MoveNorth()
     {
-        ypos = ypos -= moverate;
-    };
+        ypos -= moverate;
+    }
     void MoveNorthEast()
     {
-        ypos = ypos -= moverate;
-        xpos = xpos += moverate;
-    };
+        ypos -= moverate;
+        xpos += moverate;
+    }
     void MoveEast()
     {
-        xpos = xpos += moverate;
-    };
+        xpos += moverate;
+    }
     void MoveSouthEast()
     {
-        ypos = ypos += moverate;
-        xpos = xpos += moverate;
-    };
+        ypos += moverate;
+        xpos += moverate;
+    }
     void MoveSouth()
     {
-        ypos = ypos += moverate;
-    };
+        ypos += moverate;
+    }
     void MoveSouthWest()
     {
-        ypos = ypos += moverate;
-        xpos = xpos -= moverate;
-    };
+        ypos += moverate;
+        xpos -= moverate;
+    }
     void MoveWest()
     {
-        xpos = xpos -= moverate;
-    };
+        xpos -= moverate;
+    }
     void MoveNorthWest()
     {
-        ypos = ypos -= moverate;
-        xpos = xpos -= moverate;
-    };
+        ypos -= moverate;
+        xpos -= moverate;
+    }
 
     bool IsHungry()
     {
@@ -2351,15 +2331,12 @@ public:
 
     void DirMove(sf::Vector2f Tar)
     {
-        bool Above = false;
-        bool Right = false;
         bool AtTargetx = false;
         bool AtTargety = false;
         bool CloseX = false;
         bool CloseY = false;
         if (Tar.x < xpos)
         {
-            Right = false;
         }
         else if (Tar.x == xpos)
         {
@@ -2367,12 +2344,10 @@ public:
         }
         else
         {
-            Right = true;
         }
 
         if (Tar.y < ypos)
         {
-            Above = false;
         }
         else if (Tar.y == ypos)
         {
@@ -2380,7 +2355,6 @@ public:
         }
         else
         {
-            Above = true;
         }
 
         if (AtTargetx == true && AtTargety == true)
@@ -2443,40 +2417,40 @@ public:
 
     void MoveNorth()
     {
-        ypos = ypos -= moverate;
-    };
+        ypos -= moverate;
+    }
     void MoveNorthEast()
     {
-        ypos = ypos -= moverate;
-        xpos = xpos += moverate;
-    };
+        ypos -= moverate;
+        xpos += moverate;
+    }
     void MoveEast()
     {
-        xpos = xpos += moverate;
-    };
+        xpos += moverate;
+    }
     void MoveSouthEast()
     {
-        ypos = ypos += moverate;
-        xpos = xpos += moverate;
-    };
+        ypos += moverate;
+        xpos += moverate;
+    }
     void MoveSouth()
     {
-        ypos = ypos += moverate;
-    };
+        ypos += moverate;
+    }
     void MoveSouthWest()
     {
-        ypos = ypos += moverate;
-        xpos = xpos -= moverate;
-    };
+        ypos += moverate;
+        xpos -= moverate;
+    }
     void MoveWest()
     {
-        xpos = xpos -= moverate;
-    };
+        xpos -= moverate;
+    }
     void MoveNorthWest()
     {
-        ypos = ypos -= moverate;
-        xpos = xpos -= moverate;
-    };
+        ypos -= moverate;
+        xpos -= moverate;
+    }
 
     bool IsHungry()
     {
@@ -2870,7 +2844,7 @@ void TimeTest()
     }
     clock_t vCreation = clock();
     int vJohns = 0;
-    for (int n = 0; n != TestVector.size(); n++)
+    for (size_t n = 0; n != TestVector.size(); n++)
     {
         if (TestVector[n].name == "John")
         {
@@ -3492,7 +3466,7 @@ std::vector<Faction> UniFact;
 
 int FactionMembers(std::string FactionName)
 {
-    for (int i = 0; i != UniFact.size(); i++)
+    for (size_t i = 0; i != UniFact.size(); i++)
     {
         if (UniFact[i].Name == FactionName)
         {
@@ -3505,7 +3479,7 @@ int FactionMembers(std::string FactionName)
 
 float FactionAggression(std::string FactionName)
 {
-    for (int i = 0; i != UniFact.size(); i++)
+    for (size_t i = 0; i != UniFact.size(); i++)
     {
         if (UniFact[i].Name == FactionName)
         {
@@ -3518,7 +3492,7 @@ float FactionAggression(std::string FactionName)
 
 int FactionTerritories(std::string FactionName)
 {
-    for (int i = 0; i != UniFact.size(); i++)
+    for (size_t i = 0; i != UniFact.size(); i++)
     {
         if (UniFact[i].Name == FactionName)
         {
@@ -3531,7 +3505,7 @@ int FactionTerritories(std::string FactionName)
 
 float FactionPower(std::string FactionName)
 {
-    for (int i = 0; i != UniFact.size(); i++)
+    for (size_t i = 0; i != UniFact.size(); i++)
     {
         if (UniFact[i].Name == FactionName)
         {
@@ -3563,7 +3537,7 @@ float FactionPower(std::string FactionName)
 int FactionPopulation()
 {
     int Pop = 0;
-    for (int i = 0; i != UniFact.size(); i++)
+    for (size_t i = 0; i != UniFact.size(); i++)
     {
         Pop += UniFact[i].Members;
     }
@@ -3684,7 +3658,7 @@ void BuildStartingCritters(int ZedAmount = 0)
                         sf::Vector2f vPos = Math.CircleRandz(1000,1000,180);
                         SpawnCritter("Human",vPos.x,vPos.y);
                     }*/
-            for (int count = 0; count != Squady.Squad.size(); count++)
+            for (size_t count = 0; count != Squady.Squad.size(); count++)
             {
                 sf::Vector2f vPos = Math.CircleRandz(1000, 1000, 180);
                 //SpawnCritter("Human",vPos.x,vPos.y);
@@ -3891,7 +3865,7 @@ SquadHud() // This prints that "pretty" little Squad Unit display in the top lef
 {
     try
     {
-        for (int i = 0; i != npclist.size(); i++)
+        for (size_t i = 0; i != npclist.size(); i++)
         {
             if (npclist[i].name != "debug")
             {

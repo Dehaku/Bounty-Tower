@@ -22,14 +22,14 @@ public:
 
     sf::Texture *GetImage(std::string Input)
     {
-        for (int i = 0; i != GlobalImage.size(); i++)
+        for (size_t i = 0; i != GlobalImage.size(); i++)
         {
             if (GlobalImage.at(i).name == Input)
             {
                 return &GlobalImage.at(i).Image;
             }
         }
-        for (int i = 0; i != GlobalImage.size(); i++)
+        for (size_t i = 0; i != GlobalImage.size(); i++)
         {
             if (GlobalImage.at(i).name == "Error.bmp")
             {
@@ -41,14 +41,14 @@ public:
 
     sf::Texture GetvImage(std::string Input)
     {
-        for (int i = 0; i != GlobalImage.size(); i++)
+        for (size_t i = 0; i != GlobalImage.size(); i++)
         {
             if (GlobalImage.at(i).name == Input)
             {
                 return GlobalImage.at(i).Image;
             }
         }
-        for (int i = 0; i != GlobalImage.size(); i++)
+        for (size_t i = 0; i != GlobalImage.size(); i++)
         {
             if (GlobalImage.at(i).name == "Error.bmp")
             {

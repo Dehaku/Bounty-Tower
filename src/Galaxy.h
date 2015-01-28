@@ -299,7 +299,7 @@ public:
                         sf::Vector2f vPos = Math.CircleRandz(1000,1000,180);
                         SpawnCritter("Human",vPos.x,vPos.y);
                     }*/
-                    for (int count = 0; count != Squady.Squad.size(); count++)
+                    for (size_t count = 0; count != Squady.Squad.size(); count++)
                     {
                         sf::Vector2f vPos = Math.CircleRandz(1000, 1000, 180);
                         //SpawnCritter("Human",vPos.x,vPos.y);
@@ -549,12 +549,12 @@ public:
     void WorldLoop()
     {
         debug("Starting world loop");
-        for (int i = 0; i != UniFact.size(); i++)
+        for (size_t i = 0; i != UniFact.size(); i++)
         { // Running through factions, Probably needs it's own function.
             debug(AddString("BeginningFaction", UniFact[i].Name));
 
             if (UniFact[i].Territories.size() != 0 &&
-                UniFact[i].Members <= UniFact[i].Territories.size() / 2)
+                static_cast<size_t>(UniFact[i].Members) <= UniFact[i].Territories.size() / 2)
             {
                 if (randz(1, 100) <= UniFact[i].Members * 4)
                 {
@@ -566,7 +566,7 @@ public:
                 randz(0, 100 * (UniFact[i].Territories.size() / 4)))
             { // Factions aggression causes them to seek more territory.
                 bool TileChange = false;
-                for (int t = 0; t != UniFact[i].Territories.size(); t++)
+                for (size_t t = 0; t != UniFact[i].Territories.size(); t++)
                 {
                     sf::Vector2i Short = UniFact[i].Territories[t].WorldTile;
                     if (Short.x > 0 && Short.x < 99 && Short.y > 0 &&
@@ -612,7 +612,7 @@ public:
                         { // Declare War.
                             std::string Tenant = WT->Owner;
 
-                            for (int z = 0; z != UniFact.size(); z++)
+                            for (size_t z = 0; z != UniFact.size(); z++)
                             {
                                 if (UniFact[z].Name == Tenant)
                                 {
@@ -673,7 +673,7 @@ public:
                                             Short.x + X, Short.y + Y);
                                         UniFact[i].Territories.push_back(CT);
 
-                                        for (int k = 0;
+                                        for (size_t k = 0;
                                              k != UniFact[z].Territories.size();
                                              k++)
                                         {
@@ -703,7 +703,7 @@ public:
 
                 if (TileChange)
                 {
-                    for (int Fact = 0; Fact != UniFact.size(); Fact++)
+                    for (size_t Fact = 0; Fact != UniFact.size(); Fact++)
                     {
                         //std::cout << UniFact[Fact].Name << " Factions: " << UniFact[Fact].Territories.size();
                         CleanTerritories(UniFact[Fact].Territories);

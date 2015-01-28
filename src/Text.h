@@ -160,7 +160,7 @@ public:
 
     void DisplayChat(sf::Vector2f Position)
     {
-        for (int i = 0; i != ChatStorage.size(); i++)
+        for (size_t i = 0; i != ChatStorage.size(); i++)
         {
             cText.CreateText(
                 Position.x, (Position.y - (ChatStorage.size() * 10)) + (i * 10),
