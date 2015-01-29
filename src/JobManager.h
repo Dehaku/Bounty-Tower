@@ -1,7 +1,6 @@
 #ifndef __JOBMANAGER_H_INCLUDED__
 #define __JOBMANAGER_H_INCLUDED__
 
-#include "Globals.h"
 #include "Items.h"
 
 class NPC;

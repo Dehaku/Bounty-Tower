@@ -6,6 +6,7 @@
 #include "keys.h"
 #include "JobManager.h"
 #include "Text.h"
+#include "Globals.h"
 
 #include <list>
 
