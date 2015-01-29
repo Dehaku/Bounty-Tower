@@ -107,11 +107,11 @@ void Buttons::ButtonPressed()
 
 void SquareButtons::ButtonPressed()
 {
-    std::vector<squarebutton>::iterator i;
-    for (i = vSquareButtonList.begin(); i != vSquareButtonList.end(); i++)
+    for (auto const &button : vSquareButtonList)
     {
-        if (AABB(MousePos, i->vPos.x - i->iSizex, i->vPos.x + i->iSizex,
-                 i->vPos.y - i->iSizey, i->vPos.y + i->iSizey))
+        if (AABB(MousePos, button.vPos.x - button.iSizex,
+                 button.vPos.x + button.iSizex, button.vPos.y - button.iSizey,
+                 button.vPos.y + button.iSizey))
         {
             std::cout << "Button Click!\n";
             // Is this never called? Is this class useless?
