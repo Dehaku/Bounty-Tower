@@ -5,8 +5,6 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 
-extern sf::RenderWindow App;
-
 /* Need to Make
 Kamehame styled beam
 */

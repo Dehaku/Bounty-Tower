@@ -3,6 +3,8 @@
 
 #include <cmath>
 
+extern sf::RenderWindow App;
+
 Effects Effectz;
 
 float Effects::AngleBetweenVectors(sf::Vector2f a, sf::Vector2f b)
