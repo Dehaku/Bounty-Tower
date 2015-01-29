@@ -166,16 +166,17 @@ bool ButtonClicked(int id)
 
 bool SquareButtonClicked(int id)
 {
-    std::vector<squarebutton>::iterator i;
-    for (i = vSquareButtonList.begin(); i != vSquareButtonList.end(); i++)
+    for (auto &button : vSquareButtonList)
     {
-        if (i->id == id)
+        if (button.id == id)
         {
-            if (AABB(MousePos, i->vPos.x - i->iSizex, i->vPos.x + i->iSizex,
-                     i->vPos.y - i->iSizey, i->vPos.y + i->iSizey) &&
+            if (AABB(MousePos, button.vPos.x - button.iSizex,
+                     button.vPos.x + button.iSizex,
+                     button.vPos.y - button.iSizey,
+                     button.vPos.y + button.iSizey) &&
                 (Key.LMBTime == 1 || Key.LMBTime > 20))
             {
-                i->BeenPressed = true;
+                button.BeenPressed = true;
                 std::cout << "Pressed! \n";
                 Globals.ButtonClicked = true;
                 Globals.ButtonClickedTime = 3;
