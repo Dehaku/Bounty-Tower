@@ -624,24 +624,16 @@ bool UpdatePlanet(){
 
 int GetItemVectorId(int id)
 {
-    std::list<item>::iterator Items;
-    int ReturnValue = 0;
-    try
-    { //You should always Try when dealing with vectors that could be empty.
-        for (Items = worlditems.begin(); Items != worlditems.end(); Items++)
-        { // Searching through the items.
-            if (Items->id == id)
-            {
-                return ReturnValue;
-            }
-            ReturnValue++; // If the current item isn't the right one, Increase the Returnvalue by one..
-        }
-        return -1; // This will only return if the item doesn't exist.
-    }
-    catch (std::exception &e)
+    int index = 0;
+    for (auto const &item : worlditems)
     {
-        return -1;
-    } // If for some odd reason the vector crashes, Return -1
+        if (item.id == id)
+        {
+            return index;
+        }
+        index++;
+    }
+    return -1;
 }
 
 int GetNpcVectorId(int id)
