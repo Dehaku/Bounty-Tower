@@ -1329,9 +1329,9 @@ void UpdateNPC()
                     Ran = *Me->GetItemType(2);
                     debug("Fish n Chips");
                 }
-                bool Attacked = false;
                 try
                 {
+                    bool Attacked = false;
                     if (Debug)
                     {
                         std::cout << "Pre Mel \n";
