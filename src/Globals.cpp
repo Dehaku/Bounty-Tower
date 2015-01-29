@@ -223,19 +223,14 @@ int Math::Closeisha(int orix, int oriy, int tarx, int tary)
 int Math::DistanceTrace(int xa, int ya, int xb, int yb)
 { // Highly inaccurate
     int dx = xb - xa, dy = yb - ya, steps;
-    float xIncrement, yIncrement, x = xa, y = ya;
     if (abs(dx) > abs(dy))
         steps = abs(dx);
     else
         steps = abs(dy);
-    xIncrement = dx / (float)steps;
-    yIncrement = dy / (float)steps;
     int distance = 0;
 
     for (int k = 0; k < steps; k++)
     {
-        x += xIncrement;
-        y += yIncrement;
         distance++;
     }
     return distance;

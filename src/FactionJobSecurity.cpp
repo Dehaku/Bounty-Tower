@@ -116,9 +116,7 @@ void DrawJobList(int DrawXPos, int DrawYPos)
                     UniFact[i].JobList[t].pWorker != nullptr)
                 {
                     debug("First condition");
-                    std::string Name = UniFact[i].JobList[t].pWorker->name;
                     debug("CritterName");
-                    Name = UniFact[i].JobList[t].pItem->name;
                     debug("ItemName");
 
                     cText.CreateText(

@@ -36,10 +36,8 @@ void NPC::BodyDefinition::BodyPartFind(std::string Part, int amount)
                              LinePosTwo - (LinePosOne + len));
             amount += atoi(LineValue.c_str());
 
-            std::string amo;
             std::stringstream out;
             out << amount;
-            amo = out.str();
             BodyParts.replace(LinePosOne + len, LinePosTwo - (LinePosOne + len),
                               out.str());
 
@@ -56,10 +54,8 @@ void NPC::BodyDefinition::BodyPartFind(std::string Part, int amount)
     else if (amount > 0)
     {
         BodyParts.assign(Part);
-        std::string amo;
         std::stringstream out;
         out << amount;
-        amo = out.str();
         BodyParts.append(out.str());
         BodyParts.append("]");
     }
@@ -759,22 +755,6 @@ void NPC::DirMove(sf::Vector2f Tar)
         xpos -= xx;
         ypos -= yy;
     }
-
-    int dx = Tar.x - xpos, dy = Tar.y - ypos, steps;
-    float xIncrement, yIncrement, x = xpos, y = ypos;
-    if (abs(dx) > abs(dy))
-        steps = abs(dx);
-    else
-        steps = abs(dy);
-    xIncrement = dx / (float)steps;
-    yIncrement = dy / (float)steps;
-    for (int k = 0; k < steps; k++)
-    {
-        x += xIncrement;
-        y += yIncrement;
-    }
-    //xpos += x/steps;
-    //ypos += y/steps;
 }
 
 void NPC::MomMove()
@@ -975,10 +955,8 @@ void NPC::Tag(std::string tag, int amount)
             int len = tag.length();
             funz.assign(tags, found + len, foundz - (found + len));
             amount += atoi(funz.c_str());
-            std::string amo;
             std::stringstream out;
             out << amount;
-            amo = out.str();
             tags.replace(found + len, foundz - (found + len), out.str());
             //cout<<"Out is:"<<out.str()<<endl;
             if (out.str() == "0")
@@ -995,10 +973,8 @@ void NPC::Tag(std::string tag, int amount)
     else if (amount > 0)
     {
         tags.assign(tag);
-        std::string amo;
         std::stringstream out;
         out << amount;
-        amo = out.str();
         tags.append(out.str());
         tags.append("]");
     }
@@ -1035,11 +1011,9 @@ float NPC::bloodwork(std::string aliment, float amount)
             //std::cout << ", became: " << amount << std::endl;
             Returns = amount;
 
-            std::string amo;
             std::stringstream out;
             //Hargendy!
             out << amount;
-            amo = out.str();
             bloodcontent.replace(tStart + len, tEnd - (tStart + len),
                                  out.str());
             //cout<<"Out is:"<<out.str()<<endl;
@@ -1058,11 +1032,9 @@ float NPC::bloodwork(std::string aliment, float amount)
     else // if(amount > 0)
     {
         bloodcontent.append(aliment);
-        std::string amo;
         std::stringstream out;
         Returns = amount;
         out << amount;
-        amo = out.str();
         bloodcontent.append(out.str());
         bloodcontent.append("]");
     }
@@ -1096,11 +1068,9 @@ float NPC::bloodworkXX(std::string aliment, int amount)
             amount += atoi(StrNum.c_str());
             Returns = amount;
 
-            std::string amo;
             std::stringstream out;
             //Hargendy!
             out << amount;
-            amo = out.str();
             bloodcontent.replace(tStart + len, tEnd - (tStart + len),
                                  out.str());
             //cout<<"Out is:"<<out.str()<<endl;
@@ -1119,11 +1089,9 @@ float NPC::bloodworkXX(std::string aliment, int amount)
     else if (amount > 0)
     {
         bloodcontent.append(aliment);
-        std::string amo;
         std::stringstream out;
         Returns = amount;
         out << amount;
-        amo = out.str();
         bloodcontent.append(out.str());
         bloodcontent.append("]");
     }
