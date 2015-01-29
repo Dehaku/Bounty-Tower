@@ -599,10 +599,9 @@ item::item()
 
 void cItemManager::AddItems()
 {
-    std::vector<item>::iterator Me;
-    for (Me = AddedItems.begin(); Me != AddedItems.end(); Me++)
+    for (auto const &item : AddedItems)
     {
-        worlditems.push_back(*Me);
+        worlditems.push_back(item);
     }
     AddedItems.clear();
 }
