@@ -3143,8 +3143,6 @@ int main()
 
     App.setVerticalSyncEnabled(true);
 
-    sf::Thread ThreadDrawStuffs(&DrawItems);
-
     // Various temporary variables used for testing.
     int testage = 0;
     int testage2 = 0;
