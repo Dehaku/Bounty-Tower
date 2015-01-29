@@ -1732,14 +1732,13 @@ void CleanTerritories(std::vector<Territory> &Territories)
     bool Done = false;
     while (Done == false)
     {
-        std::vector<Territory>::iterator Iter;
         Done = true;
-        for (Iter = Territories.begin(); Iter != Territories.end(); Iter++)
+        for (auto it = Territories.begin(); it != Territories.end(); ++it)
         {
-            if (Iter->ToDelete)
+            if (it->ToDelete)
             {
                 Done = false;
-                Territories.erase(Iter);
+                Territories.erase(it);
                 debug("Territory deleted.");
                 break;
             }
