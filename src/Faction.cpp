@@ -65,7 +65,8 @@ void NPC::BodyDefinition::BodyPartFind(std::string Part, int amount)
     }
 }
 
-std::set<int> NPC::Melee(int min, int max, int range, std::set<int> exception)
+std::set<int> NPC::Melee(int /*min*/, int /*max*/, int range,
+                         std::set<int> /*exception*/)
 {
     std::set<int> Tar;
     if (FirstStrike == false)
@@ -139,9 +140,8 @@ void NPC::PathFinding::MyFindPath(int Sx, int Sy, int Ex, int Ey)
     Con("Pathfind stuff - Complete");
 }
 
-int NPC::PathFinding::MyReadPathX(int pathfinderID, int xpathLocation)
+int NPC::PathFinding::MyReadPathX(int /*pathfinderID*/, int xpathLocation)
 {
-    pathfinderID = 1;
     if (xpathLocation <= MypathLength)
     {
         //Read coordinate from bank
@@ -159,9 +159,8 @@ int NPC::PathFinding::MyReadPathX(int pathfinderID, int xpathLocation)
         "MyReadPathX: Couldn't return a meaningful value!");
 }
 
-int NPC::PathFinding::MyReadPathY(int pathfinderID, int ypathLocation)
+int NPC::PathFinding::MyReadPathY(int /*pathfinderID*/, int ypathLocation)
 {
-    pathfinderID = 1;
     if (ypathLocation <= MypathLength)
     {
         //Read coordinate from bank
@@ -178,8 +177,8 @@ int NPC::PathFinding::MyReadPathY(int pathfinderID, int ypathLocation)
         "MyReadPathY: Couldn't return a meaningful value!");
 }
 
-void NPC::PathFinding::MyReadPath(int pathfinderID, int currentX, int currentY,
-                                  int pixelsPerFrame)
+void NPC::PathFinding::MyReadPath(int /*pathfinderID*/, int currentX,
+                                  int currentY, int pixelsPerFrame)
 {
     int ID = 1; //redundant, but makes the following easier to read
     //If a path has been found for the pathfinder	...
@@ -922,7 +921,8 @@ std::string NPC::getname()
     return name;
 }
 
-void NPC::spawn(int gposx, int gposy, int rposx, int rposy, int posx, int posy)
+void NPC::spawn(int /*gposx*/, int /*gposy*/, int /*rposx*/, int /*rposy*/,
+                int posx, int posy)
 {
     gxpos = 100;
     gypos = 100;
@@ -1575,7 +1575,7 @@ MakeSquad::MakeSquad()
 }
 
 std::set<int> NPCTrace(int xa, int ya, int xb, int yb, int id,
-                       std::set<int> exceptions)
+                       std::set<int> /*exceptions*/)
 { //.at(0) = Item/NPC(23/69) .at(1) = id
 
     int dx = xb - xa, dy = yb - ya, steps;

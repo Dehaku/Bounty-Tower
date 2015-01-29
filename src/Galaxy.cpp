@@ -71,7 +71,7 @@ void GalaxyController::Wave()
     }
 }
 
-void GalaxyController::Time(int Modify)
+void GalaxyController::Time(int /*Modify*/)
 {
     if (timetilltick >= TickTimer)
     {

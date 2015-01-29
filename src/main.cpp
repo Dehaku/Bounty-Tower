@@ -341,7 +341,7 @@ void UpdateItem()
 }
 
 std::vector<int> NnGTrace(int xa, int ya, int xb, int yb, int id,
-                          std::vector<int> exceptions)
+                          std::vector<int> /*exceptions*/)
 { //.at(0) = Item/NPC(23/69) .at(1) = id
     int dx = xb - xa, dy = yb - ya, steps;
     float xIncrement, yIncrement, x = xa, y = ya;
@@ -467,7 +467,7 @@ bool gridposTrace(int xa, int ya, int xb, int yb, int id, sf::Vector2f Target)
 }
 
 std::vector<int> npcTrace(int xa, int ya, int xb, int yb, int id,
-                          std::vector<int> exceptions = std::vector<int>())
+                          std::vector<int> /*exceptions = std::vector<int>()*/)
 {
 
     int dx = xb - xa, dy = yb - ya, steps;
@@ -689,7 +689,7 @@ int GetNpcVectorId(int id)
     } // If for some odd reason the vector crashes, Return -1
 }
 
-bool RemoveNPC(char *NPCname, int Id)
+bool RemoveNPC(char *NPCname, int /*Id*/)
 {
     int TempInt = 0;
     std::string thingeh;
@@ -718,8 +718,8 @@ bool RemoveNPC(char *NPCname, int Id)
 }
 
 std::vector<int> FindClosestItem(int Orix, int Oriy, std::string TarItem,
-                                 int Gxpos = 0, int Gypos = 0, int Rxpos = 0,
-                                 int Rypos = 0)
+                                 int /*Gxpos*/ = 0, int /*Gypos*/ = 0,
+                                 int /*Rxpos*/ = 0, int /*Rypos*/ = 0)
 {
     std::vector<int> Returns;
     std::list<item>::iterator Items;

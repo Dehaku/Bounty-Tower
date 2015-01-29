@@ -37,7 +37,7 @@ void cTextList::CreateText(int xpos, int ypos, int SizeMe, sf::Color color,
                            float int1, std::string stringvalue2,
                            std::string String2, float int2,
                            std::string stringvalue3, std::string String3,
-                           float int3, int Shadow, int NULL3)
+                           float int3, int Shadow, int /*NULL3*/)
 {
     int Size = SizeMe;
     bool Bold = true;

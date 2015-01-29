@@ -15,7 +15,7 @@ endif()
 
 # For GCC and Clang, enable C++14 support and add some other flags
 if(USING_GCC OR USING_CLANG)
-  add_compile_options(-std=c++14 -pedantic -Wall)
+  add_compile_options(-std=c++14 -pedantic -Wall -Wextra)
   if(SANITIZE)
     add_compile_options(-fsanitize=${SANITIZE})
     set(CMAKE_EXE_LINKER_FLAGS

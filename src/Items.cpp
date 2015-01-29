@@ -36,7 +36,7 @@ void RemoveItems()
     }
 }
 
-void zSaveItem(int planet, sf::Vector2i Region, item &object)
+void zSaveItem(int /*planet*/, sf::Vector2i Region, item &object)
 {
 
     using namespace std;
@@ -378,8 +378,8 @@ item *GetItemPtrfromVectorVarSearch(std::list<item> &Vector,
     return nullptr;
 }
 
-item *FindClosestItemPtr(int Orix, int Oriy, std::string TarItem, int Gxpos,
-                         int Gypos, int Rxpos, int Rypos)
+item *FindClosestItemPtr(int Orix, int Oriy, std::string TarItem, int /*Gxpos*/,
+                         int /*Gypos*/, int /*Rxpos*/, int /*Rypos*/)
 {
     //std::vector<item>::iterator Items;
     // This will be difficult, go through all the items, and find the closest one, Silly old self, Watch how it's done.
@@ -502,7 +502,8 @@ void item::DrawImg()
     App.draw(img);
 }
 
-void item::spawn(int gposx, int gposy, int rposx, int rposy, int posx, int posy)
+void item::spawn(int /*gposx*/, int /*gposy*/, int /*rposx*/, int /*rposy*/,
+                 int posx, int posy)
 {
     gxpos = 100;
     gypos = 100;

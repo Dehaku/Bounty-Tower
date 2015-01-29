@@ -17,7 +17,7 @@ xTile xChunk[ChunkSize][ChunkSize][ChunkSize];
 extern sf::RenderWindow App;
 
 void zGenerateChunk(std::string type, int planet, sf::Vector2i Cords,
-                    sf::Vector2i Pos)
+                    sf::Vector2i /*Pos*/)
 {
 
     Con("Queso?");
@@ -106,7 +106,7 @@ void zGenerateChunk(std::string type, int planet, sf::Vector2i Cords,
 }
 
 void GenerateChunk(std::string type, int planet, sf::Vector2i Cords,
-                   sf::Vector2i Pos)
+                   sf::Vector2i /*Pos*/)
 {
     //std::string Deb = "Creating Chunk: ";
     //Deb.append(type);
@@ -475,7 +475,7 @@ void GenerateWorld(int RegionSize, int PlanetNum)
     //GenerateChunk("Building",500,sf::Vector2i(abs(GC.MenuPos.x/20),abs(GC.MenuPos.y/20)));
 }
 
-void SaveMap(int planet, int xcord, int ycord, int xpos, int ypos)
+void SaveMap(int planet, int /*xcord*/, int /*ycord*/, int xpos, int ypos)
 {
     using namespace std; // Start to Save Map
     cout << "Saving current map to file...\n";
@@ -500,7 +500,7 @@ void SaveMap(int planet, int xcord, int ycord, int xpos, int ypos)
     }
 }
 
-void LoadMap(int planet, int xcord, int ycord, int xpos, int ypos)
+void LoadMap(int planet, int xcord, int ycord, int /*xpos*/, int /*ypos*/)
 {
     using namespace std;
     fstream File; // Start to Load Map
