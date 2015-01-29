@@ -22,6 +22,7 @@
 #include "FactionJobSecurity.h"
 #include "Galaxy.h"
 #include "menus.h"
+#include "aStarLibrary.h"
 
 item *ListGet(std::list<item> &List, int Position)
 {

@@ -3,13 +3,10 @@
 
 #include "Items.h"
 #include "Effects.h"
-#include "aStarLibrary.h"
 #include "keys.h"
 #include "JobManager.h"
 #include "Text.h"
 
-#include <time.h>
-#include <ctime>
 #include <list>
 
 //TODO: Make it so faction units cannot harm eachother, Do the same with Allied Factions.

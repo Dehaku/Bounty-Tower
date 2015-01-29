@@ -1,5 +1,6 @@
 #include "Faction.h"
 #include "filesystemUtils.hpp"
+#include "aStarLibrary.h"
 
 #include <sstream>
 #include <fstream>
