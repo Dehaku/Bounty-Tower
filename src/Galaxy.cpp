@@ -10,16 +10,9 @@ GalaxyController GC;
 extern sf::RenderWindow App;
 
 GalaxyController::GalaxyController()
+    : timescale(10), timescalez(10), timetilltick(0), Waves(1), WaveTimer(1000),
+      TickTimer(10), bTest(false), Debug(false), MenuType("NULL")
 {
-    Debug = false;
-    bTest = false;
-    MenuType = "NULL";
-    timescale = 10;
-    timescalez = 10;
-    timetilltick = 0;
-    TickTimer = 10;
-    WaveTimer = 1000;
-    Waves = 1;
 }
 
 void GalaxyController::AddvPlanet()
