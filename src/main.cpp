@@ -5534,7 +5534,6 @@ int main()
                 }*/
             }
 
-            sf::String Textz;
             if (Key.LMBTime == 0 &&
                 Globals.HeldClickPos != sf::Vector2f(-1, -1))
             {
