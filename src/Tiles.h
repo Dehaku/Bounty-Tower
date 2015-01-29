@@ -15,7 +15,6 @@ public:
     float Health;
     bool Walkable;
     sf::Sprite Img;
-    sf::Texture Texture;
     sf::Color WorldColor;
 
     void Dirt();
