@@ -1557,7 +1557,6 @@ std::set<int> NPCTrace(int xa, int ya, int xb, int yb, int id,
         {
             Effectz.CreateCircle(x, y, 1, Blue);
         }
-        int Count = 0;
 
         // Merely doing this so I can reuse the same code, but for items, Hehe.
         {
@@ -1579,7 +1578,6 @@ std::set<int> NPCTrace(int xa, int ya, int xb, int yb, int id,
                     }
 
                 } //23 = Item, 69 = NPC
-                Count++;
             }
         }
     }
