@@ -1,6 +1,7 @@
 #include "Tiles.h"
 #include "Effects.h"
 #include "Faction.h"
+#include "filesystemUtils.hpp"
 
 Tile Tiles[Grids][Grids][Grids];
 WorldTile WorldMap[100][100];

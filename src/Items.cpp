@@ -1,4 +1,5 @@
 #include "Items.h"
+#include "filesystemUtils.hpp"
 
 item myitem;
 std::list<item> worlditems;

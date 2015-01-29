@@ -1,4 +1,5 @@
 #include "Faction.h"
+#include "filesystemUtils.hpp"
 
 Faction *ConFact;
 std::vector<NPC> npclist;
