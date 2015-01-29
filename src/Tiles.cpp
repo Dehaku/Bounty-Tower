@@ -590,7 +590,16 @@ void DrawWorldTiles()
     {
         for (int t = 0; t != 100; t++)
         {
+
+
+            if(AABB(i*20,t*20,Globals.TopLeft.x-20,Globals.TopRight.x,Globals.TopLeft.y-20,Globals.BottomRight.y))
+            {
+
             WorldMap[i][t].Img.setPosition(i * 20, t * 20);
+
+
+
+
             App.draw(WorldMap[i][t].Img);
             if (WorldMap[i][t].Infected > 0)
             {
@@ -617,6 +626,7 @@ void DrawWorldTiles()
                     }
                 }
             }
+        }
         }
     }
     debug("Done Drawing");
