@@ -515,30 +515,24 @@ bool NPC::HasWeapon(std::string weapon)
     if (weapon != "")
         Specific = true;
     std::list<item>::iterator Items;
-    try
-    { //You should always Try when dealing with vectors that could be empty.
-        for (Items = inventory.begin(); Items != inventory.end(); Items++)
+    for (Items = inventory.begin(); Items != inventory.end(); Items++)
+    {
+        if (Items->IsWeapon)
+            FoundWeapon = true;
+        if (weapon != "")
         {
-            if (Items->IsWeapon)
-                FoundWeapon = true;
-            if (weapon != "")
-            {
-                if (Items->name == weapon)
-                    HasSpecifiedWeapon = true;
-            }
-        }
-        if (HasSpecifiedWeapon)
-        {
-            return true;
-        }
-        if (FoundWeapon && Specific == false)
-        {
-            return true;
+            if (Items->name == weapon)
+                HasSpecifiedWeapon = true;
         }
     }
-    catch (std::exception &e)
+    if (HasSpecifiedWeapon)
     {
-    } /*This keeps the game from crashing if there is nothing in the vector.*/
+        return true;
+    }
+    if (FoundWeapon && Specific == false)
+    {
+        return true;
+    }
     return false;
 }
 
