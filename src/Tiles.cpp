@@ -1225,7 +1225,7 @@ void Tile::Cake()
     DeathID = 7;
 }
 
-Tile::Tile()
+Tile::Tile() : ID{}
 {
     WorldColor = sf::Color(0, 0, 0, 255);
     Health = 10;
@@ -1233,7 +1233,7 @@ Tile::Tile()
     Walkable = true;
 }
 
-xTile::xTile()
+xTile::xTile() : ID{}, Img{nullptr}
 {
     WorldColor = sf::Color(0, 0, 0, 255);
     Health = 10;
@@ -1245,7 +1245,7 @@ void xTile::initImage()
     Img = imagemanager.GetImage("City.png");
 }
 
-WorldTile::WorldTile()
+WorldTile::WorldTile() : ID{}
 {
     Infected = 0;
     Tiles = 32;
