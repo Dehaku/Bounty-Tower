@@ -1,6 +1,7 @@
 #include "Galaxy.h"
 
 #include "Faction.h"
+#include "Images.h"
 
 #include <iostream>
 

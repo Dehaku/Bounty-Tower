@@ -23,6 +23,7 @@
 #include "Galaxy.h"
 #include "menus.h"
 #include "aStarLibrary.h"
+#include "Images.h"
 
 item *ListGet(std::list<item> &List, int Position)
 {

@@ -2,6 +2,7 @@
 #include "Effects.h"
 #include "Faction.h"
 #include "filesystemUtils.hpp"
+#include "Images.h"
 
 #include <sstream>
 #include <fstream>

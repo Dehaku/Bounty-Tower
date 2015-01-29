@@ -2,8 +2,6 @@
 #define __TILES_H_INCLUDED__
 
 #include <SFML/Graphics.hpp>
-#include "Images.h"
-#include "Globals.h"
 
 const int Grids = 96;
 
