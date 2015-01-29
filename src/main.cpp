@@ -367,7 +367,7 @@ std::vector<int> NnGTrace(int xa, int ya, int xb, int yb, int id,
 
             for (Me = npclist.begin(); Me != npclist.end(); ++Me)
             {
-                if (Math.Closeish(x, y, Me->xpos, Me->ypos) <= Me->reach &&
+                if (Math::Closeish(x, y, Me->xpos, Me->ypos) <= Me->reach &&
                     Me->id != id)
                 {
 
@@ -402,7 +402,7 @@ std::vector<int> NnGTrace(int xa, int ya, int xb, int yb, int id,
 
         for (Me = worlditems.begin(); Me != worlditems.end(); ++Me)
         {
-            if (Math.Closeish(x, y, Me->xpos, Me->ypos) <= 10 && Me->id != id)
+            if (Math::Closeish(x, y, Me->xpos, Me->ypos) <= 10 && Me->id != id)
             {
                 //Making sure not to constantly add the same
                 //try{if( VectorID.at(Count-1) != Me->id){ VectorID.push_back(23); VectorID.push_back( GetItemVectorId(Me->id)); }} catch (std::exception& e){}
@@ -489,7 +489,7 @@ std::vector<int> npcTrace(int xa, int ya, int xb, int yb, int id,
         int Count = 0;
         for (Me = npclist.begin(); Me != npclist.end(); ++Me)
         {
-            if (Math.Closeish(x, y, Me->xpos, Me->ypos) <= Me->reach &&
+            if (Math::Closeish(x, y, Me->xpos, Me->ypos) <= Me->reach &&
                 Me->id != id)
             {
                 VectorID.push_back(Count);
@@ -522,7 +522,7 @@ std::vector<int> npcTrace(int xa, int ya, int xb, int yb, int id,
         float yy;
         if(Key.j){MahNumba++;}
         if(Key.k){MahNumba--;}
-        int distence = Math.Closeish(orix,oriy,tarx,tary);
+        int distence = Math::Closeish(orix,oriy,tarx,tary);
         //cText.CreateText(MousePos.x,MousePos.y,11,White,"Distence:","",distence);
         //cText.CreateText(MousePos.x,MousePos.y+11,11,White,"MahNumba:","",MahNumba);
         for(int i = 0; i != distence; i++){
@@ -560,8 +560,8 @@ bool UpdatePlanet(){
                     // && It->name == "Sun"
                     if(It->id != Me->id){ sf::Vector2f lMe = Me->Pos; sf::Vector2f lIt = It->Pos;
                     sf::Vector2f NewSpeed(0,0);
-                    int range = Math.Closeish(Me->Pos.x,Me->Pos.y,It->Pos.x,It->Pos.y);
-                    if(Math.Closeish(lMe.x,lMe.y,lIt.x,lIt.y) < ( ((Me->mass/10)/2)+((It->mass/10)/2) )){
+                    int range = Math::Closeish(Me->Pos.x,Me->Pos.y,It->Pos.x,It->Pos.y);
+                    if(Math::Closeish(lMe.x,lMe.y,lIt.x,lIt.y) < ( ((Me->mass/10)/2)+((It->mass/10)/2) )){
                        if(Absorbed == false){
                        std::cout<<"My current mass:"<<Me->mass<<" It's current mass"<<It->mass<<std::endl;
                        Me->mass += It->mass;
@@ -748,8 +748,8 @@ std::vector<int> FindClosestItem(int Orix, int Oriy, std::string TarItem,
         {
             if (Items->name == TarItem)
             {
-                int one = Math.Closeish(Orix, Oriy, Items->xpos, Items->ypos);
-                int two = Math.Closeish(Orix, Oriy, closx, closy);
+                int one = Math::Closeish(Orix, Oriy, Items->xpos, Items->ypos);
+                int two = Math::Closeish(Orix, Oriy, closx, closy);
                 if (one < two)
                 {
                     closx = Items->xpos;
@@ -1213,14 +1213,22 @@ void UpdateNPC()
         if (Me->name == "Azabul")
         {
 
-            Me->TentArm1.x = Math.Clamp(Me->TentArm1.x + randz(-3, 3), -20, 20);
-            Me->TentArm1.y = Math.Clamp(Me->TentArm1.y + randz(-3, 3), -20, 20);
-            Me->TentArm2.x = Math.Clamp(Me->TentArm2.x + randz(-3, 3), -20, 20);
-            Me->TentArm2.y = Math.Clamp(Me->TentArm2.y + randz(-3, 3), -20, 20);
-            Me->TentEnd1.x = Math.Clamp(Me->TentEnd1.x + randz(-3, 3), -20, 20);
-            Me->TentEnd1.y = Math.Clamp(Me->TentEnd1.y + randz(-3, 3), -20, 20);
-            Me->TentEnd2.x = Math.Clamp(Me->TentEnd2.x + randz(-3, 3), -20, 20);
-            Me->TentEnd2.y = Math.Clamp(Me->TentEnd2.y + randz(-3, 3), -20, 20);
+            Me->TentArm1.x =
+                Math::Clamp(Me->TentArm1.x + randz(-3, 3), -20, 20);
+            Me->TentArm1.y =
+                Math::Clamp(Me->TentArm1.y + randz(-3, 3), -20, 20);
+            Me->TentArm2.x =
+                Math::Clamp(Me->TentArm2.x + randz(-3, 3), -20, 20);
+            Me->TentArm2.y =
+                Math::Clamp(Me->TentArm2.y + randz(-3, 3), -20, 20);
+            Me->TentEnd1.x =
+                Math::Clamp(Me->TentEnd1.x + randz(-3, 3), -20, 20);
+            Me->TentEnd1.y =
+                Math::Clamp(Me->TentEnd1.y + randz(-3, 3), -20, 20);
+            Me->TentEnd2.x =
+                Math::Clamp(Me->TentEnd2.x + randz(-3, 3), -20, 20);
+            Me->TentEnd2.y =
+                Math::Clamp(Me->TentEnd2.y + randz(-3, 3), -20, 20);
         }
 
         if (Me->id == MyTargetid && Key.space)
@@ -1370,8 +1378,8 @@ void UpdateNPC()
                     if (bMel == true)
                     {
                         if (Mel.type == 1 &&
-                            Math.Closeish(Me->xpos, Me->ypos, Me->ShootPos.x,
-                                          Me->ShootPos.y) < Mel.range)
+                            Math::Closeish(Me->xpos, Me->ypos, Me->ShootPos.x,
+                                           Me->ShootPos.y) < Mel.range)
                         {
                             Attacked = true;
                             std::set<int> Tarz;
@@ -1390,8 +1398,8 @@ void UpdateNPC()
                             {
                                 Me->attacktimer =
                                     (Me->attacktimerint -
-                                     (Math.Clamp(Me->Skills.agility / 10, 10,
-                                                 100)));
+                                     (Math::Clamp(Me->Skills.agility / 10, 10,
+                                                  100)));
                             } // Melee has a different method for saying it's done.
                             if (Debug)
                             {
@@ -1432,18 +1440,18 @@ void UpdateNPC()
                                 gridposTrace(Me->xpos, Me->ypos, Me->ShootPos.x,
                                              Me->ShootPos.y, Me->id,
                                              Me->TargetPos) == true &&
-                                Math.Closeish(Me->xpos, Me->ypos,
-                                              Me->ShootPos.x,
-                                              Me->ShootPos.y) <= Me->viewrange)
+                                Math::Closeish(Me->xpos, Me->ypos,
+                                               Me->ShootPos.x,
+                                               Me->ShootPos.y) <= Me->viewrange)
                             {
                                 int Tempx = randz(
                                     0,
-                                    Math.Clamp(
+                                    Math::Clamp(
                                         100 - Me->Skills.dexterity, 0,
                                         100)); // This is to mess up the aiming.
                                 int Tempy = randz(
-                                    0, Math.Clamp(100 - Me->Skills.dexterity, 0,
-                                                  100));
+                                    0, Math::Clamp(100 - Me->Skills.dexterity,
+                                                   0, 100));
                                 if (Me->HasTag("[CanLearn:"))
                                 {
                                     Me->Skills.Train("dexterity");
@@ -1496,8 +1504,8 @@ void UpdateNPC()
                                 Me->Attacking = false;
                                 Me->attacktimer =
                                     (Me->attacktimerint -
-                                     (Math.Clamp(Me->Skills.agility / 10, 10,
-                                                 100)));
+                                     (Math::Clamp(Me->Skills.agility / 10, 10,
+                                                  100)));
                             }
                             else
                             {
@@ -1719,10 +1727,10 @@ void UpdateNPC()
                         {
                             if (zitz->cbaseid == 110110 && zitz->health > 0)
                             {
-                                int one = Math.Closeish(Me->xpos, Me->ypos,
-                                                        zitz->xpos, zitz->ypos);
-                                int two = Math.Closeish(Me->xpos, Me->ypos,
-                                                        closx, closy);
+                                int one = Math::Closeish(
+                                    Me->xpos, Me->ypos, zitz->xpos, zitz->ypos);
+                                int two = Math::Closeish(Me->xpos, Me->ypos,
+                                                         closx, closy);
                                 if (one < two)
                                 {
                                     closx = zitz->xpos;
@@ -1811,8 +1819,9 @@ void UpdateNPC()
                                         Me->HasTarget = true;
                                         Me->target = "BuildWoodWall";
 
-                                        if (Math.Closeish(Me->xpos, Me->ypos, x,
-                                                          y) <= Me->size * 3)
+                                        if (Math::Closeish(Me->xpos, Me->ypos,
+                                                           x,
+                                                           y) <= Me->size * 3)
                                         {
 
                                             Me->TargetPos.x = Me->xpos;
@@ -1897,9 +1906,9 @@ void UpdateNPC()
                                         debug("Post wood targeting, Pre "
                                               "Close-Ish function");
 
-                                        if (Math.Closeish(Me->xpos, Me->ypos,
-                                                          WldWood->xpos,
-                                                          WldWood->ypos) <=
+                                        if (Math::Closeish(Me->xpos, Me->ypos,
+                                                           WldWood->xpos,
+                                                           WldWood->ypos) <=
                                             Me->size)
                                         {
                                             //Con("I'm there! \n");
@@ -1927,7 +1936,7 @@ void UpdateNPC()
 
                                     if (UniFact[0].JobList[i].Type ==
                                             "PickUp" &&
-                                        Math.Closeish(
+                                        Math::Closeish(
                                             Me->xpos, Me->ypos,
                                             UniFact[0].JobList[i].pItem->xpos,
                                             UniFact[0]
@@ -1963,7 +1972,7 @@ void UpdateNPC()
                                     }
 
                                     if (UniFact[0].JobList[i].Type == "Chop" &&
-                                        Math.Closeish(
+                                        Math::Closeish(
                                             Me->xpos, Me->ypos,
                                             UniFact[0].JobList[i].pItem->xpos,
                                             UniFact[0]
@@ -2015,9 +2024,9 @@ void UpdateNPC()
                                     Me->HasTarget = true;
                                     Me->target = "DigNaturalWall";
 
-                                    if (Math.Closeish(Me->xpos, Me->ypos,
-                                                      PathFindWorkPos.x,
-                                                      PathFindWorkPos.y) <=
+                                    if (Math::Closeish(Me->xpos, Me->ypos,
+                                                       PathFindWorkPos.x,
+                                                       PathFindWorkPos.y) <=
                                         Me->size * 3)
                                     {
 
@@ -2175,10 +2184,10 @@ void UpdateNPC()
                                 if (zitz->cbaseid == 666333 && zitz->health > 0)
                                 {
                                     int one =
-                                        Math.Closeish(Me->xpos, Me->ypos,
-                                                      zitz->xpos, zitz->ypos);
-                                    int two = Math.Closeish(Me->xpos, Me->ypos,
-                                                            closx, closy);
+                                        Math::Closeish(Me->xpos, Me->ypos,
+                                                       zitz->xpos, zitz->ypos);
+                                    int two = Math::Closeish(Me->xpos, Me->ypos,
+                                                             closx, closy);
                                     if (one < two)
                                     {
                                         closx = zitz->xpos;
@@ -2190,9 +2199,9 @@ void UpdateNPC()
                         if (first == false)
                         {
                             Me->ShootPos = sf::Vector2f(closx, closy);
-                            if (Math.Closeish(Me->xpos, Me->ypos,
-                                              Me->ShootPos.x,
-                                              Me->ShootPos.y) <= Me->viewrange)
+                            if (Math::Closeish(Me->xpos, Me->ypos,
+                                               Me->ShootPos.x,
+                                               Me->ShootPos.y) <= Me->viewrange)
                             {
                                 Me->Attacking = true;
                             }
@@ -2214,7 +2223,7 @@ void UpdateNPC()
                         std::string AtkType;
                         Me->attacktimer =
                             (Me->attacktimerint -
-                             (Math.Clamp(Me->Skills.agility / 10, 10, 100))) *
+                             (Math::Clamp(Me->Skills.agility / 10, 10, 100))) *
                             4;
                         int numba = -1;
                         int numbaz = -1;
@@ -2312,14 +2321,14 @@ void UpdateNPC()
                     std::cout << "Pre 'set' vision. \n";
 
                 bool FoundGoal = false;
-                if (Math.Closeish(Me->TargetPos.x, Me->TargetPos.y, Me->xpos,
-                                  Me->ypos) <= Me->viewrange &&
+                if (Math::Closeish(Me->TargetPos.x, Me->TargetPos.y, Me->xpos,
+                                   Me->ypos) <= Me->viewrange &&
                     Me->cbaseid != -1337)
                 {
 
-                    float Ang = Math.AngleBetweenVectors(
-                        Math.Vec(Me->TargetPos.x, Me->TargetPos.y),
-                        Math.Vec(Me->xpos, Me->ypos));
+                    float Ang = Math::AngleBetweenVectors(
+                        Math::Vec(Me->TargetPos.x, Me->TargetPos.y),
+                        Math::Vec(Me->xpos, Me->ypos));
                     float MyAngle = Me->angle;
                     float difference = abs(Ang - MyAngle);
                     if (difference > 180.0f)
@@ -2350,16 +2359,16 @@ void UpdateNPC()
                         int z = currentz;
                         if (sunmap[z][i][t] != -1)
                         {
-                            if (Math.Closeish((i * GridSize) + 10,
-                                              (t * GridSize) + 10, Me->xpos,
-                                              Me->ypos) <= Me->viewrange &&
+                            if (Math::Closeish((i * GridSize) + 10,
+                                               (t * GridSize) + 10, Me->xpos,
+                                               Me->ypos) <= Me->viewrange &&
                                 Me->cbaseid != -1337)
                             {
 
-                                float Ang = Math.AngleBetweenVectors(
-                                    Math.Vec((i * GridSize) + 10,
-                                             (t * GridSize) + 10),
-                                    Math.Vec(Me->xpos, Me->ypos));
+                                float Ang = Math::AngleBetweenVectors(
+                                    Math::Vec((i * GridSize) + 10,
+                                              (t * GridSize) + 10),
+                                    Math::Vec(Me->xpos, Me->ypos));
                                 float MyAngle = Me->angle;
                                 float difference = abs(Ang - MyAngle);
                                 if (difference > 180.0f)
@@ -2368,7 +2377,7 @@ void UpdateNPC()
                                 }
                                 if (difference >= -90.0f && difference <= 90.0f)
                                 {
-                                    /*if(gridposTrace(Me->xpos,Me->ypos,(i*GridSize)+10,(t*GridSize)+10,Me->id,Math.Vec((i*GridSize)+10,(t*GridSize)+10)) == true)
+                                    /*if(gridposTrace(Me->xpos,Me->ypos,(i*GridSize)+10,(t*GridSize)+10,Me->id,Math::Vec((i*GridSize)+10,(t*GridSize)+10)) == true)
                                         {
                                              sunmap[z][i][t] = 255;
                                              //Effectz.CreateCircle((i*20)+10,(t*20)+10,2,White);
@@ -2422,8 +2431,8 @@ void UpdateNPC()
         for(iList = sList.begin(); iList != sList.end(); iList++){
             float NpcPosX = npclist.at(*iList).xpos;
             float NpcPosY = npclist.at(*iList).ypos;
-            if( Math.Closeish(Me->TargetPos.x,Me->TargetPos.y,Me->xpos,Me->ypos) <= Me->viewrange ){
-                float Ang = Math.AngleBetweenVectors(Math.Vec(Me->TargetPos.x,Me->TargetPos.y),Math.Vec(Me->xpos,Me->ypos));
+            if( Math::Closeish(Me->TargetPos.x,Me->TargetPos.y,Me->xpos,Me->ypos) <= Me->viewrange ){
+                float Ang = Math::AngleBetweenVectors(Math::Vec(Me->TargetPos.x,Me->TargetPos.y),Math::Vec(Me->xpos,Me->ypos));
                 if(Ang >= Me->angle-90 && Ang <= Me->angle+90){
 
                     std::cout << Me->name << Me->id << " is facing " << npclist.at(*iList).name <<npclist.at(*iList).id << std::endl;
@@ -2451,9 +2460,9 @@ void UpdateNPC()
                         int z = currentz;
                         if(sunmap[z][i][t] != -1)
                         {
-                            if( Math.Closeish((i*GridSize)+10,(t*GridSize)+10,Me->xpos,Me->ypos) <= Me->viewrange && Me->cbaseid != -1337)
+                            if( Math::Closeish((i*GridSize)+10,(t*GridSize)+10,Me->xpos,Me->ypos) <= Me->viewrange && Me->cbaseid != -1337)
                             {
-                                float Ang = Math.AngleBetweenVectors(Math.Vec((i*GridSize)+10,(t*GridSize)+10),Math.Vec(Me->xpos,Me->ypos));
+                                float Ang = Math::AngleBetweenVectors(Math::Vec((i*GridSize)+10,(t*GridSize)+10),Math::Vec(Me->xpos,Me->ypos));
                                 float MyAngle = Me->angle;
                                 float difference = abs(Ang - MyAngle);
                                 if (difference > 180.0f)
@@ -2462,7 +2471,7 @@ void UpdateNPC()
                                 }
                                 if(difference >= -90.0f && difference <= 90.0f)
                                 {
-                                    if(gridposTrace(Me->xpos,Me->ypos,(i*GridSize)+10,(t*GridSize)+10,Me->id,Math.Vec((i*GridSize)+10,(t*GridSize)+10)) == true)
+                                    if(gridposTrace(Me->xpos,Me->ypos,(i*GridSize)+10,(t*GridSize)+10,Me->id,Math::Vec((i*GridSize)+10,(t*GridSize)+10)) == true)
                                     {
                                         sunmap[z][i][t] = 255;
                                         //Effectz.CreateCircle((i*20)+10,(t*20)+10,2,White);
@@ -2489,17 +2498,17 @@ void UpdateNPC()
             }
             if ((Me->target != "None" && Me->AtTarget) ||
                 (Me->target != "None" &&
-                 Math.Closeish(Me->xpos, Me->ypos, Me->TargetPos.x,
-                               Me->TargetPos.y) <= Me->size))
+                 Math::Closeish(Me->xpos, Me->ypos, Me->TargetPos.x,
+                                Me->TargetPos.y) <= Me->size))
             {
                 if (GetItemVectorId(Me->TargetId) != -1)
                 {
                     auto ItemItr = worlditems.begin();
                     std::advance(ItemItr, GetItemVectorId(Me->TargetId));
 
-                    //if(Math.Closeish(Me->xpos,Me->ypos,worlditems.at(GetItemVectorId(Me->TargetId)).xpos,worlditems.at(GetItemVectorId(Me->TargetId)).ypos) <= Me->reach && worlditems.at(GetItemVectorId(Me->TargetId)).Pickupable == true)
-                    if (Math.Closeish(Me->xpos, Me->ypos, (*ItemItr).xpos,
-                                      (*ItemItr).ypos) <= Me->reach &&
+                    //if(Math::Closeish(Me->xpos,Me->ypos,worlditems.at(GetItemVectorId(Me->TargetId)).xpos,worlditems.at(GetItemVectorId(Me->TargetId)).ypos) <= Me->reach && worlditems.at(GetItemVectorId(Me->TargetId)).Pickupable == true)
+                    if (Math::Closeish(Me->xpos, Me->ypos, (*ItemItr).xpos,
+                                       (*ItemItr).ypos) <= Me->reach &&
                         (*ItemItr).Pickupable == true)
                     {
                         try
@@ -2525,7 +2534,7 @@ void UpdateNPC()
                     {
                         if (GetItemVectorId(Me->TargetId) != -1)
                         {
-                            if (Math.Closeish(
+                            if (Math::Closeish(
                                     Me->xpos, Me->ypos,
                                     (*ListGet(worlditems,
                                               GetItemVectorId(Me->TargetId)))
@@ -2552,7 +2561,7 @@ void UpdateNPC()
                     {
                         if (GetItemVectorId(Me->TargetId) != -1)
                         {
-                            if (Math.Closeish(
+                            if (Math::Closeish(
                                     Me->xpos, Me->ypos,
                                     (*ListGet(worlditems,
                                               GetItemVectorId(Me->TargetId)))
@@ -2588,7 +2597,7 @@ void UpdateNPC()
                     {
                         if (GetItemVectorId(Me->TargetId) != -1)
                         {
-                            if (Math.Closeish(
+                            if (Math::Closeish(
                                     Me->xpos, Me->ypos,
                                     (*ListGet(worlditems,
                                               GetItemVectorId(Me->TargetId)))
@@ -2630,16 +2639,16 @@ void UpdateNPC()
                     (Me->movetimerint +
                      Me->movetimer); // TODO: Figure out why I added 0 to this, Year later: It was because movetimer may be less than 0, I wanted the next to turn happen as soon as possible due to it.
                 if (Me->target != "None" && Me->NeedsPath == false &&
-                    Math.Vec(Me->xpos, Me->ypos) != Me->TargetPos)
+                    Math::Vec(Me->xpos, Me->ypos) != Me->TargetPos)
                 { // Walk Move
                     if (Me->Attacking && Me->HasWeapon("Gun") &&
-                        Math.Closeish(Me->xpos, Me->ypos, Me->TargetPos.x,
-                                      Me->TargetPos.y) < Me->viewrange)
+                        Math::Closeish(Me->xpos, Me->ypos, Me->TargetPos.x,
+                                       Me->TargetPos.y) < Me->viewrange)
                     {
                     }
                     else if (Me->Attacking && Me->HasWeapon("Sword") &&
-                             Math.Closeish(Me->xpos, Me->ypos, Me->TargetPos.x,
-                                           Me->TargetPos.y) < 10)
+                             Math::Closeish(Me->xpos, Me->ypos, Me->TargetPos.x,
+                                            Me->TargetPos.y) < 10)
                     {
                     }
                     else
@@ -2652,7 +2661,7 @@ void UpdateNPC()
                     }
                 }
                 if (Me->NeedsPath == true &&
-                    Math.Vec(Me->xpos, Me->ypos) != Me->TargetPos)
+                    Math::Vec(Me->xpos, Me->ypos) != Me->TargetPos)
                 { // Acting on Path Finding.
                     if (randz(0, 20) < 3)
                     {
@@ -2716,8 +2725,8 @@ void UpdateNPC()
 
                     Me->PathFinding.MyReadPath(1, Me->xpos, Me->ypos,
                                                Me->moverate);
-                    Me->DirMove(Math.Vec(Me->PathFinding.MyxPath,
-                                         Me->PathFinding.MyyPath));
+                    Me->DirMove(Math::Vec(Me->PathFinding.MyxPath,
+                                          Me->PathFinding.MyyPath));
 
                     Con("Post ReadPath");
 
@@ -2778,8 +2787,8 @@ void UpdateNPC()
                  Item++)
             {
                 if (Item->type == 4 &&
-                    Math.Exceed(Me->hunger + Item->hungervalue,
-                                Me->maxhunger) == false &&
+                    Math::Exceed(Me->hunger + Item->hungervalue,
+                                 Me->maxhunger) == false &&
                     true == false)
                 {
                     //if(Item->hungervalue > 0){ Me->fillhunger(1); Item->hungervalue--;}
@@ -2798,8 +2807,8 @@ void UpdateNPC()
                     ChatBox.AddChat(ChtStr, sf::Color(150, 150, 0));
                 }
                 if (Item->type == 5 &&
-                    Math.Exceed(Me->thirst + Item->thirstvalue,
-                                Me->maxthirst) == false &&
+                    Math::Exceed(Me->thirst + Item->thirstvalue,
+                                 Me->maxthirst) == false &&
                     true == false)
                 {
                     //if(Item->hungervalue > 0){ Me->fillhunger(1); Item->hungervalue--;}
@@ -2848,11 +2857,11 @@ void UpdateNPC()
                 std::cout << "Post Inventory Cleanup. \n";
 
         } // End of CanMove
-        //Me->angle = Math.AngleBetweenVectors(Math.Vec(TempXpos,TempYpos),Math.Vec(Me->xpos,Me->ypos))-180;
-        Me->angle = Math.AngleBetweenVectors(Me->TargetPos,
-                                             Math.Vec(Me->xpos, Me->ypos));
+        //Me->angle = Math::AngleBetweenVectors(Math::Vec(TempXpos,TempYpos),Math::Vec(Me->xpos,Me->ypos))-180;
+        Me->angle = Math::AngleBetweenVectors(Me->TargetPos,
+                                              Math::Vec(Me->xpos, Me->ypos));
         Me->MomMove();
-        //float f=Math.AngleBetweenVectors(sf::Vector2f(Me->xpos,Me->ypos), Me->TargetPos);Me->img.setRotation(f);
+        //float f=Math::AngleBetweenVectors(sf::Vector2f(Me->xpos,Me->ypos), Me->TargetPos);Me->img.setRotation(f);
         if (Debug)
             std::cout << Me->name << Me->id << " is done. \n";
 
@@ -3421,8 +3430,8 @@ int main()
 
             for (auto &worlditem : worlditems)
             {
-                if (Math.Closeish(MousePos.x, MousePos.y, (worlditem).xpos,
-                                  (worlditem).ypos) <= 10)
+                if (Math::Closeish(MousePos.x, MousePos.y, (worlditem).xpos,
+                                   (worlditem).ypos) <= 10)
                 {
                     std::cout << "Found; " << (worlditem).name << std::endl;
                     //fSleep(2);
@@ -4261,9 +4270,9 @@ int main()
             { // Giving Orders
                 npclist.at(MyTarget).TargetPos = MousePos;
                 npclist.at(MyTarget).action = "Orders";
-                if (Math.Closeish(npclist.at(MyTarget).xpos,
-                                  npclist.at(MyTarget).ypos, MousePos.x,
-                                  MousePos.y) <= 10)
+                if (Math::Closeish(npclist.at(MyTarget).xpos,
+                                   npclist.at(MyTarget).ypos, MousePos.x,
+                                   MousePos.y) <= 10)
                 {
                     npclist.at(MyTarget).action = "Act";
                     npclist.at(MyTarget).NeedsPath = false;
@@ -4273,8 +4282,8 @@ int main()
                 for (Item = worlditems.begin(); Item != worlditems.end();
                      Item++)
                 {
-                    if (Math.Closeish(MousePos.x, MousePos.y, Item->xpos,
-                                      Item->ypos) <= 10)
+                    if (Math::Closeish(MousePos.x, MousePos.y, Item->xpos,
+                                       Item->ypos) <= 10)
                     {
                         GC.MenuType = "CritterContext";
                     }
@@ -4288,7 +4297,7 @@ int main()
             }
             else
             {
-                GC.MenuPos = Math.Vec(-10000, -10000);
+                GC.MenuPos = Math::Vec(-10000, -10000);
             }
         } //=============================================================================*End of Local*========================================================================
         if (GC.Phase == "Solar")
@@ -4488,7 +4497,7 @@ int main()
             Effectz.CreateCircle(xanchor, yanchor, 5, Blue);
             Effectz.CreateCircle(Xxx, Yyy, 5, White);
 
-            int distence = Math.Closeish(xanchor, yanchor, Xxx, Yyy);
+            int distence = Math::Closeish(xanchor, yanchor, Xxx, Yyy);
             cText.CreateText(xanchor, yanchor, 11, White, "Distence:", "",
                              distence);
             cText.CreateText(xanchor, yanchor + 11, 11, White, "Radius:", "",
@@ -5124,33 +5133,33 @@ int main()
             cText.CreateText(
                 Globals.TopLeft.x + 2, Globals.TopLeft.y + (HUDZ++) * 11, 11,
                 White, "FactionOwned: ",
-                WorldMap[Math.Clamp(abs(MousePos.x / 20), 0,
-                                    99)][Math.Clamp(abs(MousePos.y / 20), 0,
-                                                    99)].Owner);
+                WorldMap[Math::Clamp(abs(MousePos.x / 20), 0,
+                                     99)][Math::Clamp(abs(MousePos.y / 20), 0,
+                                                      99)].Owner);
             cText.CreateText(
                 Globals.TopLeft.x + 2, Globals.TopLeft.y + (HUDZ++) * 11, 11,
                 White, "FactionMembers: ", "",
-                FactionMembers(WorldMap[Math.Clamp(
+                FactionMembers(WorldMap[Math::Clamp(
                     abs(MousePos.x / 20), 0,
-                    99)][Math.Clamp(abs(MousePos.y / 20), 0, 99)].Owner));
+                    99)][Math::Clamp(abs(MousePos.y / 20), 0, 99)].Owner));
             cText.CreateText(
                 Globals.TopLeft.x + 2, Globals.TopLeft.y + (HUDZ++) * 11, 11,
                 White, "FactionAggression: ", "",
-                FactionAggression(WorldMap[Math.Clamp(
+                FactionAggression(WorldMap[Math::Clamp(
                     abs(MousePos.x / 20), 0,
-                    99)][Math.Clamp(abs(MousePos.y / 20), 0, 99)].Owner));
+                    99)][Math::Clamp(abs(MousePos.y / 20), 0, 99)].Owner));
             cText.CreateText(
                 Globals.TopLeft.x + 2, Globals.TopLeft.y + (HUDZ++) * 11, 11,
                 White, "FactionTerritories: ", "",
-                FactionTerritories(WorldMap[Math.Clamp(
+                FactionTerritories(WorldMap[Math::Clamp(
                     abs(MousePos.x / 20), 0,
-                    99)][Math.Clamp(abs(MousePos.y / 20), 0, 99)].Owner));
+                    99)][Math::Clamp(abs(MousePos.y / 20), 0, 99)].Owner));
             cText.CreateText(
                 Globals.TopLeft.x + 2, Globals.TopLeft.y + (HUDZ++) * 11, 11,
                 White, "FactionPower: ", "",
-                FactionPower(WorldMap[Math.Clamp(
+                FactionPower(WorldMap[Math::Clamp(
                     abs(MousePos.x / 20), 0,
-                    99)][Math.Clamp(abs(MousePos.y / 20), 0, 99)].Owner));
+                    99)][Math::Clamp(abs(MousePos.y / 20), 0, 99)].Owner));
 
             cText.CreateText(Globals.TopLeft.x + 2,
                              Globals.TopLeft.y + (HUDZ++) * 11, 11, White,
@@ -5223,8 +5232,8 @@ int main()
                                              GC.MenuPos.y + (iY * 11), 11, Cyan,
                                              "Enter City");
                             int Butt = CreateButton(
-                                Math.Vec(GC.MenuPos.x + 90,
-                                         (GC.MenuPos.y + (iY * 11)) + 5),
+                                Math::Vec(GC.MenuPos.x + 90,
+                                          (GC.MenuPos.y + (iY * 11)) + 5),
                                 5, Red);
                             if (ButtonClicked(Butt))
                             {
@@ -5289,8 +5298,8 @@ int main()
                                              GC.MenuPos.y + (iY * 11), 11, Cyan,
                                              "Enter Land");
                             int Butt = CreateButton(
-                                Math.Vec(GC.MenuPos.x + 90,
-                                         (GC.MenuPos.y + (iY * 11)) + 5),
+                                Math::Vec(GC.MenuPos.x + 90,
+                                          (GC.MenuPos.y + (iY * 11)) + 5),
                                 5, Red);
                             if (ButtonClicked(Butt))
                             {
@@ -5304,7 +5313,7 @@ int main()
             }
             else
             {
-                GC.MenuPos = Math.Vec(-10000, -10000);
+                GC.MenuPos = Math::Vec(-10000, -10000);
             }
             debug("Done with world.");
         }
@@ -5587,8 +5596,8 @@ int main()
                         tfunz++;
                         if (Key.LMB == true)
                         {
-                            int Dist = Math.Closeish(MousePos.x, MousePos.y,
-                                                     zit->xpos, zit->ypos);
+                            int Dist = Math::Closeish(MousePos.x, MousePos.y,
+                                                      zit->xpos, zit->ypos);
                             if (Dist <= GridSize)
                             {
                                 MyTarget = tfunz;
@@ -5858,8 +5867,8 @@ int main()
                 for (Items = worlditems.begin(); Items != worlditems.end();
                      Items++)
                 {
-                    if (Math.Closeish(MousePos.x, MousePos.y, Items->xpos,
-                                      Items->ypos) <= 10)
+                    if (Math::Closeish(MousePos.x, MousePos.y, Items->xpos,
+                                       Items->ypos) <= 10)
                     {
                         cText.CreateText(Items->xpos, Items->ypos, 11, White,
                                          Items->name, " ID:", Items->id);

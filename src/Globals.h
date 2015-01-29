@@ -125,20 +125,18 @@ bool AABB(int Pointx, int Pointy, int Left, int Right, int Up, int Down);
 bool AABB(sf::Vector2f Point, int Left, int Right, int Up, int Down);
 int CloseishS(int orix, int tarx);
 
-class Math
+namespace Math
 {
-public:
-    int Closeish(int orix, int oriy, int tarx, int tary);
-    int Closeisha(int orix, int oriy, int tarx, int tary);
-    int DistanceTrace(int xa, int ya, int xb, int yb);
-    int Closeishxx(int orix, int oriy, int tarx, int tary);
-    bool Exceed(float Value, float Limit);
-    int Clamp(int Value, int MinValue, int MaxValue);
-    float AngleBetweenVectors(sf::Vector2f a, sf::Vector2f b);
-    sf::Vector2f CircleRandz(int xpos, int ypos, int radius);
-    sf::Vector2f Vec(float X, float Y);
-};
-extern Math Math;
+int Closeish(int orix, int oriy, int tarx, int tary);
+int Closeisha(int orix, int oriy, int tarx, int tary);
+int DistanceTrace(int xa, int ya, int xb, int yb);
+int Closeishxx(int orix, int oriy, int tarx, int tary);
+bool Exceed(float Value, float Limit);
+int Clamp(int Value, int MinValue, int MaxValue);
+float AngleBetweenVectors(sf::Vector2f a, sf::Vector2f b);
+sf::Vector2f CircleRandz(int xpos, int ypos, int radius);
+sf::Vector2f Vec(float X, float Y);
+}
 
 /// Get the absolute of a numeric value,
 /// converted to size_t, suitable for indexing

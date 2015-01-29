@@ -406,8 +406,8 @@ item *FindClosestItemPtr(int Orix, int Oriy, std::string TarItem, int Gxpos,
         {
             if ((*i).name == TarItem)
             {
-                int one = Math.Closeish(Orix, Oriy, (*i).xpos, (*i).ypos);
-                int two = Math.Closeish(Orix, Oriy, closx, closy);
+                int one = Math::Closeish(Orix, Oriy, (*i).xpos, (*i).ypos);
+                int two = Math::Closeish(Orix, Oriy, closx, closy);
                 if (one < two)
                 {
                     closx = (*i).xpos;

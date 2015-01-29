@@ -309,7 +309,6 @@ sf::Vector2f Math::Vec(float X, float Y)
     sf::Vector2f Returns(X, Y);
     return Returns;
 }
-class Math Math;
 
 int StringFindNumber(std::string Stringy, std::string Term)
 {

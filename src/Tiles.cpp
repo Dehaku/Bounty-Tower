@@ -300,7 +300,7 @@ void GenerateChunk(std::string type, int planet, sf::Vector2i Cords,
                 }
                 else if (randz(1, 20) == 300)
                 {
-                    //int xsize = randz(i,i-Math.Clamp(32,0,Math.i) );
+                    //int xsize = randz(i,i-Math::Clamp(32,0,Math::i) );
                     //int ysize = randz(5,29);
                 }
                 if (randz(1, 10000) == 1)
@@ -599,7 +599,7 @@ void DrawWorldTiles()
                     ((t * 20) + 20) - 1, sf::Color(0, 0, 0, 0), 1,
                     sf::Color(
                         255, 0, 0,
-                        Math.Clamp(10 * WorldMap[i][t].Infected, 0, 255)));
+                        Math::Clamp(10 * WorldMap[i][t].Infected, 0, 255)));
             }
             if (WorldMap[i][t].Owner != "")
             {
