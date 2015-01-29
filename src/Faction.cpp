@@ -1508,17 +1508,15 @@ void cNpcManager::InitializeCritters()
             }
 
             std::string Imagery = StringFindString(line, "[Image:");
-            std::vector<cImageHolder>::iterator i;
             if (Debug)
             {
                 std::cout << "Pre Imagery \n";
             }
-            for (i = imagemanager.GlobalImage.begin();
-                 i != imagemanager.GlobalImage.end(); i++)
+            for (auto const &image : imagemanager.GlobalImage)
             {
-                if (i->name == Imagery)
+                if (image.name == Imagery)
                 {
-                    Critter.img.setTexture(i->Image);
+                    Critter.img.setTexture(image.Image);
                     //Critter.img.SetSubRect(sf::IntRect(0, 0, i->Image.GetWidth(),i->Image.GetHeight()));
                     //Critter.img.SetCenter(i->Image.GetWidth()/2,i->Image.GetHeight()/2);
                 }
