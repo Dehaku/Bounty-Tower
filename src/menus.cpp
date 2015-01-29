@@ -623,14 +623,8 @@ MenuPopUp() // TODO: Add functionality to allow you to press 1-9 to activate the
                     BS, BSY, ButCol, "Close Menu");
                 if (SquareButtonClicked(Butt) || Key.num1Time == 1)
                 {
-
-                    std::list<item>::iterator Item;
-                    for (Item = worlditems.begin(); Item != worlditems.end();
-                         Item++)
-                    {
-                        GC.MenuPos = sf::Vector2f(-10000, -10000);
-                        GC.MenuType = "NULL";
-                    }
+                    GC.MenuPos = sf::Vector2f(-10000, -10000);
+                    GC.MenuType = "NULL";
 
                     fSleep(0.2);
                     break;
