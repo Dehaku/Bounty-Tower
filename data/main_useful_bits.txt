@@ -1,0 +1,42 @@
+if (true == false)
+    { // Random useful bits of code.
+        // try{ }catch (std::exception& e) { std::cout << "Something went wrong in \n"; }
+        // angle = MahNumba-(PI/180)*(atan2f(xpos-tarx,ypos-tary));
+        //cText.CreateText(Pos1,Pos2,White,"","",-6698,"","",-6698,"","",-6698,1,11,0);
+        //char *a=new char[list.at(aim).name.size()+1];a[list.at(aim).name.size()]=0;memcpy(a,list.at(aim).name.c_str(),list.at(aim).name.size());
+        /*
+    float Xxx = 0; // global
+    float Yyy = 0; // global
+    int speeds = 1; // global
+    int xanchor = 0; // global
+    int yanchor = 0; // global
+    float Degrees = randz(.0f,359.0f); // global
+        Degrees += speeds; // Should probably leave speed at 1, If not less.
+        int radius = 400;
+        Xxx = xanchor + cosf(Degrees * PI/180) * radius;
+		Yyy = yanchor + sinf(Degrees * PI/180) * radius;
+        Effectz.CreateCircle(Xxx,Yyy,5,White);
+        */
+
+        if (true == false)
+        { // A perfect circle generator, It still needs adjusting to get angles to be taken off of it.
+/*for (int i = 0; i <= 2*circle_radius; i++){
+    for (int j = 0; j <= 2*circle_radius; j++)
+    {
+        float distance_to_centre = sqrt(( (i) - circle_radius)*( (i) - circle_radius) + ( (j) - circle_radius)*( (j) - circle_radius));
+        if (distance_to_centre > circle_radius-0.5 && distance_to_centre < circle_radius+0.5){
+
+
+
+            if(Key.comma){
+                //gridposTrace(Me->xpos,Me->ypos,(i+Me->xpos)-radius,(j+Me->ypos)-radius,Me->id,sf::Vector2f(900,900));
+                //Effectz.CreateCircle( (i+Me->xpos)-radius,(j+Me->ypos)-radius,1,White);
+                }
+
+
+            }
+        else{
+        }
+    }
+}*/}
+    }
