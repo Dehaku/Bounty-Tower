@@ -6,8 +6,6 @@
 
 #include <SFML/Graphics.hpp>
 
-extern sf::RenderWindow App;
-
 class button
 {
 public:

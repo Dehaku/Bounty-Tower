@@ -5,6 +5,8 @@
 class ChatBox ChatBox;
 cTextList cText;
 
+extern sf::RenderWindow App;
+
 void cTextList::Setup()
 {
     sString.setColor(Color);

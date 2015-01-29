@@ -7,6 +7,8 @@
 
 GalaxyController GC;
 
+extern sf::RenderWindow App;
+
 GalaxyController::GalaxyController()
 {
     Debug = false;

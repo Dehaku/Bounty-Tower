@@ -16,6 +16,7 @@ std::vector<NPC> WorldCritters;
 std::vector<Faction> UniFact;
 Faction PF;
 cNpcManager npcmanager;
+extern sf::RenderWindow App;
 
 void NPC::BodyDefinition::BodyPartFind(std::string Part, int amount)
 {

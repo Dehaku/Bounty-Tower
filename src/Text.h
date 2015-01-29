@@ -3,8 +3,6 @@
 
 #include <SFML/Graphics.hpp>
 
-extern sf::RenderWindow App;
-
 class cTextList
 {
 public:
