@@ -1581,7 +1581,7 @@ std::set<int> NPCTrace(int xa, int ya, int xb, int yb, int id,
             }
         }
     }
-    if (SetID.size() == 0)
+    if (SetID.empty())
     {
         SetID.insert(-1);
     }
