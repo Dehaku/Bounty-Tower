@@ -155,10 +155,8 @@ bool Inbetween(float First, float Second, float Number)
 
 int randz(int minValue, int maxValue)
 {
-
-    maxValue =
-        maxValue +
-        1; // Apparently this method of randomization falls short one number.
+    // Apparently this method of randomization falls short one number.
+    maxValue = maxValue + 1;
     //if(Debug){ std::cout << "randz(" << minValue << "," << maxValue << ") \n";}
     if (minValue == maxValue)
     {
@@ -171,8 +169,8 @@ int randz(int minValue, int maxValue)
 
 bool AABB(int Pointx, int Pointy, int Left, int Right, int Up, int Down)
 {
-    sf::Vector2f Point(
-        Pointx, Pointy); // Point(100,100), Up 80, Down 120, Left, 80, Right 120
+    // Point(100,100), Up 80, Down 120, Left, 80, Right 120
+    sf::Vector2f Point(Pointx, Pointy);
     if (Point.x >= Left && Point.x <= Right && Point.y >= Up && Point.y <= Down)
         return true;
     return false;
@@ -299,13 +297,15 @@ sf::Vector2f Math::CircleRandz(int xpos, int ypos, int radius)
     {
         Xxx = xanchor + cosf(Degrees * PI / 180) * radius;
         Yyy = yanchor + sinf(Degrees * PI / 180) * radius;
-        Degrees += speeds; // Should probably leave speed at 1, If not less.
+        // Should probably leave speed at 1, If not less.
+        Degrees += speeds;
     }
     return sf::Vector2f(Xxx, Yyy);
 }
 
 sf::Vector2f Math::Vec(float X, float Y)
-{ // This may seem pointless, But I like my stuff compressed.
+{
+    // This may seem pointless, But I like my stuff compressed.
     sf::Vector2f Returns(X, Y);
     return Returns;
 }
@@ -401,17 +401,15 @@ std::vector<std::string> StringFindElements(std::string Source,
 
         if (FirstRun)
         {
-            Element.append(
-                Source, tStart,
-                tEnd -
-                    tStart); // Ignoring the later +1, since we don't want it ignoring the first character if it's not a seperater
+            // Ignoring the later +1, since we don't want it ignoring the
+            // first character if it's not a seperater
+            Element.append(Source, tStart, tEnd - tStart);
             FirstRun = false;
         }
         else
-            Element.append(
-                Source, tStart + 1,
-                tEnd - tStart -
-                    1); // +1 so it ignores the : that was used to find it, -1 since the +1 pushed it over, causing it to grab the 'next' :
+            // +1 so it ignores the : that was used to find it,
+            // -1 since the +1 pushed it over, causing it to grab the 'next' :
+            Element.append(Source, tStart + 1, tEnd - tStart - 1);
 
         Returns.push_back(Element);
         tStart = tEnd;
@@ -563,7 +561,8 @@ float stof(std::string String) // String to Float.
 */
 
 float PercentIs(float Value, float Percentage)
-{ // Divide the return by 100 for maths.
+{
+    // Divide the return by 100 for maths.
     if (Value == 0)
         Value = 0.000000001;
     if (Percentage == 0)
@@ -592,8 +591,9 @@ Globes Globals;
 
 std::string GenerateName(int MinLength, int MaxLength)
 {
-    std::string
-        Inserter; // TODO: Add a rememberance for the last added letter, and add a 50% chance to NOT do the same letter again.
+    // TODO: Add a rememberance for the last added letter,
+    // and add a 50% chance to NOT do the same letter again.
+    std::string Inserter;
     std::string Name;
     int Length = randz(MinLength, MaxLength);
     bool Vowel = true;
