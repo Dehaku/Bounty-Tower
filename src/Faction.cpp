@@ -197,8 +197,18 @@ void NPC::PathFinding::MyReadPath(int pathfinderID, int currentX, int currentY,
                 MypathLocation = MypathLocation + 1;
         }
         //Read the path data.
-        MyxPath = MyReadPathX(ID, MypathLocation);
-        MyyPath = MyReadPathY(ID, MypathLocation);
+        try
+        {
+            MyxPath = MyReadPathX(ID, MypathLocation);
+            MyyPath = MyReadPathY(ID, MypathLocation);
+        }
+        catch (std::exception const &ex)
+        {
+            // Log the exception and bail out of this function
+            std::cerr << "NPC::PathFinding: " << ex.what();
+            return;
+        }
+
         //If the center of the last path square on the path has been
         //reached then reset.
         if (MypathLocation == MypathLength)
