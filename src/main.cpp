@@ -289,38 +289,19 @@ void UpdateItem()
 
                     for (int ItLength = 0; ItLength != 5; ItLength++)
                     {
-
-                        if (ItLength != 15)
-                            for (int Rot = 1; Rot != 361; Rot++)
-                            {
-                                //int Rot = GX;
-                                int XPos = ((abs(Me->xpos / 20)) +
-                                            cosf(Rot * PI / 180) * ItLength);
-                                int YPos = ((abs(Me->ypos / 20)) +
-                                            sinf(Rot * PI / 180) * ItLength);
-                                //XPos *= 20;
-                                //YPos *= 20;
-
-                                //Effectz.CreateCircle(MousePos.x,MousePos.y,5,Red);
-                                //Effectz.CreateCircle(XPos,YPos,5,White);
-                                Tiles[XPos][YPos][30].Stone();
-                            }
-                        else
+                        for (int Rot = 1; Rot != 361; Rot++)
                         {
-                            for (int Rot = 1; Rot != 361; Rot++)
-                            {
-                                //int Rot = GX;
-                                int XPos = ((abs(Me->xpos / 20)) +
-                                            cosf(Rot * PI / 180) * ItLength);
-                                int YPos = ((abs(Me->ypos / 20)) +
-                                            sinf(Rot * PI / 180) * ItLength);
-                                //XPos *= 20;
-                                //YPos *= 20;
+                            //int Rot = GX;
+                            int XPos = ((abs(Me->xpos / 20)) +
+                                        cosf(Rot * PI / 180) * ItLength);
+                            int YPos = ((abs(Me->ypos / 20)) +
+                                        sinf(Rot * PI / 180) * ItLength);
+                            //XPos *= 20;
+                            //YPos *= 20;
 
-                                //Effectz.CreateCircle(MousePos.x,MousePos.y,5,Red);
-                                //Effectz.CreateCircle(XPos,YPos,5,White);
-                                Tiles[XPos][YPos][30].Stone();
-                            }
+                            //Effectz.CreateCircle(MousePos.x,MousePos.y,5,Red);
+                            //Effectz.CreateCircle(XPos,YPos,5,White);
+                            Tiles[XPos][YPos][30].Stone();
                         }
                     }
 
