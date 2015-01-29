@@ -146,16 +146,15 @@ int CreateSquareButton(sf::Vector2f vPos, int iSizex, int iSizey,
 
 bool ButtonClicked(int id)
 {
-    std::vector<button>::iterator i;
-    for (i = vButtonList.begin(); i != vButtonList.end(); i++)
+    for (auto &button : vButtonList)
     {
-        if (i->id == id)
+        if (button.id == id)
         {
-            if (Math::Closeish(MousePos.x, MousePos.y, i->vPos.x, i->vPos.y) <
-                    i->iSize &&
+            if (Math::Closeish(MousePos.x, MousePos.y, button.vPos.x,
+                               button.vPos.y) < button.iSize &&
                 (Key.LMBTime == 1 || Key.LMBTime > 20))
             {
-                i->BeenPressed = true;
+                button.BeenPressed = true;
                 std::cout << "Pressed! \n";
                 Globals.ButtonClicked = true;
                 return true;
