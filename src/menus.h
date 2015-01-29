@@ -6,11 +6,13 @@
 
 #include <SFML/Graphics.hpp>
 
+// TODO: Add a tooltip to the buttons, When you hover over it,
+// it will display some text
+
 class button
 {
 public:
-    bool
-        BeenPressed; // TODO: Add a tooltip to the buttons, When you hover over it, it will display some text
+    bool BeenPressed;
     int iSize;
     sf::Vector2f vPos;
     sf::Color Color;
@@ -29,8 +31,7 @@ public:
 class squarebutton
 {
 public:
-    bool
-        BeenPressed; // TODO: Add a tooltip to the buttons, When you hover over it, it will display some text
+    bool BeenPressed;
     int iSizex;
     int iSizey;
     sf::Vector2f vPos;
