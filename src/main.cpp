@@ -3944,7 +3944,6 @@ int main()
                     {
                         npclist.at(i).xpos =
                             npclist.at(i).xpos - 640 - 640 - 640;
-                        npclist.at(i).ypos = npclist.at(i).ypos;
                         SaveNPC(500, sf::Vector2i(currentregionx + 2,
                                                   currentregiony - 1),
                                 npclist.at(i));
@@ -3975,7 +3974,6 @@ int main()
                     else if (npclist.at(i).xpos < 0 && npclist.at(i).ypos < 640)
                     {
                         npclist.at(i).xpos = npclist.at(i).xpos + 640;
-                        npclist.at(i).ypos = npclist.at(i).ypos;
                         SaveNPC(500, sf::Vector2i(currentregionx - 2,
                                                   currentregiony - 1),
                                 npclist.at(i));
@@ -3994,7 +3992,6 @@ int main()
                     }
                     else if (npclist.at(i).ypos < 0 && npclist.at(i).xpos < 640)
                     {
-                        npclist.at(i).xpos = npclist.at(i).xpos;
                         npclist.at(i).ypos = npclist.at(i).ypos + 640;
                         SaveNPC(500, sf::Vector2i(currentregionx - 1,
                                                   currentregiony - 2),
@@ -4016,7 +4013,6 @@ int main()
                     else if (npclist.at(i).ypos > 1920 &&
                              npclist.at(i).xpos < 640)
                     {
-                        npclist.at(i).xpos = npclist.at(i).xpos;
                         npclist.at(i).ypos =
                             npclist.at(i).ypos - 640 - 640 - 640;
                         SaveNPC(500, sf::Vector2i(currentregionx - 1,
@@ -4103,7 +4099,6 @@ int main()
                     if ((worlditem).xpos > 1920 && (worlditem).ypos < 640)
                     {
                         (worlditem).xpos = (worlditem).xpos - 640 - 640 - 640;
-                        (worlditem).ypos = (worlditem).ypos;
                         SaveItem(500, sf::Vector2i(currentregionx + 2,
                                                    currentregiony - 1),
                                  (worlditem));
@@ -4131,7 +4126,6 @@ int main()
                     else if ((worlditem).xpos < 0 && (worlditem).ypos < 640)
                     {
                         (worlditem).xpos = (worlditem).xpos + 640;
-                        (worlditem).ypos = (worlditem).ypos;
                         SaveItem(500, sf::Vector2i(currentregionx - 2,
                                                    currentregiony - 1),
                                  (worlditem));
@@ -4149,7 +4143,6 @@ int main()
                     }
                     else if ((worlditem).ypos < 0 && (worlditem).xpos < 640)
                     {
-                        (worlditem).xpos = (worlditem).xpos;
                         (worlditem).ypos = (worlditem).ypos + 640;
                         SaveItem(500, sf::Vector2i(currentregionx - 1,
                                                    currentregiony - 2),
@@ -4168,7 +4161,6 @@ int main()
                     }
                     else if ((worlditem).ypos > 1920 && (worlditem).xpos < 640)
                     {
-                        (worlditem).xpos = (worlditem).xpos;
                         (worlditem).ypos = (worlditem).ypos - 640 - 640 - 640;
                         SaveItem(500, sf::Vector2i(currentregionx - 1,
                                                    currentregiony + 2),
