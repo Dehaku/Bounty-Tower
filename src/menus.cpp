@@ -95,11 +95,10 @@ squarebutton::squarebutton()
 
 void Buttons::ButtonPressed()
 {
-    std::vector<button>::iterator i;
-    for (i = vButtonList.begin(); i != vButtonList.end(); i++)
+    for (auto const &button : vButtonList)
     {
-        if (Math::Closeish(MousePos.x, MousePos.y, i->vPos.x, i->vPos.y) <
-            i->iSize)
+        if (Math::Closeish(MousePos.x, MousePos.y, button.vPos.x,
+                           button.vPos.y) < button.iSize)
         {
             std::cout << "Button Click!\n";
         }
