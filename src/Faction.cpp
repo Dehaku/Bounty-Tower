@@ -176,7 +176,6 @@ int NPC::PathFinding::MyReadPathY(int /*pathfinderID*/, int ypathLocation)
 void NPC::PathFinding::MyReadPath(int /*pathfinderID*/, int currentX,
                                   int currentY, int pixelsPerFrame)
 {
-    int ID = 1; //redundant, but makes the following easier to read
     //If a path has been found for the pathfinder	...
     if (MypathStatus == AStarFound)
     {
@@ -194,6 +193,7 @@ void NPC::PathFinding::MyReadPath(int /*pathfinderID*/, int currentX,
         //Read the path data.
         try
         {
+            const int ID = 1;
             MyxPath = MyReadPathX(ID, MypathLocation);
             MyyPath = MyReadPathY(ID, MypathLocation);
         }
