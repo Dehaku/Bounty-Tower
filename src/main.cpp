@@ -4223,12 +4223,10 @@ int main()
                     npclist.at(MyTarget).NeedsPath = false;
                 }
 
-                std::list<item>::iterator Item;
-                for (Item = worlditems.begin(); Item != worlditems.end();
-                     Item++)
+                for (auto const &item : worlditems)
                 {
-                    if (Math::Closeish(MousePos.x, MousePos.y, Item->xpos,
-                                       Item->ypos) <= 10)
+                    if (Math::Closeish(MousePos.x, MousePos.y, item.xpos,
+                                       item.ypos) <= 10)
                     {
                         GC.MenuType = "CritterContext";
                     }
@@ -5753,29 +5751,26 @@ int main()
                 {
                     Effectz.CreateSquare(Nxpos, Nypos, Nxpos + 130, Nypos + 70,
                                          sf::Color(0, 0, 0, 100));
-                    std::list<item>::iterator It;
                     int Yv = Nypos;
-                    for (It = npclist.at(MyTarget).inventory.begin();
-                         It != npclist.at(MyTarget).inventory.end(); It++)
+                    for (auto const &item : npclist.at(MyTarget).inventory)
                     { // Listing all the current items from this critters inventory.
-                        if (It->InsidePart.size() == 0)
+                        if (item.InsidePart.size() == 0)
                         {
                             cText.CreateText(Nxpos + 65, Yv, 11, White,
-                                             It->name, ": ", It->amount);
+                                             item.name, ": ", item.amount);
                             Yv += 10;
                         }
                     }
 
-                    for (It = npclist.at(MyTarget).inventory.begin();
-                         It != npclist.at(MyTarget).inventory.end(); It++)
+                    for (auto const &item : npclist.at(MyTarget).inventory)
                     { // Listing all items from 'inside' the critter.
-                        if (It->InsidePart.size() != 0)
+                        if (item.InsidePart.size() != 0)
                         {
                             cText.CreateText(
                                 Nxpos + 65, Yv, 11, sf::Color(255, 200, 200),
-                                AddString(AddString("Inside ", It->InsidePart),
+                                AddString(AddString("Inside ", item.InsidePart),
                                           " :"),
-                                AddString(It->name, " :"), It->amount);
+                                AddString(item.name, " :"), item.amount);
                             Yv += 10;
                         }
                     }
@@ -5804,15 +5799,13 @@ int main()
 
             //else{MyTargetid = -1;}
             { // Mousing over items will say a wee bit about them.
-                std::list<item>::iterator Items;
-                for (Items = worlditems.begin(); Items != worlditems.end();
-                     Items++)
+                for (auto const &item : worlditems)
                 {
-                    if (Math::Closeish(MousePos.x, MousePos.y, Items->xpos,
-                                       Items->ypos) <= 10)
+                    if (Math::Closeish(MousePos.x, MousePos.y, item.xpos,
+                                       item.ypos) <= 10)
                     {
-                        cText.CreateText(Items->xpos, Items->ypos, 11, White,
-                                         Items->name, " ID:", Items->id);
+                        cText.CreateText(item.xpos, item.ypos, 11, White,
+                                         item.name, " ID:", item.id);
                     }
                 }
             }
