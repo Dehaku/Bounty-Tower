@@ -5,8 +5,6 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 
-#include "Game.h"
-
 // TODO: Add a bool for Any, and have all keys make it true, Press Any Key
 // TODO: Add a Holding integer for each one If Key.Qheld > 10
 extern bool plat;

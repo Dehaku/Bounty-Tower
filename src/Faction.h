@@ -1,7 +1,6 @@
 #ifndef __FACTION_H_INCLUDED__
 #define __FACTION_H_INCLUDED__
 
-#include "Game.h"
 #include "Items.h"
 #include "Effects.h"
 #include "aStarLibrary.h"

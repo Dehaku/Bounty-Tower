@@ -4,8 +4,6 @@
 //#include "keys.h"
 #include <iostream>
 
-#include "Game.h"
-
 const int AStarmapWidth = 100, mapHeight = 100, tileSize = 20, numberPeople = 3;
 const int notfinished = 0, notStarted = 0; // path-related constants
 const int AStarFound = 1, nonexistent = 2;

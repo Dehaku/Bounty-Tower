@@ -16,7 +16,6 @@
 #include <windows.h>
 #endif
 #include <time.h>
-#include "Game.h"
 #include "Items.h"
 #include "Faction.h"
 #include "Tiles.h"

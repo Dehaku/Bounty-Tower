@@ -1,8 +1,6 @@
 #ifndef __IMAGES_H_INCLUDED__
 #define __IMAGES_H_INCLUDED__
 
-#include "Game.h"
-
 #include <SFML/Graphics.hpp>
 
 extern int getdir(std::string dir, std::vector<std::string> &files);

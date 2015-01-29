@@ -1,8 +1,6 @@
 #ifndef __TEXT_H_INCLUDED__
 #define __TEXT_H_INCLUDED__
 
-#include "Game.h"
-
 #include <SFML/Graphics.hpp>
 
 extern sf::RenderWindow App;

@@ -1,9 +1,10 @@
 #ifndef __ITEMS_H_INCLUDED__
 #define __ITEMS_H_INCLUDED__
 
-#include "Game.h"
 #include "Globals.h"
 #include "Images.h"
+
+#include <list>
 
 extern sf::RenderWindow App;
 

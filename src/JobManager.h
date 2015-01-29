@@ -1,7 +1,6 @@
 #ifndef __JOBMANAGER_H_INCLUDED__
 #define __JOBMANAGER_H_INCLUDED__
 
-#include "Game.h"
 #include "Globals.h"
 #include "Items.h"
 

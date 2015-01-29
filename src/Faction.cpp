@@ -1,6 +1,10 @@
 #include "Faction.h"
 #include "filesystemUtils.hpp"
 
+#include <sstream>
+#include <fstream>
+#include <cstring>
+
 Faction *ConFact;
 std::vector<NPC> npclist;
 NPC NPCz;

@@ -3,6 +3,9 @@
 #include "Faction.h"
 #include "filesystemUtils.hpp"
 
+#include <sstream>
+#include <fstream>
+
 Tile Tiles[Grids][Grids][Grids];
 WorldTile WorldMap[100][100];
 Tile vChunk[ChunkSize][ChunkSize][ChunkSize]; // 10223616

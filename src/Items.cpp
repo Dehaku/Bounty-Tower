@@ -1,6 +1,10 @@
 #include "Items.h"
 #include "filesystemUtils.hpp"
 
+#include <fstream>
+#include <sstream>
+#include <iostream>
+
 item myitem;
 std::list<item> worlditems;
 cItemManager itemmanager;

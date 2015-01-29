@@ -1,5 +1,4 @@
 #include "Effects.h"
-#include "Game.h"
 
 #include <cmath>
 

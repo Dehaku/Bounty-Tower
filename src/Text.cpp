@@ -1,5 +1,7 @@
 #include "Text.h"
 
+#include <sstream>
+
 class ChatBox ChatBox;
 cTextList cText;
 
