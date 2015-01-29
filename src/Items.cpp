@@ -1,9 +1,13 @@
 #include "Items.h"
 #include "filesystemUtils.hpp"
+#include "Globals.h"
+#include "Images.h"
 
 #include <fstream>
 #include <sstream>
 #include <iostream>
+
+extern sf::RenderWindow App;
 
 item myitem;
 std::list<item> worlditems;

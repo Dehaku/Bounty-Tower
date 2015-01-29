@@ -1,12 +1,9 @@
 #ifndef __ITEMS_H_INCLUDED__
 #define __ITEMS_H_INCLUDED__
 
-#include "Globals.h"
-#include "Images.h"
-
 #include <list>
 
-extern sf::RenderWindow App;
+#include <SFML/Graphics.hpp>
 
 class NPC;
 class item
