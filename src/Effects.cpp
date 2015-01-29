@@ -6,12 +6,6 @@ extern sf::RenderWindow App;
 
 Effects Effectz;
 
-float Effects::AngleBetweenVectors(sf::Vector2f a, sf::Vector2f b)
-{
-    //  (180 / PI = 57.3065)
-    return 57.3065f * atan2(b.y - a.y, b.x - a.x);
-}
-
 int Effects::Closeish(int orix, int oriy, int tarx, int tary)
 {
     int Powa = sqrt(pow((tarx - orix), 2) + pow((tary - oriy), 2));

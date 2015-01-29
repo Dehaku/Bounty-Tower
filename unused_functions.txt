@@ -1,0 +1,5 @@
+float AngleBetweenVectors(sf::Vector2f a, sf::Vector2f b)
+{
+    //  (180 / PI = 57.3065)
+    return 57.3065f * atan2(b.y - a.y, b.x - a.x);
+}
