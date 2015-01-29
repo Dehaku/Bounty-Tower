@@ -6,6 +6,8 @@
 
 //#include "FactionJobSecurity.h"
 #include "Game.h"
+#include "Globals.h"
+#include "Images.h"
 
 extern sf::RenderWindow App;
 

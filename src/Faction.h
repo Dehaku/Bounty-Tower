@@ -6,6 +6,12 @@
 // *#include "JobManager.h"
 
 #include "Game.h"
+#include "Items.h"
+#include "Effects.h"
+#include "aStarLibrary.h"
+#include "keys.h"
+#include "JobManager.h"
+#include "Text.h"
 
 #include <time.h>
 #include <ctime>
