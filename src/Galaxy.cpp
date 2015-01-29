@@ -55,7 +55,7 @@ void GalaxyController::Wave()
                          ((currenty - 18) * GridSize) + 1, 11, Black,
                          "Time Till Wave ", "", Waves + 1, ": ", "",
                          WaveTimer / 10);
-        if (WaveTimer / 2 < 50 && randz(0, 1 == 1))
+        if (WaveTimer / 2 < 50 && randz(0, 1) == 1)
         {
             cText.CreateText((currentx - 2) * GridSize,
                              (currenty - 18) * GridSize, 11, White,
