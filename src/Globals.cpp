@@ -307,7 +307,6 @@ sf::Vector2f Math::Vec(float X, float Y)
 
 int StringFindNumber(std::string Stringy, std::string Term)
 {
-    int Returns;
     size_t tStart;
     tStart = Stringy.find(Term);
     if (tStart != std::string::npos)
@@ -319,7 +318,7 @@ int StringFindNumber(std::string Stringy, std::string Term)
         {
             int iLength = Term.length();
             Output.assign(Stringy, tStart + iLength, tEnd - (tStart + iLength));
-            Returns = atof(Output.c_str());
+            auto Returns = atof(Output.c_str());
             if (Output == "true")
             {
                 Returns = 1;
