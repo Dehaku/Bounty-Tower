@@ -526,6 +526,10 @@ void item::PrintConsoleInfo()
 }
 
 item::item()
+    : cbaseid{}, range{}, xpos{}, ypos{}, zpos{}, rxpos{}, rypos{}, gxpos{},
+      gypos{}, imgstrx{}, imgstry{}, imgendx{}, imgendy{}, IsWeapon{},
+      tillrot{}, prodrate{}, prodratetimer{}, timerdecon{}, LiquidContainMax{},
+      ObjectContainMax{}, ContainAmount{}
 { // start of constructor
     ToDelete = false;
     TargetPos = sf::Vector2f(-1, -1);
