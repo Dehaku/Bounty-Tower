@@ -1,0 +1,40 @@
+// DONE(); TODO: Figure out why the Vending Machine, Water, and sometimes Gun and Sword become invisible
+// DONE(For items); TODO: Add a warning for repeat ID's in Items/Tiles/Critters/Ect
+
+// TODO: Make a new class vector to hold a critters pathfinding, have critter point to said instance, Only pathing critters take up memory, rather than all critters in memory.
+
+// TODO: Have a button next to each item in a critters inventory, The button will drop the item they are holding.
+// TODO: Add a UsageDifficulty value to items to add a basic check for skills, Like add that number to the accuracy for weapons, maybe a bit to damage, and good for Techy stuff as well, Like a computer.
+// TODO: For the critters, Add Skill rust, And have a Bionic that reduces, or negates skill rust, use tag system
+// TODO: Add in support for 'Stoping' the game, and use multithreading to load everything faster by doing it seperately.
+// TODO: Add safe guards for when selected critters are deleted, Possibly simply check if your current target is marked for deletion, and deselect them?
+
+// TODO: Factions have been added, Make certain hostile creatures attack anything not in their own faction, Later, add Faction Relations to Factions, and have them look at that instead.
+// TODO: Change Tile.Walkability to a signed integer, That value will be a percent modifer on a critters movement speed over it, Negative values will be percentile modifers for Burrowers, 0 will be no movement.
+// TODO: Decide on what to do with the Walkability on this file, Either do it before critter iteration, Greatly reducing processing time per critter... Or leave it for convinent methoding for Burrows and Fliers and such.
+// TODO: Add Teleporters, To allow critters to Path for them, Once the Path Finding hits a teleporter, start another path find there to their target, then compare that value to the continued path.
+// TODO: (Space) 1 in 10,000 Stars in made nearly completely of Metal, and glows of Neon instead. Ala https://www.youtube.com/watch?v=DMVXWk67IAg
+// TODO: Add Thermal Resistence for Tiles, Basing how much temperature they let through, As well as add Heaters and Freezers to do small scall terraforming. (As well as having fun with liquids.)
+// TODO: Add Air Threshold for Tiles as well, Certain blocks will let air/scent through.
+
+// TODO: Change the critters item preferences from Type, to appropriote values, E.G. Do not search inventory for type 4, and eat it, Instead, search for something with a positive hunger value, Do same with weapons.
+// TODO: Make sure critters search for Food value, Thirst value, rather than "Food" or "Water" Make sure they check if something has damage, rather than a specific name, to use it as a weapon.
+// TODO: Add MapSaving and Loading to the transitional phase.
+
+// TODO: Fear Effects: Pass Out, Run Away, Scream, Paralyzation, 'Stomach' Ejection.
+
+// TODO: Whenever adding an item to any inventory, Check if it is stackable, if it is... check if the inventory already contains said item, then simply add to the amount.
+
+// TODO: Add delicious dodging/blocking maneuvers, Catching/Deflecting blows, nimbly ducking/swaying, Perhaps even counter-attacks as well.
+
+// TODO: Add a cos/sine drawn circle around critters to display their attack cooldowns.
+
+// TODO: Critters, Add a class vector, Said class will contain three variables, BodyPart/ItemPtr/NPCPtr, When a critter is initialized, Run through it's part for graspers, Add it to said class vector, Use this for grappling/wielding items, Think of reasons for multi-grasper weapons.
+
+// TODO: To compensate for lack of coolness, Whenever I do player inventory management, I'll have a normal list, but have all the items icons orbiting a center player icon or something just for looks, Maybe even have each item have it's own pull based on it's mass and such, Hehehe.
+
+// TODO: Effectz, Create a filling circle using Cos-Sine, However, Instead of doing 360 with the line function, Instead, make your own using the Tile Code, For Radius, Fill the circle line, Alot less redundency, I believe, Stress test should be done.
+
+// BUG: Current menu/button system causes a button to be pressed twice, Haven't been able to hunt this one down yet.
+
+// TODO: Lighting Effects: http://en.sfml-dev.org/forums/index.php?topic=6635.msg121245#msg121245

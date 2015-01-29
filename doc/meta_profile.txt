@@ -1,0 +1,86 @@
+/*  Meta Profile Upgrades and Benefits
+
+    Alignment (Peaceful/Hostile) (Religious/Athiest) (Technophile/Technophobe)
+
+    During the course of the game, Upon completing specific goals/structures, You'll earn meta points that can be spent to upgrade various things on a global scale for your controlled faction.
+
+
+    *Earning* - Various tasks to earn Meta Points, From Building specificly shaped structures, to interacting with species, to blowing up planets, to discovering rare artifacts, ect
+    First time building a perfect circle in local space.
+    First time building a Galaxy Logo in local space.
+
+    Building; http://imgur.com/gallery/YtsPPTK (May be used for spells as well/instead)
+
+    First encounter with an Azabulian
+    First Kill of an Azabulian
+    First Recruiting of an Azabulian
+    First Spell Discovered
+
+    Caused a faction to become space faring.
+
+    Killing in the name of; A Squad Tactic that forces your critters to shout your name(Read Meta Profile Jist), Giving up any surprise, Gaining you meta points for each kill.
+
+
+
+    Killed 200 Azabulians
+
+    Sacrificed critters to the gods(Armok easter egg required)
+
+    One Time Only; Sacrificed entire faction at once(About a one minute grace period, Minimum population requirement (30+?) )
+
+    *Spending* Spend Meta Points in various catagories, from Global Faction Critter Stats, to Tech Growth Rates, to immensely enhanced single critter stats, to spell creation, to creature creation.
+    Create a brand new creature from scratch(Higher quality parts require more points)
+
+    "Faction Global" - Permanent enhancements to all future factions under your control, Even upon losing your current one, These benefits carry over.
+    Faction Global; Stat Growth; Small percent buff to specific critter skills/attributes, like 5% buff to all move speeds.
+    Faction Global; Mental Awakening; Small addition to all critters mental attributes, Added to their base values.
+
+    "Faction Single" - Enhancements to a single specific creature in your faction, The buff is usually rather large compared to the Global Varients, Though usually costs immensely more.
+    Faction Single; Avatar; Imbue a creature with divine power, Causing them to gain immense growth rates, 5x physical attributes.
+    Faction Single; Ageless; Critter stops aging.
+    Faction Single; Aristotle; Critter can teach anything at full proficency, Even without knowing it themselves.
+
+    "Mythical Power" - Extremely powerful spells that can be produced via Divine Power or Meta Points.
+    Mythical Power; Blackhole; Summon a Blackhole in Local Space(Low Tier), World Space(Mid Tier), Galactic Space(Top tier)
+    Mythical Power; Lightning Strike
+    Mythical Power; Plague
+    Mythical Power; Necromatic Uprising
+    Mythical Power; Volcano
+    Mythical Power; Planet Buster
+
+
+*/
+
+/* Meta Profile Jist
+
+7:48 PM - Dehaku: But yeah, It's basic inspiration...
+7:48 PM - Dehaku: Is that the player is actually some form of Diety possessing control of a faction.
+7:48 PM - Dehaku: They have their own tendencies and capabilities and power...
+7:49 PM - Dehaku: Once they take over a faction, they grant their passives(Permanent boosts), Their actives(Single critter boosts), and can grant miracles (Mythical Powers)
+7:49 PM - Dehaku: And, of course...
+7:49 PM - Dehaku: They guide the faction to their will.
+7:49 PM - Dehaku: Yenno, playing the game.
+7:49 PM - Dehaku: -snickers-
+7:50 PM - Dehaku: They gain power by having the faction do various meta tasks that to them would see mostly pointless.
+7:50 PM - Dehaku: Like sacrificing people, or shaping the world, or... recruiting certain people into their ranks.
+7:50 PM - Dehaku: These actions would power the diety(Meta Profile Points)
+7:51 PM - Dehaku: This concept should work beautifully in Multiplayer as well.
+7:52 PM - Dehaku: Even the AI can get in on it for the more static factions.
+7:52 PM - Dehaku: Perhaps even a couple randomed ones as well.
+7:52 PM - Dehaku: Plus...
+7:52 PM - Dehaku: It's always nice to earn something permanent, even when your entire team has been destroyed, A little consulation for next time, eh?
+7:53 PM - Dehaku: My main fear about it, Is it may dip too much into the Magic's territory.
+7:53 PM - Dehaku: But so long as I keep the mythical powers epic, and static...
+7:53 PM - Dehaku: Magic should still have it's own appeal.
+7:54 PM - Litharian: Mmmm... Yeah.
+7:55 PM - Litharian: Plus, I'm imagining the net gain when something like Loretta goes out in a tragic accidetn.
+7:56 PM - Dehaku: -nods-
+7:56 PM - Dehaku: Heh, Plus...
+7:56 PM - Dehaku: It allows alot of interesting dynamics.
+7:56 PM - Dehaku: Like you could set up your squads to initative combat in your name, Yenno, Shouting a gods name or something, Giving up any element of surprise...
+7:57 PM - Dehaku: But earning you small bits of meta points with each kill or some such.
+7:57 PM - Dehaku: Just little things like that.
+
+
+
+*/

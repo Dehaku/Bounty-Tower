@@ -1,0 +1,103 @@
+/*  Possible 3d Pathfinding,
+
+http://royalexander.wordpress.com/2009/07/07/new-version-a-pathfinding-in-3d/
+
+http://playtechs.blogspot.com/2007/05/pathfinding-in-space.html
+http://playtechs.blogspot.com/2007/05/pathfinding-in-space-part-2.html
+http://playtechs.blogspot.com/2007/05/pathfinding-in-space-part-3.html
+
+http://theory.stanford.edu/~amitp/GameProgramming/Variations.html#jump-point-search
+
+
+
+
+
+/// <summary>
+/// Method that switfly finds the best path from start to end. Doesn't reverse outcome
+/// </summary>
+/// <returns>The end breadcrump where each .next is a step back)</returns>
+private static BreadCrumb FindPathReversed(World world, Point3D start, Point3D end)
+{
+    MinHeap<BreadCrumb> openList = new MinHeap<BreadCrumb>(256);
+    BreadCrumb[, ,] brWorld = new BreadCrumb[world.Right, world.Top, world.Back];
+    BreadCrumb node;
+    Point3D tmp;
+    int cost;
+    int diff;
+
+    BreadCrumb current = new BreadCrumb(start);
+    current.cost = 0;
+
+    BreadCrumb finish = new BreadCrumb(end);
+    brWorld[current.position.X, current.position.Y, current.position.Z] = current;
+    openList.Add(current);
+
+    while (openList.Count > 0)
+    {
+        //Find best item and switch it to the 'closedList'
+        current = openList.ExtractFirst();
+        current.onClosedList = true;
+
+        //Find neighbours
+        for (int i = 0; i < surrounding.Length; i++)
+        {
+            tmp = current.position + surrounding[i];
+            if (world.PositionIsFree(tmp))
+            {
+                //Check if we've already examined a neighbour, if not create a new node for it.
+                if (brWorld[tmp.X, tmp.Y, tmp.Z] == null)
+                {
+                    node = new BreadCrumb(tmp);
+                    brWorld[tmp.X, tmp.Y, tmp.Z] = node;
+                }
+                else
+                {
+                    node = brWorld[tmp.X, tmp.Y, tmp.Z];
+                }
+
+                //If the node is not on the 'closedList' check it's new score, keep the best
+                if (!node.onClosedList)
+                {
+                    diff = 0;
+                    if (current.position.X != node.position.X)
+                    {
+                        diff += 1;
+                    }
+                    if (current.position.Y != node.position.Y)
+                    {
+                        diff += 1;
+                    }
+                    if (current.position.Z != node.position.Z)
+                    {
+                        diff += 1;
+                    }
+                    cost = current.cost + diff + node.position.GetDistanceSquared(end);
+
+                    if (cost < node.cost)
+                    {
+                        node.cost = cost;
+                        node.next = current;
+                    }
+
+                    //If the node wasn't on the openList yet, add it
+                    if (!node.onOpenList)
+                    {
+                        //Check to see if we're done
+                        if (node.Equals(finish))
+                        {
+                            node.next = current;
+                            return node;
+                        }
+                        node.onOpenList = true;
+                        openList.Add(node);
+                    }
+                }
+            }
+        }
+    }
+    return null; //no path found
+}
+
+
+
+*/

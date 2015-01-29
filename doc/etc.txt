@@ -1,0 +1,36 @@
+/* Personality Traits and Effects
+    Note: All phobias are reversable for preferences.
+    Clausterphobia - Immense morale penalty/Fear affect whenever in a 1x area. (Walls on both sides.)
+    Agoraphobia - Immense Morale Penalty/Fear affect whenever in a 4x or greater area (Walls further than 4 tileradius cause problems, Ceilings/Sky counts as well.)
+    LeggedPhobia - Immense Morale Penalty/Fear Affect whenever witnessing a creature with a specific amount of legs/arms, Might simply turn this into a Part phobia.
+    Solar/Lunar Phobia - Penalties when witnessing a Sun or Moon.
+    Depression - Constant Morale Debuff.
+
+    Charismatic - Doubles Morale Benefit when talking to others.
+    Perceptive Listener - Increased skill gain and relations when talking to others.
+
+
+
+*/
+
+// Music: Kevin Macleod - Space 1990, Space Ambient
+// Music: Kevin Macleod - Jalandhar, Ambient
+// Music: Kevin Macleod - Twisted, Classic rock.
+// Music: Kevin Macleod - Electro Cabello
+// Music: Kevin Macleod - Vadodora Chill Mix, Ambient
+// Music: Kevin Macleod - Vadodora, Ambient to Battle
+// Music: Kevin Macleod - Unity
+// Music: Kevin Macleod - The Complex
+// Music TODO: Have specific tracks play for various tech levels, Primal for low level, modern for today's tech, sci-fi/futuristic music for high tech.
+
+//3:35 AM - Dehaku: Oh how I can't wait to get to the Combat section...
+//3:36 AM - Dehaku: Revisting the bodies... Making delicious dodging/blocking... various statistics and comparisions...
+//3:38 AM - Dehaku: Elongated attacks, pin-point, sweep, radius, Knock Back, Impalement, Grabbing, Squeezing, Crushing, Stabbing, Throwing, Swallowing, Exploding, Evaporating, Burning,
+//  Frying, Freezing, Expanding, Shrinking, Liquifying, Solidifying, Gathering, Molding, Shaping, Transforming, Imbuing, Enchanting, Teleporting, Blinking, Fading, Duplicating,
+//  Melding, Fusion...
+//3:38 AM - Dehaku: And that's just off the top of my head.
+//3:39 AM - Dehaku: Drinking, Injecting, Poisoning, Stealing, Replacing, Entering, Breaking...
+//3:40 AM - Dehaku: Paralyzing, Knock Out, Awakening, Imploding....
+//3:41 AM - Dehaku: And... Last, but certainly not least...
+//3:41 AM - Dehaku: Spacing.
+// Tripping, Disarming, Crippling, Blinding, Blocking, Parrying, Counter-Attacks
