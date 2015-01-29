@@ -5530,15 +5530,14 @@ int main()
                 View1.setCenter(currentx * GridSize, currenty * GridSize);
             }
 
-            int tfunz = -1;
-            bool FoundOne = false;
-
             if (GC.Phase == "Local")
             {
+                bool FoundOne = false;
                 if (Debug)
                     std::cout << "Pre Mouse Based Functions\n";
                 if (Key.LMB == true)
                 {
+                    int tfunz = -1;
                     for (zit = npclist.begin(); zit != npclist.end(); ++zit)
                     {
                         tfunz++;
