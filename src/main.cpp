@@ -737,22 +737,21 @@ std::set<int> NpcList(int exceptions = -1)
     {
         std::cout << "Pre npcList \n";
     }
-    std::vector<NPC>::iterator Me;
     std::set<int> Returns;
 
-    for (Me = npclist.begin(); Me != npclist.end(); Me++)
+    for (auto const &npc : npclist)
     {
         if (Debug)
         {
             std::cout << "For NpcList \n";
         }
-        if (Me->id != exceptions)
+        if (npc.id != exceptions)
         {
             if (Debug)
             {
                 std::cout << "Post exception NpcList \n";
             }
-            Returns.insert(GetNpcVectorId(Me->id));
+            Returns.insert(GetNpcVectorId(npc.id));
             if (Debug)
             {
                 std::cout << "Post Returns NpcList \n";

@@ -1264,34 +1264,33 @@ void TimeTest()
     }
     clock_t sCreation = clock();
     int sJohns = 0;
-    std::list<NPC>::iterator it;
-    for (it = TestSet.begin(); it != TestSet.end(); it++)
+    for (auto const &elem : TestSet)
     {
-        if (it->name == "John")
+        if (elem.name == "John")
         {
             sJohns++;
         }
-        if (it->id == 10)
+        if (elem.id == 10)
         {
             //sJohns++;
         }
-        if (it->health == 10)
+        if (elem.health == 10)
         {
             //sJohns++;
         }
-        if (it->id == 10)
+        if (elem.id == 10)
         {
             //sJohns++;
         }
-        if (it->health == 10)
+        if (elem.health == 10)
         {
             //sJohns++;
         }
-        if (it->id == 10)
+        if (elem.id == 10)
         {
             //sJohns++;
         }
-        if (it->health == 10)
+        if (elem.health == 10)
         {
             //sJohns++;
         }
@@ -1311,10 +1310,9 @@ void TimeTest()
 
 void cNpcManager::AddCritters()
 {
-    std::vector<NPC>::iterator Me;
-    for (Me = AddedCritters.begin(); Me != AddedCritters.end(); Me++)
+    for (auto const &c : AddedCritters)
     {
-        npclist.push_back(*Me);
+        npclist.push_back(c);
     }
     AddedCritters.clear();
 }
