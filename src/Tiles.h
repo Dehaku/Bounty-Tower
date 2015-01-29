@@ -20,129 +20,19 @@ public:
     sf::Texture Texture;
     sf::Color WorldColor;
 
-    void Dirt()
-    { // 1003
-        ID = 1003;
-        WorldColor = sf::Color(100, 100, 0);
-        Img.setTexture(*imagemanager.GetImage("Dirt.png"));
-    }
-
-    void RendGrass()
-    { // 1001
-        ID = 1001;
-        WorldColor = sf::Color(0, 150, 0);
-        sf::Image Grazz;
-        Grazz.create(20, 20, sf::Color(0, 0, 0, 255));
-        for (int i = 0; i != 20; i++)
-        {
-            for (int t = 0; t != 20; t++)
-            {
-                int Pix = randz(0, 3);
-                if (Pix <= 2)
-                    Grazz.setPixel(i, t, sf::Color(0, 128, 0, 255));
-                if (Pix == 3)
-                    Grazz.setPixel(i, t, sf::Color(0, 255, 0, 255));
-                //Grazz.setPixel(i,t,sf::Color(0,128,0,255));
-            }
-        }
-        //sf::Texture Why;
-        //Texture.loadFromImage(Grazz);
-        //Img.setTexture(Texture);
-        //Img.setTexture(Why);
-        //Img.setTexture( *imagemanager.GetImage("Grass.png"));
-    }
-
-    void Grass()
-    { // 1001
-        ID = 1001;
-        WorldColor = sf::Color(0, 150, 0);
-        Img.setTexture(*imagemanager.GetImage("Grass.png"));
-        //RendGrass();
-    }
-
-    void Stone()
-    { // 1007
-        ID = 1007;
-        WorldColor = sf::Color(150, 150, 150);
-        Walkable = true;
-        Img.setTexture(*imagemanager.GetImage("Underground.png"));
-    }
-
-    void StoneWall()
-    { // 1008
-        ID = 1008;
-        WorldColor = sf::Color(150, 150, 150);
-        Walkable = false;
-        Img.setTexture(*imagemanager.GetImage("StoneWall.png"));
-    }
-
-    void Wall()
-    { // 1010
-        ID = 1010;
-        WorldColor = sf::Color(100, 100, 100);
-        Img.setTexture(*imagemanager.GetImage("Wall.png"));
-        Health = 200;
-        DeathID = 1007;
-        Walkable = false;
-    }
-
-    void WoodFloor()
-    { // 1030
-        ID = 1030;
-        WorldColor = sf::Color(150, 150, 0);
-        Img.setTexture(*imagemanager.GetImage("WoodFloor.png"));
-    }
-
-    void Road(bool Center = false)
-    { // 1050
-        ID = 1050;
-        WorldColor = sf::Color(0, 0, 0);
-        if (Center)
-            Img.setTexture(*imagemanager.GetImage("MiddleRoad.png"));
-        if (!Center)
-            Img.setTexture(*imagemanager.GetImage("Black.png"));
-    }
-
-    void Door()
-    { // 1100
-        ID = 1100;
-        WorldColor = sf::Color(255, 0, 0);
-        Img.setTexture(*imagemanager.GetImage("Door.png"));
-        Walkable = true;
-        Health = 15;
-        DeathID = 7;
-    }
-
-    void Lava()
-    { // 1337
-        ID = 1337;
-        WorldColor = sf::Color(255, 100, 0);
-        Img.setTexture(*imagemanager.GetImage("Lava.png"));
-    }
-
-    void Sky()
-    { // 1700
-        ID = 1700;
-        WorldColor = sf::Color(150, 150, 150);
-        Img.setTexture(*imagemanager.GetImage("Sky.png"));
-    }
-
-    void Cake()
-    {
-        ID = 1100;
-        WorldColor = sf::Color(255, 0, 0);
-        Img.setTexture(*imagemanager.GetImage("Door.png"));
-        Health = 15;
-        DeathID = 7;
-    }
-
-    Tile()
-    {
-        WorldColor = sf::Color(0, 0, 0, 255);
-        Health = 10;
-        DeathID = ID;
-        Walkable = true;
-    }
+    void Dirt();
+    void RendGrass();
+    void Grass();
+    void Stone();
+    void StoneWall();
+    void Wall();
+    void WoodFloor();
+    void Road(bool Center = false);
+    void Door();
+    void Lava();
+    void Sky();
+    void Cake();
+    Tile();
 };
 
 class xTile
@@ -154,34 +44,20 @@ public:
     sf::Texture *Img;
     sf::Color WorldColor;
 
-    xTile()
-    {
-        WorldColor = sf::Color(0, 0, 0, 255);
-        Health = 10;
-        DeathID = ID;
-    }
-    void initImage()
-    {
-        Img = imagemanager.GetImage("City.png");
-    }
+    xTile();
+    void initImage();
 };
 
 class Chunk
 {
 public:
     Tile zTiles[ChunkSize][ChunkSize][ChunkSize];
-    Chunk()
-    {
-    }
 };
 
 class Planet
 {
 public:
     std::vector<Chunk> Chunks;
-    Planet()
-    {
-    }
 };
 
 class WorldTile
@@ -207,11 +83,7 @@ public:
 
     std::vector<Building> Builds;
 
-    WorldTile()
-    {
-        Infected = 0;
-        Tiles = 32;
-    }
+    WorldTile();
 };
 
 extern Tile Tiles[Grids][Grids][Grids];
