@@ -2186,34 +2186,33 @@ void SetTestage()
         TestSet.insert(npc);
     }
     int sJohns = 0;
-    std::set<NPC>::iterator it;
-    for (it = TestSet.begin(); it != TestSet.end(); it++)
+    for (const auto &npc : TestSet)
     {
-        if (it->name == "John")
+        if (npc.name == "John")
         {
             sJohns++;
         }
-        if (it->id == 10)
+        if (npc.id == 10)
         {
             //sJohns++;
         }
-        if (it->health == 10)
+        if (npc.health == 10)
         {
             //sJohns++;
         }
-        if (it->id == 10)
+        if (npc.id == 10)
         {
             //sJohns++;
         }
-        if (it->health == 10)
+        if (npc.health == 10)
         {
             //sJohns++;
         }
-        if (it->id == 10)
+        if (npc.id == 10)
         {
             //sJohns++;
         }
-        if (it->health == 10)
+        if (npc.health == 10)
         {
             //sJohns++;
         }
