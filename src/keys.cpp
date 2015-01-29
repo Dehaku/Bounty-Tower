@@ -680,6 +680,9 @@ void Ke::Update()
 }
 
 Ke::Ke()
+    : num1{}, num1Time{}, num2{}, num2Time{}, num3{}, num3Time{}, num4{},
+      num4Time{}, num5{}, num5Time{}, num6{}, num6Time{}, num7{}, num7Time{},
+      num8{}, num8Time{}, num9{}, num9Time{}, num0{}, num0Time{}
 {
     left = false;
     up = false;
