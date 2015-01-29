@@ -47,9 +47,6 @@ void SpawnCritter(std::string Object, int xpos, int ypos);
 //
 //-- Prototypes
 
-// Problem/Bug: Pathfinding only works in 2d space... I have no idea, http://www.reddit.com/r/gamedev/comments/14rfsv/a_pathfinding_in_3d_space/c7fzd4q
-// Problem/Bug: Pathfinding doesn't work on goals that involve unwalkable tiles, I.E. Removing Walls and such, Perhaps have the seeking position be one of the eight adjacunt?, if[i-1] yadda = Walkable, then set that as the position?
-
 std::string GetClipboardText()
 {
 #ifdef GALAXY_LINUX

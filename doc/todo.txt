@@ -38,3 +38,6 @@
 // BUG: Current menu/button system causes a button to be pressed twice, Haven't been able to hunt this one down yet.
 
 // TODO: Lighting Effects: http://en.sfml-dev.org/forums/index.php?topic=6635.msg121245#msg121245
+
+// Problem/Bug: Pathfinding only works in 2d space... I have no idea, http://www.reddit.com/r/gamedev/comments/14rfsv/a_pathfinding_in_3d_space/c7fzd4q
+// Problem/Bug: Pathfinding doesn't work on goals that involve unwalkable tiles, I.E. Removing Walls and such, Perhaps have the seeking position be one of the eight adjacunt?, if[i-1] yadda = Walkable, then set that as the position?
