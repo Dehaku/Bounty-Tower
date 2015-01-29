@@ -12,8 +12,8 @@
 #include <string>
 #include <vector>
 #include <dirent.h>
-#include <math.h>
 #include <memory.h>
+#include <cmath>
 #ifdef GALAXY_LINUX
 #include <sys/stat.h>
 #else
