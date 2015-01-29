@@ -567,8 +567,7 @@ float PercentIs(float Value, float Percentage)
     return Percent;
 }
 
-Globes::Globes() :
-    GenString{}
+Globes::Globes() : GenString{}
 {
     globalid = 100;
     glbbtn = 100;
