@@ -4,6 +4,7 @@
 #include <sstream>
 #include <fstream>
 #include <cstring>
+#include <iostream>
 
 Faction *ConFact;
 std::vector<NPC> npclist;

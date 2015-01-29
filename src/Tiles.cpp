@@ -5,6 +5,7 @@
 
 #include <sstream>
 #include <fstream>
+#include <iostream>
 
 Tile Tiles[Grids][Grids][Grids];
 WorldTile WorldMap[100][100];

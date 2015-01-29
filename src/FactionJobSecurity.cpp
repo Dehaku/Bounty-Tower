@@ -3,6 +3,8 @@
 #include "Faction.h"
 #include "Tiles.h"
 
+#include <iostream>
+
 void RMBMenuItem(item &pItem)
 {
     /*

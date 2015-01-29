@@ -2,6 +2,8 @@
 
 #include "Faction.h"
 
+#include <iostream>
+
 GalaxyController GC;
 
 GalaxyController::GalaxyController()

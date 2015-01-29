@@ -7,6 +7,8 @@
 #include "FactionJobSecurity.h"
 #include "Faction.h"
 
+#include <iostream>
+
 std::vector<button> vButtonList;
 std::vector<squarebutton> vSquareButtonList;
 MenuPointerContainer MenuPtrCon;
