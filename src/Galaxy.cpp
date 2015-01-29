@@ -479,7 +479,7 @@ void GalaxyController::WorldLoop()
             {
                 sf::Vector2i Short = UniFact[i].Territories[t].WorldTile;
 
-                if (AABB(Short,1,98,1,98))
+                if (AABB(Short, 1, 98, 1, 98))
                 {
                     int Direction = randz(0, 3);
                     int X = 0;
