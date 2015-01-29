@@ -279,7 +279,7 @@ void GenerateChunk(std::string type, int planet, sf::Vector2i Cords,
         }
         for (int i = 4; i != 28; i++)
         {
-            for (int t = 0; t != 28; t++)
+            for (int t = 1; t != 28; t++)
             {
                 //vChunk[i][t][30].Road();
                 if (randz(1, 100) == 1)
