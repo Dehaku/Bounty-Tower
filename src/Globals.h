@@ -123,6 +123,7 @@ bool Inbetween(float First, float Second, float Number);
 int randz(int minValue, int maxValue);
 bool AABB(int Pointx, int Pointy, int Left, int Right, int Up, int Down);
 bool AABB(sf::Vector2f Point, int Left, int Right, int Up, int Down);
+bool AABB(sf::Vector2i Point, int Left, int Right, int Up, int Down);
 int CloseishS(int orix, int tarx);
 
 namespace Math
