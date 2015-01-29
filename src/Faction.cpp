@@ -306,6 +306,16 @@ void NPC::Skill::Train(std::string skill, int amount, int skillgain)
 }
 
 NPC::NPC()
+    : Attacking{}, FirstStrike{}, ImgRotates{}, Prone{}, Body{}, rot{}, Xxx{},
+      Yyy{}, Degrees{}, PathFinding{}, imgstrx{}, imgstry{}, imgendx{},
+      imgendy{}, IsPlayer{}, HasSpawned{}, Grappling{}, cbaseid{}, id2{},
+      surname{}, alive{}, stillalive{}, ticksalive{}, useditem{}, canmove{},
+      breathrate{}, breathtimer{}, breathtimerint{}, Age{}, AgeType{},
+      direction{}, worshippers{}, gypos{}, gxpos{}, planet{}, ypos{}, xpos{},
+      rypos{}, rxpos{}, mana{}, reginterntemp{}, interntemp{}, regtemp{},
+      temp{}, breathmax{}, nutrition{}, maxstamina{}, stamina{}, credits{},
+      size{}, minmeleedamage{}, maxmeleedamage{}, minrangeddamage{},
+      maxrangeddamage{}, dirgrid{}, valuegrid{}, followgrid{}
 {
     HasJob = false;
 
