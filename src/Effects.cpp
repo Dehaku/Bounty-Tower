@@ -6,12 +6,6 @@ extern sf::RenderWindow App;
 
 Effects Effectz;
 
-int Effects::Closeish(int orix, int oriy, int tarx, int tary)
-{
-    int Powa = sqrt(pow((tarx - orix), 2) + pow((tary - oriy), 2));
-    return Powa;
-}
-
 void Effects::cLine::DrawMe()
 {
     /*//sf::Shape Line = sf::Shape::Line(StartPos.x,StartPos.y,EndPos.x,EndPos.y, size, maincolor, outline, seccolor);
