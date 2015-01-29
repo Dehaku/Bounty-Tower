@@ -1,5 +1,9 @@
 #include "keys.h"
 
+#include <SFML/Graphics.hpp>
+
+extern sf::RenderWindow App;
+
 bool plat = true;
 Ke Key;
 

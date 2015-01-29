@@ -1,15 +1,9 @@
 #ifndef __KEYS_H__
 #define __KEYS_H__
 
-#include <SFML/System.hpp>
-#include <SFML/Graphics.hpp>
-#include <SFML/Window.hpp>
-
 // TODO: Add a bool for Any, and have all keys make it true, Press Any Key
 // TODO: Add a Holding integer for each one If Key.Qheld > 10
 extern bool plat;
-
-extern sf::RenderWindow App;
 
 extern bool InFocus;
 
