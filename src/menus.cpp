@@ -44,7 +44,7 @@ void button::DrawButton()
     Effectz.DrawEffects();
 }
 
-button::button()
+button::button() : iSize{}, TextSize{}
 {
     BeenPressed = false;
     id = Globals.glbbtn++;
@@ -86,7 +86,7 @@ void squarebutton::DrawButton()
     Effectz.DrawEffects();
 }
 
-squarebutton::squarebutton()
+squarebutton::squarebutton() : iSizex{}, iSizey{}, TextSize{}
 {
     BeenPressed = false;
     TextColor = sf::Color(175, 175, 0);
