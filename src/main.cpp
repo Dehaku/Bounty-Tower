@@ -5541,7 +5541,7 @@ int main()
             }
             GC.Time(0);
             if (GC.Phase != "MainMenu" && Globals.Following == false &&
-                GC.Phase != "MakeSquad" && Globals.Following == false)
+                GC.Phase != "MakeSquad")
             {
                 View1.setCenter(currentx * GridSize, currenty * GridSize);
             }
