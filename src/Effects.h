@@ -1,9 +1,7 @@
 #ifndef __EFFECTS_H_INCLUDED__
 #define __EFFECTS_H_INCLUDED__
 
-#include <SFML/System.hpp>
 #include <SFML/Graphics.hpp>
-#include <SFML/Window.hpp>
 
 /* Need to Make
 Kamehame styled beam
