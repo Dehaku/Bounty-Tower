@@ -638,24 +638,16 @@ int GetItemVectorId(int id)
 
 int GetNpcVectorId(int id)
 {
-    std::vector<NPC>::iterator Npc;
-    int ReturnValue = 0;
-    try
-    { //You should always Try when dealing with vectors that could be empty.
-        for (Npc = npclist.begin(); Npc != npclist.end(); Npc++)
-        { // Searching through the list.
-            if (Npc->id == id)
-            {
-                return ReturnValue;
-            }
-            ReturnValue++; // If the current item isn't the right one, Increase the Returnvalue by one..
-        }
-        return -1; // This will only return if the npc doesn't exist.
-    }
-    catch (std::exception &e)
+    int index = 0;
+    for (auto const &npc : npclist)
     {
-        return -1;
-    } // If for some odd reason the vector crashes, Return -1
+        if (npc.id == id)
+        {
+            return index;
+        }
+        index++;
+    }
+    return -1;
 }
 
 bool RemoveNPC(char *NPCname, int /*Id*/)
