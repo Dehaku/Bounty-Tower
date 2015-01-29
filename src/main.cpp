@@ -439,7 +439,6 @@ bool gridposTrace(int xa, int ya, int xb, int yb, int id, sf::Vector2f Target)
     {
         x += xIncrement;
         y += yIncrement;
-        std::vector<NPC>::iterator Me;
         if (Tiles[abs_to_index(x / GridSize)][abs_to_index(y / GridSize)][30]
                 .ID == 1010)
         {
@@ -2315,7 +2314,6 @@ void UpdateNPC()
                 std::cout << "Post Act Section \n";
 
             { // Vision check and Activation of Path Finding.
-                std::set<int> sList;
                 if (Debug)
                     std::cout << "Pre 'set' vision. \n";
 
@@ -3275,7 +3273,6 @@ int main()
 
     // These are old iterators I made to allow things to be done in the main loop, They need to be moved into their own files and functions.
     std::vector<NPC>::iterator zit;
-    std::vector<item>::iterator zitz;
 
     // For A*
     InitializePathfinder();
@@ -4505,7 +4502,6 @@ int main()
             //std::cout << testmonkey << std::endl;
             if (GC.bTest == true)
             {
-                std::vector<Tile>::iterator T;
                 // TODO: Fix Later
                 /*for(T = Tiles.begin(); T != Tiles.end(); T++){
 

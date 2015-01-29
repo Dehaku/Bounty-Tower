@@ -150,9 +150,6 @@ void GalaxyController::BuildLocal(std::string Type, int ZedAmount)
 
         // ----------------------------------------
 
-        std::vector<NPC>::iterator zit;
-        std::vector<item>::iterator zitz;
-
         {
             if (Debug)
             {
@@ -249,9 +246,6 @@ void GalaxyController::BuildLocal(std::string Type, int ZedAmount)
         Tiles[58][48][30].Stone();
         Tiles[49][40][30].Stone();
         Tiles[49][57][30].Stone();
-
-        std::vector<NPC>::iterator zit;
-        std::vector<item>::iterator zitz;
 
         {
             if (Debug)
@@ -380,9 +374,6 @@ void GalaxyController::BuildLocalTest()
 
     // ----------------------------------------
 
-    std::vector<NPC>::iterator zit;
-    std::vector<item>::iterator zitz;
-
     {
         if (Debug)
         {
@@ -423,8 +414,6 @@ void GalaxyController::BuildLocalTest()
 
 void GalaxyController::ZombieSwarmLocal(int num)
 {
-    std::vector<NPC>::iterator zit;
-
     {
         for (int count = 0; count <= num; count++)
         {
@@ -461,13 +450,6 @@ void GalaxyController::BuildTileTest()
             //Tiles.push_back(T);
         }
     }
-
-    // }
-    // }
-    // }
-    // }
-
-    std::vector<Tile>::iterator T;
 }
 
 void GalaxyController::BuildWorldTest()

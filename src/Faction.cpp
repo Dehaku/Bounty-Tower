@@ -1970,9 +1970,6 @@ void SpawnCritter(std::string Object, int xpos, int ypos)
 
 void BuildStartingCritters(int ZedAmount)
 {
-    std::vector<NPC>::iterator zit;
-    std::vector<item>::iterator zitz;
-
     {
         if (Debug)
         {
