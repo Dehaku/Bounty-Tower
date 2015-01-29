@@ -2351,7 +2351,7 @@ void UpdateNPC()
                         Me->TargetPos
                             .y); // TODO: This causes a crash for some reason.
 
-                    Con("Done MyFindPath");
+
 
                     if (PathFindWorkPos.x != 0)
                     {
@@ -2360,7 +2360,7 @@ void UpdateNPC()
                                        Previous;
                     }
 
-                    Con("Done MyFindPath x2");
+
                 }
                 if (true == false)
                 {
@@ -2620,7 +2620,7 @@ void UpdateNPC()
                         Me->PathFinding.MyFindPath(Me->xpos, Me->ypos,
                                                    Me->TargetPos.x,
                                                    Me->TargetPos.y);
-                        Con("Pre Walkability setting?");
+
 
                         if (PathFindWorkPos.x != 0)
                         {
@@ -2629,7 +2629,7 @@ void UpdateNPC()
                                            Previous;
                         }
 
-                        Con("Post Walkability");
+
                     }
                     for (int i = 0; i != Grids; i++)
                     {
@@ -2648,7 +2648,7 @@ void UpdateNPC()
                                 walkability[i][t] = 0;
                         }
                     }
-                    Con("Post For Grids");
+
 
                     int Previous = -1;
 
@@ -2662,14 +2662,14 @@ void UpdateNPC()
                                        walkable;
                     }
 
-                    Con("Post WorkPos.x");
+
 
                     Me->PathFinding.MyReadPath(1, Me->xpos, Me->ypos,
                                                Me->moverate);
                     Me->DirMove(Math::Vec(Me->PathFinding.MyxPath,
                                           Me->PathFinding.MyyPath));
 
-                    Con("Post ReadPath");
+
 
                     if (PathFindWorkPos.x != 0)
                     {
@@ -2703,7 +2703,7 @@ void UpdateNPC()
                         }
                     }
 
-                    Con("Post CreatLine");
+
 
                     if (Me->PathFinding.MypathLocation ==
                         Me->PathFinding.MypathLength)
@@ -2718,7 +2718,7 @@ void UpdateNPC()
                         Me->NeedsPath = false;
                     }
 
-                    Con("Post ItAll");
+
                     //Me->TargetPos.x = xPath[1];
                     //Me->TargetPos.y = yPath[1];
                 }

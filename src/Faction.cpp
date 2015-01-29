@@ -116,24 +116,20 @@ void NPC::PathFinding::MyFindPath(int Sx, int Sy, int Ex, int Ey)
         fSleep(60);
     }
 
-    Con("Pathfind location");
+
     MypathLocation = pathLocation[1];
-    Con("Pathfind length");
+
     MypathLength = pathLength[1];
     //MypathBank[1] = (int*) realloc (pathBank[1],pathLength[1]*8);
-    Con("Pathfind stuff");
+
     for (int i = 0; i != MypathLength; ++i)
     {
-        if (i >= 1)
-        {
-            yPa.push_back(pathBank[1][i * 2 - 1]);
-        }
-        if (i >= 2)
-        {
-            xPa.push_back(pathBank[1][i * 2 - 2]);
-        }
+
+        yPa.push_back(pathBank[1][i * 2 - 1]);
+        xPa.push_back(pathBank[1][i * 2 - 2]);
+
     }
-    Con("Pathfind stuff - Complete");
+
 }
 
 int NPC::PathFinding::MyReadPathX(int /*pathfinderID*/, int xpathLocation)
