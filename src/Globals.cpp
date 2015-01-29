@@ -381,13 +381,13 @@ std::vector<std::string> StringFindElements(std::string Source,
     debug("Start StringFindElements");
 
     std::vector<std::string> Returns;
-    size_t tStart = 0;
-    size_t tEnd = 0;
     bool FirstRun = true;
 
     bool WhileBreaker = false;
     while (WhileBreaker == false)
     {
+        size_t tStart = 0;
+        size_t tEnd = 0;
         debug("Starting Search");
         tEnd = Source.find(Seperater, tStart + 1);
 
@@ -470,14 +470,13 @@ std::set<std::string> StringFindSetChaos(std::string Stringy, std::string Term,
                                          std::string Ending)
 {
     std::set<std::string> Returns;
-    size_t tStart;
     bool NotDone = true;
     // std::cout <<"Working With:" << Stringy << std::endl;
     int Goal = 0;
     while (NotDone)
     {
         NotDone = false;
-        tStart = Stringy.find(Term);
+        size_t tStart = Stringy.find(Term);
         size_t tEnd;
         std::string Output;
         tEnd = Stringy.find(Ending, tStart + 1);
