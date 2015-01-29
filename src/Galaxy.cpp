@@ -2,6 +2,7 @@
 
 #include "Faction.h"
 #include "Images.h"
+#include "Globals.h"
 
 #include <iostream>
 
@@ -477,7 +478,8 @@ void GalaxyController::WorldLoop()
             for (size_t t = 0; t != UniFact[i].Territories.size(); t++)
             {
                 sf::Vector2i Short = UniFact[i].Territories[t].WorldTile;
-                if (Short.x > 0 && Short.x < 99 && Short.y > 0 && Short.y < 99)
+
+                if (AABB(Short,1,98,1,98))
                 {
                     int Direction = randz(0, 3);
                     int X = 0;

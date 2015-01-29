@@ -184,6 +184,14 @@ bool AABB(sf::Vector2f Point, int Left, int Right, int Up, int Down)
     return false;
 }
 
+bool AABB(sf::Vector2i Point, int Left, int Right, int Up, int Down)
+{
+
+    if (Point.x >= Left && Point.x <= Right && Point.y >= Up && Point.y <= Down)
+        return true;
+    return false;
+}
+
 int CloseishS(int orix, int tarx)
 {
     int xnum;

@@ -1,6 +1,7 @@
 #include "aStarLibrary.h"
 
 #include <stdexcept>
+#include <cstdlib>
 
 int onClosedList = 10;
 char walkability[AStarmapWidth][mapHeight];
