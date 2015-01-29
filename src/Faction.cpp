@@ -514,14 +514,13 @@ bool NPC::HasWeapon(std::string weapon)
     bool FoundWeapon = false;
     if (weapon != "")
         Specific = true;
-    std::list<item>::iterator Items;
-    for (Items = inventory.begin(); Items != inventory.end(); Items++)
+    for (auto const &item : inventory)
     {
-        if (Items->IsWeapon)
+        if (item.IsWeapon)
             FoundWeapon = true;
         if (weapon != "")
         {
-            if (Items->name == weapon)
+            if (item.name == weapon)
                 HasSpecifiedWeapon = true;
         }
     }
