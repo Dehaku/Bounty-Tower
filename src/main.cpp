@@ -763,7 +763,7 @@ std::set<int> NpcList(int exceptions = -1)
     {
         std::cout << "Post For NpcList \n";
     }
-    if (Returns.size() != 0)
+    if (!Returns.empty())
     {
         return Returns;
     }
@@ -1376,7 +1376,7 @@ void UpdateNPC()
                             std::set<int> ids =
                                 NPCTrace(Me->xpos, Me->ypos, Me->TargetPos.x,
                                          Me->TargetPos.y, Me->id);
-                            if (ids.size() != 0)
+                            if (!ids.empty())
                             {
                                 try
                                 {
@@ -1428,7 +1428,7 @@ void UpdateNPC()
                                                    Targ.y, 2, White);
                                 std::set<int> ids = NPCTrace(
                                     Me->xpos, Me->ypos, Targ.x, Targ.y, Me->id);
-                                if (ids.size() != 0)
+                                if (!ids.empty())
                                 {
                                     for (size_t Ta = 0; Ta != ids.size(); Ta++)
                                     {
