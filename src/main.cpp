@@ -25,6 +25,8 @@
 #include "aStarLibrary.h"
 #include "Images.h"
 
+using std::abs;
+
 item *ListGet(std::list<item> &List, int Position)
 {
     auto i = List.begin();

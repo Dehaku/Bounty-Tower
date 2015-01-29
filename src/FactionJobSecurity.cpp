@@ -5,6 +5,8 @@
 
 #include <iostream>
 
+using std::abs;
+
 void RMBMenuItem(item &pItem)
 {
     /*

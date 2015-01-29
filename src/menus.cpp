@@ -13,6 +13,8 @@ std::vector<button> vButtonList;
 std::vector<squarebutton> vSquareButtonList;
 MenuPointerContainer MenuPtrCon;
 
+using std::abs;
+
 void button::DrawButton()
 {
     if (BeenPressed == true)
