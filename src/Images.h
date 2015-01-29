@@ -88,6 +88,6 @@ public:
     {
     }
 };
-cImageManager imagemanager;
+extern cImageManager imagemanager;
 
 #endif // IMAGES_H_INCLUDED

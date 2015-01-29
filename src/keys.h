@@ -944,6 +944,6 @@ public:
         endTime = 0;
     }
 };
-Ke Key;
+extern Ke Key;
 
 #endif

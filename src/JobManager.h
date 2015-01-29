@@ -5,12 +5,11 @@
 // *#include "Tiles.h"
 
 #include "Game.h"
+#include "Globals.h"
+#include "Items.h"
 
 class NPC;
 class Tile;
-//class item;
-
-//class Faction;
 
 class MyItem
 {
@@ -25,7 +24,7 @@ public:
             Name = "Weapon";
     }
 };
-std::vector<MyItem> MyItemList;
+extern std::vector<MyItem> MyItemList;
 
 class ItemContainer
 {
@@ -36,41 +35,12 @@ public:
     }
 };
 
-std::vector<ItemContainer> IC;
+extern std::vector<ItemContainer> IC;
 
-void InsertItems()
-{
-    for (int i = 0; i != 10; i++)
-    {
-        MyItem TheItem;
-        MyItemList.push_back(TheItem);
-    }
-}
-
-void InsertItemsIntoContainers()
-{
-    for (size_t i = 0; i != MyItemList.size(); i++)
-    {
-        ItemContainer ItemHolder;
-        ItemHolder.TheItemPtr = &MyItemList[i];
-        IC.push_back(ItemHolder);
-    }
-}
-
-void PrintIC()
-{
-    for (size_t i = 0; i != IC.size(); i++)
-    {
-        //std::cout << IC[i].TheItemPtr->Name << std::endl;
-    }
-}
-
-void RunItAll()
-{
-    InsertItems();
-    InsertItemsIntoContainers();
-    PrintIC();
-}
+void InsertItems();
+void InsertItemsIntoContainers();
+void PrintIC();
+void RunItAll();
 
 class PointerContainer
 {
@@ -118,9 +88,5 @@ public:
         ToDelete = false;
     }
 };
-
-//std::vector<Job> JobList;
-
-//extern std::vector<Faction> UniFact;
 
 #endif // JOBMANAGER_H_INCLUDED

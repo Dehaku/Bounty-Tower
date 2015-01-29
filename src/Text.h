@@ -1,9 +1,11 @@
 #ifndef __TEXT_H_INCLUDED__
 #define __TEXT_H_INCLUDED__
 
-extern sf::RenderWindow App;
-
 #include "Game.h"
+
+#include <SFML/Graphics.hpp>
+
+extern sf::RenderWindow App;
 
 class cTextList
 {
@@ -136,7 +138,7 @@ public:
         Size = 11;
     }
 };
-cTextList cText;
+extern cTextList cText;
 
 class ChatBox
 {
@@ -168,6 +170,6 @@ public:
         }
     }
 };
-ChatBox ChatBox;
+extern ChatBox ChatBox;
 
 #endif // TEXT_H_INCLUDED

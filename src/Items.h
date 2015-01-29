@@ -268,7 +268,7 @@ public:
         //UnpointItem(this);
     }
 };
-item myitem;
+extern item myitem;
 
 class cItem : public item
 {
@@ -280,8 +280,7 @@ public:
 
 cItem *GetGlobalItem(std::string strtype);
 
-//std::vector<item> worlditems;
-std::list<item> worlditems;
+extern std::list<item> worlditems;
 
 class cItemManager
 {
@@ -402,419 +401,29 @@ public:
     }
 };
 
-cItemManager itemmanager;
+extern cItemManager itemmanager;
 
-void RemoveItems()
-{
-    bool Done = false;
-    while (Done == false)
-    {
-        bool Yet = false;
-        //*for(int i = 0; i != worlditems.size(); i++)
-        for (auto i = worlditems.begin(); i != worlditems.end(); i++)
-        {
-            if ((*i).ToDelete == true)
-            {
-                worlditems.erase(i);
-                Yet = true;
-                break;
-            }
-        }
-        if (Yet == false)
-        {
-            Done = true;
-        }
-    }
-}
+void RemoveItems();
 
-void zSaveItem(int planet, sf::Vector2i Region, item &object)
-{
+void zSaveItem(int planet, sf::Vector2i Region, item &object);
 
-    using namespace std;
-    ofstream File; // Start to Load Map
-    string newline("data/maps/Planet");
-    stringstream newconvert;
-    newline.append("500");
-    newline.append("/stuff");
-    newconvert << "x";
-    newconvert << Region.x;
-    newconvert << "y";
-    newconvert << Region.y;
-    newline.append(newconvert.str());
-    string newending(".item");
-    newline.append(newending);
-    Con(newline);
-
-    File.open(newline.c_str(), fstream::in | fstream::ate);
-    debug("looking for file...");
-
-    if (File.is_open())
-    {
-        File << std::endl;
-        File << "[name:" << object.name << "]"
-             << "[xpos:" << object.xpos << "]"
-             << "[ypos:" << object.ypos << "]";
-        Con("Added", false);
-        Con(object.name);
-        File.close();
-    } // End to Load Map
-    else
-    {
-        string line("data/maps/Planet500");
-        stringstream convert;
-        //convert << planet;
-        line.append(convert.str());
-        convert.clear();
-        galaxy_mkdir(line);
-        line.append("/stuff");
-        convert << "x";
-        convert << Region.x;
-        convert << "y";
-        convert << Region.y;
-        line.append(convert.str());
-        string ending(".item");
-        line.append(ending);
-        Con(line);
-
-        ofstream outputFile(line.c_str());
-
-        outputFile << "[" << object.name << "," << object.xpos << ","
-                   << object.ypos << "]";
-    }
-}
-
-void SaveItem(int planet, sf::Vector2i Region, item &Critter)
-{ // I already did all the work once, Imma be lazy for some time.
-    using namespace std;
-    string line("data/maps/Planet");
-    stringstream convert;
-    convert << planet;
-    line.append(convert.str());
-    convert.clear();
-    galaxy_mkdir(line);
-    line.append("/stuff");
-    convert << "x";
-    convert << Region.x;
-    convert << "y";
-    convert << Region.y;
-    line.append(convert.str());
-    string ending(".item");
-    line.append(ending);
-
-    ofstream File;
-    File.open(line.c_str(), fstream::in | fstream::ate);
-    debug("looking for file...");
-
-    if (File.is_open())
-    {
-        //File << std::endl;
-        File << std::endl;
-        File << "[name:" << Critter.name << "]"
-             << "[xpos:" << Critter.xpos << "]"
-             << "[ypos:" << Critter.ypos << "]";
-        //Con("Added", false);
-        //Con(object.name);
-        File.close();
-    } // End to Load Map
-    else
-    {
-        ofstream outputFile(line.c_str());
-
-        outputFile << "[name:" << Critter.name << "]"
-                   << "[xpos:" << Critter.xpos << "]"
-                   << "[ypos:" << Critter.ypos << "]";
-    }
-}
+void SaveItem(int planet, sf::Vector2i Region, item &Critter);
 
 std::string LoadItems(sf::Vector2i WorldPos, std::string Direction,
-                      int planet = 500)
-{
+                      int planet = 500);
 
-    std::string line("data/maps/Planet");
-    std::stringstream convert;
-    convert << planet;
-    line.append(convert.str());
-    convert.clear();
-    galaxy_mkdir(line);
-    line.append("/stuff");
-    convert << "x";
-    convert << WorldPos.x;
-    convert << "y";
-    convert << WorldPos.y;
-    line.append(convert.str());
-    std::string ending(".item");
-    line.append(ending);
+void SpawnItem(std::string Object, int xpos, int ypos);
 
-    std::ifstream Input(line.c_str());
-    if (Input.is_open())
-    {
-        while (Input.good())
-        {
-            std::string line;
-            getline(Input, line);
-            item Critter;
+void RefreshImages();
 
-            Critter.name = "Debuggery";
+item *GetItemPtrfromVector(std::list<item> &Vector, std::string Name);
 
-            Critter.name = StringFindString(line, "[name:");
-            if (Critter.name != "Debuggery")
-                Critter = *GetGlobalItem(Critter.name);
-            Critter.xpos = StringFindNumber(line, "[xpos:");
-            Critter.ypos = StringFindNumber(line, "[ypos:");
-            std::cout << "Xpos: " << Critter.xpos << "Ypos: " << Critter.ypos
-                      << std::endl;
-
-            if (Direction == "TopLeft")
-            {
-            }
-            if (Direction == "Top")
-            {
-                Critter.xpos += 640;
-            }
-            if (Direction == "TopRight")
-            {
-                Critter.xpos += 640;
-                Critter.xpos += 640;
-            }
-            if (Direction == "Right")
-            {
-                Critter.xpos += 640;
-                Critter.xpos += 640;
-                Critter.ypos += 640;
-            }
-            if (Direction == "BottomRight")
-            {
-                Critter.xpos += 640;
-                Critter.xpos += 640;
-                Critter.ypos += 640;
-                Critter.ypos += 640;
-            }
-            if (Direction == "Bottom")
-            {
-                Critter.xpos += 640;
-                Critter.ypos += 640;
-                Critter.ypos += 640;
-            }
-            if (Direction == "BottomLeft")
-            {
-                Critter.ypos += 640;
-                Critter.ypos += 640;
-            }
-            if (Direction == "Left")
-            {
-                Critter.ypos += 640;
-            }
-            std::cout << "Xpos: " << Critter.xpos << "Ypos: " << Critter.ypos
-                      << std::endl;
-
-            /*std::string Imagery = StringFindString(line,"[Image:");
-                std::vector<cImageHolder>::iterator i;
-                if(Debug){ std::cout << "Pre Imagery \n";}
-                for(i = imagemanager.GlobalImage.begin(); i != imagemanager.GlobalImage.end(); i++)
-                {
-                    if(i->name == Imagery)
-                    {
-                        Critter.img.setTexture(i->Image);
-                    }
-                }*/
-
-            if (Critter.name != "Debuggery")
-            {
-                worlditems.push_back(Critter);
-            }
-        }
-    }
-    return line;
-}
-
-void SpawnItem(std::string Object, int xpos, int ypos)
-{
-    if (Debug)
-    {
-        std::cout << "Spawning" << Object << " \n";
-    }
-    cItem var;
-    if (Debug)
-    {
-        std::cout << "Pre var in SpawnItem"
-                  << " \n";
-    }
-    var = *GetGlobalItem(Object);
-    if (Debug)
-    {
-        std::cout << "Post var in SpawnItem"
-                  << " \n";
-    }
-
-    var.id = Globals.globalid++;
-    var.xpos = xpos;
-    var.ypos = ypos;
-    itemmanager.AddedItems.push_back(var);
-    if (Debug)
-    {
-        std::cout << "Done Spawning. \n";
-    }
-
-    /*bool searching = true;
-    while( searching )
-    {
-        if( itemmanager.GlobalItem[i].name == Object && t != itemmanager.GlobalItem.end())
-        {
-            doThings();
-            searching=false;
-        }
-    i++;
-    t++;
-    }*/
-
-    /*for(i = itemmanager.GlobalItem.begin(); i != itemmanager.GlobalItem.end(); i++)
-    {
-        if(i->name == Object)
-        {
-            cItem var;
-            var = *i;
-            var.id = globalid++;
-            var.xpos = xpos;
-            var.ypos = ypos;
-            worlditems.push_back(var);
-            break;
-        }
-    }*/
-}
-
-void RefreshImages()
-{ // PANIC
-    for (size_t i = 0; i != worlditems.size(); i++)
-    {
-        for (size_t t = 0; t != itemmanager.GlobalItem.size(); t++)
-        {
-            //if(worlditems.at(i).name == itemmanager.GlobalItem.at(t).name)
-            {
-                //worlditems.at(i).img.setTexture(*itemmanager.GlobalItem.at(t).img.getTexture());
-            }
-        }
-    }
-    Con("Done");
-}
-
-item *GetItemPtrfromVector(std::list<item> &Vector, std::string Name)
-{
-    debug("Doing GetItmPtr");
-    //*for(int i = 0; i != Vector.size(); i++)
-    for (auto i = Vector.begin(); i != Vector.begin(); i++)
-    {
-        if ((*i).name == Name)
-        {
-            debug("Returning GetItmPtr");
-            return &(*i);
-        }
-    }
-
-    debug("GetItmPtr didn't find anything, returning NULL");
-    return nullptr;
-}
-
-item *GetItemPtrfromVector2(std::list<item> &Vector, std::string Name)
-{
-    debug("Doing GetItmPtr");
-    //for(int i = 0; i != Vector.size(); i++)
-    for (auto &elem : Vector)
-    {
-        if ((elem).name == Name)
-        {
-            debug("Returning GetItmPtr");
-            return &(elem);
-        }
-    }
-
-    debug("GetItmPtr didn't find anything, returning NULL");
-    return nullptr;
-}
+item *GetItemPtrfromVector2(std::list<item> &Vector, std::string Name);
 
 item *GetItemPtrfromVectorVarSearch(std::list<item> &Vector,
-                                    std::string VarSearch, float AtLeast = 1)
-{
-    debug("Doing GetItmPtrVarSearch");
-    //for(int i = 0; i != Vector.size(); i++)
-    for (auto i = Vector.begin(); i != Vector.begin(); i++)
-    {
-
-        if ((*i).MassFlesh >= AtLeast && VarSearch == "MassFlesh")
-        {
-            debug("Returning GetItmPtrVarSearch");
-            return &(*i);
-        }
-        if ((*i).MassVeggy >= AtLeast && VarSearch == "MassVeggy")
-        {
-            debug("Returning GetItmPtrVarSearch");
-            return &(*i);
-        }
-        if ((*i).MassWater >= AtLeast && VarSearch == "MassWater")
-        {
-            debug("Returning GetItmPtrVarSearch");
-            return &(*i);
-        }
-        if ((*i).MassMetal >= AtLeast && VarSearch == "MassMetal")
-        {
-            debug("Returning GetItmPtrVarSearch");
-            return &(*i);
-        }
-        if ((*i).MassPlastic >= AtLeast && VarSearch == "MassPlastic")
-        {
-            debug("Returning GetItmPtrVarSearch");
-            return &(*i);
-        }
-    }
-
-    debug("GetItmPtrVarSearch didn't find anything, returning NULL");
-    return nullptr;
-}
+                                    std::string VarSearch, float AtLeast = 1);
 
 item *FindClosestItemPtr(int Orix, int Oriy, std::string TarItem, int Gxpos = 0,
-                         int Gypos = 0, int Rxpos = 0, int Rypos = 0)
-{
-    //std::vector<item>::iterator Items;
-    // This will be difficult, go through all the items, and find the closest one, Silly old self, Watch how it's done.
-    int closx =
-        -1000000; // Make sure the default starting number is far beyond being the closest one.
-    int closy = -1000000;
-    bool first = true;
-
-    item *Returns;
-
-    for (auto i = worlditems.begin(); i != worlditems.begin(); i++)
-    {
-        if (first == true)
-        {
-            if ((*i).name == TarItem)
-            {
-                closx = (*i).xpos;
-                closy = (*i).ypos;
-                first = false;
-                Returns = &(*i);
-            }
-        }
-        else
-        {
-            if ((*i).name == TarItem)
-            {
-                int one = Math.Closeish(Orix, Oriy, (*i).xpos, (*i).ypos);
-                int two = Math.Closeish(Orix, Oriy, closx, closy);
-                if (one < two)
-                {
-                    closx = (*i).xpos;
-                    closy = (*i).ypos;
-                    Returns = &(*i);
-                }
-            }
-        }
-    }
-    if (first != true)
-    {
-        return Returns; // Returns = (xpos,ypos,id,Vector Position)
-    }
-    else
-        return nullptr;
-}
+                         int Gypos = 0, int Rxpos = 0, int Rypos = 0);
 
 #endif // ITEMS_H_INCLUDED
