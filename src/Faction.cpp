@@ -564,8 +564,7 @@ item *NPC::GetItemType(int type)
     {
         std::cout << "Returning inventory nothing. \n";
     }
-    return NULL;
-    throw std::runtime_error("GetItemType: Couldn't get item type.");
+    return nullptr;
 }
 
 bool NPC::HasItemType(int type)
@@ -1804,7 +1803,6 @@ int FactionMembers(std::string FactionName)
         }
     }
     return 0;
-    throw std::runtime_error("FactionMembers: Couldn't return anything");
 }
 
 float FactionAggression(std::string FactionName)
@@ -1817,7 +1815,6 @@ float FactionAggression(std::string FactionName)
         }
     }
     return 0;
-    throw std::runtime_error("FactionAggression: Couldn't return anything");
 }
 
 int FactionTerritories(std::string FactionName)
@@ -1830,7 +1827,6 @@ int FactionTerritories(std::string FactionName)
         }
     }
     return 0;
-    throw std::runtime_error("FactionTerritories: Couldn't return anything");
 }
 
 float FactionPower(std::string FactionName)
@@ -1861,7 +1857,6 @@ float FactionPower(std::string FactionName)
         }
     }
     return 0;
-    throw std::runtime_error("FactionPower: Couldn't return anything");
 }
 
 int FactionPopulation()
