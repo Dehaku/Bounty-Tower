@@ -417,7 +417,7 @@ NPC::NPC()
         {
             name = "Joe";
         }
-        else if (numzb == 5)
+        else if (numzb == 6)
         {
             name = "Justin";
         }
