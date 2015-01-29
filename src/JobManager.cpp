@@ -36,3 +36,36 @@ void RunItAll()
     InsertItemsIntoContainers();
     PrintIC();
 }
+
+MyItem::MyItem()
+{
+    int Random = randz(1, 2);
+    if (Random == 1)
+        Name = "Tool";
+    if (Random == 2)
+        Name = "Weapon";
+}
+
+PointerContainer::PointerContainer()
+{
+    pItem = nullptr;
+    pNPC = nullptr;
+    pTile = nullptr;
+}
+
+std::string Job::GetItemName()
+{
+    return this->pItem->name;
+}
+
+Job::Job()
+{
+    pItem = nullptr;
+    pWorker = nullptr;
+
+    CompletionProgress = 0;
+    CompletionTimer = 1000;
+
+    Priority = 4;
+    ToDelete = false;
+}

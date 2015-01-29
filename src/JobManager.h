@@ -1,8 +1,5 @@
 #ifndef __JOBMANAGER_H_INCLUDED__
 #define __JOBMANAGER_H_INCLUDED__
-// *#include "Faction.h"
-// *#include "Items.h"
-// *#include "Tiles.h"
 
 #include "Game.h"
 #include "Globals.h"
@@ -15,14 +12,7 @@ class MyItem
 {
 public:
     std::string Name;
-    MyItem()
-    {
-        int Random = randz(1, 2);
-        if (Random == 1)
-            Name = "Tool";
-        if (Random == 2)
-            Name = "Weapon";
-    }
+    MyItem();
 };
 extern std::vector<MyItem> MyItemList;
 
@@ -30,9 +20,6 @@ class ItemContainer
 {
 public:
     MyItem *TheItemPtr;
-    ItemContainer()
-    {
-    }
 };
 
 extern std::vector<ItemContainer> IC;
@@ -48,12 +35,7 @@ public:
     item *pItem;
     NPC *pNPC;
     Tile *pTile;
-    PointerContainer()
-    {
-        pItem = nullptr;
-        pNPC = nullptr;
-        pTile = nullptr;
-    }
+    PointerContainer();
 };
 
 class Job
@@ -71,22 +53,9 @@ public:
     sf::Vector2i WorkplacePos;
 
     bool ToDelete;
-    std::string GetItemName()
-    {
-        return this->pItem->name;
-    }
+    std::string GetItemName();
 
-    Job()
-    {
-        pItem = nullptr;
-        pWorker = nullptr;
-
-        CompletionProgress = 0;
-        CompletionTimer = 1000;
-
-        Priority = 4;
-        ToDelete = false;
-    }
+    Job();
 };
 
 #endif // JOBMANAGER_H_INCLUDED
