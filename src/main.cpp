@@ -361,7 +361,7 @@ std::vector<int> NnGTrace(int xa, int ya, int xb, int yb, int id,
             Effectz.CreateCircle(x, y, 1, Blue);
         }
         int Count = 0;
-        if (true == true)
+
         { // Merely doing this so I can reuse the same code, but for items, Hehe.
             std::vector<NPC>::iterator Me;
 
@@ -550,7 +550,7 @@ bool UpdatePlanet(){
         int Marked = 0;
         bool Absorbed = false;
         std::vector<planet>::iterator Me;
-        if(true == true){
+        {
         for( Me = Planets.begin(); Me != Planets.end(); ++Me ){
 
             if(Me->name != "Sun"){
@@ -613,7 +613,7 @@ bool UpdatePlanet(){
 
 bool UpdatePlanet(){
         std::vector<planet>::iterator Me;
-        if(true == true){
+        {
         for( Me = Planets.begin(); Me != Planets.end(); ++Me ){
 
             if(Me->name != "Sun"){
@@ -2314,7 +2314,6 @@ void UpdateNPC()
             if (Debug)
                 std::cout << "Post Act Section \n";
 
-            if (true == true)
             { // Vision check and Activation of Path Finding.
                 std::set<int> sList;
                 if (Debug)
@@ -5495,7 +5494,6 @@ int main()
             //Sleep(1);
         }
 
-        if (true == true)
         { //======Camera Controls======
             if (Key.plus == true)
             {
@@ -5861,7 +5859,6 @@ int main()
             }
 
             //else{MyTargetid = -1;}
-            if (true == true)
             { // Mousing over items will say a wee bit about them.
                 std::list<item>::iterator Items;
                 for (Items = worlditems.begin(); Items != worlditems.end();

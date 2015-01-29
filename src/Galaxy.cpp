@@ -153,7 +153,6 @@ void GalaxyController::BuildLocal(std::string Type, int ZedAmount)
         std::vector<NPC>::iterator zit;
         std::vector<item>::iterator zitz;
 
-        if (true == true)
         {
             if (Debug)
             {
@@ -254,7 +253,6 @@ void GalaxyController::BuildLocal(std::string Type, int ZedAmount)
         std::vector<NPC>::iterator zit;
         std::vector<item>::iterator zitz;
 
-        if (true == true)
         {
             if (Debug)
             {
@@ -385,7 +383,6 @@ void GalaxyController::BuildLocalTest()
     std::vector<NPC>::iterator zit;
     std::vector<item>::iterator zitz;
 
-    if (true == true)
     {
         if (Debug)
         {
@@ -427,7 +424,7 @@ void GalaxyController::BuildLocalTest()
 void GalaxyController::ZombieSwarmLocal(int num)
 {
     std::vector<NPC>::iterator zit;
-    if (true == true)
+
     {
         for (int count = 0; count <= num; count++)
         {

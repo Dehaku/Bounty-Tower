@@ -1492,7 +1492,7 @@ void cNpcManager::InitializeCritters()
             Critter.thirsttimer = Critter.thirsttimerint;
             Critter.NeedsPath = false;
 
-            if (true == true) // Critter Bodies
+            // Critter Bodies
             {
                 if (Critter.race == "Human" || Critter.race == "Zombie")
                 {
@@ -1588,8 +1588,9 @@ std::set<int> NPCTrace(int xa, int ya, int xb, int yb, int id,
             Effectz.CreateCircle(x, y, 1, Blue);
         }
         int Count = 0;
-        if (true == true)
-        { // Merely doing this so I can reuse the same code, but for items, Hehe.
+
+        // Merely doing this so I can reuse the same code, but for items, Hehe.
+        {
             std::vector<NPC>::iterator Me;
 
             for (Me = npclist.begin(); Me != npclist.end(); ++Me)
@@ -1962,7 +1963,6 @@ void BuildStartingCritters(int ZedAmount)
     std::vector<NPC>::iterator zit;
     std::vector<item>::iterator zitz;
 
-    if (true == true)
     {
         if (Debug)
         {

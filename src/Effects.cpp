@@ -160,7 +160,6 @@ void Effects::CreateCircle(int xpos, int ypos, int Size, sf::Color MainColor,
 
 void Effects::DrawEffects()
 {
-    if (true == true)
     {
         std::vector<cCircle>::iterator effectz;
         std::vector<cCircle>::iterator remova;
@@ -175,7 +174,6 @@ void Effects::DrawEffects()
         Circles.clear();
     }
 
-    if (true == true)
     {
         std::vector<cSquare>::iterator effectz;
         for (effectz = Squares.begin(); effectz != Squares.end(); ++effectz)
@@ -186,7 +184,6 @@ void Effects::DrawEffects()
         Squares.clear();
     }
 
-    if (true == true)
     {
         std::vector<cLine>::iterator effectz;
         for (effectz = Lines.begin(); effectz != Lines.end(); ++effectz)
@@ -196,7 +193,6 @@ void Effects::DrawEffects()
         Lines.clear();
     }
 
-    if (true == true)
     {
         std::vector<cBeam>::iterator effectz;
         for (effectz = Beams.begin(); effectz != Beams.end(); ++effectz)

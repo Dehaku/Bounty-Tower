@@ -370,7 +370,7 @@ std::string StringFindStringNpos(std::string Stringy, std::string Term)
         size_t tEnd;
         std::string Output;
         tEnd = Stringy.find("]", tStart + 1);
-        if (true == true)
+
         {
             int iLength = Term.length();
             Output.assign(Stringy, tStart + iLength, tEnd - (tStart + iLength));
