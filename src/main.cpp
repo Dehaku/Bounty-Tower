@@ -650,11 +650,9 @@ int GetNpcVectorId(int id)
     return -1;
 }
 
-bool RemoveNPC(char *NPCname, int /*Id*/)
+bool RemoveNPC(char * /*NPCname*/, int /*Id*/)
 {
     int TempInt = 0;
-    std::string thingeh;
-    thingeh = NPCname;
     std::vector<NPC>::iterator zit;
     std::vector<NPC>::iterator location;
     for (zit = npclist.begin(); zit != npclist.end(); ++zit)
@@ -816,8 +814,6 @@ void UpdateNPC()
                 WorkingLine.append(Me->Body.BodyParts, SearchPos,
                                    EndPos - SearchPos);
                 float PartNumber = 0;
-
-                std::string PartString = "";
 
                 PartNumber = StringFindNumber(WorkingLine, "[Walk:");
                 if (PartNumber != 0)
@@ -3653,7 +3649,7 @@ int main()
 
             for (int Rot = 0; Rot != 360; Rot++)
             {
-                //int Rot = GX;
+                /*int Rot = GX;
                 int XPos = ((abs(MousePos.x / 20) * 20) + 10 +
                             cosf(Rot * PI / 180) * Length) /
                            20;
@@ -3664,7 +3660,7 @@ int main()
                 YPos *= 20;
 
                 //Effectz.CreateCircle(MousePos.x,MousePos.y,5,Red);
-                //Effectz.CreateCircle(XPos,YPos,5,White);
+                //Effectz.CreateCircle(XPos,YPos,5,White);*/
             }
             if (Key.p && true == false)
                 for (int Rot = 0; Rot != 360; Rot++)
