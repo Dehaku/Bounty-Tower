@@ -567,7 +567,8 @@ float PercentIs(float Value, float Percentage)
     return Percent;
 }
 
-Globes::Globes()
+Globes::Globes() :
+    GenString{}
 {
     globalid = 100;
     glbbtn = 100;
@@ -576,7 +577,6 @@ Globes::Globes()
     ButtonClicked = false;
     ButtonClickedTime = 0;
     Following = false;
-    GenString = "";
     InitalZeds = false;
     TimeScale = 1;
 }
