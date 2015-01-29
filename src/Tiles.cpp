@@ -672,9 +672,12 @@ void DrawNewTiles()
     {
         for (int t = 0; t != Grids; t++)
         {
-            Tiles[i][t][30].Img.setPosition(i * 20, t * 20);
-            App.draw(Tiles[i][t][30].Img);
-            //DrawTile(i*20,t*20,*Tiles[i][t][30].Img);
+            if(AABB(i*20,t*20,Globals.TopLeft.x-20,Globals.TopRight.x,Globals.TopLeft.y-20,Globals.BottomRight.y))
+            {
+                Tiles[i][t][30].Img.setPosition(i * 20, t * 20);
+                App.draw(Tiles[i][t][30].Img);
+            }
+
         }
     }
     debug("Done Drawing New Tiles");
