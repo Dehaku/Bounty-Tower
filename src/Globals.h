@@ -101,7 +101,7 @@ extern int groundmap[gridz][gridy][gridx];
 extern int smellmap[gridz][gridy][gridx];
 extern int sunmap[gridz][gridy][gridx];
 
-enum skills
+enum class skills
 {
     ag,
     ch,
@@ -111,7 +111,7 @@ enum skills
     pe,
     en,
     wi
-}; // I love the usability this has, But I hate the globalization, Maybe toss this into a class?
+};
 
 void fSleep(float Time);
 void debug(std::string Info);
