@@ -1557,10 +1557,9 @@ void UpdateNPC()
                     if (Me->IsThirsty())
                     {
                         bool IsFood = false;
-                        for (auto it = worlditems.begin();
-                             it != worlditems.end(); ++it)
+                        for (auto &worlditem : worlditems)
                         {
-                            if (it->type == 4)
+                            if (worlditem.type == 4)
                             {
                                 IsFood = true;
                             }
@@ -1582,10 +1581,9 @@ void UpdateNPC()
                     Me->target = "Water";
                     //std::cout << id << " is thirsty." << std::endl;
                     bool IsWater = false;
-                    for (auto it = worlditems.begin(); it != worlditems.end();
-                         ++it)
+                    for (auto &worlditem : worlditems)
                     {
-                        if (it->MassWater > 0)
+                        if (worlditem.MassWater > 0)
                         {
                             IsWater = true;
                         }
@@ -1659,32 +1657,32 @@ void UpdateNPC()
                     int closy = -100000;
                     int ClosID = 0;
                     bool first = true;
-                    for (auto it = npclist.begin(); it != npclist.end(); ++it)
+                    for (auto &elem : npclist)
                     {
                         //if(first == true){ if(zitz->cbaseid != Me->cbaseid && zitz->health > 0){
                         if (first == true)
                         {
-                            if (it->cbaseid == 110110 && it->health > 0)
+                            if (elem.cbaseid == 110110 && elem.health > 0)
                             {
-                                closx = it->xpos;
-                                closy = it->ypos;
+                                closx = elem.xpos;
+                                closy = elem.ypos;
                                 first = false;
                             }
                         }
                         // else { if(zitz->cbaseid != Me->cbaseid && zitz->health > 0) {
                         else
                         {
-                            if (it->cbaseid == 110110 && it->health > 0)
+                            if (elem.cbaseid == 110110 && elem.health > 0)
                             {
                                 int one = Math::Closeish(Me->xpos, Me->ypos,
-                                                         it->xpos, it->ypos);
+                                                         elem.xpos, elem.ypos);
                                 int two = Math::Closeish(Me->xpos, Me->ypos,
                                                          closx, closy);
                                 if (one < two)
                                 {
-                                    closx = it->xpos;
-                                    closy = it->ypos;
-                                    ClosID = it->id;
+                                    closx = elem.xpos;
+                                    closy = elem.ypos;
+                                    ClosID = elem.id;
                                 }
                             }
                         }
@@ -2114,31 +2112,31 @@ void UpdateNPC()
                     if (Me->HasTag("[ZombieHater:"))
                     {
                         bool first = true;
-                        for (auto it = npclist.begin(); it != npclist.end();
-                             ++it)
+                        for (auto &elem : npclist)
                         {
                             if (first == true)
                             {
-                                if (it->cbaseid == 666333 && it->health > 0)
+                                if (elem.cbaseid == 666333 && elem.health > 0)
                                 {
-                                    closx = it->xpos;
-                                    closy = it->ypos;
+                                    closx = elem.xpos;
+                                    closy = elem.ypos;
                                     first = false;
                                     FoundOne = true;
                                 }
                             }
                             else
                             {
-                                if (it->cbaseid == 666333 && it->health > 0)
+                                if (elem.cbaseid == 666333 && elem.health > 0)
                                 {
-                                    int one = Math::Closeish(
-                                        Me->xpos, Me->ypos, it->xpos, it->ypos);
+                                    int one =
+                                        Math::Closeish(Me->xpos, Me->ypos,
+                                                       elem.xpos, elem.ypos);
                                     int two = Math::Closeish(Me->xpos, Me->ypos,
                                                              closx, closy);
                                     if (one < two)
                                     {
-                                        closx = it->xpos;
-                                        closy = it->ypos;
+                                        closx = elem.xpos;
+                                        closy = elem.ypos;
                                     }
                                 }
                             }
@@ -2176,20 +2174,19 @@ void UpdateNPC()
                         int numbaz = -1;
                         int num;
                         bool foundit = false;
-                        for (auto it = npclist.begin(); it != npclist.end();
-                             ++it)
+                        for (auto &elem : npclist)
                         {
                             if (foundit == false)
                             {
                                 numba++;
-                                if (CloseishS(it->xpos, Me->xpos) <=
+                                if (CloseishS(elem.xpos, Me->xpos) <=
                                         Me->reach &&
-                                    CloseishS(it->ypos, Me->ypos) <=
+                                    CloseishS(elem.ypos, Me->ypos) <=
                                         Me->reach &&
-                                    it->target != "Flesh")
+                                    elem.target != "Flesh")
                                 {
                                     numbaz++;
-                                    num = it->id;
+                                    num = elem.id;
                                     foundit = true;
                                 }
                             }
@@ -2889,46 +2886,46 @@ void DrawTiles()
 
 void DrawNPCs()
 {
-    for (auto it = npclist.begin(); it != npclist.end(); ++it)
+    for (auto &elem : npclist)
     {
         //if(zit->xpos/GridSize > currentx-27 && zit->xpos/GridSize < currentx+26 && zit->ypos/GridSize > currenty-20 && zit->ypos/GridSize < currenty+20)
         //{
-        if (it->HasSpawned == true)
+        if (elem.HasSpawned == true)
         {
             // zit->img.setRotation( -anglez+90 );
             //int Alph = sunmap[currentz][abs_to_index(zit->xpos/GridSize)][abs_to_index(zit->ypos/GridSize)];
 
-            if (it->name == "Azabul")
+            if (elem.name == "Azabul")
             {
-                sf::Vector2f TA1 = it->TentArm1;
-                sf::Vector2f TA2 = it->TentArm2;
-                sf::Vector2f TE1 = it->TentEnd1;
-                sf::Vector2f TE2 = it->TentEnd2;
+                sf::Vector2f TA1 = elem.TentArm1;
+                sf::Vector2f TA2 = elem.TentArm2;
+                sf::Vector2f TE1 = elem.TentEnd1;
+                sf::Vector2f TE2 = elem.TentEnd2;
 
-                Effectz.CreateLine(it->xpos, it->ypos, TA1.x + it->xpos,
-                                   TA1.y + it->ypos, 2, sf::Color(0, 200, 200),
+                Effectz.CreateLine(elem.xpos, elem.ypos, TA1.x + elem.xpos,
+                                   TA1.y + elem.ypos, 2, sf::Color(0, 200, 200),
                                    1, sf::Color(0, 255, 255));
-                Effectz.CreateLine(it->xpos, it->ypos, TA2.x + it->xpos,
-                                   TA2.y + it->ypos, 2, sf::Color(0, 200, 200),
+                Effectz.CreateLine(elem.xpos, elem.ypos, TA2.x + elem.xpos,
+                                   TA2.y + elem.ypos, 2, sf::Color(0, 200, 200),
                                    1, sf::Color(0, 255, 255));
                 Effectz.CreateLine(
-                    TA1.x + it->xpos, TA1.y + it->ypos,
-                    TE1.x + TA1.x + it->xpos, TE1.y + TA1.y + it->ypos, 2,
+                    TA1.x + elem.xpos, TA1.y + elem.ypos,
+                    TE1.x + TA1.x + elem.xpos, TE1.y + TA1.y + elem.ypos, 2,
                     sf::Color(0, 200, 200), 1, sf::Color(0, 255, 255));
                 Effectz.CreateLine(
-                    TA2.x + it->xpos, TA2.y + it->ypos,
-                    TE2.x + TA2.x + it->xpos, TE2.y + TA2.y + it->ypos, 2,
+                    TA2.x + elem.xpos, TA2.y + elem.ypos,
+                    TE2.x + TA2.x + elem.xpos, TE2.y + TA2.y + elem.ypos, 2,
                     sf::Color(0, 200, 200), 1, sf::Color(0, 255, 255));
                 Effectz.DrawEffects();
             }
 
             int Alph = 255;
-            it->img.setColor(sf::Color(255, 255, 255, Alph));
-            it->img.setScale(Globals.Scalex, Globals.Scaley);
-            it->img.setOrigin(it->img.getTextureRect().width / 2,
-                              it->img.getTextureRect().height / 2);
-            it->DrawImg();
-            Effectz.CreateCircle(it->xpos, it->ypos, it->size,
+            elem.img.setColor(sf::Color(255, 255, 255, Alph));
+            elem.img.setScale(Globals.Scalex, Globals.Scaley);
+            elem.img.setOrigin(elem.img.getTextureRect().width / 2,
+                               elem.img.getTextureRect().height / 2);
+            elem.DrawImg();
+            Effectz.CreateCircle(elem.xpos, elem.ypos, elem.size,
                                  sf::Color(50, 50, 50, 50));
         }
         //}
@@ -2940,13 +2937,13 @@ void DrawItems()
 {
     //App.setActive(true);
 
-    for (auto it = worlditems.begin(); it != worlditems.end(); ++it)
+    for (auto &worlditem : worlditems)
     {
         //if(zit->xpos/GridSize > currentx-27 && zit->xpos/GridSize < currentx+26 && zit->ypos/GridSize > currenty-20 && zit->ypos/GridSize < currenty+20)
         //{
-        it->img.setColor(sf::Color(255, 255, 255, 255));
-        it->img.setScale(Globals.Scalex, Globals.Scaley);
-        it->DrawImg();
+        worlditem.img.setColor(sf::Color(255, 255, 255, 255));
+        worlditem.img.setScale(Globals.Scalex, Globals.Scaley);
+        worlditem.DrawImg();
         //}
     }
     debug("Done Drawing Items");
@@ -3349,9 +3346,9 @@ int main()
 
             if (Key.l == true)
             {
-                for (auto it = npclist.begin(); it != npclist.end(); ++it)
+                for (auto &elem : npclist)
                 {
-                    it->PrintBloodContent();
+                    elem.PrintBloodContent();
                 }
             } // Zombification
 
@@ -5466,25 +5463,25 @@ int main()
                 if (Key.LMB == true)
                 {
                     int tfunz = -1;
-                    for (auto it = npclist.begin(); it != npclist.end(); ++it)
+                    for (auto &elem : npclist)
                     {
                         tfunz++;
                         if (Key.LMB == true)
                         {
                             int Dist = Math::Closeish(MousePos.x, MousePos.y,
-                                                      it->xpos, it->ypos);
+                                                      elem.xpos, elem.ypos);
                             if (Dist <= GridSize)
                             {
                                 MyTarget = tfunz;
                                 FoundOne = true;
-                                std::cout << it->id << std::endl;
+                                std::cout << elem.id << std::endl;
                             }
                         }
                         if (Debug)
                             std::cout << "Post Closeish Targeting \n";
-                        if (it->alive == true)
+                        if (elem.alive == true)
                         {
-                            if (it->target == "Flesh" && it->health > 0)
+                            if (elem.target == "Flesh" && elem.health > 0)
                             {
                                 if (Debug)
                                     std::cout << "Doing Nothing with Living "
@@ -5492,7 +5489,7 @@ int main()
                                 //sf::Shape Line = sf::Shape::Line(zit->xpos, zit->ypos, zit->TargetPos.x, zit->TargetPos.y, 1, sf::Color(255,0,0,255));
                                 //App.draw(Line);
                             }
-                            else if (it->health > 0)
+                            else if (elem.health > 0)
                             {
                                 if (Debug)
                                     std::cout
@@ -5511,16 +5508,16 @@ int main()
                     if (Debug)
                         std::cout << "Found Nothing, Setting targets to -1 \n";
                 }
-                for (auto it = npclist.begin(); it != npclist.end(); ++it)
+                for (auto &elem : npclist)
                 {
-                    if (it->Attacking == true && it->name == "Miniturret")
+                    if (elem.Attacking == true && elem.name == "Miniturret")
                     {
                         if (Debug)
                             std::cout
                                 << "Telling Turret to no longer attack \n";
                         // TODO: Fix Latersf::Shape Line = sf::Shape::Line(zit->TargetPos.x+randz(-4,4),zit->TargetPos.y+randz(-4,4), zit->xpos, zit->ypos, 1, sf::Color(200,200,200,255));
                         // TODO: Fix LaterApp.Draw(Line);
-                        it->Attacking = false;
+                        elem.Attacking = false;
                     }
                 }
                 if (Debug)

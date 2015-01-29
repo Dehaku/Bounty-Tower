@@ -548,15 +548,15 @@ bool NPC::HasWeapon(std::string weapon)
 item *NPC::GetItemType(int type)
 {
     //for(int i = 0; i < inventory.size(); i++)
-    for (auto i = inventory.begin(); i != inventory.end(); i++)
+    for (auto &elem : inventory)
     {
-        if ((*i).type == type)
+        if ((elem).type == type)
         {
             if (Debug)
             {
                 std::cout << "Returning inventory class \n";
             }
-            return &(*i);
+            return &(elem);
         }
     }
     if (Debug)
