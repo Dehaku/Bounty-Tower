@@ -89,6 +89,8 @@ std::string RandomWindowName()
     WindowNames.push_back("Galaxy");
     WindowNames.push_back("Ye Old Settlement, Ye New Galaxy");
     WindowNames.push_back("The first Galaxy had Joey, Just saying");
+    WindowNames.push_back("First comes the universe, then comes Galaxy");
+
 
     int RandomName = randz(0, WindowNames.size() - 1);
     std::cout << WindowNames.size() << ", " << RandomName;
