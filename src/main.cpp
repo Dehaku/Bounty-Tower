@@ -1252,13 +1252,11 @@ void UpdateNPC()
             Me->name = "Zombie";
             Me->cbaseid = 666333;
             std::string Imagery = "Zombie.tga";
-            std::vector<cImageHolder>::iterator i;
-            for (i = imagemanager.GlobalImage.begin();
-                 i != imagemanager.GlobalImage.end(); i++)
+            for (auto const &image : imagemanager.GlobalImage)
             {
-                if (i->name == Imagery)
+                if (image.name == Imagery)
                 {
-                    Me->img.setTexture(i->Image);
+                    Me->img.setTexture(image.Image);
                     Me->img.setOrigin(Me->img.getTextureRect().height / 2,
                                       Me->img.getTextureRect().width / 2);
                 }
@@ -2736,46 +2734,44 @@ void UpdateNPC()
                     //Me->TargetPos.y = yPath[1];
                 }
             }
-            std::list<item>::iterator Item;
-            for (Item = Me->inventory.begin(); Item != Me->inventory.end();
-                 Item++)
+            for (auto &elem : Me->inventory)
             {
-                if (Item->type == 4 &&
-                    Math::Exceed(Me->hunger + Item->hungervalue,
+                if (elem.type == 4 &&
+                    Math::Exceed(Me->hunger + elem.hungervalue,
                                  Me->maxhunger) == false &&
                     true == false)
                 {
                     //if(Item->hungervalue > 0){ Me->fillhunger(1); Item->hungervalue--;}
-                    Me->fillhunger(Item->hungervalue);
-                    Me->fillthirst(Item->thirstvalue);
-                    Item->ToDelete = true;
+                    Me->fillhunger(elem.hungervalue);
+                    Me->fillthirst(elem.thirstvalue);
+                    elem.ToDelete = true;
 
                     std::string ChtStr;
                     ChtStr.append("* ");
                     ChtStr.append(Me->name);
                     ChtStr.append(AddString("(", NumbertoString(Me->id), ")"));
                     ChtStr.append(" has consumed ");
-                    ChtStr.append(Item->name);
+                    ChtStr.append(elem.name);
                     ChtStr.append(".");
 
                     ChatBox.AddChat(ChtStr, sf::Color(150, 150, 0));
                 }
-                if (Item->type == 5 &&
-                    Math::Exceed(Me->thirst + Item->thirstvalue,
+                if (elem.type == 5 &&
+                    Math::Exceed(Me->thirst + elem.thirstvalue,
                                  Me->maxthirst) == false &&
                     true == false)
                 {
                     //if(Item->hungervalue > 0){ Me->fillhunger(1); Item->hungervalue--;}
-                    Me->fillhunger(Item->hungervalue);
-                    Me->fillthirst(Item->thirstvalue);
-                    Item->ToDelete = true;
+                    Me->fillhunger(elem.hungervalue);
+                    Me->fillthirst(elem.thirstvalue);
+                    elem.ToDelete = true;
 
                     std::string ChtStr;
                     ChtStr.append("* ");
                     ChtStr.append(Me->name);
                     ChtStr.append(AddString("(", NumbertoString(Me->id), ")"));
                     ChtStr.append(" has consumed ");
-                    ChtStr.append(Item->name);
+                    ChtStr.append(elem.name);
                     ChtStr.append(".");
 
                     ChatBox.AddChat(ChtStr, sf::Color(150, 150, 0));
@@ -2791,13 +2787,13 @@ void UpdateNPC()
             while (Done == false)
             {
                 bool Yet = false;
-                for (Item = Me->inventory.begin(); Item != Me->inventory.end();
-                     Item++)
+                for (auto it = Me->inventory.begin(); it != Me->inventory.end();
+                     ++it)
                 {
-                    if (Item->ToDelete)
+                    if (it->ToDelete)
                     {
-                        std::cout << Item->name << " to be deleted. \n";
-                        Me->inventory.erase(Item);
+                        std::cout << it->name << " to be deleted. \n";
+                        Me->inventory.erase(it);
                         Yet = true;
                         break;
                     }
@@ -3038,10 +3034,9 @@ void DrawStuffs()
     debug("Drew Effects");
     //    DrawPlanets();//Remove this one, Reenable previous
 
-    std::vector<squarebutton>::iterator ii;
-    for (ii = vSquareButtonList.begin(); ii != vSquareButtonList.end(); ii++)
+    for (auto &button : vSquareButtonList)
     {
-        ii->DrawButton();
+        button.DrawButton();
     }
     vSquareButtonList.clear();
     debug("Drew and Cleared square buttons");
@@ -3049,10 +3044,9 @@ void DrawStuffs()
     cText.DrawTextz();
     debug("Drew Text");
 
-    std::vector<button>::iterator i;
-    for (i = vButtonList.begin(); i != vButtonList.end(); i++)
+    for (auto &button : vButtonList)
     {
-        i->DrawButton();
+        button.DrawButton();
     }
     vButtonList.clear();
     debug("Drew and Cleared buttons");
