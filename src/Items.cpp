@@ -656,13 +656,11 @@ void cItemManager::InitializeItems()
             Item.range = StringFindNumber(line, "[range:");
             Item.IsWeapon = Booleanize(StringFindNumber(line, "[IsWeapon:"));
             std::string Imagery = StringFindString(line, "[image:");
-            std::vector<cImageHolder>::iterator i;
-            for (i = imagemanager.GlobalImage.begin();
-                 i != imagemanager.GlobalImage.end(); i++)
+            for (auto const &image : imagemanager.GlobalImage)
             {
-                if (i->name == Imagery)
+                if (image.name == Imagery)
                 {
-                    Item.img.setTexture(i->Image);
+                    Item.img.setTexture(image.Image);
                     sf::IntRect Tempz = Item.img.getTextureRect();
                     sf::Vector2f Size(Tempz.height, Tempz.width);
                     if (Debug)
@@ -672,7 +670,7 @@ void cItemManager::InitializeItems()
                     }
                     //sf::Vector2u Size = Item.img.getSize();
 
-                    //Item.img.SetSubRect(sf::IntRect(0, 0, i->Image.GetWidth(),i->Image.GetHeight()));
+                    //Item.img.SetSubRect(sf::IntRect(0, 0, image.Image.GetWidth(),image.Image.GetHeight()));
                     Item.img.setOrigin(Size.x / 2, Size.y / 2);
                 }
             }
