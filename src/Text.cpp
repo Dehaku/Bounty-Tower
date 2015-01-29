@@ -121,7 +121,7 @@ void cTextList::LoadFont()
     }
 }
 
-cTextList::cTextList()
+cTextList::cTextList() : xpos{}, ypos{}, Shadow{}, Bold{}
 {
     Size = 11;
 }
