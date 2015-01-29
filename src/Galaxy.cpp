@@ -461,6 +461,29 @@ void GalaxyController::WorldLoop()
     { // Running through factions, Probably needs it's own function.
         debug(AddString("BeginningFaction", UniFact[i].Name));
 
+        if (UniFact[i].Initialized == false)
+        { // Spawning and assigning factions their starting territory.
+
+
+            int x = randz(1, 99);
+            int y = randz(1, 99);
+            if (WorldMap[x][y].Owner == "")
+            {
+                WorldMap[x][y].Owner = UniFact[i].Name;
+
+                Territory ClaimedTerritory;
+
+                ClaimedTerritory.WorldTile = sf::Vector2i(x, y);
+
+                UniFact[i].Territories.push_back(ClaimedTerritory);
+
+                UniFact[i].Initialized = true;
+
+                std::cout << UniFact[i].Name << " has claimed " << x << "/" << y
+                          << std::endl;
+            }
+        }
+
         if (UniFact[i].Territories.size() != 0 &&
             static_cast<size_t>(UniFact[i].Members) <=
                 UniFact[i].Territories.size() / 2)
@@ -475,9 +498,19 @@ void GalaxyController::WorldLoop()
             randz(0, 100 * (UniFact[i].Territories.size() / 4)))
         { // Factions aggression causes them to seek more territory.
             bool TileChange = false;
-            for (size_t t = 0; t != UniFact[i].Territories.size(); t++)
+
+
+            if(UniFact[i].Territories.empty())
+                continue;
+            if(UniFact[i].Members <= 0) /* Don't ask how it can be in the negatives. */
+                continue;
+
+            int ForMembers = UniFact[i].Members;
+            for (size_t t = 0; t != ForMembers; t++)
             {
-                sf::Vector2i Short = UniFact[i].Territories[t].WorldTile;
+                int Territ = randz(0,UniFact[i].Territories.size()-1);
+
+                sf::Vector2i Short = UniFact[i].Territories[Territ].WorldTile;
 
                 if (AABB(Short, 1, 98, 1, 98))
                 {
@@ -567,6 +600,8 @@ void GalaxyController::WorldLoop()
                                 {
                                     //UniFact[z].Members = Loss;
                                     //if(Members > 0) UniFact[i].Members = randz(UniFact[i].Members/16,UniFact[i].Members/4);
+                                    if(UniFact[z].Members > 0)
+                                        UniFact[z].Members -= 1;
 
                                     WT->Owner = UniFact[i].Name;
 
@@ -594,6 +629,8 @@ void GalaxyController::WorldLoop()
                                 }
                                 else
                                 {
+                                    if(UniFact[i].Members > 0)
+                                        UniFact[i].Members -= 1;
                                     //UniFact[i].Members = randz(UniFact[i].Members/4,UniFact[i].Members);
                                     //UniFact[z].Members = randz(UniFact[z].Members/32,UniFact[z].Members/16);
                                 }
@@ -614,26 +651,7 @@ void GalaxyController::WorldLoop()
             }
         }
 
-        if (UniFact[i].Initialized == false)
-        { // Spawning and assigning factions their starting territory.
-            int x = randz(1, 99);
-            int y = randz(1, 99);
-            if (WorldMap[x][y].Owner == "")
-            {
-                WorldMap[x][y].Owner = UniFact[i].Name;
 
-                Territory ClaimedTerritory;
-
-                ClaimedTerritory.WorldTile = sf::Vector2i(x, y);
-
-                UniFact[i].Territories.push_back(ClaimedTerritory);
-
-                UniFact[i].Initialized = true;
-
-                std::cout << UniFact[i].Name << " has claimed " << x << "/" << y
-                          << std::endl;
-            }
-        }
         debug(AddString("EndingFaction", UniFact[i].Name));
     }
     debug("Ending world loop");

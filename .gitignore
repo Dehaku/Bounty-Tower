@@ -1,1 +1,7 @@
 CMakeLists.txt.user
+*.o
+*.dll
+Settlement.exe
+Settlement.cbp
+version.h
+Settlement.depend

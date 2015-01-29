@@ -4922,7 +4922,7 @@ int main()
                 GC.Phase = "World";
                 GC.BuildWorldTest();
 
-                InitializeFactions();
+                InitializeFactions(13);
             }
 
             //DrawStuffs();
