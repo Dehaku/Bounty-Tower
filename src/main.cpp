@@ -3115,13 +3115,12 @@ void RemoveNPCs()
     while (Done == false)
     {
         bool Yet = false;
-        std::vector<NPC>::iterator Item;
-        for (Item = npclist.begin(); Item != npclist.end(); Item++)
+        for (auto it = npclist.begin(); it != npclist.end(); ++it)
         {
-            if (Item->ToDelete)
+            if (it->ToDelete)
             {
-                std::cout << Item->name << " to be deleted. \n";
-                npclist.erase(Item);
+                std::cout << it->name << " to be deleted. \n";
+                npclist.erase(it);
                 Yet = true;
                 break;
             }
