@@ -1752,6 +1752,10 @@ void CleanTerritories(std::vector<Territory> &Territories)
 }
 
 Faction::Faction()
+    : Creativity{}, Aggressiveness{}, TechAgriculture{}, TechArchitecture{},
+      TechEnergyProduction{}, TechWeaponryMass{}, TechWeaponryEnergy{},
+      TechWeaponryExplosive{}, TechWeaponrySharp{}, TechWeaponryBlunt{},
+      TechDiplomacy{}, TechMedical{}, TechRobotics{}
 {
     PlayerControlled = false;
     Initialized = false;
