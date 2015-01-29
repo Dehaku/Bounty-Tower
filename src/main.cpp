@@ -91,7 +91,6 @@ std::string RandomWindowName()
     WindowNames.push_back("The first Galaxy had Joey, Just saying");
     WindowNames.push_back("First comes the universe, then comes Galaxy");
 
-
     int RandomName = randz(0, WindowNames.size() - 1);
     std::cout << WindowNames.size() << ", " << RandomName;
 
@@ -186,13 +185,12 @@ void UnpointItems(std::list<item> &Items)
 bool RemoveItem(int Id)
 {
     int TempInt = 0;
-    std::list<item>::iterator zit;
     std::list<item>::iterator location;
-    for (zit = worlditems.begin(); zit != worlditems.end(); ++zit)
+    for (auto it = worlditems.begin(); it != worlditems.end(); ++it)
     {
-        if (zit->id == Id)
+        if (it->id == Id)
         {
-            location = zit;
+            location = it;
             TempInt = 1;
         }
     }
@@ -215,11 +213,10 @@ void UpdateItem()
     {
         std::cout << "Pre Item \n";
     }
-    std::list<item>::iterator Me;
     auto startlist = worlditems.begin();
     auto endlist = worlditems.end();
 
-    for (Me = startlist; Me != endlist; ++Me)
+    for (auto Me = startlist; Me != endlist; ++Me)
     {
         try
         {
@@ -655,13 +652,12 @@ int GetNpcVectorId(int id)
 bool RemoveNPC(char * /*NPCname*/, int /*Id*/)
 {
     int TempInt = 0;
-    std::vector<NPC>::iterator zit;
     std::vector<NPC>::iterator location;
-    for (zit = npclist.begin(); zit != npclist.end(); ++zit)
+    for (auto it = npclist.begin(); it != npclist.end(); ++it)
     {
-        if (zit->health <= 0 || zit->HasSpawned == false || zit->alive == false)
+        if (it->health <= 0 || it->HasSpawned == false || it->alive == false)
         {
-            location = zit;
+            location = it;
             TempInt = 1;
         }
     }
@@ -1560,12 +1556,11 @@ void UpdateNPC()
                         "Food"; //std::cout << id << " is hungry." << std::endl;
                     if (Me->IsThirsty())
                     {
-                        std::list<item>::iterator zitz;
                         bool IsFood = false;
-                        for (zitz = worlditems.begin();
-                             zitz != worlditems.end(); ++zitz)
+                        for (auto it = worlditems.begin();
+                             it != worlditems.end(); ++it)
                         {
-                            if (zitz->type == 4)
+                            if (it->type == 4)
                             {
                                 IsFood = true;
                             }
@@ -1586,12 +1581,11 @@ void UpdateNPC()
                 {
                     Me->target = "Water";
                     //std::cout << id << " is thirsty." << std::endl;
-                    std::list<item>::iterator zitz;
                     bool IsWater = false;
-                    for (zitz = worlditems.begin(); zitz != worlditems.end();
-                         ++zitz)
+                    for (auto it = worlditems.begin(); it != worlditems.end();
+                         ++it)
                     {
-                        if (zitz->MassWater > 0)
+                        if (it->MassWater > 0)
                         {
                             IsWater = true;
                         }
@@ -1661,37 +1655,36 @@ void UpdateNPC()
                     Me->target = "Flesh";
                 if (Me->target == "Flesh")
                 {
-                    std::vector<NPC>::iterator zitz;
                     int closx = -100000;
                     int closy = -100000;
                     int ClosID = 0;
                     bool first = true;
-                    for (zitz = npclist.begin(); zitz != npclist.end(); ++zitz)
+                    for (auto it = npclist.begin(); it != npclist.end(); ++it)
                     {
                         //if(first == true){ if(zitz->cbaseid != Me->cbaseid && zitz->health > 0){
                         if (first == true)
                         {
-                            if (zitz->cbaseid == 110110 && zitz->health > 0)
+                            if (it->cbaseid == 110110 && it->health > 0)
                             {
-                                closx = zitz->xpos;
-                                closy = zitz->ypos;
+                                closx = it->xpos;
+                                closy = it->ypos;
                                 first = false;
                             }
                         }
                         // else { if(zitz->cbaseid != Me->cbaseid && zitz->health > 0) {
                         else
                         {
-                            if (zitz->cbaseid == 110110 && zitz->health > 0)
+                            if (it->cbaseid == 110110 && it->health > 0)
                             {
-                                int one = Math::Closeish(
-                                    Me->xpos, Me->ypos, zitz->xpos, zitz->ypos);
+                                int one = Math::Closeish(Me->xpos, Me->ypos,
+                                                         it->xpos, it->ypos);
                                 int two = Math::Closeish(Me->xpos, Me->ypos,
                                                          closx, closy);
                                 if (one < two)
                                 {
-                                    closx = zitz->xpos;
-                                    closy = zitz->ypos;
-                                    ClosID = zitz->id;
+                                    closx = it->xpos;
+                                    closy = it->ypos;
+                                    ClosID = it->id;
                                 }
                             }
                         }
@@ -2120,34 +2113,32 @@ void UpdateNPC()
                     bool FoundOne = false;
                     if (Me->HasTag("[ZombieHater:"))
                     {
-                        std::vector<NPC>::iterator zitz;
                         bool first = true;
-                        for (zitz = npclist.begin(); zitz != npclist.end();
-                             ++zitz)
+                        for (auto it = npclist.begin(); it != npclist.end();
+                             ++it)
                         {
                             if (first == true)
                             {
-                                if (zitz->cbaseid == 666333 && zitz->health > 0)
+                                if (it->cbaseid == 666333 && it->health > 0)
                                 {
-                                    closx = zitz->xpos;
-                                    closy = zitz->ypos;
+                                    closx = it->xpos;
+                                    closy = it->ypos;
                                     first = false;
                                     FoundOne = true;
                                 }
                             }
                             else
                             {
-                                if (zitz->cbaseid == 666333 && zitz->health > 0)
+                                if (it->cbaseid == 666333 && it->health > 0)
                                 {
-                                    int one =
-                                        Math::Closeish(Me->xpos, Me->ypos,
-                                                       zitz->xpos, zitz->ypos);
+                                    int one = Math::Closeish(
+                                        Me->xpos, Me->ypos, it->xpos, it->ypos);
                                     int two = Math::Closeish(Me->xpos, Me->ypos,
                                                              closx, closy);
                                     if (one < two)
                                     {
-                                        closx = zitz->xpos;
-                                        closy = zitz->ypos;
+                                        closx = it->xpos;
+                                        closy = it->ypos;
                                     }
                                 }
                             }
@@ -2185,21 +2176,20 @@ void UpdateNPC()
                         int numbaz = -1;
                         int num;
                         bool foundit = false;
-                        std::vector<NPC>::iterator zitz;
-                        for (zitz = npclist.begin(); zitz != npclist.end();
-                             ++zitz)
+                        for (auto it = npclist.begin(); it != npclist.end();
+                             ++it)
                         {
                             if (foundit == false)
                             {
                                 numba++;
-                                if (CloseishS(zitz->xpos, Me->xpos) <=
+                                if (CloseishS(it->xpos, Me->xpos) <=
                                         Me->reach &&
-                                    CloseishS(zitz->ypos, Me->ypos) <=
+                                    CloseishS(it->ypos, Me->ypos) <=
                                         Me->reach &&
-                                    zitz->target != "Flesh")
+                                    it->target != "Flesh")
                                 {
                                     numbaz++;
-                                    num = zitz->id;
+                                    num = it->id;
                                     foundit = true;
                                 }
                             }
@@ -2899,47 +2889,46 @@ void DrawTiles()
 
 void DrawNPCs()
 {
-    std::vector<NPC>::iterator zit;
-    for (zit = npclist.begin(); zit != npclist.end(); ++zit)
+    for (auto it = npclist.begin(); it != npclist.end(); ++it)
     {
         //if(zit->xpos/GridSize > currentx-27 && zit->xpos/GridSize < currentx+26 && zit->ypos/GridSize > currenty-20 && zit->ypos/GridSize < currenty+20)
         //{
-        if (zit->HasSpawned == true)
+        if (it->HasSpawned == true)
         {
             // zit->img.setRotation( -anglez+90 );
             //int Alph = sunmap[currentz][abs_to_index(zit->xpos/GridSize)][abs_to_index(zit->ypos/GridSize)];
 
-            if (zit->name == "Azabul")
+            if (it->name == "Azabul")
             {
-                sf::Vector2f TA1 = zit->TentArm1;
-                sf::Vector2f TA2 = zit->TentArm2;
-                sf::Vector2f TE1 = zit->TentEnd1;
-                sf::Vector2f TE2 = zit->TentEnd2;
+                sf::Vector2f TA1 = it->TentArm1;
+                sf::Vector2f TA2 = it->TentArm2;
+                sf::Vector2f TE1 = it->TentEnd1;
+                sf::Vector2f TE2 = it->TentEnd2;
 
-                Effectz.CreateLine(zit->xpos, zit->ypos, TA1.x + zit->xpos,
-                                   TA1.y + zit->ypos, 2, sf::Color(0, 200, 200),
+                Effectz.CreateLine(it->xpos, it->ypos, TA1.x + it->xpos,
+                                   TA1.y + it->ypos, 2, sf::Color(0, 200, 200),
                                    1, sf::Color(0, 255, 255));
-                Effectz.CreateLine(zit->xpos, zit->ypos, TA2.x + zit->xpos,
-                                   TA2.y + zit->ypos, 2, sf::Color(0, 200, 200),
+                Effectz.CreateLine(it->xpos, it->ypos, TA2.x + it->xpos,
+                                   TA2.y + it->ypos, 2, sf::Color(0, 200, 200),
                                    1, sf::Color(0, 255, 255));
                 Effectz.CreateLine(
-                    TA1.x + zit->xpos, TA1.y + zit->ypos,
-                    TE1.x + TA1.x + zit->xpos, TE1.y + TA1.y + zit->ypos, 2,
+                    TA1.x + it->xpos, TA1.y + it->ypos,
+                    TE1.x + TA1.x + it->xpos, TE1.y + TA1.y + it->ypos, 2,
                     sf::Color(0, 200, 200), 1, sf::Color(0, 255, 255));
                 Effectz.CreateLine(
-                    TA2.x + zit->xpos, TA2.y + zit->ypos,
-                    TE2.x + TA2.x + zit->xpos, TE2.y + TA2.y + zit->ypos, 2,
+                    TA2.x + it->xpos, TA2.y + it->ypos,
+                    TE2.x + TA2.x + it->xpos, TE2.y + TA2.y + it->ypos, 2,
                     sf::Color(0, 200, 200), 1, sf::Color(0, 255, 255));
                 Effectz.DrawEffects();
             }
 
             int Alph = 255;
-            zit->img.setColor(sf::Color(255, 255, 255, Alph));
-            zit->img.setScale(Globals.Scalex, Globals.Scaley);
-            zit->img.setOrigin(zit->img.getTextureRect().width / 2,
-                               zit->img.getTextureRect().height / 2);
-            zit->DrawImg();
-            Effectz.CreateCircle(zit->xpos, zit->ypos, zit->size,
+            it->img.setColor(sf::Color(255, 255, 255, Alph));
+            it->img.setScale(Globals.Scalex, Globals.Scaley);
+            it->img.setOrigin(it->img.getTextureRect().width / 2,
+                              it->img.getTextureRect().height / 2);
+            it->DrawImg();
+            Effectz.CreateCircle(it->xpos, it->ypos, it->size,
                                  sf::Color(50, 50, 50, 50));
         }
         //}
@@ -2951,14 +2940,13 @@ void DrawItems()
 {
     //App.setActive(true);
 
-    std::list<item>::iterator zit;
-    for (zit = worlditems.begin(); zit != worlditems.end(); ++zit)
+    for (auto it = worlditems.begin(); it != worlditems.end(); ++it)
     {
         //if(zit->xpos/GridSize > currentx-27 && zit->xpos/GridSize < currentx+26 && zit->ypos/GridSize > currenty-20 && zit->ypos/GridSize < currenty+20)
         //{
-        zit->img.setColor(sf::Color(255, 255, 255, 255));
-        zit->img.setScale(Globals.Scalex, Globals.Scaley);
-        zit->DrawImg();
+        it->img.setColor(sf::Color(255, 255, 255, 255));
+        it->img.setScale(Globals.Scalex, Globals.Scaley);
+        it->DrawImg();
         //}
     }
     debug("Done Drawing Items");
@@ -3179,9 +3167,6 @@ int main()
     // Setting the initial game phase.
     GC.Phase = "MainMenu";
 
-    // These are old iterators I made to allow things to be done in the main loop, They need to be moved into their own files and functions.
-    std::vector<NPC>::iterator zit;
-
     // For A*
     InitializePathfinder();
 
@@ -3364,10 +3349,9 @@ int main()
 
             if (Key.l == true)
             {
-                std::vector<NPC>::iterator zit;
-                for (zit = npclist.begin(); zit != npclist.end(); ++zit)
+                for (auto it = npclist.begin(); it != npclist.end(); ++it)
                 {
-                    zit->PrintBloodContent();
+                    it->PrintBloodContent();
                 }
             } // Zombification
 
@@ -5482,25 +5466,25 @@ int main()
                 if (Key.LMB == true)
                 {
                     int tfunz = -1;
-                    for (zit = npclist.begin(); zit != npclist.end(); ++zit)
+                    for (auto it = npclist.begin(); it != npclist.end(); ++it)
                     {
                         tfunz++;
                         if (Key.LMB == true)
                         {
                             int Dist = Math::Closeish(MousePos.x, MousePos.y,
-                                                      zit->xpos, zit->ypos);
+                                                      it->xpos, it->ypos);
                             if (Dist <= GridSize)
                             {
                                 MyTarget = tfunz;
                                 FoundOne = true;
-                                std::cout << zit->id << std::endl;
+                                std::cout << it->id << std::endl;
                             }
                         }
                         if (Debug)
                             std::cout << "Post Closeish Targeting \n";
-                        if (zit->alive == true)
+                        if (it->alive == true)
                         {
-                            if (zit->target == "Flesh" && zit->health > 0)
+                            if (it->target == "Flesh" && it->health > 0)
                             {
                                 if (Debug)
                                     std::cout << "Doing Nothing with Living "
@@ -5508,7 +5492,7 @@ int main()
                                 //sf::Shape Line = sf::Shape::Line(zit->xpos, zit->ypos, zit->TargetPos.x, zit->TargetPos.y, 1, sf::Color(255,0,0,255));
                                 //App.draw(Line);
                             }
-                            else if (zit->health > 0)
+                            else if (it->health > 0)
                             {
                                 if (Debug)
                                     std::cout
@@ -5527,16 +5511,16 @@ int main()
                     if (Debug)
                         std::cout << "Found Nothing, Setting targets to -1 \n";
                 }
-                for (zit = npclist.begin(); zit != npclist.end(); ++zit)
+                for (auto it = npclist.begin(); it != npclist.end(); ++it)
                 {
-                    if (zit->Attacking == true && zit->name == "Miniturret")
+                    if (it->Attacking == true && it->name == "Miniturret")
                     {
                         if (Debug)
                             std::cout
                                 << "Telling Turret to no longer attack \n";
                         // TODO: Fix Latersf::Shape Line = sf::Shape::Line(zit->TargetPos.x+randz(-4,4),zit->TargetPos.y+randz(-4,4), zit->xpos, zit->ypos, 1, sf::Color(200,200,200,255));
                         // TODO: Fix LaterApp.Draw(Line);
-                        zit->Attacking = false;
+                        it->Attacking = false;
                     }
                 }
                 if (Debug)
