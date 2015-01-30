@@ -3174,9 +3174,9 @@ int main()
                 if (Event.mouseWheel.delta > 0)
                 {
                     std::cout << "Zoom Out \n";
-                    if (CameraZoom < 2)
+                    if (globals::CameraZoom < 2)
                     {
-                        CameraZoom = CameraZoom / 0.5;
+                        globals::CameraZoom = globals::CameraZoom / 0.5;
                         //CameraSize
                         View1.zoom(0.5);
                     }
@@ -3184,9 +3184,9 @@ int main()
                 if (Event.mouseWheel.delta < 0)
                 {
                     std::cout << "Zoom In \n";
-                    if (CameraZoom > 0.5)
+                    if (globals::CameraZoom > 0.5)
                     {
-                        CameraZoom = CameraZoom / 2;
+                        globals::CameraZoom = globals::CameraZoom / 2;
                         View1.zoom(2);
                     }
                 }
@@ -3238,10 +3238,10 @@ int main()
 
         cText.CreateText(CZ(globals::TopRight.x - CZ(50)),
                          CZ(globals::TopRight.y + CZ(50)), CZ(11),
-                         sf::Color::White, "x", "", CameraZoom);
+                         sf::Color::White, "x", "", globals::CameraZoom);
         cText.CreateText((globals::TopRight.x - 50), (globals::TopRight.y + 50),
-                         (11) / CameraZoom, sf::Color::White, "x", "",
-                         CameraZoom);
+                         (11) / globals::CameraZoom, sf::Color::White, "x", "",
+                         globals::CameraZoom);
 
         if (Key.kTime == 1)
         { // Generates a random name from GenerateName(); and puts it into the console.

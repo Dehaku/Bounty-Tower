@@ -10,7 +10,7 @@ void debug(std::string Info)
 
 float CZ(float Number)
 {
-    return Number / CameraZoom;
+    return Number / globals::CameraZoom;
 }
 
 bool Debug = false;
@@ -24,10 +24,10 @@ std::vector<int> Selected;
 float GCtimescale = 1;
 int MyTarget = -1;
 int MyTargetid = -1;
-float CameraZoom = 1;
 
 namespace globals
 {
+float CameraZoom = 1;
 int currentx = 50;
 int currenty = 50;
 int currentz = 6;

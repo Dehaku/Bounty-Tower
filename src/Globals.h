@@ -19,10 +19,10 @@ extern std::vector<int> Selected;
 extern float GCtimescale;
 extern int MyTarget;
 extern int MyTargetid;
-extern float CameraZoom;
 
 namespace globals
 {
+extern float CameraZoom;
 extern int currentx;
 extern int currenty;
 extern int currentz;
