@@ -27,8 +27,6 @@ extern float GY;
 extern sf::Vector2f MousePos;
 extern int MouseStagnation;
 
-extern sf::Sprite NewTile;
-
 extern bool AllowedToAttack; // Set this to each NPC
 
 extern std::vector<int> Selected;

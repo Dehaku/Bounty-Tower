@@ -19,8 +19,6 @@ float GY = 0;
 sf::Vector2f MousePos;
 int MouseStagnation = 0;
 
-sf::Sprite NewTile;
-
 bool AllowedToAttack = true; // Set this to each NPC
 
 std::vector<int> Selected;
