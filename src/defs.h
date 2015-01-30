@@ -5,6 +5,7 @@
 
 const sf::Vector2f Rez(1024, 768);
 const sf::Vector2f Center(500, 500);
+const sf::Vector2f HalfSize(Rez.x / 2, Rez.y / 2);
 const int gridx = 100;
 const int gridy = 100;
 const int gridz = 10;

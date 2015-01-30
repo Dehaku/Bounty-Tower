@@ -5,7 +5,6 @@
 bool Debug = false;
 bool InFocus = true;
 bool DrawStuffsDone = true;
-sf::Vector2f HalfSize(Rez.x / 2, Rez.y / 2);
 sf::View View1(Center, HalfSize);
 
 int AirPressure = 10;

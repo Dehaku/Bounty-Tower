@@ -9,7 +9,6 @@ extern bool Debug;
 extern bool InFocus;
 extern bool DrawStuffsDone;
 
-extern sf::Vector2f HalfSize;
 extern sf::View View1;
 
 extern int AirPressure;
