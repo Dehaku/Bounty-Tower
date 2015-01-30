@@ -517,14 +517,6 @@ std::set<std::string> StringFindSetChaos(std::string Stringy, std::string Term,
 }
 
 std::string AddString(std::string Original, std::string Addition,
-                      std::string Addition2)
-{
-    Original.append(Addition);
-    Original.append(Addition2);
-
-    return Original;
-}
-std::string AddString(std::string Original, std::string Addition,
                       std::string Addition2, std::string Addition3)
 {
     Original.append(Addition);

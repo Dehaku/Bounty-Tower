@@ -984,9 +984,8 @@ float NPC::bloodwork(std::string aliment, float amount)
 { // Returns the final altered value of the altered 'aliment'
 
     size_t tStart;
-    aliment = AddString(
-        "[", aliment,
-        ":"); // Doing this so the rest of the code is much, much simplier.
+    aliment = "[" + aliment +
+              ":"; // Doing this so the rest of the code is much, much simplier.
     tStart = bloodcontent.find(aliment);
     float Returns = amount;
 

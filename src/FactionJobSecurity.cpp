@@ -121,9 +121,8 @@ void DrawJobList(int DrawXPos, int DrawYPos)
 
                     cText.CreateText(
                         DrawXPos, DrawYPos + (YVariance * 10), 11,
-                        sf::Color::Yellow,
-                        AddString(UniFact[i].JobList[t].pWorker->name,
-                                  UniFact[i].JobList[t].Name, " "),
+                        sf::Color::Yellow, UniFact[i].JobList[t].pWorker->name +
+                                               UniFact[i].JobList[t].Name + " ",
                         UniFact[i]
                             .JobList[t]
                             .pItem->name); // ,JobList.at(i).pItem.name
@@ -141,12 +140,11 @@ void DrawJobList(int DrawXPos, int DrawYPos)
                 else if (UniFact[i].JobList[t].pWorker != nullptr)
                 {
                     debug("Third condition");
-                    cText.CreateText(
-                        DrawXPos, DrawYPos + (YVariance * 10), 11,
-                        sf::Color::Yellow,
-                        AddString(UniFact[i].JobList[t].pWorker->name,
-                                  UniFact[i].JobList[t].Type, " "),
-                        UniFact[i].JobList[t].Name);
+                    cText.CreateText(DrawXPos, DrawYPos + (YVariance * 10), 11,
+                                     sf::Color::Yellow,
+                                     UniFact[i].JobList[t].pWorker->name +
+                                         UniFact[i].JobList[t].Type + " ",
+                                     UniFact[i].JobList[t].Name);
                 }
                 else
                 {

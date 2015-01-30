@@ -1068,8 +1068,7 @@ void UpdateNPC()
                             std::string ChtStr;
                             ChtStr.append("* ");
                             ChtStr.append(Me->name);
-                            ChtStr.append(
-                                AddString("(", NumbertoString(Me->id), ")"));
+                            ChtStr.append("(" + NumbertoString(Me->id) + ")");
                             ChtStr.append(" has inserted ");
                             ChtStr.append((*i).name);
                             ChtStr.append(" into their ");
@@ -1222,7 +1221,7 @@ void UpdateNPC()
                 std::string ChtStr;
                 ChtStr.append("* ");
                 ChtStr.append(Me->name);
-                ChtStr.append(AddString("(", NumbertoString(Me->id), ")"));
+                ChtStr.append("(" + NumbertoString(Me->id) + ")");
                 ChtStr.append(" has died! ");
 
                 ChatBox.AddChat(ChtStr, sf::Color(200, 0, 0));
@@ -1286,7 +1285,7 @@ void UpdateNPC()
             std::string ChtStr;
             ChtStr.append("* ");
             ChtStr.append(OldName);
-            ChtStr.append(AddString("(", NumbertoString(Me->id), ")"));
+            ChtStr.append("(" + NumbertoString(Me->id) + ")");
             ChtStr.append(" has been zombified by Zombification! ");
 
             ChatBox.AddChat(ChtStr, sf::Color(200, 0, 0));
@@ -2220,16 +2219,15 @@ void UpdateNPC()
                             std::string AtkStr;
                             AtkStr.append("* ");
                             AtkStr.append(Me->name);
-                            AtkStr.append(
-                                AddString("(", NumbertoString(Me->id), ")"));
+                            AtkStr.append("(" + NumbertoString(Me->id) + ")");
                             if (AtkType != "")
                                 AtkStr.append(" has biten ");
                             else
                                 AtkStr.append(AtkType);
                             AtkStr.append(npclist.at(numba).name);
-                            AtkStr.append(AddString(
-                                "(", NumbertoString(npclist.at(numba).id),
-                                ")"));
+                            AtkStr.append("(" +
+                                          NumbertoString(npclist.at(numba).id) +
+                                          ")");
                             AtkStr.append(", dealing ");
                             AtkStr.append(NumbertoString(zDamage));
                             AtkStr.append(" damage.");
@@ -2722,7 +2720,7 @@ void UpdateNPC()
                     std::string ChtStr;
                     ChtStr.append("* ");
                     ChtStr.append(Me->name);
-                    ChtStr.append(AddString("(", NumbertoString(Me->id), ")"));
+                    ChtStr.append("(" + NumbertoString(Me->id) + ")");
                     ChtStr.append(" has consumed ");
                     ChtStr.append(elem.name);
                     ChtStr.append(".");
@@ -2742,7 +2740,7 @@ void UpdateNPC()
                     std::string ChtStr;
                     ChtStr.append("* ");
                     ChtStr.append(Me->name);
-                    ChtStr.append(AddString("(", NumbertoString(Me->id), ")"));
+                    ChtStr.append("(" + NumbertoString(Me->id) + ")");
                     ChtStr.append(" has consumed ");
                     ChtStr.append(elem.name);
                     ChtStr.append(".");
