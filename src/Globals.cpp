@@ -8,7 +8,6 @@ bool DrawStuffsDone = true;
 std::vector<std::string> chatboxlist;
 std::vector<NPC> *Selection;
 sf::Vector2f RMBHeldPos;
-class ID ID;
 sf::Vector2f HalfSize(Rez.x / 2, Rez.y / 2);
 sf::View View1(Center, HalfSize);
 

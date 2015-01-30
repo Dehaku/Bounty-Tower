@@ -7,6 +7,20 @@ const int Grids = 96;
 
 const int ChunkSize = 32;
 
+class WorldTileType
+{
+public:
+    enum
+    {
+        City,
+        Spire,
+        Grass,
+        Road,
+        River,
+        Ocean
+    };
+};
+
 class Tile
 {
 public:

@@ -16,21 +16,6 @@ extern std::vector<NPC> *Selection;
 
 extern sf::Vector2f RMBHeldPos;
 
-class ID
-{
-public:
-    enum WorldTile
-    {
-        City,
-        Spire,
-        Grass,
-        Road,
-        River,
-        Ocean
-    };
-};
-extern ID ID;
-
 extern sf::Vector2f HalfSize;
 extern sf::View View1;
 

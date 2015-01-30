@@ -549,9 +549,9 @@ void InitalizeWorldTiles()
         for (int t = 0; t != 100; t++)
         {
             WorldMap[i][t].ID = randz(0, 10);
-            if (WorldMap[i][t].ID == ID.City)
+            if (WorldMap[i][t].ID == WorldTileType::City)
             {
-                WorldMap[i][t].ID = ID.City;
+                WorldMap[i][t].ID = WorldTileType::City;
                 WorldMap[i][t].Img.setTexture(
                     *imagemanager.GetImage("City.png"));
                 if (Globals.InitalZeds)
@@ -561,9 +561,9 @@ void InitalizeWorldTiles()
                 WorldMap[i][t].Type = "Building";
                 Cities++;
             }
-            else if (WorldMap[i][t].ID == ID.Spire)
+            else if (WorldMap[i][t].ID == WorldTileType::Spire)
             {
-                WorldMap[i][t].ID = ID.Spire;
+                WorldMap[i][t].ID = WorldTileType::Spire;
                 WorldMap[i][t].Img.setTexture(
                     *imagemanager.GetImage("Spire.png"));
                 WorldMap[i][t].Infected = 0;
@@ -572,7 +572,7 @@ void InitalizeWorldTiles()
             }
             else
             {
-                WorldMap[i][t].ID = ID.Grass;
+                WorldMap[i][t].ID = WorldTileType::Grass;
                 WorldMap[i][t].Img.setTexture(
                     *imagemanager.GetImage("Grass.png"));
                 WorldMap[i][t].Infected = 0;
