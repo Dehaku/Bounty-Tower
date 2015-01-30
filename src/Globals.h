@@ -2,7 +2,6 @@
 #define __GLOBALS_H_INCLUDED__
 
 #include <SFML/Graphics.hpp>
-#include <set>
 
 const sf::Vector2f Rez(1024, 768);
 const sf::Vector2f Center(500, 500);

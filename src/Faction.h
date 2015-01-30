@@ -9,6 +9,7 @@
 #include "Globals.h"
 
 #include <list>
+#include <set>
 
 // TODO: Make it so faction units cannot harm eachother,
 // Do the same with Allied Factions.

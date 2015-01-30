@@ -1,8 +1,6 @@
 #include "Globals.h"
 
 #include <iostream>
-#include <fstream>
-#include <sstream>
 
 bool Debug = false;
 bool InFocus = true;
