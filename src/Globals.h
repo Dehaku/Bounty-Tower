@@ -9,13 +9,6 @@ extern bool Debug;
 extern bool InFocus;
 extern bool DrawStuffsDone;
 
-extern std::vector<std::string> chatboxlist;
-
-class NPC;
-extern std::vector<NPC> *Selection;
-
-extern sf::Vector2f RMBHeldPos;
-
 extern sf::Vector2f HalfSize;
 extern sf::View View1;
 
