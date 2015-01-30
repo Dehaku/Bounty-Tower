@@ -7,6 +7,7 @@
 #include "FactionJobSecurity.h"
 #include "Faction.h"
 #include "math.h"
+#include "util.h"
 
 #include <iostream>
 

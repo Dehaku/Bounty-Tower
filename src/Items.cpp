@@ -3,6 +3,7 @@
 #include "Globals.h"
 #include "Images.h"
 #include "math.h"
+#include "util.h"
 
 #include <fstream>
 #include <sstream>

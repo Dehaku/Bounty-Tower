@@ -4,6 +4,7 @@
 #include "filesystemUtils.hpp"
 #include "Images.h"
 #include "math.h"
+#include "util.h"
 
 #include <sstream>
 #include <fstream>

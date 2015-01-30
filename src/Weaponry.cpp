@@ -1,5 +1,5 @@
 #include "Weaponry.h"
-#include "Globals.h"
+#include "util.h"
 
 #include <iostream>
 

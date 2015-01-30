@@ -2,6 +2,7 @@
 
 #include "Faction.h"
 #include "Tiles.h"
+#include "util.h"
 
 #include <iostream>
 

@@ -1,6 +1,6 @@
 #include "math.h"
 
-#include "Globals.h"
+#include "util.h"
 
 int math::Closeish(int orix, int oriy, int tarx, int tary)
 {

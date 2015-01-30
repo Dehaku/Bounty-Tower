@@ -1,5 +1,6 @@
 #include "JobManager.h"
 #include "Globals.h"
+#include "util.h"
 
 std::vector<MyItem> MyItemList;
 std::vector<ItemContainer> IC;

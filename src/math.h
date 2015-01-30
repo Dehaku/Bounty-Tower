@@ -3,6 +3,9 @@
 
 #include <SFML/System.hpp>
 
+const float PI = 3.141;
+const double G = 6.67;
+
 namespace math
 {
 int Closeish(int orix, int oriy, int tarx, int tary);

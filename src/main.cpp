@@ -25,6 +25,7 @@
 #include "aStarLibrary.h"
 #include "Images.h"
 #include "math.h"
+#include "util.h"
 
 using std::abs;
 
