@@ -126,7 +126,7 @@ bool AABB(sf::Vector2f Point, int Left, int Right, int Up, int Down);
 bool AABB(sf::Vector2i Point, int Left, int Right, int Up, int Down);
 int CloseishS(int orix, int tarx);
 
-namespace Math
+namespace math
 {
 int Closeish(int orix, int oriy, int tarx, int tary);
 int Closeisha(int orix, int oriy, int tarx, int tary);

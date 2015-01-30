@@ -204,13 +204,13 @@ int CloseishS(int orix, int tarx)
     return num;
 }
 
-int Math::Closeish(int orix, int oriy, int tarx, int tary)
+int math::Closeish(int orix, int oriy, int tarx, int tary)
 {
     int Powa = sqrt(pow((tarx - orix), 2) + pow((tary - oriy), 2));
     return Powa;
 }
 
-int Math::Closeisha(int orix, int oriy, int tarx, int tary)
+int math::Closeisha(int orix, int oriy, int tarx, int tary)
 { // Original
     int xnum;
     int ynum;
@@ -228,7 +228,7 @@ int Math::Closeisha(int orix, int oriy, int tarx, int tary)
     return num;
 }
 
-int Math::DistanceTrace(int xa, int ya, int xb, int yb)
+int math::DistanceTrace(int xa, int ya, int xb, int yb)
 { // Highly inaccurate
     int dx = xb - xa, dy = yb - ya, steps;
     if (abs(dx) > abs(dy))
@@ -244,7 +244,7 @@ int Math::DistanceTrace(int xa, int ya, int xb, int yb)
     return distance;
 }
 
-int Math::Closeishxx(int orix, int oriy, int tarx, int tary)
+int math::Closeishxx(int orix, int oriy, int tarx, int tary)
 { // Returns an octogonish type ring of detection, 10% overshooting.
     int Sqr = DistanceTrace(orix, oriy, tarx, tary);
     int Dia = Closeisha(orix, oriy, tarx, tary);
@@ -252,7 +252,7 @@ int Math::Closeishxx(int orix, int oriy, int tarx, int tary)
     return Powa;
 }
 
-bool Math::Exceed(float Value, float Limit)
+bool math::Exceed(float Value, float Limit)
 {
     if (Value > Limit)
     {
@@ -264,7 +264,7 @@ bool Math::Exceed(float Value, float Limit)
     }
 }
 
-int Math::Clamp(int Value, int MinValue, int MaxValue)
+int math::Clamp(int Value, int MinValue, int MaxValue)
 {
     if (Value > MaxValue)
     {
@@ -280,14 +280,14 @@ int Math::Clamp(int Value, int MinValue, int MaxValue)
     }
 }
 
-float Math::AngleBetweenVectors(sf::Vector2f a, sf::Vector2f b)
+float math::AngleBetweenVectors(sf::Vector2f a, sf::Vector2f b)
 {
     //  (180 / PI = 57.3065)
     //return 114.5915f * atan2(b.y - a.y, b.x - a.x);
     return 57.3065f * atan2(b.y - a.y, b.x - a.x);
 }
 
-sf::Vector2f Math::CircleRandz(int xpos, int ypos, int radius)
+sf::Vector2f math::CircleRandz(int xpos, int ypos, int radius)
 {
     float Xxx = 0;      // global
     float Yyy = 0;      // global
@@ -306,7 +306,7 @@ sf::Vector2f Math::CircleRandz(int xpos, int ypos, int radius)
     return sf::Vector2f(Xxx, Yyy);
 }
 
-sf::Vector2f Math::Vec(float X, float Y)
+sf::Vector2f math::Vec(float X, float Y)
 {
     // This may seem pointless, But I like my stuff compressed.
     sf::Vector2f Returns(X, Y);
