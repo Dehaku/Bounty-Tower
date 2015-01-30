@@ -32,13 +32,6 @@ extern std::vector<NPC> *Selection;
 
 extern sf::Vector2f RMBHeldPos;
 
-extern sf::RenderTexture renderTexture;
-extern sf::Image Img;
-extern sf::Texture Tex;
-
-extern sf::Sprite Sprt;
-extern sf::Sprite Sprt2;
-
 class ID
 {
 public:
