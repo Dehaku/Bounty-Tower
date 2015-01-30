@@ -554,7 +554,7 @@ void InitalizeWorldTiles()
                 WorldMap[i][t].ID = WorldTileType::City;
                 WorldMap[i][t].Img.setTexture(
                     *imagemanager.GetImage("City.png"));
-                if (globals::InitalZeds)
+                if (gvars::InitalZeds)
                     WorldMap[i][t].Infected = randz(0, 20);
                 else
                     WorldMap[i][t].Infected = 0;
@@ -593,9 +593,8 @@ void DrawWorldTiles()
         for (int t = 0; t != 100; t++)
         {
 
-            if (AABB(i * 20, t * 20, globals::TopLeft.x - 20,
-                     globals::TopRight.x, globals::TopLeft.y - 20,
-                     globals::BottomRight.y))
+            if (AABB(i * 20, t * 20, gvars::TopLeft.x - 20, gvars::TopRight.x,
+                     gvars::TopLeft.y - 20, gvars::BottomRight.y))
             {
 
                 WorldMap[i][t].Img.setPosition(i * 20, t * 20);
@@ -672,9 +671,8 @@ void DrawNewTiles()
     {
         for (int t = 0; t != Grids; t++)
         {
-            if (AABB(i * 20, t * 20, globals::TopLeft.x - 20,
-                     globals::TopRight.x, globals::TopLeft.y - 20,
-                     globals::BottomRight.y))
+            if (AABB(i * 20, t * 20, gvars::TopLeft.x - 20, gvars::TopRight.x,
+                     gvars::TopLeft.y - 20, gvars::BottomRight.y))
             {
                 Tiles[i][t][30].Img.setPosition(i * 20, t * 20);
                 App.draw(Tiles[i][t][30].Img);
@@ -736,9 +734,10 @@ void TilesGoUp()
     }
 
     debug("Starting");
-    GenerateChunk(WorldMap[globals::currentregionx - 1][globals::currentregiony + 2].Type,
-                  globals::currentplanet,
-                  sf::Vector2i(globals::currentregionx - 1, globals::currentregiony + 2));
+    GenerateChunk(
+        WorldMap[gvars::currentregionx - 1][gvars::currentregiony + 2].Type,
+        gvars::currentplanet,
+        sf::Vector2i(gvars::currentregionx - 1, gvars::currentregiony + 2));
     for (int x = 0; x != ChunkSize; x++)
     {
         for (int y = 0 + 32 + 32; y != ChunkSize + 32 + 32; y++)
@@ -747,9 +746,10 @@ void TilesGoUp()
         }
     }
     debug("Starting 2");
-    GenerateChunk(WorldMap[globals::currentregionx][globals::currentregiony + 2].Type,
-                  globals::currentplanet,
-                  sf::Vector2i(globals::currentregionx, globals::currentregiony + 2));
+    GenerateChunk(
+        WorldMap[gvars::currentregionx][gvars::currentregiony + 2].Type,
+        gvars::currentplanet,
+        sf::Vector2i(gvars::currentregionx, gvars::currentregiony + 2));
     for (int x = 0 + 32; x != ChunkSize + 32; x++)
     {
         for (int y = 0 + 32 + 32; y != ChunkSize + 32 + 32; y++)
@@ -761,9 +761,10 @@ void TilesGoUp()
         }
     }
     debug("Starting 3");
-    GenerateChunk(WorldMap[globals::currentregionx + 1][globals::currentregiony + 2].Type,
-                  globals::currentplanet,
-                  sf::Vector2i(globals::currentregionx + 1, globals::currentregiony + 2));
+    GenerateChunk(
+        WorldMap[gvars::currentregionx + 1][gvars::currentregiony + 2].Type,
+        gvars::currentplanet,
+        sf::Vector2i(gvars::currentregionx + 1, gvars::currentregiony + 2));
     for (int x = 0 + 32 + 32; x != ChunkSize + 32 + 32; x++)
     {
         for (int y = 0 + 32 + 32; y != ChunkSize + 32 + 32; y++)
@@ -773,7 +774,7 @@ void TilesGoUp()
     }
 
     debug("Done");
-    globals::currentregiony++;
+    gvars::currentregiony++;
 }
 
 void TilesGoDown()
@@ -802,9 +803,10 @@ void TilesGoDown()
     }
 
     debug("Starting");
-    GenerateChunk(WorldMap[globals::currentregionx - 1][globals::currentregiony - 2].Type,
-                  globals::currentplanet,
-                  sf::Vector2i(globals::currentregionx - 1, globals::currentregiony - 2));
+    GenerateChunk(
+        WorldMap[gvars::currentregionx - 1][gvars::currentregiony - 2].Type,
+        gvars::currentplanet,
+        sf::Vector2i(gvars::currentregionx - 1, gvars::currentregiony - 2));
     for (int x = 0; x != ChunkSize; x++)
     {
         for (int y = 0; y != ChunkSize; y++)
@@ -813,9 +815,10 @@ void TilesGoDown()
         }
     }
     debug("Starting 2");
-    GenerateChunk(WorldMap[globals::currentregionx][globals::currentregiony - 2].Type,
-                  globals::currentplanet,
-                  sf::Vector2i(globals::currentregionx, globals::currentregiony - 2));
+    GenerateChunk(
+        WorldMap[gvars::currentregionx][gvars::currentregiony - 2].Type,
+        gvars::currentplanet,
+        sf::Vector2i(gvars::currentregionx, gvars::currentregiony - 2));
     for (int x = 0 + 32; x != ChunkSize + 32; x++)
     {
         for (int y = 0; y != ChunkSize; y++)
@@ -827,9 +830,10 @@ void TilesGoDown()
         }
     }
     debug("Starting 3");
-    GenerateChunk(WorldMap[globals::currentregionx + 1][globals::currentregiony - 2].Type,
-                  globals::currentplanet,
-                  sf::Vector2i(globals::currentregionx + 1, globals::currentregiony - 2));
+    GenerateChunk(
+        WorldMap[gvars::currentregionx + 1][gvars::currentregiony - 2].Type,
+        gvars::currentplanet,
+        sf::Vector2i(gvars::currentregionx + 1, gvars::currentregiony - 2));
     for (int x = 0 + 32 + 32; x != ChunkSize + 32 + 32; x++)
     {
         for (int y = 0; y != ChunkSize; y++)
@@ -839,7 +843,7 @@ void TilesGoDown()
     }
 
     debug("Done");
-    globals::currentregiony--;
+    gvars::currentregiony--;
 }
 
 void TilesGoLeft()
@@ -871,9 +875,10 @@ void TilesGoLeft()
         }
     }
     debug("Starting");
-    GenerateChunk(WorldMap[globals::currentregionx + 2][globals::currentregiony - 1].Type,
-                  globals::currentplanet,
-                  sf::Vector2i(globals::currentregionx + 2, globals::currentregiony - 1));
+    GenerateChunk(
+        WorldMap[gvars::currentregionx + 2][gvars::currentregiony - 1].Type,
+        gvars::currentplanet,
+        sf::Vector2i(gvars::currentregionx + 2, gvars::currentregiony - 1));
     for (int x = 0 + 32 + 32; x != ChunkSize + 32 + 32; x++)
     {
         for (int y = 0; y != ChunkSize; y++)
@@ -882,9 +887,10 @@ void TilesGoLeft()
         }
     }
     debug("Starting 2");
-    GenerateChunk(WorldMap[globals::currentregionx + 2][globals::currentregiony].Type,
-                  globals::currentplanet,
-                  sf::Vector2i(globals::currentregionx + 2, globals::currentregiony));
+    GenerateChunk(
+        WorldMap[gvars::currentregionx + 2][gvars::currentregiony].Type,
+        gvars::currentplanet,
+        sf::Vector2i(gvars::currentregionx + 2, gvars::currentregiony));
     for (int x = 0 + 32 + 32; x != ChunkSize + 32 + 32; x++)
     {
 
@@ -897,9 +903,10 @@ void TilesGoLeft()
         }
     }
     debug("Starting 3");
-    GenerateChunk(WorldMap[globals::currentregionx + 2][globals::currentregiony + 1].Type,
-                  globals::currentplanet,
-                  sf::Vector2i(globals::currentregionx + 2, globals::currentregiony + 1));
+    GenerateChunk(
+        WorldMap[gvars::currentregionx + 2][gvars::currentregiony + 1].Type,
+        gvars::currentplanet,
+        sf::Vector2i(gvars::currentregionx + 2, gvars::currentregiony + 1));
     for (int x = 0 + 32 + 32; x != ChunkSize + 32 + 32; x++)
     {
         for (int y = 0 + 32 + 32; y != ChunkSize + 32 + 32; y++)
@@ -909,7 +916,7 @@ void TilesGoLeft()
     }
 
     debug("Done");
-    globals::currentregionx++;
+    gvars::currentregionx++;
 }
 
 void TilesGoRight()
@@ -943,9 +950,10 @@ void TilesGoRight()
     }
 
     debug("Starting");
-    GenerateChunk(WorldMap[globals::currentregionx - 2][globals::currentregiony - 1].Type,
-                  globals::currentplanet,
-                  sf::Vector2i(globals::currentregionx - 2, globals::currentregiony - 1));
+    GenerateChunk(
+        WorldMap[gvars::currentregionx - 2][gvars::currentregiony - 1].Type,
+        gvars::currentplanet,
+        sf::Vector2i(gvars::currentregionx - 2, gvars::currentregiony - 1));
     for (int x = 0; x != ChunkSize; x++)
     {
         for (int y = 0; y != ChunkSize; y++)
@@ -954,9 +962,10 @@ void TilesGoRight()
         }
     }
     debug("Starting 2");
-    GenerateChunk(WorldMap[globals::currentregionx - 2][globals::currentregiony].Type,
-                  globals::currentplanet,
-                  sf::Vector2i(globals::currentregionx - 2, globals::currentregiony));
+    GenerateChunk(
+        WorldMap[gvars::currentregionx - 2][gvars::currentregiony].Type,
+        gvars::currentplanet,
+        sf::Vector2i(gvars::currentregionx - 2, gvars::currentregiony));
     for (int x = 0; x != ChunkSize; x++)
     {
 
@@ -969,9 +978,10 @@ void TilesGoRight()
         }
     }
     debug("Starting 3");
-    GenerateChunk(WorldMap[globals::currentregionx - 2][globals::currentregiony + 1].Type,
-                  globals::currentplanet,
-                  sf::Vector2i(globals::currentregionx - 2, globals::currentregiony + 1));
+    GenerateChunk(
+        WorldMap[gvars::currentregionx - 2][gvars::currentregiony + 1].Type,
+        gvars::currentplanet,
+        sf::Vector2i(gvars::currentregionx - 2, gvars::currentregiony + 1));
     for (int x = 0; x != ChunkSize; x++)
     {
         for (int y = 0 + 32 + 32; y != ChunkSize + 32 + 32; y++)
@@ -980,10 +990,12 @@ void TilesGoRight()
         }
     }
 
-    LoadCritters(sf::Vector2i(globals::currentregionx - 2, globals::currentregiony + 1), "Left");
+    LoadCritters(
+        sf::Vector2i(gvars::currentregionx - 2, gvars::currentregiony + 1),
+        "Left");
 
     debug("Done");
-    globals::currentregionx--;
+    gvars::currentregionx--;
 
     /*for(int i = Grids; i != 31; i--)
     {
@@ -1015,7 +1027,8 @@ void TilesGoRight()
 void BuildLocalfromWorld(sf::Vector2i WorldPos)
 {
     debug("Starting BLfW");
-    GenerateChunk(WorldMap[WorldPos.x - 1][WorldPos.y - 1].Type, globals::currentplanet,
+    GenerateChunk(WorldMap[WorldPos.x - 1][WorldPos.y - 1].Type,
+                  gvars::currentplanet,
                   sf::Vector2i(WorldPos.x - 1, WorldPos.y - 1));
     for (int x = 0; x != ChunkSize; x++)
     {
@@ -1025,7 +1038,8 @@ void BuildLocalfromWorld(sf::Vector2i WorldPos)
         }
     }
     debug("Starting 2");
-    GenerateChunk(WorldMap[WorldPos.x - 1][WorldPos.y].Type, globals::currentplanet,
+    GenerateChunk(WorldMap[WorldPos.x - 1][WorldPos.y].Type,
+                  gvars::currentplanet,
                   sf::Vector2i(WorldPos.x - 1, WorldPos.y));
     for (int x = 0; x != ChunkSize; x++)
     {
@@ -1039,7 +1053,8 @@ void BuildLocalfromWorld(sf::Vector2i WorldPos)
         }
     }
     debug("Starting 3");
-    GenerateChunk(WorldMap[WorldPos.x - 1][WorldPos.y + 1].Type, globals::currentplanet,
+    GenerateChunk(WorldMap[WorldPos.x - 1][WorldPos.y + 1].Type,
+                  gvars::currentplanet,
                   sf::Vector2i(WorldPos.x - 1, WorldPos.y + 1));
     for (int x = 0; x != ChunkSize; x++)
     {
@@ -1049,7 +1064,8 @@ void BuildLocalfromWorld(sf::Vector2i WorldPos)
         }
     }
 
-    GenerateChunk(WorldMap[WorldPos.x + 1][WorldPos.y - 1].Type, globals::currentplanet,
+    GenerateChunk(WorldMap[WorldPos.x + 1][WorldPos.y - 1].Type,
+                  gvars::currentplanet,
                   sf::Vector2i(WorldPos.x + 1, WorldPos.y - 1));
     for (int x = 0 + 32 + 32; x != ChunkSize + 32 + 32; x++)
     {
@@ -1059,7 +1075,8 @@ void BuildLocalfromWorld(sf::Vector2i WorldPos)
         }
     }
     debug("Starting 2");
-    GenerateChunk(WorldMap[WorldPos.x + 1][WorldPos.y].Type, globals::currentplanet,
+    GenerateChunk(WorldMap[WorldPos.x + 1][WorldPos.y].Type,
+                  gvars::currentplanet,
                   sf::Vector2i(WorldPos.x + 1, WorldPos.y));
     for (int x = 0 + 32 + 32; x != ChunkSize + 32 + 32; x++)
     {
@@ -1073,7 +1090,8 @@ void BuildLocalfromWorld(sf::Vector2i WorldPos)
         }
     }
     debug("Starting 3");
-    GenerateChunk(WorldMap[WorldPos.x + 1][WorldPos.y + 1].Type, globals::currentplanet,
+    GenerateChunk(WorldMap[WorldPos.x + 1][WorldPos.y + 1].Type,
+                  gvars::currentplanet,
                   sf::Vector2i(WorldPos.x + 1, WorldPos.y + 1));
     for (int x = 0 + 32 + 32; x != ChunkSize + 32 + 32; x++)
     {
@@ -1083,7 +1101,8 @@ void BuildLocalfromWorld(sf::Vector2i WorldPos)
         }
     }
 
-    GenerateChunk(WorldMap[WorldPos.x][WorldPos.y + 1].Type, globals::currentplanet,
+    GenerateChunk(WorldMap[WorldPos.x][WorldPos.y + 1].Type,
+                  gvars::currentplanet,
                   sf::Vector2i(WorldPos.x, WorldPos.y + 1));
     for (int x = 0 + 32; x != ChunkSize + 32; x++)
     {
@@ -1096,7 +1115,8 @@ void BuildLocalfromWorld(sf::Vector2i WorldPos)
         }
     }
 
-    GenerateChunk(WorldMap[WorldPos.x][WorldPos.y - 1].Type, globals::currentplanet,
+    GenerateChunk(WorldMap[WorldPos.x][WorldPos.y - 1].Type,
+                  gvars::currentplanet,
                   sf::Vector2i(WorldPos.x, WorldPos.y - 1));
     for (int x = 0 + 32; x != ChunkSize + 32; x++)
     {
@@ -1108,7 +1128,7 @@ void BuildLocalfromWorld(sf::Vector2i WorldPos)
         }
     }
 
-    GenerateChunk(WorldMap[WorldPos.x][WorldPos.y].Type, globals::currentplanet,
+    GenerateChunk(WorldMap[WorldPos.x][WorldPos.y].Type, gvars::currentplanet,
                   sf::Vector2i(WorldPos.x, WorldPos.y));
     for (int x = 0 + 32; x != ChunkSize + 32; x++)
     {

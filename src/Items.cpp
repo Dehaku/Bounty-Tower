@@ -239,28 +239,28 @@ std::string LoadItems(sf::Vector2i WorldPos, std::string Direction, int planet)
 
 void SpawnItem(std::string Object, int xpos, int ypos)
 {
-    if (globals::Debug)
+    if (gvars::Debug)
     {
         std::cout << "Spawning" << Object << " \n";
     }
     cItem var;
-    if (globals::Debug)
+    if (gvars::Debug)
     {
         std::cout << "Pre var in SpawnItem"
                   << " \n";
     }
     var = *GetGlobalItem(Object);
-    if (globals::Debug)
+    if (gvars::Debug)
     {
         std::cout << "Post var in SpawnItem"
                   << " \n";
     }
 
-    var.id = globals::globalid++;
+    var.id = gvars::globalid++;
     var.xpos = xpos;
     var.ypos = ypos;
     itemmanager.AddedItems.push_back(var);
-    if (globals::Debug)
+    if (gvars::Debug)
     {
         std::cout << "Done Spawning. \n";
     }
@@ -535,7 +535,7 @@ item::item()
 { // start of constructor
     ToDelete = false;
     TargetPos = sf::Vector2f(-1, -1);
-    id = globals::globalid++;
+    id = gvars::globalid++;
     name = "";
     weight = 0;
     value = 0;
@@ -665,7 +665,7 @@ void cItemManager::InitializeItems()
                     Item.img.setTexture(image.Image);
                     sf::IntRect Tempz = Item.img.getTextureRect();
                     sf::Vector2f Size(Tempz.height, Tempz.width);
-                    if (globals::Debug)
+                    if (gvars::Debug)
                     {
                         std::cout << "TextRect: " << Tempz.height << ":"
                                   << Tempz.width << std::endl;

@@ -319,7 +319,7 @@ NPC::NPC()
     viewrange = 200;
     stench = 0;
     killcount = 0;
-    id = globals::globalid++;
+    id = gvars::globalid++;
     NeedsFood = true;
     NeedsWater = true;
     TargetVectorId = -1;
@@ -547,14 +547,14 @@ item *NPC::GetItemType(int type)
     {
         if ((elem).type == type)
         {
-            if (globals::Debug)
+            if (gvars::Debug)
             {
                 std::cout << "Returning inventory class \n";
             }
             return &(elem);
         }
     }
-    if (globals::Debug)
+    if (gvars::Debug)
     {
         std::cout << "Returning inventory nothing. \n";
     }
@@ -568,14 +568,14 @@ bool NPC::HasItemType(int type)
     {
         if ((elem).type == type)
         {
-            if (globals::Debug)
+            if (gvars::Debug)
             {
                 std::cout << "returning inventory bool true \n";
             }
             return true;
         }
     }
-    if (globals::Debug)
+    if (gvars::Debug)
     {
         std::cout << "returning inventory bool false \n";
     }
@@ -760,8 +760,8 @@ void NPC::MomMove()
     xpos += (Momentum.x / size);
     ypos += (Momentum.y / size);
 
-    Momentum.x = math::Clamp((Momentum.x - globals::AirPressure), 0, 9999999);
-    Momentum.y = math::Clamp((Momentum.y - globals::AirPressure), 0, 9999999);
+    Momentum.x = math::Clamp((Momentum.x - gvars::AirPressure), 0, 9999999);
+    Momentum.y = math::Clamp((Momentum.y - gvars::AirPressure), 0, 9999999);
 }
 
 void NPC::MoveNorth()
@@ -1116,13 +1116,13 @@ bool NPC::CloseToTarget(int distance, sf::Vector2f Tar)
 
 void NPC::AddItem(const std::string &itemname, int amount)
 { // TODO: Set this to optionally receive an item class instead, Will be useful for modded weapons and ect.
-    if (globals::Debug)
+    if (gvars::Debug)
     {
         std::cout << "Pre var in AddItem"
                   << " \n";
     }
     cItem var = *GetGlobalItem(itemname);
-    if (globals::Debug)
+    if (gvars::Debug)
     {
         std::cout << "Post var in AddItem"
                   << " \n";
@@ -1344,12 +1344,12 @@ void cNpcManager::InitializeCritters()
             Critter.race = Critter.name;
             if (Critter.name == "Zombie")
                 Critter.race = "Zombie";
-            if (globals::Debug)
+            if (gvars::Debug)
             {
                 std::cout << "Working on " << Critter.name << "\n";
             }
             Critter.cbaseid = StringFindNumber(line, "[BaseId:");
-            Critter.id = globals::globalid++;
+            Critter.id = gvars::globalid++;
 
             Critter.target = StringFindString(line, "[Target:");
             Critter.NeedsFood =
@@ -1361,7 +1361,7 @@ void cNpcManager::InitializeCritters()
             Critter.AllowedDrink =
                 Booleanize(StringFindNumber(line, "[AllowedDrink:"));
             Critter.canmove = Booleanize(StringFindNumber(line, "[CanMove:"));
-            if (globals::Debug)
+            if (gvars::Debug)
             {
                 std::cout << "1 \n";
             }
@@ -1381,7 +1381,7 @@ void cNpcManager::InitializeCritters()
             Critter.size = StringFindNumber(line, "[Size:");
             Critter.reach = StringFindNumber(line, "[Reach:");
             Critter.stench = StringFindNumber(line, "[Stench:");
-            if (globals::Debug)
+            if (gvars::Debug)
             {
                 std::cout << "2 \n";
             }
@@ -1405,7 +1405,7 @@ void cNpcManager::InitializeCritters()
                       StringFindNumber(line, "[MaxPer:"));
             Critter.Skills.agility = randz(StringFindNumber(line, "[MinAgi:"),
                                            StringFindNumber(line, "[MaxAgi:"));
-            if (globals::Debug)
+            if (gvars::Debug)
             {
                 std::cout << "3 \n";
             }
@@ -1427,12 +1427,12 @@ void cNpcManager::InitializeCritters()
                 auto a = new char[OogaBooga.size() + 1];
                 a[OogaBooga.size()] = 0;
                 memcpy(a, OogaBooga.c_str(), OogaBooga.size());
-                if (globals::Debug)
+                if (gvars::Debug)
                 {
                     std::cout << "Pre Critter.AddItem \n";
                 }
                 Critter.AddItem(a, 1);
-                if (globals::Debug)
+                if (gvars::Debug)
                 {
                     std::cout << "*Post Critter.AddItem* \n";
                 }
@@ -1502,7 +1502,7 @@ void cNpcManager::InitializeCritters()
             }
 
             std::string Imagery = StringFindString(line, "[Image:");
-            if (globals::Debug)
+            if (gvars::Debug)
             {
                 std::cout << "Pre Imagery \n";
             }
@@ -1519,7 +1519,7 @@ void cNpcManager::InitializeCritters()
             {
                 GlobalCritter.push_back(Critter);
             }
-            if (globals::Debug)
+            if (gvars::Debug)
             {
                 std::cout << "Post Imagery \n";
             }
@@ -1880,20 +1880,20 @@ NPC *GetGlobalCritter(std::string strtype)
 
 void SpawnCritter(std::string Object, int xpos, int ypos)
 {
-    if (globals::Debug)
+    if (gvars::Debug)
     {
         std::cout << "Spawning" << Object << " \n";
     }
     NPC var;
     var = *GetGlobalCritter(Object);
     // var.ReCreate();
-    var.id = globals::globalid++;
+    var.id = gvars::globalid++;
     var.xpos = xpos;
     var.ypos = ypos;
     var.ReCreateSkills();
 
     npcmanager.AddedCritters.push_back(var);
-    if (globals::Debug)
+    if (gvars::Debug)
     {
         std::cout << "Done Spawning. \n";
     }
@@ -1928,7 +1928,7 @@ void SpawnCritter(std::string Object, int xpos, int ypos)
 void BuildStartingCritters(int ZedAmount)
 {
     {
-        if (globals::Debug)
+        if (gvars::Debug)
         {
             std::cout << "PreInt\n";
         }
@@ -1962,7 +1962,7 @@ void BuildStartingCritters(int ZedAmount)
         {
             std::cout << "Problem during initalization of NPC Spawns. \n";
         }
-        if (globals::Debug)
+        if (gvars::Debug)
         {
             std::cout << "PostInt\n";
         }
@@ -2005,7 +2005,7 @@ std::string LoadCritters(sf::Vector2i WorldPos, std::string Direction,
                 Critter = *GetGlobalCritter(Critter.race);
             if (Critter.name == "Zombie")
                 Critter = *GetGlobalCritter("Zombie");
-            Critter.id = globals::globalid++;
+            Critter.id = gvars::globalid++;
             Critter.name = StringFindString(line, "[name:");
             Critter.race = StringFindString(line, "[race:");
             Critter.xpos = StringFindNumber(line, "[xpos:");
@@ -2152,14 +2152,14 @@ SquadHud() // This prints that "pretty" little Squad Unit display in the top lef
             {
 
                 Effectz.CreateSquare(
-                    globals::TopLeft.x + (20), globals::TopLeft.y + (20 * i),
-                    globals::TopLeft.x + 20 + (20),
-                    globals::TopLeft.y + 20 + (20 * i), sf::Color::Black);
+                    gvars::TopLeft.x + (20), gvars::TopLeft.y + (20 * i),
+                    gvars::TopLeft.x + 20 + (20),
+                    gvars::TopLeft.y + 20 + (20 * i), sf::Color::Black);
 
                 std::string Output =
                     npclist[i].name + npclist[i].action + npclist[i].target;
-                cText.CreateText(globals::TopLeft.x + 20 + (20),
-                                 globals::TopLeft.y + (20 * i), 12,
+                cText.CreateText(gvars::TopLeft.x + 20 + (20),
+                                 gvars::TopLeft.y + (20 * i), 12,
                                  sf::Color::White, Output);
             }
         }

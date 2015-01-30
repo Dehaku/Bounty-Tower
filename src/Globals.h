@@ -8,7 +8,7 @@
 float CZ(float Number);
 void debug(std::string Info);
 
-namespace globals
+namespace gvars
 {
 extern bool Debug;
 extern bool InFocus;

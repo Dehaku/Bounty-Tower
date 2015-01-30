@@ -4,16 +4,16 @@
 
 void debug(std::string Info)
 {
-    if (globals::Debug)
+    if (gvars::Debug)
         std::cout << Info << std::endl;
 }
 
 float CZ(float Number)
 {
-    return Number / globals::CameraZoom;
+    return Number / gvars::CameraZoom;
 }
 
-namespace globals
+namespace gvars
 {
 bool Debug = false;
 bool InFocus = true;

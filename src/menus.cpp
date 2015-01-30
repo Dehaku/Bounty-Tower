@@ -27,7 +27,8 @@ void button::DrawButton()
                              sf::Color(Color.r / 2, Color.g / 2, Color.b / 2),
                              2, sf::Color::White);
     }
-    else if (math::Closeish(globals::MousePos.x, globals::MousePos.y, vPos.x, vPos.y) < iSize)
+    else if (math::Closeish(gvars::MousePos.x, gvars::MousePos.y, vPos.x,
+                            vPos.y) < iSize)
     {
         //Effectz.CreateCircle(vPos.x,vPos.y,iSize,Color,2,White);
         Effectz.CreateSquare(vPos.x - iSize, vPos.y - (iSize / 1.5),
@@ -49,7 +50,7 @@ void button::DrawButton()
 button::button() : iSize{}, TextSize{}
 {
     BeenPressed = false;
-    id = globals::glbbtn++;
+    id = gvars::glbbtn++;
 }
 
 void squarebutton::DrawButton()
@@ -62,20 +63,20 @@ void squarebutton::DrawButton()
                              sf::Color(Color.r / 2, Color.g / 2, Color.b / 2),
                              2, sf::Color::White);
     }
-    else if (AABB(globals::MousePos, vPos.x - iSizex, vPos.x + iSizex, vPos.y - iSizey,
-                  vPos.y + iSizey))
+    else if (AABB(gvars::MousePos, vPos.x - iSizex, vPos.x + iSizex,
+                  vPos.y - iSizey, vPos.y + iSizey))
     {
         //Effectz.CreateCircle(vPos.x,vPos.y,iSize,Color,2,White);
         Effectz.CreateSquare(vPos.x - iSizex, vPos.y - iSizey, vPos.x + iSizex,
                              vPos.y + iSizey, Color, 2, sf::Color::White);
-        if (globals::MouseStagnation > 10 && sButtonText.length() != 0)
+        if (gvars::MouseStagnation > 10 && sButtonText.length() != 0)
         {
-            Effectz.CreateSquare(globals::MousePos.x + 10, globals::MousePos.y - 6,
-                                 globals::MousePos.x + (sButtonText.length() * 7),
-                                 globals::MousePos.y + 6, sf::Color::Black, 1,
+            Effectz.CreateSquare(gvars::MousePos.x + 10, gvars::MousePos.y - 6,
+                                 gvars::MousePos.x + (sButtonText.length() * 7),
+                                 gvars::MousePos.y + 6, sf::Color::Black, 1,
                                  sf::Color(175, 175, 0));
-            cText.CreateText(globals::MousePos.x + 12, globals::MousePos.y - 6, 11, TextColor,
-                             sButtonText);
+            cText.CreateText(gvars::MousePos.x + 12, gvars::MousePos.y - 6, 11,
+                             TextColor, sButtonText);
         }
     }
     else
@@ -93,14 +94,14 @@ squarebutton::squarebutton() : iSizex{}, iSizey{}, TextSize{}
 {
     BeenPressed = false;
     TextColor = sf::Color(175, 175, 0);
-    id = globals::glbbtn++;
+    id = gvars::glbbtn++;
 }
 
 void Buttons::ButtonPressed()
 {
     for (auto const &button : vButtonList)
     {
-        if (math::Closeish(globals::MousePos.x, globals::MousePos.y, button.vPos.x,
+        if (math::Closeish(gvars::MousePos.x, gvars::MousePos.y, button.vPos.x,
                            button.vPos.y) < button.iSize)
         {
             std::cout << "Button Click!\n";
@@ -112,7 +113,7 @@ void SquareButtons::ButtonPressed()
 {
     for (auto const &button : vSquareButtonList)
     {
-        if (AABB(globals::MousePos, button.vPos.x - button.iSizex,
+        if (AABB(gvars::MousePos, button.vPos.x - button.iSizex,
                  button.vPos.x + button.iSizex, button.vPos.y - button.iSizey,
                  button.vPos.y + button.iSizey))
         {
@@ -153,13 +154,13 @@ bool ButtonClicked(int id)
     {
         if (button.id == id)
         {
-            if (math::Closeish(globals::MousePos.x, globals::MousePos.y, button.vPos.x,
-                               button.vPos.y) < button.iSize &&
+            if (math::Closeish(gvars::MousePos.x, gvars::MousePos.y,
+                               button.vPos.x, button.vPos.y) < button.iSize &&
                 (Key.LMBTime == 1 || Key.LMBTime > 20))
             {
                 button.BeenPressed = true;
                 std::cout << "Pressed! \n";
-                globals::ButtonClicked = true;
+                gvars::ButtonClicked = true;
                 return true;
             }
         }
@@ -173,7 +174,7 @@ bool SquareButtonClicked(int id)
     {
         if (button.id == id)
         {
-            if (AABB(globals::MousePos, button.vPos.x - button.iSizex,
+            if (AABB(gvars::MousePos, button.vPos.x - button.iSizex,
                      button.vPos.x + button.iSizex,
                      button.vPos.y - button.iSizey,
                      button.vPos.y + button.iSizey) &&
@@ -181,8 +182,8 @@ bool SquareButtonClicked(int id)
             {
                 button.BeenPressed = true;
                 std::cout << "Pressed! \n";
-                globals::ButtonClicked = true;
-                globals::ButtonClickedTime = 3;
+                gvars::ButtonClicked = true;
+                gvars::ButtonClickedTime = 3;
                 return true;
             }
         }
@@ -203,7 +204,7 @@ MenuPopUp() // TODO: Add functionality to allow you to press 1-9 to activate the
 
     if (GC.MenuPos.x == -10000)
     {
-        GC.MenuPos = globals::MousePos;
+        GC.MenuPos = gvars::MousePos;
     }
 
     sf::Vector2f Tiled(abs(GC.MenuPos.x / 20) * 20,
@@ -982,13 +983,13 @@ MenuPopUp() // TODO: Add functionality to allow you to press 1-9 to activate the
                         {
                             if (Item->Pickupable == true)
                             {
-                                npclist.at(GetNpcVectorId(globals::MyTargetid)).action =
-                                    "Pickup";
-                                npclist.at(GetNpcVectorId(globals::MyTargetid)).target =
-                                    Item->name;
-                                npclist.at(GetNpcVectorId(globals::MyTargetid))
+                                npclist.at(GetNpcVectorId(gvars::MyTargetid))
+                                    .action = "Pickup";
+                                npclist.at(GetNpcVectorId(gvars::MyTargetid))
+                                    .target = Item->name;
+                                npclist.at(GetNpcVectorId(gvars::MyTargetid))
                                     .TargetId = Item->id;
-                                npclist.at(GetNpcVectorId(globals::MyTargetid))
+                                npclist.at(GetNpcVectorId(gvars::MyTargetid))
                                     .TargetPos =
                                     sf::Vector2f(Item->xpos, Item->ypos);
                                 GC.MenuPos = sf::Vector2f(-10000, -10000);
@@ -1005,7 +1006,7 @@ MenuPopUp() // TODO: Add functionality to allow you to press 1-9 to activate the
             iY++;
         }
 
-        if (globals::MyTarget == -1 && GC.MenuType == "CritterContext")
+        if (gvars::MyTarget == -1 && GC.MenuType == "CritterContext")
         {
             GC.MenuPos = sf::Vector2f(-10000, -10000);
             GC.MenuType = "NULL";
@@ -1022,7 +1023,8 @@ void RightMouseButtonContextMenu()
 
         for (size_t i = 0; i != npclist.size(); i++)
         {
-            if (math::Closeish(globals::MousePos.x, globals::MousePos.y, npclist[i].xpos,
+            if (math::Closeish(gvars::MousePos.x, gvars::MousePos.y,
+                               npclist[i].xpos,
                                npclist[i].ypos) <= npclist[i].size)
             {
                 GC.MenuType = "CritterRMB";
@@ -1033,8 +1035,8 @@ void RightMouseButtonContextMenu()
 
         for (auto &worlditem : worlditems)
         {
-            if (math::Closeish(globals::MousePos.x, globals::MousePos.y, (worlditem).xpos,
-                               (worlditem).ypos) <= 10)
+            if (math::Closeish(gvars::MousePos.x, gvars::MousePos.y,
+                               (worlditem).xpos, (worlditem).ypos) <= 10)
             {
                 GC.MenuType = "ItemRMB";
                 GC.MenuPtrCon.pVecItem.push_back(&(worlditem));
