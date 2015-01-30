@@ -3,6 +3,7 @@
 #include "Faction.h"
 #include "filesystemUtils.hpp"
 #include "Images.h"
+#include "math.h"
 
 #include <sstream>
 #include <fstream>

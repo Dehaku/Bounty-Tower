@@ -3,6 +3,7 @@
 #include "Faction.h"
 #include "Images.h"
 #include "Globals.h"
+#include "math.h"
 
 #include <iostream>
 

@@ -2,6 +2,7 @@
 #include "filesystemUtils.hpp"
 #include "Globals.h"
 #include "Images.h"
+#include "math.h"
 
 #include <fstream>
 #include <sstream>

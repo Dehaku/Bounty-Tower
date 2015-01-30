@@ -2,6 +2,7 @@
 #include "filesystemUtils.hpp"
 #include "aStarLibrary.h"
 #include "Images.h"
+#include "math.h"
 
 #include <sstream>
 #include <fstream>

@@ -116,18 +116,6 @@ bool AABB(sf::Vector2f Point, int Left, int Right, int Up, int Down);
 bool AABB(sf::Vector2i Point, int Left, int Right, int Up, int Down);
 int CloseishS(int orix, int tarx);
 
-namespace math
-{
-int Closeish(int orix, int oriy, int tarx, int tary);
-int Closeisha(int orix, int oriy, int tarx, int tary);
-int DistanceTrace(int xa, int ya, int xb, int yb);
-int Closeishxx(int orix, int oriy, int tarx, int tary);
-int Clamp(int Value, int MinValue, int MaxValue);
-float AngleBetweenVectors(sf::Vector2f a, sf::Vector2f b);
-sf::Vector2f CircleRandz(int xpos, int ypos, int radius);
-using Vec2f = sf::Vector2f;
-}
-
 /// Get the absolute of a numeric value,
 /// converted to size_t, suitable for indexing
 template <typename T> size_t abs_to_index(T value)

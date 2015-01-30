@@ -6,6 +6,7 @@
 #include "Galaxy.h"
 #include "FactionJobSecurity.h"
 #include "Faction.h"
+#include "math.h"
 
 #include <iostream>
 

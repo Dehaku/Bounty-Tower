@@ -24,6 +24,7 @@
 #include "menus.h"
 #include "aStarLibrary.h"
 #include "Images.h"
+#include "math.h"
 
 using std::abs;
 
