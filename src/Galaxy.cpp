@@ -459,7 +459,7 @@ void GalaxyController::WorldLoop()
     debug("Starting world loop");
     for (size_t i = 0; i != UniFact.size(); i++)
     { // Running through factions, Probably needs it's own function.
-        debug(AddString("BeginningFaction", UniFact[i].Name));
+        debug("BeginningFaction" + UniFact[i].Name);
 
         if (UniFact[i].Initialized == false)
         { // Spawning and assigning factions their starting territory.
@@ -650,7 +650,7 @@ void GalaxyController::WorldLoop()
             }
         }
 
-        debug(AddString("EndingFaction", UniFact[i].Name));
+        debug("EndingFaction" + UniFact[i].Name);
     }
     debug("Ending world loop");
 }

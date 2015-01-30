@@ -786,7 +786,7 @@ void UpdateNPC()
         size_t SearchPos = 0;
         size_t EndPos = 0;
 
-        debug(AddString("Debug: Beginning Part Loop for", Me->name));
+        debug("Debug: Beginning Part Loop for" + Me->name);
 
         //  Global Part Tag Variables
 
@@ -1712,8 +1712,7 @@ void UpdateNPC()
                         debug("Preforming Job Routine; ");
                         for (size_t i = 0; i != UniFact[0].JobList.size(); i++)
                         {
-                            debug(
-                                AddString("Starting Job ", NumbertoString(i)));
+                            debug("Starting Job " + NumbertoString(i));
                             //if(!Deleting) Deleter++;
                             //Con(AddString(Me->name,JobList[i].Type));
                             if (UniFact[0].JobList[i].pItem == nullptr &&
@@ -2056,7 +2055,7 @@ void UpdateNPC()
                                 }
                             }
 
-                            debug(AddString("End Job ", NumbertoString(i)));
+                            debug("End Job " + NumbertoString(i));
                         }
 
                         RemoveJobs(UniFact[0].JobList);
@@ -5682,18 +5681,16 @@ int main()
                     { // Listing all items from 'inside' the critter.
                         if (item.InsidePart.size() != 0)
                         {
-                            cText.CreateText(
-                                Nxpos + 65, Yv, 11, sf::Color(255, 200, 200),
-                                AddString(AddString("Inside ", item.InsidePart),
-                                          " :"),
-                                AddString(item.name, " :"), item.amount);
+                            cText.CreateText(Nxpos + 65, Yv, 11,
+                                             sf::Color(255, 200, 200),
+                                             "Inside " + item.InsidePart + " :",
+                                             item.name + " :", item.amount);
                             Yv += 10;
                         }
                     }
-                    cText.CreateText(Nxpos + 65, Yv, 11,
-                                     sf::Color(255, 150, 150),
-                                     AddString("Blood: ", npclist.at(MyTarget)
-                                                              .bloodcontent));
+                    cText.CreateText(
+                        Nxpos + 65, Yv, 11, sf::Color(255, 150, 150),
+                        "Blood: " + npclist.at(MyTarget).bloodcontent);
 
                     button var;
                     var.Color = Red;

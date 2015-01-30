@@ -133,8 +133,7 @@ void DrawJobList(int DrawXPos, int DrawYPos)
                     debug("Second condition");
                     cText.CreateText(
                         DrawXPos, DrawYPos + (YVariance * 10), 11,
-                        sf::Color::Yellow,
-                        AddString(UniFact[i].JobList[t].Name, " "),
+                        sf::Color::Yellow, UniFact[i].JobList[t].Name + " ",
                         UniFact[i]
                             .JobList[t]
                             .pItem->name); // ,JobList.at(i).pItem.name
@@ -154,7 +153,7 @@ void DrawJobList(int DrawXPos, int DrawYPos)
                     debug("Fourth condition");
                     cText.CreateText(DrawXPos, DrawYPos + (YVariance * 10), 11,
                                      sf::Color::Yellow,
-                                     AddString(UniFact[i].JobList[t].Type, " "),
+                                     UniFact[i].JobList[t].Type + " ",
                                      UniFact[i].JobList[t].Name);
                 }
 

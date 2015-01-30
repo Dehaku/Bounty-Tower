@@ -450,14 +450,14 @@ MenuPopUp() // TODO: Add functionality to allow you to press 1-9 to activate the
                                    GC.MenuPos.x + 90,
                                    (GC.MenuPos.y + (iY * 13)) + 13, 1, Cyan);
                 if (GC.MenuPtrCon.pItem->Pickupable)
-                    cText.CreateText(
-                        GC.MenuPos.x + 2, GC.MenuPos.y + (iY * 13), 12, White,
-                        AddString(GC.MenuPtrCon.pItem->name, " - PickUp"));
+                    cText.CreateText(GC.MenuPos.x + 2, GC.MenuPos.y + (iY * 13),
+                                     12, White,
+                                     GC.MenuPtrCon.pItem->name + " - PickUp");
                 else
-                    cText.CreateText(
-                        GC.MenuPos.x + 2, GC.MenuPos.y + (iY * 13), 12, White,
-                        AddString(GC.MenuPtrCon.pItem->name,
-                                  " - xPickUpx, Cannot be picked up."));
+                    cText.CreateText(GC.MenuPos.x + 2, GC.MenuPos.y + (iY * 13),
+                                     12, White,
+                                     GC.MenuPtrCon.pItem->name +
+                                         " - xPickUpx, Cannot be picked up.");
                 int Butt = CreateSquareButton(
                     Math::Vec(GC.MenuPos.x + BRD,
                               (GC.MenuPos.y + (iY * 13)) + MBD),
@@ -490,14 +490,14 @@ MenuPopUp() // TODO: Add functionality to allow you to press 1-9 to activate the
                                    GC.MenuPos.x + 90,
                                    (GC.MenuPos.y + (iY * 13)) + 13, 1, Cyan);
                 if (!GC.MenuPtrCon.pItem->Pickupable)
-                    cText.CreateText(
-                        GC.MenuPos.x + 2, GC.MenuPos.y + (iY * 13), 12, White,
-                        AddString(GC.MenuPtrCon.pItem->name, " - ChopDown"));
+                    cText.CreateText(GC.MenuPos.x + 2, GC.MenuPos.y + (iY * 13),
+                                     12, White,
+                                     GC.MenuPtrCon.pItem->name + " - ChopDown");
                 else
                     cText.CreateText(
                         GC.MenuPos.x + 2, GC.MenuPos.y + (iY * 13), 12, White,
-                        AddString(GC.MenuPtrCon.pItem->name,
-                                  " - xChopDownx, Cannot be chopped up."));
+                        GC.MenuPtrCon.pItem->name +
+                            " - xChopDownx, Cannot be chopped up.");
                 int Butt = CreateSquareButton(
                     Math::Vec(GC.MenuPos.x + BRD,
                               (GC.MenuPos.y + (iY * 13)) + MBD),
