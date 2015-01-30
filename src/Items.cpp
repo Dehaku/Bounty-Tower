@@ -1,6 +1,6 @@
 #include "Items.h"
 #include "filesystemUtils.hpp"
-#include "Globals.h"
+#include "globalvars.h"
 #include "Images.h"
 #include "math.h"
 #include "util.h"

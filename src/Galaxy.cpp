@@ -2,7 +2,7 @@
 
 #include "Faction.h"
 #include "Images.h"
-#include "Globals.h"
+#include "globalvars.h"
 #include "math.h"
 #include "util.h"
 

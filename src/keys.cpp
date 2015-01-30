@@ -1,5 +1,5 @@
 #include "keys.h"
-#include "Globals.h"
+#include "globalvars.h"
 
 #include <SFML/Graphics.hpp>
 

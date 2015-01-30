@@ -1,4 +1,4 @@
-#include "Globals.h"
+#include "globalvars.h"
 
 #include <iostream>
 
