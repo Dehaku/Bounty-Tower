@@ -23,6 +23,10 @@ if(USING_GCC OR USING_CLANG)
   endif()
 endif()
 
+if(USING_GCC)
+    add_compile_options(-Wno-missing-field-initializers)
+endif()
+
 set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/CMake/Modules)
 find_package(SFML 2 COMPONENTS graphics window audio system REQUIRED)
 include_directories(${SFML_INCLUDE_DIR})
