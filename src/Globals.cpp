@@ -35,10 +35,10 @@ int currentregiony = 50;
 int currentplanet = 500;
 int groundmap[gridz][gridy][gridx];
 int smellmap[gridz][gridy][gridx];
-int sunmap[gridz][gridy][gridx];
 
 namespace globals
 {
+int sunmap[gridz][gridy][gridx];
 bool Following = false;
 bool ButtonClicked = false;
 int ButtonClickedTime = 0;

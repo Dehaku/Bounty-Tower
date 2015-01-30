@@ -30,10 +30,10 @@ extern int currentregiony;
 extern int currentplanet;
 extern int groundmap[gridz][gridy][gridx];
 extern int smellmap[gridz][gridy][gridx];
-extern int sunmap[gridz][gridy][gridx];
 
 namespace globals
 {
+extern int sunmap[gridz][gridy][gridx];
 extern bool Following;
 extern bool ButtonClicked;
 extern int ButtonClickedTime;

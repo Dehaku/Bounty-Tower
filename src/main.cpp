@@ -2290,7 +2290,7 @@ void UpdateNPC()
                         }
                     }
                 }
-                sunmap[currentz][abs_to_index(
+                globals::sunmap[currentz][abs_to_index(
                     Me->xpos / GridSize)][abs_to_index(Me->ypos / GridSize)] =
                     255;
                 for (int i = 0; i <= gridy - 1; i++)
@@ -2298,7 +2298,7 @@ void UpdateNPC()
                     for (int t = 0; t <= gridx - 1; t++)
                     {
                         int z = currentz;
-                        if (sunmap[z][i][t] != -1)
+                        if (globals::sunmap[z][i][t] != -1)
                         {
                             if (math::Closeish((i * GridSize) + 10,
                                                (t * GridSize) + 10, Me->xpos,
@@ -2320,7 +2320,7 @@ void UpdateNPC()
                                 {
                                     /*if(gridposTrace(Me->xpos,Me->ypos,(i*GridSize)+10,(t*GridSize)+10,Me->id,Math::Vec((i*GridSize)+10,(t*GridSize)+10)) == true)
                                         {
-                                             sunmap[z][i][t] = 255;
+                                             globals::sunmap[z][i][t] = 255;
                                              //Effectz.CreateCircle((i*20)+10,(t*20)+10,2,White);
                                         }*/
                                 }
@@ -2395,7 +2395,7 @@ void UpdateNPC()
                     for( int t = 0; t <= gridx-1; t++)
                     {
                         int z = currentz;
-                        if(sunmap[z][i][t] != -1)
+                        if(globals::sunmap[z][i][t] != -1)
                         {
                             if( Math::Closeish((i*GridSize)+10,(t*GridSize)+10,Me->xpos,Me->ypos) <= Me->viewrange && Me->cbaseid != -1337)
                             {
@@ -2410,7 +2410,7 @@ void UpdateNPC()
                                 {
                                     if(gridposTrace(Me->xpos,Me->ypos,(i*GridSize)+10,(t*GridSize)+10,Me->id,Math::Vec((i*GridSize)+10,(t*GridSize)+10)) == true)
                                     {
-                                        sunmap[z][i][t] = 255;
+                                        globals::sunmap[z][i][t] = 255;
                                         //Effectz.CreateCircle((i*20)+10,(t*20)+10,2,White);
                                     }
                                 }
@@ -2821,7 +2821,7 @@ void DrawTiles()
                     { // dirt
                         Tile.setTexture(*imagemanager.GetImage("Dirt.bmp"));
                         Tile.setColor(
-                            sf::Color(255, 255, 255, sunmap[z][i][t]));
+                            sf::Color(255, 255, 255, globals::sunmap[z][i][t]));
                         Tile.setPosition(i * iTS, t * iTS);
                         App.draw(Tile);
                     }
@@ -2829,7 +2829,7 @@ void DrawTiles()
                     { // grass
                         Tile.setTexture(*imagemanager.GetImage("Grass.bmp"));
                         Tile.setColor(
-                            sf::Color(255, 255, 255, sunmap[z][i][t]));
+                            sf::Color(255, 255, 255, globals::sunmap[z][i][t]));
                         Tile.setPosition(i * iTS, t * iTS);
                         App.draw(Tile);
                     }
@@ -2837,7 +2837,7 @@ void DrawTiles()
                     { // stone
                         Tile.setTexture(*imagemanager.GetImage("Stone.bmp"));
                         Tile.setColor(
-                            sf::Color(255, 255, 255, sunmap[z][i][t]));
+                            sf::Color(255, 255, 255, globals::sunmap[z][i][t]));
                         Tile.setPosition(i * iTS, t * iTS);
                         App.draw(Tile);
                     }
@@ -2845,7 +2845,7 @@ void DrawTiles()
                     { // water
                         Tile.setTexture(*imagemanager.GetImage("Water.bmp"));
                         Tile.setColor(
-                            sf::Color(255, 255, 255, sunmap[z][i][t]));
+                            sf::Color(255, 255, 255, globals::sunmap[z][i][t]));
                         Tile.setPosition(i * iTS, t * iTS);
                         App.draw(Tile);
                     }
@@ -2853,7 +2853,7 @@ void DrawTiles()
                     { // lava
                         Tile.setTexture(*imagemanager.GetImage("Lava.bmp"));
                         Tile.setColor(
-                            sf::Color(255, 255, 255, sunmap[z][i][t]));
+                            sf::Color(255, 255, 255, globals::sunmap[z][i][t]));
                         Tile.setPosition(i * iTS, t * iTS);
                         App.draw(Tile);
                     }
@@ -2862,7 +2862,7 @@ void DrawTiles()
                         Tile.setTexture(
                             *imagemanager.GetImage("DeepWater.bmp"));
                         Tile.setColor(
-                            sf::Color(255, 255, 255, sunmap[z][i][t]));
+                            sf::Color(255, 255, 255, globals::sunmap[z][i][t]));
                         Tile.setPosition(i * iTS, t * iTS);
                         App.draw(Tile);
                     }
@@ -2881,7 +2881,7 @@ void DrawNPCs()
         if (elem.HasSpawned == true)
         {
             // zit->img.setRotation( -anglez+90 );
-            //int Alph = sunmap[currentz][abs_to_index(zit->xpos/GridSize)][abs_to_index(zit->ypos/GridSize)];
+            //int Alph = globals::sunmap[currentz][abs_to_index(zit->xpos/GridSize)][abs_to_index(zit->ypos/GridSize)];
 
             if (elem.name == "Azabul")
             {
@@ -2966,7 +2966,7 @@ void LightTrail(int x, int y, int z)
     {
         curz = 0;
     }
-    sunmap[curz][curx][cury] = 255;
+    globals::sunmap[curz][curx][cury] = 255;
 }
 
 void DisplayChat(sf::Vector2f Position)
@@ -4154,7 +4154,7 @@ int main()
                 }
             } //End of Giving Orders
 
-            //for (int i = 0; i <= gridy-1; i++){for( int t = 0; t <= gridx-1; t++){int z = currentz;if(sunmap[z][i][t] != 0){sunmap[z][i][t] -= 5;}}} // Darkness
+            //for (int i = 0; i <= gridy-1; i++){for( int t = 0; t <= gridx-1; t++){int z = currentz;if(globals::sunmap[z][i][t] != 0){globals::sunmap[z][i][t] -= 5;}}} // Darkness
             if (GC.MenuType != "NULL")
             {
                 MenuPopUp();

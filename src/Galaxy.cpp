@@ -88,7 +88,7 @@ void GalaxyController::BuildLocal(std::string Type, int ZedAmount)
         {
             for (int t = 0; t != gridx; t++)
             {
-                //sunmap[z][i][t] = 255;
+                //globals::sunmap[z][i][t] = 255;
             }
         }
         // ----------------------------------------
@@ -311,7 +311,7 @@ void GalaxyController::BuildLocalTest()
     {
         for (int t = 0; t <= gridx - 1; t++)
         {
-            //sunmap[z][i][t] = 255;
+            //globals::sunmap[z][i][t] = 255;
         }
     }
     // ----------------------------------------
