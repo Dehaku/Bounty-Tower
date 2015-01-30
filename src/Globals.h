@@ -94,9 +94,6 @@ extern int currentregionx;
 extern int currentregiony;
 extern int currentplanet;
 
-extern std::string Zom;
-extern std::string Poi;
-
 extern int groundmap[gridz][gridy][gridx];
 extern int smellmap[gridz][gridy][gridx];
 extern int sunmap[gridz][gridy][gridx];

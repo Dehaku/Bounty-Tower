@@ -61,9 +61,6 @@ int currentregionx = 50;
 int currentregiony = 50;
 int currentplanet = 500;
 
-std::string Zom("[Zombification:");
-std::string Poi("[Poison:");
-
 int groundmap[gridz][gridy][gridx];
 int smellmap[gridz][gridy][gridx];
 int sunmap[gridz][gridy][gridx];
