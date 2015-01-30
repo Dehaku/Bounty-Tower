@@ -524,19 +524,6 @@ std::string NumbertoString(float Number)
     return str;
 }
 
-/*
-float stof(std::string String) // String to Float.
-{
-    std::string Result;
-
-    std::ostringstream convert;
-
-    convert << Number;
-
-    Result = convert.str();
-}
-*/
-
 float PercentIs(float Value, float Percentage)
 {
     // Divide the return by 100 for maths.
