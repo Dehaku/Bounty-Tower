@@ -54,18 +54,6 @@ extern int groundmap[gridz][gridy][gridx];
 extern int smellmap[gridz][gridy][gridx];
 extern int sunmap[gridz][gridy][gridx];
 
-enum class skills
-{
-    ag,
-    ch,
-    in,
-    de,
-    st,
-    pe,
-    en,
-    wi
-};
-
 class Globes
 {
 public:

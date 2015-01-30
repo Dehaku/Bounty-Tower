@@ -1,0 +1,11 @@
+enum class skills
+{
+    ag,
+    ch,
+    in,
+    de,
+    st,
+    pe,
+    en,
+    wi
+};
