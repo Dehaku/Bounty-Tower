@@ -1538,7 +1538,7 @@ void UpdateNPC()
                 {
                     Me->xpos -= shake;
                 }
-                if (globals::groundmap[currentz][abs_to_index(Me->xpos / GridSize)]
+                if (globals::groundmap[globals::currentz][abs_to_index(Me->xpos / GridSize)]
                              [abs_to_index(Me->ypos / GridSize)] == 10)
                 {
                     Me->xpos = TempXpos;
@@ -1605,7 +1605,7 @@ void UpdateNPC()
                 }
                 if (Me->target == "Wander" && Me->HasTarget == true)
                 { // TODO: Make sure this isn't needed anymore, Then delete it.
-                    if (globals::groundmap[currentz][abs_to_index(
+                    if (globals::groundmap[globals::currentz][abs_to_index(
                             Me->TargetPos.x /
                             GridSize)][abs_to_index(Me->TargetPos.y /
                                                     GridSize)] == 10)
@@ -2073,7 +2073,7 @@ void UpdateNPC()
                             Me->TargetPos = sf::Vector2f(randz(700, 1300),
                                                          randz(700, 1300));
                             Me->HasTarget = true;
-                            if (globals::groundmap[currentz][abs_to_index(
+                            if (globals::groundmap[globals::currentz][abs_to_index(
                                     Me->TargetPos.x /
                                     GridSize)][abs_to_index(Me->TargetPos.y /
                                                             GridSize)] != 10)
@@ -2290,14 +2290,14 @@ void UpdateNPC()
                         }
                     }
                 }
-                globals::sunmap[currentz][abs_to_index(
+                globals::sunmap[globals::currentz][abs_to_index(
                     Me->xpos / GridSize)][abs_to_index(Me->ypos / GridSize)] =
                     255;
                 for (int i = 0; i <= gridy - 1; i++)
                 { // Vision Stuffs;
                     for (int t = 0; t <= gridx - 1; t++)
                     {
-                        int z = currentz;
+                        int z = globals::currentz;
                         if (globals::sunmap[z][i][t] != -1)
                         {
                             if (math::Closeish((i * GridSize) + 10,
@@ -2394,7 +2394,7 @@ void UpdateNPC()
                 {
                     for( int t = 0; t <= gridx-1; t++)
                     {
-                        int z = currentz;
+                        int z = globals::currentz;
                         if(globals::sunmap[z][i][t] != -1)
                         {
                             if( Math::Closeish((i*GridSize)+10,(t*GridSize)+10,Me->xpos,Me->ypos) <= Me->viewrange && Me->cbaseid != -1337)
@@ -2800,7 +2800,7 @@ void UpdateNPC()
 
 void DrawTiles()
 {
-    int z = currentz;
+    int z = globals::currentz;
     int iTS = GridSize;
     for (int i = 0; i <= gridy - 1; i++)
     {
@@ -2817,7 +2817,7 @@ void DrawTiles()
                     (t > currenty - 21 && t < currenty + 20))
                 {
                     sf::Sprite Tile;
-                    if (globals::groundmap[currentz][i][t] == 1)
+                    if (globals::groundmap[globals::currentz][i][t] == 1)
                     { // dirt
                         Tile.setTexture(*imagemanager.GetImage("Dirt.bmp"));
                         Tile.setColor(
@@ -2825,7 +2825,7 @@ void DrawTiles()
                         Tile.setPosition(i * iTS, t * iTS);
                         App.draw(Tile);
                     }
-                    if (globals::groundmap[currentz][i][t] == 3)
+                    if (globals::groundmap[globals::currentz][i][t] == 3)
                     { // grass
                         Tile.setTexture(*imagemanager.GetImage("Grass.bmp"));
                         Tile.setColor(
@@ -2833,7 +2833,7 @@ void DrawTiles()
                         Tile.setPosition(i * iTS, t * iTS);
                         App.draw(Tile);
                     }
-                    if (globals::groundmap[currentz][i][t] == 7)
+                    if (globals::groundmap[globals::currentz][i][t] == 7)
                     { // stone
                         Tile.setTexture(*imagemanager.GetImage("Stone.bmp"));
                         Tile.setColor(
@@ -2841,7 +2841,7 @@ void DrawTiles()
                         Tile.setPosition(i * iTS, t * iTS);
                         App.draw(Tile);
                     }
-                    if (globals::groundmap[currentz][i][t] == 20)
+                    if (globals::groundmap[globals::currentz][i][t] == 20)
                     { // water
                         Tile.setTexture(*imagemanager.GetImage("Water.bmp"));
                         Tile.setColor(
@@ -2849,7 +2849,7 @@ void DrawTiles()
                         Tile.setPosition(i * iTS, t * iTS);
                         App.draw(Tile);
                     }
-                    if (globals::groundmap[currentz][i][t] == 53)
+                    if (globals::groundmap[globals::currentz][i][t] == 53)
                     { // lava
                         Tile.setTexture(*imagemanager.GetImage("Lava.bmp"));
                         Tile.setColor(
@@ -2857,7 +2857,7 @@ void DrawTiles()
                         Tile.setPosition(i * iTS, t * iTS);
                         App.draw(Tile);
                     }
-                    if (globals::groundmap[currentz][i][t] == 52)
+                    if (globals::groundmap[globals::currentz][i][t] == 52)
                     { // deepwater
                         Tile.setTexture(
                             *imagemanager.GetImage("DeepWater.bmp"));
@@ -2881,7 +2881,7 @@ void DrawNPCs()
         if (elem.HasSpawned == true)
         {
             // zit->img.setRotation( -anglez+90 );
-            //int Alph = globals::sunmap[currentz][abs_to_index(zit->xpos/GridSize)][abs_to_index(zit->ypos/GridSize)];
+            //int Alph = globals::sunmap[globals::currentz][abs_to_index(zit->xpos/GridSize)][abs_to_index(zit->ypos/GridSize)];
 
             if (elem.name == "Azabul")
             {
@@ -3481,28 +3481,28 @@ int main()
                 PlyAct = true;
             } //Sprite.Move(0,  100 * ElapsedTime);
             if (Key.comma == true && Key.lshift == true &&
-                currentz <= gridz - 1)
+                globals::currentz <= gridz - 1)
             {
-                currentz++;
+                globals::currentz++;
                 PlyAct = true;
                 fSleep(0.1f);
             } //Sprite.Move(0, -100 * ElapsedTime);
-            if (Key.period == true && Key.lshift == true && currentz >= 1)
+            if (Key.period == true && Key.lshift == true && globals::currentz >= 1)
             {
-                currentz--;
+                globals::currentz--;
                 PlyAct = true;
                 fSleep(0.1f);
             } //Sprite.Move(0,  100 * ElapsedTime);
             if (Key.comma == true && Key.rshift == true &&
-                currentz <= gridz - 1)
+                globals::currentz <= gridz - 1)
             {
-                currentz++;
+                globals::currentz++;
                 PlyAct = true;
                 fSleep(0.1f);
             } //Sprite.Move(0, -100 * ElapsedTime);
-            if (Key.period == true && Key.rshift == true && currentz >= 1)
+            if (Key.period == true && Key.rshift == true && globals::currentz >= 1)
             {
-                currentz--;
+                globals::currentz--;
                 PlyAct = true;
                 fSleep(0.1f);
             } //Sprite.Move(0,  100 * ElapsedTime);
@@ -3670,27 +3670,27 @@ int main()
                 Transitioning = true;
                 std::string Line;
                 Line = LoadCritters(
-                    sf::Vector2i(currentregionx - 1, globals::currentregiony + 1),
+                    sf::Vector2i(globals::currentregionx - 1, globals::currentregiony + 1),
                     "BottomLeft", globals::currentplanet);
                 remove(Line.c_str());
                 Line = LoadCritters(
-                    sf::Vector2i(currentregionx, globals::currentregiony + 1), "Bottom",
+                    sf::Vector2i(globals::currentregionx, globals::currentregiony + 1), "Bottom",
                     globals::currentplanet);
                 remove(Line.c_str());
                 Line = LoadCritters(
-                    sf::Vector2i(currentregionx + 1, globals::currentregiony + 1),
+                    sf::Vector2i(globals::currentregionx + 1, globals::currentregiony + 1),
                     "BottomRight", globals::currentplanet);
                 remove(Line.c_str());
                 Line = LoadItems(
-                    sf::Vector2i(currentregionx - 1, globals::currentregiony + 1),
+                    sf::Vector2i(globals::currentregionx - 1, globals::currentregiony + 1),
                     "BottomLeft", globals::currentplanet);
                 remove(Line.c_str());
                 Line =
-                    LoadItems(sf::Vector2i(currentregionx, globals::currentregiony + 1),
+                    LoadItems(sf::Vector2i(globals::currentregionx, globals::currentregiony + 1),
                               "Bottom", globals::currentplanet);
                 remove(Line.c_str());
                 Line = LoadItems(
-                    sf::Vector2i(currentregionx + 1, globals::currentregiony + 1),
+                    sf::Vector2i(globals::currentregionx + 1, globals::currentregiony + 1),
                     "BottomRight", globals::currentplanet);
                 remove(Line.c_str());
             }
@@ -3714,27 +3714,27 @@ int main()
                 Transitioning = true;
                 std::string Line;
                 Line = LoadCritters(
-                    sf::Vector2i(currentregionx - 1, globals::currentregiony - 1),
+                    sf::Vector2i(globals::currentregionx - 1, globals::currentregiony - 1),
                     "TopLeft", globals::currentplanet);
                 remove(Line.c_str());
                 Line = LoadCritters(
-                    sf::Vector2i(currentregionx, globals::currentregiony - 1), "Top",
+                    sf::Vector2i(globals::currentregionx, globals::currentregiony - 1), "Top",
                     globals::currentplanet);
                 remove(Line.c_str());
                 Line = LoadCritters(
-                    sf::Vector2i(currentregionx + 1, globals::currentregiony - 1),
+                    sf::Vector2i(globals::currentregionx + 1, globals::currentregiony - 1),
                     "TopRight", globals::currentplanet);
                 remove(Line.c_str());
                 Line = LoadItems(
-                    sf::Vector2i(currentregionx - 1, globals::currentregiony - 1),
+                    sf::Vector2i(globals::currentregionx - 1, globals::currentregiony - 1),
                     "TopLeft", globals::currentplanet);
                 remove(Line.c_str());
                 Line =
-                    LoadItems(sf::Vector2i(currentregionx, globals::currentregiony - 1),
+                    LoadItems(sf::Vector2i(globals::currentregionx, globals::currentregiony - 1),
                               "Top", globals::currentplanet);
                 remove(Line.c_str());
                 Line = LoadItems(
-                    sf::Vector2i(currentregionx + 1, globals::currentregiony - 1),
+                    sf::Vector2i(globals::currentregionx + 1, globals::currentregiony - 1),
                     "TopRight", globals::currentplanet);
                 remove(Line.c_str());
             }
@@ -3758,27 +3758,27 @@ int main()
                 Transitioning = true;
                 std::string Line;
                 Line = LoadCritters(
-                    sf::Vector2i(currentregionx + 1, globals::currentregiony - 1),
+                    sf::Vector2i(globals::currentregionx + 1, globals::currentregiony - 1),
                     "TopRight", globals::currentplanet);
                 remove(Line.c_str());
                 Line = LoadCritters(
-                    sf::Vector2i(currentregionx + 1, globals::currentregiony), "Right",
+                    sf::Vector2i(globals::currentregionx + 1, globals::currentregiony), "Right",
                     globals::currentplanet);
                 remove(Line.c_str());
                 Line = LoadCritters(
-                    sf::Vector2i(currentregionx + 1, globals::currentregiony + 1),
+                    sf::Vector2i(globals::currentregionx + 1, globals::currentregiony + 1),
                     "BottomRight", globals::currentplanet);
                 remove(Line.c_str());
                 Line = LoadItems(
-                    sf::Vector2i(currentregionx + 1, globals::currentregiony - 1),
+                    sf::Vector2i(globals::currentregionx + 1, globals::currentregiony - 1),
                     "TopRight", globals::currentplanet);
                 remove(Line.c_str());
                 Line =
-                    LoadItems(sf::Vector2i(currentregionx + 1, globals::currentregiony),
+                    LoadItems(sf::Vector2i(globals::currentregionx + 1, globals::currentregiony),
                               "Right", globals::currentplanet);
                 remove(Line.c_str());
                 Line = LoadItems(
-                    sf::Vector2i(currentregionx + 1, globals::currentregiony + 1),
+                    sf::Vector2i(globals::currentregionx + 1, globals::currentregiony + 1),
                     "BottomRight", globals::currentplanet);
                 remove(Line.c_str());
             }
@@ -3806,27 +3806,27 @@ int main()
                 Transitioning = true;
                 std::string Line;
                 Line = LoadCritters(
-                    sf::Vector2i(currentregionx - 1, globals::currentregiony - 1),
+                    sf::Vector2i(globals::currentregionx - 1, globals::currentregiony - 1),
                     "TopLeft", globals::currentplanet);
                 remove(Line.c_str());
                 Line = LoadCritters(
-                    sf::Vector2i(currentregionx - 1, globals::currentregiony), "Left",
+                    sf::Vector2i(globals::currentregionx - 1, globals::currentregiony), "Left",
                     globals::currentplanet);
                 remove(Line.c_str());
                 Line = LoadCritters(
-                    sf::Vector2i(currentregionx - 1, globals::currentregiony + 1),
+                    sf::Vector2i(globals::currentregionx - 1, globals::currentregiony + 1),
                     "BottomLeft", globals::currentplanet);
                 remove(Line.c_str());
                 Line = LoadItems(
-                    sf::Vector2i(currentregionx - 1, globals::currentregiony - 1),
+                    sf::Vector2i(globals::currentregionx - 1, globals::currentregiony - 1),
                     "TopLeft", globals::currentplanet);
                 remove(Line.c_str());
                 Line =
-                    LoadItems(sf::Vector2i(currentregionx - 1, globals::currentregiony),
+                    LoadItems(sf::Vector2i(globals::currentregionx - 1, globals::currentregiony),
                               "Left", globals::currentplanet);
                 remove(Line.c_str());
                 Line = LoadItems(
-                    sf::Vector2i(currentregionx - 1, globals::currentregiony + 1),
+                    sf::Vector2i(globals::currentregionx - 1, globals::currentregiony + 1),
                     "BottomLeft", globals::currentplanet);
                 remove(Line.c_str());
             }
@@ -3840,7 +3840,7 @@ int main()
                     {
                         npclist.at(i).xpos =
                             npclist.at(i).xpos - 640 - 640 - 640;
-                        SaveNPC(500, sf::Vector2i(currentregionx + 2,
+                        SaveNPC(500, sf::Vector2i(globals::currentregionx + 2,
                                                   globals::currentregiony - 1),
                                 npclist.at(i));
                         npclist.at(i).ToDelete = true;
@@ -3851,7 +3851,7 @@ int main()
                         npclist.at(i).xpos =
                             npclist.at(i).xpos - 640 - 640 - 640;
                         npclist.at(i).ypos = npclist.at(i).ypos - 640 - 640;
-                        SaveNPC(500, sf::Vector2i(currentregionx + 2,
+                        SaveNPC(500, sf::Vector2i(globals::currentregionx + 2,
                                                   globals::currentregiony + 1),
                                 npclist.at(i));
                         npclist.at(i).ToDelete = true;
@@ -3862,7 +3862,7 @@ int main()
                     {
                         npclist.at(i).xpos = npclist.at(i).xpos + 640;
                         npclist.at(i).ypos = npclist.at(i).ypos - 640 - 640;
-                        SaveNPC(500, sf::Vector2i(currentregionx - 2,
+                        SaveNPC(500, sf::Vector2i(globals::currentregionx - 2,
                                                   globals::currentregiony + 1),
                                 npclist.at(i));
                         npclist.at(i).ToDelete = true;
@@ -3870,7 +3870,7 @@ int main()
                     else if (npclist.at(i).xpos < 0 && npclist.at(i).ypos < 640)
                     {
                         npclist.at(i).xpos = npclist.at(i).xpos + 640;
-                        SaveNPC(500, sf::Vector2i(currentregionx - 2,
+                        SaveNPC(500, sf::Vector2i(globals::currentregionx - 2,
                                                   globals::currentregiony - 1),
                                 npclist.at(i));
                         npclist.at(i).ToDelete = true;
@@ -3881,7 +3881,7 @@ int main()
                     {
                         npclist.at(i).xpos = npclist.at(i).xpos - 640 - 640;
                         npclist.at(i).ypos = npclist.at(i).ypos + 640;
-                        SaveNPC(500, sf::Vector2i(currentregionx + 1,
+                        SaveNPC(500, sf::Vector2i(globals::currentregionx + 1,
                                                   globals::currentregiony - 2),
                                 npclist.at(i));
                         npclist.at(i).ToDelete = true;
@@ -3889,7 +3889,7 @@ int main()
                     else if (npclist.at(i).ypos < 0 && npclist.at(i).xpos < 640)
                     {
                         npclist.at(i).ypos = npclist.at(i).ypos + 640;
-                        SaveNPC(500, sf::Vector2i(currentregionx - 1,
+                        SaveNPC(500, sf::Vector2i(globals::currentregionx - 1,
                                                   globals::currentregiony - 2),
                                 npclist.at(i));
                         npclist.at(i).ToDelete = true;
@@ -3901,7 +3901,7 @@ int main()
                         npclist.at(i).xpos = npclist.at(i).xpos - 640 - 640;
                         npclist.at(i).ypos =
                             npclist.at(i).ypos - 640 - 640 - 640;
-                        SaveNPC(500, sf::Vector2i(currentregionx + 1,
+                        SaveNPC(500, sf::Vector2i(globals::currentregionx + 1,
                                                   globals::currentregiony + 2),
                                 npclist.at(i));
                         npclist.at(i).ToDelete = true;
@@ -3911,7 +3911,7 @@ int main()
                     {
                         npclist.at(i).ypos =
                             npclist.at(i).ypos - 640 - 640 - 640;
-                        SaveNPC(500, sf::Vector2i(currentregionx - 1,
+                        SaveNPC(500, sf::Vector2i(globals::currentregionx - 1,
                                                   globals::currentregiony + 2),
                                 npclist.at(i));
                         npclist.at(i).ToDelete = true;
@@ -3924,7 +3924,7 @@ int main()
                         npclist.at(i).xpos =
                             npclist.at(i).xpos - 640 - 640 - 640;
                         npclist.at(i).ypos = npclist.at(i).ypos - 640;
-                        SaveNPC(500, sf::Vector2i(currentregionx + 2,
+                        SaveNPC(500, sf::Vector2i(globals::currentregionx + 2,
                                                   globals::currentregiony),
                                 npclist.at(i));
                         npclist.at(i).ToDelete = true;
@@ -3934,7 +3934,7 @@ int main()
                         npclist.at(i).xpos = npclist.at(i).xpos - 640;
                         npclist.at(i).ypos =
                             npclist.at(i).ypos - 640 - 640 - 640;
-                        SaveNPC(500, sf::Vector2i(currentregionx,
+                        SaveNPC(500, sf::Vector2i(globals::currentregionx,
                                                   globals::currentregiony + 2),
                                 npclist.at(i));
                         npclist.at(i).ToDelete = true;
@@ -3943,7 +3943,7 @@ int main()
                     {
                         npclist.at(i).xpos = npclist.at(i).xpos + 640;
                         npclist.at(i).ypos = npclist.at(i).ypos - 640;
-                        SaveNPC(500, sf::Vector2i(currentregionx - 2,
+                        SaveNPC(500, sf::Vector2i(globals::currentregionx - 2,
                                                   globals::currentregiony),
                                 npclist.at(i));
                         npclist.at(i).ToDelete = true;
@@ -3952,7 +3952,7 @@ int main()
                     {
                         npclist.at(i).xpos = npclist.at(i).xpos - 640;
                         npclist.at(i).ypos = npclist.at(i).ypos + 640;
-                        SaveNPC(500, sf::Vector2i(currentregionx,
+                        SaveNPC(500, sf::Vector2i(globals::currentregionx,
                                                   globals::currentregiony - 2),
                                 npclist.at(i));
 
@@ -3966,22 +3966,22 @@ int main()
                 {
                    if(worlditems.at(i).xpos > 1920)
                     {
-                        SaveItem(500,sf::Vector2i(currentregionx+2,globals::currentregiony),worlditems.at(i));
+                        SaveItem(500,sf::Vector2i(globals::currentregionx+2,globals::currentregiony),worlditems.at(i));
                         worlditems.at(i).ToDelete = true;
                     }
                     if(worlditems.at(i).ypos > 1920)
                     {
-                        SaveItem(500,sf::Vector2i(currentregionx,globals::currentregiony+2),worlditems.at(i));
+                        SaveItem(500,sf::Vector2i(globals::currentregionx,globals::currentregiony+2),worlditems.at(i));
                         worlditems.at(i).ToDelete = true;
                     }
                     if(worlditems.at(i).xpos < 0)
                     {
-                        SaveItem(500,sf::Vector2i(currentregionx-2,globals::currentregiony),worlditems.at(i));
+                        SaveItem(500,sf::Vector2i(globals::currentregionx-2,globals::currentregiony),worlditems.at(i));
                         worlditems.at(i).ToDelete = true;
                     }
                     if(worlditems.at(i).ypos < 0)
                     {
-                        SaveItem(500,sf::Vector2i(currentregionx,globals::currentregiony-2),worlditems.at(i));
+                        SaveItem(500,sf::Vector2i(globals::currentregionx,globals::currentregiony-2),worlditems.at(i));
 
                         worlditems.at(i).ToDelete = true;
                     }
@@ -3995,7 +3995,7 @@ int main()
                     if ((worlditem).xpos > 1920 && (worlditem).ypos < 640)
                     {
                         (worlditem).xpos = (worlditem).xpos - 640 - 640 - 640;
-                        SaveItem(500, sf::Vector2i(currentregionx + 2,
+                        SaveItem(500, sf::Vector2i(globals::currentregionx + 2,
                                                    globals::currentregiony - 1),
                                  (worlditem));
                         (worlditem).ToDelete = true;
@@ -4004,7 +4004,7 @@ int main()
                     {
                         (worlditem).xpos = (worlditem).xpos - 640 - 640 - 640;
                         (worlditem).ypos = (worlditem).ypos - 640 - 640;
-                        SaveItem(500, sf::Vector2i(currentregionx + 2,
+                        SaveItem(500, sf::Vector2i(globals::currentregionx + 2,
                                                    globals::currentregiony + 1),
                                  (worlditem));
                         (worlditem).ToDelete = true;
@@ -4014,7 +4014,7 @@ int main()
                     {
                         (worlditem).xpos = (worlditem).xpos + 640;
                         (worlditem).ypos = (worlditem).ypos - 640 - 640;
-                        SaveItem(500, sf::Vector2i(currentregionx - 2,
+                        SaveItem(500, sf::Vector2i(globals::currentregionx - 2,
                                                    globals::currentregiony + 1),
                                  (worlditem));
                         (worlditem).ToDelete = true;
@@ -4022,7 +4022,7 @@ int main()
                     else if ((worlditem).xpos < 0 && (worlditem).ypos < 640)
                     {
                         (worlditem).xpos = (worlditem).xpos + 640;
-                        SaveItem(500, sf::Vector2i(currentregionx - 2,
+                        SaveItem(500, sf::Vector2i(globals::currentregionx - 2,
                                                    globals::currentregiony - 1),
                                  (worlditem));
                         (worlditem).ToDelete = true;
@@ -4032,7 +4032,7 @@ int main()
                     {
                         (worlditem).xpos = (worlditem).xpos - 640 - 640;
                         (worlditem).ypos = (worlditem).ypos + 640;
-                        SaveItem(500, sf::Vector2i(currentregionx + 1,
+                        SaveItem(500, sf::Vector2i(globals::currentregionx + 1,
                                                    globals::currentregiony - 2),
                                  (worlditem));
                         (worlditem).ToDelete = true;
@@ -4040,7 +4040,7 @@ int main()
                     else if ((worlditem).ypos < 0 && (worlditem).xpos < 640)
                     {
                         (worlditem).ypos = (worlditem).ypos + 640;
-                        SaveItem(500, sf::Vector2i(currentregionx - 1,
+                        SaveItem(500, sf::Vector2i(globals::currentregionx - 1,
                                                    globals::currentregiony - 2),
                                  (worlditem));
                         (worlditem).ToDelete = true;
@@ -4050,7 +4050,7 @@ int main()
                     {
                         (worlditem).xpos = (worlditem).xpos - 640 - 640;
                         (worlditem).ypos = (worlditem).ypos - 640 - 640 - 640;
-                        SaveItem(500, sf::Vector2i(currentregionx + 1,
+                        SaveItem(500, sf::Vector2i(globals::currentregionx + 1,
                                                    globals::currentregiony + 2),
                                  (worlditem));
                         (worlditem).ToDelete = true;
@@ -4058,7 +4058,7 @@ int main()
                     else if ((worlditem).ypos > 1920 && (worlditem).xpos < 640)
                     {
                         (worlditem).ypos = (worlditem).ypos - 640 - 640 - 640;
-                        SaveItem(500, sf::Vector2i(currentregionx - 1,
+                        SaveItem(500, sf::Vector2i(globals::currentregionx - 1,
                                                    globals::currentregiony + 2),
                                  (worlditem));
                         (worlditem).ToDelete = true;
@@ -4070,7 +4070,7 @@ int main()
                     {
                         (worlditem).xpos = (worlditem).xpos - 640 - 640 - 640;
                         (worlditem).ypos = (worlditem).ypos - 640;
-                        SaveItem(500, sf::Vector2i(currentregionx + 2,
+                        SaveItem(500, sf::Vector2i(globals::currentregionx + 2,
                                                    globals::currentregiony),
                                  (worlditem));
                         (worlditem).ToDelete = true;
@@ -4079,7 +4079,7 @@ int main()
                     {
                         (worlditem).xpos = (worlditem).xpos - 640;
                         (worlditem).ypos = (worlditem).ypos - 640 - 640 - 640;
-                        SaveItem(500, sf::Vector2i(currentregionx,
+                        SaveItem(500, sf::Vector2i(globals::currentregionx,
                                                    globals::currentregiony + 2),
                                  (worlditem));
                         (worlditem).ToDelete = true;
@@ -4088,7 +4088,7 @@ int main()
                     {
                         (worlditem).xpos = (worlditem).xpos + 640;
                         (worlditem).ypos = (worlditem).ypos - 640;
-                        SaveItem(500, sf::Vector2i(currentregionx - 2,
+                        SaveItem(500, sf::Vector2i(globals::currentregionx - 2,
                                                    globals::currentregiony),
                                  (worlditem));
                         (worlditem).ToDelete = true;
@@ -4097,7 +4097,7 @@ int main()
                     {
                         (worlditem).xpos = (worlditem).xpos - 640;
                         (worlditem).ypos = (worlditem).ypos + 640;
-                        SaveItem(500, sf::Vector2i(currentregionx,
+                        SaveItem(500, sf::Vector2i(globals::currentregionx,
                                                    globals::currentregiony - 2),
                                  (worlditem));
 
@@ -4153,7 +4153,7 @@ int main()
                 }
             } //End of Giving Orders
 
-            //for (int i = 0; i <= gridy-1; i++){for( int t = 0; t <= gridx-1; t++){int z = currentz;if(globals::sunmap[z][i][t] != 0){globals::sunmap[z][i][t] -= 5;}}} // Darkness
+            //for (int i = 0; i <= gridy-1; i++){for( int t = 0; t <= gridx-1; t++){int z = globals::currentz;if(globals::sunmap[z][i][t] != 0){globals::sunmap[z][i][t] -= 5;}}} // Darkness
             if (GC.MenuType != "NULL")
             {
                 MenuPopUp();
@@ -5107,7 +5107,7 @@ int main()
                                     "Building", 500,
                                     sf::Vector2i(abs(GC.MenuPos.x / 20),
                                                  abs(GC.MenuPos.y / 20)));
-                                currentregionx = abs(GC.MenuPos.x / 20);
+                                globals::currentregionx = abs(GC.MenuPos.x / 20);
                                 globals::currentregiony = abs(GC.MenuPos.y / 20);
                                 GC.Phase = "Local";
 
@@ -5409,7 +5409,7 @@ int main()
 
         if (GC.Phase != "MainMenu")
         {
-            //cText.CreateText((currentx-2)*GridSize,(currenty-1)*GridSize,11,White,"Aim Pos ","x:",currentx," ","y:",currenty," ","z:",currentz,1,0);
+            //cText.CreateText((currentx-2)*GridSize,(currenty-1)*GridSize,11,White,"Aim Pos ","x:",currentx," ","y:",currenty," ","z:",globals::currentz,1,0);
             //cText.CreateText((currentx-2)*GridSize,(currenty+1)*GridSize,11,White,"Scaling ","x:",globals::Scalex*10," ","y:",globals::Scaley*10);
             //cText.CreateText((currentx-2)*20,(currenty-18)*20,11,White,"Timescale: ","",GCtimescale*100,"","",-6698,"","",-6698,1,0);
         }

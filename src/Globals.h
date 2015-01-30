@@ -22,11 +22,11 @@ extern int MyTargetid;
 extern float CameraZoom;
 extern int currentx;
 extern int currenty;
-extern int currentz;
-extern int currentregionx;
 
 namespace globals
 {
+extern int currentz;
+extern int currentregionx;
 extern int currentregiony;
 extern int currentplanet;
 extern int groundmap[gridz][gridy][gridx];
