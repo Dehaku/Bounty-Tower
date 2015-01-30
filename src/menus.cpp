@@ -49,7 +49,7 @@ void button::DrawButton()
 button::button() : iSize{}, TextSize{}
 {
     BeenPressed = false;
-    id = Globals.glbbtn++;
+    id = globals::glbbtn++;
 }
 
 void squarebutton::DrawButton()
@@ -93,7 +93,7 @@ squarebutton::squarebutton() : iSizex{}, iSizey{}, TextSize{}
 {
     BeenPressed = false;
     TextColor = sf::Color(175, 175, 0);
-    id = Globals.glbbtn++;
+    id = globals::glbbtn++;
 }
 
 void Buttons::ButtonPressed()
@@ -159,7 +159,7 @@ bool ButtonClicked(int id)
             {
                 button.BeenPressed = true;
                 std::cout << "Pressed! \n";
-                Globals.ButtonClicked = true;
+                globals::ButtonClicked = true;
                 return true;
             }
         }
@@ -181,8 +181,8 @@ bool SquareButtonClicked(int id)
             {
                 button.BeenPressed = true;
                 std::cout << "Pressed! \n";
-                Globals.ButtonClicked = true;
-                Globals.ButtonClickedTime = 3;
+                globals::ButtonClicked = true;
+                globals::ButtonClickedTime = 3;
                 return true;
             }
         }

@@ -319,7 +319,7 @@ NPC::NPC()
     viewrange = 200;
     stench = 0;
     killcount = 0;
-    id = Globals.globalid++;
+    id = globals::globalid++;
     NeedsFood = true;
     NeedsWater = true;
     TargetVectorId = -1;
@@ -1349,7 +1349,7 @@ void cNpcManager::InitializeCritters()
                 std::cout << "Working on " << Critter.name << "\n";
             }
             Critter.cbaseid = StringFindNumber(line, "[BaseId:");
-            Critter.id = Globals.globalid++;
+            Critter.id = globals::globalid++;
 
             Critter.target = StringFindString(line, "[Target:");
             Critter.NeedsFood =
@@ -1887,7 +1887,7 @@ void SpawnCritter(std::string Object, int xpos, int ypos)
     NPC var;
     var = *GetGlobalCritter(Object);
     // var.ReCreate();
-    var.id = Globals.globalid++;
+    var.id = globals::globalid++;
     var.xpos = xpos;
     var.ypos = ypos;
     var.ReCreateSkills();
@@ -2005,7 +2005,7 @@ std::string LoadCritters(sf::Vector2i WorldPos, std::string Direction,
                 Critter = *GetGlobalCritter(Critter.race);
             if (Critter.name == "Zombie")
                 Critter = *GetGlobalCritter("Zombie");
-            Critter.id = Globals.globalid++;
+            Critter.id = globals::globalid++;
             Critter.name = StringFindString(line, "[name:");
             Critter.race = StringFindString(line, "[race:");
             Critter.xpos = StringFindNumber(line, "[xpos:");
@@ -2152,14 +2152,14 @@ SquadHud() // This prints that "pretty" little Squad Unit display in the top lef
             {
 
                 Effectz.CreateSquare(
-                    Globals.TopLeft.x + (20), Globals.TopLeft.y + (20 * i),
-                    Globals.TopLeft.x + 20 + (20),
-                    Globals.TopLeft.y + 20 + (20 * i), sf::Color::Black);
+                    globals::TopLeft.x + (20), globals::TopLeft.y + (20 * i),
+                    globals::TopLeft.x + 20 + (20),
+                    globals::TopLeft.y + 20 + (20 * i), sf::Color::Black);
 
                 std::string Output =
                     npclist[i].name + npclist[i].action + npclist[i].target;
-                cText.CreateText(Globals.TopLeft.x + 20 + (20),
-                                 Globals.TopLeft.y + (20 * i), 12,
+                cText.CreateText(globals::TopLeft.x + 20 + (20),
+                                 globals::TopLeft.y + (20 * i), 12,
                                  sf::Color::White, Output);
             }
         }

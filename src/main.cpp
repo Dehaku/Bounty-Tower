@@ -2806,12 +2806,12 @@ void DrawTiles()
     {
         for (int t = 0; t <= gridx - 1; t++)
         {
-            if ((Globals.Following == true &&
+            if ((globals::Following == true &&
                  i > (npclist.at(MyTarget).xpos / GridSize) - 27 &&
                  i < (npclist.at(MyTarget).xpos / GridSize) + 26) ||
                 (i > currentx - 27 && i < currentx + 26))
             {
-                if ((Globals.Following == true &&
+                if ((globals::Following == true &&
                      t > (npclist.at(MyTarget).ypos / GridSize) - 21 &&
                      t < (npclist.at(MyTarget).ypos / GridSize) + 20) ||
                     (t > currenty - 21 && t < currenty + 20))
@@ -2909,7 +2909,7 @@ void DrawNPCs()
 
             int Alph = 255;
             elem.img.setColor(sf::Color(255, 255, 255, Alph));
-            elem.img.setScale(Globals.Scalex, Globals.Scaley);
+            elem.img.setScale(globals::Scalex, globals::Scaley);
             elem.img.setOrigin(elem.img.getTextureRect().width / 2,
                                elem.img.getTextureRect().height / 2);
             elem.DrawImg();
@@ -2930,7 +2930,7 @@ void DrawItems()
         //if(zit->xpos/GridSize > currentx-27 && zit->xpos/GridSize < currentx+26 && zit->ypos/GridSize > currenty-20 && zit->ypos/GridSize < currenty+20)
         //{
         worlditem.img.setColor(sf::Color(255, 255, 255, 255));
-        worlditem.img.setScale(Globals.Scalex, Globals.Scaley);
+        worlditem.img.setScale(globals::Scalex, globals::Scaley);
         worlditem.DrawImg();
         //}
     }
@@ -3002,7 +3002,7 @@ void DrawStuffs()
     debug("Drew Joblist");
 
     DisplayChat(
-        sf::Vector2f(Globals.BottomLeft.x + 5, Globals.BottomLeft.y - 5));
+        sf::Vector2f(globals::BottomLeft.x + 5, globals::BottomLeft.y - 5));
     debug("Drew Chat");
 
     Effectz.DrawEffects();
@@ -3213,10 +3213,10 @@ int main()
             }
         }
         App.setView(View1);
-        Globals.ButtonClicked = false;
-        Globals.ButtonClickedTime--; // Misleading Variable name, Sorry!
-        if (Globals.ButtonClickedTime < 0)
-            Globals.ButtonClickedTime = 0;
+        globals::ButtonClicked = false;
+        globals::ButtonClickedTime--; // Misleading Variable name, Sorry!
+        if (globals::ButtonClickedTime < 0)
+            globals::ButtonClickedTime = 0;
 
         Key.Update();
         sf::Vector2f MouseStagnationCheck = MousePos;
@@ -3227,19 +3227,19 @@ int main()
         else
             MouseStagnation = 0;
 
-        Globals.TopLeft = sf::Vector2f(View1.getCenter().x - HalfSize.x,
-                                       View1.getCenter().y - HalfSize.y);
-        Globals.TopRight = sf::Vector2f(View1.getCenter().x + HalfSize.x,
+        globals::TopLeft = sf::Vector2f(View1.getCenter().x - HalfSize.x,
                                         View1.getCenter().y - HalfSize.y);
-        Globals.BottomLeft = sf::Vector2f(View1.getCenter().x - HalfSize.x,
-                                          View1.getCenter().y + HalfSize.y);
-        Globals.BottomRight = sf::Vector2f(View1.getCenter().x + HalfSize.x,
+        globals::TopRight = sf::Vector2f(View1.getCenter().x + HalfSize.x,
+                                         View1.getCenter().y - HalfSize.y);
+        globals::BottomLeft = sf::Vector2f(View1.getCenter().x - HalfSize.x,
                                            View1.getCenter().y + HalfSize.y);
+        globals::BottomRight = sf::Vector2f(View1.getCenter().x + HalfSize.x,
+                                            View1.getCenter().y + HalfSize.y);
 
-        cText.CreateText(CZ(Globals.TopRight.x - CZ(50)),
-                         CZ(Globals.TopRight.y + CZ(50)), CZ(11),
+        cText.CreateText(CZ(globals::TopRight.x - CZ(50)),
+                         CZ(globals::TopRight.y + CZ(50)), CZ(11),
                          sf::Color::White, "x", "", CameraZoom);
-        cText.CreateText((Globals.TopRight.x - 50), (Globals.TopRight.y + 50),
+        cText.CreateText((globals::TopRight.x - 50), (globals::TopRight.y + 50),
                          (11) / CameraZoom, sf::Color::White, "x", "",
                          CameraZoom);
 
@@ -3322,10 +3322,10 @@ int main()
 
             if (Key.lshiftTime > 0)
             {
-                //int x = Globals.TopLeft.x;
-                //int y = Globals.TopLeft.y+Rez.y;
-                int x = Globals.BottomLeft.x;
-                int y = Globals.BottomLeft.y;
+                //int x = globals::TopLeft.x;
+                //int y = globals::TopLeft.y+Rez.y;
+                int x = globals::BottomLeft.x;
+                int y = globals::BottomLeft.y;
                 Effectz.CreateSquare(x + 20, y - 20, x + 40, y - 40,
                                      sf::Color(0, 100, 255));
                 cText.CreateText(x + 20, y - 30, 11, sf::Color::White, "Build");
@@ -3394,7 +3394,7 @@ int main()
                 PlyAct = true;
             }
 
-            if (Globals.InitalZeds)
+            if (globals::InitalZeds)
                 GC.Wave();
 
             RightMouseButtonContextMenu();
@@ -3508,13 +3508,13 @@ int main()
             } //Sprite.Move(0,  100 * ElapsedTime);
             if (MyTarget == -1)
             {
-                Globals.Following = false;
+                globals::Following = false;
             }
             else if (Key.c)
             {
-                Globals.Following = true;
+                globals::Following = true;
             }
-            if (Globals.Following)
+            if (globals::Following)
             {
                 View1.setCenter(npclist.at(MyTarget).xpos,
                                 npclist.at(MyTarget).ypos);
@@ -4517,7 +4517,7 @@ int main()
                     NPC Squ;
 
                     Squ = *GetGlobalCritter("Human");
-                    Squ.id = Globals.globalid++;
+                    Squ.id = globals::globalid++;
                     Squ.BlankSkills();
                     std::string name;
                     std::string gender;
@@ -4960,9 +4960,10 @@ int main()
 
             GC.WorldLoop();
 
-            Effectz.CreateSquare(
-                Globals.TopLeft.x, Globals.TopLeft.y, Globals.TopLeft.x + 300,
-                Globals.TopLeft.y + 150, sf::Color(0, 0, 0, 100));
+            Effectz.CreateSquare(globals::TopLeft.x, globals::TopLeft.y,
+                                 globals::TopLeft.x + 300,
+                                 globals::TopLeft.y + 150,
+                                 sf::Color(0, 0, 0, 100));
 
             int ID;
             int Infected;
@@ -4982,51 +4983,51 @@ int main()
             debug("Pre-World HUD");
             int HUDZ = 0;
 
-            cText.CreateText(Globals.TopLeft.x + 2,
-                             Globals.TopLeft.y + (HUDZ++) * 11, 22,
+            cText.CreateText(globals::TopLeft.x + 2,
+                             globals::TopLeft.y + (HUDZ++) * 11, 22,
                              sf::Color::Yellow, "World Population: ", "",
                              FactionPopulation());
             HUDZ++;
             HUDZ++;
-            cText.CreateText(Globals.TopLeft.x + 2,
-                             Globals.TopLeft.y + (HUDZ++) * 11, 11,
+            cText.CreateText(globals::TopLeft.x + 2,
+                             globals::TopLeft.y + (HUDZ++) * 11, 11,
                              sf::Color::White, "CurrentTileID: ", "", ID);
             cText.CreateText(
-                Globals.TopLeft.x + 2, Globals.TopLeft.y + (HUDZ++) * 11, 11,
+                globals::TopLeft.x + 2, globals::TopLeft.y + (HUDZ++) * 11, 11,
                 sf::Color::White, "CurrentTileInfected: ", "", Infected);
             cText.CreateText(
-                Globals.TopLeft.x + 2, Globals.TopLeft.y + (HUDZ++) * 11, 11,
+                globals::TopLeft.x + 2, globals::TopLeft.y + (HUDZ++) * 11, 11,
                 sf::Color::White, "FactionOwned: ",
                 WorldMap[math::Clamp(abs(MousePos.x / 20), 0,
                                      99)][math::Clamp(abs(MousePos.y / 20), 0,
                                                       99)].Owner);
             cText.CreateText(
-                Globals.TopLeft.x + 2, Globals.TopLeft.y + (HUDZ++) * 11, 11,
+                globals::TopLeft.x + 2, globals::TopLeft.y + (HUDZ++) * 11, 11,
                 sf::Color::White, "FactionMembers: ", "",
                 FactionMembers(WorldMap[math::Clamp(
                     abs(MousePos.x / 20), 0,
                     99)][math::Clamp(abs(MousePos.y / 20), 0, 99)].Owner));
             cText.CreateText(
-                Globals.TopLeft.x + 2, Globals.TopLeft.y + (HUDZ++) * 11, 11,
+                globals::TopLeft.x + 2, globals::TopLeft.y + (HUDZ++) * 11, 11,
                 sf::Color::White, "FactionAggression: ", "",
                 FactionAggression(WorldMap[math::Clamp(
                     abs(MousePos.x / 20), 0,
                     99)][math::Clamp(abs(MousePos.y / 20), 0, 99)].Owner));
             cText.CreateText(
-                Globals.TopLeft.x + 2, Globals.TopLeft.y + (HUDZ++) * 11, 11,
+                globals::TopLeft.x + 2, globals::TopLeft.y + (HUDZ++) * 11, 11,
                 sf::Color::White, "FactionTerritories: ", "",
                 FactionTerritories(WorldMap[math::Clamp(
                     abs(MousePos.x / 20), 0,
                     99)][math::Clamp(abs(MousePos.y / 20), 0, 99)].Owner));
             cText.CreateText(
-                Globals.TopLeft.x + 2, Globals.TopLeft.y + (HUDZ++) * 11, 11,
+                globals::TopLeft.x + 2, globals::TopLeft.y + (HUDZ++) * 11, 11,
                 sf::Color::White, "FactionPower: ", "",
                 FactionPower(WorldMap[math::Clamp(
                     abs(MousePos.x / 20), 0,
                     99)][math::Clamp(abs(MousePos.y / 20), 0, 99)].Owner));
 
             cText.CreateText(
-                Globals.TopLeft.x + 2, Globals.TopLeft.y + (HUDZ++) * 11, 11,
+                globals::TopLeft.x + 2, globals::TopLeft.y + (HUDZ++) * 11, 11,
                 sf::Color::White, "AimedPos(DELETEME): ", "",
                 abs(MousePos.x / 20), "/", "", abs(MousePos.y / 20));
 
@@ -5219,7 +5220,7 @@ int main()
 
                     NPC var;
                     var = *GetGlobalCritter("Human");
-                    var.id = Globals.globalid++;
+                    var.id = globals::globalid++;
                     var.BlankSkills();
                     std::string name;
                     std::string gender;
@@ -5337,22 +5338,22 @@ int main()
 
         if (Key.pad7)
         {
-            Globals.Scalex += 0.1;
+            globals::Scalex += 0.1;
             fSleep(0.1);
         }
         if (Key.pad8)
         {
-            Globals.Scaley += 0.1;
+            globals::Scaley += 0.1;
             fSleep(0.1);
         }
         if (Key.pad4)
         {
-            Globals.Scalex -= 0.1;
+            globals::Scalex -= 0.1;
             fSleep(0.1);
         }
         if (Key.pad5)
         {
-            Globals.Scaley -= 0.1;
+            globals::Scaley -= 0.1;
             fSleep(0.1);
         }
         // End of Game Mode Loops =========================================================================
@@ -5410,7 +5411,7 @@ int main()
         if (GC.Phase != "MainMenu")
         {
             //cText.CreateText((currentx-2)*GridSize,(currenty-1)*GridSize,11,White,"Aim Pos ","x:",currentx," ","y:",currenty," ","z:",currentz,1,0);
-            //cText.CreateText((currentx-2)*GridSize,(currenty+1)*GridSize,11,White,"Scaling ","x:",Globals.Scalex*10," ","y:",Globals.Scaley*10);
+            //cText.CreateText((currentx-2)*GridSize,(currenty+1)*GridSize,11,White,"Scaling ","x:",globals::Scalex*10," ","y:",globals::Scaley*10);
             //cText.CreateText((currentx-2)*20,(currenty-18)*20,11,White,"Timescale: ","",GCtimescale*100,"","",-6698,"","",-6698,1,0);
         }
 
@@ -5441,7 +5442,7 @@ int main()
                     std::cout << "Post Add Critters \n";
             }
             GC.Time(0);
-            if (GC.Phase != "MainMenu" && Globals.Following == false &&
+            if (GC.Phase != "MainMenu" && globals::Following == false &&
                 GC.Phase != "MakeSquad")
             {
                 View1.setCenter(currentx * GridSize, currenty * GridSize);
@@ -5493,7 +5494,7 @@ int main()
                     }
                 }
                 if (FoundOne == false && Key.LMB == true &&
-                    Globals.ButtonClicked == false)
+                    globals::ButtonClicked == false)
                 {
                     MyTarget = -1;
                     MyTargetid = -1;
@@ -5524,10 +5525,10 @@ int main()
             }
 
             if (Key.LMBTime == 0 &&
-                Globals.HeldClickPos != sf::Vector2f(-1, -1))
+                globals::HeldClickPos != sf::Vector2f(-1, -1))
             {
                 bool FoundAny = false;
-                sf::Vector2f S = Globals.HeldClickPos;
+                sf::Vector2f S = globals::HeldClickPos;
                 sf::Vector2f E = MousePos;
                 for (size_t i = 0; i != npclist.size(); i++)
                 {
@@ -5581,21 +5582,21 @@ int main()
 
             if (Key.LMBTime > 1)
             {
-                if (Globals.HeldClickPos == sf::Vector2f(-1, -1))
-                    Globals.HeldClickPos = MousePos;
-                Effectz.CreateSquare(Globals.HeldClickPos.x,
-                                     Globals.HeldClickPos.y, MousePos.x,
+                if (globals::HeldClickPos == sf::Vector2f(-1, -1))
+                    globals::HeldClickPos = MousePos;
+                Effectz.CreateSquare(globals::HeldClickPos.x,
+                                     globals::HeldClickPos.y, MousePos.x,
                                      MousePos.y, sf::Color(0, 255, 255, 100));
             }
             else
-                Globals.HeldClickPos = sf::Vector2f(-1, -1);
+                globals::HeldClickPos = sf::Vector2f(-1, -1);
 
             if (MyTarget != -1)
             {
                 MyTargetid = npclist.at(MyTarget).id;
 
-                int Nxpos = Globals.TopLeft.x;
-                int Nypos = Globals.TopLeft.y + (Rez.y / 2);
+                int Nxpos = globals::TopLeft.x;
+                int Nypos = globals::TopLeft.y + (Rez.y / 2);
 
                 //int Nxpos = npclist.at(MyTarget).xpos;
                 //int Nypos = npclist.at(MyTarget).ypos;
@@ -5817,7 +5818,7 @@ int main()
         }
         debug("Finished removing process");
 
-        if (Key.LMB && Globals.ButtonClickedTime == 0 &&
+        if (Key.LMB && globals::ButtonClickedTime == 0 &&
             !AABB(MousePos, GC.MenuPos.x, GC.MenuEndPos.x, GC.MenuPos.y,
                   GC.MenuEndPos.y) &&
             GC.MenuPos != sf::Vector2f(-10000, -10000))

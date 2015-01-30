@@ -48,16 +48,22 @@ void debug(std::string Info)
         std::cout << Info << std::endl;
 }
 
-Globes::Globes() : GenString{}
+namespace globals
 {
-    globalid = 100;
-    glbbtn = 100;
-    Scalex = 1;
-    Scaley = 1;
-    ButtonClicked = false;
-    ButtonClickedTime = 0;
-    Following = false;
-    InitalZeds = false;
-    TimeScale = 1;
+bool Following = false;
+bool ButtonClicked = false;
+int ButtonClickedTime = 0;
+sf::Vector2f HeldClickPos;
+int glbbtn = 100;
+float Scalex = 1;
+float Scaley = 1;
+unsigned long long globalid = 100;
+sf::Vector2f TopLeft;
+sf::Vector2f TopRight;
+sf::Vector2f BottomLeft;
+sf::Vector2f BottomRight;
+std::string GenString;
+sf::Vector2i Cords;
+bool InitalZeds = false;
+float TimeScale = 1;
 }
-Globes Globals;

@@ -42,29 +42,25 @@ extern int groundmap[gridz][gridy][gridx];
 extern int smellmap[gridz][gridy][gridx];
 extern int sunmap[gridz][gridy][gridx];
 
-class Globes
+namespace globals
 {
-public:
-    bool Following;
-    bool ButtonClicked;
-    int ButtonClickedTime;
-    sf::Vector2f HeldClickPos;
-    int glbbtn;
-    float Scalex;
-    float Scaley;
-    unsigned long long globalid;
-    sf::Vector2f TopLeft;
-    sf::Vector2f TopRight;
-    sf::Vector2f BottomLeft;
-    sf::Vector2f BottomRight;
-    std::string GenString;
-    sf::Vector2i Cords;
-    bool InitalZeds;
-    float TimeScale;
-
-    Globes();
-};
-extern Globes Globals;
+extern bool Following;
+extern bool ButtonClicked;
+extern int ButtonClickedTime;
+extern sf::Vector2f HeldClickPos;
+extern int glbbtn;
+extern float Scalex;
+extern float Scaley;
+extern unsigned long long globalid;
+extern sf::Vector2f TopLeft;
+extern sf::Vector2f TopRight;
+extern sf::Vector2f BottomLeft;
+extern sf::Vector2f BottomRight;
+extern std::string GenString;
+extern sf::Vector2i Cords;
+extern bool InitalZeds;
+extern float TimeScale;
+}
 
 void debug(std::string Info);
 

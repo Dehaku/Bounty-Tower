@@ -256,7 +256,7 @@ void SpawnItem(std::string Object, int xpos, int ypos)
                   << " \n";
     }
 
-    var.id = Globals.globalid++;
+    var.id = globals::globalid++;
     var.xpos = xpos;
     var.ypos = ypos;
     itemmanager.AddedItems.push_back(var);
@@ -500,7 +500,7 @@ void item::printInfo()
 void item::DrawImg()
 {
     img.setPosition(xpos, ypos);
-    //img.setScale(Globals.Scalex,Globals.Scaley);
+    //img.setScale(globals::Scalex,globals::Scaley);
     App.draw(img);
 }
 
@@ -535,7 +535,7 @@ item::item()
 { // start of constructor
     ToDelete = false;
     TargetPos = sf::Vector2f(-1, -1);
-    id = Globals.globalid++;
+    id = globals::globalid++;
     name = "";
     weight = 0;
     value = 0;
