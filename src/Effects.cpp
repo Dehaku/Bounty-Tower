@@ -149,43 +149,31 @@ void Effects::CreateCircle(int xpos, int ypos, int Size, sf::Color MainColor,
 void Effects::DrawEffects()
 {
     {
-        std::vector<cCircle>::iterator effectz;
         int remover = 0;
-        for (effectz = Circles.begin(); effectz != Circles.end(); ++effectz)
+        for (auto &elem : Circles)
         {
-
-            effectz->DrawMe();
+            elem.DrawMe();
             remover++;
             //if(effectz->fading == true && effectz->maincolor.a <= 0){removerz = remover;}
         }
         Circles.clear();
     }
 
+    for (auto &elem : Squares)
     {
-        std::vector<cSquare>::iterator effectz;
-        for (effectz = Squares.begin(); effectz != Squares.end(); ++effectz)
-        {
-
-            effectz->DrawMe();
-        }
-        Squares.clear();
+        elem.DrawMe();
     }
+    Squares.clear();
 
+    for (auto &elem : Lines)
     {
-        std::vector<cLine>::iterator effectz;
-        for (effectz = Lines.begin(); effectz != Lines.end(); ++effectz)
-        {
-            effectz->DrawMe();
-        }
-        Lines.clear();
+        elem.DrawMe();
     }
+    Lines.clear();
 
+    for (auto &elem : Beams)
     {
-        std::vector<cBeam>::iterator effectz;
-        for (effectz = Beams.begin(); effectz != Beams.end(); ++effectz)
-        {
-            effectz->DrawMe();
-        }
-        Beams.clear();
+        elem.DrawMe();
     }
+    Beams.clear();
 }
