@@ -2351,16 +2351,12 @@ void UpdateNPC()
                         Me->TargetPos
                             .y); // TODO: This causes a crash for some reason.
 
-
-
                     if (PathFindWorkPos.x != 0)
                     {
                         walkability[abs_to_index(PathFindWorkPos.x / 20)]
                                    [abs_to_index(PathFindWorkPos.y / 20)] =
                                        Previous;
                     }
-
-
                 }
                 if (true == false)
                 {
@@ -2621,15 +2617,12 @@ void UpdateNPC()
                                                    Me->TargetPos.x,
                                                    Me->TargetPos.y);
 
-
                         if (PathFindWorkPos.x != 0)
                         {
                             walkability[abs_to_index(PathFindWorkPos.x / 20)]
                                        [abs_to_index(PathFindWorkPos.y / 20)] =
                                            Previous;
                         }
-
-
                     }
                     for (int i = 0; i != Grids; i++)
                     {
@@ -2649,7 +2642,6 @@ void UpdateNPC()
                         }
                     }
 
-
                     int Previous = -1;
 
                     if (PathFindWorkPos.x != 0)
@@ -2662,14 +2654,10 @@ void UpdateNPC()
                                        walkable;
                     }
 
-
-
                     Me->PathFinding.MyReadPath(1, Me->xpos, Me->ypos,
                                                Me->moverate);
                     Me->DirMove(Math::Vec(Me->PathFinding.MyxPath,
                                           Me->PathFinding.MyyPath));
-
-
 
                     if (PathFindWorkPos.x != 0)
                     {
@@ -2703,8 +2691,6 @@ void UpdateNPC()
                         }
                     }
 
-
-
                     if (Me->PathFinding.MypathLocation ==
                         Me->PathFinding.MypathLength)
                     {
@@ -2717,7 +2703,6 @@ void UpdateNPC()
                         Me->action = "Act";
                         Me->NeedsPath = false;
                     }
-
 
                     //Me->TargetPos.x = xPath[1];
                     //Me->TargetPos.y = yPath[1];

@@ -591,42 +591,39 @@ void DrawWorldTiles()
         for (int t = 0; t != 100; t++)
         {
 
-
-            if(AABB(i*20,t*20,Globals.TopLeft.x-20,Globals.TopRight.x,Globals.TopLeft.y-20,Globals.BottomRight.y))
+            if (AABB(i * 20, t * 20, Globals.TopLeft.x - 20, Globals.TopRight.x,
+                     Globals.TopLeft.y - 20, Globals.BottomRight.y))
             {
 
-            WorldMap[i][t].Img.setPosition(i * 20, t * 20);
+                WorldMap[i][t].Img.setPosition(i * 20, t * 20);
 
-
-
-
-            App.draw(WorldMap[i][t].Img);
-            if (WorldMap[i][t].Infected > 0)
-            {
-                Effectz.CreateSquare(
-                    (i * 20) + 1, (t * 20) + 1, ((i * 20) + 20) - 1,
-                    ((t * 20) + 20) - 1, sf::Color(0, 0, 0, 0), 1,
-                    sf::Color(
-                        255, 0, 0,
-                        Math::Clamp(10 * WorldMap[i][t].Infected, 0, 255)));
-            }
-            if (WorldMap[i][t].Owner != "")
-            {
-                for (size_t z = 0; z != UniFact.size(); z++)
+                App.draw(WorldMap[i][t].Img);
+                if (WorldMap[i][t].Infected > 0)
                 {
-                    if (WorldMap[i][t].Owner == UniFact[z].Name)
+                    Effectz.CreateSquare(
+                        (i * 20) + 1, (t * 20) + 1, ((i * 20) + 20) - 1,
+                        ((t * 20) + 20) - 1, sf::Color(0, 0, 0, 0), 1,
+                        sf::Color(
+                            255, 0, 0,
+                            Math::Clamp(10 * WorldMap[i][t].Infected, 0, 255)));
+                }
+                if (WorldMap[i][t].Owner != "")
+                {
+                    for (size_t z = 0; z != UniFact.size(); z++)
                     {
-                        sf::Color Prim = UniFact[z].PrimaryColor;
-                        Prim.a = Prim.a / 1.3;
-                        sf::Color Seco = UniFact[z].SecondaryColor;
-                        Seco.a = Seco.a / 1.3;
-                        Effectz.CreateSquare(
-                            (i * 20) + 1, (t * 20) + 1, ((i * 20) + 20) - 1,
-                            ((t * 20) + 20) - 1, Prim, 10, Seco);
+                        if (WorldMap[i][t].Owner == UniFact[z].Name)
+                        {
+                            sf::Color Prim = UniFact[z].PrimaryColor;
+                            Prim.a = Prim.a / 1.3;
+                            sf::Color Seco = UniFact[z].SecondaryColor;
+                            Seco.a = Seco.a / 1.3;
+                            Effectz.CreateSquare(
+                                (i * 20) + 1, (t * 20) + 1, ((i * 20) + 20) - 1,
+                                ((t * 20) + 20) - 1, Prim, 10, Seco);
+                        }
                     }
                 }
             }
-        }
         }
     }
     debug("Done Drawing");
@@ -672,12 +669,12 @@ void DrawNewTiles()
     {
         for (int t = 0; t != Grids; t++)
         {
-            if(AABB(i*20,t*20,Globals.TopLeft.x-20,Globals.TopRight.x,Globals.TopLeft.y-20,Globals.BottomRight.y))
+            if (AABB(i * 20, t * 20, Globals.TopLeft.x - 20, Globals.TopRight.x,
+                     Globals.TopLeft.y - 20, Globals.BottomRight.y))
             {
                 Tiles[i][t][30].Img.setPosition(i * 20, t * 20);
                 App.draw(Tiles[i][t][30].Img);
             }
-
         }
     }
     debug("Done Drawing New Tiles");

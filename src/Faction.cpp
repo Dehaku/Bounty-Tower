@@ -116,7 +116,6 @@ void NPC::PathFinding::MyFindPath(int Sx, int Sy, int Ex, int Ey)
         fSleep(60);
     }
 
-
     MypathLocation = pathLocation[1];
 
     MypathLength = pathLength[1];
@@ -127,9 +126,7 @@ void NPC::PathFinding::MyFindPath(int Sx, int Sy, int Ex, int Ey)
 
         yPa.push_back(pathBank[1][i * 2 - 1]);
         xPa.push_back(pathBank[1][i * 2 - 2]);
-
     }
-
 }
 
 int NPC::PathFinding::MyReadPathX(int /*pathfinderID*/, int xpathLocation)

@@ -464,7 +464,6 @@ void GalaxyController::WorldLoop()
         if (UniFact[i].Initialized == false)
         { // Spawning and assigning factions their starting territory.
 
-
             int x = randz(1, 99);
             int y = randz(1, 99);
             if (WorldMap[x][y].Owner == "")
@@ -499,16 +498,16 @@ void GalaxyController::WorldLoop()
         { // Factions aggression causes them to seek more territory.
             bool TileChange = false;
 
-
-            if(UniFact[i].Territories.empty())
+            if (UniFact[i].Territories.empty())
                 continue;
-            if(UniFact[i].Members <= 0) /* Don't ask how it can be in the negatives. */
+            if (UniFact[i].Members <=
+                0) /* Don't ask how it can be in the negatives. */
                 continue;
 
             int ForMembers = UniFact[i].Members;
             for (int t = 0; t != ForMembers; t++)
             {
-                int Territ = randz(0,UniFact[i].Territories.size()-1);
+                int Territ = randz(0, UniFact[i].Territories.size() - 1);
 
                 sf::Vector2i Short = UniFact[i].Territories[Territ].WorldTile;
 
@@ -600,7 +599,7 @@ void GalaxyController::WorldLoop()
                                 {
                                     //UniFact[z].Members = Loss;
                                     //if(Members > 0) UniFact[i].Members = randz(UniFact[i].Members/16,UniFact[i].Members/4);
-                                    if(UniFact[z].Members > 0)
+                                    if (UniFact[z].Members > 0)
                                         UniFact[z].Members -= 1;
 
                                     WT->Owner = UniFact[i].Name;
@@ -629,7 +628,7 @@ void GalaxyController::WorldLoop()
                                 }
                                 else
                                 {
-                                    if(UniFact[i].Members > 0)
+                                    if (UniFact[i].Members > 0)
                                         UniFact[i].Members -= 1;
                                     //UniFact[i].Members = randz(UniFact[i].Members/4,UniFact[i].Members);
                                     //UniFact[z].Members = randz(UniFact[z].Members/32,UniFact[z].Members/16);
@@ -650,7 +649,6 @@ void GalaxyController::WorldLoop()
                 }
             }
         }
-
 
         debug(AddString("EndingFaction", UniFact[i].Name));
     }
