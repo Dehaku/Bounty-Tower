@@ -27,7 +27,7 @@ void button::DrawButton()
                              sf::Color(Color.r / 2, Color.g / 2, Color.b / 2),
                              2, sf::Color::White);
     }
-    else if (math::Closeish(MousePos.x, MousePos.y, vPos.x, vPos.y) < iSize)
+    else if (math::Closeish(globals::MousePos.x, globals::MousePos.y, vPos.x, vPos.y) < iSize)
     {
         //Effectz.CreateCircle(vPos.x,vPos.y,iSize,Color,2,White);
         Effectz.CreateSquare(vPos.x - iSize, vPos.y - (iSize / 1.5),
@@ -62,19 +62,19 @@ void squarebutton::DrawButton()
                              sf::Color(Color.r / 2, Color.g / 2, Color.b / 2),
                              2, sf::Color::White);
     }
-    else if (AABB(MousePos, vPos.x - iSizex, vPos.x + iSizex, vPos.y - iSizey,
+    else if (AABB(globals::MousePos, vPos.x - iSizex, vPos.x + iSizex, vPos.y - iSizey,
                   vPos.y + iSizey))
     {
         //Effectz.CreateCircle(vPos.x,vPos.y,iSize,Color,2,White);
         Effectz.CreateSquare(vPos.x - iSizex, vPos.y - iSizey, vPos.x + iSizex,
                              vPos.y + iSizey, Color, 2, sf::Color::White);
-        if (MouseStagnation > 10 && sButtonText.length() != 0)
+        if (globals::MouseStagnation > 10 && sButtonText.length() != 0)
         {
-            Effectz.CreateSquare(MousePos.x + 10, MousePos.y - 6,
-                                 MousePos.x + (sButtonText.length() * 7),
-                                 MousePos.y + 6, sf::Color::Black, 1,
+            Effectz.CreateSquare(globals::MousePos.x + 10, globals::MousePos.y - 6,
+                                 globals::MousePos.x + (sButtonText.length() * 7),
+                                 globals::MousePos.y + 6, sf::Color::Black, 1,
                                  sf::Color(175, 175, 0));
-            cText.CreateText(MousePos.x + 12, MousePos.y - 6, 11, TextColor,
+            cText.CreateText(globals::MousePos.x + 12, globals::MousePos.y - 6, 11, TextColor,
                              sButtonText);
         }
     }
@@ -100,7 +100,7 @@ void Buttons::ButtonPressed()
 {
     for (auto const &button : vButtonList)
     {
-        if (math::Closeish(MousePos.x, MousePos.y, button.vPos.x,
+        if (math::Closeish(globals::MousePos.x, globals::MousePos.y, button.vPos.x,
                            button.vPos.y) < button.iSize)
         {
             std::cout << "Button Click!\n";
@@ -112,7 +112,7 @@ void SquareButtons::ButtonPressed()
 {
     for (auto const &button : vSquareButtonList)
     {
-        if (AABB(MousePos, button.vPos.x - button.iSizex,
+        if (AABB(globals::MousePos, button.vPos.x - button.iSizex,
                  button.vPos.x + button.iSizex, button.vPos.y - button.iSizey,
                  button.vPos.y + button.iSizey))
         {
@@ -153,7 +153,7 @@ bool ButtonClicked(int id)
     {
         if (button.id == id)
         {
-            if (math::Closeish(MousePos.x, MousePos.y, button.vPos.x,
+            if (math::Closeish(globals::MousePos.x, globals::MousePos.y, button.vPos.x,
                                button.vPos.y) < button.iSize &&
                 (Key.LMBTime == 1 || Key.LMBTime > 20))
             {
@@ -173,7 +173,7 @@ bool SquareButtonClicked(int id)
     {
         if (button.id == id)
         {
-            if (AABB(MousePos, button.vPos.x - button.iSizex,
+            if (AABB(globals::MousePos, button.vPos.x - button.iSizex,
                      button.vPos.x + button.iSizex,
                      button.vPos.y - button.iSizey,
                      button.vPos.y + button.iSizey) &&
@@ -203,7 +203,7 @@ MenuPopUp() // TODO: Add functionality to allow you to press 1-9 to activate the
 
     if (GC.MenuPos.x == -10000)
     {
-        GC.MenuPos = MousePos;
+        GC.MenuPos = globals::MousePos;
     }
 
     sf::Vector2f Tiled(abs(GC.MenuPos.x / 20) * 20,
@@ -982,13 +982,13 @@ MenuPopUp() // TODO: Add functionality to allow you to press 1-9 to activate the
                         {
                             if (Item->Pickupable == true)
                             {
-                                npclist.at(GetNpcVectorId(MyTargetid)).action =
+                                npclist.at(GetNpcVectorId(globals::MyTargetid)).action =
                                     "Pickup";
-                                npclist.at(GetNpcVectorId(MyTargetid)).target =
+                                npclist.at(GetNpcVectorId(globals::MyTargetid)).target =
                                     Item->name;
-                                npclist.at(GetNpcVectorId(MyTargetid))
+                                npclist.at(GetNpcVectorId(globals::MyTargetid))
                                     .TargetId = Item->id;
-                                npclist.at(GetNpcVectorId(MyTargetid))
+                                npclist.at(GetNpcVectorId(globals::MyTargetid))
                                     .TargetPos =
                                     sf::Vector2f(Item->xpos, Item->ypos);
                                 GC.MenuPos = sf::Vector2f(-10000, -10000);
@@ -1005,7 +1005,7 @@ MenuPopUp() // TODO: Add functionality to allow you to press 1-9 to activate the
             iY++;
         }
 
-        if (MyTarget == -1 && GC.MenuType == "CritterContext")
+        if (globals::MyTarget == -1 && GC.MenuType == "CritterContext")
         {
             GC.MenuPos = sf::Vector2f(-10000, -10000);
             GC.MenuType = "NULL";
@@ -1022,7 +1022,7 @@ void RightMouseButtonContextMenu()
 
         for (size_t i = 0; i != npclist.size(); i++)
         {
-            if (math::Closeish(MousePos.x, MousePos.y, npclist[i].xpos,
+            if (math::Closeish(globals::MousePos.x, globals::MousePos.y, npclist[i].xpos,
                                npclist[i].ypos) <= npclist[i].size)
             {
                 GC.MenuType = "CritterRMB";
@@ -1033,7 +1033,7 @@ void RightMouseButtonContextMenu()
 
         for (auto &worlditem : worlditems)
         {
-            if (math::Closeish(MousePos.x, MousePos.y, (worlditem).xpos,
+            if (math::Closeish(globals::MousePos.x, globals::MousePos.y, (worlditem).xpos,
                                (worlditem).ypos) <= 10)
             {
                 GC.MenuType = "ItemRMB";

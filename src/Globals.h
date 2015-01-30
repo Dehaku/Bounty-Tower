@@ -8,6 +8,8 @@
 float CZ(float Number);
 void debug(std::string Info);
 
+namespace globals
+{
 extern bool Debug;
 extern bool InFocus;
 extern bool DrawStuffsDone;
@@ -19,9 +21,6 @@ extern std::vector<int> Selected;
 extern float GCtimescale;
 extern int MyTarget;
 extern int MyTargetid;
-
-namespace globals
-{
 extern float CameraZoom;
 extern int currentx;
 extern int currenty;

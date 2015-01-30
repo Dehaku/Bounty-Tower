@@ -5,8 +5,6 @@
 // TODO: Add a Holding integer for each one If Key.Qheld > 10
 extern bool plat;
 
-extern bool InFocus;
-
 class Ke
 {
 public:

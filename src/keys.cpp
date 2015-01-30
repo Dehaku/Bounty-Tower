@@ -1,4 +1,5 @@
 #include "keys.h"
+#include "Globals.h"
 
 #include <SFML/Graphics.hpp>
 
@@ -10,7 +11,7 @@ Ke Key;
 void Ke::Update()
 {
 
-    if (InFocus)
+    if (globals::InFocus)
     {
 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))

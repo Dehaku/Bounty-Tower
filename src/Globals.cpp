@@ -4,7 +4,7 @@
 
 void debug(std::string Info)
 {
-    if (Debug)
+    if (globals::Debug)
         std::cout << Info << std::endl;
 }
 
@@ -13,6 +13,8 @@ float CZ(float Number)
     return Number / globals::CameraZoom;
 }
 
+namespace globals
+{
 bool Debug = false;
 bool InFocus = true;
 bool DrawStuffsDone = true;
@@ -24,9 +26,6 @@ std::vector<int> Selected;
 float GCtimescale = 1;
 int MyTarget = -1;
 int MyTargetid = -1;
-
-namespace globals
-{
 float CameraZoom = 1;
 int currentx = 50;
 int currenty = 50;

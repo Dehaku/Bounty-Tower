@@ -211,7 +211,7 @@ bool RemoveItem(int Id)
 
 void UpdateItem()
 {
-    if (Debug)
+    if (globals::Debug)
     {
         std::cout << "Pre Item \n";
     }
@@ -222,13 +222,13 @@ void UpdateItem()
     {
         try
         {
-            if (Debug)
+            if (globals::Debug)
             {
                 std::cout << Me->name << "'s turn! \n";
             }
             if (Me->produces == true)
             {
-                if (Debug)
+                if (globals::Debug)
                 {
                     std::cout << Me->name << " can produce. \n";
                 }
@@ -254,24 +254,24 @@ void UpdateItem()
                             FindEmpty = true;
                         }
                     }
-                    if (Debug)
+                    if (globals::Debug)
                     {
                         std::cout << "Producing: " << s << " \n";
                     }
                     SpawnItem(s, x, y);
-                    if (Debug)
+                    if (globals::Debug)
                     {
                         std::cout << Me->name << " has produced: " << s
                                   << " \n";
                     }
                 }
             }
-            if (Debug)
+            if (globals::Debug)
             {
                 std::cout << "Done with: " << Me->name << " \n";
             }
 
-            if (Debug)
+            if (globals::Debug)
             {
                 std::cout << "Acting on Missile \n";
             }
@@ -307,7 +307,7 @@ void UpdateItem()
                 }
             }
             Me->age = Me->age + 1;
-            if (Debug)
+            if (globals::Debug)
             {
                 std::cout << "Post Item \n";
             }
@@ -421,7 +421,7 @@ bool gridposTrace(int xa, int ya, int xb, int yb, int id, sf::Vector2f Target)
         if (Tiles[abs_to_index(x / GridSize)][abs_to_index(y / GridSize)][30]
                 .ID == 1010)
         {
-            if (Key.period && id == MyTargetid)
+            if (Key.period && id == globals::MyTargetid)
             {
                 Effectz.CreateLine(x, y, xa, ya, 1, sf::Color::Blue);
             }
@@ -436,7 +436,7 @@ bool gridposTrace(int xa, int ya, int xb, int yb, int id, sf::Vector2f Target)
         {
             return true;
         } // Returns true and stops searching.
-        if (Key.period && id == MyTargetid)
+        if (Key.period && id == globals::MyTargetid)
         {
             Effectz.CreateLine(x, y, xa, ya, 1, sf::Color::Blue);
         }
@@ -733,7 +733,7 @@ std::vector<int> FindClosestItem(int Orix, int Oriy, std::string TarItem,
 
 std::set<int> NpcList(int exceptions = -1)
 {
-    if (Debug)
+    if (globals::Debug)
     {
         std::cout << "Pre npcList \n";
     }
@@ -741,24 +741,24 @@ std::set<int> NpcList(int exceptions = -1)
 
     for (auto const &npc : npclist)
     {
-        if (Debug)
+        if (globals::Debug)
         {
             std::cout << "For NpcList \n";
         }
         if (npc.id != exceptions)
         {
-            if (Debug)
+            if (globals::Debug)
             {
                 std::cout << "Post exception NpcList \n";
             }
             Returns.insert(GetNpcVectorId(npc.id));
-            if (Debug)
+            if (globals::Debug)
             {
                 std::cout << "Post Returns NpcList \n";
             }
         }
     }
-    if (Debug)
+    if (globals::Debug)
     {
         std::cout << "Post For NpcList \n";
     }
@@ -771,7 +771,7 @@ std::set<int> NpcList(int exceptions = -1)
 
 void UpdateNPC()
 {
-    if (Debug)
+    if (globals::Debug)
     {
         std::cout << "Pre NPC\n";
     }
@@ -1018,18 +1018,18 @@ void UpdateNPC()
 
                     std::vector<std::string> StrVec =
                         StringFindElements(PartString, ":");
-                    if (Debug)
+                    if (globals::Debug)
                         std::cout << "StrVec[0]: " << StrVec[0] << std::endl;
                     float Leftover =
                         Me->bloodwork(StrVec[0], -atof(StrVec[1].c_str()));
-                    if (Debug)
+                    if (globals::Debug)
                         std::cout << "Bloodwork leftover is: " << Leftover
                                   << std::endl;
                     //NPC Critter;
 
                     for (size_t i = 0; i != StrVec.size(); i++)
                     {
-                        if (Debug)
+                        if (globals::Debug)
                             std::cout << StrVec[i] << std::endl;
                     }
                 }
@@ -1186,7 +1186,7 @@ void UpdateNPC()
                 math::Clamp(Me->TentEnd2.y + randz(-3, 3), -20, 20);
         }
 
-        if (Me->id == MyTargetid && Key.space)
+        if (Me->id == globals::MyTargetid && Key.space)
         {
             Me->Attacking = true;
         }
@@ -1292,7 +1292,7 @@ void UpdateNPC()
 
             ChatBox.AddChat(ChtStr, sf::Color(200, 0, 0));
         };
-        if (Key.rshift && Me->id == MyTargetid)
+        if (Key.rshift && Me->id == globals::MyTargetid)
         {
             std::cout << Me->target << "At: " << Me->TargetPos.x << ":"
                       << Me->TargetPos.y << std::endl;
@@ -1304,7 +1304,7 @@ void UpdateNPC()
         {
             if (Me->attacktimer <= 0)
             {
-                if (Debug)
+                if (globals::Debug)
                 {
                     std::cout << "Pre Mel Ran \n";
                 }
@@ -1324,7 +1324,7 @@ void UpdateNPC()
                 try
                 {
                     bool Attacked = false;
-                    if (Debug)
+                    if (globals::Debug)
                     {
                         std::cout << "Pre Mel \n";
                     }
@@ -1354,13 +1354,13 @@ void UpdateNPC()
                                      (math::Clamp(Me->Skills.agility / 10, 10,
                                                   100)));
                             } // Melee has a different method for saying it's done.
-                            if (Debug)
+                            if (globals::Debug)
                             {
                                 std::cout << "Post Mel \n";
                             }
                         }
                     }
-                    if (Debug)
+                    if (globals::Debug)
                     {
                         std::cout << "Pre Ran \n";
                     }
@@ -1417,7 +1417,7 @@ void UpdateNPC()
                                 {
                                     Tempy = -Tempy;
                                 }
-                                sf::Vector2f SP(MousePos.x, MousePos.y);
+                                sf::Vector2f SP(globals::MousePos.x, globals::MousePos.y);
                                 sf::Vector2f Targ(Me->ShootPos.x + Tempx,
                                                   Me->ShootPos.y + Tempy);
                                 Effectz.CreateLine(Me->xpos, Me->ypos, Targ.x,
@@ -1465,7 +1465,7 @@ void UpdateNPC()
                             {
                                 Me->Attacking = false;
                             }
-                            if (Debug)
+                            if (globals::Debug)
                             {
                                 std::cout << "Post Ran \n";
                             }
@@ -2254,11 +2254,11 @@ void UpdateNPC()
                     }
                 }
             } // Ending of "Act" action
-            if (Debug)
+            if (globals::Debug)
                 std::cout << "Post Act Section \n";
 
             { // Vision check and Activation of Path Finding.
-                if (Debug)
+                if (globals::Debug)
                     std::cout << "Pre 'set' vision. \n";
 
                 bool FoundGoal = false;
@@ -2330,7 +2330,7 @@ void UpdateNPC()
                 }
                 if (FoundGoal == false && Me->cbaseid != -1337)
                 {
-                    if (Debug)
+                    if (globals::Debug)
                         std::cout << "FoundGoal == false";
                     Me->NeedsPath = true;
 
@@ -2383,7 +2383,7 @@ void UpdateNPC()
 
     }catch (std::exception& e){}*/
                 }
-                if (Debug)
+                if (globals::Debug)
                     std::cout << "Post 'set' vision. \n";
             }
 
@@ -2572,7 +2572,7 @@ void UpdateNPC()
                     }
                 }
             }
-            if (Debug)
+            if (globals::Debug)
                 std::cout << "Post Item Pickups. \n";
 
             if (Me->movetimer <= 0)
@@ -2678,7 +2678,7 @@ void UpdateNPC()
 
                     //Me->PathFinding.MyFindPath(Me->xpos,Me->ypos,Me->TargetPos.x,Me->TargetPos.y);
 
-                    if (Me->id == MyTargetid)
+                    if (Me->id == globals::MyTargetid)
                     {
                         for (int Stuff = Me->PathFinding.MypathLocation;
                              Stuff != Me->PathFinding.MypathLength; ++Stuff)
@@ -2754,7 +2754,7 @@ void UpdateNPC()
                     ChatBox.AddChat(ChtStr, sf::Color(150, 150, 0));
                 }
             }
-            if (Debug)
+            if (globals::Debug)
                 std::cout << "Post Item Usages. \n";
 
             UnpointItems(Me->inventory);
@@ -2780,7 +2780,7 @@ void UpdateNPC()
                     Done = true;
                 }
             }
-            if (Debug)
+            if (globals::Debug)
                 std::cout << "Post Inventory Cleanup. \n";
 
         } // End of CanMove
@@ -2789,12 +2789,12 @@ void UpdateNPC()
                                               math::Vec2f(Me->xpos, Me->ypos));
         Me->MomMove();
         //float f=Math::AngleBetweenVectors(sf::Vector2f(Me->xpos,Me->ypos), Me->TargetPos);Me->img.setRotation(f);
-        if (Debug)
+        if (globals::Debug)
             std::cout << Me->name << Me->id << " is done. \n";
 
         IntegerIterator++;
     }
-    if (Debug)
+    if (globals::Debug)
         std::cout << "Post NPC\n";
 }
 
@@ -2807,13 +2807,13 @@ void DrawTiles()
         for (int t = 0; t <= gridx - 1; t++)
         {
             if ((globals::Following == true &&
-                 i > (npclist.at(MyTarget).xpos / GridSize) - 27 &&
-                 i < (npclist.at(MyTarget).xpos / GridSize) + 26) ||
+                 i > (npclist.at(globals::MyTarget).xpos / GridSize) - 27 &&
+                 i < (npclist.at(globals::MyTarget).xpos / GridSize) + 26) ||
                 (i > globals::currentx - 27 && i < globals::currentx + 26))
             {
                 if ((globals::Following == true &&
-                     t > (npclist.at(MyTarget).ypos / GridSize) - 21 &&
-                     t < (npclist.at(MyTarget).ypos / GridSize) + 20) ||
+                     t > (npclist.at(globals::MyTarget).ypos / GridSize) - 21 &&
+                     t < (npclist.at(globals::MyTarget).ypos / GridSize) + 20) ||
                     (t > globals::currenty - 21 && t < globals::currenty + 20))
                 {
                     sf::Sprite Tile;
@@ -3026,12 +3026,12 @@ void DrawStuffs()
     vButtonList.clear();
     debug("Drew and Cleared buttons");
 
-    DrawStuffsDone = true;
+    globals::DrawStuffsDone = true;
 }
 
 cItem *GetGlobalItem(std::string strtype)
 {
-    if (Debug)
+    if (globals::Debug)
     {
         std::cout << "Getting" << strtype << " \n";
     }
@@ -3039,14 +3039,14 @@ cItem *GetGlobalItem(std::string strtype)
     {
         if (elem.name == strtype)
         {
-            if (Debug)
+            if (globals::Debug)
             {
                 std::cout << "Found" << strtype << " \n";
             }
             return &elem;
         }
     }
-    if (Debug)
+    if (globals::Debug)
     {
         std::cout << "Didn't Find" << strtype << " \n";
     }
@@ -3056,7 +3056,7 @@ cItem *GetGlobalItem(std::string strtype)
 
 NPC *GetCritter(int id)
 {
-    if (Debug)
+    if (globals::Debug)
     {
         std::cout << "Getting critter(" << id << ") \n";
     }
@@ -3064,14 +3064,14 @@ NPC *GetCritter(int id)
     {
         if (elem.id == id)
         {
-            if (Debug)
+            if (globals::Debug)
             {
                 std::cout << "Found critter(" << id << ") \n";
             }
             return &elem;
         }
     }
-    if (Debug)
+    if (globals::Debug)
     {
         std::cout << "Didn't Find critter(" << id << ") \n";
     }
@@ -3127,7 +3127,7 @@ int main()
     float Degrees = randz(.0f, 359.0f); // global
     int radius = 200;
 
-    View1.zoom(2);
+    globals::View1.zoom(2);
     if (true == false)
     {   // TODO: Fix this icon crap.
         /*sf::Image icon;
@@ -3178,7 +3178,7 @@ int main()
                     {
                         globals::CameraZoom = globals::CameraZoom / 0.5;
                         //CameraSize
-                        View1.zoom(0.5);
+                        globals::View1.zoom(0.5);
                     }
                 }
                 if (Event.mouseWheel.delta < 0)
@@ -3187,7 +3187,7 @@ int main()
                     if (globals::CameraZoom > 0.5)
                     {
                         globals::CameraZoom = globals::CameraZoom / 2;
-                        View1.zoom(2);
+                        globals::View1.zoom(2);
                     }
                 }
 
@@ -3205,36 +3205,36 @@ int main()
 
             if (Event.type == sf::Event::LostFocus)
             {
-                InFocus = false;
+                globals::InFocus = false;
             }
             if (Event.type == sf::Event::GainedFocus)
             {
-                InFocus = true;
+                globals::InFocus = true;
             }
         }
-        App.setView(View1);
+        App.setView(globals::View1);
         globals::ButtonClicked = false;
         globals::ButtonClickedTime--; // Misleading Variable name, Sorry!
         if (globals::ButtonClickedTime < 0)
             globals::ButtonClickedTime = 0;
 
         Key.Update();
-        sf::Vector2f MouseStagnationCheck = MousePos;
+        sf::Vector2f MouseStagnationCheck = globals::MousePos;
         // For some reason, I have to manually modify the positions.
-        MousePos = App.mapPixelToCoords(sf::Mouse::getPosition(App));
-        if (MouseStagnationCheck == MousePos)
-            MouseStagnation++;
+        globals::MousePos = App.mapPixelToCoords(sf::Mouse::getPosition(App));
+        if (MouseStagnationCheck == globals::MousePos)
+            globals::MouseStagnation++;
         else
-            MouseStagnation = 0;
+            globals::MouseStagnation = 0;
 
-        globals::TopLeft = sf::Vector2f(View1.getCenter().x - HalfSize.x,
-                                        View1.getCenter().y - HalfSize.y);
-        globals::TopRight = sf::Vector2f(View1.getCenter().x + HalfSize.x,
-                                         View1.getCenter().y - HalfSize.y);
-        globals::BottomLeft = sf::Vector2f(View1.getCenter().x - HalfSize.x,
-                                           View1.getCenter().y + HalfSize.y);
-        globals::BottomRight = sf::Vector2f(View1.getCenter().x + HalfSize.x,
-                                            View1.getCenter().y + HalfSize.y);
+        globals::TopLeft = sf::Vector2f(globals::View1.getCenter().x - HalfSize.x,
+                                        globals::View1.getCenter().y - HalfSize.y);
+        globals::TopRight = sf::Vector2f(globals::View1.getCenter().x + HalfSize.x,
+                                         globals::View1.getCenter().y - HalfSize.y);
+        globals::BottomLeft = sf::Vector2f(globals::View1.getCenter().x - HalfSize.x,
+                                           globals::View1.getCenter().y + HalfSize.y);
+        globals::BottomRight = sf::Vector2f(globals::View1.getCenter().x + HalfSize.x,
+                                            globals::View1.getCenter().y + HalfSize.y);
 
         cText.CreateText(CZ(globals::TopRight.x - CZ(50)),
                          CZ(globals::TopRight.y + CZ(50)), CZ(11),
@@ -3281,31 +3281,31 @@ int main()
 
         if (Key.r)
         { // Debug (de)activation
-            if (!Debug)
+            if (!globals::Debug)
             {
-                Debug = true;
+                globals::Debug = true;
                 fSleep(0.2);
             }
-            else if (Debug)
+            else if (globals::Debug)
             {
-                Debug = false;
+                globals::Debug = false;
                 fSleep(0.2);
             }
         }
         if (GC.Phase == "Local")
         { //=======================================================*Local*============================================================================
-            if (Debug)
+            if (globals::Debug)
                 cText.CreateText((globals::currentx - 2) * GridSize,
                                  (globals::currenty + 1) * GridSize, 11, sf::Color::Red,
                                  "Debug On");
             if (Key.lctrl && Key.LMB)
             {
-                Boom(MousePos.x, MousePos.y, 10, 50);
+                Boom(globals::MousePos.x, globals::MousePos.y, 10, 50);
             }
 
             for (auto &worlditem : worlditems)
             {
-                if (math::Closeish(MousePos.x, MousePos.y, (worlditem).xpos,
+                if (math::Closeish(globals::MousePos.x, globals::MousePos.y, (worlditem).xpos,
                                    (worlditem).ypos) <= 10)
                 {
                     std::cout << "Found; " << (worlditem).name << std::endl;
@@ -3331,7 +3331,7 @@ int main()
                 cText.CreateText(x + 20, y - 30, 11, sf::Color::White, "Build");
             }
             if (Key.RMBTime == 1 && Key.lshift)
-                RMBMenuTile(MousePos);
+                RMBMenuTile(globals::MousePos);
 
             if (Key.l == true)
             {
@@ -3403,8 +3403,8 @@ int main()
             {
                 NPC Critter;
                 Critter = *GetGlobalCritter("Azabul");
-                Critter.xpos = MousePos.x;
-                Critter.ypos = MousePos.y;
+                Critter.xpos = globals::MousePos.x;
+                Critter.ypos = globals::MousePos.y;
 
                 Critter.Body.BodyParts =
                     "{[Name:UpperTorso][BloodPumpRate:100][AirCapacity:200]["
@@ -3506,7 +3506,7 @@ int main()
                 PlyAct = true;
                 fSleep(0.1f);
             } //Sprite.Move(0,  100 * ElapsedTime);
-            if (MyTarget == -1)
+            if (globals::MyTarget == -1)
             {
                 globals::Following = false;
             }
@@ -3516,8 +3516,8 @@ int main()
             }
             if (globals::Following)
             {
-                View1.setCenter(npclist.at(MyTarget).xpos,
-                                npclist.at(MyTarget).ypos);
+                globals::View1.setCenter(npclist.at(globals::MyTarget).xpos,
+                                npclist.at(globals::MyTarget).ypos);
             }
 
             if (Key.n)
@@ -3525,7 +3525,7 @@ int main()
             if (Key.m)
                 GenerateChunk("SouthernHouse", 500, sf::Vector2i(50, 50));
 
-            if (Key.qTime > 10 && MyTarget == -1 && !Key.lshift)
+            if (Key.qTime > 10 && globals::MyTarget == -1 && !Key.lshift)
             {
             }
 
@@ -3586,10 +3586,10 @@ int main()
                 for (int Rot = 0; Rot != 360; Rot++)
                 {
                     //int Rot = GX;
-                    int XPos = ((abs(MousePos.x / 20) * 20) + 10 +
+                    int XPos = ((abs(globals::MousePos.x / 20) * 20) + 10 +
                                 cosf(Rot * PI / 180) * Length) /
                                20;
-                    int YPos = ((abs(MousePos.y / 20) * 20) + 10 +
+                    int YPos = ((abs(globals::MousePos.y / 20) * 20) + 10 +
                                 sinf(Rot * PI / 180) * Length) /
                                20;
                     //XPos *= 20;
@@ -3612,9 +3612,9 @@ int main()
                         for (int Rot = 1; Rot != 361; Rot++)
                         {
 
-                            int XPos = abs(MousePos.x / 20) +
+                            int XPos = abs(globals::MousePos.x / 20) +
                                        sin(Rot * PI / 180) * ItLength;
-                            int YPos = abs(MousePos.y / 20) +
+                            int YPos = abs(globals::MousePos.y / 20) +
                                        cos(Rot * PI / 180) * ItLength;
 
                             Tiles[XPos][YPos][30].Stone();
@@ -3625,9 +3625,9 @@ int main()
                         for (int Rot = 1; Rot != 361; Rot++)
                         {
 
-                            int XPos = abs(MousePos.x / 20) +
+                            int XPos = abs(globals::MousePos.x / 20) +
                                        sin(Rot * PI / 180) * ItLength;
-                            int YPos = abs(MousePos.y / 20) +
+                            int YPos = abs(globals::MousePos.y / 20) +
                                        cos(Rot * PI / 180) * ItLength;
 
                             Tiles[XPos][YPos][30].Wall();
@@ -3643,8 +3643,8 @@ int main()
             if (Key.lctrlTime > 10)
             {
                 int Variable = Tiles[abs_to_index(
-                    MousePos.x / 20)][abs_to_index(MousePos.y / 20)][30].ID;
-                cText.CreateText(MousePos.x, MousePos.y, 11, sf::Color::Red, "",
+                    globals::MousePos.x / 20)][abs_to_index(globals::MousePos.y / 20)][30].ID;
+                cText.CreateText(globals::MousePos.x, globals::MousePos.y, 11, sf::Color::Red, "",
                                  "", Variable);
             }
 
@@ -4121,31 +4121,31 @@ int main()
                 std::cout << "Twas' True \n";
             }
 
-            if (MyTarget != -1 && npclist[MyTarget].health <= 0 && Key.lshift &&
+            if (globals::MyTarget != -1 && npclist[globals::MyTarget].health <= 0 && Key.lshift &&
                 Key.q)
             {
-                npclist[MyTarget].ToDelete = true;
-                MyTarget = -1;
-                MyTargetid = -1;
+                npclist[globals::MyTarget].ToDelete = true;
+                globals::MyTarget = -1;
+                globals::MyTargetid = -1;
             }
 
-            if (MyTarget != -1 && Key.RMB &&
-                Tiles[abs_to_index(MousePos.x / GridSize)][abs_to_index(
-                    MousePos.y / GridSize)][30].ID != 1010)
+            if (globals::MyTarget != -1 && Key.RMB &&
+                Tiles[abs_to_index(globals::MousePos.x / GridSize)][abs_to_index(
+                    globals::MousePos.y / GridSize)][30].ID != 1010)
             { // Giving Orders
-                npclist.at(MyTarget).TargetPos = MousePos;
-                npclist.at(MyTarget).action = "Orders";
-                if (math::Closeish(npclist.at(MyTarget).xpos,
-                                   npclist.at(MyTarget).ypos, MousePos.x,
-                                   MousePos.y) <= 10)
+                npclist.at(globals::MyTarget).TargetPos = globals::MousePos;
+                npclist.at(globals::MyTarget).action = "Orders";
+                if (math::Closeish(npclist.at(globals::MyTarget).xpos,
+                                   npclist.at(globals::MyTarget).ypos, globals::MousePos.x,
+                                   globals::MousePos.y) <= 10)
                 {
-                    npclist.at(MyTarget).action = "Act";
-                    npclist.at(MyTarget).NeedsPath = false;
+                    npclist.at(globals::MyTarget).action = "Act";
+                    npclist.at(globals::MyTarget).NeedsPath = false;
                 }
 
                 for (auto const &item : worlditems)
                 {
-                    if (math::Closeish(MousePos.x, MousePos.y, item.xpos,
+                    if (math::Closeish(globals::MousePos.x, globals::MousePos.y, item.xpos,
                                        item.ypos) <= 10)
                     {
                         GC.MenuType = "CritterContext";
@@ -4425,7 +4425,7 @@ int main()
                     Yy = sinf((angle - 90) * PI / 180) * 1;
                     xpos -= Xx;
                     ypos -= Yy;
-                    Effectz.CreateLine(MousePos.x, MousePos.y, xpos, ypos, 1,
+                    Effectz.CreateLine(globals::MousePos.x, globals::MousePos.y, xpos, ypos, 1,
                                        sf::Color::White);
                 }
             }
@@ -4436,7 +4436,7 @@ int main()
         }
         if (GC.Phase == "MakeSquad")
         {
-            View1.setCenter(Rez.x / 2, Rez.y / 2);
+            globals::View1.setCenter(Rez.x / 2, Rez.y / 2);
 
             cText.CreateText(Rez.x / 2, 20, 20, sf::Color::Blue,
                              "Design Your Squad");
@@ -4966,8 +4966,8 @@ int main()
 
             int ID;
             int Infected;
-            if (MousePos.x >= 2000 || MousePos.y >= 2000 || MousePos.x < 0 ||
-                MousePos.y < 0)
+            if (globals::MousePos.x >= 2000 || globals::MousePos.y >= 2000 || globals::MousePos.x < 0 ||
+                globals::MousePos.y < 0)
             {
                 ID = -1;
                 Infected = -1;
@@ -4975,9 +4975,9 @@ int main()
             else
             {
                 ID = WorldMap[abs_to_index(
-                    MousePos.x / 20)][abs_to_index(MousePos.y / 20)].ID;
+                    globals::MousePos.x / 20)][abs_to_index(globals::MousePos.y / 20)].ID;
                 Infected = WorldMap[abs_to_index(
-                    MousePos.x / 20)][abs_to_index(MousePos.y / 20)].Infected;
+                    globals::MousePos.x / 20)][abs_to_index(globals::MousePos.y / 20)].Infected;
             }
             debug("Pre-World HUD");
             int HUDZ = 0;
@@ -4997,41 +4997,41 @@ int main()
             cText.CreateText(
                 globals::TopLeft.x + 2, globals::TopLeft.y + (HUDZ++) * 11, 11,
                 sf::Color::White, "FactionOwned: ",
-                WorldMap[math::Clamp(abs(MousePos.x / 20), 0,
-                                     99)][math::Clamp(abs(MousePos.y / 20), 0,
+                WorldMap[math::Clamp(abs(globals::MousePos.x / 20), 0,
+                                     99)][math::Clamp(abs(globals::MousePos.y / 20), 0,
                                                       99)].Owner);
             cText.CreateText(
                 globals::TopLeft.x + 2, globals::TopLeft.y + (HUDZ++) * 11, 11,
                 sf::Color::White, "FactionMembers: ", "",
                 FactionMembers(WorldMap[math::Clamp(
-                    abs(MousePos.x / 20), 0,
-                    99)][math::Clamp(abs(MousePos.y / 20), 0, 99)].Owner));
+                    abs(globals::MousePos.x / 20), 0,
+                    99)][math::Clamp(abs(globals::MousePos.y / 20), 0, 99)].Owner));
             cText.CreateText(
                 globals::TopLeft.x + 2, globals::TopLeft.y + (HUDZ++) * 11, 11,
                 sf::Color::White, "FactionAggression: ", "",
                 FactionAggression(WorldMap[math::Clamp(
-                    abs(MousePos.x / 20), 0,
-                    99)][math::Clamp(abs(MousePos.y / 20), 0, 99)].Owner));
+                    abs(globals::MousePos.x / 20), 0,
+                    99)][math::Clamp(abs(globals::MousePos.y / 20), 0, 99)].Owner));
             cText.CreateText(
                 globals::TopLeft.x + 2, globals::TopLeft.y + (HUDZ++) * 11, 11,
                 sf::Color::White, "FactionTerritories: ", "",
                 FactionTerritories(WorldMap[math::Clamp(
-                    abs(MousePos.x / 20), 0,
-                    99)][math::Clamp(abs(MousePos.y / 20), 0, 99)].Owner));
+                    abs(globals::MousePos.x / 20), 0,
+                    99)][math::Clamp(abs(globals::MousePos.y / 20), 0, 99)].Owner));
             cText.CreateText(
                 globals::TopLeft.x + 2, globals::TopLeft.y + (HUDZ++) * 11, 11,
                 sf::Color::White, "FactionPower: ", "",
                 FactionPower(WorldMap[math::Clamp(
-                    abs(MousePos.x / 20), 0,
-                    99)][math::Clamp(abs(MousePos.y / 20), 0, 99)].Owner));
+                    abs(globals::MousePos.x / 20), 0,
+                    99)][math::Clamp(abs(globals::MousePos.y / 20), 0, 99)].Owner));
 
             cText.CreateText(
                 globals::TopLeft.x + 2, globals::TopLeft.y + (HUDZ++) * 11, 11,
                 sf::Color::White, "AimedPos(DELETEME): ", "",
-                abs(MousePos.x / 20), "/", "", abs(MousePos.y / 20));
+                abs(globals::MousePos.x / 20), "/", "", abs(globals::MousePos.y / 20));
 
             DrawWorldTiles();
-            sf::Vector2f Pos(abs(MousePos.x / 20), abs(MousePos.y / 20));
+            sf::Vector2f Pos(abs(globals::MousePos.x / 20), abs(globals::MousePos.y / 20));
             Effectz.CreateSquare(Pos.x * 20, Pos.y * 20, (Pos.x * 20) + 20,
                                  (Pos.y * 20) + 20, sf::Color(0, 0, 0, 0), 1,
                                  sf::Color(0, 200, 200, 255));
@@ -5077,7 +5077,7 @@ int main()
                 debug("After RMB");
                 if (GC.MenuPos.x == -10000)
                 {
-                    GC.MenuPos = MousePos;
+                    GC.MenuPos = globals::MousePos;
                 }
                 int Options = 1;
                 Effectz.CreateSquare(
@@ -5185,7 +5185,7 @@ int main()
         if (GC.Phase == "MainMenu")
         { //=======================================================*Main Menu*============================================================================
             GC.BuildMainMenu();
-            View1.setCenter(HalfSize.x, HalfSize.y);
+            globals::View1.setCenter(HalfSize.x, HalfSize.y);
             cText.CreateText(500, 0, 25, sf::Color::White, "Welcome!", "",
                              -6698, "", "", -6698, "", "", -6698, 1, 0);
             cText.CreateText(
@@ -5210,7 +5210,7 @@ int main()
 
             if (ButtonClicked(var.id))
             {
-                if (Debug)
+                if (globals::Debug)
                     std::cout << "Switching to MakeSquad\n";
                 GC.Phase = "MakeSquad";
 
@@ -5315,13 +5315,13 @@ int main()
 
             if (Key.comma)
             {
-                if (Debug)
+                if (globals::Debug)
                     std::cout << "Comma was pressed \n";
                 GC.Phase = "Local";
-                if (Debug)
+                if (globals::Debug)
                     std::cout << "Building Local Test\n";
                 GC.BuildLocalTest();
-                if (Debug)
+                if (globals::Debug)
                     std::cout << "Done Building Local Test\n";
             }
             if (Key.period)
@@ -5364,39 +5364,39 @@ int main()
         { //======Camera Controls======
             if (Key.plus == true)
             {
-                View1.zoom(2);
+                globals::View1.zoom(2);
                 fSleep(0.2);
             }
             if (Key.minus == true)
             {
-                View1.zoom(0.5);
+                globals::View1.zoom(0.5);
                 fSleep(0.2);
             }
             if (Key.q && !Key.lshift)
             {
-                GCtimescale -= 0.001;
+                globals::GCtimescale -= 0.001;
             }
             if (Key.e && !Key.lshift)
             {
-                GCtimescale += 0.001;
+                globals::GCtimescale += 0.001;
             }
             if (Key.q && Key.lshift)
             {
-                GCtimescale -= 0.01;
+                globals::GCtimescale -= 0.01;
             }
             if (Key.e && Key.lshift)
             {
-                GCtimescale += 0.01;
+                globals::GCtimescale += 0.01;
             }
             if (Key.w)
             {
-                GCtimescale = 1;
+                globals::GCtimescale = 1;
             }
         }
 
         if (Key.pad0 == true)
         {
-            App.setView(View1);
+            App.setView(globals::View1);
             PlyAct = true;
         }
         if (Key.pad2 == true)
@@ -5425,32 +5425,32 @@ int main()
         {
             if (GC.Phase == "Local")
             {
-                if (Debug)
+                if (globals::Debug)
                     std::cout << "Doing Local Items \n";
                 UpdateItem();
-                if (Debug)
+                if (globals::Debug)
                     std::cout << "Doing Local AddItems\n";
                 itemmanager.AddItems();
-                if (Debug)
+                if (globals::Debug)
                     std::cout << "Doing Local Update NPC's\n";
                 UpdateNPC();
-                if (Debug)
+                if (globals::Debug)
                     std::cout << "Pre Add Critters \n";
                 npcmanager.AddCritters();
-                if (Debug)
+                if (globals::Debug)
                     std::cout << "Post Add Critters \n";
             }
             GC.Time(0);
             if (GC.Phase != "MainMenu" && globals::Following == false &&
                 GC.Phase != "MakeSquad")
             {
-                View1.setCenter(globals::currentx * GridSize, globals::currenty * GridSize);
+                globals::View1.setCenter(globals::currentx * GridSize, globals::currenty * GridSize);
             }
 
             if (GC.Phase == "Local")
             {
                 bool FoundOne = false;
-                if (Debug)
+                if (globals::Debug)
                     std::cout << "Pre Mouse Based Functions\n";
                 if (Key.LMB == true)
                 {
@@ -5460,22 +5460,22 @@ int main()
                         tfunz++;
                         if (Key.LMB == true)
                         {
-                            int Dist = math::Closeish(MousePos.x, MousePos.y,
+                            int Dist = math::Closeish(globals::MousePos.x, globals::MousePos.y,
                                                       elem.xpos, elem.ypos);
                             if (Dist <= GridSize)
                             {
-                                MyTarget = tfunz;
+                                globals::MyTarget = tfunz;
                                 FoundOne = true;
                                 std::cout << elem.id << std::endl;
                             }
                         }
-                        if (Debug)
+                        if (globals::Debug)
                             std::cout << "Post Closeish Targeting \n";
                         if (elem.alive == true)
                         {
                             if (elem.target == "Flesh" && elem.health > 0)
                             {
-                                if (Debug)
+                                if (globals::Debug)
                                     std::cout << "Doing Nothing with Living "
                                                  "Zombie \n";
                                 //sf::Shape Line = sf::Shape::Line(zit->xpos, zit->ypos, zit->TargetPos.x, zit->TargetPos.y, 1, sf::Color(255,0,0,255));
@@ -5483,7 +5483,7 @@ int main()
                             }
                             else if (elem.health > 0)
                             {
-                                if (Debug)
+                                if (globals::Debug)
                                     std::cout
                                         << "Doing nothing with Living... \n";
                                 //sf::Shape Line = sf::Shape::Line(zit->xpos, zit->ypos, zit->TargetPos.x, zit->TargetPos.y, 1, sf::Color(255,255,0,255));
@@ -5495,16 +5495,16 @@ int main()
                 if (FoundOne == false && Key.LMB == true &&
                     globals::ButtonClicked == false)
                 {
-                    MyTarget = -1;
-                    MyTargetid = -1;
-                    if (Debug)
+                    globals::MyTarget = -1;
+                    globals::MyTargetid = -1;
+                    if (globals::Debug)
                         std::cout << "Found Nothing, Setting targets to -1 \n";
                 }
                 for (auto &elem : npclist)
                 {
                     if (elem.Attacking == true && elem.name == "Miniturret")
                     {
-                        if (Debug)
+                        if (globals::Debug)
                             std::cout
                                 << "Telling Turret to no longer attack \n";
                         // TODO: Fix Latersf::Shape Line = sf::Shape::Line(zit->TargetPos.x+randz(-4,4),zit->TargetPos.y+randz(-4,4), zit->xpos, zit->ypos, 1, sf::Color(200,200,200,255));
@@ -5512,7 +5512,7 @@ int main()
                         elem.Attacking = false;
                     }
                 }
-                if (Debug)
+                if (globals::Debug)
                     std::cout << "Post Mouse Based Functions \n";
 
                 /*if(Key.n)
@@ -5528,7 +5528,7 @@ int main()
             {
                 bool FoundAny = false;
                 sf::Vector2f S = globals::HeldClickPos;
-                sf::Vector2f E = MousePos;
+                sf::Vector2f E = globals::MousePos;
                 for (size_t i = 0; i != npclist.size(); i++)
                 {
                     //if(npclist[i].xpos >= S.x && npclist[i].xpos <= E.x)
@@ -5537,7 +5537,7 @@ int main()
                         if (Inbetween(S.y, E.y, npclist[i].ypos) == true)
                         {
                             std::cout << npclist[i].name << std::endl;
-                            Selected.push_back(npclist[i].id);
+                            globals::Selected.push_back(npclist[i].id);
                             FoundAny = true;
                             //Selection.push_back( npclist[i] );
                             //Selection.insert( npclist[i] )
@@ -5547,31 +5547,31 @@ int main()
                 }
                 if (FoundAny == false)
                 {
-                    Selected.clear();
+                    globals::Selected.clear();
                 }
             }
 
-            for (size_t i = 0; i != Selected.size(); i++)
+            for (size_t i = 0; i != globals::Selected.size(); i++)
             {
                 NPC Var;
-                Var = *GetCritter(Selected[i]);
+                Var = *GetCritter(globals::Selected[i]);
                 sf::Vector2f Pos = sf::Vector2f(Var.xpos, Var.ypos);
                 Effectz.CreateCircle(Pos.x, Pos.y, 5,
                                      sf::Color(0, 255, 255, 100));
             }
-            if (Selected.size() > 0)
+            if (globals::Selected.size() > 0)
             {
                 if (Key.RMB &&
-                    Tiles[abs_to_index(MousePos.x / GridSize)][abs_to_index(
-                        MousePos.y / GridSize)][30].ID != 1010)
+                    Tiles[abs_to_index(globals::MousePos.x / GridSize)][abs_to_index(
+                        globals::MousePos.y / GridSize)][30].ID != 1010)
                 {
-                    for (size_t i = 0; i != Selected.size(); i++)
+                    for (size_t i = 0; i != globals::Selected.size(); i++)
                     {
                         for (size_t t = 0; t != npclist.size(); t++)
                         {
-                            if (npclist[t].id == Selected[i])
+                            if (npclist[t].id == globals::Selected[i])
                             {
-                                npclist[t].TargetPos = sf::Vector2f(MousePos);
+                                npclist[t].TargetPos = sf::Vector2f(globals::MousePos);
                                 npclist[t].action = "Orders";
                             }
                         }
@@ -5582,17 +5582,17 @@ int main()
             if (Key.LMBTime > 1)
             {
                 if (globals::HeldClickPos == sf::Vector2f(-1, -1))
-                    globals::HeldClickPos = MousePos;
+                    globals::HeldClickPos = globals::MousePos;
                 Effectz.CreateSquare(globals::HeldClickPos.x,
-                                     globals::HeldClickPos.y, MousePos.x,
-                                     MousePos.y, sf::Color(0, 255, 255, 100));
+                                     globals::HeldClickPos.y, globals::MousePos.x,
+                                     globals::MousePos.y, sf::Color(0, 255, 255, 100));
             }
             else
                 globals::HeldClickPos = sf::Vector2f(-1, -1);
 
-            if (MyTarget != -1)
+            if (globals::MyTarget != -1)
             {
-                MyTargetid = npclist.at(MyTarget).id;
+                globals::MyTargetid = npclist.at(globals::MyTarget).id;
 
                 int Nxpos = globals::TopLeft.x;
                 int Nypos = globals::TopLeft.y + (Rez.y / 2);
@@ -5603,36 +5603,36 @@ int main()
                 Effectz.CreateSquare(Nxpos, Nypos, Nxpos + 65, Nypos + 70,
                                      sf::Color(0, 0, 0, 100));
                 cText.CreateText(Nxpos, Nypos, 11, sf::Color::Red, "Health:",
-                                 "", npclist.at(MyTarget).health, "", "(",
-                                 npclist.at(MyTarget).maxhealth, ")", "", -6698,
+                                 "", npclist.at(globals::MyTarget).health, "", "(",
+                                 npclist.at(globals::MyTarget).maxhealth, ")", "", -6698,
                                  1, 0);
                 cText.CreateText(Nxpos, Nypos + 10, 11, Brown, "Hunger:", "",
-                                 npclist.at(MyTarget).hunger, "", "", -6698, "",
+                                 npclist.at(globals::MyTarget).hunger, "", "", -6698, "",
                                  "", -6698, 1, 0);
                 cText.CreateText(Nxpos, Nypos + 20, 11, sf::Color::Cyan,
-                                 "Thirst:", "", npclist.at(MyTarget).thirst, "",
+                                 "Thirst:", "", npclist.at(globals::MyTarget).thirst, "",
                                  "", -6698, "", "", -6698, 1, 0);
                 cText.CreateText(Nxpos, Nypos + 30, 11, sf::Color::White,
-                                 "Name:", npclist.at(MyTarget).name, -6698, "",
+                                 "Name:", npclist.at(globals::MyTarget).name, -6698, "",
                                  "", -6698, "", "", -6698, 1, 0);
                 cText.CreateText(Nxpos, Nypos + 40, 11, sf::Color::White, "Id:",
-                                 "", npclist.at(MyTarget).id, "", "", -6698, "",
+                                 "", npclist.at(globals::MyTarget).id, "", "", -6698, "",
                                  "", -6698, 1, 0);
-                if (npclist.at(MyTarget).NeedsPath == false)
+                if (npclist.at(globals::MyTarget).NeedsPath == false)
                 {
                     cText.CreateText(Nxpos, Nypos + 50, 11, sf::Color::Red,
-                                     "Action:", npclist.at(MyTarget).action);
+                                     "Action:", npclist.at(globals::MyTarget).action);
                 }
                 else
                 {
                     cText.CreateText(Nxpos, Nypos + 50, 11, sf::Color::Blue,
-                                     "Action:", npclist.at(MyTarget).action);
+                                     "Action:", npclist.at(globals::MyTarget).action);
                 }
                 cText.CreateText(Nxpos, Nypos + 60, 11, sf::Color::Red,
-                                 "Target:", npclist.at(MyTarget).target,
-                                 npclist.at(MyTarget).TargetPos.x, ":", "",
-                                 npclist.at(MyTarget).TargetPos.y, " Angle:",
-                                 "", npclist.at(MyTarget).angle);
+                                 "Target:", npclist.at(globals::MyTarget).target,
+                                 npclist.at(globals::MyTarget).TargetPos.x, ":", "",
+                                 npclist.at(globals::MyTarget).TargetPos.y, " Angle:",
+                                 "", npclist.at(globals::MyTarget).angle);
 
                 Effectz.CreateSquare(Nxpos, Nypos + 70, Nxpos + 130,
                                      Nypos + 150, sf::Color(0, 0, 0, 200));
@@ -5640,44 +5640,44 @@ int main()
                 int V = 1;
                 cText.CreateText(Nxpos + V, Nypos + (Y++ * 10), 11,
                                  sf::Color::White, "Strength:", "",
-                                 npclist.at(MyTarget).Skills.strength, " : ",
-                                 "", npclist.at(MyTarget).Skills.strengthxp);
+                                 npclist.at(globals::MyTarget).Skills.strength, " : ",
+                                 "", npclist.at(globals::MyTarget).Skills.strengthxp);
                 cText.CreateText(Nxpos + V, Nypos + (Y++ * 10), 11,
                                  sf::Color::White, "Perception:", "",
-                                 npclist.at(MyTarget).Skills.perception, " : ",
-                                 "", npclist.at(MyTarget).Skills.perceptionxp);
+                                 npclist.at(globals::MyTarget).Skills.perception, " : ",
+                                 "", npclist.at(globals::MyTarget).Skills.perceptionxp);
                 cText.CreateText(Nxpos + V, Nypos + (Y++ * 10), 11,
                                  sf::Color::White, "Intelligence:", "",
-                                 npclist.at(MyTarget).Skills.intelligence,
+                                 npclist.at(globals::MyTarget).Skills.intelligence,
                                  " : ", "",
-                                 npclist.at(MyTarget).Skills.intelligencexp);
+                                 npclist.at(globals::MyTarget).Skills.intelligencexp);
                 cText.CreateText(Nxpos + V, Nypos + (Y++ * 10), 11,
                                  sf::Color::White, "Charisma:", "",
-                                 npclist.at(MyTarget).Skills.charisma, " : ",
-                                 "", npclist.at(MyTarget).Skills.charismaxp);
+                                 npclist.at(globals::MyTarget).Skills.charisma, " : ",
+                                 "", npclist.at(globals::MyTarget).Skills.charismaxp);
                 cText.CreateText(Nxpos + V, Nypos + (Y++ * 10), 11,
                                  sf::Color::White, "Endurance:", "",
-                                 npclist.at(MyTarget).Skills.endurance, " : ",
-                                 "", npclist.at(MyTarget).Skills.endurancexp);
+                                 npclist.at(globals::MyTarget).Skills.endurance, " : ",
+                                 "", npclist.at(globals::MyTarget).Skills.endurancexp);
                 cText.CreateText(Nxpos + V, Nypos + (Y++ * 10), 11,
                                  sf::Color::White, "Dexterity:", "",
-                                 npclist.at(MyTarget).Skills.dexterity, " : ",
-                                 "", npclist.at(MyTarget).Skills.dexterityxp);
+                                 npclist.at(globals::MyTarget).Skills.dexterity, " : ",
+                                 "", npclist.at(globals::MyTarget).Skills.dexterityxp);
                 cText.CreateText(Nxpos + V, Nypos + (Y++ * 10), 11,
                                  sf::Color::White, "Agility:", "",
-                                 npclist.at(MyTarget).Skills.agility, " : ", "",
-                                 npclist.at(MyTarget).Skills.agilityxp);
+                                 npclist.at(globals::MyTarget).Skills.agility, " : ", "",
+                                 npclist.at(globals::MyTarget).Skills.agilityxp);
                 cText.CreateText(Nxpos + V, Nypos + (Y++ * 10), 11,
                                  sf::Color::White, "Tags:",
-                                 npclist.at(MyTarget).tags);
+                                 npclist.at(globals::MyTarget).tags);
 
-                if (npclist.at(MyTarget).inventory.size() != 0 ||
-                    npclist.at(MyTarget).bloodcontent != "")
+                if (npclist.at(globals::MyTarget).inventory.size() != 0 ||
+                    npclist.at(globals::MyTarget).bloodcontent != "")
                 {
                     Effectz.CreateSquare(Nxpos, Nypos, Nxpos + 130, Nypos + 70,
                                          sf::Color(0, 0, 0, 100));
                     int Yv = Nypos;
-                    for (auto const &item : npclist.at(MyTarget).inventory)
+                    for (auto const &item : npclist.at(globals::MyTarget).inventory)
                     { // Listing all the current items from this critters inventory.
                         if (item.InsidePart.size() == 0)
                         {
@@ -5688,7 +5688,7 @@ int main()
                         }
                     }
 
-                    for (auto const &item : npclist.at(MyTarget).inventory)
+                    for (auto const &item : npclist.at(globals::MyTarget).inventory)
                     { // Listing all items from 'inside' the critter.
                         if (item.InsidePart.size() != 0)
                         {
@@ -5701,7 +5701,7 @@ int main()
                     }
                     cText.CreateText(
                         Nxpos + 65, Yv, 11, sf::Color(255, 150, 150),
-                        "Blood: " + npclist.at(MyTarget).bloodcontent);
+                        "Blood: " + npclist.at(globals::MyTarget).bloodcontent);
 
                     button var;
                     var.Color = sf::Color::Red;
@@ -5716,16 +5716,16 @@ int main()
                 }
                 //Effectz.CreateLine(Nxpos,Nypos,MousePos.x,MousePos.y,2,Green,0,White);
                 Effectz.CreateLine(
-                    npclist.at(MyTarget).xpos, npclist.at(MyTarget).ypos,
-                    npclist.at(MyTarget).TargetPos.x,
-                    npclist.at(MyTarget).TargetPos.y, 1, sf::Color::Yellow);
+                    npclist.at(globals::MyTarget).xpos, npclist.at(globals::MyTarget).ypos,
+                    npclist.at(globals::MyTarget).TargetPos.x,
+                    npclist.at(globals::MyTarget).TargetPos.y, 1, sf::Color::Yellow);
             }
 
             //else{MyTargetid = -1;}
             { // Mousing over items will say a wee bit about them.
                 for (auto const &item : worlditems)
                 {
-                    if (math::Closeish(MousePos.x, MousePos.y, item.xpos,
+                    if (math::Closeish(globals::MousePos.x, globals::MousePos.y, item.xpos,
                                        item.ypos) <= 10)
                     {
                         cText.CreateText(item.xpos, item.ypos, 11,
@@ -5735,20 +5735,20 @@ int main()
                 }
             }
 
-            if (Debug)
+            if (globals::Debug)
                 std::cout << "Pre Draw Stuffs \n";
 
             //DrawStuffs();
 
-            if (DrawStuffsDone == true)
+            if (globals::DrawStuffsDone == true)
             {
                 //App.setActive(false);
-                DrawStuffsDone = false;
+                globals::DrawStuffsDone = false;
                 DrawStuffs();
                 //ThreadDrawStuffs.launch();
             }
 
-            if (Debug)
+            if (globals::Debug)
                 std::cout << "Post Draw Stuffs \n";
 
             /*
@@ -5818,7 +5818,7 @@ int main()
         debug("Finished removing process");
 
         if (Key.LMB && globals::ButtonClickedTime == 0 &&
-            !AABB(MousePos, GC.MenuPos.x, GC.MenuEndPos.x, GC.MenuPos.y,
+            !AABB(globals::MousePos, GC.MenuPos.x, GC.MenuEndPos.x, GC.MenuPos.y,
                   GC.MenuEndPos.y) &&
             GC.MenuPos != sf::Vector2f(-10000, -10000))
         {
