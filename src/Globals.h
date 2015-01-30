@@ -157,7 +157,6 @@ std::string StringFindChaos(std::string Stringy, std::string Term,
                             std::string Ending);
 std::set<std::string> StringFindSetChaos(std::string Stringy, std::string Term,
                                          std::string Ending);
-std::string NumbertoString(float Number);
 float PercentIs(float Value, float Percentage);
 
 class Globes
