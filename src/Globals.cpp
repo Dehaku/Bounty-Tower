@@ -28,12 +28,6 @@ bool AllowedToAttack = true; // Set this to each NPC
 
 std::vector<int> Selected;
 
-float testx = 0;
-float testy = 0;
-
-float testx2 = 0;
-float testy2 = 0;
-
 float GCtimescale = 1;
 
 int MyTarget = -1;

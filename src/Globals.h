@@ -62,12 +62,6 @@ extern bool AllowedToAttack; // Set this to each NPC
 
 extern std::vector<int> Selected;
 
-extern float testx;
-extern float testy;
-
-extern float testx2;
-extern float testy2;
-
 extern float GCtimescale;
 
 extern int MyTarget;
