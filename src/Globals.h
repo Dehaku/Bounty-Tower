@@ -29,7 +29,6 @@ extern int currentregionx;
 extern int currentregiony;
 extern int currentplanet;
 extern int groundmap[gridz][gridy][gridx];
-extern int smellmap[gridz][gridy][gridx];
 
 namespace globals
 {

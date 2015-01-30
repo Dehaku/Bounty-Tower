@@ -34,7 +34,6 @@ int currentregionx = 50;
 int currentregiony = 50;
 int currentplanet = 500;
 int groundmap[gridz][gridy][gridx];
-int smellmap[gridz][gridy][gridx];
 
 namespace globals
 {
