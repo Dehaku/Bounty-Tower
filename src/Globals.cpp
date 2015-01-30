@@ -306,13 +306,6 @@ sf::Vector2f math::CircleRandz(int xpos, int ypos, int radius)
     return sf::Vector2f(Xxx, Yyy);
 }
 
-sf::Vector2f math::Vec(float X, float Y)
-{
-    // This may seem pointless, But I like my stuff compressed.
-    sf::Vector2f Returns(X, Y);
-    return Returns;
-}
-
 int StringFindNumber(std::string Stringy, std::string Term)
 {
     size_t tStart;

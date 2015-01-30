@@ -2265,8 +2265,8 @@ void UpdateNPC()
                 {
 
                     float Ang = math::AngleBetweenVectors(
-                        math::Vec(Me->TargetPos.x, Me->TargetPos.y),
-                        math::Vec(Me->xpos, Me->ypos));
+                        math::Vec2f(Me->TargetPos.x, Me->TargetPos.y),
+                        math::Vec2f(Me->xpos, Me->ypos));
                     float MyAngle = Me->angle;
                     float difference = abs(Ang - MyAngle);
                     if (difference > 180.0f)
@@ -2304,9 +2304,9 @@ void UpdateNPC()
                             {
 
                                 float Ang = math::AngleBetweenVectors(
-                                    math::Vec((i * GridSize) + 10,
-                                              (t * GridSize) + 10),
-                                    math::Vec(Me->xpos, Me->ypos));
+                                    math::Vec2f((i * GridSize) + 10,
+                                                (t * GridSize) + 10),
+                                    math::Vec2f(Me->xpos, Me->ypos));
                                 float MyAngle = Me->angle;
                                 float difference = abs(Ang - MyAngle);
                                 if (difference > 180.0f)
@@ -2573,7 +2573,7 @@ void UpdateNPC()
                     (Me->movetimerint +
                      Me->movetimer); // TODO: Figure out why I added 0 to this, Year later: It was because movetimer may be less than 0, I wanted the next to turn happen as soon as possible due to it.
                 if (Me->target != "None" && Me->NeedsPath == false &&
-                    math::Vec(Me->xpos, Me->ypos) != Me->TargetPos)
+                    math::Vec2f(Me->xpos, Me->ypos) != Me->TargetPos)
                 { // Walk Move
                     if (Me->Attacking && Me->HasWeapon("Gun") &&
                         math::Closeish(Me->xpos, Me->ypos, Me->TargetPos.x,
@@ -2595,7 +2595,7 @@ void UpdateNPC()
                     }
                 }
                 if (Me->NeedsPath == true &&
-                    math::Vec(Me->xpos, Me->ypos) != Me->TargetPos)
+                    math::Vec2f(Me->xpos, Me->ypos) != Me->TargetPos)
                 { // Acting on Path Finding.
                     if (randz(0, 20) < 3)
                     {
@@ -2653,8 +2653,8 @@ void UpdateNPC()
 
                     Me->PathFinding.MyReadPath(1, Me->xpos, Me->ypos,
                                                Me->moverate);
-                    Me->DirMove(math::Vec(Me->PathFinding.MyxPath,
-                                          Me->PathFinding.MyyPath));
+                    Me->DirMove(math::Vec2f(Me->PathFinding.MyxPath,
+                                            Me->PathFinding.MyyPath));
 
                     if (PathFindWorkPos.x != 0)
                     {
@@ -2780,7 +2780,7 @@ void UpdateNPC()
         } // End of CanMove
         //Me->angle = Math::AngleBetweenVectors(Math::Vec(TempXpos,TempYpos),Math::Vec(Me->xpos,Me->ypos))-180;
         Me->angle = math::AngleBetweenVectors(Me->TargetPos,
-                                              math::Vec(Me->xpos, Me->ypos));
+                                              math::Vec2f(Me->xpos, Me->ypos));
         Me->MomMove();
         //float f=Math::AngleBetweenVectors(sf::Vector2f(Me->xpos,Me->ypos), Me->TargetPos);Me->img.setRotation(f);
         if (Debug)
@@ -4154,7 +4154,7 @@ int main()
             }
             else
             {
-                GC.MenuPos = math::Vec(-10000, -10000);
+                GC.MenuPos = math::Vec2f(-10000, -10000);
             }
         } //=============================================================================*End of Local*========================================================================
         if (GC.Phase == "Solar")
@@ -5088,8 +5088,8 @@ int main()
                                              GC.MenuPos.y + (iY * 11), 11, Cyan,
                                              "Enter City");
                             int Butt = CreateButton(
-                                math::Vec(GC.MenuPos.x + 90,
-                                          (GC.MenuPos.y + (iY * 11)) + 5),
+                                math::Vec2f(GC.MenuPos.x + 90,
+                                            (GC.MenuPos.y + (iY * 11)) + 5),
                                 5, Red);
                             if (ButtonClicked(Butt))
                             {
@@ -5154,8 +5154,8 @@ int main()
                                              GC.MenuPos.y + (iY * 11), 11, Cyan,
                                              "Enter Land");
                             int Butt = CreateButton(
-                                math::Vec(GC.MenuPos.x + 90,
-                                          (GC.MenuPos.y + (iY * 11)) + 5),
+                                math::Vec2f(GC.MenuPos.x + 90,
+                                            (GC.MenuPos.y + (iY * 11)) + 5),
                                 5, Red);
                             if (ButtonClicked(Butt))
                             {
@@ -5169,7 +5169,7 @@ int main()
             }
             else
             {
-                GC.MenuPos = math::Vec(-10000, -10000);
+                GC.MenuPos = math::Vec2f(-10000, -10000);
             }
             debug("Done with world.");
         }

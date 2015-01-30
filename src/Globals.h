@@ -136,7 +136,7 @@ bool Exceed(float Value, float Limit);
 int Clamp(int Value, int MinValue, int MaxValue);
 float AngleBetweenVectors(sf::Vector2f a, sf::Vector2f b);
 sf::Vector2f CircleRandz(int xpos, int ypos, int radius);
-sf::Vector2f Vec(float X, float Y);
+using Vec2f = sf::Vector2f;
 }
 
 /// Get the absolute of a numeric value,

@@ -237,8 +237,8 @@ MenuPopUp() // TODO: Add functionality to allow you to press 1-9 to activate the
                 cText.CreateText(GC.MenuPos.x + 2, GC.MenuPos.y + (iY * 13), 12,
                                  White, "Orbital Drop - Missle");
                 int Butt = CreateSquareButton(
-                    math::Vec(GC.MenuPos.x + BRD,
-                              (GC.MenuPos.y + (iY * 13)) + MBD),
+                    math::Vec2f(GC.MenuPos.x + BRD,
+                                (GC.MenuPos.y + (iY * 13)) + MBD),
                     BS, BSY, ButCol, "Strikes the location!");
                 if (SquareButtonClicked(Butt) || Key.num1Time == 1)
                 {
@@ -294,8 +294,8 @@ MenuPopUp() // TODO: Add functionality to allow you to press 1-9 to activate the
                 cText.CreateText(GC.MenuPos.x + 2, GC.MenuPos.y + (iY * 13), 12,
                                  White, "Build - Wall");
                 int Butt = CreateSquareButton(
-                    math::Vec(GC.MenuPos.x + BRD,
-                              (GC.MenuPos.y + (iY * 13)) + MBD),
+                    math::Vec2f(GC.MenuPos.x + BRD,
+                                (GC.MenuPos.y + (iY * 13)) + MBD),
                     BS, BSY, ButCol, "Makes a Wall!");
                 if (SquareButtonClicked(Butt) || Key.num1Time == 1)
                 {
@@ -312,8 +312,8 @@ MenuPopUp() // TODO: Add functionality to allow you to press 1-9 to activate the
                 cText.CreateText(GC.MenuPos.x + 2, GC.MenuPos.y + (iY * 13), 12,
                                  White, "Dig - Natural Wall");
                 int Butt = CreateSquareButton(
-                    math::Vec(GC.MenuPos.x + BRD,
-                              (GC.MenuPos.y + (iY * 13)) + MBD),
+                    math::Vec2f(GC.MenuPos.x + BRD,
+                                (GC.MenuPos.y + (iY * 13)) + MBD),
                     BS, BSY, ButCol, "Digs out a natural wall.");
                 if (SquareButtonClicked(Butt) || Key.num1Time == 1)
                 {
@@ -355,8 +355,8 @@ MenuPopUp() // TODO: Add functionality to allow you to press 1-9 to activate the
                 cText.CreateText(GC.MenuPos.x + 2, GC.MenuPos.y + (iY * 13), 12,
                                  White, "Build");
                 int Butt = CreateSquareButton(
-                    math::Vec(GC.MenuPos.x + BRD,
-                              (GC.MenuPos.y + (iY * 13)) + MBD),
+                    math::Vec2f(GC.MenuPos.x + BRD,
+                                (GC.MenuPos.y + (iY * 13)) + MBD),
                     BS, BSY, ButCol,
                     "This opens the menu to build various structures!");
                 if (SquareButtonClicked(Butt) || Key.num1Time == 1)
@@ -377,8 +377,8 @@ MenuPopUp() // TODO: Add functionality to allow you to press 1-9 to activate the
                 cText.CreateText(GC.MenuPos.x + 2, GC.MenuPos.y + (iY * 13), 12,
                                  White, "Orbital Drop");
                 int Butt = CreateSquareButton(
-                    math::Vec(GC.MenuPos.x + BRD,
-                              (GC.MenuPos.y + (iY * 13)) + MBD),
+                    math::Vec2f(GC.MenuPos.x + BRD,
+                                (GC.MenuPos.y + (iY * 13)) + MBD),
                     BS, BSY, ButCol, "Causes an orbital ship to release "
                                      "specific cargo at target location.");
                 if (SquareButtonClicked(Butt) || Key.num2Time == 1)
@@ -401,8 +401,8 @@ MenuPopUp() // TODO: Add functionality to allow you to press 1-9 to activate the
                 cText.CreateText(GC.MenuPos.x + 2, GC.MenuPos.y + (iY * 13), 12,
                                  White, "Dig");
                 int Butt = CreateSquareButton(
-                    math::Vec(GC.MenuPos.x + BRD,
-                              (GC.MenuPos.y + (iY * 13)) + MBD),
+                    math::Vec2f(GC.MenuPos.x + BRD,
+                                (GC.MenuPos.y + (iY * 13)) + MBD),
                     BS, BSY, ButCol, "Dig out the current wall tile");
                 if (SquareButtonClicked(Butt) || Key.num2Time == 1)
                 {
@@ -459,8 +459,8 @@ MenuPopUp() // TODO: Add functionality to allow you to press 1-9 to activate the
                                      GC.MenuPtrCon.pItem->name +
                                          " - xPickUpx, Cannot be picked up.");
                 int Butt = CreateSquareButton(
-                    math::Vec(GC.MenuPos.x + BRD,
-                              (GC.MenuPos.y + (iY * 13)) + MBD),
+                    math::Vec2f(GC.MenuPos.x + BRD,
+                                (GC.MenuPos.y + (iY * 13)) + MBD),
                     BS, BSY, ButCol, "Makes someone pickup this item.");
                 if ((SquareButtonClicked(Butt) &&
                      GC.MenuPtrCon.pItem->Pickupable) ||
@@ -499,8 +499,8 @@ MenuPopUp() // TODO: Add functionality to allow you to press 1-9 to activate the
                         GC.MenuPtrCon.pItem->name +
                             " - xChopDownx, Cannot be chopped up.");
                 int Butt = CreateSquareButton(
-                    math::Vec(GC.MenuPos.x + BRD,
-                              (GC.MenuPos.y + (iY * 13)) + MBD),
+                    math::Vec2f(GC.MenuPos.x + BRD,
+                                (GC.MenuPos.y + (iY * 13)) + MBD),
                     BS, BSY, ButCol,
                     "Makes someone seek and destroy this item.");
                 if ((SquareButtonClicked(Butt) &&
@@ -552,7 +552,8 @@ MenuPopUp() // TODO: Add functionality to allow you to press 1-9 to activate the
             cText.CreateText(GC.MenuPos.x + 2, GC.MenuPos.y + (iY * 13), 12,
                              White, GC.MenuPtrCon.pVecItem[i]->name);
             int Butt = CreateSquareButton(
-                math::Vec(GC.MenuPos.x + BRD, (GC.MenuPos.y + (iY * 13)) + MBD),
+                math::Vec2f(GC.MenuPos.x + BRD,
+                            (GC.MenuPos.y + (iY * 13)) + MBD),
                 BS, BSY, ButCol, "Strikes the location!");
             if (SquareButtonClicked(Butt))
             {
@@ -572,8 +573,8 @@ MenuPopUp() // TODO: Add functionality to allow you to press 1-9 to activate the
                 cText.CreateText(GC.MenuPos.x + 2, GC.MenuPos.y + (iY * 13), 12,
                                  White, GC.MenuPtrCon.pVecItem[0]->name);
                 int Butt = CreateSquareButton(
-                    math::Vec(GC.MenuPos.x + BRD,
-                              (GC.MenuPos.y + (iY * 13)) + MBD),
+                    math::Vec2f(GC.MenuPos.x + BRD,
+                                (GC.MenuPos.y + (iY * 13)) + MBD),
                     BS, BSY, ButCol, "Strikes the location!");
                 if (SquareButtonClicked(Butt) || Key.num1Time == 1)
                 {
@@ -618,8 +619,8 @@ MenuPopUp() // TODO: Add functionality to allow you to press 1-9 to activate the
                 cText.CreateText(GC.MenuPos.x + 2, GC.MenuPos.y + (iY * 13), 12,
                                  White, "Close Menu");
                 int Butt = CreateSquareButton(
-                    math::Vec(GC.MenuPos.x + BRD,
-                              (GC.MenuPos.y + (iY * 13)) + MBD),
+                    math::Vec2f(GC.MenuPos.x + BRD,
+                                (GC.MenuPos.y + (iY * 13)) + MBD),
                     BS, BSY, ButCol, "Close Menu");
                 if (SquareButtonClicked(Butt) || Key.num1Time == 1)
                 {
@@ -639,8 +640,8 @@ MenuPopUp() // TODO: Add functionality to allow you to press 1-9 to activate the
                 cText.CreateText(GC.MenuPos.x + 2, GC.MenuPos.y + (iY * 13), 12,
                                  White, "Missile Strike");
                 int Butt = CreateSquareButton(
-                    math::Vec(GC.MenuPos.x + BRD,
-                              (GC.MenuPos.y + (iY * 13)) + MBD),
+                    math::Vec2f(GC.MenuPos.x + BRD,
+                                (GC.MenuPos.y + (iY * 13)) + MBD),
                     BS, BSY, ButCol, "Missile Strike");
                 if (SquareButtonClicked(Butt) || Key.num2Time == 1)
                 {
@@ -678,8 +679,8 @@ MenuPopUp() // TODO: Add functionality to allow you to press 1-9 to activate the
                 cText.CreateText(GC.MenuPos.x + 2, GC.MenuPos.y + (iY * 13), 12,
                                  White, "Shift Wall/Stone");
                 int Butt = CreateSquareButton(
-                    math::Vec(GC.MenuPos.x + BRD,
-                              (GC.MenuPos.y + (iY * 13)) + MBD),
+                    math::Vec2f(GC.MenuPos.x + BRD,
+                                (GC.MenuPos.y + (iY * 13)) + MBD),
                     BS, BSY, ButCol);
                 if (SquareButtonClicked(Butt) || Key.num3Time == 1)
                 {
@@ -721,8 +722,8 @@ MenuPopUp() // TODO: Add functionality to allow you to press 1-9 to activate the
                 cText.CreateText(GC.MenuPos.x + 2, GC.MenuPos.y + (iY * 13), 12,
                                  White, "Spawn Zombie Horde");
                 int Butt = CreateSquareButton(
-                    math::Vec(GC.MenuPos.x + BRD,
-                              (GC.MenuPos.y + (iY * 13)) + MBD),
+                    math::Vec2f(GC.MenuPos.x + BRD,
+                                (GC.MenuPos.y + (iY * 13)) + MBD),
                     BS, BSY, ButCol);
                 if (SquareButtonClicked(Butt) || Key.num4Time == 1)
                 {
@@ -748,8 +749,8 @@ MenuPopUp() // TODO: Add functionality to allow you to press 1-9 to activate the
                 cText.CreateText(GC.MenuPos.x, GC.MenuPos.y + (iY * 13), 12,
                                  White, "Print NPC's ConsoleInfo");
                 int Butt = CreateSquareButton(
-                    math::Vec(GC.MenuPos.x + BRD,
-                              (GC.MenuPos.y + (iY * 13)) + MBD),
+                    math::Vec2f(GC.MenuPos.x + BRD,
+                                (GC.MenuPos.y + (iY * 13)) + MBD),
                     BS, BSY, ButCol);
                 if (SquareButtonClicked(Butt) || Key.num5Time == 1)
                 {
@@ -782,8 +783,8 @@ MenuPopUp() // TODO: Add functionality to allow you to press 1-9 to activate the
                 cText.CreateText(GC.MenuPos.x, GC.MenuPos.y + (iY * 13), 12,
                                  White, "Give Everyone Zombification");
                 int Butt = CreateSquareButton(
-                    math::Vec(GC.MenuPos.x + BRD,
-                              (GC.MenuPos.y + (iY * 13)) + MBD),
+                    math::Vec2f(GC.MenuPos.x + BRD,
+                                (GC.MenuPos.y + (iY * 13)) + MBD),
                     BS, BSY, ButCol,
                     "You horrible monster, Why would you do this?!");
                 if (SquareButtonClicked(Butt) || Key.num6Time == 1)
@@ -814,8 +815,8 @@ MenuPopUp() // TODO: Add functionality to allow you to press 1-9 to activate the
                 cText.CreateText(GC.MenuPos.x, GC.MenuPos.y + (iY * 13), 12,
                                  White, "Delete all critters");
                 int Butt = CreateSquareButton(
-                    math::Vec(GC.MenuPos.x + BRD,
-                              (GC.MenuPos.y + (iY * 13)) + MBD),
+                    math::Vec2f(GC.MenuPos.x + BRD,
+                                (GC.MenuPos.y + (iY * 13)) + MBD),
                     BS, BSY, ButCol);
                 if (SquareButtonClicked(Butt) || Key.num7Time == 1)
                 {
@@ -837,8 +838,8 @@ MenuPopUp() // TODO: Add functionality to allow you to press 1-9 to activate the
                 cText.CreateText(GC.MenuPos.x, GC.MenuPos.y + (iY * 13), 12,
                                  White, "Starve all critters");
                 int Butt = CreateSquareButton(
-                    math::Vec(GC.MenuPos.x + BRD,
-                              (GC.MenuPos.y + (iY * 13)) + MBD),
+                    math::Vec2f(GC.MenuPos.x + BRD,
+                                (GC.MenuPos.y + (iY * 13)) + MBD),
                     BS, BSY, ButCol);
                 if (SquareButtonClicked(Butt) || Key.num8Time == 1)
                 {
@@ -869,8 +870,8 @@ MenuPopUp() // TODO: Add functionality to allow you to press 1-9 to activate the
             cText.CreateText(GC.MenuPos.x, GC.MenuPos.y + (iY * 11), 11, Cyan,
                              elem.name);
             int Butt = CreateButton(
-                math::Vec(GC.MenuPos.x + 90, (GC.MenuPos.y + (iY * 11)) + 5), 5,
-                Red);
+                math::Vec2f(GC.MenuPos.x + 90, (GC.MenuPos.y + (iY * 11)) + 5),
+                5, Red);
             if (ButtonClicked(Butt))
             {
                 SpawnItem(elem.name, GC.MenuPos.x, GC.MenuPos.y);
@@ -896,8 +897,8 @@ MenuPopUp() // TODO: Add functionality to allow you to press 1-9 to activate the
             cText.CreateText(GC.MenuPos.x, GC.MenuPos.y + (iY * 11), 11, Cyan,
                              elem.name);
             int Butt = CreateButton(
-                math::Vec(GC.MenuPos.x + 90, (GC.MenuPos.y + (iY * 11)) + 5), 5,
-                Red);
+                math::Vec2f(GC.MenuPos.x + 90, (GC.MenuPos.y + (iY * 11)) + 5),
+                5, Red);
             if (ButtonClicked(Butt))
             {
                 SpawnCritter(elem.name, GC.MenuPos.x, GC.MenuPos.y);
@@ -929,8 +930,8 @@ MenuPopUp() // TODO: Add functionality to allow you to press 1-9 to activate the
                 cText.CreateText(GC.MenuPos.x, GC.MenuPos.y + (iY * 11), 11,
                                  Cyan, "Close Menu");
                 int Butt =
-                    CreateButton(math::Vec(GC.MenuPos.x + 90,
-                                           (GC.MenuPos.y + (iY * 11)) + 5),
+                    CreateButton(math::Vec2f(GC.MenuPos.x + 90,
+                                             (GC.MenuPos.y + (iY * 11)) + 5),
                                  5, Red);
                 if (ButtonClicked(Butt))
                 {
@@ -957,8 +958,8 @@ MenuPopUp() // TODO: Add functionality to allow you to press 1-9 to activate the
                 cText.CreateText(GC.MenuPos.x, GC.MenuPos.y + (iY * 11), 11,
                                  Cyan, "PickUp");
                 int Butt =
-                    CreateButton(math::Vec(GC.MenuPos.x + 90,
-                                           (GC.MenuPos.y + (iY * 11)) + 5),
+                    CreateButton(math::Vec2f(GC.MenuPos.x + 90,
+                                             (GC.MenuPos.y + (iY * 11)) + 5),
                                  5, Red);
                 if (ButtonClicked(Butt))
                 {
