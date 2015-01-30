@@ -47,21 +47,21 @@ void GalaxyController::Wave()
             WaveTimer = 1000;
             Waves++;
         }
-        cText.CreateText(((currentx - 2) * GridSize) + 1,
-                         ((currenty - 18) * GridSize) + 1, 11, sf::Color::Black,
+        cText.CreateText(((globals::currentx - 2) * GridSize) + 1,
+                         ((globals::currenty - 18) * GridSize) + 1, 11, sf::Color::Black,
                          "Time Till Wave ", "", Waves + 1, ": ", "",
                          WaveTimer / 10);
         if (WaveTimer / 2 < 50 && randz(0, 1) == 1)
         {
-            cText.CreateText((currentx - 2) * GridSize,
-                             (currenty - 18) * GridSize, 11, sf::Color::White,
+            cText.CreateText((globals::currentx - 2) * GridSize,
+                             (globals::currenty - 18) * GridSize, 11, sf::Color::White,
                              "Time Till Wave ", "", Waves + 1, ": ", "",
                              WaveTimer / 10);
         }
         else
         {
-            cText.CreateText((currentx - 2) * GridSize,
-                             (currenty - 18) * GridSize, 11, sf::Color::Red,
+            cText.CreateText((globals::currentx - 2) * GridSize,
+                             (globals::currenty - 18) * GridSize, 11, sf::Color::Red,
                              "Time Till Wave ", "", Waves + 1, ": ", "",
                              WaveTimer / 10);
         }

@@ -20,11 +20,11 @@ extern float GCtimescale;
 extern int MyTarget;
 extern int MyTargetid;
 extern float CameraZoom;
-extern int currentx;
-extern int currenty;
 
 namespace globals
 {
+extern int currentx;
+extern int currenty;
 extern int currentz;
 extern int currentregionx;
 extern int currentregiony;

@@ -25,11 +25,11 @@ float GCtimescale = 1;
 int MyTarget = -1;
 int MyTargetid = -1;
 float CameraZoom = 1;
-int currentx = 50;
-int currenty = 50;
 
 namespace globals
 {
+int currentx = 50;
+int currenty = 50;
 int currentz = 6;
 int currentregionx = 50;
 int currentregiony = 50;

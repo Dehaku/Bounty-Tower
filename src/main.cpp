@@ -2809,12 +2809,12 @@ void DrawTiles()
             if ((globals::Following == true &&
                  i > (npclist.at(MyTarget).xpos / GridSize) - 27 &&
                  i < (npclist.at(MyTarget).xpos / GridSize) + 26) ||
-                (i > currentx - 27 && i < currentx + 26))
+                (i > globals::currentx - 27 && i < globals::currentx + 26))
             {
                 if ((globals::Following == true &&
                      t > (npclist.at(MyTarget).ypos / GridSize) - 21 &&
                      t < (npclist.at(MyTarget).ypos / GridSize) + 20) ||
-                    (t > currenty - 21 && t < currenty + 20))
+                    (t > globals::currenty - 21 && t < globals::currenty + 20))
                 {
                     sf::Sprite Tile;
                     if (globals::groundmap[globals::currentz][i][t] == 1)
@@ -2876,7 +2876,7 @@ void DrawNPCs()
 {
     for (auto &elem : npclist)
     {
-        //if(zit->xpos/GridSize > currentx-27 && zit->xpos/GridSize < currentx+26 && zit->ypos/GridSize > currenty-20 && zit->ypos/GridSize < currenty+20)
+        //if(zit->xpos/GridSize > globals::currentx-27 && zit->xpos/GridSize < globals::currentx+26 && zit->ypos/GridSize > globals::currenty-20 && zit->ypos/GridSize < globals::currenty+20)
         //{
         if (elem.HasSpawned == true)
         {
@@ -2927,7 +2927,7 @@ void DrawItems()
 
     for (auto &worlditem : worlditems)
     {
-        //if(zit->xpos/GridSize > currentx-27 && zit->xpos/GridSize < currentx+26 && zit->ypos/GridSize > currenty-20 && zit->ypos/GridSize < currenty+20)
+        //if(zit->xpos/GridSize > globals::currentx-27 && zit->xpos/GridSize < globals::currentx+26 && zit->ypos/GridSize > globals::currenty-20 && zit->ypos/GridSize < globals::currenty+20)
         //{
         worlditem.img.setColor(sf::Color(255, 255, 255, 255));
         worlditem.img.setScale(globals::Scalex, globals::Scaley);
@@ -3295,8 +3295,8 @@ int main()
         if (GC.Phase == "Local")
         { //=======================================================*Local*============================================================================
             if (Debug)
-                cText.CreateText((currentx - 2) * GridSize,
-                                 (currenty + 1) * GridSize, 11, sf::Color::Red,
+                cText.CreateText((globals::currentx - 2) * GridSize,
+                                 (globals::currenty + 1) * GridSize, 11, sf::Color::Red,
                                  "Debug On");
             if (Key.lctrl && Key.LMB)
             {
@@ -3375,22 +3375,22 @@ int main()
 
             if (Key.left == true)
             {
-                currentx--;
+                globals::currentx--;
                 PlyAct = true;
             }
             if (Key.right == true)
             {
-                currentx++;
+                globals::currentx++;
                 PlyAct = true;
             }
             if (Key.up == true)
             {
-                currenty--;
+                globals::currenty--;
                 PlyAct = true;
             }
             if (Key.down == true)
             {
-                currenty++;
+                globals::currenty++;
                 PlyAct = true;
             }
 
@@ -3450,34 +3450,34 @@ int main()
 
             if (Key.lshift == true && Key.left == true)
             {
-                currentx--;
-                currentx--;
-                currentx--;
-                currentx--;
+                globals::currentx--;
+                globals::currentx--;
+                globals::currentx--;
+                globals::currentx--;
                 PlyAct = true;
             } //Sprite.Move(-100 * ElapsedTime, 0);
             if (Key.lshift == true && Key.right == true)
             {
-                currentx++;
-                currentx++;
-                currentx++;
-                currentx++;
+                globals::currentx++;
+                globals::currentx++;
+                globals::currentx++;
+                globals::currentx++;
                 PlyAct = true;
             } //Sprite.Move( 100 * ElapsedTime, 0);
             if (Key.lshift == true && Key.up == true)
             {
-                currenty--;
-                currenty--;
-                currenty--;
-                currenty--;
+                globals::currenty--;
+                globals::currenty--;
+                globals::currenty--;
+                globals::currenty--;
                 PlyAct = true;
             } //Sprite.Move(0, -100 * ElapsedTime);
             if (Key.lshift == true && Key.down == true)
             {
-                currenty++;
-                currenty++;
-                currenty++;
-                currenty++;
+                globals::currenty++;
+                globals::currenty++;
+                globals::currenty++;
+                globals::currenty++;
                 PlyAct = true;
             } //Sprite.Move(0,  100 * ElapsedTime);
             if (Key.comma == true && Key.lshift == true &&
@@ -3649,10 +3649,10 @@ int main()
             }
 
             bool Transitioning = false;
-            if (currenty > 64)
+            if (globals::currenty > 64)
             {
                 TilesGoUp();
-                currenty = 33;
+                globals::currenty = 33;
 
                 for (size_t i = 0; i != npclist.size(); i++)
                 {
@@ -3694,10 +3694,10 @@ int main()
                     "BottomRight", globals::currentplanet);
                 remove(Line.c_str());
             }
-            if (currenty < 32)
+            if (globals::currenty < 32)
             {
                 TilesGoDown();
-                currenty = 63;
+                globals::currenty = 63;
                 for (size_t i = 0; i != npclist.size(); i++)
                 {
                     npclist.at(i).ypos += 640;
@@ -3738,10 +3738,10 @@ int main()
                     "TopRight", globals::currentplanet);
                 remove(Line.c_str());
             }
-            if (currentx > 64)
+            if (globals::currentx > 64)
             {
                 TilesGoLeft();
-                currentx = 33;
+                globals::currentx = 33;
                 for (size_t i = 0; i != npclist.size(); i++)
                 {
                     npclist.at(i).xpos += -640;
@@ -3782,12 +3782,12 @@ int main()
                     "BottomRight", globals::currentplanet);
                 remove(Line.c_str());
             }
-            if (currentx < 32)
+            if (globals::currentx < 32)
             {
                 Con("Starting GoRight");
                 TilesGoRight();
                 Con("Ending GoRight");
-                currentx = 63;
+                globals::currentx = 63;
                 Con("Starting GoRight with NPC's and Items");
                 for (size_t i = 0; i != npclist.size(); i++)
                 {
@@ -4183,54 +4183,54 @@ int main()
 
             if (Key.left == true)
             {
-                currentx--;
+                globals::currentx--;
                 PlyAct = true;
             }
             if (Key.right == true)
             {
-                currentx++;
+                globals::currentx++;
                 PlyAct = true;
             }
             if (Key.up == true)
             {
-                currenty--;
+                globals::currenty--;
                 PlyAct = true;
             }
             if (Key.down == true)
             {
-                currenty++;
+                globals::currenty++;
                 PlyAct = true;
             }
             if (Key.lshift == true && Key.left == true)
             {
-                currentx--;
-                currentx--;
-                currentx--;
-                currentx--;
+                globals::currentx--;
+                globals::currentx--;
+                globals::currentx--;
+                globals::currentx--;
                 PlyAct = true;
             } //Sprite.Move(-100 * ElapsedTime, 0);
             if (Key.lshift == true && Key.right == true)
             {
-                currentx++;
-                currentx++;
-                currentx++;
-                currentx++;
+                globals::currentx++;
+                globals::currentx++;
+                globals::currentx++;
+                globals::currentx++;
                 PlyAct = true;
             } //Sprite.Move( 100 * ElapsedTime, 0);
             if (Key.lshift == true && Key.up == true)
             {
-                currenty--;
-                currenty--;
-                currenty--;
-                currenty--;
+                globals::currenty--;
+                globals::currenty--;
+                globals::currenty--;
+                globals::currenty--;
                 PlyAct = true;
             } //Sprite.Move(0, -100 * ElapsedTime);
             if (Key.lshift == true && Key.down == true)
             {
-                currenty++;
-                currenty++;
-                currenty++;
-                currenty++;
+                globals::currenty++;
+                globals::currenty++;
+                globals::currenty++;
+                globals::currenty++;
                 PlyAct = true;
             } //Sprite.Move(0,  100 * ElapsedTime);
 
@@ -4250,26 +4250,26 @@ int main()
             if (Key.pad8)
                 radius--;
 
-            if (currenty >
+            if (globals::currenty >
                 64) // TODO: Make the auto removing tiles use the current windows border to get it's range, Allowing proper resizing and stuffs. Edit: Herp, That's not what this is.
             {
                 TilesGoUp();
-                currenty = 33;
+                globals::currenty = 33;
             }
-            if (currenty < 32)
+            if (globals::currenty < 32)
             {
                 TilesGoDown();
-                currenty = 63;
+                globals::currenty = 63;
             }
-            if (currentx > 64)
+            if (globals::currentx > 64)
             {
                 TilesGoLeft();
-                currentx = 33;
+                globals::currentx = 33;
             }
-            if (currentx < 32)
+            if (globals::currentx < 32)
             {
                 TilesGoRight();
-                currentx = 63;
+                globals::currentx = 63;
             }
 
             if (Key.g)
@@ -4299,54 +4299,54 @@ int main()
 
             if (Key.left == true)
             {
-                currentx--;
+                globals::currentx--;
                 PlyAct = true;
             }
             if (Key.right == true)
             {
-                currentx++;
+                globals::currentx++;
                 PlyAct = true;
             }
             if (Key.up == true)
             {
-                currenty--;
+                globals::currenty--;
                 PlyAct = true;
             }
             if (Key.down == true)
             {
-                currenty++;
+                globals::currenty++;
                 PlyAct = true;
             }
             if (Key.lshift == true && Key.left == true)
             {
-                currentx--;
-                currentx--;
-                currentx--;
-                currentx--;
+                globals::currentx--;
+                globals::currentx--;
+                globals::currentx--;
+                globals::currentx--;
                 PlyAct = true;
             } //Sprite.Move(-100 * ElapsedTime, 0);
             if (Key.lshift == true && Key.right == true)
             {
-                currentx++;
-                currentx++;
-                currentx++;
-                currentx++;
+                globals::currentx++;
+                globals::currentx++;
+                globals::currentx++;
+                globals::currentx++;
                 PlyAct = true;
             } //Sprite.Move( 100 * ElapsedTime, 0);
             if (Key.lshift == true && Key.up == true)
             {
-                currenty--;
-                currenty--;
-                currenty--;
-                currenty--;
+                globals::currenty--;
+                globals::currenty--;
+                globals::currenty--;
+                globals::currenty--;
                 PlyAct = true;
             } //Sprite.Move(0, -100 * ElapsedTime);
             if (Key.lshift == true && Key.down == true)
             {
-                currenty++;
-                currenty++;
-                currenty++;
-                currenty++;
+                globals::currenty++;
+                globals::currenty++;
+                globals::currenty++;
+                globals::currenty++;
                 PlyAct = true;
             } //Sprite.Move(0,  100 * ElapsedTime);
 
@@ -4949,13 +4949,13 @@ int main()
         if (GC.Phase == "World")
         {
             if (Key.left == true)
-                currentx--;
+                globals::currentx--;
             if (Key.right == true)
-                currentx++;
+                globals::currentx++;
             if (Key.up == true)
-                currenty--;
+                globals::currenty--;
             if (Key.down == true)
-                currenty++;
+                globals::currenty++;
 
             GC.WorldLoop();
 
@@ -5409,9 +5409,9 @@ int main()
 
         if (GC.Phase != "MainMenu")
         {
-            //cText.CreateText((currentx-2)*GridSize,(currenty-1)*GridSize,11,White,"Aim Pos ","x:",currentx," ","y:",currenty," ","z:",globals::currentz,1,0);
-            //cText.CreateText((currentx-2)*GridSize,(currenty+1)*GridSize,11,White,"Scaling ","x:",globals::Scalex*10," ","y:",globals::Scaley*10);
-            //cText.CreateText((currentx-2)*20,(currenty-18)*20,11,White,"Timescale: ","",GCtimescale*100,"","",-6698,"","",-6698,1,0);
+            //cText.CreateText((globals::currentx-2)*GridSize,(globals::currenty-1)*GridSize,11,White,"Aim Pos ","x:",globals::currentx," ","y:",globals::currenty," ","z:",globals::currentz,1,0);
+            //cText.CreateText((globals::currentx-2)*GridSize,(globals::currenty+1)*GridSize,11,White,"Scaling ","x:",globals::Scalex*10," ","y:",globals::Scaley*10);
+            //cText.CreateText((globals::currentx-2)*20,(globals::currenty-18)*20,11,White,"Timescale: ","",GCtimescale*100,"","",-6698,"","",-6698,1,0);
         }
 
         //--------------------[Hud]------------------------------------------
@@ -5444,7 +5444,7 @@ int main()
             if (GC.Phase != "MainMenu" && globals::Following == false &&
                 GC.Phase != "MakeSquad")
             {
-                View1.setCenter(currentx * GridSize, currenty * GridSize);
+                View1.setCenter(globals::currentx * GridSize, globals::currenty * GridSize);
             }
 
             if (GC.Phase == "Local")
