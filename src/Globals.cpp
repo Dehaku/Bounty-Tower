@@ -14,9 +14,6 @@ float GY = 0;
 
 sf::Vector2f MousePos;
 int MouseStagnation = 0;
-
-bool AllowedToAttack = true; // Set this to each NPC
-
 std::vector<int> Selected;
 
 float GCtimescale = 1;

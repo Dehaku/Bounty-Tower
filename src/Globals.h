@@ -19,8 +19,6 @@ extern float GY;
 extern sf::Vector2f MousePos;
 extern int MouseStagnation;
 
-extern bool AllowedToAttack; // Set this to each NPC
-
 extern std::vector<int> Selected;
 
 extern float GCtimescale;
