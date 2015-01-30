@@ -2708,8 +2708,7 @@ void UpdateNPC()
             for (auto &elem : Me->inventory)
             {
                 if (elem.type == 4 &&
-                    math::Exceed(Me->hunger + elem.hungervalue,
-                                 Me->maxhunger) == false &&
+                    Me->hunger + elem.hungervalue <= Me->maxhunger &&
                     true == false)
                 {
                     //if(Item->hungervalue > 0){ Me->fillhunger(1); Item->hungervalue--;}
@@ -2728,8 +2727,7 @@ void UpdateNPC()
                     ChatBox.AddChat(ChtStr, sf::Color(150, 150, 0));
                 }
                 if (elem.type == 5 &&
-                    math::Exceed(Me->thirst + elem.thirstvalue,
-                                 Me->maxthirst) == false &&
+                    Me->thirst + elem.thirstvalue <= Me->maxthirst &&
                     true == false)
                 {
                     //if(Item->hungervalue > 0){ Me->fillhunger(1); Item->hungervalue--;}

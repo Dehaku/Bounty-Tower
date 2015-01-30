@@ -244,18 +244,6 @@ int math::Closeishxx(int orix, int oriy, int tarx, int tary)
     return Powa;
 }
 
-bool math::Exceed(float Value, float Limit)
-{
-    if (Value > Limit)
-    {
-        return true;
-    }
-    else
-    {
-        return false;
-    }
-}
-
 int math::Clamp(int Value, int MinValue, int MaxValue)
 {
     if (Value > MaxValue)
