@@ -113,24 +113,6 @@ int randzorz(int min, int max)
     return num;
 }
 
-int getdir(std::string dir, std::vector<std::string> &files)
-{
-    using namespace std;
-    DIR *dp;
-    struct dirent *dirp;
-    if ((dp = opendir(dir.c_str())) == nullptr)
-    {
-        cout << "Error(" << errno << ") opening " << dir << endl;
-        return errno;
-    }
-    while ((dirp = readdir(dp)) != nullptr)
-    {
-        files.push_back(string(dirp->d_name));
-    }
-    closedir(dp);
-    return 0;
-}
-
 void UnpointItems(std::list<item> &Items)
 {
 

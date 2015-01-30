@@ -3,8 +3,6 @@
 
 #include <SFML/Graphics.hpp>
 
-extern int getdir(std::string dir, std::vector<std::string> &files);
-
 class cImageHolder
 {
 public:

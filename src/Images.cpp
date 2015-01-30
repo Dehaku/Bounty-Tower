@@ -1,5 +1,7 @@
 #include "Images.h"
 
+#include "filesystemUtils.hpp"
+
 cImageManager imagemanager;
 
 sf::Texture *cImageManager::GetImage(std::string Input)

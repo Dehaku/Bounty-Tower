@@ -7,6 +7,10 @@
 #include <direct.h>
 #endif
 
+#include <dirent.h>
+
+#include <iostream>
+
 void galaxy_mkdir(std::string const &name)
 {
 #ifdef GALAXY_LINUX
@@ -14,4 +18,22 @@ void galaxy_mkdir(std::string const &name)
 #else
     _mkdir(name.c_str());
 #endif
+}
+
+int getdir(std::string dir, std::vector<std::string> &files)
+{
+    using namespace std;
+    DIR *dp;
+    struct dirent *dirp;
+    if ((dp = opendir(dir.c_str())) == nullptr)
+    {
+        cout << "Error(" << errno << ") opening " << dir << endl;
+        return errno;
+    }
+    while ((dirp = readdir(dp)) != nullptr)
+    {
+        files.push_back(string(dirp->d_name));
+    }
+    closedir(dp);
+    return 0;
 }
