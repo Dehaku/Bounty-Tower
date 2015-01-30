@@ -140,10 +140,10 @@ void GalaxyController::BuildLocal(std::string Type, int ZedAmount)
         Tiles[58][48][30].Stone();
         Tiles[49][40][30].Stone();
         Tiles[49][57][30].Stone();
-        //groundmap[6][49][49] = 10;
-        //groundmap[6][49][50] = 10;
-        //groundmap[6][49][51] = 10;
-        //groundmap[6][49][52] = 10;
+        //globals::groundmap[6][49][49] = 10;
+        //globals::groundmap[6][49][50] = 10;
+        //globals::groundmap[6][49][51] = 10;
+        //globals::groundmap[6][49][52] = 10;
 
         // ----------------------------------------
 
@@ -364,10 +364,10 @@ void GalaxyController::BuildLocalTest()
     Tiles[58][48][30].Stone();
     Tiles[49][40][30].Stone();
     Tiles[49][57][30].Stone();
-    //groundmap[6][49][49] = 10;
-    //groundmap[6][49][50] = 10;
-    //groundmap[6][49][51] = 10;
-    //groundmap[6][49][52] = 10;
+    //globals::groundmap[6][49][49] = 10;
+    //globals::groundmap[6][49][50] = 10;
+    //globals::groundmap[6][49][51] = 10;
+    //globals::groundmap[6][49][52] = 10;
 
     // ----------------------------------------
 

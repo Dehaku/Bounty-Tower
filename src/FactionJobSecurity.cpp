@@ -77,7 +77,7 @@ void RMBMenuTile(sf::Vector2f Pos)
         {
             Job job;
             //job.pItem = &pItem;
-            //groundmap[abs_to_index(Pos.x/20)][abs_to_index(Pos.y/20)]
+            //globals::groundmap[abs_to_index(Pos.x/20)][abs_to_index(Pos.y/20)]
             Con("Dafuqe \n");
             if (Tiles[abs_to_index(Pos.x / 20)][abs_to_index(Pos.y / 20)][30]
                     .ID != 1010)

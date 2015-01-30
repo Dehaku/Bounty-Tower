@@ -1538,7 +1538,7 @@ void UpdateNPC()
                 {
                     Me->xpos -= shake;
                 }
-                if (groundmap[currentz][abs_to_index(Me->xpos / GridSize)]
+                if (globals::groundmap[currentz][abs_to_index(Me->xpos / GridSize)]
                              [abs_to_index(Me->ypos / GridSize)] == 10)
                 {
                     Me->xpos = TempXpos;
@@ -1605,7 +1605,7 @@ void UpdateNPC()
                 }
                 if (Me->target == "Wander" && Me->HasTarget == true)
                 { // TODO: Make sure this isn't needed anymore, Then delete it.
-                    if (groundmap[currentz][abs_to_index(
+                    if (globals::groundmap[currentz][abs_to_index(
                             Me->TargetPos.x /
                             GridSize)][abs_to_index(Me->TargetPos.y /
                                                     GridSize)] == 10)
@@ -2073,7 +2073,7 @@ void UpdateNPC()
                             Me->TargetPos = sf::Vector2f(randz(700, 1300),
                                                          randz(700, 1300));
                             Me->HasTarget = true;
-                            if (groundmap[currentz][abs_to_index(
+                            if (globals::groundmap[currentz][abs_to_index(
                                     Me->TargetPos.x /
                                     GridSize)][abs_to_index(Me->TargetPos.y /
                                                             GridSize)] != 10)
@@ -2817,7 +2817,7 @@ void DrawTiles()
                     (t > currenty - 21 && t < currenty + 20))
                 {
                     sf::Sprite Tile;
-                    if (groundmap[currentz][i][t] == 1)
+                    if (globals::groundmap[currentz][i][t] == 1)
                     { // dirt
                         Tile.setTexture(*imagemanager.GetImage("Dirt.bmp"));
                         Tile.setColor(
@@ -2825,7 +2825,7 @@ void DrawTiles()
                         Tile.setPosition(i * iTS, t * iTS);
                         App.draw(Tile);
                     }
-                    if (groundmap[currentz][i][t] == 3)
+                    if (globals::groundmap[currentz][i][t] == 3)
                     { // grass
                         Tile.setTexture(*imagemanager.GetImage("Grass.bmp"));
                         Tile.setColor(
@@ -2833,7 +2833,7 @@ void DrawTiles()
                         Tile.setPosition(i * iTS, t * iTS);
                         App.draw(Tile);
                     }
-                    if (groundmap[currentz][i][t] == 7)
+                    if (globals::groundmap[currentz][i][t] == 7)
                     { // stone
                         Tile.setTexture(*imagemanager.GetImage("Stone.bmp"));
                         Tile.setColor(
@@ -2841,7 +2841,7 @@ void DrawTiles()
                         Tile.setPosition(i * iTS, t * iTS);
                         App.draw(Tile);
                     }
-                    if (groundmap[currentz][i][t] == 20)
+                    if (globals::groundmap[currentz][i][t] == 20)
                     { // water
                         Tile.setTexture(*imagemanager.GetImage("Water.bmp"));
                         Tile.setColor(
@@ -2849,7 +2849,7 @@ void DrawTiles()
                         Tile.setPosition(i * iTS, t * iTS);
                         App.draw(Tile);
                     }
-                    if (groundmap[currentz][i][t] == 53)
+                    if (globals::groundmap[currentz][i][t] == 53)
                     { // lava
                         Tile.setTexture(*imagemanager.GetImage("Lava.bmp"));
                         Tile.setColor(
@@ -2857,7 +2857,7 @@ void DrawTiles()
                         Tile.setPosition(i * iTS, t * iTS);
                         App.draw(Tile);
                     }
-                    if (groundmap[currentz][i][t] == 52)
+                    if (globals::groundmap[currentz][i][t] == 52)
                     { // deepwater
                         Tile.setTexture(
                             *imagemanager.GetImage("DeepWater.bmp"));
