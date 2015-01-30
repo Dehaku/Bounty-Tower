@@ -9,13 +9,6 @@ const int gridx = 100;
 const int gridy = 100;
 const int gridz = 10;
 const int GridSize = 20;
-const sf::Color White(255, 255, 255, 255);
-const sf::Color Red(255, 0, 0, 255);
-const sf::Color Green(0, 255, 0, 255);
-const sf::Color Blue(0, 0, 255, 255);
-const sf::Color Cyan(0, 150, 255, 255);
-const sf::Color Yellow(255, 255, 0, 255);
-const sf::Color Black(0, 0, 0, 255);
 const sf::Color Brown(100, 100, 0, 255);
 
 extern bool Debug;

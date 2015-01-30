@@ -337,7 +337,7 @@ std::vector<int> NnGTrace(int xa, int ya, int xb, int yb, int id,
         y += yIncrement;
         if (Key.g)
         {
-            Effectz.CreateCircle(x, y, 1, Blue);
+            Effectz.CreateCircle(x, y, 1, sf::Color::Blue);
         }
         int Count = 0;
 
@@ -392,7 +392,7 @@ std::vector<int> NnGTrace(int xa, int ya, int xb, int yb, int id,
 
         if (Key.period)
         {
-            Effectz.CreateCircle(x, y, 1, White);
+            Effectz.CreateCircle(x, y, 1, sf::Color::White);
         }
     }
     if (VectorID.size() == 0)
@@ -423,7 +423,7 @@ bool gridposTrace(int xa, int ya, int xb, int yb, int id, sf::Vector2f Target)
         {
             if (Key.period && id == MyTargetid)
             {
-                Effectz.CreateLine(x, y, xa, ya, 1, Blue);
+                Effectz.CreateLine(x, y, xa, ya, 1, sf::Color::Blue);
             }
             //std::cout << "Shoulda Broke. " << std::endl;
             break;
@@ -438,7 +438,7 @@ bool gridposTrace(int xa, int ya, int xb, int yb, int id, sf::Vector2f Target)
         } // Returns true and stops searching.
         if (Key.period && id == MyTargetid)
         {
-            Effectz.CreateLine(x, y, xa, ya, 1, Blue);
+            Effectz.CreateLine(x, y, xa, ya, 1, sf::Color::Blue);
         }
     }
     return false; // Returns false if the target was never found.
@@ -480,7 +480,7 @@ std::vector<int> npcTrace(int xa, int ya, int xb, int yb, int id,
 
         if (Key.h)
         {
-            Effectz.CreateCircle(x, y, 1, White);
+            Effectz.CreateCircle(x, y, 1, sf::Color::White);
         }
     }
     if (VectorID.size() == 0)
@@ -1421,7 +1421,7 @@ void UpdateNPC()
                                 sf::Vector2f Targ(Me->ShootPos.x + Tempx,
                                                   Me->ShootPos.y + Tempy);
                                 Effectz.CreateLine(Me->xpos, Me->ypos, Targ.x,
-                                                   Targ.y, 2, White);
+                                                   Targ.y, 2, sf::Color::White);
                                 std::set<int> ids = NPCTrace(
                                     Me->xpos, Me->ypos, Targ.x, Targ.y, Me->id);
                                 if (!ids.empty())
@@ -1444,14 +1444,15 @@ void UpdateNPC()
                                                 Effectz.CreateCircle(
                                                     npclist.at(id).xpos,
                                                     npclist.at(id).ypos, 5,
-                                                    Red);
+                                                    sf::Color::Red);
                                             }
                                         }
                                         catch (std::exception &e)
                                         {
                                         }
                                         cText.CreateText(Me->xpos, Me->ypos, 11,
-                                                         Red, "Bang!");
+                                                         sf::Color::Red,
+                                                         "Bang!");
                                     }
                                 }
                                 Me->Attacking = false;
@@ -2284,7 +2285,7 @@ void UpdateNPC()
                             FoundGoal = true;
                             Effectz.CreateLine(Me->xpos, Me->ypos,
                                                Me->TargetPos.x, Me->TargetPos.y,
-                                               1, White);
+                                               1, sf::Color::White);
                             Me->NeedsPath = false;
                         }
                     }
@@ -2454,7 +2455,8 @@ void UpdateNPC()
                         }
                         catch (std::exception &e)
                         {
-                            cText.CreateText(Me->xpos, Me->ypos, 11, Red,
+                            cText.CreateText(Me->xpos, Me->ypos, 11,
+                                             sf::Color::Red,
                                              "Somethings wrong!");
                         };
                     }
@@ -2519,12 +2521,14 @@ void UpdateNPC()
                                     Me->TargetId = -1;
                                     Me->TargetVectorId = -1;
                                     cText.CreateText(Me->xpos, Me->ypos, 11,
-                                                     Blue, "*Crunch!*");
+                                                     sf::Color::Blue,
+                                                     "*Crunch!*");
                                 }
                                 catch (std::exception &e)
                                 {
                                     cText.CreateText(Me->xpos, Me->ypos, 11,
-                                                     Red, "What the FUCK?!");
+                                                     sf::Color::Red,
+                                                     "What the FUCK?!");
                                 };
                             }
                         }
@@ -2554,12 +2558,14 @@ void UpdateNPC()
                                     Me->TargetId = -1;
                                     Me->TargetVectorId = -1;
                                     cText.CreateText(Me->xpos, Me->ypos, 11,
-                                                     Blue, "*Gulp!*");
+                                                     sf::Color::Blue,
+                                                     "*Gulp!*");
                                 }
                                 catch (std::exception &e)
                                 {
                                     cText.CreateText(Me->xpos, Me->ypos, 11,
-                                                     Red, "What the FUCK?!");
+                                                     sf::Color::Red,
+                                                     "What the FUCK?!");
                                 };
                             }
                         }
@@ -2684,7 +2690,7 @@ void UpdateNPC()
                                     Me->PathFinding.MyReadPathY(1, Stuff - 1),
                                     Me->PathFinding.MyReadPathX(1, Stuff),
                                     Me->PathFinding.MyReadPathY(1, Stuff), 2,
-                                    Blue);
+                                    sf::Color::Blue);
                             }
                             //std::cout << Me->PathFinding.MyReadPathX(1,Stuff) << ":" << Me->PathFinding.MyReadPathY(1,Stuff) << std::endl;
                         }
@@ -3231,10 +3237,11 @@ int main()
                                            View1.getCenter().y + HalfSize.y);
 
         cText.CreateText(CZ(Globals.TopRight.x - CZ(50)),
-                         CZ(Globals.TopRight.y + CZ(50)), CZ(11), White, "x",
-                         "", CameraZoom);
+                         CZ(Globals.TopRight.y + CZ(50)), CZ(11),
+                         sf::Color::White, "x", "", CameraZoom);
         cText.CreateText((Globals.TopRight.x - 50), (Globals.TopRight.y + 50),
-                         (11) / CameraZoom, White, "x", "", CameraZoom);
+                         (11) / CameraZoom, sf::Color::White, "x", "",
+                         CameraZoom);
 
         if (Key.kTime == 1)
         { // Generates a random name from GenerateName(); and puts it into the console.
@@ -3289,7 +3296,7 @@ int main()
         { //=======================================================*Local*============================================================================
             if (Debug)
                 cText.CreateText((currentx - 2) * GridSize,
-                                 (currenty + 1) * GridSize, 11, Red,
+                                 (currenty + 1) * GridSize, 11, sf::Color::Red,
                                  "Debug On");
             if (Key.lctrl && Key.LMB)
             {
@@ -4105,7 +4112,7 @@ int main()
             //if(Key.b) Effectz.CreateBeam(1000,1000,MousePos.x,MousePos.y,50,Red,5,Blue,false,0);
 
             button var;
-            var.Color = Red;
+            var.Color = sf::Color::Red;
             var.iSize = 5;
             var.vPos = sf::Vector2f(600, 600);
             var.sButtonText = "Howdy";
@@ -4344,21 +4351,21 @@ int main()
                 PlyAct = true;
             } //Sprite.Move(0,  100 * ElapsedTime);
 
-            //button var; var.Color = Red; var.iSize = 5; var.vPos = sf::Vector2f(200,200); var.sButtonText = "Howdy"; vButtonList.push_back(var);
+            //button var; var.Color = sf::Color::Red; var.iSize = 5; var.vPos = sf::Vector2f(200,200); var.sButtonText = "Howdy"; vButtonList.push_back(var);
             // TODO: Fix Later    if(ButtonClicked(var.id)){ std::cout << "Starting the Building. \n"; GC.BuildTileTest(); std::cout << "Done Building. \n"; sf::Sleep(1); GC.bTest = true; }
 
             Degrees += speeds; // Should probably leave speed at 1, If not less.
 
             Xxx = xanchor + cosf(Degrees * PI / 180) * radius;
             Yyy = yanchor + sinf(Degrees * PI / 180) * radius;
-            Effectz.CreateCircle(xanchor, yanchor, 5, Blue);
-            Effectz.CreateCircle(Xxx, Yyy, 5, White);
+            Effectz.CreateCircle(xanchor, yanchor, 5, sf::Color::Blue);
+            Effectz.CreateCircle(Xxx, Yyy, 5, sf::Color::White);
 
             int distence = math::Closeish(xanchor, yanchor, Xxx, Yyy);
-            cText.CreateText(xanchor, yanchor, 11, White, "Distence:", "",
-                             distence);
-            cText.CreateText(xanchor, yanchor + 11, 11, White, "Radius:", "",
-                             radius);
+            cText.CreateText(xanchor, yanchor, 11, sf::Color::White,
+                             "Distence:", "", distence);
+            cText.CreateText(xanchor, yanchor + 11, 11, sf::Color::White,
+                             "Radius:", "", radius);
 
             //std::cout << testmonkey << std::endl;
             if (GC.bTest == true)
@@ -4420,7 +4427,7 @@ int main()
                     xpos -= Xx;
                     ypos -= Yy;
                     Effectz.CreateLine(MousePos.x, MousePos.y, xpos, ypos, 1,
-                                       White);
+                                       sf::Color::White);
                 }
             }
         }
@@ -4440,7 +4447,7 @@ int main()
                              "Squad Mates: ", "", Squady.SquadMates);
 
             button var200;
-            var200.Color = Red;
+            var200.Color = sf::Color::Red;
             var200.iSize = 5;
             var200.vPos = sf::Vector2f((Rez.x / 2) - 10, 75);
             var200.sButtonText = "Howdy";
@@ -4494,7 +4501,7 @@ int main()
                 fSleep(0.2);
             }
             button var201;
-            var201.Color = Red;
+            var201.Color = sf::Color::Red;
             var201.iSize = 5;
             var201.vPos = sf::Vector2f((Rez.x / 2) + 80, 75);
             var201.sButtonText = "Howdy";
@@ -4605,7 +4612,7 @@ int main()
             //NPC.Skills.
 
             button var100;
-            var100.Color = Red;
+            var100.Color = sf::Color::Red;
             var100.iSize = 5;
             var100.vPos =
                 sf::Vector2f((Rez.x / 2) - 10, 5 + (80 + (20 * Spacing)));
@@ -4621,7 +4628,7 @@ int main()
                 fSleep(0.2);
             }
             button var101;
-            var101.Color = Red;
+            var101.Color = sf::Color::Red;
             var101.iSize = 5;
             var101.vPos =
                 sf::Vector2f((Rez.x / 2) + 80, 5 + (80 + (20 * Spacing)));
@@ -4646,7 +4653,7 @@ int main()
                              Squady.Squad.at(Squady.Aim).Skills.strength);
 
             button var;
-            var.Color = Red;
+            var.Color = sf::Color::Red;
             var.iSize = 5;
             var.vPos =
                 sf::Vector2f((Rez.x / 2) - 10, 5 + (80 + (20 * Spacing)));
@@ -4661,7 +4668,7 @@ int main()
                 }
             }
             button var2;
-            var2.Color = Red;
+            var2.Color = sf::Color::Red;
             var2.iSize = 5;
             var2.vPos =
                 sf::Vector2f((Rez.x / 2) + 80, 5 + (80 + (20 * Spacing++)));
@@ -4681,7 +4688,7 @@ int main()
                              Squady.Squad.at(Squady.Aim).Skills.perception);
 
             button var3;
-            var3.Color = Red;
+            var3.Color = sf::Color::Red;
             var3.iSize = 5;
             var3.vPos =
                 sf::Vector2f((Rez.x / 2) - 10, 5 + (80 + (20 * Spacing)));
@@ -4696,7 +4703,7 @@ int main()
                 }
             }
             button var4;
-            var4.Color = Red;
+            var4.Color = sf::Color::Red;
             var4.iSize = 5;
             var4.vPos =
                 sf::Vector2f((Rez.x / 2) + 80, 5 + (80 + (20 * Spacing++)));
@@ -4716,7 +4723,7 @@ int main()
                              Squady.Squad.at(Squady.Aim).Skills.intelligence);
 
             button var5;
-            var5.Color = Red;
+            var5.Color = sf::Color::Red;
             var5.iSize = 5;
             var5.vPos =
                 sf::Vector2f((Rez.x / 2) - 10, 5 + (80 + (20 * Spacing)));
@@ -4731,7 +4738,7 @@ int main()
                 }
             }
             button var6;
-            var6.Color = Red;
+            var6.Color = sf::Color::Red;
             var6.iSize = 5;
             var6.vPos =
                 sf::Vector2f((Rez.x / 2) + 80, 5 + (80 + (20 * Spacing++)));
@@ -4751,7 +4758,7 @@ int main()
                              Squady.Squad.at(Squady.Aim).Skills.charisma);
 
             button var7;
-            var7.Color = Red;
+            var7.Color = sf::Color::Red;
             var7.iSize = 5;
             var7.vPos =
                 sf::Vector2f((Rez.x / 2) - 10, 5 + (80 + (20 * Spacing)));
@@ -4766,7 +4773,7 @@ int main()
                 }
             }
             button var8;
-            var8.Color = Red;
+            var8.Color = sf::Color::Red;
             var8.iSize = 5;
             var8.vPos =
                 sf::Vector2f((Rez.x / 2) + 80, 5 + (80 + (20 * Spacing++)));
@@ -4786,7 +4793,7 @@ int main()
                              Squady.Squad.at(Squady.Aim).Skills.endurance);
 
             button var9;
-            var9.Color = Red;
+            var9.Color = sf::Color::Red;
             var9.iSize = 5;
             var9.vPos =
                 sf::Vector2f((Rez.x / 2) - 10, 5 + (80 + (20 * Spacing)));
@@ -4801,7 +4808,7 @@ int main()
                 }
             }
             button var10;
-            var10.Color = Red;
+            var10.Color = sf::Color::Red;
             var10.iSize = 5;
             var10.vPos =
                 sf::Vector2f((Rez.x / 2) + 80, 5 + (80 + (20 * Spacing++)));
@@ -4821,7 +4828,7 @@ int main()
                              Squady.Squad.at(Squady.Aim).Skills.dexterity);
 
             button var11;
-            var11.Color = Red;
+            var11.Color = sf::Color::Red;
             var11.iSize = 5;
             var11.vPos =
                 sf::Vector2f((Rez.x / 2) - 10, 5 + (80 + (20 * Spacing)));
@@ -4836,7 +4843,7 @@ int main()
                 }
             }
             button var12;
-            var12.Color = Red;
+            var12.Color = sf::Color::Red;
             var12.iSize = 5;
             var12.vPos =
                 sf::Vector2f((Rez.x / 2) + 80, 5 + (80 + (20 * Spacing++)));
@@ -4856,7 +4863,7 @@ int main()
                              Squady.Squad.at(Squady.Aim).Skills.agility);
 
             button var13;
-            var13.Color = Red;
+            var13.Color = sf::Color::Red;
             var13.iSize = 5;
             var13.vPos =
                 sf::Vector2f((Rez.x / 2) - 10, 5 + (80 + (20 * Spacing)));
@@ -4871,7 +4878,7 @@ int main()
                 }
             }
             button var14;
-            var14.Color = Red;
+            var14.Color = sf::Color::Red;
             var14.iSize = 5;
             var14.vPos =
                 sf::Vector2f((Rez.x / 2) + 80, 5 + (80 + (20 * Spacing++)));
@@ -4976,51 +4983,52 @@ int main()
             int HUDZ = 0;
 
             cText.CreateText(Globals.TopLeft.x + 2,
-                             Globals.TopLeft.y + (HUDZ++) * 11, 22, Yellow,
-                             "World Population: ", "", FactionPopulation());
+                             Globals.TopLeft.y + (HUDZ++) * 11, 22,
+                             sf::Color::Yellow, "World Population: ", "",
+                             FactionPopulation());
             HUDZ++;
             HUDZ++;
             cText.CreateText(Globals.TopLeft.x + 2,
-                             Globals.TopLeft.y + (HUDZ++) * 11, 11, White,
-                             "CurrentTileID: ", "", ID);
-            cText.CreateText(Globals.TopLeft.x + 2,
-                             Globals.TopLeft.y + (HUDZ++) * 11, 11, White,
-                             "CurrentTileInfected: ", "", Infected);
+                             Globals.TopLeft.y + (HUDZ++) * 11, 11,
+                             sf::Color::White, "CurrentTileID: ", "", ID);
             cText.CreateText(
                 Globals.TopLeft.x + 2, Globals.TopLeft.y + (HUDZ++) * 11, 11,
-                White, "FactionOwned: ",
+                sf::Color::White, "CurrentTileInfected: ", "", Infected);
+            cText.CreateText(
+                Globals.TopLeft.x + 2, Globals.TopLeft.y + (HUDZ++) * 11, 11,
+                sf::Color::White, "FactionOwned: ",
                 WorldMap[math::Clamp(abs(MousePos.x / 20), 0,
                                      99)][math::Clamp(abs(MousePos.y / 20), 0,
                                                       99)].Owner);
             cText.CreateText(
                 Globals.TopLeft.x + 2, Globals.TopLeft.y + (HUDZ++) * 11, 11,
-                White, "FactionMembers: ", "",
+                sf::Color::White, "FactionMembers: ", "",
                 FactionMembers(WorldMap[math::Clamp(
                     abs(MousePos.x / 20), 0,
                     99)][math::Clamp(abs(MousePos.y / 20), 0, 99)].Owner));
             cText.CreateText(
                 Globals.TopLeft.x + 2, Globals.TopLeft.y + (HUDZ++) * 11, 11,
-                White, "FactionAggression: ", "",
+                sf::Color::White, "FactionAggression: ", "",
                 FactionAggression(WorldMap[math::Clamp(
                     abs(MousePos.x / 20), 0,
                     99)][math::Clamp(abs(MousePos.y / 20), 0, 99)].Owner));
             cText.CreateText(
                 Globals.TopLeft.x + 2, Globals.TopLeft.y + (HUDZ++) * 11, 11,
-                White, "FactionTerritories: ", "",
+                sf::Color::White, "FactionTerritories: ", "",
                 FactionTerritories(WorldMap[math::Clamp(
                     abs(MousePos.x / 20), 0,
                     99)][math::Clamp(abs(MousePos.y / 20), 0, 99)].Owner));
             cText.CreateText(
                 Globals.TopLeft.x + 2, Globals.TopLeft.y + (HUDZ++) * 11, 11,
-                White, "FactionPower: ", "",
+                sf::Color::White, "FactionPower: ", "",
                 FactionPower(WorldMap[math::Clamp(
                     abs(MousePos.x / 20), 0,
                     99)][math::Clamp(abs(MousePos.y / 20), 0, 99)].Owner));
 
-            cText.CreateText(Globals.TopLeft.x + 2,
-                             Globals.TopLeft.y + (HUDZ++) * 11, 11, White,
-                             "AimedPos(DELETEME): ", "", abs(MousePos.x / 20),
-                             "/", "", abs(MousePos.y / 20));
+            cText.CreateText(
+                Globals.TopLeft.x + 2, Globals.TopLeft.y + (HUDZ++) * 11, 11,
+                sf::Color::White, "AimedPos(DELETEME): ", "",
+                abs(MousePos.x / 20), "/", "", abs(MousePos.y / 20));
 
             DrawWorldTiles();
             sf::Vector2f Pos(abs(MousePos.x / 20), abs(MousePos.y / 20));
@@ -5085,12 +5093,12 @@ int main()
                         {
                             //Effectz.CreateLine(GC.MenuPos.x,(GC.MenuPos.y+(iY*11))+8,GC.MenuPos.x+90,(GC.MenuPos.y+(iY*11))+8,3,Black,1,Yellow);
                             cText.CreateText(GC.MenuPos.x + 2,
-                                             GC.MenuPos.y + (iY * 11), 11, Cyan,
-                                             "Enter City");
+                                             GC.MenuPos.y + (iY * 11), 11,
+                                             sf::Color::Cyan, "Enter City");
                             int Butt = CreateButton(
                                 math::Vec2f(GC.MenuPos.x + 90,
                                             (GC.MenuPos.y + (iY * 11)) + 5),
-                                5, Red);
+                                5, sf::Color::Red);
                             if (ButtonClicked(Butt))
                             {
                                 Con("Que?");
@@ -5151,12 +5159,12 @@ int main()
                         {
                             //Effectz.CreateLine(GC.MenuPos.x,(GC.MenuPos.y+(iY*11))+8,GC.MenuPos.x+90,(GC.MenuPos.y+(iY*11))+8,3,Black,1,Yellow);
                             cText.CreateText(GC.MenuPos.x + 2,
-                                             GC.MenuPos.y + (iY * 11), 11, Cyan,
-                                             "Enter Land");
+                                             GC.MenuPos.y + (iY * 11), 11,
+                                             sf::Color::Cyan, "Enter Land");
                             int Butt = CreateButton(
                                 math::Vec2f(GC.MenuPos.x + 90,
                                             (GC.MenuPos.y + (iY * 11)) + 5),
-                                5, Red);
+                                5, sf::Color::Red);
                             if (ButtonClicked(Butt))
                             {
                                 Con("Button Get!");
@@ -5178,25 +5186,27 @@ int main()
         { //=======================================================*Main Menu*============================================================================
             GC.BuildMainMenu();
             View1.setCenter(HalfSize.x, HalfSize.y);
-            cText.CreateText(500, 0, 25, White, "Welcome!", "", -6698, "", "",
-                             -6698, "", "", -6698, 1, 0);
+            cText.CreateText(500, 0, 25, sf::Color::White, "Welcome!", "",
+                             -6698, "", "", -6698, "", "", -6698, 1, 0);
             cText.CreateText(
-                400, 25, 11, Red,
+                400, 25, 11, sf::Color::Red,
                 "Take this 'game' with a grain of salt, It's not done yet");
-            cText.CreateText(450, 45, 11, White, "Design Your Squad");
+            cText.CreateText(450, 45, 11, sf::Color::White,
+                             "Design Your Squad");
             // TODO: Simply add cText.CreateText for the Button Text, Or at least make it an option, Since sButtonText is designed for text 'on' the button.
             button var;
-            var.Color = Red;
+            var.Color = sf::Color::Red;
             var.iSize = 5;
             var.vPos = sf::Vector2f(440, 52);
             var.sButtonText = "Howdy";
             vButtonList.push_back(var);
 
-            cText.CreateText(450, 65, 11, White,
+            cText.CreateText(450, 65, 11, sf::Color::White,
                              "Press Comma to test the Local System");
-            cText.CreateText(450, 85, 11, Red, "Press r to turn on the "
-                                               "debugger, If it slows down the "
-                                               "game, Minimize the console.");
+            cText.CreateText(450, 85, 11, sf::Color::Red,
+                             "Press r to turn on the "
+                             "debugger, If it slows down the "
+                             "game, Minimize the console.");
 
             if (ButtonClicked(var.id))
             {
@@ -5592,34 +5602,34 @@ int main()
 
                 Effectz.CreateSquare(Nxpos, Nypos, Nxpos + 65, Nypos + 70,
                                      sf::Color(0, 0, 0, 100));
-                cText.CreateText(Nxpos, Nypos, 11, Red, "Health:", "",
-                                 npclist.at(MyTarget).health, "", "(",
+                cText.CreateText(Nxpos, Nypos, 11, sf::Color::Red, "Health:",
+                                 "", npclist.at(MyTarget).health, "", "(",
                                  npclist.at(MyTarget).maxhealth, ")", "", -6698,
                                  1, 0);
                 cText.CreateText(Nxpos, Nypos + 10, 11, Brown, "Hunger:", "",
                                  npclist.at(MyTarget).hunger, "", "", -6698, "",
                                  "", -6698, 1, 0);
-                cText.CreateText(Nxpos, Nypos + 20, 11, Cyan, "Thirst:", "",
-                                 npclist.at(MyTarget).thirst, "", "", -6698, "",
+                cText.CreateText(Nxpos, Nypos + 20, 11, sf::Color::Cyan,
+                                 "Thirst:", "", npclist.at(MyTarget).thirst, "",
+                                 "", -6698, "", "", -6698, 1, 0);
+                cText.CreateText(Nxpos, Nypos + 30, 11, sf::Color::White,
+                                 "Name:", npclist.at(MyTarget).name, -6698, "",
+                                 "", -6698, "", "", -6698, 1, 0);
+                cText.CreateText(Nxpos, Nypos + 40, 11, sf::Color::White, "Id:",
+                                 "", npclist.at(MyTarget).id, "", "", -6698, "",
                                  "", -6698, 1, 0);
-                cText.CreateText(Nxpos, Nypos + 30, 11, White, "Name:",
-                                 npclist.at(MyTarget).name, -6698, "", "",
-                                 -6698, "", "", -6698, 1, 0);
-                cText.CreateText(Nxpos, Nypos + 40, 11, White, "Id:", "",
-                                 npclist.at(MyTarget).id, "", "", -6698, "", "",
-                                 -6698, 1, 0);
                 if (npclist.at(MyTarget).NeedsPath == false)
                 {
-                    cText.CreateText(Nxpos, Nypos + 50, 11, Red, "Action:",
-                                     npclist.at(MyTarget).action);
+                    cText.CreateText(Nxpos, Nypos + 50, 11, sf::Color::Red,
+                                     "Action:", npclist.at(MyTarget).action);
                 }
                 else
                 {
-                    cText.CreateText(Nxpos, Nypos + 50, 11, Blue, "Action:",
-                                     npclist.at(MyTarget).action);
+                    cText.CreateText(Nxpos, Nypos + 50, 11, sf::Color::Blue,
+                                     "Action:", npclist.at(MyTarget).action);
                 }
-                cText.CreateText(Nxpos, Nypos + 60, 11, Red, "Target:",
-                                 npclist.at(MyTarget).target,
+                cText.CreateText(Nxpos, Nypos + 60, 11, sf::Color::Red,
+                                 "Target:", npclist.at(MyTarget).target,
                                  npclist.at(MyTarget).TargetPos.x, ":", "",
                                  npclist.at(MyTarget).TargetPos.y, " Angle:",
                                  "", npclist.at(MyTarget).angle);
@@ -5628,36 +5638,38 @@ int main()
                                      Nypos + 150, sf::Color(0, 0, 0, 200));
                 int Y = 7;
                 int V = 1;
-                cText.CreateText(Nxpos + V, Nypos + (Y++ * 10), 11, White,
-                                 "Strength:", "",
+                cText.CreateText(Nxpos + V, Nypos + (Y++ * 10), 11,
+                                 sf::Color::White, "Strength:", "",
                                  npclist.at(MyTarget).Skills.strength, " : ",
                                  "", npclist.at(MyTarget).Skills.strengthxp);
-                cText.CreateText(Nxpos + V, Nypos + (Y++ * 10), 11, White,
-                                 "Perception:", "",
+                cText.CreateText(Nxpos + V, Nypos + (Y++ * 10), 11,
+                                 sf::Color::White, "Perception:", "",
                                  npclist.at(MyTarget).Skills.perception, " : ",
                                  "", npclist.at(MyTarget).Skills.perceptionxp);
-                cText.CreateText(
-                    Nxpos + V, Nypos + (Y++ * 10), 11, White, "Intelligence:",
-                    "", npclist.at(MyTarget).Skills.intelligence, " : ", "",
-                    npclist.at(MyTarget).Skills.intelligencexp);
-                cText.CreateText(Nxpos + V, Nypos + (Y++ * 10), 11, White,
-                                 "Charisma:", "",
+                cText.CreateText(Nxpos + V, Nypos + (Y++ * 10), 11,
+                                 sf::Color::White, "Intelligence:", "",
+                                 npclist.at(MyTarget).Skills.intelligence,
+                                 " : ", "",
+                                 npclist.at(MyTarget).Skills.intelligencexp);
+                cText.CreateText(Nxpos + V, Nypos + (Y++ * 10), 11,
+                                 sf::Color::White, "Charisma:", "",
                                  npclist.at(MyTarget).Skills.charisma, " : ",
                                  "", npclist.at(MyTarget).Skills.charismaxp);
-                cText.CreateText(Nxpos + V, Nypos + (Y++ * 10), 11, White,
-                                 "Endurance:", "",
+                cText.CreateText(Nxpos + V, Nypos + (Y++ * 10), 11,
+                                 sf::Color::White, "Endurance:", "",
                                  npclist.at(MyTarget).Skills.endurance, " : ",
                                  "", npclist.at(MyTarget).Skills.endurancexp);
-                cText.CreateText(Nxpos + V, Nypos + (Y++ * 10), 11, White,
-                                 "Dexterity:", "",
+                cText.CreateText(Nxpos + V, Nypos + (Y++ * 10), 11,
+                                 sf::Color::White, "Dexterity:", "",
                                  npclist.at(MyTarget).Skills.dexterity, " : ",
                                  "", npclist.at(MyTarget).Skills.dexterityxp);
-                cText.CreateText(Nxpos + V, Nypos + (Y++ * 10), 11, White,
-                                 "Agility:", "",
+                cText.CreateText(Nxpos + V, Nypos + (Y++ * 10), 11,
+                                 sf::Color::White, "Agility:", "",
                                  npclist.at(MyTarget).Skills.agility, " : ", "",
                                  npclist.at(MyTarget).Skills.agilityxp);
-                cText.CreateText(Nxpos + V, Nypos + (Y++ * 10), 11, White,
-                                 "Tags:", npclist.at(MyTarget).tags);
+                cText.CreateText(Nxpos + V, Nypos + (Y++ * 10), 11,
+                                 sf::Color::White, "Tags:",
+                                 npclist.at(MyTarget).tags);
 
                 if (npclist.at(MyTarget).inventory.size() != 0 ||
                     npclist.at(MyTarget).bloodcontent != "")
@@ -5669,8 +5681,9 @@ int main()
                     { // Listing all the current items from this critters inventory.
                         if (item.InsidePart.size() == 0)
                         {
-                            cText.CreateText(Nxpos + 65, Yv, 11, White,
-                                             item.name, ": ", item.amount);
+                            cText.CreateText(Nxpos + 65, Yv, 11,
+                                             sf::Color::White, item.name, ": ",
+                                             item.amount);
                             Yv += 10;
                         }
                     }
@@ -5691,7 +5704,7 @@ int main()
                         "Blood: " + npclist.at(MyTarget).bloodcontent);
 
                     button var;
-                    var.Color = Red;
+                    var.Color = sf::Color::Red;
                     var.iSize = 5;
                     var.vPos = sf::Vector2f(Nxpos + 120, Nypos + 50);
                     var.sButtonText = "Howdy";
@@ -5702,10 +5715,10 @@ int main()
                     } // TODO: Get this before the MyTarget -1 check up there.
                 }
                 //Effectz.CreateLine(Nxpos,Nypos,MousePos.x,MousePos.y,2,Green,0,White);
-                Effectz.CreateLine(npclist.at(MyTarget).xpos,
-                                   npclist.at(MyTarget).ypos,
-                                   npclist.at(MyTarget).TargetPos.x,
-                                   npclist.at(MyTarget).TargetPos.y, 1, Yellow);
+                Effectz.CreateLine(
+                    npclist.at(MyTarget).xpos, npclist.at(MyTarget).ypos,
+                    npclist.at(MyTarget).TargetPos.x,
+                    npclist.at(MyTarget).TargetPos.y, 1, sf::Color::Yellow);
             }
 
             //else{MyTargetid = -1;}
@@ -5715,8 +5728,9 @@ int main()
                     if (math::Closeish(MousePos.x, MousePos.y, item.xpos,
                                        item.ypos) <= 10)
                     {
-                        cText.CreateText(item.xpos, item.ypos, 11, White,
-                                         item.name, " ID:", item.id);
+                        cText.CreateText(item.xpos, item.ypos, 11,
+                                         sf::Color::White, item.name, " ID:",
+                                         item.id);
                     }
                 }
             }

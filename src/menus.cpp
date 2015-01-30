@@ -25,21 +25,21 @@ void button::DrawButton()
         Effectz.CreateSquare(vPos.x - iSize, vPos.y - (iSize / 1.5),
                              vPos.x + iSize, vPos.y + (iSize / 1.5),
                              sf::Color(Color.r / 2, Color.g / 2, Color.b / 2),
-                             2, White);
+                             2, sf::Color::White);
     }
     else if (math::Closeish(MousePos.x, MousePos.y, vPos.x, vPos.y) < iSize)
     {
         //Effectz.CreateCircle(vPos.x,vPos.y,iSize,Color,2,White);
         Effectz.CreateSquare(vPos.x - iSize, vPos.y - (iSize / 1.5),
                              vPos.x + iSize, vPos.y + (iSize / 1.5), Color, 2,
-                             White);
+                             sf::Color::White);
     }
     else
     {
         //Effectz.CreateCircle(vPos.x,vPos.y,iSize,Color,1,Black);
         Effectz.CreateSquare(vPos.x - iSize, vPos.y - (iSize / 1.5),
                              vPos.x + iSize, vPos.y + (iSize / 1.5), Color, 2,
-                             Black);
+                             sf::Color::Black);
     }
     cText.CreateText(vPos.x + 10, vPos.y - (TextSize / 2), TextSize, TextColor,
                      sForwardText);
@@ -57,16 +57,17 @@ void squarebutton::DrawButton()
     if (BeenPressed == true)
     {
         //Effectz.CreateCircle(vPos.x,vPos.y,iSize,sf::Color(Color.r/2,Color.g/2,Color.b/2),2,White);
-        Effectz.CreateSquare(
-            vPos.x - iSizex, vPos.y - iSizey, vPos.x + iSizex, vPos.y + iSizey,
-            sf::Color(Color.r / 2, Color.g / 2, Color.b / 2), 2, White);
+        Effectz.CreateSquare(vPos.x - iSizex, vPos.y - iSizey, vPos.x + iSizex,
+                             vPos.y + iSizey,
+                             sf::Color(Color.r / 2, Color.g / 2, Color.b / 2),
+                             2, sf::Color::White);
     }
     else if (AABB(MousePos, vPos.x - iSizex, vPos.x + iSizex, vPos.y - iSizey,
                   vPos.y + iSizey))
     {
         //Effectz.CreateCircle(vPos.x,vPos.y,iSize,Color,2,White);
         Effectz.CreateSquare(vPos.x - iSizex, vPos.y - iSizey, vPos.x + iSizex,
-                             vPos.y + iSizey, Color, 2, White);
+                             vPos.y + iSizey, Color, 2, sf::Color::White);
         if (MouseStagnation > 10 && sButtonText.length() != 0)
         {
             Effectz.CreateSquare(MousePos.x + 10, MousePos.y - 6,
@@ -81,7 +82,7 @@ void squarebutton::DrawButton()
     {
         //Effectz.CreateCircle(vPos.x,vPos.y,iSize,Color,1,Black);
         Effectz.CreateSquare(vPos.x - iSizex, vPos.y - iSizey, vPos.x + iSizex,
-                             vPos.y + iSizey, Color, 2, Black);
+                             vPos.y + iSizey, Color, 2, sf::Color::Black);
     }
     cText.CreateText(vPos.x + 10, vPos.y - (TextSize / 2), TextSize, TextColor,
                      sForwardText);
@@ -221,23 +222,23 @@ MenuPopUp() // TODO: Add functionality to allow you to press 1-9 to activate the
                              GC.MenuEndPos.y, sf::Color::Black, 2,
                              sf::Color::Cyan);
         int iY = 0;
-        int BRD = 140;           // ButtonRightDisplacement.
-        int BS = 7;              // ButtonSize;
-        int BSY = 5;             // ButtonSize;
-        int MBD = 8;             // MoveButtonDown
-        sf::Color ButCol = Cyan; // ButtonColor.
+        int BRD = 140;                      // ButtonRightDisplacement.
+        int BS = 7;                         // ButtonSize;
+        int BSY = 5;                        // ButtonSize;
+        int MBD = 8;                        // MoveButtonDown
+        sf::Color ButCol = sf::Color::Cyan; // ButtonColor.
 
         for (int i = 0; i != Options; i++)
         {
 
             if (i == 0)
             {
-                Effectz.CreateLine(GC.MenuPos.x,
-                                   (GC.MenuPos.y + (iY * 13)) + 13,
-                                   GC.MenuPos.x + 90,
-                                   (GC.MenuPos.y + (iY * 13)) + 13, 1, Cyan);
+                Effectz.CreateLine(
+                    GC.MenuPos.x, (GC.MenuPos.y + (iY * 13)) + 13,
+                    GC.MenuPos.x + 90, (GC.MenuPos.y + (iY * 13)) + 13, 1,
+                    sf::Color::Cyan);
                 cText.CreateText(GC.MenuPos.x + 2, GC.MenuPos.y + (iY * 13), 12,
-                                 White, "Orbital Drop - Missle");
+                                 sf::Color::White, "Orbital Drop - Missle");
                 int Butt = CreateSquareButton(
                     math::Vec2f(GC.MenuPos.x + BRD,
                                 (GC.MenuPos.y + (iY * 13)) + MBD),
@@ -278,23 +279,23 @@ MenuPopUp() // TODO: Add functionality to allow you to press 1-9 to activate the
                              GC.MenuEndPos.y, sf::Color::Black, 2,
                              sf::Color::Cyan);
         int iY = 0;
-        int BRD = 140;           // ButtonRightDisplacement.
-        int BS = 7;              // ButtonSize;
-        int BSY = 5;             // ButtonSize;
-        int MBD = 8;             // MoveButtonDown
-        sf::Color ButCol = Cyan; // ButtonColor.
+        int BRD = 140;                      // ButtonRightDisplacement.
+        int BS = 7;                         // ButtonSize;
+        int BSY = 5;                        // ButtonSize;
+        int MBD = 8;                        // MoveButtonDown
+        sf::Color ButCol = sf::Color::Cyan; // ButtonColor.
 
         for (int i = 0; i != Options; i++)
         {
 
             if (i == 0)
             {
-                Effectz.CreateLine(GC.MenuPos.x,
-                                   (GC.MenuPos.y + (iY * 13)) + 13,
-                                   GC.MenuPos.x + 90,
-                                   (GC.MenuPos.y + (iY * 13)) + 13, 1, Cyan);
+                Effectz.CreateLine(
+                    GC.MenuPos.x, (GC.MenuPos.y + (iY * 13)) + 13,
+                    GC.MenuPos.x + 90, (GC.MenuPos.y + (iY * 13)) + 13, 1,
+                    sf::Color::Cyan);
                 cText.CreateText(GC.MenuPos.x + 2, GC.MenuPos.y + (iY * 13), 12,
-                                 White, "Build - Wall");
+                                 sf::Color::White, "Build - Wall");
                 int Butt = CreateSquareButton(
                     math::Vec2f(GC.MenuPos.x + BRD,
                                 (GC.MenuPos.y + (iY * 13)) + MBD),
@@ -307,12 +308,12 @@ MenuPopUp() // TODO: Add functionality to allow you to press 1-9 to activate the
 
             if (i == 1)
             {
-                Effectz.CreateLine(GC.MenuPos.x,
-                                   (GC.MenuPos.y + (iY * 13)) + 13,
-                                   GC.MenuPos.x + 90,
-                                   (GC.MenuPos.y + (iY * 13)) + 13, 1, Cyan);
+                Effectz.CreateLine(
+                    GC.MenuPos.x, (GC.MenuPos.y + (iY * 13)) + 13,
+                    GC.MenuPos.x + 90, (GC.MenuPos.y + (iY * 13)) + 13, 1,
+                    sf::Color::Cyan);
                 cText.CreateText(GC.MenuPos.x + 2, GC.MenuPos.y + (iY * 13), 12,
-                                 White, "Dig - Natural Wall");
+                                 sf::Color::White, "Dig - Natural Wall");
                 int Butt = CreateSquareButton(
                     math::Vec2f(GC.MenuPos.x + BRD,
                                 (GC.MenuPos.y + (iY * 13)) + MBD),
@@ -337,11 +338,11 @@ MenuPopUp() // TODO: Add functionality to allow you to press 1-9 to activate the
                              GC.MenuEndPos.y, sf::Color::Black, 2,
                              sf::Color::Cyan);
         int iY = 0;
-        int BRD = 140;           // ButtonRightDisplacement.
-        int BS = 7;              // ButtonSize;
-        int BSY = 5;             // ButtonSize;
-        int MBD = 8;             // MoveButtonDown
-        sf::Color ButCol = Cyan; // ButtonColor.
+        int BRD = 140;                      // ButtonRightDisplacement.
+        int BS = 7;                         // ButtonSize;
+        int BSY = 5;                        // ButtonSize;
+        int MBD = 8;                        // MoveButtonDown
+        sf::Color ButCol = sf::Color::Cyan; // ButtonColor.
 
         for (int i = 0; i != Options; i++)
         {
@@ -350,12 +351,12 @@ MenuPopUp() // TODO: Add functionality to allow you to press 1-9 to activate the
             {
 
                 //Effectz.CreateLine(GC.MenuPos.x,(GC.MenuPos.y+(iY*13))+8,GC.MenuPos.x+90,(GC.MenuPos.y+(iY*13))+8,3,Black,1,Yellow);
-                Effectz.CreateLine(GC.MenuPos.x,
-                                   (GC.MenuPos.y + (iY * 13)) + 13,
-                                   GC.MenuPos.x + 90,
-                                   (GC.MenuPos.y + (iY * 13)) + 13, 1, Cyan);
+                Effectz.CreateLine(
+                    GC.MenuPos.x, (GC.MenuPos.y + (iY * 13)) + 13,
+                    GC.MenuPos.x + 90, (GC.MenuPos.y + (iY * 13)) + 13, 1,
+                    sf::Color::Cyan);
                 cText.CreateText(GC.MenuPos.x + 2, GC.MenuPos.y + (iY * 13), 12,
-                                 White, "Build");
+                                 sf::Color::White, "Build");
                 int Butt = CreateSquareButton(
                     math::Vec2f(GC.MenuPos.x + BRD,
                                 (GC.MenuPos.y + (iY * 13)) + MBD),
@@ -372,12 +373,12 @@ MenuPopUp() // TODO: Add functionality to allow you to press 1-9 to activate the
             {
 
                 //Effectz.CreateLine(GC.MenuPos.x,(GC.MenuPos.y+(iY*13))+8,GC.MenuPos.x+90,(GC.MenuPos.y+(iY*13))+8,3,Black,1,Yellow);
-                Effectz.CreateLine(GC.MenuPos.x,
-                                   (GC.MenuPos.y + (iY * 13)) + 13,
-                                   GC.MenuPos.x + 90,
-                                   (GC.MenuPos.y + (iY * 13)) + 13, 1, Cyan);
+                Effectz.CreateLine(
+                    GC.MenuPos.x, (GC.MenuPos.y + (iY * 13)) + 13,
+                    GC.MenuPos.x + 90, (GC.MenuPos.y + (iY * 13)) + 13, 1,
+                    sf::Color::Cyan);
                 cText.CreateText(GC.MenuPos.x + 2, GC.MenuPos.y + (iY * 13), 12,
-                                 White, "Orbital Drop");
+                                 sf::Color::White, "Orbital Drop");
                 int Butt = CreateSquareButton(
                     math::Vec2f(GC.MenuPos.x + BRD,
                                 (GC.MenuPos.y + (iY * 13)) + MBD),
@@ -396,12 +397,12 @@ MenuPopUp() // TODO: Add functionality to allow you to press 1-9 to activate the
             {
 
                 //Effectz.CreateLine(GC.MenuPos.x,(GC.MenuPos.y+(iY*13))+8,GC.MenuPos.x+90,(GC.MenuPos.y+(iY*13))+8,3,Black,1,Yellow);
-                Effectz.CreateLine(GC.MenuPos.x,
-                                   (GC.MenuPos.y + (iY * 13)) + 13,
-                                   GC.MenuPos.x + 90,
-                                   (GC.MenuPos.y + (iY * 13)) + 13, 1, Cyan);
+                Effectz.CreateLine(
+                    GC.MenuPos.x, (GC.MenuPos.y + (iY * 13)) + 13,
+                    GC.MenuPos.x + 90, (GC.MenuPos.y + (iY * 13)) + 13, 1,
+                    sf::Color::Cyan);
                 cText.CreateText(GC.MenuPos.x + 2, GC.MenuPos.y + (iY * 13), 12,
-                                 White, "Dig");
+                                 sf::Color::White, "Dig");
                 int Butt = CreateSquareButton(
                     math::Vec2f(GC.MenuPos.x + BRD,
                                 (GC.MenuPos.y + (iY * 13)) + MBD),
@@ -436,28 +437,28 @@ MenuPopUp() // TODO: Add functionality to allow you to press 1-9 to activate the
                              GC.MenuEndPos.y, sf::Color::Black, 2,
                              sf::Color::Cyan);
         int iY = 0;
-        int BRD = 140;           // ButtonRightDisplacement.
-        int BS = 7;              // ButtonSize;
-        int BSY = 5;             // ButtonSize;
-        int MBD = 8;             // MoveButtonDown
-        sf::Color ButCol = Cyan; // ButtonColor.
+        int BRD = 140;                      // ButtonRightDisplacement.
+        int BS = 7;                         // ButtonSize;
+        int BSY = 5;                        // ButtonSize;
+        int MBD = 8;                        // MoveButtonDown
+        sf::Color ButCol = sf::Color::Cyan; // ButtonColor.
 
         for (int i = 0; i != Options; i++)
         {
 
             if (i == 0)
             {
-                Effectz.CreateLine(GC.MenuPos.x,
-                                   (GC.MenuPos.y + (iY * 13)) + 13,
-                                   GC.MenuPos.x + 90,
-                                   (GC.MenuPos.y + (iY * 13)) + 13, 1, Cyan);
+                Effectz.CreateLine(
+                    GC.MenuPos.x, (GC.MenuPos.y + (iY * 13)) + 13,
+                    GC.MenuPos.x + 90, (GC.MenuPos.y + (iY * 13)) + 13, 1,
+                    sf::Color::Cyan);
                 if (GC.MenuPtrCon.pItem->Pickupable)
                     cText.CreateText(GC.MenuPos.x + 2, GC.MenuPos.y + (iY * 13),
-                                     12, White,
+                                     12, sf::Color::White,
                                      GC.MenuPtrCon.pItem->name + " - PickUp");
                 else
                     cText.CreateText(GC.MenuPos.x + 2, GC.MenuPos.y + (iY * 13),
-                                     12, White,
+                                     12, sf::Color::White,
                                      GC.MenuPtrCon.pItem->name +
                                          " - xPickUpx, Cannot be picked up.");
                 int Butt = CreateSquareButton(
@@ -487,17 +488,18 @@ MenuPopUp() // TODO: Add functionality to allow you to press 1-9 to activate the
 
             if (i == 1)
             {
-                Effectz.CreateLine(GC.MenuPos.x,
-                                   (GC.MenuPos.y + (iY * 13)) + 13,
-                                   GC.MenuPos.x + 90,
-                                   (GC.MenuPos.y + (iY * 13)) + 13, 1, Cyan);
+                Effectz.CreateLine(
+                    GC.MenuPos.x, (GC.MenuPos.y + (iY * 13)) + 13,
+                    GC.MenuPos.x + 90, (GC.MenuPos.y + (iY * 13)) + 13, 1,
+                    sf::Color::Cyan);
                 if (!GC.MenuPtrCon.pItem->Pickupable)
                     cText.CreateText(GC.MenuPos.x + 2, GC.MenuPos.y + (iY * 13),
-                                     12, White,
+                                     12, sf::Color::White,
                                      GC.MenuPtrCon.pItem->name + " - ChopDown");
                 else
                     cText.CreateText(
-                        GC.MenuPos.x + 2, GC.MenuPos.y + (iY * 13), 12, White,
+                        GC.MenuPos.x + 2, GC.MenuPos.y + (iY * 13), 12,
+                        sf::Color::White,
                         GC.MenuPtrCon.pItem->name +
                             " - xChopDownx, Cannot be chopped up.");
                 int Butt = CreateSquareButton(
@@ -539,20 +541,21 @@ MenuPopUp() // TODO: Add functionality to allow you to press 1-9 to activate the
                              GC.MenuEndPos.y, sf::Color::Black, 2,
                              sf::Color::Cyan);
         int iY = 0;
-        int BRD = 140;           // ButtonRightDisplacement.
-        int BS = 7;              // ButtonSize;
-        int BSY = 5;             // ButtonSize;
-        int MBD = 8;             // MoveButtonDown
-        sf::Color ButCol = Cyan; // ButtonColor.
+        int BRD = 140;                      // ButtonRightDisplacement.
+        int BS = 7;                         // ButtonSize;
+        int BSY = 5;                        // ButtonSize;
+        int MBD = 8;                        // MoveButtonDown
+        sf::Color ButCol = sf::Color::Cyan; // ButtonColor.
 
         for (size_t i = 0; i != GC.MenuPtrCon.pVecItem.size(); i++)
         {
 
             Effectz.CreateLine(GC.MenuPos.x, (GC.MenuPos.y + (iY * 13)) + 13,
                                GC.MenuPos.x + 90,
-                               (GC.MenuPos.y + (iY * 13)) + 13, 1, Cyan);
+                               (GC.MenuPos.y + (iY * 13)) + 13, 1,
+                               sf::Color::Cyan);
             cText.CreateText(GC.MenuPos.x + 2, GC.MenuPos.y + (iY * 13), 12,
-                             White, GC.MenuPtrCon.pVecItem[i]->name);
+                             sf::Color::White, GC.MenuPtrCon.pVecItem[i]->name);
             int Butt = CreateSquareButton(
                 math::Vec2f(GC.MenuPos.x + BRD,
                             (GC.MenuPos.y + (iY * 13)) + MBD),
@@ -568,12 +571,13 @@ MenuPopUp() // TODO: Add functionality to allow you to press 1-9 to activate the
 
             if (/*i == -1*/ false) // `i` can't be -1
             {
-                Effectz.CreateLine(GC.MenuPos.x,
-                                   (GC.MenuPos.y + (iY * 13)) + 13,
-                                   GC.MenuPos.x + 90,
-                                   (GC.MenuPos.y + (iY * 13)) + 13, 1, Cyan);
+                Effectz.CreateLine(
+                    GC.MenuPos.x, (GC.MenuPos.y + (iY * 13)) + 13,
+                    GC.MenuPos.x + 90, (GC.MenuPos.y + (iY * 13)) + 13, 1,
+                    sf::Color::Cyan);
                 cText.CreateText(GC.MenuPos.x + 2, GC.MenuPos.y + (iY * 13), 12,
-                                 White, GC.MenuPtrCon.pVecItem[0]->name);
+                                 sf::Color::White,
+                                 GC.MenuPtrCon.pVecItem[0]->name);
                 int Butt = CreateSquareButton(
                     math::Vec2f(GC.MenuPos.x + BRD,
                                 (GC.MenuPos.y + (iY * 13)) + MBD),
@@ -603,23 +607,23 @@ MenuPopUp() // TODO: Add functionality to allow you to press 1-9 to activate the
                              GC.MenuEndPos.y, sf::Color::Black, 2,
                              sf::Color::Cyan);
         int iY = 0;
-        int BRD = 140;           // ButtonRightDisplacement.
-        int BS = 7;              // ButtonSize;
-        int BSY = 5;             // ButtonSize;
-        int MBD = 8;             // MoveButtonDown
-        sf::Color ButCol = Cyan; // ButtonColor.
+        int BRD = 140;                      // ButtonRightDisplacement.
+        int BS = 7;                         // ButtonSize;
+        int BSY = 5;                        // ButtonSize;
+        int MBD = 8;                        // MoveButtonDown
+        sf::Color ButCol = sf::Color::Cyan; // ButtonColor.
 
         for (int i = 0; i != Options; i++)
         {
 
             if (i == 0)
             {
-                Effectz.CreateLine(GC.MenuPos.x,
-                                   (GC.MenuPos.y + (iY * 13)) + 13,
-                                   GC.MenuPos.x + 90,
-                                   (GC.MenuPos.y + (iY * 13)) + 13, 1, Cyan);
+                Effectz.CreateLine(
+                    GC.MenuPos.x, (GC.MenuPos.y + (iY * 13)) + 13,
+                    GC.MenuPos.x + 90, (GC.MenuPos.y + (iY * 13)) + 13, 1,
+                    sf::Color::Cyan);
                 cText.CreateText(GC.MenuPos.x + 2, GC.MenuPos.y + (iY * 13), 12,
-                                 White, "Close Menu");
+                                 sf::Color::White, "Close Menu");
                 int Butt = CreateSquareButton(
                     math::Vec2f(GC.MenuPos.x + BRD,
                                 (GC.MenuPos.y + (iY * 13)) + MBD),
@@ -635,12 +639,12 @@ MenuPopUp() // TODO: Add functionality to allow you to press 1-9 to activate the
             }
             if (i == 1)
             {
-                Effectz.CreateLine(GC.MenuPos.x,
-                                   (GC.MenuPos.y + (iY * 13)) + 13,
-                                   GC.MenuPos.x + 90,
-                                   (GC.MenuPos.y + (iY * 13)) + 13, 1, Cyan);
+                Effectz.CreateLine(
+                    GC.MenuPos.x, (GC.MenuPos.y + (iY * 13)) + 13,
+                    GC.MenuPos.x + 90, (GC.MenuPos.y + (iY * 13)) + 13, 1,
+                    sf::Color::Cyan);
                 cText.CreateText(GC.MenuPos.x + 2, GC.MenuPos.y + (iY * 13), 12,
-                                 White, "Missile Strike");
+                                 sf::Color::White, "Missile Strike");
                 int Butt = CreateSquareButton(
                     math::Vec2f(GC.MenuPos.x + BRD,
                                 (GC.MenuPos.y + (iY * 13)) + MBD),
@@ -674,12 +678,12 @@ MenuPopUp() // TODO: Add functionality to allow you to press 1-9 to activate the
             {
 
                 //Effectz.CreateLine(GC.MenuPos.x,(GC.MenuPos.y+(iY*13))+8,GC.MenuPos.x+90,(GC.MenuPos.y+(iY*13))+8,3,Black,1,Yellow);
-                Effectz.CreateLine(GC.MenuPos.x,
-                                   (GC.MenuPos.y + (iY * 13)) + 13,
-                                   GC.MenuPos.x + 90,
-                                   (GC.MenuPos.y + (iY * 13)) + 13, 1, Cyan);
+                Effectz.CreateLine(
+                    GC.MenuPos.x, (GC.MenuPos.y + (iY * 13)) + 13,
+                    GC.MenuPos.x + 90, (GC.MenuPos.y + (iY * 13)) + 13, 1,
+                    sf::Color::Cyan);
                 cText.CreateText(GC.MenuPos.x + 2, GC.MenuPos.y + (iY * 13), 12,
-                                 White, "Shift Wall/Stone");
+                                 sf::Color::White, "Shift Wall/Stone");
                 int Butt = CreateSquareButton(
                     math::Vec2f(GC.MenuPos.x + BRD,
                                 (GC.MenuPos.y + (iY * 13)) + MBD),
@@ -717,12 +721,12 @@ MenuPopUp() // TODO: Add functionality to allow you to press 1-9 to activate the
             {
 
                 //Effectz.CreateLine(GC.MenuPos.x,(GC.MenuPos.y+(iY*13))+8,GC.MenuPos.x+90,(GC.MenuPos.y+(iY*13))+8,3,Black,1,Yellow);
-                Effectz.CreateLine(GC.MenuPos.x,
-                                   (GC.MenuPos.y + (iY * 13)) + 13,
-                                   GC.MenuPos.x + 90,
-                                   (GC.MenuPos.y + (iY * 13)) + 13, 1, Cyan);
+                Effectz.CreateLine(
+                    GC.MenuPos.x, (GC.MenuPos.y + (iY * 13)) + 13,
+                    GC.MenuPos.x + 90, (GC.MenuPos.y + (iY * 13)) + 13, 1,
+                    sf::Color::Cyan);
                 cText.CreateText(GC.MenuPos.x + 2, GC.MenuPos.y + (iY * 13), 12,
-                                 White, "Spawn Zombie Horde");
+                                 sf::Color::White, "Spawn Zombie Horde");
                 int Butt = CreateSquareButton(
                     math::Vec2f(GC.MenuPos.x + BRD,
                                 (GC.MenuPos.y + (iY * 13)) + MBD),
@@ -744,12 +748,12 @@ MenuPopUp() // TODO: Add functionality to allow you to press 1-9 to activate the
             {
 
                 //Effectz.CreateLine(GC.MenuPos.x,(GC.MenuPos.y+(iY*13))+8,GC.MenuPos.x+90,(GC.MenuPos.y+(iY*13))+8,3,Black,1,Yellow);
-                Effectz.CreateLine(GC.MenuPos.x,
-                                   (GC.MenuPos.y + (iY * 13)) + 13,
-                                   GC.MenuPos.x + 90,
-                                   (GC.MenuPos.y + (iY * 13)) + 13, 1, Cyan);
+                Effectz.CreateLine(
+                    GC.MenuPos.x, (GC.MenuPos.y + (iY * 13)) + 13,
+                    GC.MenuPos.x + 90, (GC.MenuPos.y + (iY * 13)) + 13, 1,
+                    sf::Color::Cyan);
                 cText.CreateText(GC.MenuPos.x, GC.MenuPos.y + (iY * 13), 12,
-                                 White, "Print NPC's ConsoleInfo");
+                                 sf::Color::White, "Print NPC's ConsoleInfo");
                 int Butt = CreateSquareButton(
                     math::Vec2f(GC.MenuPos.x + BRD,
                                 (GC.MenuPos.y + (iY * 13)) + MBD),
@@ -778,12 +782,13 @@ MenuPopUp() // TODO: Add functionality to allow you to press 1-9 to activate the
             {
 
                 //Effectz.CreateLine(GC.MenuPos.x,(GC.MenuPos.y+(iY*13))+8,GC.MenuPos.x+90,(GC.MenuPos.y+(iY*13))+8,3,Black,1,Yellow);
-                Effectz.CreateLine(GC.MenuPos.x,
-                                   (GC.MenuPos.y + (iY * 13)) + 13,
-                                   GC.MenuPos.x + 90,
-                                   (GC.MenuPos.y + (iY * 13)) + 13, 1, Cyan);
+                Effectz.CreateLine(
+                    GC.MenuPos.x, (GC.MenuPos.y + (iY * 13)) + 13,
+                    GC.MenuPos.x + 90, (GC.MenuPos.y + (iY * 13)) + 13, 1,
+                    sf::Color::Cyan);
                 cText.CreateText(GC.MenuPos.x, GC.MenuPos.y + (iY * 13), 12,
-                                 White, "Give Everyone Zombification");
+                                 sf::Color::White,
+                                 "Give Everyone Zombification");
                 int Butt = CreateSquareButton(
                     math::Vec2f(GC.MenuPos.x + BRD,
                                 (GC.MenuPos.y + (iY * 13)) + MBD),
@@ -810,12 +815,12 @@ MenuPopUp() // TODO: Add functionality to allow you to press 1-9 to activate the
             {
 
                 //Effectz.CreateLine(GC.MenuPos.x,(GC.MenuPos.y+(iY*13))+8,GC.MenuPos.x+90,(GC.MenuPos.y+(iY*13))+8,3,Black,1,Yellow);
-                Effectz.CreateLine(GC.MenuPos.x,
-                                   (GC.MenuPos.y + (iY * 13)) + 13,
-                                   GC.MenuPos.x + 90,
-                                   (GC.MenuPos.y + (iY * 13)) + 13, 1, Cyan);
+                Effectz.CreateLine(
+                    GC.MenuPos.x, (GC.MenuPos.y + (iY * 13)) + 13,
+                    GC.MenuPos.x + 90, (GC.MenuPos.y + (iY * 13)) + 13, 1,
+                    sf::Color::Cyan);
                 cText.CreateText(GC.MenuPos.x, GC.MenuPos.y + (iY * 13), 12,
-                                 White, "Delete all critters");
+                                 sf::Color::White, "Delete all critters");
                 int Butt = CreateSquareButton(
                     math::Vec2f(GC.MenuPos.x + BRD,
                                 (GC.MenuPos.y + (iY * 13)) + MBD),
@@ -833,12 +838,12 @@ MenuPopUp() // TODO: Add functionality to allow you to press 1-9 to activate the
             {
 
                 //Effectz.CreateLine(GC.MenuPos.x,(GC.MenuPos.y+(iY*13))+8,GC.MenuPos.x+90,(GC.MenuPos.y+(iY*13))+8,3,Black,1,Yellow);
-                Effectz.CreateLine(GC.MenuPos.x,
-                                   (GC.MenuPos.y + (iY * 13)) + 13,
-                                   GC.MenuPos.x + 90,
-                                   (GC.MenuPos.y + (iY * 13)) + 13, 1, Cyan);
+                Effectz.CreateLine(
+                    GC.MenuPos.x, (GC.MenuPos.y + (iY * 13)) + 13,
+                    GC.MenuPos.x + 90, (GC.MenuPos.y + (iY * 13)) + 13, 1,
+                    sf::Color::Cyan);
                 cText.CreateText(GC.MenuPos.x, GC.MenuPos.y + (iY * 13), 12,
-                                 White, "Starve all critters");
+                                 sf::Color::White, "Starve all critters");
                 int Butt = CreateSquareButton(
                     math::Vec2f(GC.MenuPos.x + BRD,
                                 (GC.MenuPos.y + (iY * 13)) + MBD),
@@ -862,18 +867,19 @@ MenuPopUp() // TODO: Add functionality to allow you to press 1-9 to activate the
             GC.MenuPos.x + 100,
             (GC.MenuPos.y + (itemmanager.GlobalItem.size() * 10)) + 5);
         Effectz.CreateSquare(GC.MenuPos.x, GC.MenuPos.y, GC.MenuEndPos.x,
-                             GC.MenuEndPos.y, White);
+                             GC.MenuEndPos.y, sf::Color::White);
         int iY = 0;
         for (auto &elem : itemmanager.GlobalItem)
         {
-            Effectz.CreateLine(
-                GC.MenuPos.x, (GC.MenuPos.y + (iY * 11)) + 8, GC.MenuPos.x + 90,
-                (GC.MenuPos.y + (iY * 11)) + 8, 3, Black, 1, Yellow);
-            cText.CreateText(GC.MenuPos.x, GC.MenuPos.y + (iY * 11), 11, Cyan,
-                             elem.name);
+            Effectz.CreateLine(GC.MenuPos.x, (GC.MenuPos.y + (iY * 11)) + 8,
+                               GC.MenuPos.x + 90,
+                               (GC.MenuPos.y + (iY * 11)) + 8, 3,
+                               sf::Color::Black, 1, sf::Color::Yellow);
+            cText.CreateText(GC.MenuPos.x, GC.MenuPos.y + (iY * 11), 11,
+                             sf::Color::Cyan, elem.name);
             int Butt = CreateButton(
                 math::Vec2f(GC.MenuPos.x + 90, (GC.MenuPos.y + (iY * 11)) + 5),
-                5, Red);
+                5, sf::Color::Red);
             if (ButtonClicked(Butt))
             {
                 SpawnItem(elem.name, GC.MenuPos.x, GC.MenuPos.y);
@@ -889,18 +895,19 @@ MenuPopUp() // TODO: Add functionality to allow you to press 1-9 to activate the
             GC.MenuPos.x + 100,
             (GC.MenuPos.y + (npcmanager.GlobalCritter.size() * 10)) + 5);
         Effectz.CreateSquare(GC.MenuPos.x, GC.MenuPos.y, GC.MenuEndPos.x,
-                             GC.MenuEndPos.y, White);
+                             GC.MenuEndPos.y, sf::Color::White);
         int iY = 0;
         for (auto &elem : npcmanager.GlobalCritter)
         {
-            Effectz.CreateLine(
-                GC.MenuPos.x, (GC.MenuPos.y + (iY * 11)) + 8, GC.MenuPos.x + 90,
-                (GC.MenuPos.y + (iY * 11)) + 8, 3, Black, 1, Yellow);
-            cText.CreateText(GC.MenuPos.x, GC.MenuPos.y + (iY * 11), 11, Cyan,
-                             elem.name);
+            Effectz.CreateLine(GC.MenuPos.x, (GC.MenuPos.y + (iY * 11)) + 8,
+                               GC.MenuPos.x + 90,
+                               (GC.MenuPos.y + (iY * 11)) + 8, 3,
+                               sf::Color::Black, 1, sf::Color::Yellow);
+            cText.CreateText(GC.MenuPos.x, GC.MenuPos.y + (iY * 11), 11,
+                             sf::Color::Cyan, elem.name);
             int Butt = CreateButton(
                 math::Vec2f(GC.MenuPos.x + 90, (GC.MenuPos.y + (iY * 11)) + 5),
-                5, Red);
+                5, sf::Color::Red);
             if (ButtonClicked(Butt))
             {
                 SpawnCritter(elem.name, GC.MenuPos.x, GC.MenuPos.y);
@@ -917,7 +924,7 @@ MenuPopUp() // TODO: Add functionality to allow you to press 1-9 to activate the
         GC.MenuEndPos = sf::Vector2f(GC.MenuPos.x + 100,
                                      (GC.MenuPos.y + (Options * 10)) + 5);
         Effectz.CreateSquare(GC.MenuPos.x, GC.MenuPos.y, GC.MenuEndPos.x,
-                             GC.MenuEndPos.y, White);
+                             GC.MenuEndPos.y, sf::Color::White);
         int iY = 0;
         for (int i = 0; i != Options; i++)
         {
@@ -927,14 +934,14 @@ MenuPopUp() // TODO: Add functionality to allow you to press 1-9 to activate the
 
                 Effectz.CreateLine(GC.MenuPos.x, (GC.MenuPos.y + (iY * 11)) + 8,
                                    GC.MenuPos.x + 90,
-                                   (GC.MenuPos.y + (iY * 11)) + 8, 3, Black, 1,
-                                   Yellow);
+                                   (GC.MenuPos.y + (iY * 11)) + 8, 3,
+                                   sf::Color::Black, 1, sf::Color::Yellow);
                 cText.CreateText(GC.MenuPos.x, GC.MenuPos.y + (iY * 11), 11,
-                                 Cyan, "Close Menu");
+                                 sf::Color::Cyan, "Close Menu");
                 int Butt =
                     CreateButton(math::Vec2f(GC.MenuPos.x + 90,
                                              (GC.MenuPos.y + (iY * 11)) + 5),
-                                 5, Red);
+                                 5, sf::Color::Red);
                 if (ButtonClicked(Butt))
                 {
 
@@ -955,14 +962,14 @@ MenuPopUp() // TODO: Add functionality to allow you to press 1-9 to activate the
 
                 Effectz.CreateLine(GC.MenuPos.x, (GC.MenuPos.y + (iY * 11)) + 8,
                                    GC.MenuPos.x + 90,
-                                   (GC.MenuPos.y + (iY * 11)) + 8, 3, Black, 1,
-                                   Yellow);
+                                   (GC.MenuPos.y + (iY * 11)) + 8, 3,
+                                   sf::Color::Black, 1, sf::Color::Yellow);
                 cText.CreateText(GC.MenuPos.x, GC.MenuPos.y + (iY * 11), 11,
-                                 Cyan, "PickUp");
+                                 sf::Color::Cyan, "PickUp");
                 int Butt =
                     CreateButton(math::Vec2f(GC.MenuPos.x + 90,
                                              (GC.MenuPos.y + (iY * 11)) + 5),
-                                 5, Red);
+                                 5, sf::Color::Red);
                 if (ButtonClicked(Butt))
                 {
 

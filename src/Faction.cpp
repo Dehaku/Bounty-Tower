@@ -78,7 +78,7 @@ std::set<int> NPC::Melee(int /*min*/, int /*max*/, int range,
         Xxx = xpos + cosf(Degrees * PI / 180) * range;
         Yyy = ypos + sinf(Degrees * PI / 180) * range;
         Degrees += 1;
-        Effectz.CreateLine(xpos, ypos, Xxx, Yyy, 2, Blue);
+        Effectz.CreateLine(xpos, ypos, Xxx, Yyy, 2, sf::Color::Blue);
         Tar = NPCTrace(xpos, ypos, Xxx, Yyy, id, std::set<int>());
     }
     std::list<item>::iterator Inv;
@@ -1555,7 +1555,7 @@ std::set<int> NPCTrace(int xa, int ya, int xb, int yb, int id,
         y += yIncrement;
         if (Key.g)
         {
-            Effectz.CreateCircle(x, y, 1, Blue);
+            Effectz.CreateCircle(x, y, 1, sf::Color::Blue);
         }
 
         // Merely doing this so I can reuse the same code, but for items, Hehe.
