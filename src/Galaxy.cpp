@@ -506,7 +506,7 @@ void GalaxyController::WorldLoop()
                 continue;
 
             int ForMembers = UniFact[i].Members;
-            for (size_t t = 0; t != ForMembers; t++)
+            for (int t = 0; t != ForMembers; t++)
             {
                 int Territ = randz(0,UniFact[i].Territories.size()-1);
 
