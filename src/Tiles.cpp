@@ -5,6 +5,7 @@
 #include "Images.h"
 #include "math.h"
 #include "util.h"
+#include "globalvars.h"
 
 #include <sstream>
 #include <fstream>

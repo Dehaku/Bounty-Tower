@@ -6,7 +6,7 @@
 #include "keys.h"
 #include "JobManager.h"
 #include "Text.h"
-#include "globalvars.h"
+#include "defs.h"
 
 #include <list>
 #include <set>

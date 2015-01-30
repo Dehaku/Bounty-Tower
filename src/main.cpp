@@ -26,6 +26,7 @@
 #include "Images.h"
 #include "math.h"
 #include "util.h"
+#include "globalvars.h"
 
 using std::abs;
 

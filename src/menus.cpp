@@ -8,6 +8,7 @@
 #include "Faction.h"
 #include "math.h"
 #include "util.h"
+#include "globalvars.h"
 
 #include <iostream>
 

@@ -3,6 +3,7 @@
 #include "Faction.h"
 #include "Tiles.h"
 #include "util.h"
+#include "globalvars.h"
 
 #include <iostream>
 
