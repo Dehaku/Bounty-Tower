@@ -516,14 +516,6 @@ std::set<std::string> StringFindSetChaos(std::string Stringy, std::string Term,
     return Returns;
 }
 
-std::string NumbertoString(float Number)
-{
-    std::stringstream ReturnLine;
-    ReturnLine << Number;
-    std::string str = ReturnLine.str();
-    return str;
-}
-
 float PercentIs(float Value, float Percentage)
 {
     // Divide the return by 100 for maths.

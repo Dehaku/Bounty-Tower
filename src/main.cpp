@@ -1068,13 +1068,13 @@ void UpdateNPC()
                             std::string ChtStr;
                             ChtStr.append("* ");
                             ChtStr.append(Me->name);
-                            ChtStr.append("(" + NumbertoString(Me->id) + ")");
+                            ChtStr.append("(" + std::to_string(Me->id) + ")");
                             ChtStr.append(" has inserted ");
                             ChtStr.append((*i).name);
                             ChtStr.append(" into their ");
                             ChtStr.append(CurrentPart);
                             ChtStr.append("'s Orafice(");
-                            ChtStr.append(NumbertoString(PartNumber));
+                            ChtStr.append(std::to_string(PartNumber));
                             ChtStr.append(").");
 
                             ChatBox.AddChat(ChtStr, sf::Color(150, 150, 0));
@@ -1131,7 +1131,7 @@ void UpdateNPC()
                 std::string ChtStr;
                 ChtStr.append("* ");
                 ChtStr.append(Me->name);
-                ChtStr.append(AddString("(",NumbertoString(Me->id),")"));
+                ChtStr.append(AddString("(",std::to_string(Me->id),")"));
                 ChtStr.append(" has ejected ");
                 ChtStr.append(Me->inventory[i].name);
                 ChtStr.append(" from their ");
@@ -1221,7 +1221,7 @@ void UpdateNPC()
                 std::string ChtStr;
                 ChtStr.append("* ");
                 ChtStr.append(Me->name);
-                ChtStr.append("(" + NumbertoString(Me->id) + ")");
+                ChtStr.append("(" + std::to_string(Me->id) + ")");
                 ChtStr.append(" has died! ");
 
                 ChatBox.AddChat(ChtStr, sf::Color(200, 0, 0));
@@ -1285,7 +1285,7 @@ void UpdateNPC()
             std::string ChtStr;
             ChtStr.append("* ");
             ChtStr.append(OldName);
-            ChtStr.append("(" + NumbertoString(Me->id) + ")");
+            ChtStr.append("(" + std::to_string(Me->id) + ")");
             ChtStr.append(" has been zombified by Zombification! ");
 
             ChatBox.AddChat(ChtStr, sf::Color(200, 0, 0));
@@ -1711,7 +1711,7 @@ void UpdateNPC()
                         debug("Preforming Job Routine; ");
                         for (size_t i = 0; i != UniFact[0].JobList.size(); i++)
                         {
-                            debug("Starting Job " + NumbertoString(i));
+                            debug("Starting Job " + std::to_string(i));
                             //if(!Deleting) Deleter++;
                             //Con(AddString(Me->name,JobList[i].Type));
                             if (UniFact[0].JobList[i].pItem == nullptr &&
@@ -2054,7 +2054,7 @@ void UpdateNPC()
                                 }
                             }
 
-                            debug("End Job " + NumbertoString(i));
+                            debug("End Job " + std::to_string(i));
                         }
 
                         RemoveJobs(UniFact[0].JobList);
@@ -2219,17 +2219,17 @@ void UpdateNPC()
                             std::string AtkStr;
                             AtkStr.append("* ");
                             AtkStr.append(Me->name);
-                            AtkStr.append("(" + NumbertoString(Me->id) + ")");
+                            AtkStr.append("(" + std::to_string(Me->id) + ")");
                             if (AtkType != "")
                                 AtkStr.append(" has biten ");
                             else
                                 AtkStr.append(AtkType);
                             AtkStr.append(npclist.at(numba).name);
                             AtkStr.append("(" +
-                                          NumbertoString(npclist.at(numba).id) +
+                                          std::to_string(npclist.at(numba).id) +
                                           ")");
                             AtkStr.append(", dealing ");
-                            AtkStr.append(NumbertoString(zDamage));
+                            AtkStr.append(std::to_string(zDamage));
                             AtkStr.append(" damage.");
 
                             ChatBox.AddChat(AtkStr, sf::Color::Red);
@@ -2720,7 +2720,7 @@ void UpdateNPC()
                     std::string ChtStr;
                     ChtStr.append("* ");
                     ChtStr.append(Me->name);
-                    ChtStr.append("(" + NumbertoString(Me->id) + ")");
+                    ChtStr.append("(" + std::to_string(Me->id) + ")");
                     ChtStr.append(" has consumed ");
                     ChtStr.append(elem.name);
                     ChtStr.append(".");
@@ -2740,7 +2740,7 @@ void UpdateNPC()
                     std::string ChtStr;
                     ChtStr.append("* ");
                     ChtStr.append(Me->name);
-                    ChtStr.append("(" + NumbertoString(Me->id) + ")");
+                    ChtStr.append("(" + std::to_string(Me->id) + ")");
                     ChtStr.append(" has consumed ");
                     ChtStr.append(elem.name);
                     ChtStr.append(".");
