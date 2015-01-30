@@ -13,8 +13,6 @@ extern bool InFocus;
 extern bool DrawStuffsDone;
 extern sf::View View1;
 extern int AirPressure;
-extern float GX;
-extern float GY;
 extern sf::Vector2f MousePos;
 extern int MouseStagnation;
 extern std::vector<int> Selected;

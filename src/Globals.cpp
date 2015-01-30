@@ -18,8 +18,6 @@ bool InFocus = true;
 bool DrawStuffsDone = true;
 sf::View View1(Center, HalfSize);
 int AirPressure = 10;
-float GX = 0;
-float GY = 0;
 sf::Vector2f MousePos;
 int MouseStagnation = 0;
 std::vector<int> Selected;

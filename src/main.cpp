@@ -3639,7 +3639,6 @@ int main()
             //float XX = cos(GX * PI) / 180;
             //float YY = sin(GY * PI) / 180;
             //Effectz.CreateCircle(XX,YY,11,sf::Color::White);
-            GX++;
 
             if (Key.lctrlTime > 10)
             {
