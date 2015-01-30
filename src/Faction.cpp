@@ -12,7 +12,6 @@
 
 Faction *ConFact;
 std::vector<NPC> npclist;
-NPC NPCz;
 MakeSquad Squady;
 std::vector<NPC> WorldCritters;
 std::vector<Faction> UniFact;

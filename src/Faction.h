@@ -282,8 +282,6 @@ public:
     bool operator<(NPC const &other) const;
 };
 
-extern NPC NPCz;
-
 void SetTestage();
 
 void TimeTest();
