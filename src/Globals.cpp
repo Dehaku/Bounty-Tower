@@ -29,10 +29,10 @@ int currentx = 50;
 int currenty = 50;
 int currentz = 6;
 int currentregionx = 50;
-int currentregiony = 50;
 
 namespace globals
 {
+int currentregiony = 50;
 int currentplanet = 500;
 int groundmap[gridz][gridy][gridx];
 int sunmap[gridz][gridy][gridx];

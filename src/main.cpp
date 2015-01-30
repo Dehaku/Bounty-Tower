@@ -3670,27 +3670,27 @@ int main()
                 Transitioning = true;
                 std::string Line;
                 Line = LoadCritters(
-                    sf::Vector2i(currentregionx - 1, currentregiony + 1),
+                    sf::Vector2i(currentregionx - 1, globals::currentregiony + 1),
                     "BottomLeft", globals::currentplanet);
                 remove(Line.c_str());
                 Line = LoadCritters(
-                    sf::Vector2i(currentregionx, currentregiony + 1), "Bottom",
+                    sf::Vector2i(currentregionx, globals::currentregiony + 1), "Bottom",
                     globals::currentplanet);
                 remove(Line.c_str());
                 Line = LoadCritters(
-                    sf::Vector2i(currentregionx + 1, currentregiony + 1),
+                    sf::Vector2i(currentregionx + 1, globals::currentregiony + 1),
                     "BottomRight", globals::currentplanet);
                 remove(Line.c_str());
                 Line = LoadItems(
-                    sf::Vector2i(currentregionx - 1, currentregiony + 1),
+                    sf::Vector2i(currentregionx - 1, globals::currentregiony + 1),
                     "BottomLeft", globals::currentplanet);
                 remove(Line.c_str());
                 Line =
-                    LoadItems(sf::Vector2i(currentregionx, currentregiony + 1),
+                    LoadItems(sf::Vector2i(currentregionx, globals::currentregiony + 1),
                               "Bottom", globals::currentplanet);
                 remove(Line.c_str());
                 Line = LoadItems(
-                    sf::Vector2i(currentregionx + 1, currentregiony + 1),
+                    sf::Vector2i(currentregionx + 1, globals::currentregiony + 1),
                     "BottomRight", globals::currentplanet);
                 remove(Line.c_str());
             }
@@ -3714,27 +3714,27 @@ int main()
                 Transitioning = true;
                 std::string Line;
                 Line = LoadCritters(
-                    sf::Vector2i(currentregionx - 1, currentregiony - 1),
+                    sf::Vector2i(currentregionx - 1, globals::currentregiony - 1),
                     "TopLeft", globals::currentplanet);
                 remove(Line.c_str());
                 Line = LoadCritters(
-                    sf::Vector2i(currentregionx, currentregiony - 1), "Top",
+                    sf::Vector2i(currentregionx, globals::currentregiony - 1), "Top",
                     globals::currentplanet);
                 remove(Line.c_str());
                 Line = LoadCritters(
-                    sf::Vector2i(currentregionx + 1, currentregiony - 1),
+                    sf::Vector2i(currentregionx + 1, globals::currentregiony - 1),
                     "TopRight", globals::currentplanet);
                 remove(Line.c_str());
                 Line = LoadItems(
-                    sf::Vector2i(currentregionx - 1, currentregiony - 1),
+                    sf::Vector2i(currentregionx - 1, globals::currentregiony - 1),
                     "TopLeft", globals::currentplanet);
                 remove(Line.c_str());
                 Line =
-                    LoadItems(sf::Vector2i(currentregionx, currentregiony - 1),
+                    LoadItems(sf::Vector2i(currentregionx, globals::currentregiony - 1),
                               "Top", globals::currentplanet);
                 remove(Line.c_str());
                 Line = LoadItems(
-                    sf::Vector2i(currentregionx + 1, currentregiony - 1),
+                    sf::Vector2i(currentregionx + 1, globals::currentregiony - 1),
                     "TopRight", globals::currentplanet);
                 remove(Line.c_str());
             }
@@ -3758,27 +3758,27 @@ int main()
                 Transitioning = true;
                 std::string Line;
                 Line = LoadCritters(
-                    sf::Vector2i(currentregionx + 1, currentregiony - 1),
+                    sf::Vector2i(currentregionx + 1, globals::currentregiony - 1),
                     "TopRight", globals::currentplanet);
                 remove(Line.c_str());
                 Line = LoadCritters(
-                    sf::Vector2i(currentregionx + 1, currentregiony), "Right",
+                    sf::Vector2i(currentregionx + 1, globals::currentregiony), "Right",
                     globals::currentplanet);
                 remove(Line.c_str());
                 Line = LoadCritters(
-                    sf::Vector2i(currentregionx + 1, currentregiony + 1),
+                    sf::Vector2i(currentregionx + 1, globals::currentregiony + 1),
                     "BottomRight", globals::currentplanet);
                 remove(Line.c_str());
                 Line = LoadItems(
-                    sf::Vector2i(currentregionx + 1, currentregiony - 1),
+                    sf::Vector2i(currentregionx + 1, globals::currentregiony - 1),
                     "TopRight", globals::currentplanet);
                 remove(Line.c_str());
                 Line =
-                    LoadItems(sf::Vector2i(currentregionx + 1, currentregiony),
+                    LoadItems(sf::Vector2i(currentregionx + 1, globals::currentregiony),
                               "Right", globals::currentplanet);
                 remove(Line.c_str());
                 Line = LoadItems(
-                    sf::Vector2i(currentregionx + 1, currentregiony + 1),
+                    sf::Vector2i(currentregionx + 1, globals::currentregiony + 1),
                     "BottomRight", globals::currentplanet);
                 remove(Line.c_str());
             }
@@ -3806,27 +3806,27 @@ int main()
                 Transitioning = true;
                 std::string Line;
                 Line = LoadCritters(
-                    sf::Vector2i(currentregionx - 1, currentregiony - 1),
+                    sf::Vector2i(currentregionx - 1, globals::currentregiony - 1),
                     "TopLeft", globals::currentplanet);
                 remove(Line.c_str());
                 Line = LoadCritters(
-                    sf::Vector2i(currentregionx - 1, currentregiony), "Left",
+                    sf::Vector2i(currentregionx - 1, globals::currentregiony), "Left",
                     globals::currentplanet);
                 remove(Line.c_str());
                 Line = LoadCritters(
-                    sf::Vector2i(currentregionx - 1, currentregiony + 1),
+                    sf::Vector2i(currentregionx - 1, globals::currentregiony + 1),
                     "BottomLeft", globals::currentplanet);
                 remove(Line.c_str());
                 Line = LoadItems(
-                    sf::Vector2i(currentregionx - 1, currentregiony - 1),
+                    sf::Vector2i(currentregionx - 1, globals::currentregiony - 1),
                     "TopLeft", globals::currentplanet);
                 remove(Line.c_str());
                 Line =
-                    LoadItems(sf::Vector2i(currentregionx - 1, currentregiony),
+                    LoadItems(sf::Vector2i(currentregionx - 1, globals::currentregiony),
                               "Left", globals::currentplanet);
                 remove(Line.c_str());
                 Line = LoadItems(
-                    sf::Vector2i(currentregionx - 1, currentregiony + 1),
+                    sf::Vector2i(currentregionx - 1, globals::currentregiony + 1),
                     "BottomLeft", globals::currentplanet);
                 remove(Line.c_str());
             }
@@ -3841,7 +3841,7 @@ int main()
                         npclist.at(i).xpos =
                             npclist.at(i).xpos - 640 - 640 - 640;
                         SaveNPC(500, sf::Vector2i(currentregionx + 2,
-                                                  currentregiony - 1),
+                                                  globals::currentregiony - 1),
                                 npclist.at(i));
                         npclist.at(i).ToDelete = true;
                     }
@@ -3852,7 +3852,7 @@ int main()
                             npclist.at(i).xpos - 640 - 640 - 640;
                         npclist.at(i).ypos = npclist.at(i).ypos - 640 - 640;
                         SaveNPC(500, sf::Vector2i(currentregionx + 2,
-                                                  currentregiony + 1),
+                                                  globals::currentregiony + 1),
                                 npclist.at(i));
                         npclist.at(i).ToDelete = true;
                     }
@@ -3863,7 +3863,7 @@ int main()
                         npclist.at(i).xpos = npclist.at(i).xpos + 640;
                         npclist.at(i).ypos = npclist.at(i).ypos - 640 - 640;
                         SaveNPC(500, sf::Vector2i(currentregionx - 2,
-                                                  currentregiony + 1),
+                                                  globals::currentregiony + 1),
                                 npclist.at(i));
                         npclist.at(i).ToDelete = true;
                     }
@@ -3871,7 +3871,7 @@ int main()
                     {
                         npclist.at(i).xpos = npclist.at(i).xpos + 640;
                         SaveNPC(500, sf::Vector2i(currentregionx - 2,
-                                                  currentregiony - 1),
+                                                  globals::currentregiony - 1),
                                 npclist.at(i));
                         npclist.at(i).ToDelete = true;
                     }
@@ -3882,7 +3882,7 @@ int main()
                         npclist.at(i).xpos = npclist.at(i).xpos - 640 - 640;
                         npclist.at(i).ypos = npclist.at(i).ypos + 640;
                         SaveNPC(500, sf::Vector2i(currentregionx + 1,
-                                                  currentregiony - 2),
+                                                  globals::currentregiony - 2),
                                 npclist.at(i));
                         npclist.at(i).ToDelete = true;
                     }
@@ -3890,7 +3890,7 @@ int main()
                     {
                         npclist.at(i).ypos = npclist.at(i).ypos + 640;
                         SaveNPC(500, sf::Vector2i(currentregionx - 1,
-                                                  currentregiony - 2),
+                                                  globals::currentregiony - 2),
                                 npclist.at(i));
                         npclist.at(i).ToDelete = true;
                     }
@@ -3902,7 +3902,7 @@ int main()
                         npclist.at(i).ypos =
                             npclist.at(i).ypos - 640 - 640 - 640;
                         SaveNPC(500, sf::Vector2i(currentregionx + 1,
-                                                  currentregiony + 2),
+                                                  globals::currentregiony + 2),
                                 npclist.at(i));
                         npclist.at(i).ToDelete = true;
                     }
@@ -3912,7 +3912,7 @@ int main()
                         npclist.at(i).ypos =
                             npclist.at(i).ypos - 640 - 640 - 640;
                         SaveNPC(500, sf::Vector2i(currentregionx - 1,
-                                                  currentregiony + 2),
+                                                  globals::currentregiony + 2),
                                 npclist.at(i));
                         npclist.at(i).ToDelete = true;
                     }
@@ -3925,7 +3925,7 @@ int main()
                             npclist.at(i).xpos - 640 - 640 - 640;
                         npclist.at(i).ypos = npclist.at(i).ypos - 640;
                         SaveNPC(500, sf::Vector2i(currentregionx + 2,
-                                                  currentregiony),
+                                                  globals::currentregiony),
                                 npclist.at(i));
                         npclist.at(i).ToDelete = true;
                     }
@@ -3935,7 +3935,7 @@ int main()
                         npclist.at(i).ypos =
                             npclist.at(i).ypos - 640 - 640 - 640;
                         SaveNPC(500, sf::Vector2i(currentregionx,
-                                                  currentregiony + 2),
+                                                  globals::currentregiony + 2),
                                 npclist.at(i));
                         npclist.at(i).ToDelete = true;
                     }
@@ -3944,7 +3944,7 @@ int main()
                         npclist.at(i).xpos = npclist.at(i).xpos + 640;
                         npclist.at(i).ypos = npclist.at(i).ypos - 640;
                         SaveNPC(500, sf::Vector2i(currentregionx - 2,
-                                                  currentregiony),
+                                                  globals::currentregiony),
                                 npclist.at(i));
                         npclist.at(i).ToDelete = true;
                     }
@@ -3953,7 +3953,7 @@ int main()
                         npclist.at(i).xpos = npclist.at(i).xpos - 640;
                         npclist.at(i).ypos = npclist.at(i).ypos + 640;
                         SaveNPC(500, sf::Vector2i(currentregionx,
-                                                  currentregiony - 2),
+                                                  globals::currentregiony - 2),
                                 npclist.at(i));
 
                         npclist.at(i).ToDelete = true;
@@ -3966,22 +3966,22 @@ int main()
                 {
                    if(worlditems.at(i).xpos > 1920)
                     {
-                        SaveItem(500,sf::Vector2i(currentregionx+2,currentregiony),worlditems.at(i));
+                        SaveItem(500,sf::Vector2i(currentregionx+2,globals::currentregiony),worlditems.at(i));
                         worlditems.at(i).ToDelete = true;
                     }
                     if(worlditems.at(i).ypos > 1920)
                     {
-                        SaveItem(500,sf::Vector2i(currentregionx,currentregiony+2),worlditems.at(i));
+                        SaveItem(500,sf::Vector2i(currentregionx,globals::currentregiony+2),worlditems.at(i));
                         worlditems.at(i).ToDelete = true;
                     }
                     if(worlditems.at(i).xpos < 0)
                     {
-                        SaveItem(500,sf::Vector2i(currentregionx-2,currentregiony),worlditems.at(i));
+                        SaveItem(500,sf::Vector2i(currentregionx-2,globals::currentregiony),worlditems.at(i));
                         worlditems.at(i).ToDelete = true;
                     }
                     if(worlditems.at(i).ypos < 0)
                     {
-                        SaveItem(500,sf::Vector2i(currentregionx,currentregiony-2),worlditems.at(i));
+                        SaveItem(500,sf::Vector2i(currentregionx,globals::currentregiony-2),worlditems.at(i));
 
                         worlditems.at(i).ToDelete = true;
                     }
@@ -3996,7 +3996,7 @@ int main()
                     {
                         (worlditem).xpos = (worlditem).xpos - 640 - 640 - 640;
                         SaveItem(500, sf::Vector2i(currentregionx + 2,
-                                                   currentregiony - 1),
+                                                   globals::currentregiony - 1),
                                  (worlditem));
                         (worlditem).ToDelete = true;
                     }
@@ -4005,7 +4005,7 @@ int main()
                         (worlditem).xpos = (worlditem).xpos - 640 - 640 - 640;
                         (worlditem).ypos = (worlditem).ypos - 640 - 640;
                         SaveItem(500, sf::Vector2i(currentregionx + 2,
-                                                   currentregiony + 1),
+                                                   globals::currentregiony + 1),
                                  (worlditem));
                         (worlditem).ToDelete = true;
                     }
@@ -4015,7 +4015,7 @@ int main()
                         (worlditem).xpos = (worlditem).xpos + 640;
                         (worlditem).ypos = (worlditem).ypos - 640 - 640;
                         SaveItem(500, sf::Vector2i(currentregionx - 2,
-                                                   currentregiony + 1),
+                                                   globals::currentregiony + 1),
                                  (worlditem));
                         (worlditem).ToDelete = true;
                     }
@@ -4023,7 +4023,7 @@ int main()
                     {
                         (worlditem).xpos = (worlditem).xpos + 640;
                         SaveItem(500, sf::Vector2i(currentregionx - 2,
-                                                   currentregiony - 1),
+                                                   globals::currentregiony - 1),
                                  (worlditem));
                         (worlditem).ToDelete = true;
                     }
@@ -4033,7 +4033,7 @@ int main()
                         (worlditem).xpos = (worlditem).xpos - 640 - 640;
                         (worlditem).ypos = (worlditem).ypos + 640;
                         SaveItem(500, sf::Vector2i(currentregionx + 1,
-                                                   currentregiony - 2),
+                                                   globals::currentregiony - 2),
                                  (worlditem));
                         (worlditem).ToDelete = true;
                     }
@@ -4041,7 +4041,7 @@ int main()
                     {
                         (worlditem).ypos = (worlditem).ypos + 640;
                         SaveItem(500, sf::Vector2i(currentregionx - 1,
-                                                   currentregiony - 2),
+                                                   globals::currentregiony - 2),
                                  (worlditem));
                         (worlditem).ToDelete = true;
                     }
@@ -4051,7 +4051,7 @@ int main()
                         (worlditem).xpos = (worlditem).xpos - 640 - 640;
                         (worlditem).ypos = (worlditem).ypos - 640 - 640 - 640;
                         SaveItem(500, sf::Vector2i(currentregionx + 1,
-                                                   currentregiony + 2),
+                                                   globals::currentregiony + 2),
                                  (worlditem));
                         (worlditem).ToDelete = true;
                     }
@@ -4059,7 +4059,7 @@ int main()
                     {
                         (worlditem).ypos = (worlditem).ypos - 640 - 640 - 640;
                         SaveItem(500, sf::Vector2i(currentregionx - 1,
-                                                   currentregiony + 2),
+                                                   globals::currentregiony + 2),
                                  (worlditem));
                         (worlditem).ToDelete = true;
                     }
@@ -4071,7 +4071,7 @@ int main()
                         (worlditem).xpos = (worlditem).xpos - 640 - 640 - 640;
                         (worlditem).ypos = (worlditem).ypos - 640;
                         SaveItem(500, sf::Vector2i(currentregionx + 2,
-                                                   currentregiony),
+                                                   globals::currentregiony),
                                  (worlditem));
                         (worlditem).ToDelete = true;
                     }
@@ -4080,7 +4080,7 @@ int main()
                         (worlditem).xpos = (worlditem).xpos - 640;
                         (worlditem).ypos = (worlditem).ypos - 640 - 640 - 640;
                         SaveItem(500, sf::Vector2i(currentregionx,
-                                                   currentregiony + 2),
+                                                   globals::currentregiony + 2),
                                  (worlditem));
                         (worlditem).ToDelete = true;
                     }
@@ -4089,7 +4089,7 @@ int main()
                         (worlditem).xpos = (worlditem).xpos + 640;
                         (worlditem).ypos = (worlditem).ypos - 640;
                         SaveItem(500, sf::Vector2i(currentregionx - 2,
-                                                   currentregiony),
+                                                   globals::currentregiony),
                                  (worlditem));
                         (worlditem).ToDelete = true;
                     }
@@ -4098,7 +4098,7 @@ int main()
                         (worlditem).xpos = (worlditem).xpos - 640;
                         (worlditem).ypos = (worlditem).ypos + 640;
                         SaveItem(500, sf::Vector2i(currentregionx,
-                                                   currentregiony - 2),
+                                                   globals::currentregiony - 2),
                                  (worlditem));
 
                         (worlditem).ToDelete = true;
@@ -5108,7 +5108,7 @@ int main()
                                     sf::Vector2i(abs(GC.MenuPos.x / 20),
                                                  abs(GC.MenuPos.y / 20)));
                                 currentregionx = abs(GC.MenuPos.x / 20);
-                                currentregiony = abs(GC.MenuPos.y / 20);
+                                globals::currentregiony = abs(GC.MenuPos.y / 20);
                                 GC.Phase = "Local";
 
                                 //GC.BuildLocal("City", WorldMap[abs_to_index(GC.MenuPos.x/20)][abs_to_index(GC.MenuPos.y/20)].Infected);

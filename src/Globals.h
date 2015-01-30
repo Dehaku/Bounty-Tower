@@ -24,10 +24,10 @@ extern int currentx;
 extern int currenty;
 extern int currentz;
 extern int currentregionx;
-extern int currentregiony;
 
 namespace globals
 {
+extern int currentregiony;
 extern int currentplanet;
 extern int groundmap[gridz][gridy][gridx];
 extern int sunmap[gridz][gridy][gridx];
