@@ -3671,27 +3671,27 @@ int main()
                 std::string Line;
                 Line = LoadCritters(
                     sf::Vector2i(currentregionx - 1, currentregiony + 1),
-                    "BottomLeft", currentplanet);
+                    "BottomLeft", globals::currentplanet);
                 remove(Line.c_str());
                 Line = LoadCritters(
                     sf::Vector2i(currentregionx, currentregiony + 1), "Bottom",
-                    currentplanet);
+                    globals::currentplanet);
                 remove(Line.c_str());
                 Line = LoadCritters(
                     sf::Vector2i(currentregionx + 1, currentregiony + 1),
-                    "BottomRight", currentplanet);
+                    "BottomRight", globals::currentplanet);
                 remove(Line.c_str());
                 Line = LoadItems(
                     sf::Vector2i(currentregionx - 1, currentregiony + 1),
-                    "BottomLeft", currentplanet);
+                    "BottomLeft", globals::currentplanet);
                 remove(Line.c_str());
                 Line =
                     LoadItems(sf::Vector2i(currentregionx, currentregiony + 1),
-                              "Bottom", currentplanet);
+                              "Bottom", globals::currentplanet);
                 remove(Line.c_str());
                 Line = LoadItems(
                     sf::Vector2i(currentregionx + 1, currentregiony + 1),
-                    "BottomRight", currentplanet);
+                    "BottomRight", globals::currentplanet);
                 remove(Line.c_str());
             }
             if (currenty < 32)
@@ -3715,27 +3715,27 @@ int main()
                 std::string Line;
                 Line = LoadCritters(
                     sf::Vector2i(currentregionx - 1, currentregiony - 1),
-                    "TopLeft", currentplanet);
+                    "TopLeft", globals::currentplanet);
                 remove(Line.c_str());
                 Line = LoadCritters(
                     sf::Vector2i(currentregionx, currentregiony - 1), "Top",
-                    currentplanet);
+                    globals::currentplanet);
                 remove(Line.c_str());
                 Line = LoadCritters(
                     sf::Vector2i(currentregionx + 1, currentregiony - 1),
-                    "TopRight", currentplanet);
+                    "TopRight", globals::currentplanet);
                 remove(Line.c_str());
                 Line = LoadItems(
                     sf::Vector2i(currentregionx - 1, currentregiony - 1),
-                    "TopLeft", currentplanet);
+                    "TopLeft", globals::currentplanet);
                 remove(Line.c_str());
                 Line =
                     LoadItems(sf::Vector2i(currentregionx, currentregiony - 1),
-                              "Top", currentplanet);
+                              "Top", globals::currentplanet);
                 remove(Line.c_str());
                 Line = LoadItems(
                     sf::Vector2i(currentregionx + 1, currentregiony - 1),
-                    "TopRight", currentplanet);
+                    "TopRight", globals::currentplanet);
                 remove(Line.c_str());
             }
             if (currentx > 64)
@@ -3759,27 +3759,27 @@ int main()
                 std::string Line;
                 Line = LoadCritters(
                     sf::Vector2i(currentregionx + 1, currentregiony - 1),
-                    "TopRight", currentplanet);
+                    "TopRight", globals::currentplanet);
                 remove(Line.c_str());
                 Line = LoadCritters(
                     sf::Vector2i(currentregionx + 1, currentregiony), "Right",
-                    currentplanet);
+                    globals::currentplanet);
                 remove(Line.c_str());
                 Line = LoadCritters(
                     sf::Vector2i(currentregionx + 1, currentregiony + 1),
-                    "BottomRight", currentplanet);
+                    "BottomRight", globals::currentplanet);
                 remove(Line.c_str());
                 Line = LoadItems(
                     sf::Vector2i(currentregionx + 1, currentregiony - 1),
-                    "TopRight", currentplanet);
+                    "TopRight", globals::currentplanet);
                 remove(Line.c_str());
                 Line =
                     LoadItems(sf::Vector2i(currentregionx + 1, currentregiony),
-                              "Right", currentplanet);
+                              "Right", globals::currentplanet);
                 remove(Line.c_str());
                 Line = LoadItems(
                     sf::Vector2i(currentregionx + 1, currentregiony + 1),
-                    "BottomRight", currentplanet);
+                    "BottomRight", globals::currentplanet);
                 remove(Line.c_str());
             }
             if (currentx < 32)
@@ -3807,27 +3807,27 @@ int main()
                 std::string Line;
                 Line = LoadCritters(
                     sf::Vector2i(currentregionx - 1, currentregiony - 1),
-                    "TopLeft", currentplanet);
+                    "TopLeft", globals::currentplanet);
                 remove(Line.c_str());
                 Line = LoadCritters(
                     sf::Vector2i(currentregionx - 1, currentregiony), "Left",
-                    currentplanet);
+                    globals::currentplanet);
                 remove(Line.c_str());
                 Line = LoadCritters(
                     sf::Vector2i(currentregionx - 1, currentregiony + 1),
-                    "BottomLeft", currentplanet);
+                    "BottomLeft", globals::currentplanet);
                 remove(Line.c_str());
                 Line = LoadItems(
                     sf::Vector2i(currentregionx - 1, currentregiony - 1),
-                    "TopLeft", currentplanet);
+                    "TopLeft", globals::currentplanet);
                 remove(Line.c_str());
                 Line =
                     LoadItems(sf::Vector2i(currentregionx - 1, currentregiony),
-                              "Left", currentplanet);
+                              "Left", globals::currentplanet);
                 remove(Line.c_str());
                 Line = LoadItems(
                     sf::Vector2i(currentregionx - 1, currentregiony + 1),
-                    "BottomLeft", currentplanet);
+                    "BottomLeft", globals::currentplanet);
                 remove(Line.c_str());
             }
 
