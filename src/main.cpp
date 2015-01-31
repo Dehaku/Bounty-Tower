@@ -2165,9 +2165,9 @@ void UpdateNPC()
                             if (foundit == false)
                             {
                                 numba++;
-                                if (math::CloseishS(elem.xpos, Me->xpos) <=
+                                if (math::closeishS(elem.xpos, Me->xpos) <=
                                         Me->reach &&
-                                    math::CloseishS(elem.ypos, Me->ypos) <=
+                                    math::closeishS(elem.ypos, Me->ypos) <=
                                         Me->reach &&
                                     elem.target != "Flesh")
                                 {

@@ -5,7 +5,7 @@
 
 void Explosion(int xpos, int ypos, int /*size*/, int /*power*/, bool /*frag*/)
 {
-    std::cout << math::CloseishS(xpos, ypos) << " Is the stuff\n";
+    std::cout << math::closeishS(xpos, ypos) << " Is the stuff\n";
     //  std::cout << plat << std::endl;
 
     //    std::vector<NPC>::iterator Targets;

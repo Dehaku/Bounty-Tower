@@ -48,7 +48,7 @@ int math::closeishxx(int orix, int oriy, int tarx, int tary)
     return Powa;
 }
 
-int math::CloseishS(int orix, int tarx)
+int math::closeishS(int orix, int tarx)
 {
     int xnum;
     xnum = orix - tarx;

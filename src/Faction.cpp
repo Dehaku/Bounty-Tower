@@ -631,7 +631,7 @@ void NPC::Move(sf::Vector2f Tar)
         }
         else if (Above == true)
         {
-            int numz = math::CloseishS(Tar.y, ypos);
+            int numz = math::closeishS(Tar.y, ypos);
             if (numz < moverate)
             {
                 ypos += numz;
@@ -643,7 +643,7 @@ void NPC::Move(sf::Vector2f Tar)
         }
         else
         {
-            int numz = math::CloseishS(Tar.y, ypos);
+            int numz = math::closeishS(Tar.y, ypos);
             if (numz < moverate)
             {
                 ypos -= numz;
@@ -659,7 +659,7 @@ void NPC::Move(sf::Vector2f Tar)
         }
         else if (Right == true)
         {
-            int numz = math::CloseishS(Tar.x, xpos);
+            int numz = math::closeishS(Tar.x, xpos);
             if (numz < moverate)
             {
                 xpos += numz;
@@ -671,7 +671,7 @@ void NPC::Move(sf::Vector2f Tar)
         }
         else
         {
-            int numz = math::CloseishS(Tar.x, xpos);
+            int numz = math::closeishS(Tar.x, xpos);
             if (numz < moverate)
             {
                 xpos -= numz;
@@ -722,8 +722,8 @@ void NPC::DirMove(sf::Vector2f Tar)
         if (AtTargetx == false && AtTargety == false)
         {
         }
-        int numz0 = math::CloseishS(Tar.y, ypos);
-        int numz1 = math::CloseishS(Tar.x, xpos);
+        int numz0 = math::closeishS(Tar.y, ypos);
+        int numz1 = math::closeishS(Tar.x, xpos);
         if (numz1 < moverate && numz0 < moverate)
         {
             xpos = Tar.x;
