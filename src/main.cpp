@@ -71,7 +71,7 @@ std::string GetClipboardText()
 }
 
 // Create the main rendering window
-std::string RandomWindowName()
+std::string randomWindowName()
 {
     std::vector<std::string> const names{
         "Zombificational Settlementation Experimentation", "Galaxy",
@@ -3070,7 +3070,7 @@ void RemoveNPCs()
 
 int main()
 {
-    window.create(sf::VideoMode(Rez.x, Rez.y, 32), RandomWindowName());
+    window.create(sf::VideoMode(Rez.x, Rez.y, 32), randomWindowName());
 
     cText.LoadFont();
 
@@ -3285,7 +3285,7 @@ int main()
 
             if (Key.vTime == 1)
                 ChatBox.AddChat(
-                    RandomWindowName(),
+                    randomWindowName(),
                     sf::Color(randz(0, 255), randz(0, 255), randz(0, 255)));
 
             SquadHud();
