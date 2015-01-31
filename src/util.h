@@ -8,7 +8,6 @@
 #include <SFML/System.hpp>
 
 void fSleep(float Time);
-void PrintToFile(std::string FileName, std::string Text, bool EndLine = true);
 void Con(std::string Text, bool EndLine = true);
 void Con(float Number, bool EndLine = true);
 bool Booleanize(int Num);

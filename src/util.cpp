@@ -8,31 +8,6 @@ void fSleep(float Time)
     sf::sleep(sf::seconds(Time));
 }
 
-void PrintToFile(std::string FileName, std::string Text, bool EndLine)
-{
-    using namespace std; // Start Saving Map
-
-    /*debug("Saving current map to file...");
-    string line("");
-    stringstream convert;
-    convert << planet;
-    convert << Cords.x;
-    convert << Cords.y;
-    line.append(convert.str());
-    string ending(".map");
-    line.append(ending);
-    cout << line << endl;
-    */
-    ofstream outputFile(FileName.c_str());
-    //outputFile << biometype << endl;
-    //debug("Writting map to file...");
-
-    outputFile << Text;
-
-    if (EndLine)
-        outputFile << endl;
-}
-
 void Con(std::string Text, bool EndLine)
 {
     if (EndLine)
