@@ -1,0 +1,27 @@
+    if (true == false)
+    {   // Old complex version of tracing
+        /*
+
+        This could be used if you need more/less sensitive detection, but for general detection, Just use the one above.
+        float angle;
+        float xpos = orix;
+        float ypos = oriy;
+        float xx;
+        float yy;
+        if(Key.j){MahNumba++;}
+        if(Key.k){MahNumba--;}
+        int distence = Math::Closeish(orix,oriy,tarx,tary);
+        //cText.CreateText(MousePos.x,MousePos.y,11,White,"Distence:","",distence);
+        //cText.CreateText(MousePos.x,MousePos.y+11,11,White,"MahNumba:","",MahNumba);
+        for(int i = 0; i != distence; i++){
+        angle = MahNumba-(PI/180)*(atan2f(xpos-tarx,ypos-tary));//To be honest, I spent alot of time with trial and error to get this part to work.
+
+        xx = cosf((angle) * PI/180) * 4;
+        yy = sinf((angle) * PI/180) * 4;// Come back and mess with this later, check to see how much FPS it takes on finer settings.
+        xpos -= xx;
+        ypos -= yy;
+
+
+        if(Key.period){Effectz.CreateCircle(xpos,ypos,1,White);}
+        }*/
+    }

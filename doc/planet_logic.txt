@@ -1,0 +1,104 @@
+void PlanetLogic()
+{
+
+    /*
+
+
+bool UpdatePlanet(){
+        int Marked = 0;
+        bool Absorbed = false;
+        std::vector<planet>::iterator Me;
+        {
+        for( Me = Planets.begin(); Me != Planets.end(); ++Me ){
+
+            if(Me->name != "Sun"){
+
+                std::vector<planet>::iterator It;
+                for( It = Planets.begin(); It != Planets.end(); ++It ){
+                    // && It->name == "Sun"
+                    if(It->id != Me->id){ sf::Vector2f lMe = Me->Pos; sf::Vector2f lIt = It->Pos;
+                    sf::Vector2f NewSpeed(0,0);
+                    int range = Math::Closeish(Me->Pos.x,Me->Pos.y,It->Pos.x,It->Pos.y);
+                    if(Math::Closeish(lMe.x,lMe.y,lIt.x,lIt.y) < ( ((Me->mass/10)/2)+((It->mass/10)/2) )){
+                       if(Absorbed == false){
+                       std::cout<<"My current mass:"<<Me->mass<<" It's current mass"<<It->mass<<std::endl;
+                       Me->mass += It->mass;
+                       std::cout<<"My new mass:"<<Me->mass<<std::endl;
+                       Me->speed += It->speed/(Me->mass*Me->mass);
+                       Marked = It->id;
+                       Absorbed = true;
+                       Me->img.SetScale(Me->mass/100,Me->mass/100);
+                       //RemovePlanet(It->id);
+                       }
+
+
+                        }
+                    else{
+                    NewSpeed.x -= ((((lMe.x -= lIt.x)*It->mass)/(range ))*GCtimescale);
+                    NewSpeed.y -= ((((lMe.y -= lIt.y)*It->mass)/(range ))*GCtimescale);}
+
+                    Me->speed.x += (NewSpeed.x / (Me->mass*Me->mass));
+                    Me->speed.y += (NewSpeed.y / (Me->mass*Me->mass));
+                    int xx = 0;
+                    int yy = 0;
+                    int NSx = NewSpeed.x*100;
+                    int NSy = NewSpeed.y*100;
+                    if(NSx < 0){xx = -NSx;}
+                    else {xx = NSx;}
+                    if(NSy < 0){yy = -NSy;}
+                    else {yy = NSy;}
+
+                    if(Key.space){cText.CreateText(Me->Pos.x,Me->Pos.y+10,11,White,"Force:","x:",xx," ","       ",yy," ","",xx+yy,1,0);
+                    cText.CreateText(Me->Pos.x,Me->Pos.y+20,11,White,"Speed:","x:",Me->speed.x*100," y:","",Me->speed.y*100,"","",-6698,1,0);}
+                    //if(Me->name == "Planet Z"){ std::cout<<" Force: x:"<< xx<<" y:"<<yy<<std::endl;  }
+
+                    }
+                }
+
+            }
+        }//End of For
+        RemovePlanet(Marked);
+
+    }
+    for( Me = Planets.begin(); Me != Planets.end(); ++Me ){
+            if(Me->name != "Sun"){Me->Pos += Me->speed;}
+    }
+
+
+
+}
+
+
+bool UpdatePlanet(){
+        std::vector<planet>::iterator Me;
+        {
+        for( Me = Planets.begin(); Me != Planets.end(); ++Me ){
+
+            if(Me->name != "Sun"){
+
+                std::vector<planet>::iterator It;
+                for( It = Planets.begin(); It != Planets.end(); ++It ){
+                    if(It->id != Me->id){ sf::Vector2f lMe = Me->Pos; sf::Vector2f lIt = It->Pos;
+                    sf::Vector2f NewSpeed(0,0);
+                    NewSpeed.x -= ((lMe.x -= lIt.x)/Me->mass*GCtimescale)*GCtimescale;
+                    NewSpeed.y -= ((lMe.y -= lIt.y)/Me->mass*GCtimescale)*GCtimescale;
+
+                    Me->speed += NewSpeed;
+
+                    }
+                }
+
+            }
+        }//End of For
+
+    }
+    for( Me = Planets.begin(); Me != Planets.end(); ++Me ){
+            if(Me->name != "Sun"){Me->Pos += Me->speed;}
+    }
+
+
+
+}
+
+*/
+}
