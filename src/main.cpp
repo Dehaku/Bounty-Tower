@@ -2705,49 +2705,43 @@ void DrawTiles()
 
 void DrawNPCs()
 {
-    for (auto &elem : npclist)
+    for (auto &npc : npclist)
     {
-        //if(zit->xpos/GridSize > globals::currentx-27 && zit->xpos/GridSize < globals::currentx+26 && zit->ypos/GridSize > globals::currenty-20 && zit->ypos/GridSize < globals::currenty+20)
-        //{
-        if (elem.HasSpawned == true)
+        if (npc.HasSpawned == true)
         {
-            // zit->img.setRotation( -anglez+90 );
-            //int Alph = globals::sunmap[globals::currentz][abs_to_index(zit->xpos/GridSize)][abs_to_index(zit->ypos/GridSize)];
-
-            if (elem.name == "Azabul")
+            if (npc.name == "Azabul")
             {
-                sf::Vector2f TA1 = elem.TentArm1;
-                sf::Vector2f TA2 = elem.TentArm2;
-                sf::Vector2f TE1 = elem.TentEnd1;
-                sf::Vector2f TE2 = elem.TentEnd2;
+                sf::Vector2f TA1 = npc.TentArm1;
+                sf::Vector2f TA2 = npc.TentArm2;
+                sf::Vector2f TE1 = npc.TentEnd1;
+                sf::Vector2f TE2 = npc.TentEnd2;
 
-                Effectz.CreateLine(elem.xpos, elem.ypos, TA1.x + elem.xpos,
-                                   TA1.y + elem.ypos, 2, sf::Color(0, 200, 200),
+                Effectz.CreateLine(npc.xpos, npc.ypos, TA1.x + npc.xpos,
+                                   TA1.y + npc.ypos, 2, sf::Color(0, 200, 200),
                                    1, sf::Color(0, 255, 255));
-                Effectz.CreateLine(elem.xpos, elem.ypos, TA2.x + elem.xpos,
-                                   TA2.y + elem.ypos, 2, sf::Color(0, 200, 200),
+                Effectz.CreateLine(npc.xpos, npc.ypos, TA2.x + npc.xpos,
+                                   TA2.y + npc.ypos, 2, sf::Color(0, 200, 200),
                                    1, sf::Color(0, 255, 255));
                 Effectz.CreateLine(
-                    TA1.x + elem.xpos, TA1.y + elem.ypos,
-                    TE1.x + TA1.x + elem.xpos, TE1.y + TA1.y + elem.ypos, 2,
+                    TA1.x + npc.xpos, TA1.y + npc.ypos,
+                    TE1.x + TA1.x + npc.xpos, TE1.y + TA1.y + npc.ypos, 2,
                     sf::Color(0, 200, 200), 1, sf::Color(0, 255, 255));
                 Effectz.CreateLine(
-                    TA2.x + elem.xpos, TA2.y + elem.ypos,
-                    TE2.x + TA2.x + elem.xpos, TE2.y + TA2.y + elem.ypos, 2,
+                    TA2.x + npc.xpos, TA2.y + npc.ypos,
+                    TE2.x + TA2.x + npc.xpos, TE2.y + TA2.y + npc.ypos, 2,
                     sf::Color(0, 200, 200), 1, sf::Color(0, 255, 255));
                 Effectz.DrawEffects();
             }
 
             int Alph = 255;
-            elem.img.setColor(sf::Color(255, 255, 255, Alph));
-            elem.img.setScale(gvars::Scalex, gvars::Scaley);
-            elem.img.setOrigin(elem.img.getTextureRect().width / 2,
-                               elem.img.getTextureRect().height / 2);
-            elem.DrawImg();
-            Effectz.CreateCircle(elem.xpos, elem.ypos, elem.size,
+            npc.img.setColor(sf::Color(255, 255, 255, Alph));
+            npc.img.setScale(gvars::Scalex, gvars::Scaley);
+            npc.img.setOrigin(npc.img.getTextureRect().width / 2,
+                              npc.img.getTextureRect().height / 2);
+            npc.DrawImg();
+            Effectz.CreateCircle(npc.xpos, npc.ypos, npc.size,
                                  sf::Color(50, 50, 50, 50));
         }
-        //}
     }
     debug("Done drawing NPCs");
 }
