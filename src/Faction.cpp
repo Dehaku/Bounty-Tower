@@ -1,7 +1,7 @@
 #include "Faction.h"
 #include "filesystemUtils.hpp"
 #include "aStarLibrary.h"
-#include "Images.h"
+#include "Textures.h"
 #include "math.h"
 #include "util.h"
 #include "globalvars.h"
@@ -1506,11 +1506,11 @@ void cNpcManager::InitializeCritters()
             {
                 std::cout << "Pre Imagery \n";
             }
-            for (auto const &image : imagemanager.GlobalImage)
+            for (auto const &image : texturemanager.GlobalImage)
             {
                 if (image.name == Imagery)
                 {
-                    Critter.img.setTexture(image.Image);
+                    Critter.img.setTexture(image.texture);
                     //Critter.img.SetSubRect(sf::IntRect(0, 0, i->Image.GetWidth(),i->Image.GetHeight()));
                     //Critter.img.SetCenter(i->Image.GetWidth()/2,i->Image.GetHeight()/2);
                 }

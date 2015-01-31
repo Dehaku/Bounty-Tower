@@ -1,48 +1,48 @@
-#include "Images.h"
+#include "Textures.h"
 
 #include "filesystemUtils.hpp"
 
-cImageManager imagemanager;
+TextureManager texturemanager;
 
-sf::Texture *cImageManager::GetImage(std::string Input)
+sf::Texture *TextureManager::GetImage(std::string Input)
 {
     for (size_t i = 0; i != GlobalImage.size(); i++)
     {
         if (GlobalImage.at(i).name == Input)
         {
-            return &GlobalImage.at(i).Image;
+            return &GlobalImage.at(i).texture;
         }
     }
     for (size_t i = 0; i != GlobalImage.size(); i++)
     {
         if (GlobalImage.at(i).name == "Error.bmp")
         {
-            return &GlobalImage.at(i).Image;
+            return &GlobalImage.at(i).texture;
         }
     }
     throw std::runtime_error("GetImage: Couldn't find image.");
 }
 
-sf::Texture cImageManager::GetvImage(std::string Input)
+sf::Texture TextureManager::GetvImage(std::string Input)
 {
     for (size_t i = 0; i != GlobalImage.size(); i++)
     {
         if (GlobalImage.at(i).name == Input)
         {
-            return GlobalImage.at(i).Image;
+            return GlobalImage.at(i).texture;
         }
     }
     for (size_t i = 0; i != GlobalImage.size(); i++)
     {
         if (GlobalImage.at(i).name == "Error.bmp")
         {
-            return GlobalImage.at(i).Image;
+            return GlobalImage.at(i).texture;
         }
     }
     throw std::runtime_error("GetvImage: Couldn't find image.");
 }
 
-void cImageManager::InitializeImages()
+void TextureManager::InitializeImages()
 {
     using namespace std;
     string dir = string("./data/gfx");
@@ -55,13 +55,13 @@ void cImageManager::InitializeImages()
         if (file != "." && file != "..")
         {
             line.append(ending);
-            cImageHolder image;
-            image.Image.loadFromFile(line);
+            TextureHolder image;
+            image.texture.loadFromFile(line);
             //std::cout << Size.x << " : " << Size.y << std::endl;
 
             std::string namebit = file;
             image.name = namebit;
-            image.Image.setSmooth(false);
+            image.texture.setSmooth(false);
             GlobalImage.push_back(image);
         }
     }

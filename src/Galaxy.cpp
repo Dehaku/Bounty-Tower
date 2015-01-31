@@ -1,7 +1,7 @@
 #include "Galaxy.h"
 
 #include "Faction.h"
-#include "Images.h"
+#include "Textures.h"
 #include "globalvars.h"
 #include "math.h"
 #include "util.h"
@@ -424,7 +424,7 @@ void GalaxyController::BuildMainMenu()
 {
     //Effectz.CreateSquare(-1000,-1000,10000,10000,Cyan);
     sf::Sprite Sprt;
-    Sprt.setTexture(*imagemanager.GetImage("Main.png"));
+    Sprt.setTexture(*texturemanager.GetImage("Main.png"));
 
     App.draw(Sprt);
 }

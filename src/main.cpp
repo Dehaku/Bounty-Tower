@@ -23,7 +23,7 @@
 #include "Galaxy.h"
 #include "menus.h"
 #include "aStarLibrary.h"
-#include "Images.h"
+#include "Textures.h"
 #include "math.h"
 #include "util.h"
 #include "globalvars.h"
@@ -1234,11 +1234,11 @@ void UpdateNPC()
             Me->name = "Zombie";
             Me->cbaseid = 666333;
             std::string Imagery = "Zombie.tga";
-            for (auto const &image : imagemanager.GlobalImage)
+            for (auto const &image : texturemanager.GlobalImage)
             {
                 if (image.name == Imagery)
                 {
-                    Me->img.setTexture(image.Image);
+                    Me->img.setTexture(image.texture);
                     Me->img.setOrigin(Me->img.getTextureRect().height / 2,
                                       Me->img.getTextureRect().width / 2);
                 }
@@ -2804,7 +2804,7 @@ void DrawTiles()
                     sf::Sprite Tile;
                     if (gvars::groundmap[gvars::currentz][i][t] == 1)
                     { // dirt
-                        Tile.setTexture(*imagemanager.GetImage("Dirt.bmp"));
+                        Tile.setTexture(*texturemanager.GetImage("Dirt.bmp"));
                         Tile.setColor(
                             sf::Color(255, 255, 255, gvars::sunmap[z][i][t]));
                         Tile.setPosition(i * iTS, t * iTS);
@@ -2812,7 +2812,7 @@ void DrawTiles()
                     }
                     if (gvars::groundmap[gvars::currentz][i][t] == 3)
                     { // grass
-                        Tile.setTexture(*imagemanager.GetImage("Grass.bmp"));
+                        Tile.setTexture(*texturemanager.GetImage("Grass.bmp"));
                         Tile.setColor(
                             sf::Color(255, 255, 255, gvars::sunmap[z][i][t]));
                         Tile.setPosition(i * iTS, t * iTS);
@@ -2820,7 +2820,7 @@ void DrawTiles()
                     }
                     if (gvars::groundmap[gvars::currentz][i][t] == 7)
                     { // stone
-                        Tile.setTexture(*imagemanager.GetImage("Stone.bmp"));
+                        Tile.setTexture(*texturemanager.GetImage("Stone.bmp"));
                         Tile.setColor(
                             sf::Color(255, 255, 255, gvars::sunmap[z][i][t]));
                         Tile.setPosition(i * iTS, t * iTS);
@@ -2828,7 +2828,7 @@ void DrawTiles()
                     }
                     if (gvars::groundmap[gvars::currentz][i][t] == 20)
                     { // water
-                        Tile.setTexture(*imagemanager.GetImage("Water.bmp"));
+                        Tile.setTexture(*texturemanager.GetImage("Water.bmp"));
                         Tile.setColor(
                             sf::Color(255, 255, 255, gvars::sunmap[z][i][t]));
                         Tile.setPosition(i * iTS, t * iTS);
@@ -2836,7 +2836,7 @@ void DrawTiles()
                     }
                     if (gvars::groundmap[gvars::currentz][i][t] == 53)
                     { // lava
-                        Tile.setTexture(*imagemanager.GetImage("Lava.bmp"));
+                        Tile.setTexture(*texturemanager.GetImage("Lava.bmp"));
                         Tile.setColor(
                             sf::Color(255, 255, 255, gvars::sunmap[z][i][t]));
                         Tile.setPosition(i * iTS, t * iTS);
@@ -2845,7 +2845,7 @@ void DrawTiles()
                     if (gvars::groundmap[gvars::currentz][i][t] == 52)
                     { // deepwater
                         Tile.setTexture(
-                            *imagemanager.GetImage("DeepWater.bmp"));
+                            *texturemanager.GetImage("DeepWater.bmp"));
                         Tile.setColor(
                             sf::Color(255, 255, 255, gvars::sunmap[z][i][t]));
                         Tile.setPosition(i * iTS, t * iTS);
@@ -3122,7 +3122,7 @@ int main()
     if (!Aim.LoadFromFile("gfx/Aim.tga"))return EXIT_FAILURE;*/
     }
 
-    imagemanager.InitializeImages();
+    texturemanager.InitializeImages();
     itemmanager.InitializeItems();
     npcmanager.InitializeCritters();
 

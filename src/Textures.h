@@ -3,21 +3,21 @@
 
 #include <SFML/Graphics.hpp>
 
-class cImageHolder
+class TextureHolder
 {
 public:
-    sf::Texture Image;
+    sf::Texture texture;
     std::string name;
 };
 
-class cImageManager
+class TextureManager
 {
 public:
-    std::vector<cImageHolder> GlobalImage;
+    std::vector<TextureHolder> GlobalImage;
     sf::Texture *GetImage(std::string Input);
     sf::Texture GetvImage(std::string Input);
     void InitializeImages();
 };
-extern cImageManager imagemanager;
+extern TextureManager texturemanager;
 
 #endif // IMAGES_H_INCLUDED

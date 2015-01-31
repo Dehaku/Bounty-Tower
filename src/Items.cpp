@@ -1,7 +1,7 @@
 #include "Items.h"
 #include "filesystemUtils.hpp"
 #include "globalvars.h"
-#include "Images.h"
+#include "Textures.h"
 #include "math.h"
 #include "util.h"
 
@@ -658,11 +658,11 @@ void cItemManager::InitializeItems()
             Item.range = StringFindNumber(line, "[range:");
             Item.IsWeapon = Booleanize(StringFindNumber(line, "[IsWeapon:"));
             std::string Imagery = StringFindString(line, "[image:");
-            for (auto const &image : imagemanager.GlobalImage)
+            for (auto const &image : texturemanager.GlobalImage)
             {
                 if (image.name == Imagery)
                 {
-                    Item.img.setTexture(image.Image);
+                    Item.img.setTexture(image.texture);
                     sf::IntRect Tempz = Item.img.getTextureRect();
                     sf::Vector2f Size(Tempz.height, Tempz.width);
                     if (gvars::Debug)
