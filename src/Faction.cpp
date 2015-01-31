@@ -110,7 +110,7 @@ void NPC::PathFinding::MyFindPath(int Sx, int Sy, int Ex, int Ey)
 
     try
     {
-        MypathStatus = astar::FindPath(1, Sx, Sy, Ex, Ey);
+        MypathStatus = astar::findPath(1, Sx, Sy, Ex, Ey);
     }
     catch (std::exception &e)
     {

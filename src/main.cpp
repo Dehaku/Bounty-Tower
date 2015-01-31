@@ -3123,7 +3123,7 @@ int main()
     GC.Phase = "MainMenu";
 
     // For A*
-    astar::InitializePathfinder();
+    astar::init();
 
     while (window.isOpen())
     {
@@ -5830,6 +5830,6 @@ int main()
         }
 
     } // End of game loop
-    astar::EndPathfinder();
+    astar::end();
     return EXIT_SUCCESS;
 }

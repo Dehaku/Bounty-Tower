@@ -34,13 +34,13 @@ int pathStatus[numberPeople + 1];
 int xPath[numberPeople + 1];
 int yPath[numberPeople + 1];
 
-void InitializePathfinder()
+void init()
 {
     for (auto &elem : pathBank)
         elem = (int *)malloc(4);
 }
 
-void EndPathfinder()
+void end()
 {
     for (auto &elem : pathBank)
     {
@@ -48,7 +48,7 @@ void EndPathfinder()
     }
 }
 
-int FindPath(int pathfinderID, int startingX, int startingY, int targetX,
+int findPath(int pathfinderID, int startingX, int startingY, int targetX,
              int targetY)
 {
     //* std::cout << "Path One";
@@ -463,7 +463,7 @@ int FindPath(int pathfinderID, int startingX, int startingY, int targetX,
         } while (pathX != startX || pathY != startY);
 
         //11.Read the first path step into xPath/yPath arrays
-        ReadPath(pathfinderID, startingX, startingY, 1);
+        readPath(pathfinderID, startingX, startingY, 1);
         //* std::cout << "Path Reading";
     }
     //* std::cout << "returning Path ;" << path << "\n";
@@ -481,7 +481,7 @@ noPath:
     return nonexistent;
 }
 
-void ReadPath(int pathfinderID, int currentX, int currentY, int pixelsPerFrame)
+void readPath(int pathfinderID, int currentX, int currentY, int pixelsPerFrame)
 {
     /*
 ;	Note on PixelsPerFrame: The need for this parameter probably isn't
@@ -526,8 +526,8 @@ void ReadPath(int pathfinderID, int currentX, int currentY, int pixelsPerFrame)
         }
 
         //Read the path data.
-        xPath[ID] = ReadPathX(ID, pathLocation[ID]);
-        yPath[ID] = ReadPathY(ID, pathLocation[ID]);
+        xPath[ID] = readPathX(ID, pathLocation[ID]);
+        yPath[ID] = readPathY(ID, pathLocation[ID]);
 
         //If the center of the last path square on the path has been
         //reached then reset.
@@ -549,7 +549,7 @@ void ReadPath(int pathfinderID, int currentX, int currentY, int pixelsPerFrame)
     }
 }
 
-int ReadPathX(int pathfinderID, int pathLocation)
+int readPathX(int pathfinderID, int pathLocation)
 {
     if (pathLocation <= pathLength[pathfinderID])
     {
@@ -567,7 +567,7 @@ int ReadPathX(int pathfinderID, int pathLocation)
     throw std::runtime_error("ReadPathX: Couldn't return a meaningful value!");
 }
 
-int ReadPathY(int pathfinderID, int pathLocation)
+int readPathY(int pathfinderID, int pathLocation)
 {
     if (pathLocation <= pathLength[pathfinderID])
     {
