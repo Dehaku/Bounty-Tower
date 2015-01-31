@@ -97,8 +97,6 @@ public:
     //void useitem(){UseItem(name.c_str());}
     bool boolname(char *cakezebra);
 
-    char getname();
-
     void printInfo();
 
     //bool SetImg(int istrx,int istry,int iendx,int iendy){img.SetSubRect(sf::IntRect(istrx, istry, iendx, iendy));}

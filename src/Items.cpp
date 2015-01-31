@@ -457,14 +457,6 @@ bool item::boolname(char *cakezebra)
     return false;
 }
 
-char item::getname()
-{
-    //const char painiscupcake;
-    //painiscupcake = name.c_str();
-    //PaintDesktop()
-    return *name.c_str();
-}
-
 void item::printInfo()
 {
 
