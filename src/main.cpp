@@ -500,11 +500,19 @@ bool RemoveNPC(char * /*NPCname*/, int /*Id*/)
     throw std::runtime_error("RemoveNPC: Couldn't return anything sensible.");
 }
 
-std::vector<int> FindClosestItem(int Orix, int Oriy, std::string TarItem,
-                                 int /*Gxpos*/ = 0, int /*Gypos*/ = 0,
-                                 int /*Rxpos*/ = 0, int /*Rypos*/ = 0)
+struct ItemFindResult
 {
-    std::vector<int> Returns;
+    bool found;
+    int xpos;
+    int ypos;
+    int id;
+    int vectorPosition;
+};
+
+ItemFindResult FindClosestItem(int Orix, int Oriy, std::string TarItem,
+                               int /*Gxpos*/ = 0, int /*Gypos*/ = 0,
+                               int /*Rxpos*/ = 0, int /*Rypos*/ = 0)
+{
     // This will be difficult, go through all the items, and find the closest one.
     int closx =
         -1000000; // Make sure the default starting number is far beyond being the closest one.
@@ -545,13 +553,9 @@ std::vector<int> FindClosestItem(int Orix, int Oriy, std::string TarItem,
     }
     if (first != true)
     {
-        Returns.push_back(closx);
-        Returns.push_back(closy);
-        Returns.push_back(Closid);
-        Returns.push_back(closVect);
-        return Returns; // Returns = (xpos,ypos,id,Vector Position)
+        return {true, closx, closy, Closid, closVect};
     }
-    throw std::runtime_error("FindClosestItem: Couldn't return anything!");
+    return {false, 0, 0, 0, 0};
 }
 
 std::set<int> NpcList(int exceptions = -1)
@@ -1459,13 +1463,12 @@ void updateNpc()
                 }
                 if (npc.target == "Water")
                 {
-                    std::vector<int> Item =
-                        FindClosestItem(npc.xpos, npc.ypos, "Water");
-                    if (Item.size() != 0)
+                    auto Item = FindClosestItem(npc.xpos, npc.ypos, "Water");
+                    if (Item.found)
                     {
-                        npc.TargetPos = sf::Vector2f(Item.at(0), Item.at(1));
-                        npc.TargetId = Item.at(2);
-                        npc.TargetVectorId = Item.at(3);
+                        npc.TargetPos = sf::Vector2f(Item.xpos, Item.ypos);
+                        npc.TargetId = Item.id;
+                        npc.TargetVectorId = Item.vectorPosition;
                         npc.target = "Water";
                         npc.HasTarget = true;
                     }
@@ -1914,13 +1917,12 @@ void updateNpc()
 
                 if (npc.name == "Shinobi" && npc.HasWeapon() == false)
                 {
-                    std::vector<int> Item =
-                        FindClosestItem(npc.xpos, npc.ypos, "Sword");
-                    if (Item.size() != 0)
+                    auto Item = FindClosestItem(npc.xpos, npc.ypos, "Sword");
+                    if (Item.found)
                     {
-                        npc.TargetPos = sf::Vector2f(Item.at(0), Item.at(1));
-                        npc.TargetId = Item.at(2);
-                        npc.TargetVectorId = Item.at(3);
+                        npc.TargetPos = sf::Vector2f(Item.xpos, Item.ypos);
+                        npc.TargetId = Item.id;
+                        npc.TargetVectorId = Item.vectorPosition;
                         npc.target = "Sword";
                         npc.HasTarget = true;
                     }
