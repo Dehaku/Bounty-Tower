@@ -13,7 +13,7 @@ public:
 class TextureManager
 {
 public:
-    std::vector<TextureHolder> GlobalImage;
+    std::vector<TextureHolder> textures;
     sf::Texture *GetImage(std::string Input);
     void InitializeImages();
 };

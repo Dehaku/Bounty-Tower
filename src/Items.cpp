@@ -658,7 +658,7 @@ void cItemManager::InitializeItems()
             Item.range = StringFindNumber(line, "[range:");
             Item.IsWeapon = Booleanize(StringFindNumber(line, "[IsWeapon:"));
             std::string Imagery = StringFindString(line, "[image:");
-            for (auto const &image : texturemanager.GlobalImage)
+            for (auto const &image : texturemanager.textures)
             {
                 if (image.name == Imagery)
                 {

@@ -6,18 +6,18 @@ TextureManager texturemanager;
 
 sf::Texture *TextureManager::GetImage(std::string Input)
 {
-    for (size_t i = 0; i != GlobalImage.size(); i++)
+    for (size_t i = 0; i != textures.size(); i++)
     {
-        if (GlobalImage.at(i).name == Input)
+        if (textures.at(i).name == Input)
         {
-            return &GlobalImage.at(i).texture;
+            return &textures.at(i).texture;
         }
     }
-    for (size_t i = 0; i != GlobalImage.size(); i++)
+    for (size_t i = 0; i != textures.size(); i++)
     {
-        if (GlobalImage.at(i).name == "Error.bmp")
+        if (textures.at(i).name == "Error.bmp")
         {
-            return &GlobalImage.at(i).texture;
+            return &textures.at(i).texture;
         }
     }
     throw std::runtime_error("GetImage: Couldn't find image.");
@@ -43,7 +43,7 @@ void TextureManager::InitializeImages()
             std::string namebit = file;
             image.name = namebit;
             image.texture.setSmooth(false);
-            GlobalImage.push_back(image);
+            textures.push_back(image);
         }
     }
 }

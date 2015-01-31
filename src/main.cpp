@@ -1234,7 +1234,7 @@ void UpdateNPC()
             Me->name = "Zombie";
             Me->cbaseid = 666333;
             std::string Imagery = "Zombie.tga";
-            for (auto const &image : texturemanager.GlobalImage)
+            for (auto const &image : texturemanager.textures)
             {
                 if (image.name == Imagery)
                 {

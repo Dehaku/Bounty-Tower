@@ -1506,7 +1506,7 @@ void cNpcManager::InitializeCritters()
             {
                 std::cout << "Pre Imagery \n";
             }
-            for (auto const &image : texturemanager.GlobalImage)
+            for (auto const &image : texturemanager.textures)
             {
                 if (image.name == Imagery)
                 {
