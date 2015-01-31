@@ -67,7 +67,7 @@ void zSaveItem(int /*planet*/, sf::Vector2i Region, item &object)
         Con("Added", false);
         Con(object.name);
         File.close();
-    } // End to Load Map
+    }
     else
     {
         string line("data/maps/Planet500");
@@ -94,7 +94,8 @@ void zSaveItem(int /*planet*/, sf::Vector2i Region, item &object)
 }
 
 void SaveItem(int planet, sf::Vector2i Region, item &Critter)
-{ // I already did all the work once, Imma be lazy for some time.
+{
+    // I already did all the work once, Imma be lazy for some time.
     using namespace std;
     string line("data/maps/Planet");
     stringstream convert;
@@ -117,15 +118,12 @@ void SaveItem(int planet, sf::Vector2i Region, item &Critter)
 
     if (File.is_open())
     {
-        //File << std::endl;
         File << std::endl;
         File << "[name:" << Critter.name << "]"
              << "[xpos:" << Critter.xpos << "]"
              << "[ypos:" << Critter.ypos << "]";
-        //Con("Added", false);
-        //Con(object.name);
         File.close();
-    } // End to Load Map
+    }
     else
     {
         ofstream outputFile(line.c_str());
@@ -216,17 +214,6 @@ std::string LoadItems(sf::Vector2i WorldPos, std::string Direction, int planet)
             std::cout << "Xpos: " << Critter.xpos << "Ypos: " << Critter.ypos
                       << std::endl;
 
-            /*std::string Imagery = StringFindString(line,"[Image:");
-                std::vector<cImageHolder>::iterator i;
-                if(Debug){ std::cout << "Pre Imagery \n";}
-                for(i = imagemanager.GlobalImage.begin(); i != imagemanager.GlobalImage.end(); i++)
-                {
-                    if(i->name == Imagery)
-                    {
-                        Critter.img.setTexture(i->Image);
-                    }
-                }*/
-
             if (Critter.name != "Debuggery")
             {
                 worlditems.push_back(Critter);
@@ -263,36 +250,11 @@ void SpawnItem(std::string Object, int xpos, int ypos)
     {
         std::cout << "Done Spawning. \n";
     }
-
-    /*bool searching = true;
-    while( searching )
-    {
-        if( itemmanager.GlobalItem[i].name == Object && t != itemmanager.GlobalItem.end())
-        {
-            doThings();
-            searching=false;
-        }
-    i++;
-    t++;
-    }*/
-
-    /*for(i = itemmanager.GlobalItem.begin(); i != itemmanager.GlobalItem.end(); i++)
-    {
-        if(i->name == Object)
-        {
-            cItem var;
-            var = *i;
-            var.id = globalid++;
-            var.xpos = xpos;
-            var.ypos = ypos;
-            worlditems.push_back(var);
-            break;
-        }
-    }*/
 }
 
 void RefreshImages()
-{ // PANIC
+{
+    // PANIC
     for (size_t i = 0; i != worlditems.size(); i++)
     {
         for (size_t t = 0; t != itemmanager.GlobalItem.size(); t++)
@@ -383,9 +345,12 @@ item *FindClosestItemPtr(int Orix, int Oriy, std::string TarItem, int /*Gxpos*/,
                          int /*Gypos*/, int /*Rxpos*/, int /*Rypos*/)
 {
     //std::vector<item>::iterator Items;
-    // This will be difficult, go through all the items, and find the closest one, Silly old self, Watch how it's done.
-    int closx =
-        -1000000; // Make sure the default starting number is far beyond being the closest one.
+    // This will be difficult, go through all the items,
+    // and find the closest one, Silly old self, Watch how it's done.
+
+    // Make sure the default starting number is
+    // far beyond being the closest one.
+    int closx = -1000000;
     int closy = -1000000;
     bool first = true;
 
@@ -523,7 +488,7 @@ item::item()
       gypos{}, imgstrx{}, imgstry{}, imgendx{}, imgendy{}, IsWeapon{},
       tillrot{}, prodrate{}, prodratetimer{}, timerdecon{}, LiquidContainMax{},
       ObjectContainMax{}, ContainAmount{}
-{ // start of constructor
+{
     ToDelete = false;
     TargetPos = sf::Vector2f(-1, -1);
     id = gvars::globalid++;
@@ -534,8 +499,9 @@ item::item()
     age = 0;
     amount = 1;
 
-    HasInternalUse =
-        0; // This may be a little confusing, This is so the item can stay inside without being ejected because one function doesn't need it.
+    // This may be a little confusing, This is so the item can stay
+    // inside without being ejected because one function doesn't need it.
+    HasInternalUse = 0;
 
     hungervalue = 0;
     thirstvalue = 0;
@@ -559,7 +525,8 @@ item::item()
     IsMagic = false;
     stacks = false;
 
-    ammotype = 0; // 0 = none/melee, 6 = small bullet, 7 = large bullet
+    // 0 = none/melee, 6 = small bullet, 7 = large bullet
+    ammotype = 0;
     maxclip = 0;
     currentclip = 0;
     mindam = 1;
@@ -586,8 +553,6 @@ item::item()
     ProdOn = false;
     IsOn = false;
     Sleepable = false;
-    //img.SetImage(Images);
-    //img.SetCenter(10,10);
 }
 
 void cItemManager::AddItems()
@@ -601,21 +566,9 @@ void cItemManager::AddItems()
 
 void cItemManager::InitializeItems()
 {
-
-    /*using namespace std;  I'll be using this soon enough, It'll allow the program to surf through the folder, and create all the stuff it needs.
-        string dir = string(".//data//items");
-        vector<string> files = vector<string>();
-        getdir(dir,files);
-        for(unsigned int i = 0; i < files.size(); i++)
-        {
-            string line("saves/maps/");
-            string ending(files[i]);
-            line.append(ending);
-            if( remove(line.c_str()) != 0 ){}
-        } */
-
-    std::ifstream Input(
-        "data/items.txt"); // TODO: Have this read from an Items folder, and read from all .txt files in it, Allowing greater compability between mods.
+    // TODO: Have this read from an Items folder, and read from
+    // all .txt files in it, Allowing greater compability between mods.
+    std::ifstream Input("data/items.txt");
     if (Input.is_open())
     {
         while (Input.good())
@@ -661,13 +614,9 @@ void cItemManager::InitializeItems()
                         std::cout << "TextRect: " << Tempz.height << ":"
                                   << Tempz.width << std::endl;
                     }
-                    //sf::Vector2u Size = Item.img.getSize();
-
-                    //Item.img.SetSubRect(sf::IntRect(0, 0, image.Image.GetWidth(),image.Image.GetHeight()));
                     Item.img.setOrigin(Size.x / 2, Size.y / 2);
                 }
             }
-            //Item.img.setTexture( *imagemanager.GetImage(Imagery) );
             if (Item.name != "Debuggery")
             {
                 GlobalItem.push_back(Item);

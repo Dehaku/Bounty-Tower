@@ -17,8 +17,12 @@ public:
     std::string name;
     std::string inventor;
     std::string Contains;
-    std::string
-        InsidePart; // This is to only be filled with a part name if it is put inside a creature, otherwise, it is to be left blank. This item is ment to be put inside a critters inventory, All inventory checks are to ignore instances where this has more than .size() = 0, Opposite is true for items contained in critter.
+    // This is to only be filled with a part name if it is put inside
+    // a creature, otherwise, it is to be left blank. This item is
+    // meant to be put inside a critters inventory,
+    // All inventory checks are to ignore instances where this has
+    // more than .size() = 0, Opposite is true for items contained in critter.
+    std::string InsidePart;
     int HasInternalUse;
 
     int range;
@@ -38,11 +42,16 @@ public:
     int imgendx;
     int imgendy;
     bool IsWeapon;
-    int type; // 0 = none, 1 = melee weapon, 2 = ranged weapon, 3 = thrown weapon, 4 = food, 5 = water, 6 = cell, 7 = Ore, 8 = Digging Tool, 9 = Cutting Tool, 10 = Fishing Tool, 11 = Liquid Container, 12 = Plant, 13 = ?
-    std::string
-        usedskill; // 0 = none, 1 = hand gun, 2 = rifle, 3 = slash, 4 = blunt, 5 = pierce
+    // 0 = none, 1 = melee weapon, 2 = ranged weapon,
+    // 3 = thrown weapon, 4 = food, 5 = water, 6 = cell, 7 = Ore,
+    // 8 = Digging Tool, 9 = Cutting Tool, 10 = Fishing Tool,
+    // 11 = Liquid Container, 12 = Plant, 13 = ?
+    int type;
+    // 0 = none, 1 = hand gun, 2 = rifle, 3 = slash, 4 = blunt, 5 = pierce
+    std::string usedskill;
     float amount;
-    int celltype; // 0 None 1 Chem 2 Solar 3 Nuclear 4 Soul 5 Magic
+    // 0 None 1 Chem 2 Solar 3 Nuclear 4 Soul 5 Magic
+    int celltype;
     int cellcharge;
     int cellcost;
     int tillrot;
@@ -94,19 +103,11 @@ public:
     void chargecell(int amount);
     void soulcell(int soultype);
     bool getid(int idz);
-    //void useitem(){UseItem(name.c_str());}
     bool boolname(char *cakezebra);
-
     void printInfo();
-
-    //bool SetImg(int istrx,int istry,int iendx,int iendy){img.SetSubRect(sf::IntRect(istrx, istry, iendx, iendy));}
-
     void DrawImg();
-
     void spawn(int gposx, int gposy, int rposx, int rposy, int posx, int posy);
-
     void PrintConsoleInfo();
-
     item();
 };
 

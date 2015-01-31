@@ -1,0 +1,10 @@
+            /*std::string Imagery = StringFindString(line,"[Image:");
+                std::vector<cImageHolder>::iterator i;
+                if(Debug){ std::cout << "Pre Imagery \n";}
+                for(i = imagemanager.GlobalImage.begin(); i != imagemanager.GlobalImage.end(); i++)
+                {
+                    if(i->name == Imagery)
+                    {
+                        Critter.img.setTexture(i->Image);
+                    }
+                }*/

@@ -1,0 +1,12 @@
+
+    /*using namespace std;  I'll be using this soon enough, It'll allow the program to surf through the folder, and create all the stuff it needs.
+        string dir = string(".//data//items");
+        vector<string> files = vector<string>();
+        getdir(dir,files);
+        for(unsigned int i = 0; i < files.size(); i++)
+        {
+            string line("saves/maps/");
+            string ending(files[i]);
+            line.append(ending);
+            if( remove(line.c_str()) != 0 ){}
+        } */

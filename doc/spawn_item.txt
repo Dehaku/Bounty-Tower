@@ -1,0 +1,26 @@
+
+    /*bool searching = true;
+    while( searching )
+    {
+        if( itemmanager.GlobalItem[i].name == Object && t != itemmanager.GlobalItem.end())
+        {
+            doThings();
+            searching=false;
+        }
+    i++;
+    t++;
+    }*/
+
+    /*for(i = itemmanager.GlobalItem.begin(); i != itemmanager.GlobalItem.end(); i++)
+    {
+        if(i->name == Object)
+        {
+            cItem var;
+            var = *i;
+            var.id = globalid++;
+            var.xpos = xpos;
+            var.ypos = ypos;
+            worlditems.push_back(var);
+            break;
+        }
+    }*/
