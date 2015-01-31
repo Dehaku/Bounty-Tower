@@ -5,18 +5,29 @@
 
 int onClosedList = 10;
 char walkability[AStarmapWidth][mapHeight];
+//1 dimensional array holding ID# of open list items
 int openList[AStarmapWidth * mapHeight + 2];
+// 2 dimensional array used to record
+// whether a cell is on the open list or on the closed list.
 int whichList[AStarmapWidth + 1][mapHeight + 1];
+//1d array stores the x location of an item on the open list
 int openX[AStarmapWidth * mapHeight + 2];
+//1d array stores the y location of an item on the open list
 int openY[AStarmapWidth * mapHeight + 2];
+//2d array to store parent of each cell (x)
 int parentX[AStarmapWidth + 1][mapHeight + 1];
+//2d array to store parent of each cell (y)
 int parentY[AStarmapWidth + 1][mapHeight + 1];
+//1d array to store F cost of a cell on the open list
 int Fcost[AStarmapWidth * mapHeight + 2];
+//2d array to store G cost for each cell.
 int Gcost[AStarmapWidth + 1][mapHeight + 1];
+//1d array to store H cost of a cell on the open list
 int Hcost[AStarmapWidth * mapHeight + 2];
 int pathLength[numberPeople + 1];
 int pathLocation[numberPeople + 1];
 int *pathBank[numberPeople + 1];
+//Path reading variables
 int pathStatus[numberPeople + 1];
 int xPath[numberPeople + 1];
 int yPath[numberPeople + 1];
