@@ -8,7 +8,7 @@
 #include "FactionJobSecurity.h"
 #include "Galaxy.h"
 #include "menus.h"
-#include "aStarLibrary.h"
+#include "astar.h"
 #include "Textures.h"
 #include "math.h"
 #include "util.h"

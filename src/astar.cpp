@@ -1,4 +1,4 @@
-#include "aStarLibrary.h"
+#include "astar.h"
 
 #include <stdexcept>
 #include <cstdlib>

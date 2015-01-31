@@ -1,6 +1,6 @@
 #include "Faction.h"
 #include "filesystemUtils.hpp"
-#include "aStarLibrary.h"
+#include "astar.h"
 #include "Textures.h"
 #include "math.h"
 #include "util.h"
