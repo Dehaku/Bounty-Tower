@@ -2770,33 +2770,9 @@ void DrawItems()
 
 void LightTrail(int x, int y, int z)
 {
-    int curx = x;
-    int cury = y;
-    int curz = z;
-    if (curx > gridx - 1)
-    {
-        curx = gridx - 1;
-    }
-    if (cury > gridy - 1)
-    {
-        cury = gridy - 1;
-    }
-    if (cury > gridz - 1)
-    {
-        cury = gridz - 1;
-    }
-    if (curx < 0)
-    {
-        curx = 0;
-    }
-    if (cury < 0)
-    {
-        cury = 0;
-    }
-    if (curz < 0)
-    {
-        curz = 0;
-    }
+    int curx = math::clamp(x, 0, gridx - 1);
+    int cury = math::clamp(y, 0, gridy - 1);
+    int curz = math::clamp(z, 0, gridz - 1);
     gvars::sunmap[curz][curx][cury] = 255;
 }
 
