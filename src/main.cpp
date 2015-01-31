@@ -100,7 +100,7 @@ std::string RandomWindowName()
     return WindowNames[RandomName];
 }
 
-sf::RenderWindow App;
+sf::RenderWindow window;
 
 int randzorz(int min, int max)
 {
@@ -2808,7 +2808,7 @@ void DrawTiles()
                         Tile.setColor(
                             sf::Color(255, 255, 255, gvars::sunmap[z][i][t]));
                         Tile.setPosition(i * iTS, t * iTS);
-                        App.draw(Tile);
+                        window.draw(Tile);
                     }
                     if (gvars::groundmap[gvars::currentz][i][t] == 3)
                     { // grass
@@ -2816,7 +2816,7 @@ void DrawTiles()
                         Tile.setColor(
                             sf::Color(255, 255, 255, gvars::sunmap[z][i][t]));
                         Tile.setPosition(i * iTS, t * iTS);
-                        App.draw(Tile);
+                        window.draw(Tile);
                     }
                     if (gvars::groundmap[gvars::currentz][i][t] == 7)
                     { // stone
@@ -2824,7 +2824,7 @@ void DrawTiles()
                         Tile.setColor(
                             sf::Color(255, 255, 255, gvars::sunmap[z][i][t]));
                         Tile.setPosition(i * iTS, t * iTS);
-                        App.draw(Tile);
+                        window.draw(Tile);
                     }
                     if (gvars::groundmap[gvars::currentz][i][t] == 20)
                     { // water
@@ -2832,7 +2832,7 @@ void DrawTiles()
                         Tile.setColor(
                             sf::Color(255, 255, 255, gvars::sunmap[z][i][t]));
                         Tile.setPosition(i * iTS, t * iTS);
-                        App.draw(Tile);
+                        window.draw(Tile);
                     }
                     if (gvars::groundmap[gvars::currentz][i][t] == 53)
                     { // lava
@@ -2840,7 +2840,7 @@ void DrawTiles()
                         Tile.setColor(
                             sf::Color(255, 255, 255, gvars::sunmap[z][i][t]));
                         Tile.setPosition(i * iTS, t * iTS);
-                        App.draw(Tile);
+                        window.draw(Tile);
                     }
                     if (gvars::groundmap[gvars::currentz][i][t] == 52)
                     { // deepwater
@@ -2849,7 +2849,7 @@ void DrawTiles()
                         Tile.setColor(
                             sf::Color(255, 255, 255, gvars::sunmap[z][i][t]));
                         Tile.setPosition(i * iTS, t * iTS);
-                        App.draw(Tile);
+                        window.draw(Tile);
                     }
                 }
             }
@@ -2983,7 +2983,8 @@ void DrawStuffs()
 
     DrawNPCs();
 
-    DrawJobList(App.getView().getCenter().x - 500, App.getView().getCenter().y);
+    DrawJobList(window.getView().getCenter().x - 500,
+                window.getView().getCenter().y);
     debug("Drew Joblist");
 
     DisplayChat(sf::Vector2f(gvars::BottomLeft.x + 5, gvars::BottomLeft.y - 5));
@@ -3087,7 +3088,7 @@ void RemoveNPCs()
 
 int main()
 {
-    App.create(sf::VideoMode(Rez.x, Rez.y, 32), RandomWindowName());
+    window.create(sf::VideoMode(Rez.x, Rez.y, 32), RandomWindowName());
 
     cText.LoadFont();
 
@@ -3095,10 +3096,10 @@ int main()
     //Debug = true;
 
     bool PlyAct = false;
-    App.setFramerateLimit(30); // 0 is unlimited
+    window.setFramerateLimit(30); // 0 is unlimited
     sf::View Planetary(Center, HalfSize);
 
-    App.setVerticalSyncEnabled(true);
+    window.setVerticalSyncEnabled(true);
 
     // Various temporary variables used for testing.
     int testage = 0;
@@ -3139,7 +3140,7 @@ int main()
     // For A*
     InitializePathfinder();
 
-    while (App.isOpen())
+    while (window.isOpen())
     {
         RemoveNPCs();
         if (Key.mTime > 5)
@@ -3147,11 +3148,11 @@ int main()
             GC.Phase = "MainMenu";
         }
         sf::Event Event;
-        while (App.pollEvent(Event))
+        while (window.pollEvent(Event))
         {
             if (Event.type == sf::Event::Closed)
             {
-                App.close();
+                window.close();
             }
             if (Event.type == sf::Event::MouseWheelMoved)
             {
@@ -3196,7 +3197,7 @@ int main()
                 gvars::InFocus = true;
             }
         }
-        App.setView(gvars::View1);
+        window.setView(gvars::View1);
         gvars::ButtonClicked = false;
         gvars::ButtonClickedTime--; // Misleading Variable name, Sorry!
         if (gvars::ButtonClickedTime < 0)
@@ -3205,7 +3206,8 @@ int main()
         Key.Update();
         sf::Vector2f MouseStagnationCheck = gvars::MousePos;
         // For some reason, I have to manually modify the positions.
-        gvars::MousePos = App.mapPixelToCoords(sf::Mouse::getPosition(App));
+        gvars::MousePos =
+            window.mapPixelToCoords(sf::Mouse::getPosition(window));
         if (MouseStagnationCheck == gvars::MousePos)
             gvars::MouseStagnation++;
         else
@@ -5391,12 +5393,12 @@ int main()
 
         if (Key.pad0 == true)
         {
-            App.setView(gvars::View1);
+            window.setView(gvars::View1);
             PlyAct = true;
         }
         if (Key.pad2 == true)
         {
-            App.setView(Planetary);
+            window.setView(Planetary);
             PlyAct = true;
         }
 
@@ -5806,8 +5808,8 @@ int main()
         spr.setTexture(tex);
             */
 
-            App.display();
-            App.clear();
+            window.display();
+            window.clear();
         }
         PlyAct = false;
         debug("Starting Removing process, NPC/Unpoint/Items/GC.Menu");

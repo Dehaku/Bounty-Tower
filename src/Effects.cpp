@@ -2,7 +2,7 @@
 
 #include <cmath>
 
-extern sf::RenderWindow App;
+extern sf::RenderWindow window;
 
 Effects Effectz;
 
@@ -31,7 +31,7 @@ void Effects::cLine::DrawMe()
     rectangle.setOutlineColor(seccolor);
     rectangle.setOutlineThickness(outline);
     rectangle.setPosition(StartPos.x, StartPos.y);
-    App.draw(rectangle);
+    window.draw(rectangle);
 }
 
 void Effects::cCircle::DrawMe()
@@ -44,7 +44,7 @@ void Effects::cCircle::DrawMe()
     Circle.setOutlineColor(seccolor);
     Circle.setPosition(Pos.x, Pos.y);
     Circle.setOrigin(size, size);
-    App.draw(Circle);
+    window.draw(Circle);
 }
 
 void Effects::cSquare::DrawMe()
@@ -58,7 +58,7 @@ void Effects::cSquare::DrawMe()
     rectangle.setOutlineColor(seccolor);
     rectangle.setOutlineThickness(outline);
     rectangle.setPosition(EndPos.x, EndPos.y);
-    App.draw(rectangle);
+    window.draw(rectangle);
 }
 
 void Effects::cBeam::DrawMe()
@@ -68,7 +68,7 @@ void Effects::cBeam::DrawMe()
     //Line.setFillColor(maincolor);
     //maincolor.a -= faderate;
     //if(maincolor.a < 0){maincolor.a = 0;}
-    App.draw(Line, 2, sf::Lines);
+    window.draw(Line, 2, sf::Lines);
 
     sf::RectangleShape rectangle;
 
@@ -86,7 +86,7 @@ void Effects::cBeam::DrawMe()
     rectangle.setOutlineColor(seccolor);
     rectangle.setOutlineThickness(outline);
     rectangle.setPosition(StartPos.x, StartPos.y);
-    App.draw(rectangle);
+    window.draw(rectangle);
 }
 
 void Effects::CreateLine(int Sxpos, int Sypos, int Expos, int Eypos, int Size,

@@ -17,7 +17,7 @@ Tile vChunk[ChunkSize][ChunkSize][ChunkSize]; // 10223616
 Tile TempTile[Grids][Grids][Grids];
 xTile xChunk[ChunkSize][ChunkSize][ChunkSize];
 
-extern sf::RenderWindow App;
+extern sf::RenderWindow window;
 
 void zGenerateChunk(std::string type, int planet, sf::Vector2i Cords,
                     sf::Vector2i /*Pos*/)
@@ -600,7 +600,7 @@ void DrawWorldTiles()
 
                 WorldMap[i][t].Img.setPosition(i * 20, t * 20);
 
-                App.draw(WorldMap[i][t].Img);
+                window.draw(WorldMap[i][t].Img);
                 if (WorldMap[i][t].Infected > 0)
                 {
                     Effectz.CreateSquare(
@@ -663,7 +663,7 @@ void DrawTile(int xpos, int ypos, sf::Texture &Image)
     Con("Bacon");
     Imgr.setPosition(xpos, ypos);
     Con("Bacon");
-    App.draw(Imgr);
+    window.draw(Imgr);
 }
 
 void DrawNewTiles()
@@ -676,7 +676,7 @@ void DrawNewTiles()
                      gvars::TopLeft.y - 20, gvars::BottomRight.y))
             {
                 Tiles[i][t][30].Img.setPosition(i * 20, t * 20);
-                App.draw(Tiles[i][t][30].Img);
+                window.draw(Tiles[i][t][30].Img);
             }
         }
     }

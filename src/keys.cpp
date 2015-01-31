@@ -3,7 +3,7 @@
 
 #include <SFML/Graphics.hpp>
 
-extern sf::RenderWindow App;
+extern sf::RenderWindow window;
 
 bool plat = true;
 Ke Key;

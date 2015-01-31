@@ -5,7 +5,7 @@
 class ChatBox ChatBox;
 cTextList cText;
 
-extern sf::RenderWindow App;
+extern sf::RenderWindow window;
 
 void cTextList::Setup()
 {
@@ -26,10 +26,10 @@ void cTextList::DrawMe()
 
         sString.setPosition(xpos - 1, ypos - 1);
         sString.setColor(sf::Color(0, 0, 0));
-        App.draw(sString);
+        window.draw(sString);
     }
     Setup();
-    App.draw(sString);
+    window.draw(sString);
 }
 
 void cTextList::CreateText(int xpos, int ypos, int SizeMe, sf::Color color,

@@ -9,7 +9,7 @@
 #include <sstream>
 #include <iostream>
 
-extern sf::RenderWindow App;
+extern sf::RenderWindow window;
 
 item myitem;
 std::list<item> worlditems;
@@ -501,7 +501,7 @@ void item::DrawImg()
 {
     img.setPosition(xpos, ypos);
     //img.setScale(globals::Scalex,globals::Scaley);
-    App.draw(img);
+    window.draw(img);
 }
 
 void item::spawn(int /*gposx*/, int /*gposy*/, int /*rposx*/, int /*rposy*/,

@@ -10,7 +10,7 @@
 
 GalaxyController GC;
 
-extern sf::RenderWindow App;
+extern sf::RenderWindow window;
 
 GalaxyController::GalaxyController()
     : timescale(10), timescalez(10), timetilltick(0), Waves(1), WaveTimer(1000),
@@ -426,7 +426,7 @@ void GalaxyController::BuildMainMenu()
     sf::Sprite Sprt;
     Sprt.setTexture(texturemanager.getTexture("Main.png"));
 
-    App.draw(Sprt);
+    window.draw(Sprt);
 }
 
 void GalaxyController::BuildTileTest()

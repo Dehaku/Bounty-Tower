@@ -18,7 +18,7 @@ std::vector<NPC> WorldCritters;
 std::vector<Faction> UniFact;
 Faction PF;
 cNpcManager npcmanager;
-extern sf::RenderWindow App;
+extern sf::RenderWindow window;
 
 void NPC::BodyDefinition::BodyPartFind(std::string Part, int amount)
 {
@@ -585,7 +585,7 @@ bool NPC::HasItemType(int type)
 void NPC::DrawImg()
 {
     img.setPosition(xpos, ypos);
-    App.draw(img);
+    window.draw(img);
 }
 
 void NPC::Move(sf::Vector2f Tar)
