@@ -111,7 +111,6 @@ public:
 
     item();
 };
-extern item myitem;
 
 class cItem : public item
 {

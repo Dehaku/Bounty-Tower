@@ -11,7 +11,6 @@
 
 extern sf::RenderWindow window;
 
-item myitem;
 std::list<item> worlditems;
 cItemManager itemmanager;
 
