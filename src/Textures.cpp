@@ -23,25 +23,6 @@ sf::Texture *TextureManager::GetImage(std::string Input)
     throw std::runtime_error("GetImage: Couldn't find image.");
 }
 
-sf::Texture TextureManager::GetvImage(std::string Input)
-{
-    for (size_t i = 0; i != GlobalImage.size(); i++)
-    {
-        if (GlobalImage.at(i).name == Input)
-        {
-            return GlobalImage.at(i).texture;
-        }
-    }
-    for (size_t i = 0; i != GlobalImage.size(); i++)
-    {
-        if (GlobalImage.at(i).name == "Error.bmp")
-        {
-            return GlobalImage.at(i).texture;
-        }
-    }
-    throw std::runtime_error("GetvImage: Couldn't find image.");
-}
-
 void TextureManager::InitializeImages()
 {
     using namespace std;
