@@ -48,6 +48,18 @@ int math::closeishxx(int orix, int oriy, int tarx, int tary)
     return Powa;
 }
 
+int math::CloseishS(int orix, int tarx)
+{
+    int xnum;
+    xnum = orix - tarx;
+    int num = xnum;
+    if (num < 0)
+    {
+        num -= num * 2;
+    }
+    return num;
+}
+
 int math::clamp(int Value, int MinValue, int MaxValue)
 {
     if (Value > MaxValue)

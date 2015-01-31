@@ -69,18 +69,6 @@ bool AABB(sf::Vector2i Point, int Left, int Right, int Up, int Down)
     return false;
 }
 
-int CloseishS(int orix, int tarx)
-{
-    int xnum;
-    xnum = orix - tarx;
-    int num = xnum;
-    if (num < 0)
-    {
-        num -= num * 2;
-    }
-    return num;
-}
-
 int StringFindNumber(std::string Stringy, std::string Term)
 {
     size_t tStart;

@@ -1,11 +1,11 @@
 #include "Weaponry.h"
-#include "util.h"
+#include "math.h"
 
 #include <iostream>
 
 void Explosion(int xpos, int ypos, int /*size*/, int /*power*/, bool /*frag*/)
 {
-    std::cout << CloseishS(xpos, ypos) << " Is the stuff\n";
+    std::cout << math::CloseishS(xpos, ypos) << " Is the stuff\n";
     //  std::cout << plat << std::endl;
 
     //    std::vector<NPC>::iterator Targets;

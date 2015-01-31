@@ -12,6 +12,7 @@ int closeish(int orix, int oriy, int tarx, int tary);
 int closeisha(int orix, int oriy, int tarx, int tary);
 int distanceTrace(int xa, int ya, int xb, int yb);
 int closeishxx(int orix, int oriy, int tarx, int tary);
+int CloseishS(int orix, int tarx);
 int clamp(int Value, int MinValue, int MaxValue);
 float angleBetweenVectors(sf::Vector2f a, sf::Vector2f b);
 sf::Vector2f circleRandz(int xpos, int ypos, int radius);
