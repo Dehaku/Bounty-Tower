@@ -73,17 +73,13 @@ std::string GetClipboardText()
 // Create the main rendering window
 std::string RandomWindowName()
 {
-    std::vector<std::string> WindowNames;
-    WindowNames.push_back("Zombificational Settlementation Experimentation");
-    WindowNames.push_back("Galaxy");
-    WindowNames.push_back("Ye Old Settlement, Ye New Galaxy");
-    WindowNames.push_back("The first Galaxy had Joey, Just saying");
-    WindowNames.push_back("First comes the universe, then comes Galaxy");
+    std::vector<std::string> const names{
+        "Zombificational Settlementation Experimentation", "Galaxy",
+        "Ye Old Settlement, Ye New Galaxy",
+        "The first Galaxy had Joey, Just saying",
+        "First comes the universe, then comes Galaxy"};
 
-    int RandomName = randz(0, WindowNames.size() - 1);
-    std::cout << WindowNames.size() << ", " << RandomName;
-
-    return WindowNames[RandomName];
+    return names[randz(0, names.size() - 1)];
 }
 
 sf::RenderWindow window;
