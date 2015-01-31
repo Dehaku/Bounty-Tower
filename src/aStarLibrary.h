@@ -1,6 +1,8 @@
 #ifndef ASTARLIBRARY_H_INCLUDED
 #define ASTARLIBRARY_H_INCLUDED
 
+namespace astar
+{
 const int AStarmapWidth = 100, mapHeight = 100, tileSize = 20, numberPeople = 3;
 const int notfinished = 0, notStarted = 0; // path-related constants
 const int AStarFound = 1, nonexistent = 2;
@@ -53,5 +55,6 @@ int ReadPathX(int pathfinderID, int pathLocation);
 // Desc: Reads the y coordinate of the next path step
 //-----------------------------------------------------------------------------
 int ReadPathY(int pathfinderID, int pathLocation);
+}
 
 #endif // ASTARLIBRARY_H_INCLUDED

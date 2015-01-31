@@ -3,6 +3,8 @@
 #include <stdexcept>
 #include <cstdlib>
 
+namespace astar
+{
 int onClosedList = 10;
 char walkability[AStarmapWidth][mapHeight];
 //1 dimensional array holding ID# of open list items
@@ -582,3 +584,5 @@ int ReadPathY(int pathfinderID, int pathLocation)
     }
     throw std::runtime_error("ReadPathY: Couldn't return a meaningful value!");
 }
+
+} // namespace astar

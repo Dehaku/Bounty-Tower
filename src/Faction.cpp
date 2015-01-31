@@ -110,7 +110,7 @@ void NPC::PathFinding::MyFindPath(int Sx, int Sy, int Ex, int Ey)
 
     try
     {
-        MypathStatus = FindPath(1, Sx, Sy, Ex, Ey);
+        MypathStatus = astar::FindPath(1, Sx, Sy, Ex, Ey);
     }
     catch (std::exception &e)
     {
@@ -118,16 +118,16 @@ void NPC::PathFinding::MyFindPath(int Sx, int Sy, int Ex, int Ey)
         fSleep(60);
     }
 
-    MypathLocation = pathLocation[1];
+    MypathLocation = astar::pathLocation[1];
 
-    MypathLength = pathLength[1];
+    MypathLength = astar::pathLength[1];
     //MypathBank[1] = (int*) realloc (pathBank[1],pathLength[1]*8);
 
     for (int i = 0; i != MypathLength; ++i)
     {
 
-        yPa.push_back(pathBank[1][i * 2 - 1]);
-        xPa.push_back(pathBank[1][i * 2 - 2]);
+        yPa.push_back(astar::pathBank[1][i * 2 - 1]);
+        xPa.push_back(astar::pathBank[1][i * 2 - 2]);
     }
 }
 
@@ -143,7 +143,7 @@ int NPC::PathFinding::MyReadPathX(int /*pathfinderID*/, int xpathLocation)
         //of the path square (optional). This assumes that you are using
         //sprites that are centered -- i.e., with the midHandle command.
         //Otherwise you will want to adjust this.
-        x = tileSize * x + .5 * tileSize;
+        x = astar::tileSize * x + .5 * astar::tileSize;
         return x;
     }
     throw std::runtime_error(
@@ -161,7 +161,7 @@ int NPC::PathFinding::MyReadPathY(int /*pathfinderID*/, int ypathLocation)
         //of the path square (optional). This assumes that you are using
         //sprites that are centered -- i.e., with the midHandle command.
         //Otherwise you will want to adjust this.
-        y = tileSize * y + .5 * tileSize;
+        y = astar::tileSize * y + .5 * astar::tileSize;
         return y;
     }
     throw std::runtime_error(
@@ -172,7 +172,7 @@ void NPC::PathFinding::MyReadPath(int /*pathfinderID*/, int currentX,
                                   int currentY, int pixelsPerFrame)
 {
     //If a path has been found for the pathfinder	...
-    if (MypathStatus == AStarFound)
+    if (MypathStatus == astar::AStarFound)
     {
         //If path finder is just starting a new path or has reached the
         //center of the current path square (and the end of the path
@@ -206,7 +206,7 @@ void NPC::PathFinding::MyReadPath(int /*pathfinderID*/, int currentX,
             if (abs(currentX - MyxPath) < pixelsPerFrame &&
                 abs(currentY - MyyPath) <
                     pixelsPerFrame) //if close enough to center of square
-                MypathStatus = notStarted;
+                MypathStatus = astar::notStarted;
         }
     }
     //If there is no path for this pathfinder, simply stay in the current

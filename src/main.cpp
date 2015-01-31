@@ -2302,12 +2302,13 @@ void updateNpc()
 
                     if (PathFindWorkPos.x != 0)
                     {
-                        Previous = walkability[abs_to_index(
+                        Previous = astar::walkability[abs_to_index(
                             PathFindWorkPos.x /
                             20)][abs_to_index(PathFindWorkPos.y / 20)];
-                        walkability[abs_to_index(PathFindWorkPos.x / 20)]
-                                   [abs_to_index(PathFindWorkPos.y / 20)] =
-                                       walkable;
+                        astar::walkability[abs_to_index(
+                            PathFindWorkPos.x /
+                            20)][abs_to_index(PathFindWorkPos.y / 20)] =
+                            astar::walkable;
                     }
 
                     npc.PathFinding.MyFindPath(
@@ -2317,9 +2318,10 @@ void updateNpc()
 
                     if (PathFindWorkPos.x != 0)
                     {
-                        walkability[abs_to_index(PathFindWorkPos.x / 20)]
-                                   [abs_to_index(PathFindWorkPos.y / 20)] =
-                                       Previous;
+                        astar::walkability[abs_to_index(
+                            PathFindWorkPos.x /
+                            20)][abs_to_index(PathFindWorkPos.y / 20)] =
+                            Previous;
                     }
                 }
                 if (true == false)
@@ -2574,12 +2576,13 @@ void updateNpc()
                         int Previous = -1;
                         if (PathFindWorkPos.x != 0)
                         {
-                            Previous = walkability[abs_to_index(
+                            Previous = astar::walkability[abs_to_index(
                                 PathFindWorkPos.x /
                                 20)][abs_to_index(PathFindWorkPos.y / 20)];
-                            walkability[abs_to_index(PathFindWorkPos.x / 20)]
-                                       [abs_to_index(PathFindWorkPos.y / 20)] =
-                                           walkable;
+                            astar::walkability[abs_to_index(
+                                PathFindWorkPos.x /
+                                20)][abs_to_index(PathFindWorkPos.y / 20)] =
+                                astar::walkable;
                         }
 
                         npc.PathFinding.MyFindPath(npc.xpos, npc.ypos,
@@ -2588,9 +2591,10 @@ void updateNpc()
 
                         if (PathFindWorkPos.x != 0)
                         {
-                            walkability[abs_to_index(PathFindWorkPos.x / 20)]
-                                       [abs_to_index(PathFindWorkPos.y / 20)] =
-                                           Previous;
+                            astar::walkability[abs_to_index(
+                                PathFindWorkPos.x /
+                                20)][abs_to_index(PathFindWorkPos.y / 20)] =
+                                Previous;
                         }
                     }
                     for (int i = 0; i != Grids; i++)
@@ -2600,14 +2604,14 @@ void updateNpc()
                             // Add an Item Check here later to see if it blocks movement
                             if (Tiles[i][t][30].Walkable == false)
                             {
-                                walkability[i][t] = unwalkable;
+                                astar::walkability[i][t] = astar::unwalkable;
                             }
                             else
                             {
-                                walkability[i][t] = walkable;
+                                astar::walkability[i][t] = astar::walkable;
                             }
-                            if (walkability[i][t] > 1)
-                                walkability[i][t] = 0;
+                            if (astar::walkability[i][t] > 1)
+                                astar::walkability[i][t] = 0;
                         }
                     }
 
@@ -2615,12 +2619,13 @@ void updateNpc()
 
                     if (PathFindWorkPos.x != 0)
                     {
-                        Previous = walkability[abs_to_index(
+                        Previous = astar::walkability[abs_to_index(
                             PathFindWorkPos.x /
                             20)][abs_to_index(PathFindWorkPos.y / 20)];
-                        walkability[abs_to_index(PathFindWorkPos.x / 20)]
-                                   [abs_to_index(PathFindWorkPos.y / 20)] =
-                                       walkable;
+                        astar::walkability[abs_to_index(
+                            PathFindWorkPos.x /
+                            20)][abs_to_index(PathFindWorkPos.y / 20)] =
+                            astar::walkable;
                     }
 
                     npc.PathFinding.MyReadPath(1, npc.xpos, npc.ypos,
@@ -2630,9 +2635,10 @@ void updateNpc()
 
                     if (PathFindWorkPos.x != 0)
                     {
-                        walkability[abs_to_index(PathFindWorkPos.x / 20)]
-                                   [abs_to_index(PathFindWorkPos.y / 20)] =
-                                       Previous;
+                        astar::walkability[abs_to_index(
+                            PathFindWorkPos.x /
+                            20)][abs_to_index(PathFindWorkPos.y / 20)] =
+                            Previous;
                     }
 
                     /*if (npc.xpos > npc.PathFinding.MyxPath) {npc.xpos = npc.xpos - npc.moverate;}
@@ -3117,7 +3123,7 @@ int main()
     GC.Phase = "MainMenu";
 
     // For A*
-    InitializePathfinder();
+    astar::InitializePathfinder();
 
     while (window.isOpen())
     {
@@ -5824,6 +5830,6 @@ int main()
         }
 
     } // End of game loop
-    EndPathfinder();
+    astar::EndPathfinder();
     return EXIT_SUCCESS;
 }

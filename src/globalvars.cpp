@@ -51,4 +51,4 @@ std::string GenString;
 sf::Vector2i Cords;
 bool InitalZeds = false;
 float TimeScale = 1;
-}
+} // namespace gvars
