@@ -23,7 +23,7 @@ sf::Texture *TextureManager::GetImage(std::string Input)
     throw std::runtime_error("GetImage: Couldn't find image.");
 }
 
-void TextureManager::InitializeImages()
+void TextureManager::init()
 {
     using namespace std;
     string dir = string("./data/gfx");

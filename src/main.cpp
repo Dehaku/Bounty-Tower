@@ -3122,7 +3122,7 @@ int main()
     if (!Aim.LoadFromFile("gfx/Aim.tga"))return EXIT_FAILURE;*/
     }
 
-    texturemanager.InitializeImages();
+    texturemanager.init();
     itemmanager.InitializeItems();
     npcmanager.InitializeCritters();
 
