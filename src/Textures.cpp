@@ -4,20 +4,20 @@
 
 TextureManager texturemanager;
 
-sf::Texture *TextureManager::getTexture(std::string Input)
+sf::Texture &TextureManager::getTexture(std::string Input)
 {
     for (size_t i = 0; i != textures.size(); i++)
     {
         if (textures.at(i).name == Input)
         {
-            return &textures.at(i).texture;
+            return textures.at(i).texture;
         }
     }
     for (size_t i = 0; i != textures.size(); i++)
     {
         if (textures.at(i).name == "Error.bmp")
         {
-            return &textures.at(i).texture;
+            return textures.at(i).texture;
         }
     }
     throw std::runtime_error("GetImage: Couldn't find image.");

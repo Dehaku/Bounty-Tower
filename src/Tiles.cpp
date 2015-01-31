@@ -554,7 +554,7 @@ void InitalizeWorldTiles()
             {
                 WorldMap[i][t].ID = WorldTileType::City;
                 WorldMap[i][t].Img.setTexture(
-                    *texturemanager.getTexture("City.png"));
+                    texturemanager.getTexture("City.png"));
                 if (gvars::InitalZeds)
                     WorldMap[i][t].Infected = randz(0, 20);
                 else
@@ -566,7 +566,7 @@ void InitalizeWorldTiles()
             {
                 WorldMap[i][t].ID = WorldTileType::Spire;
                 WorldMap[i][t].Img.setTexture(
-                    *texturemanager.getTexture("Spire.png"));
+                    texturemanager.getTexture("Spire.png"));
                 WorldMap[i][t].Infected = 0;
                 WorldMap[i][t].Type = "Spire";
                 Spires++;
@@ -575,7 +575,7 @@ void InitalizeWorldTiles()
             {
                 WorldMap[i][t].ID = WorldTileType::Grass;
                 WorldMap[i][t].Img.setTexture(
-                    *texturemanager.getTexture("Grass.png"));
+                    texturemanager.getTexture("Grass.png"));
                 WorldMap[i][t].Infected = 0;
                 WorldMap[i][t].Type = "Plains";
                 Plains++;
@@ -1148,7 +1148,7 @@ void Tile::Dirt()
 { // 1003
     ID = 1003;
     WorldColor = sf::Color(100, 100, 0);
-    Img.setTexture(*texturemanager.getTexture("Dirt.png"));
+    Img.setTexture(texturemanager.getTexture("Dirt.png"));
 }
 
 void Tile::RendGrass()
@@ -1180,7 +1180,7 @@ void Tile::Grass()
 { // 1001
     ID = 1001;
     WorldColor = sf::Color(0, 150, 0);
-    Img.setTexture(*texturemanager.getTexture("Grass.png"));
+    Img.setTexture(texturemanager.getTexture("Grass.png"));
     //RendGrass();
 }
 
@@ -1189,7 +1189,7 @@ void Tile::Stone()
     ID = 1007;
     WorldColor = sf::Color(150, 150, 150);
     Walkable = true;
-    Img.setTexture(*texturemanager.getTexture("Underground.png"));
+    Img.setTexture(texturemanager.getTexture("Underground.png"));
 }
 
 void Tile::StoneWall()
@@ -1197,14 +1197,14 @@ void Tile::StoneWall()
     ID = 1008;
     WorldColor = sf::Color(150, 150, 150);
     Walkable = false;
-    Img.setTexture(*texturemanager.getTexture("StoneWall.png"));
+    Img.setTexture(texturemanager.getTexture("StoneWall.png"));
 }
 
 void Tile::Wall()
 { // 1010
     ID = 1010;
     WorldColor = sf::Color(100, 100, 100);
-    Img.setTexture(*texturemanager.getTexture("Wall.png"));
+    Img.setTexture(texturemanager.getTexture("Wall.png"));
     Health = 200;
     DeathID = 1007;
     Walkable = false;
@@ -1214,7 +1214,7 @@ void Tile::WoodFloor()
 { // 1030
     ID = 1030;
     WorldColor = sf::Color(150, 150, 0);
-    Img.setTexture(*texturemanager.getTexture("WoodFloor.png"));
+    Img.setTexture(texturemanager.getTexture("WoodFloor.png"));
 }
 
 void Tile::Road(bool Center)
@@ -1222,16 +1222,16 @@ void Tile::Road(bool Center)
     ID = 1050;
     WorldColor = sf::Color(0, 0, 0);
     if (Center)
-        Img.setTexture(*texturemanager.getTexture("MiddleRoad.png"));
+        Img.setTexture(texturemanager.getTexture("MiddleRoad.png"));
     if (!Center)
-        Img.setTexture(*texturemanager.getTexture("Black.png"));
+        Img.setTexture(texturemanager.getTexture("Black.png"));
 }
 
 void Tile::Door()
 { // 1100
     ID = 1100;
     WorldColor = sf::Color(255, 0, 0);
-    Img.setTexture(*texturemanager.getTexture("Door.png"));
+    Img.setTexture(texturemanager.getTexture("Door.png"));
     Walkable = true;
     Health = 15;
     DeathID = 7;
@@ -1241,21 +1241,21 @@ void Tile::Lava()
 { // 1337
     ID = 1337;
     WorldColor = sf::Color(255, 100, 0);
-    Img.setTexture(*texturemanager.getTexture("Lava.png"));
+    Img.setTexture(texturemanager.getTexture("Lava.png"));
 }
 
 void Tile::Sky()
 { // 1700
     ID = 1700;
     WorldColor = sf::Color(150, 150, 150);
-    Img.setTexture(*texturemanager.getTexture("Sky.png"));
+    Img.setTexture(texturemanager.getTexture("Sky.png"));
 }
 
 void Tile::Cake()
 {
     ID = 1100;
     WorldColor = sf::Color(255, 0, 0);
-    Img.setTexture(*texturemanager.getTexture("Door.png"));
+    Img.setTexture(texturemanager.getTexture("Door.png"));
     Health = 15;
     DeathID = 7;
 }
@@ -1277,7 +1277,7 @@ xTile::xTile() : ID{}, Img{nullptr}
 
 void xTile::initImage()
 {
-    Img = texturemanager.getTexture("City.png");
+    Img = &texturemanager.getTexture("City.png");
 }
 
 WorldTile::WorldTile() : ID{}
