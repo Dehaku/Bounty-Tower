@@ -1,34 +1,8 @@
 #include "util.h"
 
-#include <iostream>
-
 void fSleep(float Time)
 {
     sf::sleep(sf::seconds(Time));
-}
-
-void Con(std::string Text, bool EndLine)
-{
-    if (EndLine)
-    {
-        std::cout << Text << std::endl;
-    }
-    else
-    {
-        std::cout << Text;
-    }
-}
-
-void Con(float Number, bool EndLine)
-{
-    if (EndLine)
-    {
-        std::cout << Number << std::endl;
-    }
-    else
-    {
-        std::cout << Number;
-    }
 }
 
 bool Booleanize(int Num)

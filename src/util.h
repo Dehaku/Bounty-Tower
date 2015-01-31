@@ -4,12 +4,21 @@
 #include <string>
 #include <vector>
 #include <set>
+#include <iostream>
 
 #include <SFML/System.hpp>
 
 void fSleep(float Time);
-void Con(std::string Text, bool EndLine = true);
-void Con(float Number, bool EndLine = true);
+
+template <typename T> void Con(T arg, bool endLine = true)
+{
+    std::cout << arg;
+    if (endLine)
+    {
+        std::cout << std::endl;
+    }
+}
+
 bool Booleanize(int Num);
 bool Inbetween(float First, float Second, float Number);
 int randz(int minValue, int maxValue);
