@@ -174,35 +174,33 @@ bool RemoveItem(int Id)
     throw std::runtime_error("Couldn't return anything sensible");
 }
 
-void UpdateItem()
+void updateItem()
 {
     if (gvars::Debug)
     {
         std::cout << "Pre Item \n";
     }
-    auto startlist = worlditems.begin();
-    auto endlist = worlditems.end();
 
-    for (auto Me = startlist; Me != endlist; ++Me)
+    for (auto &item : worlditems)
     {
         try
         {
             if (gvars::Debug)
             {
-                std::cout << Me->name << "'s turn! \n";
+                std::cout << item.name << "'s turn! \n";
             }
-            if (Me->produces == true)
+            if (item.produces == true)
             {
                 if (gvars::Debug)
                 {
-                    std::cout << Me->name << " can produce. \n";
+                    std::cout << item.name << " can produce. \n";
                 }
-                Me->prodratetimer++;
-                if (Me->prodratetimer >= Me->prodrate)
+                item.prodratetimer++;
+                if (item.prodratetimer >= item.prodrate)
                 {
-                    Me->prodratetimer = 0;
+                    item.prodratetimer = 0;
                     std::string s;
-                    s = Me->produce;
+                    s = item.produce;
                     auto a = new char[s.size() + 1];
                     a[s.size()] = 0;
                     memcpy(a, s.c_str(), s.size());
@@ -211,8 +209,8 @@ void UpdateItem()
                     int y;
                     while (FindEmpty == false)
                     {
-                        x = randz(Me->xpos - 10, Me->xpos + 10);
-                        y = randz(Me->ypos - 10, Me->ypos + 10);
+                        x = randz(item.xpos - 10, item.xpos + 10);
+                        y = randz(item.ypos - 10, item.ypos + 10);
                         if (Tiles[abs_to_index(x / GridSize)][abs_to_index(
                                 y / GridSize)][30].Walkable == true)
                         {
@@ -226,38 +224,38 @@ void UpdateItem()
                     SpawnItem(s, x, y);
                     if (gvars::Debug)
                     {
-                        std::cout << Me->name << " has produced: " << s
+                        std::cout << item.name << " has produced: " << s
                                   << " \n";
                     }
                 }
             }
             if (gvars::Debug)
             {
-                std::cout << "Done with: " << Me->name << " \n";
+                std::cout << "Done with: " << item.name << " \n";
             }
 
             if (gvars::Debug)
             {
                 std::cout << "Acting on Missile \n";
             }
-            if (Me->TargetPos != sf::Vector2f(-1, -1))
+            if (item.TargetPos != sf::Vector2f(-1, -1))
             {
-                Me->xpos = (Me->xpos + Me->TargetPos.x) / 2;
-                Me->ypos = (Me->ypos + Me->TargetPos.y) / 2;
-                if (Me->age >= 10)
+                item.xpos = (item.xpos + item.TargetPos.x) / 2;
+                item.ypos = (item.ypos + item.TargetPos.y) / 2;
+                if (item.age >= 10)
                 {
-                    Me->ToDelete = true;
-                    Boom(Me->xpos, Me->ypos, randz(Me->mindam, Me->maxdam),
-                         Me->range);
+                    item.ToDelete = true;
+                    Boom(item.xpos, item.ypos, randz(item.mindam, item.maxdam),
+                         item.range);
 
                     for (int ItLength = 0; ItLength != 5; ItLength++)
                     {
                         for (int Rot = 1; Rot != 361; Rot++)
                         {
                             //int Rot = GX;
-                            int XPos = ((abs(Me->xpos / 20)) +
+                            int XPos = ((abs(item.xpos / 20)) +
                                         cosf(Rot * PI / 180) * ItLength);
-                            int YPos = ((abs(Me->ypos / 20)) +
+                            int YPos = ((abs(item.ypos / 20)) +
                                         sinf(Rot * PI / 180) * ItLength);
                             //XPos *= 20;
                             //YPos *= 20;
@@ -271,7 +269,7 @@ void UpdateItem()
                     Con("Boom!");
                 }
             }
-            Me->age = Me->age + 1;
+            item.age = item.age + 1;
             if (gvars::Debug)
             {
                 std::cout << "Post Item \n";
@@ -5406,7 +5404,7 @@ int main()
             {
                 if (gvars::Debug)
                     std::cout << "Doing Local Items \n";
-                UpdateItem();
+                updateItem();
                 if (gvars::Debug)
                     std::cout << "Doing Local AddItems\n";
                 itemmanager.AddItems();
