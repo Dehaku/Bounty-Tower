@@ -199,8 +199,9 @@ MenuPointerContainer::MenuPointerContainer()
     pTile = nullptr;
 }
 
-void
-MenuPopUp() // TODO: Add functionality to allow you to press 1-9 to activate the menu buttons.
+// TODO: Add functionality to allow you to press 1-9
+// to activate the menu buttons.
+void MenuPopUp()
 {
 
     if (GC.MenuPos.x == -10000)
