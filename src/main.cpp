@@ -27,14 +27,7 @@ item *ListGet(std::list<item> &List, int Position)
 //
 
 void DrawStuffs();
-
 int GetItemVectorId(int id);
-
-void SpawnItem(std::string Object, int xpos, int ypos);
-void SpawnCritter(std::string Object, int xpos, int ypos);
-
-//
-//-- Prototypes
 
 std::string GetClipboardText()
 {
