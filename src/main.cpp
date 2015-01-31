@@ -505,7 +505,6 @@ std::vector<int> FindClosestItem(int Orix, int Oriy, std::string TarItem,
                                  int /*Rxpos*/ = 0, int /*Rypos*/ = 0)
 {
     std::vector<int> Returns;
-    std::list<item>::iterator Items;
     // This will be difficult, go through all the items, and find the closest one.
     int closx =
         -1000000; // Make sure the default starting number is far beyond being the closest one.
@@ -514,30 +513,30 @@ std::vector<int> FindClosestItem(int Orix, int Oriy, std::string TarItem,
     int closVect;
     int VectPos = 0;
     bool first = true;
-    for (Items = worlditems.begin(); Items != worlditems.end(); ++Items)
+    for (auto const &item : worlditems)
     {
         if (first == true)
         {
-            if (Items->name == TarItem)
+            if (item.name == TarItem)
             {
-                closx = Items->xpos;
-                closy = Items->ypos;
-                Closid = Items->id;
+                closx = item.xpos;
+                closy = item.ypos;
+                Closid = item.id;
                 closVect = VectPos;
                 first = false;
             }
         }
         else
         {
-            if (Items->name == TarItem)
+            if (item.name == TarItem)
             {
-                int one = math::closeish(Orix, Oriy, Items->xpos, Items->ypos);
+                int one = math::closeish(Orix, Oriy, item.xpos, item.ypos);
                 int two = math::closeish(Orix, Oriy, closx, closy);
                 if (one < two)
                 {
-                    closx = Items->xpos;
-                    closy = Items->ypos;
-                    Closid = Items->id;
+                    closx = item.xpos;
+                    closy = item.ypos;
+                    Closid = item.id;
                     closVect = VectPos;
                 }
             }
