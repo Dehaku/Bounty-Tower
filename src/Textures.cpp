@@ -4,7 +4,7 @@
 
 TextureManager texturemanager;
 
-sf::Texture *TextureManager::GetImage(std::string Input)
+sf::Texture *TextureManager::getTexture(std::string Input)
 {
     for (size_t i = 0; i != textures.size(); i++)
     {

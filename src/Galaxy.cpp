@@ -424,7 +424,7 @@ void GalaxyController::BuildMainMenu()
 {
     //Effectz.CreateSquare(-1000,-1000,10000,10000,Cyan);
     sf::Sprite Sprt;
-    Sprt.setTexture(*texturemanager.GetImage("Main.png"));
+    Sprt.setTexture(*texturemanager.getTexture("Main.png"));
 
     App.draw(Sprt);
 }

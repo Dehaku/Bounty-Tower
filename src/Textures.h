@@ -14,7 +14,7 @@ class TextureManager
 {
 public:
     std::vector<TextureHolder> textures;
-    sf::Texture *GetImage(std::string Input);
+    sf::Texture *getTexture(std::string Input);
     void init();
 };
 extern TextureManager texturemanager;
