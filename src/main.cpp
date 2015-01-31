@@ -329,7 +329,7 @@ std::vector<int> NnGTrace(int xa, int ya, int xb, int yb, int id,
 
             for (Me = npclist.begin(); Me != npclist.end(); ++Me)
             {
-                if (math::Closeish(x, y, Me->xpos, Me->ypos) <= Me->reach &&
+                if (math::closeish(x, y, Me->xpos, Me->ypos) <= Me->reach &&
                     Me->id != id)
                 {
 
@@ -364,7 +364,7 @@ std::vector<int> NnGTrace(int xa, int ya, int xb, int yb, int id,
 
         for (Me = worlditems.begin(); Me != worlditems.end(); ++Me)
         {
-            if (math::Closeish(x, y, Me->xpos, Me->ypos) <= 10 && Me->id != id)
+            if (math::closeish(x, y, Me->xpos, Me->ypos) <= 10 && Me->id != id)
             {
                 //Making sure not to constantly add the same
                 //try{if( VectorID.at(Count-1) != Me->id){ VectorID.push_back(23); VectorID.push_back( GetItemVectorId(Me->id)); }} catch (std::exception& e){}
@@ -450,7 +450,7 @@ std::vector<int> npcTrace(int xa, int ya, int xb, int yb, int id,
         int Count = 0;
         for (Me = npclist.begin(); Me != npclist.end(); ++Me)
         {
-            if (math::Closeish(x, y, Me->xpos, Me->ypos) <= Me->reach &&
+            if (math::closeish(x, y, Me->xpos, Me->ypos) <= Me->reach &&
                 Me->id != id)
             {
                 VectorID.push_back(Count);
@@ -690,8 +690,8 @@ std::vector<int> FindClosestItem(int Orix, int Oriy, std::string TarItem,
         {
             if (Items->name == TarItem)
             {
-                int one = math::Closeish(Orix, Oriy, Items->xpos, Items->ypos);
-                int two = math::Closeish(Orix, Oriy, closx, closy);
+                int one = math::closeish(Orix, Oriy, Items->xpos, Items->ypos);
+                int two = math::closeish(Orix, Oriy, closx, closy);
                 if (one < two)
                 {
                     closx = Items->xpos;
@@ -1152,21 +1152,21 @@ void UpdateNPC()
         {
 
             Me->TentArm1.x =
-                math::Clamp(Me->TentArm1.x + randz(-3, 3), -20, 20);
+                math::clamp(Me->TentArm1.x + randz(-3, 3), -20, 20);
             Me->TentArm1.y =
-                math::Clamp(Me->TentArm1.y + randz(-3, 3), -20, 20);
+                math::clamp(Me->TentArm1.y + randz(-3, 3), -20, 20);
             Me->TentArm2.x =
-                math::Clamp(Me->TentArm2.x + randz(-3, 3), -20, 20);
+                math::clamp(Me->TentArm2.x + randz(-3, 3), -20, 20);
             Me->TentArm2.y =
-                math::Clamp(Me->TentArm2.y + randz(-3, 3), -20, 20);
+                math::clamp(Me->TentArm2.y + randz(-3, 3), -20, 20);
             Me->TentEnd1.x =
-                math::Clamp(Me->TentEnd1.x + randz(-3, 3), -20, 20);
+                math::clamp(Me->TentEnd1.x + randz(-3, 3), -20, 20);
             Me->TentEnd1.y =
-                math::Clamp(Me->TentEnd1.y + randz(-3, 3), -20, 20);
+                math::clamp(Me->TentEnd1.y + randz(-3, 3), -20, 20);
             Me->TentEnd2.x =
-                math::Clamp(Me->TentEnd2.x + randz(-3, 3), -20, 20);
+                math::clamp(Me->TentEnd2.x + randz(-3, 3), -20, 20);
             Me->TentEnd2.y =
-                math::Clamp(Me->TentEnd2.y + randz(-3, 3), -20, 20);
+                math::clamp(Me->TentEnd2.y + randz(-3, 3), -20, 20);
         }
 
         if (Me->id == gvars::MyTargetid && Key.space)
@@ -1314,7 +1314,7 @@ void UpdateNPC()
                     if (bMel == true)
                     {
                         if (Mel.type == 1 &&
-                            math::Closeish(Me->xpos, Me->ypos, Me->ShootPos.x,
+                            math::closeish(Me->xpos, Me->ypos, Me->ShootPos.x,
                                            Me->ShootPos.y) < Mel.range)
                         {
                             Attacked = true;
@@ -1334,7 +1334,7 @@ void UpdateNPC()
                             {
                                 Me->attacktimer =
                                     (Me->attacktimerint -
-                                     (math::Clamp(Me->Skills.agility / 10, 10,
+                                     (math::clamp(Me->Skills.agility / 10, 10,
                                                   100)));
                             } // Melee has a different method for saying it's done.
                             if (gvars::Debug)
@@ -1376,17 +1376,17 @@ void UpdateNPC()
                                 gridposTrace(Me->xpos, Me->ypos, Me->ShootPos.x,
                                              Me->ShootPos.y, Me->id,
                                              Me->TargetPos) == true &&
-                                math::Closeish(Me->xpos, Me->ypos,
+                                math::closeish(Me->xpos, Me->ypos,
                                                Me->ShootPos.x,
                                                Me->ShootPos.y) <= Me->viewrange)
                             {
                                 int Tempx = randz(
                                     0,
-                                    math::Clamp(
+                                    math::clamp(
                                         100 - Me->Skills.dexterity, 0,
                                         100)); // This is to mess up the aiming.
                                 int Tempy = randz(
-                                    0, math::Clamp(100 - Me->Skills.dexterity,
+                                    0, math::clamp(100 - Me->Skills.dexterity,
                                                    0, 100));
                                 if (Me->HasTag("[CanLearn:"))
                                 {
@@ -1442,7 +1442,7 @@ void UpdateNPC()
                                 Me->Attacking = false;
                                 Me->attacktimer =
                                     (Me->attacktimerint -
-                                     (math::Clamp(Me->Skills.agility / 10, 10,
+                                     (math::clamp(Me->Skills.agility / 10, 10,
                                                   100)));
                             }
                             else
@@ -1661,9 +1661,9 @@ void UpdateNPC()
                         {
                             if (elem.cbaseid == 110110 && elem.health > 0)
                             {
-                                int one = math::Closeish(Me->xpos, Me->ypos,
+                                int one = math::closeish(Me->xpos, Me->ypos,
                                                          elem.xpos, elem.ypos);
-                                int two = math::Closeish(Me->xpos, Me->ypos,
+                                int two = math::closeish(Me->xpos, Me->ypos,
                                                          closx, closy);
                                 if (one < two)
                                 {
@@ -1752,7 +1752,7 @@ void UpdateNPC()
                                         Me->HasTarget = true;
                                         Me->target = "BuildWoodWall";
 
-                                        if (math::Closeish(Me->xpos, Me->ypos,
+                                        if (math::closeish(Me->xpos, Me->ypos,
                                                            x,
                                                            y) <= Me->size * 3)
                                         {
@@ -1839,7 +1839,7 @@ void UpdateNPC()
                                         debug("Post wood targeting, Pre "
                                               "Close-Ish function");
 
-                                        if (math::Closeish(Me->xpos, Me->ypos,
+                                        if (math::closeish(Me->xpos, Me->ypos,
                                                            WldWood->xpos,
                                                            WldWood->ypos) <=
                                             Me->size)
@@ -1869,7 +1869,7 @@ void UpdateNPC()
 
                                     if (UniFact[0].JobList[i].Type ==
                                             "PickUp" &&
-                                        math::Closeish(
+                                        math::closeish(
                                             Me->xpos, Me->ypos,
                                             UniFact[0].JobList[i].pItem->xpos,
                                             UniFact[0]
@@ -1905,7 +1905,7 @@ void UpdateNPC()
                                     }
 
                                     if (UniFact[0].JobList[i].Type == "Chop" &&
-                                        math::Closeish(
+                                        math::closeish(
                                             Me->xpos, Me->ypos,
                                             UniFact[0].JobList[i].pItem->xpos,
                                             UniFact[0]
@@ -1957,7 +1957,7 @@ void UpdateNPC()
                                     Me->HasTarget = true;
                                     Me->target = "DigNaturalWall";
 
-                                    if (math::Closeish(Me->xpos, Me->ypos,
+                                    if (math::closeish(Me->xpos, Me->ypos,
                                                        PathFindWorkPos.x,
                                                        PathFindWorkPos.y) <=
                                         Me->size * 3)
@@ -2115,9 +2115,9 @@ void UpdateNPC()
                                 if (elem.cbaseid == 666333 && elem.health > 0)
                                 {
                                     int one =
-                                        math::Closeish(Me->xpos, Me->ypos,
+                                        math::closeish(Me->xpos, Me->ypos,
                                                        elem.xpos, elem.ypos);
-                                    int two = math::Closeish(Me->xpos, Me->ypos,
+                                    int two = math::closeish(Me->xpos, Me->ypos,
                                                              closx, closy);
                                     if (one < two)
                                     {
@@ -2130,7 +2130,7 @@ void UpdateNPC()
                         if (first == false)
                         {
                             Me->ShootPos = sf::Vector2f(closx, closy);
-                            if (math::Closeish(Me->xpos, Me->ypos,
+                            if (math::closeish(Me->xpos, Me->ypos,
                                                Me->ShootPos.x,
                                                Me->ShootPos.y) <= Me->viewrange)
                             {
@@ -2154,7 +2154,7 @@ void UpdateNPC()
                         std::string AtkType;
                         Me->attacktimer =
                             (Me->attacktimerint -
-                             (math::Clamp(Me->Skills.agility / 10, 10, 100))) *
+                             (math::clamp(Me->Skills.agility / 10, 10, 100))) *
                             4;
                         int numba = -1;
                         int numbaz = -1;
@@ -2247,12 +2247,12 @@ void UpdateNPC()
                     std::cout << "Pre 'set' vision. \n";
 
                 bool FoundGoal = false;
-                if (math::Closeish(Me->TargetPos.x, Me->TargetPos.y, Me->xpos,
+                if (math::closeish(Me->TargetPos.x, Me->TargetPos.y, Me->xpos,
                                    Me->ypos) <= Me->viewrange &&
                     Me->cbaseid != -1337)
                 {
 
-                    float Ang = math::AngleBetweenVectors(
+                    float Ang = math::angleBetweenVectors(
                         math::Vec2f(Me->TargetPos.x, Me->TargetPos.y),
                         math::Vec2f(Me->xpos, Me->ypos));
                     float MyAngle = Me->angle;
@@ -2285,13 +2285,13 @@ void UpdateNPC()
                         int z = gvars::currentz;
                         if (gvars::sunmap[z][i][t] != -1)
                         {
-                            if (math::Closeish((i * GridSize) + 10,
+                            if (math::closeish((i * GridSize) + 10,
                                                (t * GridSize) + 10, Me->xpos,
                                                Me->ypos) <= Me->viewrange &&
                                 Me->cbaseid != -1337)
                             {
 
-                                float Ang = math::AngleBetweenVectors(
+                                float Ang = math::angleBetweenVectors(
                                     math::Vec2f((i * GridSize) + 10,
                                                 (t * GridSize) + 10),
                                     math::Vec2f(Me->xpos, Me->ypos));
@@ -2420,7 +2420,7 @@ void UpdateNPC()
             }
             if ((Me->target != "None" && Me->AtTarget) ||
                 (Me->target != "None" &&
-                 math::Closeish(Me->xpos, Me->ypos, Me->TargetPos.x,
+                 math::closeish(Me->xpos, Me->ypos, Me->TargetPos.x,
                                 Me->TargetPos.y) <= Me->size))
             {
                 if (GetItemVectorId(Me->TargetId) != -1)
@@ -2429,7 +2429,7 @@ void UpdateNPC()
                     std::advance(ItemItr, GetItemVectorId(Me->TargetId));
 
                     //if(Math::Closeish(Me->xpos,Me->ypos,worlditems.at(GetItemVectorId(Me->TargetId)).xpos,worlditems.at(GetItemVectorId(Me->TargetId)).ypos) <= Me->reach && worlditems.at(GetItemVectorId(Me->TargetId)).Pickupable == true)
-                    if (math::Closeish(Me->xpos, Me->ypos, (*ItemItr).xpos,
+                    if (math::closeish(Me->xpos, Me->ypos, (*ItemItr).xpos,
                                        (*ItemItr).ypos) <= Me->reach &&
                         (*ItemItr).Pickupable == true)
                     {
@@ -2457,7 +2457,7 @@ void UpdateNPC()
                     {
                         if (GetItemVectorId(Me->TargetId) != -1)
                         {
-                            if (math::Closeish(
+                            if (math::closeish(
                                     Me->xpos, Me->ypos,
                                     (*ListGet(worlditems,
                                               GetItemVectorId(Me->TargetId)))
@@ -2484,7 +2484,7 @@ void UpdateNPC()
                     {
                         if (GetItemVectorId(Me->TargetId) != -1)
                         {
-                            if (math::Closeish(
+                            if (math::closeish(
                                     Me->xpos, Me->ypos,
                                     (*ListGet(worlditems,
                                               GetItemVectorId(Me->TargetId)))
@@ -2522,7 +2522,7 @@ void UpdateNPC()
                     {
                         if (GetItemVectorId(Me->TargetId) != -1)
                         {
-                            if (math::Closeish(
+                            if (math::closeish(
                                     Me->xpos, Me->ypos,
                                     (*ListGet(worlditems,
                                               GetItemVectorId(Me->TargetId)))
@@ -2569,12 +2569,12 @@ void UpdateNPC()
                     math::Vec2f(Me->xpos, Me->ypos) != Me->TargetPos)
                 { // Walk Move
                     if (Me->Attacking && Me->HasWeapon("Gun") &&
-                        math::Closeish(Me->xpos, Me->ypos, Me->TargetPos.x,
+                        math::closeish(Me->xpos, Me->ypos, Me->TargetPos.x,
                                        Me->TargetPos.y) < Me->viewrange)
                     {
                     }
                     else if (Me->Attacking && Me->HasWeapon("Sword") &&
-                             math::Closeish(Me->xpos, Me->ypos, Me->TargetPos.x,
+                             math::closeish(Me->xpos, Me->ypos, Me->TargetPos.x,
                                             Me->TargetPos.y) < 10)
                     {
                     }
@@ -2770,7 +2770,7 @@ void UpdateNPC()
 
         } // End of CanMove
         //Me->angle = Math::AngleBetweenVectors(Math::Vec(TempXpos,TempYpos),Math::Vec(Me->xpos,Me->ypos))-180;
-        Me->angle = math::AngleBetweenVectors(Me->TargetPos,
+        Me->angle = math::angleBetweenVectors(Me->TargetPos,
                                               math::Vec2f(Me->xpos, Me->ypos));
         Me->MomMove();
         //float f=Math::AngleBetweenVectors(sf::Vector2f(Me->xpos,Me->ypos), Me->TargetPos);Me->img.setRotation(f);
@@ -3291,7 +3291,7 @@ int main()
 
             for (auto &worlditem : worlditems)
             {
-                if (math::Closeish(gvars::MousePos.x, gvars::MousePos.y,
+                if (math::closeish(gvars::MousePos.x, gvars::MousePos.y,
                                    (worlditem).xpos, (worlditem).ypos) <= 10)
                 {
                     std::cout << "Found; " << (worlditem).name << std::endl;
@@ -4124,7 +4124,7 @@ int main()
             { // Giving Orders
                 npclist.at(gvars::MyTarget).TargetPos = gvars::MousePos;
                 npclist.at(gvars::MyTarget).action = "Orders";
-                if (math::Closeish(npclist.at(gvars::MyTarget).xpos,
+                if (math::closeish(npclist.at(gvars::MyTarget).xpos,
                                    npclist.at(gvars::MyTarget).ypos,
                                    gvars::MousePos.x, gvars::MousePos.y) <= 10)
                 {
@@ -4134,7 +4134,7 @@ int main()
 
                 for (auto const &item : worlditems)
                 {
-                    if (math::Closeish(gvars::MousePos.x, gvars::MousePos.y,
+                    if (math::closeish(gvars::MousePos.x, gvars::MousePos.y,
                                        item.xpos, item.ypos) <= 10)
                     {
                         GC.MenuType = "CritterContext";
@@ -4349,7 +4349,7 @@ int main()
             Effectz.CreateCircle(xanchor, yanchor, 5, sf::Color::Blue);
             Effectz.CreateCircle(Xxx, Yyy, 5, sf::Color::White);
 
-            int distence = math::Closeish(xanchor, yanchor, Xxx, Yyy);
+            int distence = math::closeish(xanchor, yanchor, Xxx, Yyy);
             cText.CreateText(xanchor, yanchor, 11, sf::Color::White,
                              "Distence:", "", distence);
             cText.CreateText(xanchor, yanchor + 11, 11, sf::Color::White,
@@ -4986,36 +4986,36 @@ int main()
             cText.CreateText(
                 gvars::TopLeft.x + 2, gvars::TopLeft.y + (HUDZ++) * 11, 11,
                 sf::Color::White, "FactionOwned: ",
-                WorldMap[math::Clamp(abs(gvars::MousePos.x / 20), 0, 99)]
-                        [math::Clamp(abs(gvars::MousePos.y / 20), 0, 99)]
+                WorldMap[math::clamp(abs(gvars::MousePos.x / 20), 0, 99)]
+                        [math::clamp(abs(gvars::MousePos.y / 20), 0, 99)]
                             .Owner);
             cText.CreateText(
                 gvars::TopLeft.x + 2, gvars::TopLeft.y + (HUDZ++) * 11, 11,
                 sf::Color::White, "FactionMembers: ", "",
-                FactionMembers(WorldMap[math::Clamp(
+                FactionMembers(WorldMap[math::clamp(
                     abs(gvars::MousePos.x / 20), 0,
-                    99)][math::Clamp(abs(gvars::MousePos.y / 20), 0, 99)]
+                    99)][math::clamp(abs(gvars::MousePos.y / 20), 0, 99)]
                                    .Owner));
             cText.CreateText(
                 gvars::TopLeft.x + 2, gvars::TopLeft.y + (HUDZ++) * 11, 11,
                 sf::Color::White, "FactionAggression: ", "",
-                FactionAggression(WorldMap[math::Clamp(
+                FactionAggression(WorldMap[math::clamp(
                     abs(gvars::MousePos.x / 20), 0,
-                    99)][math::Clamp(abs(gvars::MousePos.y / 20), 0, 99)]
+                    99)][math::clamp(abs(gvars::MousePos.y / 20), 0, 99)]
                                       .Owner));
             cText.CreateText(
                 gvars::TopLeft.x + 2, gvars::TopLeft.y + (HUDZ++) * 11, 11,
                 sf::Color::White, "FactionTerritories: ", "",
-                FactionTerritories(WorldMap[math::Clamp(
+                FactionTerritories(WorldMap[math::clamp(
                     abs(gvars::MousePos.x / 20), 0,
-                    99)][math::Clamp(abs(gvars::MousePos.y / 20), 0, 99)]
+                    99)][math::clamp(abs(gvars::MousePos.y / 20), 0, 99)]
                                        .Owner));
             cText.CreateText(
                 gvars::TopLeft.x + 2, gvars::TopLeft.y + (HUDZ++) * 11, 11,
                 sf::Color::White, "FactionPower: ", "",
-                FactionPower(WorldMap[math::Clamp(
+                FactionPower(WorldMap[math::clamp(
                     abs(gvars::MousePos.x / 20), 0,
-                    99)][math::Clamp(abs(gvars::MousePos.y / 20), 0, 99)]
+                    99)][math::clamp(abs(gvars::MousePos.y / 20), 0, 99)]
                                  .Owner));
 
             cText.CreateText(gvars::TopLeft.x + 2,
@@ -5456,7 +5456,7 @@ int main()
                         tfunz++;
                         if (Key.LMB == true)
                         {
-                            int Dist = math::Closeish(gvars::MousePos.x,
+                            int Dist = math::closeish(gvars::MousePos.x,
                                                       gvars::MousePos.y,
                                                       elem.xpos, elem.ypos);
                             if (Dist <= GridSize)
@@ -5736,7 +5736,7 @@ int main()
             { // Mousing over items will say a wee bit about them.
                 for (auto const &item : worlditems)
                 {
-                    if (math::Closeish(gvars::MousePos.x, gvars::MousePos.y,
+                    if (math::closeish(gvars::MousePos.x, gvars::MousePos.y,
                                        item.xpos, item.ypos) <= 10)
                     {
                         cText.CreateText(item.xpos, item.ypos, 11,

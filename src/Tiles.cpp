@@ -608,7 +608,7 @@ void DrawWorldTiles()
                         ((t * 20) + 20) - 1, sf::Color(0, 0, 0, 0), 1,
                         sf::Color(
                             255, 0, 0,
-                            math::Clamp(10 * WorldMap[i][t].Infected, 0, 255)));
+                            math::clamp(10 * WorldMap[i][t].Infected, 0, 255)));
                 }
                 if (WorldMap[i][t].Owner != "")
                 {

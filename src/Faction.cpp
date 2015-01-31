@@ -70,7 +70,7 @@ std::set<int> NPC::Melee(int /*min*/, int /*max*/, int range,
     if (FirstStrike == false)
     {
         Degrees =
-            math::AngleBetweenVectors(sf::Vector2f(xpos, ypos), TargetPos) - 90;
+            math::angleBetweenVectors(sf::Vector2f(xpos, ypos), TargetPos) - 90;
         FirstStrike = true;
     }
     for (int i = 0; i != 30; i++)
@@ -89,7 +89,7 @@ std::set<int> NPC::Melee(int /*min*/, int /*max*/, int range,
         }
     }
     if (Degrees >=
-        math::AngleBetweenVectors(sf::Vector2f(xpos, ypos), TargetPos) + 90)
+        math::angleBetweenVectors(sf::Vector2f(xpos, ypos), TargetPos) + 90)
     {
         Attacking = false;
         FirstStrike = false;
@@ -760,8 +760,8 @@ void NPC::MomMove()
     xpos += (Momentum.x / size);
     ypos += (Momentum.y / size);
 
-    Momentum.x = math::Clamp((Momentum.x - gvars::AirPressure), 0, 9999999);
-    Momentum.y = math::Clamp((Momentum.y - gvars::AirPressure), 0, 9999999);
+    Momentum.x = math::clamp((Momentum.x - gvars::AirPressure), 0, 9999999);
+    Momentum.y = math::clamp((Momentum.y - gvars::AirPressure), 0, 9999999);
 }
 
 void NPC::MoveNorth()
@@ -1103,7 +1103,7 @@ float NPC::bloodworkXX(std::string aliment, int amount)
 bool NPC::CloseToTarget(int distance, sf::Vector2f Tar)
 {
     int numbz = 0;
-    numbz = math::Closeish(xpos, ypos, Tar.x, Tar.y);
+    numbz = math::closeish(xpos, ypos, Tar.x, Tar.y);
     if (numbz <= distance)
     {
         return true;
@@ -1564,7 +1564,7 @@ std::set<int> NPCTrace(int xa, int ya, int xb, int yb, int id,
 
             for (Me = npclist.begin(); Me != npclist.end(); ++Me)
             {
-                if (math::Closeish(x, y, Me->xpos, Me->ypos) <= Me->size &&
+                if (math::closeish(x, y, Me->xpos, Me->ypos) <= Me->size &&
                     Me->id != id)
                 {
 
@@ -1941,7 +1941,7 @@ void BuildStartingCritters(int ZedAmount)
                     }*/
             for (size_t count = 0; count != Squady.Squad.size(); count++)
             {
-                sf::Vector2f vPos = math::CircleRandz(1000, 1000, 180);
+                sf::Vector2f vPos = math::circleRandz(1000, 1000, 180);
                 //SpawnCritter("Human",vPos.x,vPos.y);
                 Squady.Squad.at(count).xpos = vPos.x;
                 Squady.Squad.at(count).ypos = vPos.y;
@@ -1953,7 +1953,7 @@ void BuildStartingCritters(int ZedAmount)
             for (int zeds = 0; zeds != ZedAmount; zeds++)
             {
                 Con("Starting Zed");
-                sf::Vector2f vPos = math::CircleRandz(1000, 1000, 580);
+                sf::Vector2f vPos = math::circleRandz(1000, 1000, 580);
                 SpawnCritter("Zombie", vPos.x, vPos.y);
                 Con("Ending Zed");
             }
@@ -2134,7 +2134,7 @@ void Boom(int xpos, int ypos, int damage, int size)
     std::vector<NPC>::iterator Me;
     for (Me = npclist.begin(); Me != npclist.end(); ++Me)
     {
-        if (math::Closeish(xpos, ypos, Me->xpos, Me->ypos) < size)
+        if (math::closeish(xpos, ypos, Me->xpos, Me->ypos) < size)
         {
             Me->modhealth(-damage);
         }

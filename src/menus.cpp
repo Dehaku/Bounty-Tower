@@ -28,7 +28,7 @@ void button::DrawButton()
                              sf::Color(Color.r / 2, Color.g / 2, Color.b / 2),
                              2, sf::Color::White);
     }
-    else if (math::Closeish(gvars::MousePos.x, gvars::MousePos.y, vPos.x,
+    else if (math::closeish(gvars::MousePos.x, gvars::MousePos.y, vPos.x,
                             vPos.y) < iSize)
     {
         //Effectz.CreateCircle(vPos.x,vPos.y,iSize,Color,2,White);
@@ -102,7 +102,7 @@ void Buttons::ButtonPressed()
 {
     for (auto const &button : vButtonList)
     {
-        if (math::Closeish(gvars::MousePos.x, gvars::MousePos.y, button.vPos.x,
+        if (math::closeish(gvars::MousePos.x, gvars::MousePos.y, button.vPos.x,
                            button.vPos.y) < button.iSize)
         {
             std::cout << "Button Click!\n";
@@ -155,7 +155,7 @@ bool ButtonClicked(int id)
     {
         if (button.id == id)
         {
-            if (math::Closeish(gvars::MousePos.x, gvars::MousePos.y,
+            if (math::closeish(gvars::MousePos.x, gvars::MousePos.y,
                                button.vPos.x, button.vPos.y) < button.iSize &&
                 (Key.LMBTime == 1 || Key.LMBTime > 20))
             {
@@ -979,7 +979,7 @@ MenuPopUp() // TODO: Add functionality to allow you to press 1-9 to activate the
                     for (Item = worlditems.begin(); Item != worlditems.end();
                          Item++)
                     {
-                        if (math::Closeish(GC.MenuPos.x, GC.MenuPos.y,
+                        if (math::closeish(GC.MenuPos.x, GC.MenuPos.y,
                                            Item->xpos, Item->ypos) <= 10)
                         {
                             if (Item->Pickupable == true)
@@ -1024,7 +1024,7 @@ void RightMouseButtonContextMenu()
 
         for (size_t i = 0; i != npclist.size(); i++)
         {
-            if (math::Closeish(gvars::MousePos.x, gvars::MousePos.y,
+            if (math::closeish(gvars::MousePos.x, gvars::MousePos.y,
                                npclist[i].xpos,
                                npclist[i].ypos) <= npclist[i].size)
             {
@@ -1036,7 +1036,7 @@ void RightMouseButtonContextMenu()
 
         for (auto &worlditem : worlditems)
         {
-            if (math::Closeish(gvars::MousePos.x, gvars::MousePos.y,
+            if (math::closeish(gvars::MousePos.x, gvars::MousePos.y,
                                (worlditem).xpos, (worlditem).ypos) <= 10)
             {
                 GC.MenuType = "ItemRMB";

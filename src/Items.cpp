@@ -408,8 +408,8 @@ item *FindClosestItemPtr(int Orix, int Oriy, std::string TarItem, int /*Gxpos*/,
         {
             if ((*i).name == TarItem)
             {
-                int one = math::Closeish(Orix, Oriy, (*i).xpos, (*i).ypos);
-                int two = math::Closeish(Orix, Oriy, closx, closy);
+                int one = math::closeish(Orix, Oriy, (*i).xpos, (*i).ypos);
+                int two = math::closeish(Orix, Oriy, closx, closy);
                 if (one < two)
                 {
                     closx = (*i).xpos;

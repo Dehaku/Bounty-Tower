@@ -156,7 +156,7 @@ void GalaxyController::BuildLocal(std::string Type, int ZedAmount)
             {
                 for (int count = 0; count <= 2; count++)
                 {
-                    sf::Vector2f vPos = math::CircleRandz(1000, 1000, 180);
+                    sf::Vector2f vPos = math::circleRandz(1000, 1000, 180);
                     SpawnCritter("Human", vPos.x, vPos.y);
                 }
 
@@ -258,7 +258,7 @@ void GalaxyController::BuildLocal(std::string Type, int ZedAmount)
                     }*/
                 for (size_t count = 0; count != Squady.Squad.size(); count++)
                 {
-                    sf::Vector2f vPos = math::CircleRandz(1000, 1000, 180);
+                    sf::Vector2f vPos = math::circleRandz(1000, 1000, 180);
                     //SpawnCritter("Human",vPos.x,vPos.y);
                     Squady.Squad.at(count).xpos = vPos.x;
                     Squady.Squad.at(count).ypos = vPos.y;
@@ -269,7 +269,7 @@ void GalaxyController::BuildLocal(std::string Type, int ZedAmount)
                 for (int zeds = 0; zeds != ZedAmount; zeds++)
                 {
                     Con("Starting Zed");
-                    sf::Vector2f vPos = math::CircleRandz(1000, 1000, 580);
+                    sf::Vector2f vPos = math::circleRandz(1000, 1000, 580);
                     SpawnCritter("Zombie", vPos.x, vPos.y);
                     Con("Ending Zed");
                 }
@@ -380,7 +380,7 @@ void GalaxyController::BuildLocalTest()
         {
             for (int count = 0; count <= 2; count++)
             {
-                sf::Vector2f vPos = math::CircleRandz(1000, 1000, 180);
+                sf::Vector2f vPos = math::circleRandz(1000, 1000, 180);
                 SpawnCritter("Human", vPos.x, vPos.y);
             }
 
@@ -414,7 +414,7 @@ void GalaxyController::ZombieSwarmLocal(int num)
     {
         for (int count = 0; count <= num; count++)
         {
-            sf::Vector2f Pos = math::CircleRandz(1000, 1000, 500);
+            sf::Vector2f Pos = math::circleRandz(1000, 1000, 500);
             SpawnCritter("Zombie", Pos.x, Pos.y);
         }
     }
