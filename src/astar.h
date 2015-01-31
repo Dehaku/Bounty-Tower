@@ -3,12 +3,12 @@
 
 namespace astar
 {
-const int AStarmapWidth = 100, mapHeight = 100, tileSize = 20, numberPeople = 3;
+const int mapWidth = 100, mapHeight = 100, tileSize = 20, numberPeople = 3;
 const int notfinished = 0, notStarted = 0; // path-related constants
 const int AStarFound = 1, nonexistent = 2;
 const int walkable = 0, unwalkable = 1; // walkability array constants
 
-extern char walkability[AStarmapWidth][mapHeight];
+extern char walkability[mapWidth][mapHeight];
 //stores length of the AStarFound path for critter
 extern int pathLength[numberPeople + 1];
 //stores current position along the chosen path for critter

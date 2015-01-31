@@ -6,26 +6,26 @@
 namespace astar
 {
 int onClosedList = 10;
-char walkability[AStarmapWidth][mapHeight];
+char walkability[mapWidth][mapHeight];
 //1 dimensional array holding ID# of open list items
-int openList[AStarmapWidth * mapHeight + 2];
+int openList[mapWidth * mapHeight + 2];
 // 2 dimensional array used to record
 // whether a cell is on the open list or on the closed list.
-int whichList[AStarmapWidth + 1][mapHeight + 1];
+int whichList[mapWidth + 1][mapHeight + 1];
 //1d array stores the x location of an item on the open list
-int openX[AStarmapWidth * mapHeight + 2];
+int openX[mapWidth * mapHeight + 2];
 //1d array stores the y location of an item on the open list
-int openY[AStarmapWidth * mapHeight + 2];
+int openY[mapWidth * mapHeight + 2];
 //2d array to store parent of each cell (x)
-int parentX[AStarmapWidth + 1][mapHeight + 1];
+int parentX[mapWidth + 1][mapHeight + 1];
 //2d array to store parent of each cell (y)
-int parentY[AStarmapWidth + 1][mapHeight + 1];
+int parentY[mapWidth + 1][mapHeight + 1];
 //1d array to store F cost of a cell on the open list
-int Fcost[AStarmapWidth * mapHeight + 2];
+int Fcost[mapWidth * mapHeight + 2];
 //2d array to store G cost for each cell.
-int Gcost[AStarmapWidth + 1][mapHeight + 1];
+int Gcost[mapWidth + 1][mapHeight + 1];
 //1d array to store H cost of a cell on the open list
-int Hcost[AStarmapWidth * mapHeight + 2];
+int Hcost[mapWidth * mapHeight + 2];
 int pathLength[numberPeople + 1];
 int pathLocation[numberPeople + 1];
 int *pathBank[numberPeople + 1];
@@ -81,7 +81,7 @@ int findPath(int pathfinderID, int startingX, int startingY, int targetX,
     //3.Reset some variables that need to be cleared
     if (onClosedList > 1000000) //reset whichList occasionally
     {
-        for (int x = 0; x < AStarmapWidth; x++)
+        for (int x = 0; x < mapWidth; x++)
         {
             for (int y = 0; y < mapHeight; y++)
                 whichList[x][y] = 0;
@@ -183,8 +183,7 @@ int findPath(int pathfinderID, int startingX, int startingY, int targetX,
                 {
 
                     //	If not off the map (do this first to avoid array out-of-bounds errors)
-                    if (a != -1 && b != -1 && a != AStarmapWidth &&
-                        b != mapHeight)
+                    if (a != -1 && b != -1 && a != mapWidth && b != mapHeight)
                     {
 
                         //	If not already on the closed list (items on the closed list have
