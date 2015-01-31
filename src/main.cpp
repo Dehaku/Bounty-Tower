@@ -1,21 +1,7 @@
-#include <SFML/System.hpp>
-#include <SFML/Graphics.hpp>
-#include <SFML/Window.hpp>
-#include <iostream>
-#include <fstream>
-#include <sstream>
-#include <stdio.h>
-#include <stdlib.h>
-#include <set>
-#include <string>
-#include <vector>
-#include <dirent.h>
-#include <math.h>
-#include <memory.h>
+#include <cstring>
 #ifndef GALAXY_LINUX
 #include <windows.h>
 #endif
-#include <time.h>
 #include "Items.h"
 #include "Faction.h"
 #include "Tiles.h"
