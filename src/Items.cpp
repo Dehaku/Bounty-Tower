@@ -14,28 +14,24 @@ extern sf::RenderWindow window;
 std::list<item> worlditems;
 cItemManager itemmanager;
 
-void RemoveItems()
+void RemoveItems(std::list<item> &Items)
 {
     bool Done = false;
     while (Done == false)
     {
-        bool Yet = false;
-        //*for(int i = 0; i != worlditems.size(); i++)
-        for (auto i = worlditems.begin(); i != worlditems.end(); i++)
+        Done = true;
+        for (auto it = Items.begin(); it != Items.end(); ++it)
         {
-            if ((*i).ToDelete == true)
+            if (it->ToDelete)
             {
-                worlditems.erase(i);
-                Yet = true;
+                Done = false;
+                Items.erase(it);
                 break;
             }
         }
-        if (Yet == false)
-        {
-            Done = true;
-        }
     }
 }
+
 
 void zSaveItem(int /*planet*/, sf::Vector2i Region, item &object)
 {
@@ -272,7 +268,7 @@ item *GetItemPtrfromVector(std::list<item> &Vector, std::string Name)
 {
     debug("Doing GetItmPtr");
     //*for(int i = 0; i != Vector.size(); i++)
-    for (auto i = Vector.begin(); i != Vector.begin(); i++)
+    for (auto i = Vector.begin(); i != Vector.end(); i++)
     {
         if ((*i).name == Name)
         {
@@ -307,7 +303,7 @@ item *GetItemPtrfromVectorVarSearch(std::list<item> &Vector,
 {
     debug("Doing GetItmPtrVarSearch");
     //for(int i = 0; i != Vector.size(); i++)
-    for (auto i = Vector.begin(); i != Vector.begin(); i++)
+    for (auto i = Vector.begin(); i != Vector.end(); i++)
     {
 
         if ((*i).MassFlesh >= AtLeast && VarSearch == "MassFlesh")
@@ -356,7 +352,7 @@ item *FindClosestItemPtr(int Orix, int Oriy, std::string TarItem, int /*Gxpos*/,
 
     item *Returns;
 
-    for (auto i = worlditems.begin(); i != worlditems.begin(); i++)
+    for (auto i = worlditems.begin(); i != worlditems.end(); i++)
     {
         if (first == true)
         {
@@ -502,6 +498,8 @@ item::item()
     // This may be a little confusing, This is so the item can stay
     // inside without being ejected because one function doesn't need it.
     HasInternalUse = 0;
+
+    User = nullptr;
 
     hungervalue = 0;
     thirstvalue = 0;

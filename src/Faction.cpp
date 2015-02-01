@@ -366,6 +366,11 @@ NPC::NPC()
     Skills.charismaxp = 0;
     Skills.perceptionxp = 0;
     Skills.agilityxp = 0;
+
+    Target.Item = nullptr;
+    Target.NPC = nullptr;
+    Target.Tile = nullptr;
+
     maxhealth = Skills.endurance * 0.8;
     regentimerint = 100;
     regentimer = regentimerint;
@@ -459,6 +464,7 @@ NPC::NPC()
     AllowedDrink = true;
     NeedsPath = false;
 }
+
 
 void NPC::ReCreateSkills()
 {

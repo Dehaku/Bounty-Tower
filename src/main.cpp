@@ -596,6 +596,494 @@ std::set<int> NpcList(int exceptions = -1)
     throw std::runtime_error("NpcList: Couldn't return anything!");
 }
 
+
+void critterBrain(std::vector<NPC> &NPCs)
+{
+    for(auto &npc : NPCs)
+    {
+
+        // BodyPart Loop
+        // First, Run through the bodyparts finding the 'global' tags, like Nutrient Extraction and such.
+        // Second, Run through each individual part running through all the local tags.
+
+        short int Parts = 0;
+        size_t SearchPos = 0;
+        size_t EndPos = 0;
+
+        debug("Debug: Beginning Part Loop for" + npc.name);
+
+        //  Global Part Tag Variables
+
+        float PartsWalkSpeed = 0;
+        float GlobalNutritionPercentage = 100;
+        bool ConsumeFlesh = false;
+        bool ConsumeVeggy = false;
+        bool ConsumeWater = false;
+
+        //  *   Global Part Tag Variables   *
+
+        while (SearchPos != npc.Body.BodyParts.npos) // Global Part Tags
+        {
+            SearchPos = npc.Body.BodyParts.find("{", SearchPos);
+
+            if (SearchPos != npc.Body.BodyParts.npos)
+            {
+                EndPos = npc.Body.BodyParts.find("}", SearchPos);
+
+                std::string WorkingLine;
+
+                WorkingLine.append(npc.Body.BodyParts, SearchPos,
+                                   EndPos - SearchPos);
+                float PartNumber = 0;
+
+                PartNumber = StringFindNumber(WorkingLine, "[Walk:");
+                if (PartNumber != 0)
+                {
+
+                    if (PartsWalkSpeed != 0)
+                    {
+                        PartsWalkSpeed = PartNumber;
+                    }
+                    else
+                    {
+                        PartsWalkSpeed += (PartNumber * 0.5);
+                    }
+                }
+
+                PartNumber =
+                    StringFindNumber(WorkingLine, "[NutritionExtraction:");
+                if (PartNumber != 0)
+                {
+                    GlobalNutritionPercentage += PartNumber;
+                }
+
+                PartNumber = StringFindNumber(WorkingLine, "[DigestsBlood:");
+                if (PartNumber != 0)
+                {
+                }
+                PartNumber = StringFindNumber(WorkingLine, "[DigestsFlesh:");
+                if (PartNumber != 0)
+                {
+                    ConsumeFlesh = true;
+                }
+                PartNumber = StringFindNumber(WorkingLine, "[DigestsVeggy:");
+                if (PartNumber != 0)
+                {
+                    ConsumeVeggy = true;
+                }
+                PartNumber = StringFindNumber(WorkingLine, "[DigestsWater:");
+                if (PartNumber != 0)
+                {
+                    ConsumeWater = true;
+                }
+
+                SearchPos = EndPos;
+            }
+        }
+
+        SearchPos = 0;
+        EndPos = 0;
+
+        //for(int i = 0; i != npc.inventory.size(); i++)
+        for (auto i = npc.inventory.begin(); i != npc.inventory.end(); i++)
+        {
+            if ((*i).InsidePart != "")
+            {
+                (*i).HasInternalUse--;
+            }
+        }
+
+        while (SearchPos != npc.Body.BodyParts.npos) // Individual Part Tags
+        {
+
+            SearchPos = npc.Body.BodyParts.find("{", SearchPos);
+
+            if (SearchPos != npc.Body.BodyParts.npos)
+            {
+                EndPos = npc.Body.BodyParts.find("}", SearchPos);
+                Parts++;
+
+                std::string WorkingLine;
+
+                WorkingLine.append(npc.Body.BodyParts, SearchPos,
+                                   EndPos - SearchPos);
+
+                float PartNumber = 0;
+                std::string PartString = "";
+                item *PartItem;
+
+                std::string CurrentPart =
+                    StringFindString(WorkingLine, "[Name:");
+
+                PartNumber = StringFindNumber(WorkingLine, "[DigestsBlood:");
+                PartItem = GetItemPtrfromVector(npc.inventory, "Blood");
+                if (PartNumber != 0 && PartItem != nullptr)
+                {
+
+                    float WorkAmount = PartItem->amount;
+                    float Diff = WorkAmount - (PartNumber / 1000);
+
+                    if (Diff > 0)
+                    {
+                        PartItem->amount = Diff;
+                        float Nutr = (WorkAmount - Diff) *
+                                     100; // TODO: Figure this out better.
+                        npc.bloodwork(
+                            "Nutrients",
+                            Nutr * PercentageBuff(GlobalNutritionPercentage));
+                    }
+                    else
+                    {
+                        //*GetItemPtrfromVector(npc.inventory,"Blood").amount = 0;
+                        GetItemPtrfromVector(npc.inventory, "Blood")->ToDelete =
+                            true;
+                        float Nutr =
+                            WorkAmount * 100; // TODO: Figure this out better.
+                        npc.bloodwork(
+                            "Nutrients",
+                            Nutr * PercentageBuff(GlobalNutritionPercentage));
+                    }
+                }
+
+                PartNumber = StringFindNumber(WorkingLine, "[DigestsFlesh:");
+                PartItem =
+                    GetItemPtrfromVectorVarSearch(npc.inventory, "MassFlesh");
+                //if(PartItem != NULL) PartItem->HasInternalUse++; // This is designed to keep items from being ejected until they are completely useless to a critter, I.E. Items with multiple Food Mass's.
+                if (PartNumber != 0 && PartItem != nullptr &&
+                    PartItem->MassFlesh >
+                        0) // TODO: Make sure the item is in THIS PART before digesting it!
+                {
+                    //std::cout << "HasInternalUse: " << PartItem->HasInternalUse << std::endl;
+                    float WorkAmount = PartItem->MassFlesh;
+                    float Diff = WorkAmount - (PartNumber / 1000);
+
+                    if (Diff > 0)
+                    {
+                        PartItem->MassFlesh = Diff;
+                        PartItem->HasInternalUse = 0;
+                        float Nutr = (WorkAmount - Diff) *
+                                     100; // TODO: Figure this out better.
+                        npc.bloodwork(
+                            "Nutrients",
+                            Nutr * PercentageBuff(GlobalNutritionPercentage));
+                    }
+                    if (PartItem->MassFlesh <= 0)
+                    {
+                        //*GetItemPtrfromVector(npc.inventory,"Blood").amount = 0;
+                        PartItem->ToDelete = true;
+                        //Add Food to everyone, Make sure they go hungry to eat it, Figure out a way to Eject the empty item, Or do water! Everyone starts with water.
+                        //npc.bloodwork("Nutrients",Nutr*PercentageBuff(GlobalNutritionPercentage));
+                    }
+                }
+
+                PartNumber = StringFindNumber(WorkingLine, "[DigestsVeggy:");
+                PartItem =
+                    GetItemPtrfromVectorVarSearch(npc.inventory, "MassVeggy");
+                //if(PartItem != NULL) PartItem->HasInternalUse++; // This is designed to keep items from being ejected until they are completely useless to a critter, I.E. Items with multiple Food Mass's.
+                if (PartNumber != 0 && PartItem != nullptr &&
+                    PartItem->MassVeggy >
+                        0) // TODO: Make sure the item is in THIS PART before digesting it!
+                {
+                    //std::cout << "HasInternalUse: " << PartItem->HasInternalUse << std::endl;
+                    float WorkAmount = PartItem->MassVeggy;
+                    float Diff = WorkAmount - (PartNumber / 1000);
+
+                    if (Diff > 0)
+                    {
+                        PartItem->MassVeggy = Diff;
+                        PartItem->HasInternalUse = 0;
+                        float Nutr = (WorkAmount - Diff) *
+                                     100; // TODO: Figure this out better.
+                        npc.bloodwork(
+                            "Nutrients",
+                            Nutr * PercentageBuff(GlobalNutritionPercentage));
+                    }
+                    if (PartItem->MassVeggy <= 0)
+                    {
+                        PartItem->ToDelete = true;
+                        //npc.bloodwork("Nutrients",Nutr*PercentageBuff(GlobalNutritionPercentage));
+                    }
+                }
+
+                PartNumber = StringFindNumber(WorkingLine, "[DigestsWater:");
+                PartItem =
+                    GetItemPtrfromVectorVarSearch(npc.inventory, "MassWater");
+                //if(PartItem != NULL) PartItem->HasInternalUse++; // This is designed to keep items from being ejected until they are completely useless to a critter, I.E. Items with multiple Food Mass's.
+                if (PartNumber != 0 && PartItem != nullptr &&
+                    PartItem->MassWater >
+                        0) // TODO: Make sure the item is in THIS PART before digesting it!
+                {
+                    //std::cout << "HasInternalUse: " << PartItem->HasInternalUse << std::endl;
+                    float WorkAmount = PartItem->MassWater;
+                    float Diff = WorkAmount - (PartNumber / 1000);
+
+                    if (Diff > 0)
+                    {
+                        PartItem->MassWater = Diff;
+                        PartItem->HasInternalUse = 0;
+                        float Nutr = (WorkAmount - Diff) *
+                                     100; // TODO: Figure this out better.
+                        npc.bloodwork(
+                            "Hydration",
+                            Nutr * PercentageBuff(GlobalNutritionPercentage));
+                    }
+                    if (PartItem->MassWater <= 0)
+                    {
+                        PartItem->ToDelete = true;
+                        //npc.bloodwork("Nutrients",Nutr*PercentageBuff(GlobalNutritionPercentage));
+                    }
+                }
+
+                PartString = StringFindString(WorkingLine, "[PoisonFilter:");
+                if (PartString != "")
+                {
+
+                    std::vector<std::string> StrVec =
+                        StringFindElements(PartString, ":");
+                    if (gvars::Debug)
+                        std::cout << "StrVec[0]: " << StrVec[0] << std::endl;
+                    float Leftover =
+                        npc.bloodwork(StrVec[0], -atof(StrVec[1].c_str()));
+                    if (gvars::Debug)
+                        std::cout << "Bloodwork leftover is: " << Leftover
+                                  << std::endl;
+                    //NPC Critter;
+
+                    for (size_t i = 0; i != StrVec.size(); i++)
+                    {
+                        if (gvars::Debug)
+                            std::cout << StrVec[i] << std::endl;
+                    }
+                }
+
+                PartNumber = StringFindNumber(WorkingLine, "[Orafice:");
+                if (PartNumber > 0)
+                {
+                    //std::vector<item> * Inv = &npc.inventory;
+
+                    //for(int i = 0; i != npc.inventory.size(); i++)
+                    for (auto i = npc.inventory.begin();
+                         i != npc.inventory.end(); i++)
+                    {
+                        bool FoundIt = false;
+                        if ((*i).InsidePart == "" && (*i).MassFlesh > 0 &&
+                            ConsumeFlesh) // Awww yeeessss, We gonna eat some flesh with our Orafice!
+                        {
+                            (*i).InsidePart = CurrentPart;
+                            FoundIt = true;
+                        }
+
+                        if ((*i).InsidePart == "" && (*i).MassVeggy > 0 &&
+                            ConsumeVeggy) // Awww yeeessss, We gonna eat something with our Orafice!
+                        {
+                            (*i).InsidePart = CurrentPart;
+                            FoundIt = true;
+                        }
+
+                        if ((*i).InsidePart == "" && (*i).MassWater > 0 &&
+                            ConsumeWater) // Awww yeeessss, We gonna eat something with our Orafice!
+                        {
+                            (*i).InsidePart = CurrentPart;
+                            FoundIt = true;
+                        }
+
+                        if (FoundIt)
+                        {
+                            std::string ChtStr;
+                            ChtStr.append("* ");
+                            ChtStr.append(npc.name);
+                            ChtStr.append("(" + std::to_string(npc.id) + ")");
+                            ChtStr.append(" has inserted ");
+                            ChtStr.append((*i).name);
+                            ChtStr.append(" into their ");
+                            ChtStr.append(CurrentPart);
+                            ChtStr.append("'s Orafice(");
+                            ChtStr.append(std::to_string(PartNumber));
+                            ChtStr.append(").");
+
+                            ChatBox.AddChat(ChtStr, sf::Color(150, 150, 0));
+                        }
+                    }
+                }
+
+                PartNumber = StringFindNumber(
+                    WorkingLine, "[BloodPumpRate:"); // TODO: Do this right.
+                if (PartNumber != 0)
+                {
+                    float Blood =
+                        StringFindNumber(npc.bloodcontent, "[Nutrients:");
+                    if (Blood > PartNumber)
+                    {
+                        if ((npc.maxhunger - npc.hunger) > PartNumber)
+                        {
+                            npc.hunger += PartNumber;
+                            npc.bloodwork("Nutrients", -PartNumber);
+                        }
+                    }
+                    Blood = StringFindNumber(npc.bloodcontent, "[Hydration:");
+                    if (Blood > PartNumber)
+                    {
+                        if ((npc.maxthirst - npc.thirst) > PartNumber)
+                        {
+                            npc.thirst += PartNumber;
+                            npc.bloodwork("Hydration", -PartNumber);
+                        }
+                    }
+                }
+                SearchPos = EndPos;
+            }
+        }
+
+        debug("Debug: Ending Part Loop");
+        // *BodyPart Loop*
+
+
+        /* Critter Prioritization */
+        // Method Two, Struct Desires
+        struct Desire
+        {
+            std::string DesireType;
+            float Potency;
+        };
+        std::vector<Desire> Desires;
+
+        // Declaring and adding Desires
+        Desire NewDesire;
+        {//Sustainence
+            NewDesire.DesireType = "Sustainence";
+            NewDesire.Potency = 0;
+        }
+        Desires.push_back(NewDesire);
+        {//Apathy
+            NewDesire.DesireType = "Apathy";
+            NewDesire.Potency = 100;
+        }
+        Desires.push_back(NewDesire);
+        {//SelfDefense
+            NewDesire.DesireType = "SelfDefense";
+            NewDesire.Potency = 0;
+        }
+        Desires.push_back(NewDesire);
+        {//Social
+            NewDesire.DesireType = "Social";
+            NewDesire.Potency = 0;
+        }
+        Desires.push_back(NewDesire);
+        {//Work
+            NewDesire.DesireType = "Work";
+            NewDesire.Potency = 0;
+        }
+        Desires.push_back(NewDesire);
+
+        /*Causation to Desires*/
+        // Get Critters max nutrition, then reduce it by critters nutrients in blood
+        float Nutrients = npc.maxhunger - npc.bloodwork("Nutrients",0);
+        float Hydration = npc.maxthirst - npc.bloodwork("Hydration",0);
+
+        for(auto &Sus : Desires)
+        {
+            if(Sus.DesireType == "Sustainence")
+                Sus.Potency += Hydration+Nutrients;
+            if(Sus.DesireType == "SelfDefense")
+                Sus.Potency == 10000;
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+        // Finding the highest Desire
+        bool InComplete;
+        ReDesire:
+        InComplete = false;
+        auto HighestDesire = Desires.begin();
+        for(auto &i : Desires)
+        {
+            if(i.Potency > (*HighestDesire).Potency)
+                (*HighestDesire) = i;
+        }
+
+
+        // Acting on Highest Desire
+        if((*HighestDesire).DesireType == "Apathy")
+        {
+            Effectz.CreateCircle(npc.xpos,npc.ypos,11,sf::Color::Red);
+        }
+        if((*HighestDesire).DesireType == "SelfDefense")
+        {
+            (*HighestDesire).Potency = 0;
+            InComplete = true;
+        }
+        if((*HighestDesire).DesireType == "Sustainence")
+        {
+            bool InInv = false;
+            for(auto &Inv : npc.inventory)
+                if(Inv.MassFlesh > 0)
+                {
+                    npc.Target.Item = &Inv;
+                    InInv = true;
+                    break;
+                }
+            if(InInv == false)
+            {
+                for(auto &LclItms : worlditems)
+                {
+                    if(npc.Target.Item == nullptr && LclItms.MassFlesh > 0 && LclItms.User == nullptr)
+                    {
+                        npc.Target.Item = &LclItms; // Is this creating a copy? The Behavior in testing still makes multiple critters target the same item.
+                        LclItms.User = &npc;
+                    }
+                    else if(LclItms.MassFlesh > 0 && LclItms.User == nullptr)
+                    {
+
+                        float CurrentItem = math::closeish(npc.xpos,npc.ypos,(*npc.Target.Item).xpos,(*npc.Target.Item).ypos);
+                        float NewItem = math::closeish(npc.xpos,npc.ypos,LclItms.xpos,LclItms.ypos);
+                        if(NewItem < CurrentItem)
+                        {
+                            (*npc.Target.Item).User = nullptr;
+                            npc.Target.Item = &LclItms;
+                            (*npc.Target.Item).User = &npc;
+                        }
+                    }
+                }
+            }
+
+
+            if(npc.Target.Item != nullptr && InInv == false)
+            {
+                Effectz.CreateLine(npc.xpos,npc.ypos,(*npc.Target.Item).xpos,(*npc.Target.Item).ypos,2,sf::Color::White);
+            }
+        }
+
+
+        // Incase the highest desire isn't completable, Go through again for the next highest desire.
+        if(InComplete)
+            goto ReDesire;
+
+
+
+        cText.CreateText(npc.xpos-30,npc.ypos-15,10,sf::Color::Red,(*HighestDesire).DesireType,":",(*HighestDesire).Potency);
+        cText.CreateText(npc.xpos-70,npc.ypos-35,10,sf::Color::Cyan,npc.Body.BodyParts);
+
+
+
+        /* End of Critter Prioritization */
+
+        RemoveItems(npc.inventory);
+
+
+
+    }
+}
+
 void updateNpc()
 {
     if (gvars::Debug)
@@ -610,7 +1098,6 @@ void updateNpc()
         // Second, Run through each individual part running through all the local tags.
 
         short int Parts = 0;
-
         size_t SearchPos = 0;
         size_t EndPos = 0;
 
@@ -970,8 +1457,6 @@ void updateNpc()
             }
         }
         */
-
-        //if(Parts != 0) std::cout << npc.name << " has " << Parts << " bodyparts. \n";
 
         debug("Debug: Ending Part Loop");
         // *BodyPart Loop*
@@ -3913,7 +4398,7 @@ int main()
                     }
                 }
                 UnpointItems(worlditems);
-                RemoveItems();
+                RemoveItems(worlditems);
             }
 
             //if(Key.b) Effectz.CreateBeam(1000,1000,MousePos.x,MousePos.y,50,Red,5,Blue,false,0);
@@ -5247,7 +5732,10 @@ int main()
                 itemmanager.AddItems();
                 if (gvars::Debug)
                     std::cout << "Doing Local Update NPC's\n";
-                updateNpc();
+                //updateNpc();
+
+                critterBrain(npclist);
+
                 if (gvars::Debug)
                     std::cout << "Pre Add Critters \n";
                 npcmanager.AddCritters();
@@ -5581,50 +6069,6 @@ int main()
             if (gvars::Debug)
                 std::cout << "Post Draw Stuffs \n";
 
-            /*
-
-        Sprt2.setTexture(*imagemanager.GetImage("TestImage.png") );
-        Sprt.setTexture(*imagemanager.GetImage("TestMask.png") );
-        renderTexture.create(1000,1000);
-        renderTexture.clear(sf::Color::Transparent);
-
-        //renderTexture.draw(Sprt2);
-        renderTexture.draw(Sprt);
-
-        renderTexture.display();
-
-
-
-
-        //Img.setTexture(*imagemanager.GetImage("TestImage.png"));
-
-        Img = renderTexture.getTexture().copyToImage();
-
-        Img.createMaskFromColor(sf::Color::Magenta);
-
-        Tex.loadFromImage(Img);
-
-        Sprt.setTexture(Tex);
-        Sprt.setPosition(MousePos);
-
-        App.draw(Sprt);
-        */
-
-            /*
-        // Update RenderTexture
-        renderTex.display();
-
-        // Turn the contents with your magenta shape into an Image and apply mask
-        img = renderTex.getTexture().copyToImage();
-        img.createMaskFromColor(sf::Color::Magenta);
-
-        // Update Texture from Image
-        tex.loadFromImage(img);
-
-        // Update Sprite from Texture
-        spr.setTexture(tex);
-            */
-
             window.display();
             window.clear();
         }
@@ -5632,7 +6076,7 @@ int main()
         debug("Starting Removing process, NPC/Unpoint/Items/GC.Menu");
         RemoveNPCs();
         UnpointItems(worlditems);
-        RemoveItems();
+        RemoveItems(worlditems);
 
         //std::cout << "AABB, " << MousePos.x << ":" << MousePos.y << " Vs (" << GC.MenuPos.x << ":" << Right << ") : (" << Up << ":" << Down << ") \n" ;
 

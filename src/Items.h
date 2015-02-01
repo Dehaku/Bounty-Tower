@@ -25,6 +25,8 @@ public:
     std::string InsidePart;
     int HasInternalUse;
 
+    NPC *User;
+
     int range;
     int age;
     int weight;
@@ -132,7 +134,9 @@ public:
 
 extern cItemManager itemmanager;
 
-void RemoveItems();
+
+
+void RemoveItems(std::list<item> &Items);
 
 void zSaveItem(int planet, sf::Vector2i Region, item &object);
 

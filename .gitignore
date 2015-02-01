@@ -6,3 +6,5 @@ Settlement.cbp
 version.h
 Settlement.depend
 *.map
+*.layout
+*.item

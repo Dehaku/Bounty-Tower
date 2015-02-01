@@ -113,6 +113,8 @@ public:
     };
     PathFinding PathFinding;
 
+
+
     short imgstrx;
     short imgstry;
     short imgendx;
@@ -224,6 +226,15 @@ public:
         void Train(std::string skill, int amount = 1, int skillgain = 1);
     };
     Skill Skills;
+
+    class TargetInfo
+    {
+    public:
+        item *Item;
+        NPC *NPC;
+        Tile *Tile;
+    };
+    TargetInfo Target;
 
     int killcount;
     short reach;
