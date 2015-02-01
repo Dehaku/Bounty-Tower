@@ -3,7 +3,9 @@
 from os import walk
 from subprocess import call
 
-ignore = [('src', 'main.cpp')]
+ignore = [
+    ('src', 'main.cpp')  # Critter brain rewrite
+]
 
 for (dirpath, dirnames, filenames) in walk('src'):
     for f in filenames:
