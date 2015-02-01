@@ -596,10 +596,9 @@ std::set<int> NpcList(int exceptions = -1)
     throw std::runtime_error("NpcList: Couldn't return anything!");
 }
 
-
 void critterBrain(std::vector<NPC> &NPCs)
 {
-    for(auto &npc : NPCs)
+    for (auto &npc : NPCs)
     {
 
         // BodyPart Loop
@@ -937,7 +936,6 @@ void critterBrain(std::vector<NPC> &NPCs)
         debug("Debug: Ending Part Loop");
         // *BodyPart Loop*
 
-
         /* Critter Prioritization */
         // Method Two, Struct Desires
         struct Desire
@@ -949,27 +947,27 @@ void critterBrain(std::vector<NPC> &NPCs)
 
         // Declaring and adding Desires
         Desire NewDesire;
-        {//Sustainence
+        { //Sustainence
             NewDesire.DesireType = "Sustainence";
             NewDesire.Potency = 0;
         }
         Desires.push_back(NewDesire);
-        {//Apathy
+        { //Apathy
             NewDesire.DesireType = "Apathy";
             NewDesire.Potency = 100;
         }
         Desires.push_back(NewDesire);
-        {//SelfDefense
+        { //SelfDefense
             NewDesire.DesireType = "SelfDefense";
             NewDesire.Potency = 0;
         }
         Desires.push_back(NewDesire);
-        {//Social
+        { //Social
             NewDesire.DesireType = "Social";
             NewDesire.Potency = 0;
         }
         Desires.push_back(NewDesire);
-        {//Work
+        { //Work
             NewDesire.DesireType = "Work";
             NewDesire.Potency = 0;
         }
@@ -977,78 +975,71 @@ void critterBrain(std::vector<NPC> &NPCs)
 
         /*Causation to Desires*/
         // Get Critters max nutrition, then reduce it by critters nutrients in blood
-        float Nutrients = npc.maxhunger - npc.bloodwork("Nutrients",0);
-        float Hydration = npc.maxthirst - npc.bloodwork("Hydration",0);
+        float Nutrients = npc.maxhunger - npc.bloodwork("Nutrients", 0);
+        float Hydration = npc.maxthirst - npc.bloodwork("Hydration", 0);
 
-        for(auto &Sus : Desires)
+        for (auto &Sus : Desires)
         {
-            if(Sus.DesireType == "Sustainence")
-                Sus.Potency += Hydration+Nutrients;
-            if(Sus.DesireType == "SelfDefense") {
+            if (Sus.DesireType == "Sustainence")
+                Sus.Potency += Hydration + Nutrients;
+            if (Sus.DesireType == "SelfDefense")
+            {
                 // This line makes the game freeze
                 // Sus.Potency = 10000;
             }
         }
 
-
-
-
-
-
-
-
-
-
-
-
-
         // Finding the highest Desire
         bool InComplete;
-        ReDesire:
+    ReDesire:
         InComplete = false;
         auto HighestDesire = Desires.begin();
-        for(auto &i : Desires)
+        for (auto &i : Desires)
         {
-            if(i.Potency > (*HighestDesire).Potency)
+            if (i.Potency > (*HighestDesire).Potency)
                 (*HighestDesire) = i;
         }
 
-
         // Acting on Highest Desire
-        if((*HighestDesire).DesireType == "Apathy")
+        if ((*HighestDesire).DesireType == "Apathy")
         {
-            Effectz.CreateCircle(npc.xpos,npc.ypos,11,sf::Color::Red);
+            Effectz.CreateCircle(npc.xpos, npc.ypos, 11, sf::Color::Red);
         }
-        if((*HighestDesire).DesireType == "SelfDefense")
+        if ((*HighestDesire).DesireType == "SelfDefense")
         {
             (*HighestDesire).Potency = 0;
             InComplete = true;
         }
-        if((*HighestDesire).DesireType == "Sustainence")
+        if ((*HighestDesire).DesireType == "Sustainence")
         {
             bool InInv = false;
-            for(auto &Inv : npc.inventory)
-                if(Inv.MassFlesh > 0)
+            for (auto &Inv : npc.inventory)
+                if (Inv.MassFlesh > 0)
                 {
                     npc.Target.Item = &Inv;
                     InInv = true;
                     break;
                 }
-            if(InInv == false)
+            if (InInv == false)
             {
-                for(auto &LclItms : worlditems)
+                for (auto &LclItms : worlditems)
                 {
-                    if(npc.Target.Item == nullptr && LclItms.MassFlesh > 0 && LclItms.User == nullptr)
+                    if (npc.Target.Item == nullptr && LclItms.MassFlesh > 0 &&
+                        LclItms.User == nullptr)
                     {
-                        npc.Target.Item = &LclItms; // Is this creating a copy? The Behavior in testing still makes multiple critters target the same item.
+                        npc.Target.Item =
+                            &LclItms; // Is this creating a copy? The Behavior in testing still makes multiple critters target the same item.
                         LclItms.User = &npc;
                     }
-                    else if(LclItms.MassFlesh > 0 && LclItms.User == nullptr)
+                    else if (LclItms.MassFlesh > 0 && LclItms.User == nullptr)
                     {
 
-                        float CurrentItem = math::closeish(npc.xpos,npc.ypos,(*npc.Target.Item).xpos,(*npc.Target.Item).ypos);
-                        float NewItem = math::closeish(npc.xpos,npc.ypos,LclItms.xpos,LclItms.ypos);
-                        if(NewItem < CurrentItem)
+                        float CurrentItem = math::closeish(
+                            npc.xpos, npc.ypos, (*npc.Target.Item).xpos,
+                            (*npc.Target.Item).ypos);
+                        float NewItem = math::closeish(
+                            npc.xpos, npc.ypos, LclItms.xpos, LclItms.ypos);
+                        if (NewItem < CurrentItem)
                         {
                             (*npc.Target.Item).User = nullptr;
                             npc.Target.Item = &LclItms;
@@ -1058,31 +1049,27 @@ void critterBrain(std::vector<NPC> &NPCs)
                 }
             }
 
-
-            if(npc.Target.Item != nullptr && InInv == false)
+            if (npc.Target.Item != nullptr && InInv == false)
             {
-                Effectz.CreateLine(npc.xpos,npc.ypos,(*npc.Target.Item).xpos,(*npc.Target.Item).ypos,2,sf::Color::White);
+                Effectz.CreateLine(npc.xpos, npc.ypos, (*npc.Target.Item).xpos,
+                                   (*npc.Target.Item).ypos, 2,
+                                   sf::Color::White);
             }
         }
 
-
         // Incase the highest desire isn't completable, Go through again for the next highest desire.
-        if(InComplete)
+        if (InComplete)
             goto ReDesire;
 
-
-
-        cText.CreateText(npc.xpos-30,npc.ypos-15,10,sf::Color::Red,(*HighestDesire).DesireType,":",(*HighestDesire).Potency);
-        cText.CreateText(npc.xpos-70,npc.ypos-35,10,sf::Color::Cyan,npc.Body.BodyParts);
-
-
+        cText.CreateText(npc.xpos - 30, npc.ypos - 15, 10, sf::Color::Red,
+                         (*HighestDesire).DesireType, ":",
+                         (*HighestDesire).Potency);
+        cText.CreateText(npc.xpos - 70, npc.ypos - 35, 10, sf::Color::Cyan,
+                         npc.Body.BodyParts);
 
         /* End of Critter Prioritization */
 
         RemoveItems(npc.inventory);
-
-
-
     }
 }
 
