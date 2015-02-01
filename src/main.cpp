@@ -984,8 +984,10 @@ void critterBrain(std::vector<NPC> &NPCs)
         {
             if(Sus.DesireType == "Sustainence")
                 Sus.Potency += Hydration+Nutrients;
-            if(Sus.DesireType == "SelfDefense")
-                Sus.Potency = 10000;
+            if(Sus.DesireType == "SelfDefense") {
+                // This line makes the game freeze
+                // Sus.Potency = 10000;
+            }
         }
 
 
