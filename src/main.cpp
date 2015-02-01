@@ -985,19 +985,27 @@ void critterBrain(std::vector<NPC> &NPCs)
             if (Sus.DesireType == "SelfDefense")
             {
                 // This line makes the game freeze
-                // Sus.Potency = 10000;
+                Sus.Potency = 10000;
             }
         }
 
         // Finding the highest Desire
         bool InComplete;
+        Desire * HighestDesire;
+        bool FirstIter = true;
+
     ReDesire:
         InComplete = false;
-        auto HighestDesire = Desires.begin();
+
         for (auto &i : Desires)
         {
+            if(FirstIter)
+            {
+                HighestDesire = &i;
+                FirstIter = false;
+            }
             if (i.Potency > (*HighestDesire).Potency)
-                (*HighestDesire) = i;
+                HighestDesire = &i;
         }
 
         // Acting on Highest Desire
@@ -1008,6 +1016,7 @@ void critterBrain(std::vector<NPC> &NPCs)
         if ((*HighestDesire).DesireType == "SelfDefense")
         {
             (*HighestDesire).Potency = 0;
+            std::cout << (*HighestDesire).Potency << std::endl;
             InComplete = true;
         }
         if ((*HighestDesire).DesireType == "Sustainence")
@@ -1058,6 +1067,13 @@ void critterBrain(std::vector<NPC> &NPCs)
         }
 
         // Incase the highest desire isn't completable, Go through again for the next highest desire.
+        for (auto &i : Desires)
+        {
+            std::cout << npc.name << ":" << i.DesireType << ": " << i.Potency << std::endl;
+        }
+
+
+
         if (InComplete)
             goto ReDesire;
 
