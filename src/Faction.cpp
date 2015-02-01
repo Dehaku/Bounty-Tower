@@ -465,7 +465,6 @@ NPC::NPC()
     NeedsPath = false;
 }
 
-
 void NPC::ReCreateSkills()
 {
 

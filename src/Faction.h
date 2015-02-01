@@ -113,8 +113,6 @@ public:
     };
     PathFinding PathFinding;
 
-
-
     short imgstrx;
     short imgstry;
     short imgendx;

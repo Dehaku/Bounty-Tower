@@ -32,7 +32,6 @@ void RemoveItems(std::list<item> &Items)
     }
 }
 
-
 void zSaveItem(int /*planet*/, sf::Vector2i Region, item &object)
 {
 
