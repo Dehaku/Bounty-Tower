@@ -868,11 +868,11 @@ void menuPopUp()
     {
         GC.MenuEndPos = sf::Vector2f(
             GC.MenuPos.x + 100,
-            (GC.MenuPos.y + (itemmanager.GlobalItem.size() * 10)) + 5);
+            (GC.MenuPos.y + (itemmanager.globalItems.size() * 10)) + 5);
         effects.createSquare(GC.MenuPos.x, GC.MenuPos.y, GC.MenuEndPos.x,
                              GC.MenuEndPos.y, sf::Color::White);
         int iY = 0;
-        for (auto &elem : itemmanager.GlobalItem)
+        for (auto &elem : itemmanager.globalItems)
         {
             effects.createLine(GC.MenuPos.x, (GC.MenuPos.y + (iY * 11)) + 8,
                                GC.MenuPos.x + 90,

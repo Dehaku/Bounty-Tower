@@ -120,12 +120,11 @@ extern std::list<Item> worlditems;
 class ItemManager
 {
 public:
-    std::vector<Item> GlobalItem;
-    std::vector<Item> AddedItems;
+    std::vector<Item> globalItems;
+    std::vector<Item> addedItems;
 
-    void AddItems();
-
-    void InitializeItems();
+    void addItems();
+    void initializeItems();
 };
 
 extern ItemManager itemmanager;

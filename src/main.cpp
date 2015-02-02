@@ -3327,7 +3327,7 @@ Item *GetGlobalItem(std::string strtype)
     {
         std::cout << "Getting" << strtype << " \n";
     }
-    for (auto &elem : itemmanager.GlobalItem)
+    for (auto &elem : itemmanager.globalItems)
     {
         if (elem.name == strtype)
         {
@@ -3431,7 +3431,7 @@ int main()
     }
 
     texturemanager.init();
-    itemmanager.InitializeItems();
+    itemmanager.initializeItems();
     npcmanager.InitializeCritters();
 
     // Building the players faction, This is temporary.
@@ -3546,8 +3546,8 @@ int main()
         if (Key.iTime == 10)
         { // Attempt to fix item images that were vanishing.
             Con("Doing");
-            itemmanager.GlobalItem.clear();
-            itemmanager.InitializeItems();
+            itemmanager.globalItems.clear();
+            itemmanager.initializeItems();
 
             RefreshImages();
         }
@@ -5734,7 +5734,7 @@ int main()
                 updateItem();
                 if (gvars::Debug)
                     std::cout << "Doing Local AddItems\n";
-                itemmanager.AddItems();
+                itemmanager.addItems();
                 if (gvars::Debug)
                     std::cout << "Doing Local Update NPC's\n";
                 //updateNpc();

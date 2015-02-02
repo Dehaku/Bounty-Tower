@@ -240,7 +240,7 @@ void SpawnItem(std::string Object, int xpos, int ypos)
     var.id = gvars::globalid++;
     var.xpos = xpos;
     var.ypos = ypos;
-    itemmanager.AddedItems.push_back(var);
+    itemmanager.addedItems.push_back(var);
     if (gvars::Debug)
     {
         std::cout << "Done Spawning. \n";
@@ -252,7 +252,7 @@ void RefreshImages()
     // PANIC
     for (size_t i = 0; i != worlditems.size(); i++)
     {
-        for (size_t t = 0; t != itemmanager.GlobalItem.size(); t++)
+        for (size_t t = 0; t != itemmanager.globalItems.size(); t++)
         {
             //if(worlditems.at(i).name == itemmanager.GlobalItem.at(t).name)
             {
@@ -552,16 +552,16 @@ Item::Item()
     Sleepable = false;
 }
 
-void ItemManager::AddItems()
+void ItemManager::addItems()
 {
-    for (auto const &item : AddedItems)
+    for (auto const &item : addedItems)
     {
         worlditems.push_back(item);
     }
-    AddedItems.clear();
+    addedItems.clear();
 }
 
-void ItemManager::InitializeItems()
+void ItemManager::initializeItems()
 {
     // TODO: Have this read from an Items folder, and read from
     // all .txt files in it, Allowing greater compability between mods.
@@ -616,22 +616,22 @@ void ItemManager::InitializeItems()
             }
             if (Item.name != "Debuggery")
             {
-                GlobalItem.push_back(Item);
+                globalItems.push_back(Item);
             }
         }
     }
-    for (size_t i = 0; i != GlobalItem.size(); i++)
+    for (size_t i = 0; i != globalItems.size(); i++)
     {
-        for (size_t t = 0; t != GlobalItem.size(); t++)
+        for (size_t t = 0; t != globalItems.size(); t++)
         {
             if (i != t)
             {
-                if (GlobalItem[i].cbaseid == GlobalItem[t].cbaseid)
+                if (globalItems[i].cbaseid == globalItems[t].cbaseid)
                 {
                     std::cout
                         << " \n \n cbaseid Conflict Detected between "
-                        << GlobalItem[i].name << " and " << GlobalItem[t].name
-                        << ", cbaseid: " << GlobalItem[i].cbaseid << std::endl;
+                        << globalItems[i].name << " and " << globalItems[t].name
+                        << ", cbaseid: " << globalItems[i].cbaseid << std::endl;
                 }
             }
         }
