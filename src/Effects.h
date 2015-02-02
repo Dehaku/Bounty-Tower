@@ -67,6 +67,7 @@ public:
     std::vector<Line> lines;
     std::vector<Beam> beams;
     std::vector<Square> squares;
+    std::vector<sf::ConvexShape> polygons;
 
     void createLine(int Sxpos, int Sypos, int Expos, int Eypos, int Size,
                     sf::Color MainColor, float Outline = 0,

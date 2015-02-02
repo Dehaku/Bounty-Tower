@@ -14,6 +14,8 @@
 #include "util.h"
 #include "globalvars.h"
 
+int RemoveMe = 0;
+
 using std::abs;
 
 Item *ListGet(std::list<Item> &List, int Position)
@@ -930,8 +932,112 @@ void critterBrain(std::vector<NPC> &NPCs)
             }
         }
 
+        npc.bloodwork("Nutrients", -1);
+        npc.bloodwork("Hydration", -1);
+
         debug("Debug: Ending Part Loop");
         // *BodyPart Loop*
+        /* Critter Vision   */
+        NPC Critter;
+        const sf::Vector2f npcPos(npc.xpos,npc.ypos);
+        npc.angle = math::angleBetweenVectors(npcPos,gvars::mousePos)-90;
+
+
+        int EndAngle = -(npc.angle-(npc.viewangle/2));
+        int StartAngle = -(npc.angle-(-npc.viewangle/2));
+        sf::ConvexShape Poly;
+        debug("Debug: Poly Creation");
+        //Poly.setPosition(npc.xpos,npc.ypos);
+
+        debug("Debug: Really?");
+
+        Poly.setPointCount(1);
+        Poly.setPoint(0, sf::Vector2f(0,0));
+        int PointCounter = 1;
+
+        sf::ConvexShape Shape;
+        Shape.setPointCount(PointCounter);
+        Shape.setPoint(0,sf::Vector2f(0,0));
+
+
+        debug("Debug: Starting Forloop");
+        for(int Rot = StartAngle; Rot != EndAngle; Rot++)
+        {
+            float XPos = npc.xpos + sin(Rot * PI / 180) * npc.viewrange;
+            float YPos = npc.ypos + cos(Rot * PI / 180) * npc.viewrange;
+
+            if(Rot == StartAngle)
+            {
+                PointCounter++;
+                Shape.setPointCount(PointCounter);
+                Shape.setPoint(PointCounter-1,sf::Vector2f(XPos-npc.xpos,YPos-npc.ypos));
+                effects.createLine(npc.xpos,npc.ypos,
+                                XPos, YPos,1,sf::Color::Yellow);
+            }
+
+
+            int CenterPoint = (StartAngle+EndAngle)/2;
+            if(Rot == CenterPoint)
+            {
+                PointCounter++;
+                Shape.setPointCount(PointCounter);
+                Shape.setPoint(PointCounter-1,sf::Vector2f(XPos-npc.xpos,YPos-npc.ypos));
+                effects.createLine(npc.xpos,npc.ypos,
+                                XPos, YPos,1,sf::Color::Cyan);
+            }
+
+            debug("Debug: Excitement!");
+            if((Rot % 10) == 0 && Rot != 0)
+            {
+                //PointCounter++;
+                //Poly.setPointCount(PointCounter);
+                //Poly.setPoint(PointCounter, sf::Vector2f(XPos-npc.xpos,YPos-npc.ypos));
+                PointCounter++;
+                Shape.setPointCount(PointCounter);
+                Shape.setPoint(PointCounter-1,sf::Vector2f(XPos-npc.xpos,YPos-npc.ypos));
+                debug("Debug: Point Added! " + std::to_string(Rot));
+            }
+                //
+
+                //effects.createCircle(XPos,YPos,3,sf::Color::Yellow);
+
+
+            if(Rot == EndAngle-1)
+            {
+                PointCounter++;
+                Shape.setPointCount(PointCounter);
+                Shape.setPoint(PointCounter-1,sf::Vector2f(XPos-npc.xpos,YPos-npc.ypos));
+                effects.createLine(npc.xpos,npc.ypos,
+                                XPos, YPos,1,sf::Color::Yellow);
+            }
+
+
+        }
+
+        debug("Debug: Post-For Loop");
+        sf::Color Filling(sf::Color::Yellow);
+        Filling.a = (100);
+        Poly.setFillColor(Filling);
+        Poly.setOutlineColor(sf::Color::Yellow);
+        Poly.setOutlineThickness(1);
+        debug("Debug: Pushing Poly");
+        Poly.setPosition(gvars::mousePos);
+        effects.polygons.push_back(Poly);
+
+
+        //sf::Color Filling(sf::Color::Yellow);
+        Filling.a = (100);
+        Shape.setFillColor(Filling);
+        Shape.setOutlineColor(sf::Color::Yellow);
+        Shape.setOutlineThickness(1);
+        Shape.setPosition(npcPos);
+        effects.polygons.push_back(Shape);
+
+
+
+
+
+
 
         /* Critter Prioritization */
         // Method Two, Struct Desires
@@ -1066,12 +1172,11 @@ void critterBrain(std::vector<NPC> &NPCs)
                     {
                         Item *Tar = npc.Target.item;
                         npc.Target.item = nullptr;
+                        (*Tar).user = nullptr;
                         npc.inventory.push_back((*Tar));
                         (*Tar).toDelete = true;
                     }
-
                 }
-
             }
 
             if (npc.Target.item != nullptr && InInv == false)
@@ -1100,6 +1205,10 @@ void critterBrain(std::vector<NPC> &NPCs)
 
         removeItems(npc.inventory);
     }
+
+    if(Key.oTime == 1) RemoveMe++;
+    if(Key.lTime == 1) RemoveMe--;
+
 }
 
 void updateNpc()
@@ -5523,6 +5632,32 @@ int main()
                              "Press r to turn on the "
                              "debugger, If it slows down the "
                              "game, Minimize the console.");
+
+            std::vector<sf::ConvexShape> Polies;
+
+            sf::ConvexShape Shape;
+            Shape.setPointCount(1);
+            Shape.setPoint(0,sf::Vector2f(0,0));
+            Shape.setPointCount(2);
+            Shape.setPoint(1,sf::Vector2f(-5,15));
+            Shape.setPointCount(3);
+            Shape.setPoint(2,sf::Vector2f(0,25));
+            Shape.setPointCount(4);
+            Shape.setPoint(3,sf::Vector2f(5,15));
+            Shape.setFillColor(sf::Color::Yellow);
+            Shape.setPosition(50,50);
+            Polies.push_back(Shape);
+
+            for(auto &elem : Polies)
+            {
+                window.draw(elem);
+            }
+            Polies.clear();
+
+            //window.draw(Shape);
+
+
+
 
             if (buttonClicked(var.id))
             {

@@ -3,7 +3,7 @@
 
 #include <SFML/System.hpp>
 
-const float PI = 3.141;
+const double PI = 3.141;
 const double G = 6.67;
 
 namespace math

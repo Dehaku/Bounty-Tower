@@ -176,4 +176,9 @@ void Effects::drawEffects()
         elem.draw();
     }
     beams.clear();
+    for (auto &elem : polygons)
+    {
+        window.draw(elem);
+    }
+    polygons.clear();
 }
