@@ -679,7 +679,6 @@ void critterBrain(std::vector<NPC> &NPCs)
         }
 
         SearchPos = 0;
-        EndPos = 0;
 
         //for(int i = 0; i != npc.inventory.size(); i++)
         for (auto i = npc.inventory.begin(); i != npc.inventory.end(); i++)
