@@ -213,7 +213,7 @@ void updateItem()
                     {
                         std::cout << "Producing: " << s << " \n";
                     }
-                    SpawnItem(s, x, y);
+                    spawnItem(s, x, y);
                     if (gvars::Debug)
                     {
                         std::cout << item.name << " has produced: " << s
@@ -712,7 +712,7 @@ void critterBrain(std::vector<NPC> &NPCs)
                     StringFindString(WorkingLine, "[Name:");
 
                 PartNumber = StringFindNumber(WorkingLine, "[DigestsBlood:");
-                PartItem = GetItemPtrfromVector(npc.inventory, "Blood");
+                PartItem = getItemPtrFromVector(npc.inventory, "Blood");
                 if (PartNumber != 0 && PartItem != nullptr)
                 {
 
@@ -731,7 +731,7 @@ void critterBrain(std::vector<NPC> &NPCs)
                     else
                     {
                         //*GetItemPtrfromVector(npc.inventory,"Blood").amount = 0;
-                        GetItemPtrfromVector(npc.inventory, "Blood")->toDelete =
+                        getItemPtrFromVector(npc.inventory, "Blood")->toDelete =
                             true;
                         float Nutr =
                             WorkAmount * 100; // TODO: Figure this out better.
@@ -743,7 +743,7 @@ void critterBrain(std::vector<NPC> &NPCs)
 
                 PartNumber = StringFindNumber(WorkingLine, "[DigestsFlesh:");
                 PartItem =
-                    GetItemPtrfromVectorVarSearch(npc.inventory, "MassFlesh");
+                    getItemPtrfromVectorVarSearch(npc.inventory, "MassFlesh");
                 //if(PartItem != NULL) PartItem->HasInternalUse++; // This is designed to keep items from being ejected until they are completely useless to a critter, I.E. Items with multiple Food Mass's.
                 if (PartNumber != 0 && PartItem != nullptr &&
                     PartItem->massFlesh >
@@ -774,7 +774,7 @@ void critterBrain(std::vector<NPC> &NPCs)
 
                 PartNumber = StringFindNumber(WorkingLine, "[DigestsVeggy:");
                 PartItem =
-                    GetItemPtrfromVectorVarSearch(npc.inventory, "MassVeggy");
+                    getItemPtrfromVectorVarSearch(npc.inventory, "MassVeggy");
                 //if(PartItem != NULL) PartItem->HasInternalUse++; // This is designed to keep items from being ejected until they are completely useless to a critter, I.E. Items with multiple Food Mass's.
                 if (PartNumber != 0 && PartItem != nullptr &&
                     PartItem->massVeggy >
@@ -803,7 +803,7 @@ void critterBrain(std::vector<NPC> &NPCs)
 
                 PartNumber = StringFindNumber(WorkingLine, "[DigestsWater:");
                 PartItem =
-                    GetItemPtrfromVectorVarSearch(npc.inventory, "MassWater");
+                    getItemPtrfromVectorVarSearch(npc.inventory, "MassWater");
                 //if(PartItem != NULL) PartItem->HasInternalUse++; // This is designed to keep items from being ejected until they are completely useless to a critter, I.E. Items with multiple Food Mass's.
                 if (PartNumber != 0 && PartItem != nullptr &&
                     PartItem->massWater >
@@ -1086,7 +1086,7 @@ void critterBrain(std::vector<NPC> &NPCs)
 
         /* End of Critter Prioritization */
 
-        RemoveItems(npc.inventory);
+        removeItems(npc.inventory);
     }
 }
 
@@ -1212,7 +1212,7 @@ void updateNpc()
                     StringFindString(WorkingLine, "[Name:");
 
                 PartNumber = StringFindNumber(WorkingLine, "[DigestsBlood:");
-                PartItem = GetItemPtrfromVector(npc.inventory, "Blood");
+                PartItem = getItemPtrFromVector(npc.inventory, "Blood");
                 if (PartNumber != 0 && PartItem != nullptr)
                 {
 
@@ -1231,7 +1231,7 @@ void updateNpc()
                     else
                     {
                         //*GetItemPtrfromVector(npc.inventory,"Blood").amount = 0;
-                        GetItemPtrfromVector(npc.inventory, "Blood")->toDelete =
+                        getItemPtrFromVector(npc.inventory, "Blood")->toDelete =
                             true;
                         float Nutr =
                             WorkAmount * 100; // TODO: Figure this out better.
@@ -1243,7 +1243,7 @@ void updateNpc()
 
                 PartNumber = StringFindNumber(WorkingLine, "[DigestsFlesh:");
                 PartItem =
-                    GetItemPtrfromVectorVarSearch(npc.inventory, "MassFlesh");
+                    getItemPtrfromVectorVarSearch(npc.inventory, "MassFlesh");
                 //if(PartItem != NULL) PartItem->HasInternalUse++; // This is designed to keep items from being ejected until they are completely useless to a critter, I.E. Items with multiple Food Mass's.
                 if (PartNumber != 0 && PartItem != nullptr &&
                     PartItem->massFlesh >
@@ -1274,7 +1274,7 @@ void updateNpc()
 
                 PartNumber = StringFindNumber(WorkingLine, "[DigestsVeggy:");
                 PartItem =
-                    GetItemPtrfromVectorVarSearch(npc.inventory, "MassVeggy");
+                    getItemPtrfromVectorVarSearch(npc.inventory, "MassVeggy");
                 //if(PartItem != NULL) PartItem->HasInternalUse++; // This is designed to keep items from being ejected until they are completely useless to a critter, I.E. Items with multiple Food Mass's.
                 if (PartNumber != 0 && PartItem != nullptr &&
                     PartItem->massVeggy >
@@ -1303,7 +1303,7 @@ void updateNpc()
 
                 PartNumber = StringFindNumber(WorkingLine, "[DigestsWater:");
                 PartItem =
-                    GetItemPtrfromVectorVarSearch(npc.inventory, "MassWater");
+                    getItemPtrfromVectorVarSearch(npc.inventory, "MassWater");
                 //if(PartItem != NULL) PartItem->HasInternalUse++; // This is designed to keep items from being ejected until they are completely useless to a critter, I.E. Items with multiple Food Mass's.
                 if (PartNumber != 0 && PartItem != nullptr &&
                     PartItem->massWater >
@@ -1933,7 +1933,7 @@ void updateNpc()
                 }
                 if (npc.target == "Food")
                 { // Compress this later by simply directly linking the target towards the search, Probably need a bool for Item or NPC to simplfy it.
-                    Item *Item = FindClosestItemPtr(npc.xpos, npc.ypos, "Food");
+                    Item *Item = findClosestItemPtr(npc.xpos, npc.ypos, "Food");
                     if (Item != nullptr)
                     {
                         if (Item->massFlesh > 0)
@@ -2068,9 +2068,9 @@ void updateNpc()
                                     debug("Starting Build");
 
                                     //if(GetItemPtrfromVector(worlditems, "Wood") != NULL) item WorkLoad = *GetItemPtrfromVector(worlditems, "Wood");
-                                    Item *InvWood = GetItemPtrfromVector(
+                                    Item *InvWood = getItemPtrFromVector(
                                         npc.inventory, "Wood");
-                                    Item *WldWood = GetItemPtrfromVector(
+                                    Item *WldWood = getItemPtrFromVector(
                                         worlditems, "Wood");
 
                                     if (InvWood != nullptr)
@@ -2250,7 +2250,7 @@ void updateNpc()
                                         //npc.inventory.push_back(*UniFact[0].JobList[i].pItem);
                                         //FUCKNUTS start here, Just made the plank, Make the tree give the planks, MmkAY?!
                                         Item WoodStuffs =
-                                            *GetGlobalItem("Wood");
+                                            *getGlobalItem("Wood");
 
                                         debug("Post WoodStuffs");
 
@@ -2351,7 +2351,7 @@ void updateNpc()
                                             for (int z = 0; z != TAR; z++)
                                             {
                                                 Item StoneStuffs =
-                                                    *GetGlobalItem("Rock");
+                                                    *getGlobalItem("Rock");
 
                                                 StoneStuffs.xpos =
                                                     PathFindWorkPos.x +
@@ -3321,7 +3321,7 @@ void DrawStuffs()
     gvars::DrawStuffsDone = true;
 }
 
-Item *GetGlobalItem(std::string strtype)
+Item *getGlobalItem(std::string strtype)
 {
     if (gvars::Debug)
     {
@@ -3549,7 +3549,7 @@ int main()
             itemmanager.globalItems.clear();
             itemmanager.initializeItems();
 
-            RefreshImages();
+            refreshImages();
         }
 
         if (Key.gTime == 1)
@@ -3979,15 +3979,15 @@ int main()
                                                  gvars::currentregiony + 1),
                                     "BottomRight", gvars::currentplanet);
                 remove(Line.c_str());
-                Line = LoadItems(sf::Vector2i(gvars::currentregionx - 1,
+                Line = loadItems(sf::Vector2i(gvars::currentregionx - 1,
                                               gvars::currentregiony + 1),
                                  "BottomLeft", gvars::currentplanet);
                 remove(Line.c_str());
-                Line = LoadItems(sf::Vector2i(gvars::currentregionx,
+                Line = loadItems(sf::Vector2i(gvars::currentregionx,
                                               gvars::currentregiony + 1),
                                  "Bottom", gvars::currentplanet);
                 remove(Line.c_str());
-                Line = LoadItems(sf::Vector2i(gvars::currentregionx + 1,
+                Line = loadItems(sf::Vector2i(gvars::currentregionx + 1,
                                               gvars::currentregiony + 1),
                                  "BottomRight", gvars::currentplanet);
                 remove(Line.c_str());
@@ -4023,15 +4023,15 @@ int main()
                                                  gvars::currentregiony - 1),
                                     "TopRight", gvars::currentplanet);
                 remove(Line.c_str());
-                Line = LoadItems(sf::Vector2i(gvars::currentregionx - 1,
+                Line = loadItems(sf::Vector2i(gvars::currentregionx - 1,
                                               gvars::currentregiony - 1),
                                  "TopLeft", gvars::currentplanet);
                 remove(Line.c_str());
-                Line = LoadItems(sf::Vector2i(gvars::currentregionx,
+                Line = loadItems(sf::Vector2i(gvars::currentregionx,
                                               gvars::currentregiony - 1),
                                  "Top", gvars::currentplanet);
                 remove(Line.c_str());
-                Line = LoadItems(sf::Vector2i(gvars::currentregionx + 1,
+                Line = loadItems(sf::Vector2i(gvars::currentregionx + 1,
                                               gvars::currentregiony - 1),
                                  "TopRight", gvars::currentplanet);
                 remove(Line.c_str());
@@ -4067,15 +4067,15 @@ int main()
                                                  gvars::currentregiony + 1),
                                     "BottomRight", gvars::currentplanet);
                 remove(Line.c_str());
-                Line = LoadItems(sf::Vector2i(gvars::currentregionx + 1,
+                Line = loadItems(sf::Vector2i(gvars::currentregionx + 1,
                                               gvars::currentregiony - 1),
                                  "TopRight", gvars::currentplanet);
                 remove(Line.c_str());
-                Line = LoadItems(sf::Vector2i(gvars::currentregionx + 1,
+                Line = loadItems(sf::Vector2i(gvars::currentregionx + 1,
                                               gvars::currentregiony),
                                  "Right", gvars::currentplanet);
                 remove(Line.c_str());
-                Line = LoadItems(sf::Vector2i(gvars::currentregionx + 1,
+                Line = loadItems(sf::Vector2i(gvars::currentregionx + 1,
                                               gvars::currentregiony + 1),
                                  "BottomRight", gvars::currentplanet);
                 remove(Line.c_str());
@@ -4115,15 +4115,15 @@ int main()
                                                  gvars::currentregiony + 1),
                                     "BottomLeft", gvars::currentplanet);
                 remove(Line.c_str());
-                Line = LoadItems(sf::Vector2i(gvars::currentregionx - 1,
+                Line = loadItems(sf::Vector2i(gvars::currentregionx - 1,
                                               gvars::currentregiony - 1),
                                  "TopLeft", gvars::currentplanet);
                 remove(Line.c_str());
-                Line = LoadItems(sf::Vector2i(gvars::currentregionx - 1,
+                Line = loadItems(sf::Vector2i(gvars::currentregionx - 1,
                                               gvars::currentregiony),
                                  "Left", gvars::currentplanet);
                 remove(Line.c_str());
-                Line = LoadItems(sf::Vector2i(gvars::currentregionx - 1,
+                Line = loadItems(sf::Vector2i(gvars::currentregionx - 1,
                                               gvars::currentregiony + 1),
                                  "BottomLeft", gvars::currentplanet);
                 remove(Line.c_str());
@@ -4293,7 +4293,7 @@ int main()
                     if ((worlditem).xpos > 1920 && (worlditem).ypos < 640)
                     {
                         (worlditem).xpos = (worlditem).xpos - 640 - 640 - 640;
-                        SaveItem(500, sf::Vector2i(gvars::currentregionx + 2,
+                        saveItem(500, sf::Vector2i(gvars::currentregionx + 2,
                                                    gvars::currentregiony - 1),
                                  (worlditem));
                         (worlditem).toDelete = true;
@@ -4302,7 +4302,7 @@ int main()
                     {
                         (worlditem).xpos = (worlditem).xpos - 640 - 640 - 640;
                         (worlditem).ypos = (worlditem).ypos - 640 - 640;
-                        SaveItem(500, sf::Vector2i(gvars::currentregionx + 2,
+                        saveItem(500, sf::Vector2i(gvars::currentregionx + 2,
                                                    gvars::currentregiony + 1),
                                  (worlditem));
                         (worlditem).toDelete = true;
@@ -4312,7 +4312,7 @@ int main()
                     {
                         (worlditem).xpos = (worlditem).xpos + 640;
                         (worlditem).ypos = (worlditem).ypos - 640 - 640;
-                        SaveItem(500, sf::Vector2i(gvars::currentregionx - 2,
+                        saveItem(500, sf::Vector2i(gvars::currentregionx - 2,
                                                    gvars::currentregiony + 1),
                                  (worlditem));
                         (worlditem).toDelete = true;
@@ -4320,7 +4320,7 @@ int main()
                     else if ((worlditem).xpos < 0 && (worlditem).ypos < 640)
                     {
                         (worlditem).xpos = (worlditem).xpos + 640;
-                        SaveItem(500, sf::Vector2i(gvars::currentregionx - 2,
+                        saveItem(500, sf::Vector2i(gvars::currentregionx - 2,
                                                    gvars::currentregiony - 1),
                                  (worlditem));
                         (worlditem).toDelete = true;
@@ -4330,7 +4330,7 @@ int main()
                     {
                         (worlditem).xpos = (worlditem).xpos - 640 - 640;
                         (worlditem).ypos = (worlditem).ypos + 640;
-                        SaveItem(500, sf::Vector2i(gvars::currentregionx + 1,
+                        saveItem(500, sf::Vector2i(gvars::currentregionx + 1,
                                                    gvars::currentregiony - 2),
                                  (worlditem));
                         (worlditem).toDelete = true;
@@ -4338,7 +4338,7 @@ int main()
                     else if ((worlditem).ypos < 0 && (worlditem).xpos < 640)
                     {
                         (worlditem).ypos = (worlditem).ypos + 640;
-                        SaveItem(500, sf::Vector2i(gvars::currentregionx - 1,
+                        saveItem(500, sf::Vector2i(gvars::currentregionx - 1,
                                                    gvars::currentregiony - 2),
                                  (worlditem));
                         (worlditem).toDelete = true;
@@ -4348,7 +4348,7 @@ int main()
                     {
                         (worlditem).xpos = (worlditem).xpos - 640 - 640;
                         (worlditem).ypos = (worlditem).ypos - 640 - 640 - 640;
-                        SaveItem(500, sf::Vector2i(gvars::currentregionx + 1,
+                        saveItem(500, sf::Vector2i(gvars::currentregionx + 1,
                                                    gvars::currentregiony + 2),
                                  (worlditem));
                         (worlditem).toDelete = true;
@@ -4356,7 +4356,7 @@ int main()
                     else if ((worlditem).ypos > 1920 && (worlditem).xpos < 640)
                     {
                         (worlditem).ypos = (worlditem).ypos - 640 - 640 - 640;
-                        SaveItem(500, sf::Vector2i(gvars::currentregionx - 1,
+                        saveItem(500, sf::Vector2i(gvars::currentregionx - 1,
                                                    gvars::currentregiony + 2),
                                  (worlditem));
                         (worlditem).toDelete = true;
@@ -4368,7 +4368,7 @@ int main()
                     {
                         (worlditem).xpos = (worlditem).xpos - 640 - 640 - 640;
                         (worlditem).ypos = (worlditem).ypos - 640;
-                        SaveItem(500, sf::Vector2i(gvars::currentregionx + 2,
+                        saveItem(500, sf::Vector2i(gvars::currentregionx + 2,
                                                    gvars::currentregiony),
                                  (worlditem));
                         (worlditem).toDelete = true;
@@ -4377,7 +4377,7 @@ int main()
                     {
                         (worlditem).xpos = (worlditem).xpos - 640;
                         (worlditem).ypos = (worlditem).ypos - 640 - 640 - 640;
-                        SaveItem(500, sf::Vector2i(gvars::currentregionx,
+                        saveItem(500, sf::Vector2i(gvars::currentregionx,
                                                    gvars::currentregiony + 2),
                                  (worlditem));
                         (worlditem).toDelete = true;
@@ -4386,7 +4386,7 @@ int main()
                     {
                         (worlditem).xpos = (worlditem).xpos + 640;
                         (worlditem).ypos = (worlditem).ypos - 640;
-                        SaveItem(500, sf::Vector2i(gvars::currentregionx - 2,
+                        saveItem(500, sf::Vector2i(gvars::currentregionx - 2,
                                                    gvars::currentregiony),
                                  (worlditem));
                         (worlditem).toDelete = true;
@@ -4395,7 +4395,7 @@ int main()
                     {
                         (worlditem).xpos = (worlditem).xpos - 640;
                         (worlditem).ypos = (worlditem).ypos + 640;
-                        SaveItem(500, sf::Vector2i(gvars::currentregionx,
+                        saveItem(500, sf::Vector2i(gvars::currentregionx,
                                                    gvars::currentregiony - 2),
                                  (worlditem));
 
@@ -4403,7 +4403,7 @@ int main()
                     }
                 }
                 UnpointItems(worlditems);
-                RemoveItems(worlditems);
+                removeItems(worlditems);
             }
 
             //if(Key.b) Effectz.CreateBeam(1000,1000,MousePos.x,MousePos.y,50,Red,5,Blue,false,0);
@@ -5423,9 +5423,9 @@ int main()
                                     GC.MenuPos.x /
                                     20)][abs_to_index(GC.MenuPos.y / 20)]
                                                           .Infected);
-                                SpawnItem("Sword", 990, 1020);
+                                spawnItem("Sword", 990, 1020);
 
-                                SpawnItem("Gun", 1010, 1020);
+                                spawnItem("Gun", 1010, 1020);
 
                                 //SpawnItem("Fruit Tree",970,1150);
                                 //SpawnItem("Fruit Tree",950,1150);
@@ -5447,11 +5447,11 @@ int main()
                                                 .ID == 1003)
                                     {
                                         Con(", Is Plantable.");
-                                        SpawnItem("Fruit Tree", Tx, Ty);
+                                        spawnItem("Fruit Tree", Tx, Ty);
                                     }
                                 }
 
-                                SpawnItem("Broken Vending Machine", 1030, 1030);
+                                spawnItem("Broken Vending Machine", 1030, 1030);
 
                                 SpawnCritter("Mini Turret", 1000, 1070);
 
@@ -6081,7 +6081,7 @@ int main()
         debug("Starting Removing process, NPC/Unpoint/Items/GC.Menu");
         RemoveNPCs();
         UnpointItems(worlditems);
-        RemoveItems(worlditems);
+        removeItems(worlditems);
 
         //std::cout << "AABB, " << MousePos.x << ":" << MousePos.y << " Vs (" << GC.MenuPos.x << ":" << Right << ") : (" << Up << ":" << Down << ") \n" ;
 

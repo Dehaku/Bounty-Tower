@@ -14,7 +14,7 @@ extern sf::RenderWindow window;
 std::list<Item> worlditems;
 ItemManager itemmanager;
 
-void RemoveItems(std::list<Item> &Items)
+void removeItems(std::list<Item> &Items)
 {
     bool Done = false;
     while (Done == false)
@@ -88,7 +88,7 @@ void zSaveItem(int /*planet*/, sf::Vector2i Region, Item &object)
     }
 }
 
-void SaveItem(int planet, sf::Vector2i Region, Item &Critter)
+void saveItem(int planet, sf::Vector2i Region, Item &Critter)
 {
     // I already did all the work once, Imma be lazy for some time.
     using namespace std;
@@ -129,7 +129,7 @@ void SaveItem(int planet, sf::Vector2i Region, Item &Critter)
     }
 }
 
-std::string LoadItems(sf::Vector2i WorldPos, std::string Direction, int planet)
+std::string loadItems(sf::Vector2i WorldPos, std::string Direction, int planet)
 {
 
     std::string line("data/maps/Planet");
@@ -160,7 +160,7 @@ std::string LoadItems(sf::Vector2i WorldPos, std::string Direction, int planet)
 
             Critter.name = StringFindString(line, "[name:");
             if (Critter.name != "Debuggery")
-                Critter = *GetGlobalItem(Critter.name);
+                Critter = *getGlobalItem(Critter.name);
             Critter.xpos = StringFindNumber(line, "[xpos:");
             Critter.ypos = StringFindNumber(line, "[ypos:");
             std::cout << "Xpos: " << Critter.xpos << "Ypos: " << Critter.ypos
@@ -218,7 +218,7 @@ std::string LoadItems(sf::Vector2i WorldPos, std::string Direction, int planet)
     return line;
 }
 
-void SpawnItem(std::string Object, int xpos, int ypos)
+void spawnItem(std::string Object, int xpos, int ypos)
 {
     if (gvars::Debug)
     {
@@ -230,7 +230,7 @@ void SpawnItem(std::string Object, int xpos, int ypos)
         std::cout << "Pre var in SpawnItem"
                   << " \n";
     }
-    var = *GetGlobalItem(Object);
+    var = *getGlobalItem(Object);
     if (gvars::Debug)
     {
         std::cout << "Post var in SpawnItem"
@@ -247,7 +247,7 @@ void SpawnItem(std::string Object, int xpos, int ypos)
     }
 }
 
-void RefreshImages()
+void refreshImages()
 {
     // PANIC
     for (size_t i = 0; i != worlditems.size(); i++)
@@ -263,7 +263,7 @@ void RefreshImages()
     Con("Done");
 }
 
-Item *GetItemPtrfromVector(std::list<Item> &Vector, std::string Name)
+Item *getItemPtrFromVector(std::list<Item> &Vector, std::string Name)
 {
     debug("Doing GetItmPtr");
     //*for(int i = 0; i != Vector.size(); i++)
@@ -280,7 +280,7 @@ Item *GetItemPtrfromVector(std::list<Item> &Vector, std::string Name)
     return nullptr;
 }
 
-Item *GetItemPtrfromVector2(std::list<Item> &Vector, std::string Name)
+Item *getItemPtrfromVector2(std::list<Item> &Vector, std::string Name)
 {
     debug("Doing GetItmPtr");
     //for(int i = 0; i != Vector.size(); i++)
@@ -297,7 +297,7 @@ Item *GetItemPtrfromVector2(std::list<Item> &Vector, std::string Name)
     return nullptr;
 }
 
-Item *GetItemPtrfromVectorVarSearch(std::list<Item> &Vector,
+Item *getItemPtrfromVectorVarSearch(std::list<Item> &Vector,
                                     std::string VarSearch, float AtLeast)
 {
     debug("Doing GetItmPtrVarSearch");
@@ -336,7 +336,7 @@ Item *GetItemPtrfromVectorVarSearch(std::list<Item> &Vector,
     return nullptr;
 }
 
-Item *FindClosestItemPtr(int Orix, int Oriy, std::string TarItem, int /*Gxpos*/,
+Item *findClosestItemPtr(int Orix, int Oriy, std::string TarItem, int /*Gxpos*/,
                          int /*Gypos*/, int /*Rxpos*/, int /*Rypos*/)
 {
     //std::vector<item>::iterator Items;

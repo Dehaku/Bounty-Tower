@@ -1126,7 +1126,7 @@ void NPC::AddItem(const std::string &itemname, int amount)
         std::cout << "Pre var in AddItem"
                   << " \n";
     }
-    Item var = *GetGlobalItem(itemname);
+    Item var = *getGlobalItem(itemname);
     if (gvars::Debug)
     {
         std::cout << "Post var in AddItem"

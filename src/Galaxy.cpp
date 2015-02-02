@@ -160,9 +160,9 @@ void GalaxyController::BuildLocal(std::string Type, int ZedAmount)
                     SpawnCritter("Human", vPos.x, vPos.y);
                 }
 
-                SpawnItem("Sword", 1039, 1020);
+                spawnItem("Sword", 1039, 1020);
 
-                SpawnItem("Gun", 1059, 1020);
+                spawnItem("Gun", 1059, 1020);
                 Con("Hunting for Trees 1");
                 for (int i = 0; i != 5; i++)
                 {
@@ -172,14 +172,14 @@ void GalaxyController::BuildLocal(std::string Type, int ZedAmount)
                         Tiles[abs_to_index(Tx / 20)][abs_to_index(Ty / 20)][30]
                                 .ID == 1003)
                     {
-                        SpawnItem("Fruit Tree", Tx, Ty);
+                        spawnItem("Fruit Tree", Tx, Ty);
                     }
                 }
                 //SpawnItem("Fruit Tree",970,1050);
                 //SpawnItem("Fruit Tree",950,1050);
                 //SpawnItem("Fruit Tree",930,1050);
 
-                SpawnItem("Broken Vending Machine", 1150, 1050);
+                spawnItem("Broken Vending Machine", 1150, 1050);
 
                 SpawnCritter("Mini Turret", 1000, 1000);
             }
@@ -274,16 +274,16 @@ void GalaxyController::BuildLocal(std::string Type, int ZedAmount)
                     Con("Ending Zed");
                 }
 
-                SpawnItem("Sword", 1039, 1020);
+                spawnItem("Sword", 1039, 1020);
 
-                SpawnItem("Gun", 1059, 1020);
+                spawnItem("Gun", 1059, 1020);
                 // Does Not Function
                 Con("Hunting for Trees 2");
                 //SpawnItem("Fruit Tree",970,1050);
                 //SpawnItem("Fruit Tree",950,1050);
                 //SpawnItem("Fruit Tree",930,1050);
 
-                SpawnItem("Broken Vending Machine", 1150, 1050);
+                spawnItem("Broken Vending Machine", 1150, 1050);
 
                 SpawnCritter("Mini Turret", 1000, 1000);
             }
@@ -384,9 +384,9 @@ void GalaxyController::BuildLocalTest()
                 SpawnCritter("Human", vPos.x, vPos.y);
             }
 
-            SpawnItem("Sword", 1039, 1020);
+            spawnItem("Sword", 1039, 1020);
 
-            SpawnItem("Gun", 1059, 1020);
+            spawnItem("Gun", 1059, 1020);
             for (int i = 0; i != 5; i++)
                 //Does not Run
                 Con("Hunting for Trees 3");
@@ -394,7 +394,7 @@ void GalaxyController::BuildLocalTest()
             //SpawnItem("Fruit Tree",950,1050);
             //SpawnItem("Fruit Tree",930,1050);
 
-            SpawnItem("Broken Vending Machine", 1150, 1050);
+            spawnItem("Broken Vending Machine", 1150, 1050);
 
             SpawnCritter("Mini Turret", 1000, 1000);
         }

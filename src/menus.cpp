@@ -255,7 +255,7 @@ void menuPopUp()
                                          GC.MenuPos.x + 2, GC.MenuPos.y + 10,
                                          sf::Color::Black);
                     Item Var;
-                    Var = *GetGlobalItem("Missile");
+                    Var = *getGlobalItem("Missile");
                     Var.targetPos = sf::Vector2f(GC.MenuPos);
                     Var.xpos = GC.MenuPos.x - 200;
                     Var.ypos = GC.MenuPos.y - 200;
@@ -662,7 +662,7 @@ void menuPopUp()
                                          GC.MenuPos.x + 2, GC.MenuPos.y + 10,
                                          sf::Color::Black);
                     Item Var;
-                    Var = *GetGlobalItem("Missile");
+                    Var = *getGlobalItem("Missile");
                     Var.targetPos = sf::Vector2f(GC.MenuPos);
                     Var.xpos = GC.MenuPos.x - 200;
                     Var.ypos = GC.MenuPos.y - 200;
@@ -885,7 +885,7 @@ void menuPopUp()
                 5, sf::Color::Red);
             if (buttonClicked(Butt))
             {
-                SpawnItem(elem.name, GC.MenuPos.x, GC.MenuPos.y);
+                spawnItem(elem.name, GC.MenuPos.x, GC.MenuPos.y);
                 fSleep(0.2);
             }
             iY++;

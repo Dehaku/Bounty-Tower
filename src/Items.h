@@ -113,7 +113,7 @@ public:
     Item();
 };
 
-Item *GetGlobalItem(std::string strtype);
+Item *getGlobalItem(std::string strtype);
 
 extern std::list<Item> worlditems;
 
@@ -128,28 +128,18 @@ public:
 };
 
 extern ItemManager itemmanager;
-
-void RemoveItems(std::list<Item> &Items);
-
+void removeItems(std::list<Item> &Items);
 void zSaveItem(int planet, sf::Vector2i Region, Item &object);
-
-void SaveItem(int planet, sf::Vector2i Region, Item &Critter);
-
-std::string LoadItems(sf::Vector2i WorldPos, std::string Direction,
+void saveItem(int planet, sf::Vector2i Region, Item &Critter);
+std::string loadItems(sf::Vector2i WorldPos, std::string Direction,
                       int planet = 500);
-
-void SpawnItem(std::string Object, int xpos, int ypos);
-
-void RefreshImages();
-
-Item *GetItemPtrfromVector(std::list<Item> &Vector, std::string Name);
-
-Item *GetItemPtrfromVector2(std::list<Item> &Vector, std::string Name);
-
-Item *GetItemPtrfromVectorVarSearch(std::list<Item> &Vector,
+void spawnItem(std::string Object, int xpos, int ypos);
+void refreshImages();
+Item *getItemPtrFromVector(std::list<Item> &Vector, std::string Name);
+Item *getItemPtrfromVector2(std::list<Item> &Vector, std::string Name);
+Item *getItemPtrfromVectorVarSearch(std::list<Item> &Vector,
                                     std::string VarSearch, float AtLeast = 1);
-
-Item *FindClosestItemPtr(int Orix, int Oriy, std::string TarItem, int Gxpos = 0,
+Item *findClosestItemPtr(int Orix, int Oriy, std::string TarItem, int Gxpos = 0,
                          int Gypos = 0, int Rxpos = 0, int Rypos = 0);
 
 #endif // ITEMS_H_INCLUDED
