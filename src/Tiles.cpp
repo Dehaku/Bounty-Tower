@@ -603,7 +603,7 @@ void DrawWorldTiles()
                 window.draw(WorldMap[i][t].Img);
                 if (WorldMap[i][t].Infected > 0)
                 {
-                    Effectz.CreateSquare(
+                    effects.createSquare(
                         (i * 20) + 1, (t * 20) + 1, ((i * 20) + 20) - 1,
                         ((t * 20) + 20) - 1, sf::Color(0, 0, 0, 0), 1,
                         sf::Color(
@@ -620,7 +620,7 @@ void DrawWorldTiles()
                             Prim.a = Prim.a / 1.3;
                             sf::Color Seco = UniFact[z].SecondaryColor;
                             Seco.a = Seco.a / 1.3;
-                            Effectz.CreateSquare(
+                            effects.createSquare(
                                 (i * 20) + 1, (t * 20) + 1, ((i * 20) + 20) - 1,
                                 ((t * 20) + 20) - 1, Prim, 10, Seco);
                         }

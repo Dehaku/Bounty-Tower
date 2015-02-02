@@ -292,7 +292,7 @@ std::vector<int> NnGTrace(int xa, int ya, int xb, int yb, int id,
         y += yIncrement;
         if (Key.g)
         {
-            Effectz.CreateCircle(x, y, 1, sf::Color::Blue);
+            effects.createCircle(x, y, 1, sf::Color::Blue);
         }
         int Count = 0;
 
@@ -347,7 +347,7 @@ std::vector<int> NnGTrace(int xa, int ya, int xb, int yb, int id,
 
         if (Key.period)
         {
-            Effectz.CreateCircle(x, y, 1, sf::Color::White);
+            effects.createCircle(x, y, 1, sf::Color::White);
         }
     }
     if (VectorID.size() == 0)
@@ -378,7 +378,7 @@ bool gridposTrace(int xa, int ya, int xb, int yb, int id, sf::Vector2f Target)
         {
             if (Key.period && id == gvars::MyTargetid)
             {
-                Effectz.CreateLine(x, y, xa, ya, 1, sf::Color::Blue);
+                effects.createLine(x, y, xa, ya, 1, sf::Color::Blue);
             }
             //std::cout << "Shoulda Broke. " << std::endl;
             break;
@@ -393,7 +393,7 @@ bool gridposTrace(int xa, int ya, int xb, int yb, int id, sf::Vector2f Target)
         } // Returns true and stops searching.
         if (Key.period && id == gvars::MyTargetid)
         {
-            Effectz.CreateLine(x, y, xa, ya, 1, sf::Color::Blue);
+            effects.createLine(x, y, xa, ya, 1, sf::Color::Blue);
         }
     }
     return false; // Returns false if the target was never found.
@@ -435,7 +435,7 @@ std::vector<int> npcTrace(int xa, int ya, int xb, int yb, int id,
 
         if (Key.h)
         {
-            Effectz.CreateCircle(x, y, 1, sf::Color::White);
+            effects.createCircle(x, y, 1, sf::Color::White);
         }
     }
     if (VectorID.size() == 0)
@@ -1013,7 +1013,7 @@ void critterBrain(std::vector<NPC> &NPCs)
         // Acting on Highest Desire
         if ((*HighestDesire).DesireType == "Apathy")
         {
-            Effectz.CreateCircle(npc.xpos, npc.ypos, 11, sf::Color::Red);
+            effects.createCircle(npc.xpos, npc.ypos, 11, sf::Color::Red);
         }
         if ((*HighestDesire).DesireType == "SelfDefense")
         {
@@ -1062,7 +1062,7 @@ void critterBrain(std::vector<NPC> &NPCs)
 
             if (npc.Target.Item != nullptr && InInv == false)
             {
-                Effectz.CreateLine(npc.xpos, npc.ypos, (*npc.Target.Item).xpos,
+                effects.createLine(npc.xpos, npc.ypos, (*npc.Target.Item).xpos,
                                    (*npc.Target.Item).ypos, 2,
                                    sf::Color::White);
             }
@@ -1737,7 +1737,7 @@ void updateNpc()
                                                 gvars::MousePos.y);
                                 sf::Vector2f Targ(npc.ShootPos.x + Tempx,
                                                   npc.ShootPos.y + Tempy);
-                                Effectz.CreateLine(npc.xpos, npc.ypos, Targ.x,
+                                effects.createLine(npc.xpos, npc.ypos, Targ.x,
                                                    Targ.y, 2, sf::Color::White);
                                 std::set<int> ids = NPCTrace(
                                     npc.xpos, npc.ypos, Targ.x, Targ.y, npc.id);
@@ -1758,7 +1758,7 @@ void updateNpc()
                                                     npc.Skills.Train(
                                                         "perception");
                                                 }
-                                                Effectz.CreateCircle(
+                                                effects.createCircle(
                                                     npclist.at(id).xpos,
                                                     npclist.at(id).ypos, 5,
                                                     sf::Color::Red);
@@ -2125,7 +2125,7 @@ void updateNpc()
                                                     y +
                                                     cos(Rot * PI / 180) * 10;
 
-                                                Effectz.CreateLine(
+                                                effects.createLine(
                                                     x, y, XPos, YPos, 1,
                                                     sf::Color(150, 150, 150,
                                                               150));
@@ -2325,7 +2325,7 @@ void updateNpc()
                                                 PathFindWorkPos.y +
                                                 cos(Rot * PI / 180) * 10;
 
-                                            Effectz.CreateLine(
+                                            effects.createLine(
                                                 PathFindWorkPos.x,
                                                 PathFindWorkPos.y, XPos, YPos,
                                                 1,
@@ -2599,7 +2599,7 @@ void updateNpc()
                                          npc.TargetPos) == true)
                         {
                             FoundGoal = true;
-                            Effectz.CreateLine(npc.xpos, npc.ypos,
+                            effects.createLine(npc.xpos, npc.ypos,
                                                npc.TargetPos.x, npc.TargetPos.y,
                                                1, sf::Color::White);
                             npc.NeedsPath = false;
@@ -3007,7 +3007,7 @@ void updateNpc()
                         {
                             if (Stuff != 1)
                             {
-                                Effectz.CreateLine(
+                                effects.createLine(
                                     npc.PathFinding.MyReadPathX(1, Stuff - 1),
                                     npc.PathFinding.MyReadPathY(1, Stuff - 1),
                                     npc.PathFinding.MyReadPathX(1, Stuff),
@@ -3207,21 +3207,21 @@ void DrawNPCs()
                 sf::Vector2f TE1 = npc.TentEnd1;
                 sf::Vector2f TE2 = npc.TentEnd2;
 
-                Effectz.CreateLine(npc.xpos, npc.ypos, TA1.x + npc.xpos,
+                effects.createLine(npc.xpos, npc.ypos, TA1.x + npc.xpos,
                                    TA1.y + npc.ypos, 2, sf::Color(0, 200, 200),
                                    1, sf::Color(0, 255, 255));
-                Effectz.CreateLine(npc.xpos, npc.ypos, TA2.x + npc.xpos,
+                effects.createLine(npc.xpos, npc.ypos, TA2.x + npc.xpos,
                                    TA2.y + npc.ypos, 2, sf::Color(0, 200, 200),
                                    1, sf::Color(0, 255, 255));
-                Effectz.CreateLine(
+                effects.createLine(
                     TA1.x + npc.xpos, TA1.y + npc.ypos,
                     TE1.x + TA1.x + npc.xpos, TE1.y + TA1.y + npc.ypos, 2,
                     sf::Color(0, 200, 200), 1, sf::Color(0, 255, 255));
-                Effectz.CreateLine(
+                effects.createLine(
                     TA2.x + npc.xpos, TA2.y + npc.ypos,
                     TE2.x + TA2.x + npc.xpos, TE2.y + TA2.y + npc.ypos, 2,
                     sf::Color(0, 200, 200), 1, sf::Color(0, 255, 255));
-                Effectz.DrawEffects();
+                effects.drawEffects();
             }
 
             int Alph = 255;
@@ -3230,7 +3230,7 @@ void DrawNPCs()
             npc.img.setOrigin(npc.img.getTextureRect().width / 2,
                               npc.img.getTextureRect().height / 2);
             npc.DrawImg();
-            Effectz.CreateCircle(npc.xpos, npc.ypos, npc.size,
+            effects.createCircle(npc.xpos, npc.ypos, npc.size,
                                  sf::Color(50, 50, 50, 50));
         }
     }
@@ -3264,7 +3264,7 @@ void LightTrail(int x, int y, int z)
 void DisplayChat(sf::Vector2f Position)
 {
     if (GC.Phase != "MainMenu")
-        Effectz.CreateSquare(
+        effects.createSquare(
             Position.x - 10, Position.y + 10, Position.x + 500,
             (Position.y - ((ChatBox.ChatStorage.size() + 1) * 10)),
             sf::Color(0, 0, 0, 100), 2, sf::Color::Cyan);
@@ -3297,7 +3297,7 @@ void DrawStuffs()
     DisplayChat(sf::Vector2f(gvars::BottomLeft.x + 5, gvars::BottomLeft.y - 5));
     debug("Drew Chat");
 
-    Effectz.DrawEffects();
+    effects.drawEffects();
     debug("Drew Effects");
     //    DrawPlanets();//Remove this one, Reenable previous
 
@@ -3621,7 +3621,7 @@ int main()
                 //int y = globals::TopLeft.y+Rez.y;
                 int x = gvars::BottomLeft.x;
                 int y = gvars::BottomLeft.y;
-                Effectz.CreateSquare(x + 20, y - 20, x + 40, y - 40,
+                effects.createSquare(x + 20, y - 20, x + 40, y - 40,
                                      sf::Color(0, 100, 255));
                 cText.CreateText(x + 20, y - 30, 11, sf::Color::White, "Build");
             }
@@ -3838,11 +3838,11 @@ int main()
                 //GenerateWorld();
             }
 
-            Effectz.CreateSquare(
+            effects.createSquare(
                 32 * 20, 32 * 20, 64 * 20, 64 * 20, sf::Color(0, 0, 0, 0), 1,
                 sf::Color::
                     Cyan); // These two are the chunk borders, Debug stuffs so you can see where the loading boundries are. (As if you needed 'em, Damn thing lags a bit, Should thread each loading bit soon.)
-            Effectz.CreateSquare(
+            effects.createSquare(
                 0 * 20, 0 * 20, 32 * 20, 32 * 20, sf::Color(0, 0, 0, 0), 1,
                 sf::Color::
                     Red); // This one reachs from 0 to 32 only because it draws from the left, not the center.
@@ -4655,8 +4655,8 @@ int main()
 
             Xxx = xanchor + cosf(Degrees * PI / 180) * radius;
             Yyy = yanchor + sinf(Degrees * PI / 180) * radius;
-            Effectz.CreateCircle(xanchor, yanchor, 5, sf::Color::Blue);
-            Effectz.CreateCircle(Xxx, Yyy, 5, sf::Color::White);
+            effects.createCircle(xanchor, yanchor, 5, sf::Color::Blue);
+            effects.createCircle(Xxx, Yyy, 5, sf::Color::White);
 
             int distence = math::closeish(xanchor, yanchor, Xxx, Yyy);
             cText.CreateText(xanchor, yanchor, 11, sf::Color::White,
@@ -4723,7 +4723,7 @@ int main()
                     Yy = sinf((angle - 90) * PI / 180) * 1;
                     xpos -= Xx;
                     ypos -= Yy;
-                    Effectz.CreateLine(gvars::MousePos.x, gvars::MousePos.y,
+                    effects.createLine(gvars::MousePos.x, gvars::MousePos.y,
                                        xpos, ypos, 1, sf::Color::White);
                 }
             }
@@ -5257,7 +5257,7 @@ int main()
 
             GC.WorldLoop();
 
-            Effectz.CreateSquare(gvars::TopLeft.x, gvars::TopLeft.y,
+            effects.createSquare(gvars::TopLeft.x, gvars::TopLeft.y,
                                  gvars::TopLeft.x + 300, gvars::TopLeft.y + 150,
                                  sf::Color(0, 0, 0, 100));
 
@@ -5336,7 +5336,7 @@ int main()
             DrawWorldTiles();
             sf::Vector2f Pos(abs(gvars::MousePos.x / 20),
                              abs(gvars::MousePos.y / 20));
-            Effectz.CreateSquare(Pos.x * 20, Pos.y * 20, (Pos.x * 20) + 20,
+            effects.createSquare(Pos.x * 20, Pos.y * 20, (Pos.x * 20) + 20,
                                  (Pos.y * 20) + 20, sf::Color(0, 0, 0, 0), 1,
                                  sf::Color(0, 200, 200, 255));
 
@@ -5384,7 +5384,7 @@ int main()
                     GC.MenuPos = gvars::MousePos;
                 }
                 int Options = 1;
-                Effectz.CreateSquare(
+                effects.createSquare(
                     GC.MenuPos.x, GC.MenuPos.y, GC.MenuPos.x + 100,
                     (GC.MenuPos.y + (Options * 10)) + 5, sf::Color::Black);
                 int iY = 0;
@@ -5864,7 +5864,7 @@ int main()
                 NPC Var;
                 Var = *GetCritter(gvars::Selected[i]);
                 sf::Vector2f Pos = sf::Vector2f(Var.xpos, Var.ypos);
-                Effectz.CreateCircle(Pos.x, Pos.y, 5,
+                effects.createCircle(Pos.x, Pos.y, 5,
                                      sf::Color(0, 255, 255, 100));
             }
             if (gvars::Selected.size() > 0)
@@ -5893,7 +5893,7 @@ int main()
             {
                 if (gvars::HeldClickPos == sf::Vector2f(-1, -1))
                     gvars::HeldClickPos = gvars::MousePos;
-                Effectz.CreateSquare(gvars::HeldClickPos.x,
+                effects.createSquare(gvars::HeldClickPos.x,
                                      gvars::HeldClickPos.y, gvars::MousePos.x,
                                      gvars::MousePos.y,
                                      sf::Color(0, 255, 255, 100));
@@ -5911,7 +5911,7 @@ int main()
                 //int Nxpos = npclist.at(MyTarget).xpos;
                 //int Nypos = npclist.at(MyTarget).ypos;
 
-                Effectz.CreateSquare(Nxpos, Nypos, Nxpos + 65, Nypos + 70,
+                effects.createSquare(Nxpos, Nypos, Nxpos + 65, Nypos + 70,
                                      sf::Color(0, 0, 0, 100));
                 cText.CreateText(Nxpos, Nypos, 11, sf::Color::Red, "Health:",
                                  "", npclist.at(gvars::MyTarget).health, "",
@@ -5949,7 +5949,7 @@ int main()
                                  " Angle:", "",
                                  npclist.at(gvars::MyTarget).angle);
 
-                Effectz.CreateSquare(Nxpos, Nypos + 70, Nxpos + 130,
+                effects.createSquare(Nxpos, Nypos + 70, Nxpos + 130,
                                      Nypos + 150, sf::Color(0, 0, 0, 200));
                 int Y = 7;
                 int V = 1;
@@ -5994,7 +5994,7 @@ int main()
                 if (npclist.at(gvars::MyTarget).inventory.size() != 0 ||
                     npclist.at(gvars::MyTarget).bloodcontent != "")
                 {
-                    Effectz.CreateSquare(Nxpos, Nypos, Nxpos + 130, Nypos + 70,
+                    effects.createSquare(Nxpos, Nypos, Nxpos + 130, Nypos + 70,
                                          sf::Color(0, 0, 0, 100));
                     int Yv = Nypos;
                     for (auto const &item :
@@ -6037,7 +6037,7 @@ int main()
                     } // TODO: Get this before the MyTarget -1 check up there.
                 }
                 //Effectz.CreateLine(Nxpos,Nypos,MousePos.x,MousePos.y,2,Green,0,White);
-                Effectz.CreateLine(npclist.at(gvars::MyTarget).xpos,
+                effects.createLine(npclist.at(gvars::MyTarget).xpos,
                                    npclist.at(gvars::MyTarget).ypos,
                                    npclist.at(gvars::MyTarget).TargetPos.x,
                                    npclist.at(gvars::MyTarget).TargetPos.y, 1,

@@ -78,7 +78,7 @@ std::set<int> NPC::Melee(int /*min*/, int /*max*/, int range,
         Xxx = xpos + cosf(Degrees * PI / 180) * range;
         Yyy = ypos + sinf(Degrees * PI / 180) * range;
         Degrees += 1;
-        Effectz.CreateLine(xpos, ypos, Xxx, Yyy, 2, sf::Color::Blue);
+        effects.createLine(xpos, ypos, Xxx, Yyy, 2, sf::Color::Blue);
         Tar = NPCTrace(xpos, ypos, Xxx, Yyy, id, std::set<int>());
     }
     std::list<item>::iterator Inv;
@@ -1560,7 +1560,7 @@ std::set<int> NPCTrace(int xa, int ya, int xb, int yb, int id,
         y += yIncrement;
         if (Key.g)
         {
-            Effectz.CreateCircle(x, y, 1, sf::Color::Blue);
+            effects.createCircle(x, y, 1, sf::Color::Blue);
         }
 
         // Merely doing this so I can reuse the same code, but for items, Hehe.
@@ -2134,7 +2134,7 @@ std::string LoadCritters(sf::Vector2i WorldPos, std::string Direction,
 
 void Boom(int xpos, int ypos, int damage, int size)
 {
-    Effectz.CreateCircle(xpos, ypos, size, sf::Color(255, 0, 0, 150), 0,
+    effects.createCircle(xpos, ypos, size, sf::Color(255, 0, 0, 150), 0,
                          sf::Color(0, 0, 0));
     std::vector<NPC>::iterator Me;
     for (Me = npclist.begin(); Me != npclist.end(); ++Me)
@@ -2156,7 +2156,7 @@ SquadHud() // This prints that "pretty" little Squad Unit display in the top lef
             if (npclist[i].name != "debug")
             {
 
-                Effectz.CreateSquare(
+                effects.createSquare(
                     gvars::TopLeft.x + (20), gvars::TopLeft.y + (20 * i),
                     gvars::TopLeft.x + 20 + (20),
                     gvars::TopLeft.y + 20 + (20 * i), sf::Color::Black);

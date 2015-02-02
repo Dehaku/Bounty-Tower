@@ -10,13 +10,11 @@ Kamehame styled beam
 class Effects
 {
 public:
-    float AngleBetweenVectors(sf::Vector2f a, sf::Vector2f b);
-    int Closeish(int orix, int oriy, int tarx, int tary);
-    class cLine
+    class Line
     {
     public:
-        sf::Vector2f StartPos;
-        sf::Vector2f EndPos;
+        sf::Vector2f startPos;
+        sf::Vector2f endPos;
         int size;
         int duration;
         bool fading;
@@ -25,36 +23,36 @@ public:
         sf::Color maincolor;
         sf::Color seccolor;
 
-        void DrawMe();
+        void draw();
     };
-    class cCircle
+    class Circle
     {
     public:
-        sf::Vector2f Pos;
+        sf::Vector2f pos;
         int size;
         bool outline;
         sf::Color maincolor;
         sf::Color seccolor;
 
-        void DrawMe();
+        void draw();
     };
-    class cSquare
+    class Square
     {
     public:
-        sf::Vector2f StartPos;
-        sf::Vector2f EndPos;
+        sf::Vector2f startPos;
+        sf::Vector2f endPos;
         bool outline;
         sf::Color maincolor;
         sf::Color seccolor;
 
-        void DrawMe();
+        void draw();
     };
 
-    class cBeam
+    class Beam
     {
     public:
-        sf::Vector2f StartPos;
-        sf::Vector2f EndPos;
+        sf::Vector2f startPos;
+        sf::Vector2f endPos;
         int size;
         int duration;
         bool fading;
@@ -63,33 +61,33 @@ public:
         sf::Color maincolor;
         sf::Color seccolor;
 
-        void DrawMe();
+        void draw();
     };
-    std::vector<cCircle> Circles;
-    std::vector<cLine> Lines;
-    std::vector<cBeam> Beams;
-    std::vector<cSquare> Squares;
+    std::vector<Circle> circles;
+    std::vector<Line> lines;
+    std::vector<Beam> beams;
+    std::vector<Square> squares;
 
-    void CreateLine(int Sxpos, int Sypos, int Expos, int Eypos, int Size,
+    void createLine(int Sxpos, int Sypos, int Expos, int Eypos, int Size,
                     sf::Color MainColor, float Outline = 0,
                     sf::Color SecondaryColor = sf::Color(0, 0, 0),
                     bool Fades = false, int Fadesrate = 255);
 
-    void CreateBeam(int Sxpos, int Sypos, int Expos, int Eypos, int Size,
+    void createBeam(int Sxpos, int Sypos, int Expos, int Eypos, int Size,
                     sf::Color MainColor, float Outline = 0,
                     sf::Color SecondaryColor = sf::Color(0, 0, 0),
                     bool Fades = false, int Fadesrate = 255);
 
-    void CreateSquare(int Sxpos, int Sypos, int Expos, int Eypos,
+    void createSquare(int Sxpos, int Sypos, int Expos, int Eypos,
                       sf::Color MainColor, float Outline = 0,
                       sf::Color SecondaryColor = sf::Color(0, 0, 0));
 
-    void CreateCircle(int xpos, int ypos, int Size, sf::Color MainColor,
+    void createCircle(int xpos, int ypos, int Size, sf::Color MainColor,
                       float Outline = 0,
                       sf::Color SecondaryColor = sf::Color(0, 0, 0));
 
-    void DrawEffects();
+    void drawEffects();
 };
-extern Effects Effectz;
+extern Effects effects;
 
 #endif // EFFECTS_H_INCLUDED

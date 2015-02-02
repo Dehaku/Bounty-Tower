@@ -23,7 +23,7 @@ void Button::draw()
     if (beenPressed == true)
     {
         //Effectz.CreateCircle(vPos.x,vPos.y,iSize,sf::Color(Color.r/2,Color.g/2,Color.b/2),2,White);
-        Effectz.CreateSquare(vPos.x - iSize, vPos.y - (iSize / 1.5),
+        effects.createSquare(vPos.x - iSize, vPos.y - (iSize / 1.5),
                              vPos.x + iSize, vPos.y + (iSize / 1.5),
                              sf::Color(color.r / 2, color.g / 2, color.b / 2),
                              2, sf::Color::White);
@@ -32,20 +32,20 @@ void Button::draw()
                             vPos.y) < iSize)
     {
         //Effectz.CreateCircle(vPos.x,vPos.y,iSize,Color,2,White);
-        Effectz.CreateSquare(vPos.x - iSize, vPos.y - (iSize / 1.5),
+        effects.createSquare(vPos.x - iSize, vPos.y - (iSize / 1.5),
                              vPos.x + iSize, vPos.y + (iSize / 1.5), color, 2,
                              sf::Color::White);
     }
     else
     {
         //Effectz.CreateCircle(vPos.x,vPos.y,iSize,Color,1,Black);
-        Effectz.CreateSquare(vPos.x - iSize, vPos.y - (iSize / 1.5),
+        effects.createSquare(vPos.x - iSize, vPos.y - (iSize / 1.5),
                              vPos.x + iSize, vPos.y + (iSize / 1.5), color, 2,
                              sf::Color::Black);
     }
     cText.CreateText(vPos.x + 10, vPos.y - (textSize / 2), textSize, textColor,
                      sForwardText);
-    Effectz.DrawEffects();
+    effects.drawEffects();
 }
 
 Button::Button() : iSize{}, textSize{}
@@ -59,7 +59,7 @@ void SquareButton::draw()
     if (beenPressed == true)
     {
         //Effectz.CreateCircle(vPos.x,vPos.y,iSize,sf::Color(Color.r/2,Color.g/2,Color.b/2),2,White);
-        Effectz.CreateSquare(vPos.x - iSizex, vPos.y - iSizey, vPos.x + iSizex,
+        effects.createSquare(vPos.x - iSizex, vPos.y - iSizey, vPos.x + iSizex,
                              vPos.y + iSizey,
                              sf::Color(color.r / 2, color.g / 2, color.b / 2),
                              2, sf::Color::White);
@@ -68,11 +68,11 @@ void SquareButton::draw()
                   vPos.y - iSizey, vPos.y + iSizey))
     {
         //Effectz.CreateCircle(vPos.x,vPos.y,iSize,Color,2,White);
-        Effectz.CreateSquare(vPos.x - iSizex, vPos.y - iSizey, vPos.x + iSizex,
+        effects.createSquare(vPos.x - iSizex, vPos.y - iSizey, vPos.x + iSizex,
                              vPos.y + iSizey, color, 2, sf::Color::White);
         if (gvars::MouseStagnation > 10 && sButtonText.length() != 0)
         {
-            Effectz.CreateSquare(gvars::MousePos.x + 10, gvars::MousePos.y - 6,
+            effects.createSquare(gvars::MousePos.x + 10, gvars::MousePos.y - 6,
                                  gvars::MousePos.x + (sButtonText.length() * 7),
                                  gvars::MousePos.y + 6, sf::Color::Black, 1,
                                  sf::Color(175, 175, 0));
@@ -83,12 +83,12 @@ void SquareButton::draw()
     else
     {
         //Effectz.CreateCircle(vPos.x,vPos.y,iSize,Color,1,Black);
-        Effectz.CreateSquare(vPos.x - iSizex, vPos.y - iSizey, vPos.x + iSizex,
+        effects.createSquare(vPos.x - iSizex, vPos.y - iSizey, vPos.x + iSizex,
                              vPos.y + iSizey, color, 2, sf::Color::Black);
     }
     cText.CreateText(vPos.x + 10, vPos.y - (textSize / 2), textSize, textColor,
                      sForwardText);
-    Effectz.DrawEffects();
+    effects.drawEffects();
 }
 
 SquareButton::SquareButton() : iSizex{}, iSizey{}, textSize{}
@@ -212,7 +212,7 @@ void menuPopUp()
     sf::Vector2f Tiled(abs(GC.MenuPos.x / 20) * 20,
                        abs(GC.MenuPos.y / 20) * 20);
 
-    Effectz.CreateSquare(Tiled.x, Tiled.y, Tiled.x + 20, Tiled.y + 20,
+    effects.createSquare(Tiled.x, Tiled.y, Tiled.x + 20, Tiled.y + 20,
                          sf::Color::Transparent, 1, sf::Color::Cyan);
 
     if (GC.MenuType == "Orbital Drop")
@@ -221,7 +221,7 @@ void menuPopUp()
         int Options = 8;
         GC.MenuEndPos = sf::Vector2f(GC.MenuPos.x + 150,
                                      (GC.MenuPos.y + (Options * 13)) + 5);
-        Effectz.CreateSquare(GC.MenuPos.x, GC.MenuPos.y, GC.MenuEndPos.x,
+        effects.createSquare(GC.MenuPos.x, GC.MenuPos.y, GC.MenuEndPos.x,
                              GC.MenuEndPos.y, sf::Color::Black, 2,
                              sf::Color::Cyan);
         int iY = 0;
@@ -236,7 +236,7 @@ void menuPopUp()
 
             if (i == 0)
             {
-                Effectz.CreateLine(
+                effects.createLine(
                     GC.MenuPos.x, (GC.MenuPos.y + (iY * 13)) + 13,
                     GC.MenuPos.x + 90, (GC.MenuPos.y + (iY * 13)) + 13, 1,
                     sf::Color::Cyan);
@@ -248,10 +248,10 @@ void menuPopUp()
                     BS, BSY, ButCol, "Strikes the location!");
                 if (squareButtonClicked(Butt) || Key.num1Time == 1)
                 {
-                    Effectz.CreateSquare(GC.MenuPos.x - 10, GC.MenuPos.y - 2,
+                    effects.createSquare(GC.MenuPos.x - 10, GC.MenuPos.y - 2,
                                          GC.MenuPos.x + 10, GC.MenuPos.y + 2,
                                          sf::Color::Black);
-                    Effectz.CreateSquare(GC.MenuPos.x - 2, GC.MenuPos.y - 10,
+                    effects.createSquare(GC.MenuPos.x - 2, GC.MenuPos.y - 10,
                                          GC.MenuPos.x + 2, GC.MenuPos.y + 10,
                                          sf::Color::Black);
                     item Var;
@@ -278,7 +278,7 @@ void menuPopUp()
         int Options = 8;
         GC.MenuEndPos = sf::Vector2f(GC.MenuPos.x + 150,
                                      (GC.MenuPos.y + (Options * 13)) + 5);
-        Effectz.CreateSquare(GC.MenuPos.x, GC.MenuPos.y, GC.MenuEndPos.x,
+        effects.createSquare(GC.MenuPos.x, GC.MenuPos.y, GC.MenuEndPos.x,
                              GC.MenuEndPos.y, sf::Color::Black, 2,
                              sf::Color::Cyan);
         int iY = 0;
@@ -293,7 +293,7 @@ void menuPopUp()
 
             if (i == 0)
             {
-                Effectz.CreateLine(
+                effects.createLine(
                     GC.MenuPos.x, (GC.MenuPos.y + (iY * 13)) + 13,
                     GC.MenuPos.x + 90, (GC.MenuPos.y + (iY * 13)) + 13, 1,
                     sf::Color::Cyan);
@@ -311,7 +311,7 @@ void menuPopUp()
 
             if (i == 1)
             {
-                Effectz.CreateLine(
+                effects.createLine(
                     GC.MenuPos.x, (GC.MenuPos.y + (iY * 13)) + 13,
                     GC.MenuPos.x + 90, (GC.MenuPos.y + (iY * 13)) + 13, 1,
                     sf::Color::Cyan);
@@ -337,7 +337,7 @@ void menuPopUp()
         int Options = 8;
         GC.MenuEndPos = sf::Vector2f(GC.MenuPos.x + 150,
                                      (GC.MenuPos.y + (Options * 13)) + 5);
-        Effectz.CreateSquare(GC.MenuPos.x, GC.MenuPos.y, GC.MenuEndPos.x,
+        effects.createSquare(GC.MenuPos.x, GC.MenuPos.y, GC.MenuEndPos.x,
                              GC.MenuEndPos.y, sf::Color::Black, 2,
                              sf::Color::Cyan);
         int iY = 0;
@@ -354,7 +354,7 @@ void menuPopUp()
             {
 
                 //Effectz.CreateLine(GC.MenuPos.x,(GC.MenuPos.y+(iY*13))+8,GC.MenuPos.x+90,(GC.MenuPos.y+(iY*13))+8,3,Black,1,Yellow);
-                Effectz.CreateLine(
+                effects.createLine(
                     GC.MenuPos.x, (GC.MenuPos.y + (iY * 13)) + 13,
                     GC.MenuPos.x + 90, (GC.MenuPos.y + (iY * 13)) + 13, 1,
                     sf::Color::Cyan);
@@ -376,7 +376,7 @@ void menuPopUp()
             {
 
                 //Effectz.CreateLine(GC.MenuPos.x,(GC.MenuPos.y+(iY*13))+8,GC.MenuPos.x+90,(GC.MenuPos.y+(iY*13))+8,3,Black,1,Yellow);
-                Effectz.CreateLine(
+                effects.createLine(
                     GC.MenuPos.x, (GC.MenuPos.y + (iY * 13)) + 13,
                     GC.MenuPos.x + 90, (GC.MenuPos.y + (iY * 13)) + 13, 1,
                     sf::Color::Cyan);
@@ -400,7 +400,7 @@ void menuPopUp()
             {
 
                 //Effectz.CreateLine(GC.MenuPos.x,(GC.MenuPos.y+(iY*13))+8,GC.MenuPos.x+90,(GC.MenuPos.y+(iY*13))+8,3,Black,1,Yellow);
-                Effectz.CreateLine(
+                effects.createLine(
                     GC.MenuPos.x, (GC.MenuPos.y + (iY * 13)) + 13,
                     GC.MenuPos.x + 90, (GC.MenuPos.y + (iY * 13)) + 13, 1,
                     sf::Color::Cyan);
@@ -436,7 +436,7 @@ void menuPopUp()
         int Options = 8;
         GC.MenuEndPos = sf::Vector2f(GC.MenuPos.x + 150,
                                      (GC.MenuPos.y + (Options * 13)) + 5);
-        Effectz.CreateSquare(GC.MenuPos.x, GC.MenuPos.y, GC.MenuEndPos.x,
+        effects.createSquare(GC.MenuPos.x, GC.MenuPos.y, GC.MenuEndPos.x,
                              GC.MenuEndPos.y, sf::Color::Black, 2,
                              sf::Color::Cyan);
         int iY = 0;
@@ -451,7 +451,7 @@ void menuPopUp()
 
             if (i == 0)
             {
-                Effectz.CreateLine(
+                effects.createLine(
                     GC.MenuPos.x, (GC.MenuPos.y + (iY * 13)) + 13,
                     GC.MenuPos.x + 90, (GC.MenuPos.y + (iY * 13)) + 13, 1,
                     sf::Color::Cyan);
@@ -491,7 +491,7 @@ void menuPopUp()
 
             if (i == 1)
             {
-                Effectz.CreateLine(
+                effects.createLine(
                     GC.MenuPos.x, (GC.MenuPos.y + (iY * 13)) + 13,
                     GC.MenuPos.x + 90, (GC.MenuPos.y + (iY * 13)) + 13, 1,
                     sf::Color::Cyan);
@@ -540,7 +540,7 @@ void menuPopUp()
         int Options = 8;
         GC.MenuEndPos = sf::Vector2f(GC.MenuPos.x + 150,
                                      (GC.MenuPos.y + (Options * 13)) + 5);
-        Effectz.CreateSquare(GC.MenuPos.x, GC.MenuPos.y, GC.MenuEndPos.x,
+        effects.createSquare(GC.MenuPos.x, GC.MenuPos.y, GC.MenuEndPos.x,
                              GC.MenuEndPos.y, sf::Color::Black, 2,
                              sf::Color::Cyan);
         int iY = 0;
@@ -553,7 +553,7 @@ void menuPopUp()
         for (size_t i = 0; i != GC.MenuPtrCon.pVecItem.size(); i++)
         {
 
-            Effectz.CreateLine(GC.MenuPos.x, (GC.MenuPos.y + (iY * 13)) + 13,
+            effects.createLine(GC.MenuPos.x, (GC.MenuPos.y + (iY * 13)) + 13,
                                GC.MenuPos.x + 90,
                                (GC.MenuPos.y + (iY * 13)) + 13, 1,
                                sf::Color::Cyan);
@@ -574,7 +574,7 @@ void menuPopUp()
 
             if (/*i == -1*/ false) // `i` can't be -1
             {
-                Effectz.CreateLine(
+                effects.createLine(
                     GC.MenuPos.x, (GC.MenuPos.y + (iY * 13)) + 13,
                     GC.MenuPos.x + 90, (GC.MenuPos.y + (iY * 13)) + 13, 1,
                     sf::Color::Cyan);
@@ -606,7 +606,7 @@ void menuPopUp()
         int Options = 8;
         GC.MenuEndPos = sf::Vector2f(GC.MenuPos.x + 150,
                                      (GC.MenuPos.y + (Options * 13)) + 5);
-        Effectz.CreateSquare(GC.MenuPos.x, GC.MenuPos.y, GC.MenuEndPos.x,
+        effects.createSquare(GC.MenuPos.x, GC.MenuPos.y, GC.MenuEndPos.x,
                              GC.MenuEndPos.y, sf::Color::Black, 2,
                              sf::Color::Cyan);
         int iY = 0;
@@ -621,7 +621,7 @@ void menuPopUp()
 
             if (i == 0)
             {
-                Effectz.CreateLine(
+                effects.createLine(
                     GC.MenuPos.x, (GC.MenuPos.y + (iY * 13)) + 13,
                     GC.MenuPos.x + 90, (GC.MenuPos.y + (iY * 13)) + 13, 1,
                     sf::Color::Cyan);
@@ -642,7 +642,7 @@ void menuPopUp()
             }
             if (i == 1)
             {
-                Effectz.CreateLine(
+                effects.createLine(
                     GC.MenuPos.x, (GC.MenuPos.y + (iY * 13)) + 13,
                     GC.MenuPos.x + 90, (GC.MenuPos.y + (iY * 13)) + 13, 1,
                     sf::Color::Cyan);
@@ -655,10 +655,10 @@ void menuPopUp()
                 if (squareButtonClicked(Butt) || Key.num2Time == 1)
                 {
 
-                    Effectz.CreateSquare(GC.MenuPos.x - 10, GC.MenuPos.y - 2,
+                    effects.createSquare(GC.MenuPos.x - 10, GC.MenuPos.y - 2,
                                          GC.MenuPos.x + 10, GC.MenuPos.y + 2,
                                          sf::Color::Black);
-                    Effectz.CreateSquare(GC.MenuPos.x - 2, GC.MenuPos.y - 10,
+                    effects.createSquare(GC.MenuPos.x - 2, GC.MenuPos.y - 10,
                                          GC.MenuPos.x + 2, GC.MenuPos.y + 10,
                                          sf::Color::Black);
                     item Var;
@@ -681,7 +681,7 @@ void menuPopUp()
             {
 
                 //Effectz.CreateLine(GC.MenuPos.x,(GC.MenuPos.y+(iY*13))+8,GC.MenuPos.x+90,(GC.MenuPos.y+(iY*13))+8,3,Black,1,Yellow);
-                Effectz.CreateLine(
+                effects.createLine(
                     GC.MenuPos.x, (GC.MenuPos.y + (iY * 13)) + 13,
                     GC.MenuPos.x + 90, (GC.MenuPos.y + (iY * 13)) + 13, 1,
                     sf::Color::Cyan);
@@ -724,7 +724,7 @@ void menuPopUp()
             {
 
                 //Effectz.CreateLine(GC.MenuPos.x,(GC.MenuPos.y+(iY*13))+8,GC.MenuPos.x+90,(GC.MenuPos.y+(iY*13))+8,3,Black,1,Yellow);
-                Effectz.CreateLine(
+                effects.createLine(
                     GC.MenuPos.x, (GC.MenuPos.y + (iY * 13)) + 13,
                     GC.MenuPos.x + 90, (GC.MenuPos.y + (iY * 13)) + 13, 1,
                     sf::Color::Cyan);
@@ -751,7 +751,7 @@ void menuPopUp()
             {
 
                 //Effectz.CreateLine(GC.MenuPos.x,(GC.MenuPos.y+(iY*13))+8,GC.MenuPos.x+90,(GC.MenuPos.y+(iY*13))+8,3,Black,1,Yellow);
-                Effectz.CreateLine(
+                effects.createLine(
                     GC.MenuPos.x, (GC.MenuPos.y + (iY * 13)) + 13,
                     GC.MenuPos.x + 90, (GC.MenuPos.y + (iY * 13)) + 13, 1,
                     sf::Color::Cyan);
@@ -785,7 +785,7 @@ void menuPopUp()
             {
 
                 //Effectz.CreateLine(GC.MenuPos.x,(GC.MenuPos.y+(iY*13))+8,GC.MenuPos.x+90,(GC.MenuPos.y+(iY*13))+8,3,Black,1,Yellow);
-                Effectz.CreateLine(
+                effects.createLine(
                     GC.MenuPos.x, (GC.MenuPos.y + (iY * 13)) + 13,
                     GC.MenuPos.x + 90, (GC.MenuPos.y + (iY * 13)) + 13, 1,
                     sf::Color::Cyan);
@@ -818,7 +818,7 @@ void menuPopUp()
             {
 
                 //Effectz.CreateLine(GC.MenuPos.x,(GC.MenuPos.y+(iY*13))+8,GC.MenuPos.x+90,(GC.MenuPos.y+(iY*13))+8,3,Black,1,Yellow);
-                Effectz.CreateLine(
+                effects.createLine(
                     GC.MenuPos.x, (GC.MenuPos.y + (iY * 13)) + 13,
                     GC.MenuPos.x + 90, (GC.MenuPos.y + (iY * 13)) + 13, 1,
                     sf::Color::Cyan);
@@ -841,7 +841,7 @@ void menuPopUp()
             {
 
                 //Effectz.CreateLine(GC.MenuPos.x,(GC.MenuPos.y+(iY*13))+8,GC.MenuPos.x+90,(GC.MenuPos.y+(iY*13))+8,3,Black,1,Yellow);
-                Effectz.CreateLine(
+                effects.createLine(
                     GC.MenuPos.x, (GC.MenuPos.y + (iY * 13)) + 13,
                     GC.MenuPos.x + 90, (GC.MenuPos.y + (iY * 13)) + 13, 1,
                     sf::Color::Cyan);
@@ -869,12 +869,12 @@ void menuPopUp()
         GC.MenuEndPos = sf::Vector2f(
             GC.MenuPos.x + 100,
             (GC.MenuPos.y + (itemmanager.GlobalItem.size() * 10)) + 5);
-        Effectz.CreateSquare(GC.MenuPos.x, GC.MenuPos.y, GC.MenuEndPos.x,
+        effects.createSquare(GC.MenuPos.x, GC.MenuPos.y, GC.MenuEndPos.x,
                              GC.MenuEndPos.y, sf::Color::White);
         int iY = 0;
         for (auto &elem : itemmanager.GlobalItem)
         {
-            Effectz.CreateLine(GC.MenuPos.x, (GC.MenuPos.y + (iY * 11)) + 8,
+            effects.createLine(GC.MenuPos.x, (GC.MenuPos.y + (iY * 11)) + 8,
                                GC.MenuPos.x + 90,
                                (GC.MenuPos.y + (iY * 11)) + 8, 3,
                                sf::Color::Black, 1, sf::Color::Yellow);
@@ -897,12 +897,12 @@ void menuPopUp()
         GC.MenuEndPos = sf::Vector2f(
             GC.MenuPos.x + 100,
             (GC.MenuPos.y + (npcmanager.GlobalCritter.size() * 10)) + 5);
-        Effectz.CreateSquare(GC.MenuPos.x, GC.MenuPos.y, GC.MenuEndPos.x,
+        effects.createSquare(GC.MenuPos.x, GC.MenuPos.y, GC.MenuEndPos.x,
                              GC.MenuEndPos.y, sf::Color::White);
         int iY = 0;
         for (auto &elem : npcmanager.GlobalCritter)
         {
-            Effectz.CreateLine(GC.MenuPos.x, (GC.MenuPos.y + (iY * 11)) + 8,
+            effects.createLine(GC.MenuPos.x, (GC.MenuPos.y + (iY * 11)) + 8,
                                GC.MenuPos.x + 90,
                                (GC.MenuPos.y + (iY * 11)) + 8, 3,
                                sf::Color::Black, 1, sf::Color::Yellow);
@@ -926,7 +926,7 @@ void menuPopUp()
         int Options = 2;
         GC.MenuEndPos = sf::Vector2f(GC.MenuPos.x + 100,
                                      (GC.MenuPos.y + (Options * 10)) + 5);
-        Effectz.CreateSquare(GC.MenuPos.x, GC.MenuPos.y, GC.MenuEndPos.x,
+        effects.createSquare(GC.MenuPos.x, GC.MenuPos.y, GC.MenuEndPos.x,
                              GC.MenuEndPos.y, sf::Color::White);
         int iY = 0;
         for (int i = 0; i != Options; i++)
@@ -935,7 +935,7 @@ void menuPopUp()
             if (i == 0)
             {
 
-                Effectz.CreateLine(GC.MenuPos.x, (GC.MenuPos.y + (iY * 11)) + 8,
+                effects.createLine(GC.MenuPos.x, (GC.MenuPos.y + (iY * 11)) + 8,
                                    GC.MenuPos.x + 90,
                                    (GC.MenuPos.y + (iY * 11)) + 8, 3,
                                    sf::Color::Black, 1, sf::Color::Yellow);
@@ -963,7 +963,7 @@ void menuPopUp()
             if (i == 1)
             {
 
-                Effectz.CreateLine(GC.MenuPos.x, (GC.MenuPos.y + (iY * 11)) + 8,
+                effects.createLine(GC.MenuPos.x, (GC.MenuPos.y + (iY * 11)) + 8,
                                    GC.MenuPos.x + 90,
                                    (GC.MenuPos.y + (iY * 11)) + 8, 3,
                                    sf::Color::Black, 1, sf::Color::Yellow);
