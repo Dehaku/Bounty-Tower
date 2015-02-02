@@ -601,9 +601,12 @@ void critterBrain(std::vector<NPC> &NPCs)
     for (auto &npc : NPCs)
     {
 
-        // BodyPart Loop
-        // First, Run through the bodyparts finding the 'global' tags, like Nutrient Extraction and such.
-        // Second, Run through each individual part running through all the local tags.
+        /*  BodyPart Loop
+            First, Run through the bodyparts finding the 'global' tags, like
+                Nutrient Extraction and such.
+            Second, Run through each individual part running through all
+                the local tags.
+        */
 
         short int Parts = 0;
         size_t SearchPos = 0;
@@ -682,7 +685,6 @@ void critterBrain(std::vector<NPC> &NPCs)
 
         SearchPos = 0;
 
-        //for(int i = 0; i != npc.inventory.size(); i++)
         for (auto i = npc.inventory.begin(); i != npc.inventory.end(); i++)
         {
             if ((*i).insidePart != "")
@@ -932,16 +934,15 @@ void critterBrain(std::vector<NPC> &NPCs)
             }
         }
 
+        /*Simulating Hunger/Thirst, Needs to be nerfed/formulated to conditions, I.E. Attributes/Parts/Weather*/
         npc.bloodwork("Nutrients", -1);
         npc.bloodwork("Hydration", -1);
 
         debug("Debug: Ending Part Loop");
-        // *BodyPart Loop*
+        /* *BodyPart Loop* */
         /* Critter Vision   */
-        NPC Critter;
         const sf::Vector2f npcPos(npc.xpos,npc.ypos);
         npc.angle = math::angleBetweenVectors(npcPos,gvars::mousePos)-90;
-
 
         int EndAngle = -(npc.angle-(npc.viewangle/2));
         int StartAngle = -(npc.angle-(-npc.viewangle/2));
