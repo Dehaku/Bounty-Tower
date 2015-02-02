@@ -991,7 +991,7 @@ void critterBrain(std::vector<NPC> &NPCs)
 
         // Finding the highest Desire
         bool InComplete;
-        Desire * HighestDesire;
+        Desire *HighestDesire;
         bool FirstIter = true;
 
     ReDesire:
@@ -999,7 +999,7 @@ void critterBrain(std::vector<NPC> &NPCs)
 
         for (auto &i : Desires)
         {
-            if(FirstIter)
+            if (FirstIter)
             {
                 HighestDesire = &i;
                 FirstIter = false;
@@ -1069,10 +1069,9 @@ void critterBrain(std::vector<NPC> &NPCs)
         // Incase the highest desire isn't completable, Go through again for the next highest desire.
         for (auto &i : Desires)
         {
-            std::cout << npc.name << ":" << i.DesireType << ": " << i.Potency << std::endl;
+            std::cout << npc.name << ":" << i.DesireType << ": " << i.Potency
+                      << std::endl;
         }
-
-
 
         if (InComplete)
             goto ReDesire;
