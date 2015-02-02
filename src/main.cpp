@@ -488,7 +488,6 @@ bool RemoveNPC(char * /*NPCname*/, int /*Id*/)
     }
     if (TempInt == 1)
     {
-        TempInt = 0;
         npclist.erase(location);
         return true;
     }
