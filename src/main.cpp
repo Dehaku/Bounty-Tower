@@ -156,7 +156,6 @@ bool RemoveItem(int Id)
     }
     if (TempInt == 1)
     {
-        TempInt = 0;
         worlditems.erase(location);
         return true;
     }
