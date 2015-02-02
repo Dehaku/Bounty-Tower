@@ -367,7 +367,7 @@ NPC::NPC()
     Skills.perceptionxp = 0;
     Skills.agilityxp = 0;
 
-    Target.Item = nullptr;
+    Target.item = nullptr;
     Target.npc = nullptr;
     Target.tile = nullptr;
 

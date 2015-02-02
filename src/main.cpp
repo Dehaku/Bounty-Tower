@@ -1027,7 +1027,7 @@ void critterBrain(std::vector<NPC> &NPCs)
             for (auto &Inv : npc.inventory)
                 if (Inv.massFlesh > 0)
                 {
-                    npc.Target.Item = &Inv;
+                    npc.Target.item = &Inv;
                     InInv = true;
                     break;
                 }
@@ -1035,10 +1035,10 @@ void critterBrain(std::vector<NPC> &NPCs)
             {
                 for (auto &LclItms : worlditems)
                 {
-                    if (npc.Target.Item == nullptr && LclItms.massFlesh > 0 &&
+                    if (npc.Target.item == nullptr && LclItms.massFlesh > 0 &&
                         LclItms.user == nullptr)
                     {
-                        npc.Target.Item =
+                        npc.Target.item =
                             &LclItms; // Is this creating a copy? The Behavior in testing still makes multiple critters target the same item.
                         LclItms.user = &npc;
                     }
@@ -1046,24 +1046,24 @@ void critterBrain(std::vector<NPC> &NPCs)
                     {
 
                         float CurrentItem = math::closeish(
-                            npc.xpos, npc.ypos, (*npc.Target.Item).xpos,
-                            (*npc.Target.Item).ypos);
+                            npc.xpos, npc.ypos, (*npc.Target.item).xpos,
+                            (*npc.Target.item).ypos);
                         float NewItem = math::closeish(
                             npc.xpos, npc.ypos, LclItms.xpos, LclItms.ypos);
                         if (NewItem < CurrentItem)
                         {
-                            (*npc.Target.Item).user = nullptr;
-                            npc.Target.Item = &LclItms;
-                            (*npc.Target.Item).user = &npc;
+                            (*npc.Target.item).user = nullptr;
+                            npc.Target.item = &LclItms;
+                            (*npc.Target.item).user = &npc;
                         }
                     }
                 }
             }
 
-            if (npc.Target.Item != nullptr && InInv == false)
+            if (npc.Target.item != nullptr && InInv == false)
             {
-                effects.createLine(npc.xpos, npc.ypos, (*npc.Target.Item).xpos,
-                                   (*npc.Target.Item).ypos, 2,
+                effects.createLine(npc.xpos, npc.ypos, (*npc.Target.item).xpos,
+                                   (*npc.Target.item).ypos, 2,
                                    sf::Color::White);
             }
         }

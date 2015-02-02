@@ -228,7 +228,7 @@ public:
     class TargetInfo
     {
     public:
-        Item *Item;
+        Item *item;
         NPC *npc;
         Tile *tile;
     };
