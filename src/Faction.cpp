@@ -368,8 +368,8 @@ NPC::NPC()
     Skills.agilityxp = 0;
 
     Target.Item = nullptr;
-    Target.NPC = nullptr;
-    Target.Tile = nullptr;
+    Target.npc = nullptr;
+    Target.tile = nullptr;
 
     maxhealth = Skills.endurance * 0.8;
     regentimerint = 100;

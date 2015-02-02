@@ -229,8 +229,8 @@ public:
     {
     public:
         item *Item;
-        NPC *NPC;
-        Tile *Tile;
+        NPC *npc;
+        Tile *tile;
     };
     TargetInfo Target;
 
