@@ -11,7 +11,7 @@ Ke Key;
 void Ke::Update()
 {
 
-    if (gvars::InFocus)
+    if (gvars::inFocus)
     {
 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))

@@ -168,7 +168,7 @@ bool RemoveItem(int Id)
 
 void updateItem()
 {
-    if (gvars::Debug)
+    if (gvars::debug)
     {
         std::cout << "Pre Item \n";
     }
@@ -177,13 +177,13 @@ void updateItem()
     {
         try
         {
-            if (gvars::Debug)
+            if (gvars::debug)
             {
                 std::cout << item.name << "'s turn! \n";
             }
             if (item.produces == true)
             {
-                if (gvars::Debug)
+                if (gvars::debug)
                 {
                     std::cout << item.name << " can produce. \n";
                 }
@@ -209,24 +209,24 @@ void updateItem()
                             FindEmpty = true;
                         }
                     }
-                    if (gvars::Debug)
+                    if (gvars::debug)
                     {
                         std::cout << "Producing: " << s << " \n";
                     }
                     spawnItem(s, x, y);
-                    if (gvars::Debug)
+                    if (gvars::debug)
                     {
                         std::cout << item.name << " has produced: " << s
                                   << " \n";
                     }
                 }
             }
-            if (gvars::Debug)
+            if (gvars::debug)
             {
                 std::cout << "Done with: " << item.name << " \n";
             }
 
-            if (gvars::Debug)
+            if (gvars::debug)
             {
                 std::cout << "Acting on Missile \n";
             }
@@ -262,7 +262,7 @@ void updateItem()
                 }
             }
             item.age = item.age + 1;
-            if (gvars::Debug)
+            if (gvars::debug)
             {
                 std::cout << "Post Item \n";
             }
@@ -376,7 +376,7 @@ bool gridposTrace(int xa, int ya, int xb, int yb, int id, sf::Vector2f Target)
         if (Tiles[abs_to_index(x / GridSize)][abs_to_index(y / GridSize)][30]
                 .ID == 1010)
         {
-            if (Key.period && id == gvars::MyTargetid)
+            if (Key.period && id == gvars::myTargetid)
             {
                 effects.createLine(x, y, xa, ya, 1, sf::Color::Blue);
             }
@@ -391,7 +391,7 @@ bool gridposTrace(int xa, int ya, int xb, int yb, int id, sf::Vector2f Target)
         {
             return true;
         } // Returns true and stops searching.
-        if (Key.period && id == gvars::MyTargetid)
+        if (Key.period && id == gvars::myTargetid)
         {
             effects.createLine(x, y, xa, ya, 1, sf::Color::Blue);
         }
@@ -558,7 +558,7 @@ ItemFindResult FindClosestItem(int Orix, int Oriy, std::string TarItem,
 
 std::set<int> NpcList(int exceptions = -1)
 {
-    if (gvars::Debug)
+    if (gvars::debug)
     {
         std::cout << "Pre npcList \n";
     }
@@ -566,24 +566,24 @@ std::set<int> NpcList(int exceptions = -1)
 
     for (auto const &npc : npclist)
     {
-        if (gvars::Debug)
+        if (gvars::debug)
         {
             std::cout << "For NpcList \n";
         }
         if (npc.id != exceptions)
         {
-            if (gvars::Debug)
+            if (gvars::debug)
             {
                 std::cout << "Post exception NpcList \n";
             }
             Returns.insert(GetNpcVectorId(npc.id));
-            if (gvars::Debug)
+            if (gvars::debug)
             {
                 std::cout << "Post Returns NpcList \n";
             }
         }
     }
-    if (gvars::Debug)
+    if (gvars::debug)
     {
         std::cout << "Post For NpcList \n";
     }
@@ -836,18 +836,18 @@ void critterBrain(std::vector<NPC> &NPCs)
 
                     std::vector<std::string> StrVec =
                         StringFindElements(PartString, ":");
-                    if (gvars::Debug)
+                    if (gvars::debug)
                         std::cout << "StrVec[0]: " << StrVec[0] << std::endl;
                     float Leftover =
                         npc.bloodwork(StrVec[0], -atof(StrVec[1].c_str()));
-                    if (gvars::Debug)
+                    if (gvars::debug)
                         std::cout << "Bloodwork leftover is: " << Leftover
                                   << std::endl;
                     //NPC Critter;
 
                     for (size_t i = 0; i != StrVec.size(); i++)
                     {
-                        if (gvars::Debug)
+                        if (gvars::debug)
                             std::cout << StrVec[i] << std::endl;
                     }
                 }
@@ -1092,7 +1092,7 @@ void critterBrain(std::vector<NPC> &NPCs)
 
 void updateNpc()
 {
-    if (gvars::Debug)
+    if (gvars::debug)
     {
         std::cout << "Pre NPC\n";
     }
@@ -1336,18 +1336,18 @@ void updateNpc()
 
                     std::vector<std::string> StrVec =
                         StringFindElements(PartString, ":");
-                    if (gvars::Debug)
+                    if (gvars::debug)
                         std::cout << "StrVec[0]: " << StrVec[0] << std::endl;
                     float Leftover =
                         npc.bloodwork(StrVec[0], -atof(StrVec[1].c_str()));
-                    if (gvars::Debug)
+                    if (gvars::debug)
                         std::cout << "Bloodwork leftover is: " << Leftover
                                   << std::endl;
                     //NPC Critter;
 
                     for (size_t i = 0; i != StrVec.size(); i++)
                     {
-                        if (gvars::Debug)
+                        if (gvars::debug)
                             std::cout << StrVec[i] << std::endl;
                     }
                 }
@@ -1502,7 +1502,7 @@ void updateNpc()
                 math::clamp(npc.TentEnd2.y + randz(-3, 3), -20, 20);
         }
 
-        if (npc.id == gvars::MyTargetid && Key.space)
+        if (npc.id == gvars::myTargetid && Key.space)
         {
             npc.Attacking = true;
         }
@@ -1608,7 +1608,7 @@ void updateNpc()
 
             ChatBox.AddChat(ChtStr, sf::Color(200, 0, 0));
         };
-        if (Key.rshift && npc.id == gvars::MyTargetid)
+        if (Key.rshift && npc.id == gvars::myTargetid)
         {
             std::cout << npc.target << "At: " << npc.TargetPos.x << ":"
                       << npc.TargetPos.y << std::endl;
@@ -1620,7 +1620,7 @@ void updateNpc()
         {
             if (npc.attacktimer <= 0)
             {
-                if (gvars::Debug)
+                if (gvars::debug)
                 {
                     std::cout << "Pre Mel Ran \n";
                 }
@@ -1640,7 +1640,7 @@ void updateNpc()
                 try
                 {
                     bool Attacked = false;
-                    if (gvars::Debug)
+                    if (gvars::debug)
                     {
                         std::cout << "Pre Mel \n";
                     }
@@ -1670,13 +1670,13 @@ void updateNpc()
                                      (math::clamp(npc.Skills.agility / 10, 10,
                                                   100)));
                             } // Melee has a different method for saying it's done.
-                            if (gvars::Debug)
+                            if (gvars::debug)
                             {
                                 std::cout << "Post Mel \n";
                             }
                         }
                     }
-                    if (gvars::Debug)
+                    if (gvars::debug)
                     {
                         std::cout << "Pre Ran \n";
                     }
@@ -1733,8 +1733,8 @@ void updateNpc()
                                 {
                                     Tempy = -Tempy;
                                 }
-                                sf::Vector2f SP(gvars::MousePos.x,
-                                                gvars::MousePos.y);
+                                sf::Vector2f SP(gvars::mousePos.x,
+                                                gvars::mousePos.y);
                                 sf::Vector2f Targ(npc.ShootPos.x + Tempx,
                                                   npc.ShootPos.y + Tempy);
                                 effects.createLine(npc.xpos, npc.ypos, Targ.x,
@@ -1782,7 +1782,7 @@ void updateNpc()
                             {
                                 npc.Attacking = false;
                             }
-                            if (gvars::Debug)
+                            if (gvars::debug)
                             {
                                 std::cout << "Post Ran \n";
                             }
@@ -2570,11 +2570,11 @@ void updateNpc()
                     }
                 }
             } // Ending of "Act" action
-            if (gvars::Debug)
+            if (gvars::debug)
                 std::cout << "Post Act Section \n";
 
             { // Vision check and Activation of Path Finding.
-                if (gvars::Debug)
+                if (gvars::debug)
                     std::cout << "Pre 'set' vision. \n";
 
                 bool FoundGoal = false;
@@ -2646,7 +2646,7 @@ void updateNpc()
                 }
                 if (FoundGoal == false && npc.cbaseid != -1337)
                 {
-                    if (gvars::Debug)
+                    if (gvars::debug)
                         std::cout << "FoundGoal == false";
                     npc.NeedsPath = true;
 
@@ -2701,7 +2701,7 @@ void updateNpc()
 
     }catch (std::exception& e){}*/
                 }
-                if (gvars::Debug)
+                if (gvars::debug)
                     std::cout << "Post 'set' vision. \n";
             }
 
@@ -2890,7 +2890,7 @@ void updateNpc()
                     }
                 }
             }
-            if (gvars::Debug)
+            if (gvars::debug)
                 std::cout << "Post Item Pickups. \n";
 
             if (npc.movetimer <= 0)
@@ -3000,7 +3000,7 @@ void updateNpc()
 
                     //npc.PathFinding.MyFindPath(npc.xpos,npc.ypos,npc.TargetPos.x,npc.TargetPos.y);
 
-                    if (npc.id == gvars::MyTargetid)
+                    if (npc.id == gvars::myTargetid)
                     {
                         for (int Stuff = npc.PathFinding.MypathLocation;
                              Stuff != npc.PathFinding.MypathLength; ++Stuff)
@@ -3076,7 +3076,7 @@ void updateNpc()
                     ChatBox.AddChat(ChtStr, sf::Color(150, 150, 0));
                 }
             }
-            if (gvars::Debug)
+            if (gvars::debug)
                 std::cout << "Post Item Usages. \n";
 
             UnpointItems(npc.inventory);
@@ -3102,7 +3102,7 @@ void updateNpc()
                     Done = true;
                 }
             }
-            if (gvars::Debug)
+            if (gvars::debug)
                 std::cout << "Post Inventory Cleanup. \n";
 
         } // End of CanMove
@@ -3111,12 +3111,12 @@ void updateNpc()
                                               math::Vec2f(npc.xpos, npc.ypos));
         npc.MomMove();
         //float f=Math::AngleBetweenVectors(sf::Vector2f(npc.xpos,npc.ypos), npc.TargetPos);npc.img.setRotation(f);
-        if (gvars::Debug)
+        if (gvars::debug)
             std::cout << npc.name << npc.id << " is done. \n";
 
         IntegerIterator++;
     }
-    if (gvars::Debug)
+    if (gvars::debug)
         std::cout << "Post NPC\n";
 }
 
@@ -3128,14 +3128,14 @@ void DrawTiles()
     {
         for (int t = 0; t <= gridx - 1; t++)
         {
-            if ((gvars::Following == true &&
-                 i > (npclist.at(gvars::MyTarget).xpos / GridSize) - 27 &&
-                 i < (npclist.at(gvars::MyTarget).xpos / GridSize) + 26) ||
+            if ((gvars::following == true &&
+                 i > (npclist.at(gvars::myTarget).xpos / GridSize) - 27 &&
+                 i < (npclist.at(gvars::myTarget).xpos / GridSize) + 26) ||
                 (i > gvars::currentx - 27 && i < gvars::currentx + 26))
             {
-                if ((gvars::Following == true &&
-                     t > (npclist.at(gvars::MyTarget).ypos / GridSize) - 21 &&
-                     t < (npclist.at(gvars::MyTarget).ypos / GridSize) + 20) ||
+                if ((gvars::following == true &&
+                     t > (npclist.at(gvars::myTarget).ypos / GridSize) - 21 &&
+                     t < (npclist.at(gvars::myTarget).ypos / GridSize) + 20) ||
                     (t > gvars::currenty - 21 && t < gvars::currenty + 20))
                 {
                     sf::Sprite Tile;
@@ -3226,7 +3226,7 @@ void DrawNPCs()
 
             int Alph = 255;
             npc.img.setColor(sf::Color(255, 255, 255, Alph));
-            npc.img.setScale(gvars::Scalex, gvars::Scaley);
+            npc.img.setScale(gvars::scalex, gvars::scaley);
             npc.img.setOrigin(npc.img.getTextureRect().width / 2,
                               npc.img.getTextureRect().height / 2);
             npc.DrawImg();
@@ -3246,7 +3246,7 @@ void DrawItems()
         //if(zit->xpos/GridSize > globals::currentx-27 && zit->xpos/GridSize < globals::currentx+26 && zit->ypos/GridSize > globals::currenty-20 && zit->ypos/GridSize < globals::currenty+20)
         //{
         worlditem.img.setColor(sf::Color(255, 255, 255, 255));
-        worlditem.img.setScale(gvars::Scalex, gvars::Scaley);
+        worlditem.img.setScale(gvars::scalex, gvars::scaley);
         worlditem.drawImg();
         //}
     }
@@ -3294,7 +3294,7 @@ void DrawStuffs()
                 window.getView().getCenter().y);
     debug("Drew Joblist");
 
-    DisplayChat(sf::Vector2f(gvars::BottomLeft.x + 5, gvars::BottomLeft.y - 5));
+    DisplayChat(sf::Vector2f(gvars::bottomLeft.x + 5, gvars::bottomLeft.y - 5));
     debug("Drew Chat");
 
     effects.drawEffects();
@@ -3318,12 +3318,12 @@ void DrawStuffs()
     vButtonList.clear();
     debug("Drew and Cleared buttons");
 
-    gvars::DrawStuffsDone = true;
+    gvars::drawStuffsDone = true;
 }
 
 Item *getGlobalItem(std::string strtype)
 {
-    if (gvars::Debug)
+    if (gvars::debug)
     {
         std::cout << "Getting" << strtype << " \n";
     }
@@ -3331,14 +3331,14 @@ Item *getGlobalItem(std::string strtype)
     {
         if (elem.name == strtype)
         {
-            if (gvars::Debug)
+            if (gvars::debug)
             {
                 std::cout << "Found" << strtype << " \n";
             }
             return &elem;
         }
     }
-    if (gvars::Debug)
+    if (gvars::debug)
     {
         std::cout << "Didn't Find" << strtype << " \n";
     }
@@ -3348,7 +3348,7 @@ Item *getGlobalItem(std::string strtype)
 
 NPC *GetCritter(int id)
 {
-    if (gvars::Debug)
+    if (gvars::debug)
     {
         std::cout << "Getting critter(" << id << ") \n";
     }
@@ -3356,14 +3356,14 @@ NPC *GetCritter(int id)
     {
         if (elem.id == id)
         {
-            if (gvars::Debug)
+            if (gvars::debug)
             {
                 std::cout << "Found critter(" << id << ") \n";
             }
             return &elem;
         }
     }
-    if (gvars::Debug)
+    if (gvars::debug)
     {
         std::cout << "Didn't Find critter(" << id << ") \n";
     }
@@ -3419,7 +3419,7 @@ int main()
     float Degrees = randz(.0f, 359.0f); // global
     int radius = 200;
 
-    gvars::View1.zoom(2);
+    gvars::view1.zoom(2);
     if (true == false)
     {   // TODO: Fix this icon crap.
         /*sf::Image icon;
@@ -3466,20 +3466,20 @@ int main()
                 if (Event.mouseWheel.delta > 0)
                 {
                     std::cout << "Zoom Out \n";
-                    if (gvars::CameraZoom < 2)
+                    if (gvars::cameraZoom < 2)
                     {
-                        gvars::CameraZoom = gvars::CameraZoom / 0.5;
+                        gvars::cameraZoom = gvars::cameraZoom / 0.5;
                         //CameraSize
-                        gvars::View1.zoom(0.5);
+                        gvars::view1.zoom(0.5);
                     }
                 }
                 if (Event.mouseWheel.delta < 0)
                 {
                     std::cout << "Zoom In \n";
-                    if (gvars::CameraZoom > 0.5)
+                    if (gvars::cameraZoom > 0.5)
                     {
-                        gvars::CameraZoom = gvars::CameraZoom / 2;
-                        gvars::View1.zoom(2);
+                        gvars::cameraZoom = gvars::cameraZoom / 2;
+                        gvars::view1.zoom(2);
                     }
                 }
 
@@ -3497,46 +3497,46 @@ int main()
 
             if (Event.type == sf::Event::LostFocus)
             {
-                gvars::InFocus = false;
+                gvars::inFocus = false;
             }
             if (Event.type == sf::Event::GainedFocus)
             {
-                gvars::InFocus = true;
+                gvars::inFocus = true;
             }
         }
-        window.setView(gvars::View1);
-        gvars::ButtonClicked = false;
-        gvars::ButtonClickedTime--; // Misleading Variable name, Sorry!
-        if (gvars::ButtonClickedTime < 0)
-            gvars::ButtonClickedTime = 0;
+        window.setView(gvars::view1);
+        gvars::buttonClicked = false;
+        gvars::buttonClickedTime--; // Misleading Variable name, Sorry!
+        if (gvars::buttonClickedTime < 0)
+            gvars::buttonClickedTime = 0;
 
         Key.Update();
-        sf::Vector2f MouseStagnationCheck = gvars::MousePos;
+        sf::Vector2f MouseStagnationCheck = gvars::mousePos;
         // For some reason, I have to manually modify the positions.
-        gvars::MousePos =
+        gvars::mousePos =
             window.mapPixelToCoords(sf::Mouse::getPosition(window));
-        if (MouseStagnationCheck == gvars::MousePos)
-            gvars::MouseStagnation++;
+        if (MouseStagnationCheck == gvars::mousePos)
+            gvars::mouseStagnation++;
         else
-            gvars::MouseStagnation = 0;
+            gvars::mouseStagnation = 0;
 
-        gvars::TopLeft = sf::Vector2f(gvars::View1.getCenter().x - HalfSize.x,
-                                      gvars::View1.getCenter().y - HalfSize.y);
-        gvars::TopRight = sf::Vector2f(gvars::View1.getCenter().x + HalfSize.x,
-                                       gvars::View1.getCenter().y - HalfSize.y);
-        gvars::BottomLeft =
-            sf::Vector2f(gvars::View1.getCenter().x - HalfSize.x,
-                         gvars::View1.getCenter().y + HalfSize.y);
-        gvars::BottomRight =
-            sf::Vector2f(gvars::View1.getCenter().x + HalfSize.x,
-                         gvars::View1.getCenter().y + HalfSize.y);
+        gvars::topLeft = sf::Vector2f(gvars::view1.getCenter().x - HalfSize.x,
+                                      gvars::view1.getCenter().y - HalfSize.y);
+        gvars::topRight = sf::Vector2f(gvars::view1.getCenter().x + HalfSize.x,
+                                       gvars::view1.getCenter().y - HalfSize.y);
+        gvars::bottomLeft =
+            sf::Vector2f(gvars::view1.getCenter().x - HalfSize.x,
+                         gvars::view1.getCenter().y + HalfSize.y);
+        gvars::bottomRight =
+            sf::Vector2f(gvars::view1.getCenter().x + HalfSize.x,
+                         gvars::view1.getCenter().y + HalfSize.y);
 
-        cText.CreateText(CZ(gvars::TopRight.x - CZ(50)),
-                         CZ(gvars::TopRight.y + CZ(50)), CZ(11),
-                         sf::Color::White, "x", "", gvars::CameraZoom);
-        cText.CreateText((gvars::TopRight.x - 50), (gvars::TopRight.y + 50),
-                         (11) / gvars::CameraZoom, sf::Color::White, "x", "",
-                         gvars::CameraZoom);
+        cText.CreateText(CZ(gvars::topRight.x - CZ(50)),
+                         CZ(gvars::topRight.y + CZ(50)), CZ(11),
+                         sf::Color::White, "x", "", gvars::cameraZoom);
+        cText.CreateText((gvars::topRight.x - 50), (gvars::topRight.y + 50),
+                         (11) / gvars::cameraZoom, sf::Color::White, "x", "",
+                         gvars::cameraZoom);
 
         if (Key.kTime == 1)
         { // Generates a random name from GenerateName(); and puts it into the console.
@@ -3576,31 +3576,31 @@ int main()
 
         if (Key.r)
         { // Debug (de)activation
-            if (!gvars::Debug)
+            if (!gvars::debug)
             {
-                gvars::Debug = true;
+                gvars::debug = true;
                 fSleep(0.2);
             }
-            else if (gvars::Debug)
+            else if (gvars::debug)
             {
-                gvars::Debug = false;
+                gvars::debug = false;
                 fSleep(0.2);
             }
         }
         if (GC.Phase == "Local")
         { //=======================================================*Local*============================================================================
-            if (gvars::Debug)
+            if (gvars::debug)
                 cText.CreateText((gvars::currentx - 2) * GridSize,
                                  (gvars::currenty + 1) * GridSize, 11,
                                  sf::Color::Red, "Debug On");
             if (Key.lctrl && Key.LMB)
             {
-                Boom(gvars::MousePos.x, gvars::MousePos.y, 10, 50);
+                Boom(gvars::mousePos.x, gvars::mousePos.y, 10, 50);
             }
 
             for (auto &worlditem : worlditems)
             {
-                if (math::closeish(gvars::MousePos.x, gvars::MousePos.y,
+                if (math::closeish(gvars::mousePos.x, gvars::mousePos.y,
                                    (worlditem).xpos, (worlditem).ypos) <= 10)
                 {
                     std::cout << "Found; " << (worlditem).name << std::endl;
@@ -3619,14 +3619,14 @@ int main()
             {
                 //int x = globals::TopLeft.x;
                 //int y = globals::TopLeft.y+Rez.y;
-                int x = gvars::BottomLeft.x;
-                int y = gvars::BottomLeft.y;
+                int x = gvars::bottomLeft.x;
+                int y = gvars::bottomLeft.y;
                 effects.createSquare(x + 20, y - 20, x + 40, y - 40,
                                      sf::Color(0, 100, 255));
                 cText.CreateText(x + 20, y - 30, 11, sf::Color::White, "Build");
             }
             if (Key.RMBTime == 1 && Key.lshift)
-                RMBMenuTile(gvars::MousePos);
+                RMBMenuTile(gvars::mousePos);
 
             if (Key.l == true)
             {
@@ -3689,7 +3689,7 @@ int main()
                 PlyAct = true;
             }
 
-            if (gvars::InitalZeds)
+            if (gvars::initalZeds)
                 GC.Wave();
 
             rightMouseButtonContextMenu();
@@ -3698,8 +3698,8 @@ int main()
             {
                 NPC Critter;
                 Critter = *GetGlobalCritter("Azabul");
-                Critter.xpos = gvars::MousePos.x;
-                Critter.ypos = gvars::MousePos.y;
+                Critter.xpos = gvars::mousePos.x;
+                Critter.ypos = gvars::mousePos.y;
 
                 Critter.Body.BodyParts =
                     "{[Name:UpperTorso][BloodPumpRate:100][AirCapacity:200]["
@@ -3803,18 +3803,18 @@ int main()
                 PlyAct = true;
                 fSleep(0.1f);
             } //Sprite.Move(0,  100 * ElapsedTime);
-            if (gvars::MyTarget == -1)
+            if (gvars::myTarget == -1)
             {
-                gvars::Following = false;
+                gvars::following = false;
             }
             else if (Key.c)
             {
-                gvars::Following = true;
+                gvars::following = true;
             }
-            if (gvars::Following)
+            if (gvars::following)
             {
-                gvars::View1.setCenter(npclist.at(gvars::MyTarget).xpos,
-                                       npclist.at(gvars::MyTarget).ypos);
+                gvars::view1.setCenter(npclist.at(gvars::myTarget).xpos,
+                                       npclist.at(gvars::myTarget).ypos);
             }
 
             if (Key.n)
@@ -3822,7 +3822,7 @@ int main()
             if (Key.m)
                 GenerateChunk("SouthernHouse", 500, sf::Vector2i(50, 50));
 
-            if (Key.qTime > 10 && gvars::MyTarget == -1 && !Key.lshift)
+            if (Key.qTime > 10 && gvars::myTarget == -1 && !Key.lshift)
             {
             }
 
@@ -3883,10 +3883,10 @@ int main()
                 for (int Rot = 0; Rot != 360; Rot++)
                 {
                     //int Rot = GX;
-                    int XPos = ((abs(gvars::MousePos.x / 20) * 20) + 10 +
+                    int XPos = ((abs(gvars::mousePos.x / 20) * 20) + 10 +
                                 cosf(Rot * PI / 180) * Length) /
                                20;
-                    int YPos = ((abs(gvars::MousePos.y / 20) * 20) + 10 +
+                    int YPos = ((abs(gvars::mousePos.y / 20) * 20) + 10 +
                                 sinf(Rot * PI / 180) * Length) /
                                20;
                     //XPos *= 20;
@@ -3909,9 +3909,9 @@ int main()
                         for (int Rot = 1; Rot != 361; Rot++)
                         {
 
-                            int XPos = abs(gvars::MousePos.x / 20) +
+                            int XPos = abs(gvars::mousePos.x / 20) +
                                        sin(Rot * PI / 180) * ItLength;
-                            int YPos = abs(gvars::MousePos.y / 20) +
+                            int YPos = abs(gvars::mousePos.y / 20) +
                                        cos(Rot * PI / 180) * ItLength;
 
                             Tiles[XPos][YPos][30].Stone();
@@ -3922,9 +3922,9 @@ int main()
                         for (int Rot = 1; Rot != 361; Rot++)
                         {
 
-                            int XPos = abs(gvars::MousePos.x / 20) +
+                            int XPos = abs(gvars::mousePos.x / 20) +
                                        sin(Rot * PI / 180) * ItLength;
-                            int YPos = abs(gvars::MousePos.y / 20) +
+                            int YPos = abs(gvars::mousePos.y / 20) +
                                        cos(Rot * PI / 180) * ItLength;
 
                             Tiles[XPos][YPos][30].Wall();
@@ -3940,9 +3940,9 @@ int main()
             if (Key.lctrlTime > 10)
             {
                 int Variable =
-                    Tiles[abs_to_index(gvars::MousePos.x / 20)][abs_to_index(
-                        gvars::MousePos.y / 20)][30].ID;
-                cText.CreateText(gvars::MousePos.x, gvars::MousePos.y, 11,
+                    Tiles[abs_to_index(gvars::mousePos.x / 20)][abs_to_index(
+                        gvars::mousePos.y / 20)][30].ID;
+                cText.CreateText(gvars::mousePos.x, gvars::mousePos.y, 11,
                                  sf::Color::Red, "", "", Variable);
             }
 
@@ -4419,31 +4419,31 @@ int main()
                 std::cout << "Twas' True \n";
             }
 
-            if (gvars::MyTarget != -1 && npclist[gvars::MyTarget].health <= 0 &&
+            if (gvars::myTarget != -1 && npclist[gvars::myTarget].health <= 0 &&
                 Key.lshift && Key.q)
             {
-                npclist[gvars::MyTarget].ToDelete = true;
-                gvars::MyTarget = -1;
-                gvars::MyTargetid = -1;
+                npclist[gvars::myTarget].ToDelete = true;
+                gvars::myTarget = -1;
+                gvars::myTargetid = -1;
             }
 
-            if (gvars::MyTarget != -1 && Key.RMB &&
-                Tiles[abs_to_index(gvars::MousePos.x / GridSize)][abs_to_index(
-                    gvars::MousePos.y / GridSize)][30].ID != 1010)
+            if (gvars::myTarget != -1 && Key.RMB &&
+                Tiles[abs_to_index(gvars::mousePos.x / GridSize)][abs_to_index(
+                    gvars::mousePos.y / GridSize)][30].ID != 1010)
             { // Giving Orders
-                npclist.at(gvars::MyTarget).TargetPos = gvars::MousePos;
-                npclist.at(gvars::MyTarget).action = "Orders";
-                if (math::closeish(npclist.at(gvars::MyTarget).xpos,
-                                   npclist.at(gvars::MyTarget).ypos,
-                                   gvars::MousePos.x, gvars::MousePos.y) <= 10)
+                npclist.at(gvars::myTarget).TargetPos = gvars::mousePos;
+                npclist.at(gvars::myTarget).action = "Orders";
+                if (math::closeish(npclist.at(gvars::myTarget).xpos,
+                                   npclist.at(gvars::myTarget).ypos,
+                                   gvars::mousePos.x, gvars::mousePos.y) <= 10)
                 {
-                    npclist.at(gvars::MyTarget).action = "Act";
-                    npclist.at(gvars::MyTarget).NeedsPath = false;
+                    npclist.at(gvars::myTarget).action = "Act";
+                    npclist.at(gvars::myTarget).NeedsPath = false;
                 }
 
                 for (auto const &item : worlditems)
                 {
-                    if (math::closeish(gvars::MousePos.x, gvars::MousePos.y,
+                    if (math::closeish(gvars::mousePos.x, gvars::mousePos.y,
                                        item.xpos, item.ypos) <= 10)
                     {
                         GC.MenuType = "CritterContext";
@@ -4723,7 +4723,7 @@ int main()
                     Yy = sinf((angle - 90) * PI / 180) * 1;
                     xpos -= Xx;
                     ypos -= Yy;
-                    effects.createLine(gvars::MousePos.x, gvars::MousePos.y,
+                    effects.createLine(gvars::mousePos.x, gvars::mousePos.y,
                                        xpos, ypos, 1, sf::Color::White);
                 }
             }
@@ -4734,7 +4734,7 @@ int main()
         }
         if (GC.Phase == "MakeSquad")
         {
-            gvars::View1.setCenter(Rez.x / 2, Rez.y / 2);
+            gvars::view1.setCenter(Rez.x / 2, Rez.y / 2);
 
             cText.CreateText(Rez.x / 2, 20, 20, sf::Color::Blue,
                              "Design Your Squad");
@@ -5257,85 +5257,85 @@ int main()
 
             GC.WorldLoop();
 
-            effects.createSquare(gvars::TopLeft.x, gvars::TopLeft.y,
-                                 gvars::TopLeft.x + 300, gvars::TopLeft.y + 150,
+            effects.createSquare(gvars::topLeft.x, gvars::topLeft.y,
+                                 gvars::topLeft.x + 300, gvars::topLeft.y + 150,
                                  sf::Color(0, 0, 0, 100));
 
             int ID;
             int Infected;
-            if (gvars::MousePos.x >= 2000 || gvars::MousePos.y >= 2000 ||
-                gvars::MousePos.x < 0 || gvars::MousePos.y < 0)
+            if (gvars::mousePos.x >= 2000 || gvars::mousePos.y >= 2000 ||
+                gvars::mousePos.x < 0 || gvars::mousePos.y < 0)
             {
                 ID = -1;
                 Infected = -1;
             }
             else
             {
-                ID = WorldMap[abs_to_index(gvars::MousePos.x / 20)]
-                             [abs_to_index(gvars::MousePos.y / 20)].ID;
+                ID = WorldMap[abs_to_index(gvars::mousePos.x / 20)]
+                             [abs_to_index(gvars::mousePos.y / 20)].ID;
                 Infected = WorldMap[abs_to_index(
-                    gvars::MousePos.x / 20)][abs_to_index(gvars::MousePos.y /
+                    gvars::mousePos.x / 20)][abs_to_index(gvars::mousePos.y /
                                                           20)].Infected;
             }
             debug("Pre-World HUD");
             int HUDZ = 0;
 
-            cText.CreateText(gvars::TopLeft.x + 2,
-                             gvars::TopLeft.y + (HUDZ++) * 11, 22,
+            cText.CreateText(gvars::topLeft.x + 2,
+                             gvars::topLeft.y + (HUDZ++) * 11, 22,
                              sf::Color::Yellow, "World Population: ", "",
                              FactionPopulation());
             HUDZ++;
             HUDZ++;
-            cText.CreateText(gvars::TopLeft.x + 2,
-                             gvars::TopLeft.y + (HUDZ++) * 11, 11,
+            cText.CreateText(gvars::topLeft.x + 2,
+                             gvars::topLeft.y + (HUDZ++) * 11, 11,
                              sf::Color::White, "CurrentTileID: ", "", ID);
             cText.CreateText(
-                gvars::TopLeft.x + 2, gvars::TopLeft.y + (HUDZ++) * 11, 11,
+                gvars::topLeft.x + 2, gvars::topLeft.y + (HUDZ++) * 11, 11,
                 sf::Color::White, "CurrentTileInfected: ", "", Infected);
             cText.CreateText(
-                gvars::TopLeft.x + 2, gvars::TopLeft.y + (HUDZ++) * 11, 11,
+                gvars::topLeft.x + 2, gvars::topLeft.y + (HUDZ++) * 11, 11,
                 sf::Color::White, "FactionOwned: ",
-                WorldMap[math::clamp(abs(gvars::MousePos.x / 20), 0, 99)]
-                        [math::clamp(abs(gvars::MousePos.y / 20), 0, 99)]
+                WorldMap[math::clamp(abs(gvars::mousePos.x / 20), 0, 99)]
+                        [math::clamp(abs(gvars::mousePos.y / 20), 0, 99)]
                             .Owner);
             cText.CreateText(
-                gvars::TopLeft.x + 2, gvars::TopLeft.y + (HUDZ++) * 11, 11,
+                gvars::topLeft.x + 2, gvars::topLeft.y + (HUDZ++) * 11, 11,
                 sf::Color::White, "FactionMembers: ", "",
                 FactionMembers(WorldMap[math::clamp(
-                    abs(gvars::MousePos.x / 20), 0,
-                    99)][math::clamp(abs(gvars::MousePos.y / 20), 0, 99)]
+                    abs(gvars::mousePos.x / 20), 0,
+                    99)][math::clamp(abs(gvars::mousePos.y / 20), 0, 99)]
                                    .Owner));
             cText.CreateText(
-                gvars::TopLeft.x + 2, gvars::TopLeft.y + (HUDZ++) * 11, 11,
+                gvars::topLeft.x + 2, gvars::topLeft.y + (HUDZ++) * 11, 11,
                 sf::Color::White, "FactionAggression: ", "",
                 FactionAggression(WorldMap[math::clamp(
-                    abs(gvars::MousePos.x / 20), 0,
-                    99)][math::clamp(abs(gvars::MousePos.y / 20), 0, 99)]
+                    abs(gvars::mousePos.x / 20), 0,
+                    99)][math::clamp(abs(gvars::mousePos.y / 20), 0, 99)]
                                       .Owner));
             cText.CreateText(
-                gvars::TopLeft.x + 2, gvars::TopLeft.y + (HUDZ++) * 11, 11,
+                gvars::topLeft.x + 2, gvars::topLeft.y + (HUDZ++) * 11, 11,
                 sf::Color::White, "FactionTerritories: ", "",
                 FactionTerritories(WorldMap[math::clamp(
-                    abs(gvars::MousePos.x / 20), 0,
-                    99)][math::clamp(abs(gvars::MousePos.y / 20), 0, 99)]
+                    abs(gvars::mousePos.x / 20), 0,
+                    99)][math::clamp(abs(gvars::mousePos.y / 20), 0, 99)]
                                        .Owner));
             cText.CreateText(
-                gvars::TopLeft.x + 2, gvars::TopLeft.y + (HUDZ++) * 11, 11,
+                gvars::topLeft.x + 2, gvars::topLeft.y + (HUDZ++) * 11, 11,
                 sf::Color::White, "FactionPower: ", "",
                 FactionPower(WorldMap[math::clamp(
-                    abs(gvars::MousePos.x / 20), 0,
-                    99)][math::clamp(abs(gvars::MousePos.y / 20), 0, 99)]
+                    abs(gvars::mousePos.x / 20), 0,
+                    99)][math::clamp(abs(gvars::mousePos.y / 20), 0, 99)]
                                  .Owner));
 
-            cText.CreateText(gvars::TopLeft.x + 2,
-                             gvars::TopLeft.y + (HUDZ++) * 11, 11,
+            cText.CreateText(gvars::topLeft.x + 2,
+                             gvars::topLeft.y + (HUDZ++) * 11, 11,
                              sf::Color::White, "AimedPos(DELETEME): ", "",
-                             abs(gvars::MousePos.x / 20), "/", "",
-                             abs(gvars::MousePos.y / 20));
+                             abs(gvars::mousePos.x / 20), "/", "",
+                             abs(gvars::mousePos.y / 20));
 
             DrawWorldTiles();
-            sf::Vector2f Pos(abs(gvars::MousePos.x / 20),
-                             abs(gvars::MousePos.y / 20));
+            sf::Vector2f Pos(abs(gvars::mousePos.x / 20),
+                             abs(gvars::mousePos.y / 20));
             effects.createSquare(Pos.x * 20, Pos.y * 20, (Pos.x * 20) + 20,
                                  (Pos.y * 20) + 20, sf::Color(0, 0, 0, 0), 1,
                                  sf::Color(0, 200, 200, 255));
@@ -5381,7 +5381,7 @@ int main()
                 debug("After RMB");
                 if (GC.MenuPos.x == -10000)
                 {
-                    GC.MenuPos = gvars::MousePos;
+                    GC.MenuPos = gvars::mousePos;
                 }
                 int Options = 1;
                 effects.createSquare(
@@ -5489,7 +5489,7 @@ int main()
         if (GC.Phase == "MainMenu")
         { //=======================================================*Main Menu*============================================================================
             GC.BuildMainMenu();
-            gvars::View1.setCenter(HalfSize.x, HalfSize.y);
+            gvars::view1.setCenter(HalfSize.x, HalfSize.y);
             cText.CreateText(500, 0, 25, sf::Color::White, "Welcome!", "",
                              -6698, "", "", -6698, "", "", -6698, 1, 0);
             cText.CreateText(
@@ -5514,7 +5514,7 @@ int main()
 
             if (buttonClicked(var.id))
             {
-                if (gvars::Debug)
+                if (gvars::debug)
                     std::cout << "Switching to MakeSquad\n";
                 GC.Phase = "MakeSquad";
 
@@ -5619,13 +5619,13 @@ int main()
 
             if (Key.comma)
             {
-                if (gvars::Debug)
+                if (gvars::debug)
                     std::cout << "Comma was pressed \n";
                 GC.Phase = "Local";
-                if (gvars::Debug)
+                if (gvars::debug)
                     std::cout << "Building Local Test\n";
                 GC.BuildLocalTest();
-                if (gvars::Debug)
+                if (gvars::debug)
                     std::cout << "Done Building Local Test\n";
             }
             if (Key.period)
@@ -5641,22 +5641,22 @@ int main()
 
         if (Key.pad7)
         {
-            gvars::Scalex += 0.1;
+            gvars::scalex += 0.1;
             fSleep(0.1);
         }
         if (Key.pad8)
         {
-            gvars::Scaley += 0.1;
+            gvars::scaley += 0.1;
             fSleep(0.1);
         }
         if (Key.pad4)
         {
-            gvars::Scalex -= 0.1;
+            gvars::scalex -= 0.1;
             fSleep(0.1);
         }
         if (Key.pad5)
         {
-            gvars::Scaley -= 0.1;
+            gvars::scaley -= 0.1;
             fSleep(0.1);
         }
         // End of Game Mode Loops =========================================================================
@@ -5668,39 +5668,39 @@ int main()
         { //======Camera Controls======
             if (Key.plus == true)
             {
-                gvars::View1.zoom(2);
+                gvars::view1.zoom(2);
                 fSleep(0.2);
             }
             if (Key.minus == true)
             {
-                gvars::View1.zoom(0.5);
+                gvars::view1.zoom(0.5);
                 fSleep(0.2);
             }
             if (Key.q && !Key.lshift)
             {
-                gvars::GCtimescale -= 0.001;
+                gvars::gCtimescale -= 0.001;
             }
             if (Key.e && !Key.lshift)
             {
-                gvars::GCtimescale += 0.001;
+                gvars::gCtimescale += 0.001;
             }
             if (Key.q && Key.lshift)
             {
-                gvars::GCtimescale -= 0.01;
+                gvars::gCtimescale -= 0.01;
             }
             if (Key.e && Key.lshift)
             {
-                gvars::GCtimescale += 0.01;
+                gvars::gCtimescale += 0.01;
             }
             if (Key.w)
             {
-                gvars::GCtimescale = 1;
+                gvars::gCtimescale = 1;
             }
         }
 
         if (Key.pad0 == true)
         {
-            window.setView(gvars::View1);
+            window.setView(gvars::view1);
             PlyAct = true;
         }
         if (Key.pad2 == true)
@@ -5729,36 +5729,36 @@ int main()
         {
             if (GC.Phase == "Local")
             {
-                if (gvars::Debug)
+                if (gvars::debug)
                     std::cout << "Doing Local Items \n";
                 updateItem();
-                if (gvars::Debug)
+                if (gvars::debug)
                     std::cout << "Doing Local AddItems\n";
                 itemmanager.addItems();
-                if (gvars::Debug)
+                if (gvars::debug)
                     std::cout << "Doing Local Update NPC's\n";
                 //updateNpc();
 
                 critterBrain(npclist);
 
-                if (gvars::Debug)
+                if (gvars::debug)
                     std::cout << "Pre Add Critters \n";
                 npcmanager.AddCritters();
-                if (gvars::Debug)
+                if (gvars::debug)
                     std::cout << "Post Add Critters \n";
             }
             GC.Time(0);
-            if (GC.Phase != "MainMenu" && gvars::Following == false &&
+            if (GC.Phase != "MainMenu" && gvars::following == false &&
                 GC.Phase != "MakeSquad")
             {
-                gvars::View1.setCenter(gvars::currentx * GridSize,
+                gvars::view1.setCenter(gvars::currentx * GridSize,
                                        gvars::currenty * GridSize);
             }
 
             if (GC.Phase == "Local")
             {
                 bool FoundOne = false;
-                if (gvars::Debug)
+                if (gvars::debug)
                     std::cout << "Pre Mouse Based Functions\n";
                 if (Key.LMB == true)
                 {
@@ -5768,23 +5768,23 @@ int main()
                         tfunz++;
                         if (Key.LMB == true)
                         {
-                            int Dist = math::closeish(gvars::MousePos.x,
-                                                      gvars::MousePos.y,
+                            int Dist = math::closeish(gvars::mousePos.x,
+                                                      gvars::mousePos.y,
                                                       elem.xpos, elem.ypos);
                             if (Dist <= GridSize)
                             {
-                                gvars::MyTarget = tfunz;
+                                gvars::myTarget = tfunz;
                                 FoundOne = true;
                                 std::cout << elem.id << std::endl;
                             }
                         }
-                        if (gvars::Debug)
+                        if (gvars::debug)
                             std::cout << "Post Closeish Targeting \n";
                         if (elem.alive == true)
                         {
                             if (elem.target == "Flesh" && elem.health > 0)
                             {
-                                if (gvars::Debug)
+                                if (gvars::debug)
                                     std::cout << "Doing Nothing with Living "
                                                  "Zombie \n";
                                 //sf::Shape Line = sf::Shape::Line(zit->xpos, zit->ypos, zit->TargetPos.x, zit->TargetPos.y, 1, sf::Color(255,0,0,255));
@@ -5792,7 +5792,7 @@ int main()
                             }
                             else if (elem.health > 0)
                             {
-                                if (gvars::Debug)
+                                if (gvars::debug)
                                     std::cout
                                         << "Doing nothing with Living... \n";
                                 //sf::Shape Line = sf::Shape::Line(zit->xpos, zit->ypos, zit->TargetPos.x, zit->TargetPos.y, 1, sf::Color(255,255,0,255));
@@ -5802,18 +5802,18 @@ int main()
                     }
                 }
                 if (FoundOne == false && Key.LMB == true &&
-                    gvars::ButtonClicked == false)
+                    gvars::buttonClicked == false)
                 {
-                    gvars::MyTarget = -1;
-                    gvars::MyTargetid = -1;
-                    if (gvars::Debug)
+                    gvars::myTarget = -1;
+                    gvars::myTargetid = -1;
+                    if (gvars::debug)
                         std::cout << "Found Nothing, Setting targets to -1 \n";
                 }
                 for (auto &elem : npclist)
                 {
                     if (elem.Attacking == true && elem.name == "Miniturret")
                     {
-                        if (gvars::Debug)
+                        if (gvars::debug)
                             std::cout
                                 << "Telling Turret to no longer attack \n";
                         // TODO: Fix Latersf::Shape Line = sf::Shape::Line(zit->TargetPos.x+randz(-4,4),zit->TargetPos.y+randz(-4,4), zit->xpos, zit->ypos, 1, sf::Color(200,200,200,255));
@@ -5821,7 +5821,7 @@ int main()
                         elem.Attacking = false;
                     }
                 }
-                if (gvars::Debug)
+                if (gvars::debug)
                     std::cout << "Post Mouse Based Functions \n";
 
                 /*if(Key.n)
@@ -5832,11 +5832,11 @@ int main()
                 }*/
             }
 
-            if (Key.LMBTime == 0 && gvars::HeldClickPos != sf::Vector2f(-1, -1))
+            if (Key.LMBTime == 0 && gvars::heldClickPos != sf::Vector2f(-1, -1))
             {
                 bool FoundAny = false;
-                sf::Vector2f S = gvars::HeldClickPos;
-                sf::Vector2f E = gvars::MousePos;
+                sf::Vector2f S = gvars::heldClickPos;
+                sf::Vector2f E = gvars::mousePos;
                 for (size_t i = 0; i != npclist.size(); i++)
                 {
                     //if(npclist[i].xpos >= S.x && npclist[i].xpos <= E.x)
@@ -5845,7 +5845,7 @@ int main()
                         if (Inbetween(S.y, E.y, npclist[i].ypos) == true)
                         {
                             std::cout << npclist[i].name << std::endl;
-                            gvars::Selected.push_back(npclist[i].id);
+                            gvars::selected.push_back(npclist[i].id);
                             FoundAny = true;
                             //Selection.push_back( npclist[i] );
                             //Selection.insert( npclist[i] )
@@ -5855,33 +5855,33 @@ int main()
                 }
                 if (FoundAny == false)
                 {
-                    gvars::Selected.clear();
+                    gvars::selected.clear();
                 }
             }
 
-            for (size_t i = 0; i != gvars::Selected.size(); i++)
+            for (size_t i = 0; i != gvars::selected.size(); i++)
             {
                 NPC Var;
-                Var = *GetCritter(gvars::Selected[i]);
+                Var = *GetCritter(gvars::selected[i]);
                 sf::Vector2f Pos = sf::Vector2f(Var.xpos, Var.ypos);
                 effects.createCircle(Pos.x, Pos.y, 5,
                                      sf::Color(0, 255, 255, 100));
             }
-            if (gvars::Selected.size() > 0)
+            if (gvars::selected.size() > 0)
             {
                 if (Key.RMB &&
-                    Tiles[abs_to_index(gvars::MousePos.x / GridSize)]
-                         [abs_to_index(gvars::MousePos.y / GridSize)][30].ID !=
+                    Tiles[abs_to_index(gvars::mousePos.x / GridSize)]
+                         [abs_to_index(gvars::mousePos.y / GridSize)][30].ID !=
                         1010)
                 {
-                    for (size_t i = 0; i != gvars::Selected.size(); i++)
+                    for (size_t i = 0; i != gvars::selected.size(); i++)
                     {
                         for (size_t t = 0; t != npclist.size(); t++)
                         {
-                            if (npclist[t].id == gvars::Selected[i])
+                            if (npclist[t].id == gvars::selected[i])
                             {
                                 npclist[t].TargetPos =
-                                    sf::Vector2f(gvars::MousePos);
+                                    sf::Vector2f(gvars::mousePos);
                                 npclist[t].action = "Orders";
                             }
                         }
@@ -5891,22 +5891,22 @@ int main()
 
             if (Key.LMBTime > 1)
             {
-                if (gvars::HeldClickPos == sf::Vector2f(-1, -1))
-                    gvars::HeldClickPos = gvars::MousePos;
-                effects.createSquare(gvars::HeldClickPos.x,
-                                     gvars::HeldClickPos.y, gvars::MousePos.x,
-                                     gvars::MousePos.y,
+                if (gvars::heldClickPos == sf::Vector2f(-1, -1))
+                    gvars::heldClickPos = gvars::mousePos;
+                effects.createSquare(gvars::heldClickPos.x,
+                                     gvars::heldClickPos.y, gvars::mousePos.x,
+                                     gvars::mousePos.y,
                                      sf::Color(0, 255, 255, 100));
             }
             else
-                gvars::HeldClickPos = sf::Vector2f(-1, -1);
+                gvars::heldClickPos = sf::Vector2f(-1, -1);
 
-            if (gvars::MyTarget != -1)
+            if (gvars::myTarget != -1)
             {
-                gvars::MyTargetid = npclist.at(gvars::MyTarget).id;
+                gvars::myTargetid = npclist.at(gvars::myTarget).id;
 
-                int Nxpos = gvars::TopLeft.x;
-                int Nypos = gvars::TopLeft.y + (Rez.y / 2);
+                int Nxpos = gvars::topLeft.x;
+                int Nypos = gvars::topLeft.y + (Rez.y / 2);
 
                 //int Nxpos = npclist.at(MyTarget).xpos;
                 //int Nypos = npclist.at(MyTarget).ypos;
@@ -5914,40 +5914,40 @@ int main()
                 effects.createSquare(Nxpos, Nypos, Nxpos + 65, Nypos + 70,
                                      sf::Color(0, 0, 0, 100));
                 cText.CreateText(Nxpos, Nypos, 11, sf::Color::Red, "Health:",
-                                 "", npclist.at(gvars::MyTarget).health, "",
-                                 "(", npclist.at(gvars::MyTarget).maxhealth,
+                                 "", npclist.at(gvars::myTarget).health, "",
+                                 "(", npclist.at(gvars::myTarget).maxhealth,
                                  ")", "", -6698, 1, 0);
                 cText.CreateText(Nxpos, Nypos + 10, 11, Brown, "Hunger:", "",
-                                 npclist.at(gvars::MyTarget).hunger, "", "",
+                                 npclist.at(gvars::myTarget).hunger, "", "",
                                  -6698, "", "", -6698, 1, 0);
                 cText.CreateText(Nxpos, Nypos + 20, 11, sf::Color::Cyan,
                                  "Thirst:", "",
-                                 npclist.at(gvars::MyTarget).thirst, "", "",
+                                 npclist.at(gvars::myTarget).thirst, "", "",
                                  -6698, "", "", -6698, 1, 0);
                 cText.CreateText(Nxpos, Nypos + 30, 11, sf::Color::White,
-                                 "Name:", npclist.at(gvars::MyTarget).name,
+                                 "Name:", npclist.at(gvars::myTarget).name,
                                  -6698, "", "", -6698, "", "", -6698, 1, 0);
                 cText.CreateText(Nxpos, Nypos + 40, 11, sf::Color::White, "Id:",
-                                 "", npclist.at(gvars::MyTarget).id, "", "",
+                                 "", npclist.at(gvars::myTarget).id, "", "",
                                  -6698, "", "", -6698, 1, 0);
-                if (npclist.at(gvars::MyTarget).NeedsPath == false)
+                if (npclist.at(gvars::myTarget).NeedsPath == false)
                 {
                     cText.CreateText(Nxpos, Nypos + 50, 11, sf::Color::Red,
                                      "Action:",
-                                     npclist.at(gvars::MyTarget).action);
+                                     npclist.at(gvars::myTarget).action);
                 }
                 else
                 {
                     cText.CreateText(Nxpos, Nypos + 50, 11, sf::Color::Blue,
                                      "Action:",
-                                     npclist.at(gvars::MyTarget).action);
+                                     npclist.at(gvars::myTarget).action);
                 }
                 cText.CreateText(Nxpos, Nypos + 60, 11, sf::Color::Red,
-                                 "Target:", npclist.at(gvars::MyTarget).target,
-                                 npclist.at(gvars::MyTarget).TargetPos.x, ":",
-                                 "", npclist.at(gvars::MyTarget).TargetPos.y,
+                                 "Target:", npclist.at(gvars::myTarget).target,
+                                 npclist.at(gvars::myTarget).TargetPos.x, ":",
+                                 "", npclist.at(gvars::myTarget).TargetPos.y,
                                  " Angle:", "",
-                                 npclist.at(gvars::MyTarget).angle);
+                                 npclist.at(gvars::myTarget).angle);
 
                 effects.createSquare(Nxpos, Nypos + 70, Nxpos + 130,
                                      Nypos + 150, sf::Color(0, 0, 0, 200));
@@ -5955,50 +5955,50 @@ int main()
                 int V = 1;
                 cText.CreateText(Nxpos + V, Nypos + (Y++ * 10), 11,
                                  sf::Color::White, "Strength:", "",
-                                 npclist.at(gvars::MyTarget).Skills.strength,
+                                 npclist.at(gvars::myTarget).Skills.strength,
                                  " : ", "",
-                                 npclist.at(gvars::MyTarget).Skills.strengthxp);
+                                 npclist.at(gvars::myTarget).Skills.strengthxp);
                 cText.CreateText(
                     Nxpos + V, Nypos + (Y++ * 10), 11, sf::Color::White,
                     "Perception:", "",
-                    npclist.at(gvars::MyTarget).Skills.perception, " : ", "",
-                    npclist.at(gvars::MyTarget).Skills.perceptionxp);
+                    npclist.at(gvars::myTarget).Skills.perception, " : ", "",
+                    npclist.at(gvars::myTarget).Skills.perceptionxp);
                 cText.CreateText(
                     Nxpos + V, Nypos + (Y++ * 10), 11, sf::Color::White,
                     "Intelligence:", "",
-                    npclist.at(gvars::MyTarget).Skills.intelligence, " : ", "",
-                    npclist.at(gvars::MyTarget).Skills.intelligencexp);
+                    npclist.at(gvars::myTarget).Skills.intelligence, " : ", "",
+                    npclist.at(gvars::myTarget).Skills.intelligencexp);
                 cText.CreateText(Nxpos + V, Nypos + (Y++ * 10), 11,
                                  sf::Color::White, "Charisma:", "",
-                                 npclist.at(gvars::MyTarget).Skills.charisma,
+                                 npclist.at(gvars::myTarget).Skills.charisma,
                                  " : ", "",
-                                 npclist.at(gvars::MyTarget).Skills.charismaxp);
+                                 npclist.at(gvars::myTarget).Skills.charismaxp);
                 cText.CreateText(
                     Nxpos + V, Nypos + (Y++ * 10), 11, sf::Color::White,
                     "Endurance:", "",
-                    npclist.at(gvars::MyTarget).Skills.endurance, " : ", "",
-                    npclist.at(gvars::MyTarget).Skills.endurancexp);
+                    npclist.at(gvars::myTarget).Skills.endurance, " : ", "",
+                    npclist.at(gvars::myTarget).Skills.endurancexp);
                 cText.CreateText(
                     Nxpos + V, Nypos + (Y++ * 10), 11, sf::Color::White,
                     "Dexterity:", "",
-                    npclist.at(gvars::MyTarget).Skills.dexterity, " : ", "",
-                    npclist.at(gvars::MyTarget).Skills.dexterityxp);
+                    npclist.at(gvars::myTarget).Skills.dexterity, " : ", "",
+                    npclist.at(gvars::myTarget).Skills.dexterityxp);
                 cText.CreateText(
                     Nxpos + V, Nypos + (Y++ * 10), 11, sf::Color::White,
-                    "Agility:", "", npclist.at(gvars::MyTarget).Skills.agility,
-                    " : ", "", npclist.at(gvars::MyTarget).Skills.agilityxp);
+                    "Agility:", "", npclist.at(gvars::myTarget).Skills.agility,
+                    " : ", "", npclist.at(gvars::myTarget).Skills.agilityxp);
                 cText.CreateText(Nxpos + V, Nypos + (Y++ * 10), 11,
                                  sf::Color::White, "Tags:",
-                                 npclist.at(gvars::MyTarget).tags);
+                                 npclist.at(gvars::myTarget).tags);
 
-                if (npclist.at(gvars::MyTarget).inventory.size() != 0 ||
-                    npclist.at(gvars::MyTarget).bloodcontent != "")
+                if (npclist.at(gvars::myTarget).inventory.size() != 0 ||
+                    npclist.at(gvars::myTarget).bloodcontent != "")
                 {
                     effects.createSquare(Nxpos, Nypos, Nxpos + 130, Nypos + 70,
                                          sf::Color(0, 0, 0, 100));
                     int Yv = Nypos;
                     for (auto const &item :
-                         npclist.at(gvars::MyTarget).inventory)
+                         npclist.at(gvars::myTarget).inventory)
                     { // Listing all the current items from this critters inventory.
                         if (item.insidePart.size() == 0)
                         {
@@ -6010,7 +6010,7 @@ int main()
                     }
 
                     for (auto const &item :
-                         npclist.at(gvars::MyTarget).inventory)
+                         npclist.at(gvars::myTarget).inventory)
                     { // Listing all items from 'inside' the critter.
                         if (item.insidePart.size() != 0)
                         {
@@ -6023,7 +6023,7 @@ int main()
                     }
                     cText.CreateText(
                         Nxpos + 65, Yv, 11, sf::Color(255, 150, 150),
-                        "Blood: " + npclist.at(gvars::MyTarget).bloodcontent);
+                        "Blood: " + npclist.at(gvars::myTarget).bloodcontent);
 
                     Button var;
                     var.color = sf::Color::Red;
@@ -6037,10 +6037,10 @@ int main()
                     } // TODO: Get this before the MyTarget -1 check up there.
                 }
                 //Effectz.CreateLine(Nxpos,Nypos,MousePos.x,MousePos.y,2,Green,0,White);
-                effects.createLine(npclist.at(gvars::MyTarget).xpos,
-                                   npclist.at(gvars::MyTarget).ypos,
-                                   npclist.at(gvars::MyTarget).TargetPos.x,
-                                   npclist.at(gvars::MyTarget).TargetPos.y, 1,
+                effects.createLine(npclist.at(gvars::myTarget).xpos,
+                                   npclist.at(gvars::myTarget).ypos,
+                                   npclist.at(gvars::myTarget).TargetPos.x,
+                                   npclist.at(gvars::myTarget).TargetPos.y, 1,
                                    sf::Color::Yellow);
             }
 
@@ -6048,7 +6048,7 @@ int main()
             { // Mousing over items will say a wee bit about them.
                 for (auto const &item : worlditems)
                 {
-                    if (math::closeish(gvars::MousePos.x, gvars::MousePos.y,
+                    if (math::closeish(gvars::mousePos.x, gvars::mousePos.y,
                                        item.xpos, item.ypos) <= 10)
                     {
                         cText.CreateText(item.xpos, item.ypos, 11,
@@ -6058,20 +6058,20 @@ int main()
                 }
             }
 
-            if (gvars::Debug)
+            if (gvars::debug)
                 std::cout << "Pre Draw Stuffs \n";
 
             //DrawStuffs();
 
-            if (gvars::DrawStuffsDone == true)
+            if (gvars::drawStuffsDone == true)
             {
                 //App.setActive(false);
-                gvars::DrawStuffsDone = false;
+                gvars::drawStuffsDone = false;
                 DrawStuffs();
                 //ThreadDrawStuffs.launch();
             }
 
-            if (gvars::Debug)
+            if (gvars::debug)
                 std::cout << "Post Draw Stuffs \n";
 
             window.display();
@@ -6096,8 +6096,8 @@ int main()
         }
         debug("Finished removing process");
 
-        if (Key.LMB && gvars::ButtonClickedTime == 0 &&
-            !AABB(gvars::MousePos, GC.MenuPos.x, GC.MenuEndPos.x, GC.MenuPos.y,
+        if (Key.LMB && gvars::buttonClickedTime == 0 &&
+            !AABB(gvars::mousePos, GC.MenuPos.x, GC.MenuEndPos.x, GC.MenuPos.y,
                   GC.MenuEndPos.y) &&
             GC.MenuPos != sf::Vector2f(-10000, -10000))
         {

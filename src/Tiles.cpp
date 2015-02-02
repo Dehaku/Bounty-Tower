@@ -555,7 +555,7 @@ void InitalizeWorldTiles()
                 WorldMap[i][t].ID = WorldTileType::City;
                 WorldMap[i][t].Img.setTexture(
                     texturemanager.getTexture("City.png"));
-                if (gvars::InitalZeds)
+                if (gvars::initalZeds)
                     WorldMap[i][t].Infected = randz(0, 20);
                 else
                     WorldMap[i][t].Infected = 0;
@@ -594,8 +594,8 @@ void DrawWorldTiles()
         for (int t = 0; t != 100; t++)
         {
 
-            if (AABB(i * 20, t * 20, gvars::TopLeft.x - 20, gvars::TopRight.x,
-                     gvars::TopLeft.y - 20, gvars::BottomRight.y))
+            if (AABB(i * 20, t * 20, gvars::topLeft.x - 20, gvars::topRight.x,
+                     gvars::topLeft.y - 20, gvars::bottomRight.y))
             {
 
                 WorldMap[i][t].Img.setPosition(i * 20, t * 20);
@@ -672,8 +672,8 @@ void DrawNewTiles()
     {
         for (int t = 0; t != Grids; t++)
         {
-            if (AABB(i * 20, t * 20, gvars::TopLeft.x - 20, gvars::TopRight.x,
-                     gvars::TopLeft.y - 20, gvars::BottomRight.y))
+            if (AABB(i * 20, t * 20, gvars::topLeft.x - 20, gvars::topRight.x,
+                     gvars::topLeft.y - 20, gvars::bottomRight.y))
             {
                 Tiles[i][t][30].Img.setPosition(i * 20, t * 20);
                 window.draw(Tiles[i][t][30].Img);

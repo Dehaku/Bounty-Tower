@@ -10,18 +10,18 @@ void debug(std::string Info);
 
 namespace gvars
 {
-extern bool Debug;
-extern bool InFocus;
-extern bool DrawStuffsDone;
-extern sf::View View1;
-extern int AirPressure;
-extern sf::Vector2f MousePos;
-extern int MouseStagnation;
-extern std::vector<int> Selected;
-extern float GCtimescale;
-extern int MyTarget;
-extern int MyTargetid;
-extern float CameraZoom;
+extern bool debug;
+extern bool inFocus;
+extern bool drawStuffsDone;
+extern sf::View view1;
+extern int airPressure;
+extern sf::Vector2f mousePos;
+extern int mouseStagnation;
+extern std::vector<int> selected;
+extern float gCtimescale;
+extern int myTarget;
+extern int myTargetid;
+extern float cameraZoom;
 extern int currentx;
 extern int currenty;
 extern int currentz;
@@ -30,22 +30,22 @@ extern int currentregiony;
 extern int currentplanet;
 extern int groundmap[gridz][gridy][gridx];
 extern int sunmap[gridz][gridy][gridx];
-extern bool Following;
-extern bool ButtonClicked;
-extern int ButtonClickedTime;
-extern sf::Vector2f HeldClickPos;
+extern bool following;
+extern bool buttonClicked;
+extern int buttonClickedTime;
+extern sf::Vector2f heldClickPos;
 extern int glbbtn;
-extern float Scalex;
-extern float Scaley;
+extern float scalex;
+extern float scaley;
 extern unsigned long long globalid;
-extern sf::Vector2f TopLeft;
-extern sf::Vector2f TopRight;
-extern sf::Vector2f BottomLeft;
-extern sf::Vector2f BottomRight;
-extern std::string GenString;
-extern sf::Vector2i Cords;
-extern bool InitalZeds;
-extern float TimeScale;
+extern sf::Vector2f topLeft;
+extern sf::Vector2f topRight;
+extern sf::Vector2f bottomLeft;
+extern sf::Vector2f bottomRight;
+extern std::string genString;
+extern sf::Vector2i cords;
+extern bool initalZeds;
+extern float timeScale;
 }
 
 #endif // GLOBALS_H_INCLUDED
