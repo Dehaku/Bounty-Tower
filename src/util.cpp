@@ -168,7 +168,6 @@ std::vector<std::string> StringFindElements(std::string Source,
             Element.append(Source, tStart + 1, tEnd - tStart - 1);
 
         Returns.push_back(Element);
-        tStart = tEnd;
 
         if (tEnd >= std::string::npos)
         {
