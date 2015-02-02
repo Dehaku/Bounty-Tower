@@ -9,29 +9,29 @@ class NPC;
 class Item
 {
 public:
-    bool ToDelete;
-    bool Pickupable;
+    bool toDelete;
+    bool pickupable;
     sf::Sprite img;
     int id;
     int cbaseid;
     std::string name;
     std::string inventor;
-    std::string Contains;
+    std::string contains;
     // This is to only be filled with a part name if it is put inside
     // a creature, otherwise, it is to be left blank. This item is
     // meant to be put inside a critters inventory,
     // All inventory checks are to ignore instances where this has
     // more than .size() = 0, Opposite is true for items contained in critter.
-    std::string InsidePart;
-    int HasInternalUse;
+    std::string insidePart;
+    int hasInternalUse;
 
-    NPC *User;
+    NPC *user;
 
     int range;
     int age;
     int weight;
     int value;
-    sf::Vector2f TargetPos;
+    sf::Vector2f targetPos;
     float xpos;
     float ypos;
     float zpos;
@@ -43,7 +43,7 @@ public:
     int imgstry;
     int imgendx;
     int imgendy;
-    bool IsWeapon;
+    bool isWeapon;
     // 0 = none, 1 = melee weapon, 2 = ranged weapon,
     // 3 = thrown weapon, 4 = food, 5 = water, 6 = cell, 7 = Ore,
     // 8 = Digging Tool, 9 = Cutting Tool, 10 = Fishing Tool,
@@ -59,13 +59,13 @@ public:
     int tillrot;
 
     int hungervalue;
-    int MassMetal;
-    int MassFlesh;
-    int MassVeggy;
-    int MassGlass;
-    int MassPlastic;
-    int MassWater;
-    int MassOil;
+    int massMetal;
+    int massFlesh;
+    int massVeggy;
+    int massGlass;
+    int massPlastic;
+    int massWater;
+    int massOil;
 
     int thirstvalue;
     int mindam;
@@ -73,14 +73,14 @@ public:
     int ammotype;
     int maxclip;
     int currentclip;
-    bool HasCell;
-    bool UseCell;
-    bool IsMagic;
+    bool hasCell;
+    bool useCell;
+    bool isMagic;
     bool stacks;
     bool rotten;
-    bool IsLiquidContainer;
-    bool IsObjectContainer;
-    bool Pushable;
+    bool isLiquidContainer;
+    bool isObjectContainer;
+    bool pushable;
     bool blocksmovement;
     bool collectssolar;
     bool collectsheat;
@@ -99,17 +99,17 @@ public:
     bool ProdOn;
     bool IsOn;
     bool Sleepable;
-    int LiquidContainMax;
-    int ObjectContainMax;
-    int ContainAmount;
+    int liquidContainMax;
+    int objectContainMax;
+    int containAmount;
     void chargecell(int amount);
     void soulcell(int soultype);
     bool getid(int idz);
     bool boolname(char *cakezebra);
     void printInfo();
-    void DrawImg();
+    void drawImg();
     void spawn(int gposx, int gposy, int rposx, int rposy, int posx, int posy);
-    void PrintConsoleInfo();
+    void printConsoleInfo();
     Item();
 };
 

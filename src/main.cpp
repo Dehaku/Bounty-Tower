@@ -94,7 +94,7 @@ void UnpointItems(std::list<Item> &Items)
     //for(int i = 0; i != Items.size(); i++)
     for (auto i = Items.begin(); i != Items.begin(); i++)
     {
-        if ((*i).ToDelete)
+        if ((*i).toDelete)
         {
             std::cout << "JobList size: " << UniFact[0].JobList.size()
                       << std::endl;
@@ -230,13 +230,13 @@ void updateItem()
             {
                 std::cout << "Acting on Missile \n";
             }
-            if (item.TargetPos != sf::Vector2f(-1, -1))
+            if (item.targetPos != sf::Vector2f(-1, -1))
             {
-                item.xpos = (item.xpos + item.TargetPos.x) / 2;
-                item.ypos = (item.ypos + item.TargetPos.y) / 2;
+                item.xpos = (item.xpos + item.targetPos.x) / 2;
+                item.ypos = (item.ypos + item.targetPos.y) / 2;
                 if (item.age >= 10)
                 {
-                    item.ToDelete = true;
+                    item.toDelete = true;
                     Boom(item.xpos, item.ypos, randz(item.mindam, item.maxdam),
                          item.range);
 
@@ -683,9 +683,9 @@ void critterBrain(std::vector<NPC> &NPCs)
         //for(int i = 0; i != npc.inventory.size(); i++)
         for (auto i = npc.inventory.begin(); i != npc.inventory.end(); i++)
         {
-            if ((*i).InsidePart != "")
+            if ((*i).insidePart != "")
             {
-                (*i).HasInternalUse--;
+                (*i).hasInternalUse--;
             }
         }
 
@@ -731,7 +731,7 @@ void critterBrain(std::vector<NPC> &NPCs)
                     else
                     {
                         //*GetItemPtrfromVector(npc.inventory,"Blood").amount = 0;
-                        GetItemPtrfromVector(npc.inventory, "Blood")->ToDelete =
+                        GetItemPtrfromVector(npc.inventory, "Blood")->toDelete =
                             true;
                         float Nutr =
                             WorkAmount * 100; // TODO: Figure this out better.
@@ -746,27 +746,27 @@ void critterBrain(std::vector<NPC> &NPCs)
                     GetItemPtrfromVectorVarSearch(npc.inventory, "MassFlesh");
                 //if(PartItem != NULL) PartItem->HasInternalUse++; // This is designed to keep items from being ejected until they are completely useless to a critter, I.E. Items with multiple Food Mass's.
                 if (PartNumber != 0 && PartItem != nullptr &&
-                    PartItem->MassFlesh >
+                    PartItem->massFlesh >
                         0) // TODO: Make sure the item is in THIS PART before digesting it!
                 {
                     //std::cout << "HasInternalUse: " << PartItem->HasInternalUse << std::endl;
-                    float WorkAmount = PartItem->MassFlesh;
+                    float WorkAmount = PartItem->massFlesh;
                     float Diff = WorkAmount - (PartNumber / 1000);
 
                     if (Diff > 0)
                     {
-                        PartItem->MassFlesh = Diff;
-                        PartItem->HasInternalUse = 0;
+                        PartItem->massFlesh = Diff;
+                        PartItem->hasInternalUse = 0;
                         float Nutr = (WorkAmount - Diff) *
                                      100; // TODO: Figure this out better.
                         npc.bloodwork(
                             "Nutrients",
                             Nutr * PercentageBuff(GlobalNutritionPercentage));
                     }
-                    if (PartItem->MassFlesh <= 0)
+                    if (PartItem->massFlesh <= 0)
                     {
                         //*GetItemPtrfromVector(npc.inventory,"Blood").amount = 0;
-                        PartItem->ToDelete = true;
+                        PartItem->toDelete = true;
                         //Add Food to everyone, Make sure they go hungry to eat it, Figure out a way to Eject the empty item, Or do water! Everyone starts with water.
                         //npc.bloodwork("Nutrients",Nutr*PercentageBuff(GlobalNutritionPercentage));
                     }
@@ -777,26 +777,26 @@ void critterBrain(std::vector<NPC> &NPCs)
                     GetItemPtrfromVectorVarSearch(npc.inventory, "MassVeggy");
                 //if(PartItem != NULL) PartItem->HasInternalUse++; // This is designed to keep items from being ejected until they are completely useless to a critter, I.E. Items with multiple Food Mass's.
                 if (PartNumber != 0 && PartItem != nullptr &&
-                    PartItem->MassVeggy >
+                    PartItem->massVeggy >
                         0) // TODO: Make sure the item is in THIS PART before digesting it!
                 {
                     //std::cout << "HasInternalUse: " << PartItem->HasInternalUse << std::endl;
-                    float WorkAmount = PartItem->MassVeggy;
+                    float WorkAmount = PartItem->massVeggy;
                     float Diff = WorkAmount - (PartNumber / 1000);
 
                     if (Diff > 0)
                     {
-                        PartItem->MassVeggy = Diff;
-                        PartItem->HasInternalUse = 0;
+                        PartItem->massVeggy = Diff;
+                        PartItem->hasInternalUse = 0;
                         float Nutr = (WorkAmount - Diff) *
                                      100; // TODO: Figure this out better.
                         npc.bloodwork(
                             "Nutrients",
                             Nutr * PercentageBuff(GlobalNutritionPercentage));
                     }
-                    if (PartItem->MassVeggy <= 0)
+                    if (PartItem->massVeggy <= 0)
                     {
-                        PartItem->ToDelete = true;
+                        PartItem->toDelete = true;
                         //npc.bloodwork("Nutrients",Nutr*PercentageBuff(GlobalNutritionPercentage));
                     }
                 }
@@ -806,26 +806,26 @@ void critterBrain(std::vector<NPC> &NPCs)
                     GetItemPtrfromVectorVarSearch(npc.inventory, "MassWater");
                 //if(PartItem != NULL) PartItem->HasInternalUse++; // This is designed to keep items from being ejected until they are completely useless to a critter, I.E. Items with multiple Food Mass's.
                 if (PartNumber != 0 && PartItem != nullptr &&
-                    PartItem->MassWater >
+                    PartItem->massWater >
                         0) // TODO: Make sure the item is in THIS PART before digesting it!
                 {
                     //std::cout << "HasInternalUse: " << PartItem->HasInternalUse << std::endl;
-                    float WorkAmount = PartItem->MassWater;
+                    float WorkAmount = PartItem->massWater;
                     float Diff = WorkAmount - (PartNumber / 1000);
 
                     if (Diff > 0)
                     {
-                        PartItem->MassWater = Diff;
-                        PartItem->HasInternalUse = 0;
+                        PartItem->massWater = Diff;
+                        PartItem->hasInternalUse = 0;
                         float Nutr = (WorkAmount - Diff) *
                                      100; // TODO: Figure this out better.
                         npc.bloodwork(
                             "Hydration",
                             Nutr * PercentageBuff(GlobalNutritionPercentage));
                     }
-                    if (PartItem->MassWater <= 0)
+                    if (PartItem->massWater <= 0)
                     {
-                        PartItem->ToDelete = true;
+                        PartItem->toDelete = true;
                         //npc.bloodwork("Nutrients",Nutr*PercentageBuff(GlobalNutritionPercentage));
                     }
                 }
@@ -862,24 +862,24 @@ void critterBrain(std::vector<NPC> &NPCs)
                          i != npc.inventory.end(); i++)
                     {
                         bool FoundIt = false;
-                        if ((*i).InsidePart == "" && (*i).MassFlesh > 0 &&
+                        if ((*i).insidePart == "" && (*i).massFlesh > 0 &&
                             ConsumeFlesh) // Awww yeeessss, We gonna eat some flesh with our Orafice!
                         {
-                            (*i).InsidePart = CurrentPart;
+                            (*i).insidePart = CurrentPart;
                             FoundIt = true;
                         }
 
-                        if ((*i).InsidePart == "" && (*i).MassVeggy > 0 &&
+                        if ((*i).insidePart == "" && (*i).massVeggy > 0 &&
                             ConsumeVeggy) // Awww yeeessss, We gonna eat something with our Orafice!
                         {
-                            (*i).InsidePart = CurrentPart;
+                            (*i).insidePart = CurrentPart;
                             FoundIt = true;
                         }
 
-                        if ((*i).InsidePart == "" && (*i).MassWater > 0 &&
+                        if ((*i).insidePart == "" && (*i).massWater > 0 &&
                             ConsumeWater) // Awww yeeessss, We gonna eat something with our Orafice!
                         {
-                            (*i).InsidePart = CurrentPart;
+                            (*i).insidePart = CurrentPart;
                             FoundIt = true;
                         }
 
@@ -1025,7 +1025,7 @@ void critterBrain(std::vector<NPC> &NPCs)
         {
             bool InInv = false;
             for (auto &Inv : npc.inventory)
-                if (Inv.MassFlesh > 0)
+                if (Inv.massFlesh > 0)
                 {
                     npc.Target.Item = &Inv;
                     InInv = true;
@@ -1035,14 +1035,14 @@ void critterBrain(std::vector<NPC> &NPCs)
             {
                 for (auto &LclItms : worlditems)
                 {
-                    if (npc.Target.Item == nullptr && LclItms.MassFlesh > 0 &&
-                        LclItms.User == nullptr)
+                    if (npc.Target.Item == nullptr && LclItms.massFlesh > 0 &&
+                        LclItms.user == nullptr)
                     {
                         npc.Target.Item =
                             &LclItms; // Is this creating a copy? The Behavior in testing still makes multiple critters target the same item.
-                        LclItms.User = &npc;
+                        LclItms.user = &npc;
                     }
-                    else if (LclItms.MassFlesh > 0 && LclItms.User == nullptr)
+                    else if (LclItms.massFlesh > 0 && LclItms.user == nullptr)
                     {
 
                         float CurrentItem = math::closeish(
@@ -1052,9 +1052,9 @@ void critterBrain(std::vector<NPC> &NPCs)
                             npc.xpos, npc.ypos, LclItms.xpos, LclItms.ypos);
                         if (NewItem < CurrentItem)
                         {
-                            (*npc.Target.Item).User = nullptr;
+                            (*npc.Target.Item).user = nullptr;
                             npc.Target.Item = &LclItms;
-                            (*npc.Target.Item).User = &npc;
+                            (*npc.Target.Item).user = &npc;
                         }
                     }
                 }
@@ -1183,9 +1183,9 @@ void updateNpc()
         //for(int i = 0; i != npc.inventory.size(); i++)
         for (auto i = npc.inventory.begin(); i != npc.inventory.begin(); i++)
         {
-            if ((*i).InsidePart != "")
+            if ((*i).insidePart != "")
             {
-                (*i).HasInternalUse--;
+                (*i).hasInternalUse--;
             }
         }
 
@@ -1231,7 +1231,7 @@ void updateNpc()
                     else
                     {
                         //*GetItemPtrfromVector(npc.inventory,"Blood").amount = 0;
-                        GetItemPtrfromVector(npc.inventory, "Blood")->ToDelete =
+                        GetItemPtrfromVector(npc.inventory, "Blood")->toDelete =
                             true;
                         float Nutr =
                             WorkAmount * 100; // TODO: Figure this out better.
@@ -1246,27 +1246,27 @@ void updateNpc()
                     GetItemPtrfromVectorVarSearch(npc.inventory, "MassFlesh");
                 //if(PartItem != NULL) PartItem->HasInternalUse++; // This is designed to keep items from being ejected until they are completely useless to a critter, I.E. Items with multiple Food Mass's.
                 if (PartNumber != 0 && PartItem != nullptr &&
-                    PartItem->MassFlesh >
+                    PartItem->massFlesh >
                         0) // TODO: Make sure the item is in THIS PART before digesting it!
                 {
                     //std::cout << "HasInternalUse: " << PartItem->HasInternalUse << std::endl;
-                    float WorkAmount = PartItem->MassFlesh;
+                    float WorkAmount = PartItem->massFlesh;
                     float Diff = WorkAmount - (PartNumber / 1000);
 
                     if (Diff > 0)
                     {
-                        PartItem->MassFlesh = Diff;
-                        PartItem->HasInternalUse = 0;
+                        PartItem->massFlesh = Diff;
+                        PartItem->hasInternalUse = 0;
                         float Nutr = (WorkAmount - Diff) *
                                      100; // TODO: Figure this out better.
                         npc.bloodwork(
                             "Nutrients",
                             Nutr * PercentageBuff(GlobalNutritionPercentage));
                     }
-                    if (PartItem->MassFlesh <= 0)
+                    if (PartItem->massFlesh <= 0)
                     {
                         //*GetItemPtrfromVector(npc.inventory,"Blood").amount = 0;
-                        PartItem->ToDelete = true;
+                        PartItem->toDelete = true;
                         //Add Food to everyone, Make sure they go hungry to eat it, Figure out a way to Eject the empty item, Or do water! Everyone starts with water.
                         //npc.bloodwork("Nutrients",Nutr*PercentageBuff(GlobalNutritionPercentage));
                     }
@@ -1277,26 +1277,26 @@ void updateNpc()
                     GetItemPtrfromVectorVarSearch(npc.inventory, "MassVeggy");
                 //if(PartItem != NULL) PartItem->HasInternalUse++; // This is designed to keep items from being ejected until they are completely useless to a critter, I.E. Items with multiple Food Mass's.
                 if (PartNumber != 0 && PartItem != nullptr &&
-                    PartItem->MassVeggy >
+                    PartItem->massVeggy >
                         0) // TODO: Make sure the item is in THIS PART before digesting it!
                 {
                     //std::cout << "HasInternalUse: " << PartItem->HasInternalUse << std::endl;
-                    float WorkAmount = PartItem->MassVeggy;
+                    float WorkAmount = PartItem->massVeggy;
                     float Diff = WorkAmount - (PartNumber / 1000);
 
                     if (Diff > 0)
                     {
-                        PartItem->MassVeggy = Diff;
-                        PartItem->HasInternalUse = 0;
+                        PartItem->massVeggy = Diff;
+                        PartItem->hasInternalUse = 0;
                         float Nutr = (WorkAmount - Diff) *
                                      100; // TODO: Figure this out better.
                         npc.bloodwork(
                             "Nutrients",
                             Nutr * PercentageBuff(GlobalNutritionPercentage));
                     }
-                    if (PartItem->MassVeggy <= 0)
+                    if (PartItem->massVeggy <= 0)
                     {
-                        PartItem->ToDelete = true;
+                        PartItem->toDelete = true;
                         //npc.bloodwork("Nutrients",Nutr*PercentageBuff(GlobalNutritionPercentage));
                     }
                 }
@@ -1306,26 +1306,26 @@ void updateNpc()
                     GetItemPtrfromVectorVarSearch(npc.inventory, "MassWater");
                 //if(PartItem != NULL) PartItem->HasInternalUse++; // This is designed to keep items from being ejected until they are completely useless to a critter, I.E. Items with multiple Food Mass's.
                 if (PartNumber != 0 && PartItem != nullptr &&
-                    PartItem->MassWater >
+                    PartItem->massWater >
                         0) // TODO: Make sure the item is in THIS PART before digesting it!
                 {
                     //std::cout << "HasInternalUse: " << PartItem->HasInternalUse << std::endl;
-                    float WorkAmount = PartItem->MassWater;
+                    float WorkAmount = PartItem->massWater;
                     float Diff = WorkAmount - (PartNumber / 1000);
 
                     if (Diff > 0)
                     {
-                        PartItem->MassWater = Diff;
-                        PartItem->HasInternalUse = 0;
+                        PartItem->massWater = Diff;
+                        PartItem->hasInternalUse = 0;
                         float Nutr = (WorkAmount - Diff) *
                                      100; // TODO: Figure this out better.
                         npc.bloodwork(
                             "Hydration",
                             Nutr * PercentageBuff(GlobalNutritionPercentage));
                     }
-                    if (PartItem->MassWater <= 0)
+                    if (PartItem->massWater <= 0)
                     {
-                        PartItem->ToDelete = true;
+                        PartItem->toDelete = true;
                         //npc.bloodwork("Nutrients",Nutr*PercentageBuff(GlobalNutritionPercentage));
                     }
                 }
@@ -1362,24 +1362,24 @@ void updateNpc()
                          i != npc.inventory.begin(); i++)
                     {
                         bool FoundIt = false;
-                        if ((*i).InsidePart == "" && (*i).MassFlesh > 0 &&
+                        if ((*i).insidePart == "" && (*i).massFlesh > 0 &&
                             ConsumeFlesh) // Awww yeeessss, We gonna eat some flesh with our Orafice!
                         {
-                            (*i).InsidePart = CurrentPart;
+                            (*i).insidePart = CurrentPart;
                             FoundIt = true;
                         }
 
-                        if ((*i).InsidePart == "" && (*i).MassVeggy > 0 &&
+                        if ((*i).insidePart == "" && (*i).massVeggy > 0 &&
                             ConsumeVeggy) // Awww yeeessss, We gonna eat something with our Orafice!
                         {
-                            (*i).InsidePart = CurrentPart;
+                            (*i).insidePart = CurrentPart;
                             FoundIt = true;
                         }
 
-                        if ((*i).InsidePart == "" && (*i).MassWater > 0 &&
+                        if ((*i).insidePart == "" && (*i).massWater > 0 &&
                             ConsumeWater) // Awww yeeessss, We gonna eat something with our Orafice!
                         {
-                            (*i).InsidePart = CurrentPart;
+                            (*i).insidePart = CurrentPart;
                             FoundIt = true;
                         }
 
@@ -1903,7 +1903,7 @@ void updateNpc()
                     bool IsWater = false;
                     for (auto &worlditem : worlditems)
                     {
-                        if (worlditem.MassWater > 0)
+                        if (worlditem.massWater > 0)
                         {
                             IsWater = true;
                         }
@@ -1936,7 +1936,7 @@ void updateNpc()
                     Item *Item = FindClosestItemPtr(npc.xpos, npc.ypos, "Food");
                     if (Item != nullptr)
                     {
-                        if (Item->MassFlesh > 0)
+                        if (Item->massFlesh > 0)
                         {
                             npc.TargetPos =
                                 sf::Vector2f(Item->xpos, Item->ypos);
@@ -2144,7 +2144,7 @@ void updateNpc()
                                                          .Wall();
                                                 //Tiles[abs_to_index(x/20)][abs_to_index(y/20)][30].ID = 1010;
                                                 //Tiles[abs_to_index(x/20)][abs_to_index(y/20)][30].Img.setTexture( *imagemanager.GetImage("Wall.png"));
-                                                InvWood->ToDelete = true;
+                                                InvWood->toDelete = true;
                                                 UniFact[0].JobList[i].ToDelete =
                                                     true;
                                                 UniFact[0]
@@ -2180,7 +2180,7 @@ void updateNpc()
                                             //Deleting = true;
                                             debug("It's close!");
                                             npc.inventory.push_back(*WldWood);
-                                            WldWood->ToDelete = true;
+                                            WldWood->toDelete = true;
                                         }
                                     }
                                     debug("Ended Build");
@@ -2214,7 +2214,7 @@ void updateNpc()
                                             *UniFact[0].JobList[i].pItem);
                                         debug("Post Inventory Pushback");
 
-                                        UniFact[0].JobList[i].pItem->ToDelete =
+                                        UniFact[0].JobList[i].pItem->toDelete =
                                             true;
                                         /*
                                 for(std::list<item>::iterator v = worlditems.begin(); v != worlditems.end(); v++ )
@@ -2261,7 +2261,7 @@ void updateNpc()
                                         worlditems.push_back(WoodStuffs);
                                         debug("Post WoodSpawn");
 
-                                        UniFact[0].JobList[i].pItem->ToDelete =
+                                        UniFact[0].JobList[i].pItem->toDelete =
                                             true;
                                         UniFact[0].JobList[i].pItem = nullptr;
                                         UniFact[0].JobList[i].ToDelete = true;
@@ -2529,7 +2529,7 @@ void updateNpc()
                                 Item Blood;
                                 Blood.amount = zDamage;
                                 Blood.name = "Blood";
-                                Blood.InsidePart = "LowerTorso";
+                                Blood.insidePart = "LowerTorso";
                                 npc.inventory.push_back(Blood);
                                 AtkType = " has drunk from ";
                             }
@@ -2764,7 +2764,7 @@ void updateNpc()
                     //if(Math::Closeish(npc.xpos,npc.ypos,worlditems.at(GetItemVectorId(npc.TargetId)).xpos,worlditems.at(GetItemVectorId(npc.TargetId)).ypos) <= npc.reach && worlditems.at(GetItemVectorId(npc.TargetId)).Pickupable == true)
                     if (math::closeish(npc.xpos, npc.ypos, (*ItemItr).xpos,
                                        (*ItemItr).ypos) <= npc.reach &&
-                        (*ItemItr).Pickupable == true)
+                        (*ItemItr).pickupable == true)
                     {
                         try
                         {
@@ -3044,7 +3044,7 @@ void updateNpc()
                     //if(Item->hungervalue > 0){ npc.fillhunger(1); Item->hungervalue--;}
                     npc.fillhunger(elem.hungervalue);
                     npc.fillthirst(elem.thirstvalue);
-                    elem.ToDelete = true;
+                    elem.toDelete = true;
 
                     std::string ChtStr;
                     ChtStr.append("* ");
@@ -3063,7 +3063,7 @@ void updateNpc()
                     //if(Item->hungervalue > 0){ npc.fillhunger(1); Item->hungervalue--;}
                     npc.fillhunger(elem.hungervalue);
                     npc.fillthirst(elem.thirstvalue);
-                    elem.ToDelete = true;
+                    elem.toDelete = true;
 
                     std::string ChtStr;
                     ChtStr.append("* ");
@@ -3089,7 +3089,7 @@ void updateNpc()
                 for (auto it = npc.inventory.begin(); it != npc.inventory.end();
                      ++it)
                 {
-                    if (it->ToDelete)
+                    if (it->toDelete)
                     {
                         std::cout << it->name << " to be deleted. \n";
                         npc.inventory.erase(it);
@@ -3247,7 +3247,7 @@ void DrawItems()
         //{
         worlditem.img.setColor(sf::Color(255, 255, 255, 255));
         worlditem.img.setScale(gvars::Scalex, gvars::Scaley);
-        worlditem.DrawImg();
+        worlditem.drawImg();
         //}
     }
     debug("Done Drawing Items");
@@ -4296,7 +4296,7 @@ int main()
                         SaveItem(500, sf::Vector2i(gvars::currentregionx + 2,
                                                    gvars::currentregiony - 1),
                                  (worlditem));
-                        (worlditem).ToDelete = true;
+                        (worlditem).toDelete = true;
                     }
                     else if ((worlditem).xpos > 1920 && (worlditem).ypos > 1280)
                     {
@@ -4305,7 +4305,7 @@ int main()
                         SaveItem(500, sf::Vector2i(gvars::currentregionx + 2,
                                                    gvars::currentregiony + 1),
                                  (worlditem));
-                        (worlditem).ToDelete = true;
+                        (worlditem).toDelete = true;
                     }
 
                     else if ((worlditem).xpos < 0 && (worlditem).ypos > 1280)
@@ -4315,7 +4315,7 @@ int main()
                         SaveItem(500, sf::Vector2i(gvars::currentregionx - 2,
                                                    gvars::currentregiony + 1),
                                  (worlditem));
-                        (worlditem).ToDelete = true;
+                        (worlditem).toDelete = true;
                     }
                     else if ((worlditem).xpos < 0 && (worlditem).ypos < 640)
                     {
@@ -4323,7 +4323,7 @@ int main()
                         SaveItem(500, sf::Vector2i(gvars::currentregionx - 2,
                                                    gvars::currentregiony - 1),
                                  (worlditem));
-                        (worlditem).ToDelete = true;
+                        (worlditem).toDelete = true;
                     }
 
                     else if ((worlditem).ypos < 0 && (worlditem).xpos > 1280)
@@ -4333,7 +4333,7 @@ int main()
                         SaveItem(500, sf::Vector2i(gvars::currentregionx + 1,
                                                    gvars::currentregiony - 2),
                                  (worlditem));
-                        (worlditem).ToDelete = true;
+                        (worlditem).toDelete = true;
                     }
                     else if ((worlditem).ypos < 0 && (worlditem).xpos < 640)
                     {
@@ -4341,7 +4341,7 @@ int main()
                         SaveItem(500, sf::Vector2i(gvars::currentregionx - 1,
                                                    gvars::currentregiony - 2),
                                  (worlditem));
-                        (worlditem).ToDelete = true;
+                        (worlditem).toDelete = true;
                     }
 
                     else if ((worlditem).ypos > 1920 && (worlditem).xpos > 1280)
@@ -4351,7 +4351,7 @@ int main()
                         SaveItem(500, sf::Vector2i(gvars::currentregionx + 1,
                                                    gvars::currentregiony + 2),
                                  (worlditem));
-                        (worlditem).ToDelete = true;
+                        (worlditem).toDelete = true;
                     }
                     else if ((worlditem).ypos > 1920 && (worlditem).xpos < 640)
                     {
@@ -4359,7 +4359,7 @@ int main()
                         SaveItem(500, sf::Vector2i(gvars::currentregionx - 1,
                                                    gvars::currentregiony + 2),
                                  (worlditem));
-                        (worlditem).ToDelete = true;
+                        (worlditem).toDelete = true;
                     }
 
                     //HAGGINABAGGINA  Some reason, When a critter is saved, It'll have more than 640 for it's position, This is unacceptable.
@@ -4371,7 +4371,7 @@ int main()
                         SaveItem(500, sf::Vector2i(gvars::currentregionx + 2,
                                                    gvars::currentregiony),
                                  (worlditem));
-                        (worlditem).ToDelete = true;
+                        (worlditem).toDelete = true;
                     }
                     else if ((worlditem).ypos > 1920)
                     {
@@ -4380,7 +4380,7 @@ int main()
                         SaveItem(500, sf::Vector2i(gvars::currentregionx,
                                                    gvars::currentregiony + 2),
                                  (worlditem));
-                        (worlditem).ToDelete = true;
+                        (worlditem).toDelete = true;
                     }
                     else if ((worlditem).xpos < 0)
                     {
@@ -4389,7 +4389,7 @@ int main()
                         SaveItem(500, sf::Vector2i(gvars::currentregionx - 2,
                                                    gvars::currentregiony),
                                  (worlditem));
-                        (worlditem).ToDelete = true;
+                        (worlditem).toDelete = true;
                     }
                     else if ((worlditem).ypos < 0)
                     {
@@ -4399,7 +4399,7 @@ int main()
                                                    gvars::currentregiony - 2),
                                  (worlditem));
 
-                        (worlditem).ToDelete = true;
+                        (worlditem).toDelete = true;
                     }
                 }
                 UnpointItems(worlditems);
@@ -6000,7 +6000,7 @@ int main()
                     for (auto const &item :
                          npclist.at(gvars::MyTarget).inventory)
                     { // Listing all the current items from this critters inventory.
-                        if (item.InsidePart.size() == 0)
+                        if (item.insidePart.size() == 0)
                         {
                             cText.CreateText(Nxpos + 65, Yv, 11,
                                              sf::Color::White, item.name, ": ",
@@ -6012,11 +6012,11 @@ int main()
                     for (auto const &item :
                          npclist.at(gvars::MyTarget).inventory)
                     { // Listing all items from 'inside' the critter.
-                        if (item.InsidePart.size() != 0)
+                        if (item.insidePart.size() != 0)
                         {
                             cText.CreateText(Nxpos + 65, Yv, 11,
                                              sf::Color(255, 200, 200),
-                                             "Inside " + item.InsidePart + " :",
+                                             "Inside " + item.insidePart + " :",
                                              item.name + " :", item.amount);
                             Yv += 10;
                         }

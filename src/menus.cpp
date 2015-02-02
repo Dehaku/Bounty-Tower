@@ -256,7 +256,7 @@ void menuPopUp()
                                          sf::Color::Black);
                     Item Var;
                     Var = *GetGlobalItem("Missile");
-                    Var.TargetPos = sf::Vector2f(GC.MenuPos);
+                    Var.targetPos = sf::Vector2f(GC.MenuPos);
                     Var.xpos = GC.MenuPos.x - 200;
                     Var.ypos = GC.MenuPos.y - 200;
                     Var.zpos = 100;
@@ -455,7 +455,7 @@ void menuPopUp()
                     GC.MenuPos.x, (GC.MenuPos.y + (iY * 13)) + 13,
                     GC.MenuPos.x + 90, (GC.MenuPos.y + (iY * 13)) + 13, 1,
                     sf::Color::Cyan);
-                if (GC.MenuPtrCon.pItem->Pickupable)
+                if (GC.MenuPtrCon.pItem->pickupable)
                     cText.CreateText(GC.MenuPos.x + 2, GC.MenuPos.y + (iY * 13),
                                      12, sf::Color::White,
                                      GC.MenuPtrCon.pItem->name + " - PickUp");
@@ -469,8 +469,8 @@ void menuPopUp()
                                 (GC.MenuPos.y + (iY * 13)) + MBD),
                     BS, BSY, ButCol, "Makes someone pickup this item.");
                 if ((squareButtonClicked(Butt) &&
-                     GC.MenuPtrCon.pItem->Pickupable) ||
-                    (Key.num1Time == 1 && GC.MenuPtrCon.pItem->Pickupable))
+                     GC.MenuPtrCon.pItem->pickupable) ||
+                    (Key.num1Time == 1 && GC.MenuPtrCon.pItem->pickupable))
                 {
 
                     for (size_t i = 0; i != UniFact.size(); i++)
@@ -495,7 +495,7 @@ void menuPopUp()
                     GC.MenuPos.x, (GC.MenuPos.y + (iY * 13)) + 13,
                     GC.MenuPos.x + 90, (GC.MenuPos.y + (iY * 13)) + 13, 1,
                     sf::Color::Cyan);
-                if (!GC.MenuPtrCon.pItem->Pickupable)
+                if (!GC.MenuPtrCon.pItem->pickupable)
                     cText.CreateText(GC.MenuPos.x + 2, GC.MenuPos.y + (iY * 13),
                                      12, sf::Color::White,
                                      GC.MenuPtrCon.pItem->name + " - ChopDown");
@@ -511,8 +511,8 @@ void menuPopUp()
                     BS, BSY, ButCol,
                     "Makes someone seek and destroy this item.");
                 if ((squareButtonClicked(Butt) &&
-                     !GC.MenuPtrCon.pItem->Pickupable) ||
-                    (Key.num1Time == 1 && !GC.MenuPtrCon.pItem->Pickupable))
+                     !GC.MenuPtrCon.pItem->pickupable) ||
+                    (Key.num1Time == 1 && !GC.MenuPtrCon.pItem->pickupable))
                 {
 
                     for (size_t i = 0; i != UniFact.size(); i++)
@@ -663,7 +663,7 @@ void menuPopUp()
                                          sf::Color::Black);
                     Item Var;
                     Var = *GetGlobalItem("Missile");
-                    Var.TargetPos = sf::Vector2f(GC.MenuPos);
+                    Var.targetPos = sf::Vector2f(GC.MenuPos);
                     Var.xpos = GC.MenuPos.x - 200;
                     Var.ypos = GC.MenuPos.y - 200;
                     Var.zpos = 100;
@@ -983,7 +983,7 @@ void menuPopUp()
                         if (math::closeish(GC.MenuPos.x, GC.MenuPos.y,
                                            Item->xpos, Item->ypos) <= 10)
                         {
-                            if (Item->Pickupable == true)
+                            if (Item->pickupable == true)
                             {
                                 npclist.at(GetNpcVectorId(gvars::MyTargetid))
                                     .action = "Pickup";

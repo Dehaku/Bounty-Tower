@@ -526,7 +526,7 @@ bool NPC::HasWeapon(std::string weapon)
         Specific = true;
     for (auto const &item : inventory)
     {
-        if (item.IsWeapon)
+        if (item.isWeapon)
             FoundWeapon = true;
         if (weapon != "")
         {

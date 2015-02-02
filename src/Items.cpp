@@ -22,7 +22,7 @@ void RemoveItems(std::list<Item> &Items)
         Done = true;
         for (auto it = Items.begin(); it != Items.end(); ++it)
         {
-            if (it->ToDelete)
+            if (it->toDelete)
             {
                 Done = false;
                 Items.erase(it);
@@ -305,27 +305,27 @@ Item *GetItemPtrfromVectorVarSearch(std::list<Item> &Vector,
     for (auto i = Vector.begin(); i != Vector.end(); i++)
     {
 
-        if ((*i).MassFlesh >= AtLeast && VarSearch == "MassFlesh")
+        if ((*i).massFlesh >= AtLeast && VarSearch == "MassFlesh")
         {
             debug("Returning GetItmPtrVarSearch");
             return &(*i);
         }
-        if ((*i).MassVeggy >= AtLeast && VarSearch == "MassVeggy")
+        if ((*i).massVeggy >= AtLeast && VarSearch == "MassVeggy")
         {
             debug("Returning GetItmPtrVarSearch");
             return &(*i);
         }
-        if ((*i).MassWater >= AtLeast && VarSearch == "MassWater")
+        if ((*i).massWater >= AtLeast && VarSearch == "MassWater")
         {
             debug("Returning GetItmPtrVarSearch");
             return &(*i);
         }
-        if ((*i).MassMetal >= AtLeast && VarSearch == "MassMetal")
+        if ((*i).massMetal >= AtLeast && VarSearch == "MassMetal")
         {
             debug("Returning GetItmPtrVarSearch");
             return &(*i);
         }
-        if ((*i).MassPlastic >= AtLeast && VarSearch == "MassPlastic")
+        if ((*i).massPlastic >= AtLeast && VarSearch == "MassPlastic")
         {
             debug("Returning GetItmPtrVarSearch");
             return &(*i);
@@ -424,11 +424,11 @@ void Item::printInfo()
     cout << "Name: " << name.c_str() << " (" << id << ") " << endl;
     cout << "Weight: " << weight << endl;
     cout << "Value: " << value << endl;
-    if (UseCell == true)
+    if (useCell == true)
     {
         cout << "celltype is: " << celltype << endl;
     }
-    if (UseCell == true)
+    if (useCell == true)
     {
         cout << "cellcharge is: " << cellcharge << endl;
     }
@@ -442,13 +442,13 @@ void Item::printInfo()
     }
     cout << "Min Damage: " << mindam << endl;
     cout << "Max Damage: " << maxdam << endl;
-    if (IsMagic == true)
+    if (isMagic == true)
     {
         cout << " *Magical* " << endl;
     }
 }
 
-void Item::DrawImg()
+void Item::drawImg()
 {
     img.setPosition(xpos, ypos);
     //img.setScale(globals::Scalex,globals::Scaley);
@@ -466,7 +466,7 @@ void Item::spawn(int /*gposx*/, int /*gposy*/, int /*rposx*/, int /*rposy*/,
     ypos = posy;
 }
 
-void Item::PrintConsoleInfo()
+void Item::printConsoleInfo()
 {
     using namespace std;
     cout << "Name: " << name << endl;
@@ -480,12 +480,12 @@ void Item::PrintConsoleInfo()
 
 Item::Item()
     : cbaseid{}, range{}, xpos{}, ypos{}, zpos{}, rxpos{}, rypos{}, gxpos{},
-      gypos{}, imgstrx{}, imgstry{}, imgendx{}, imgendy{}, IsWeapon{},
-      tillrot{}, prodrate{}, prodratetimer{}, timerdecon{}, LiquidContainMax{},
-      ObjectContainMax{}, ContainAmount{}
+      gypos{}, imgstrx{}, imgstry{}, imgendx{}, imgendy{}, isWeapon{},
+      tillrot{}, prodrate{}, prodratetimer{}, timerdecon{}, liquidContainMax{},
+      objectContainMax{}, containAmount{}
 {
-    ToDelete = false;
-    TargetPos = sf::Vector2f(-1, -1);
+    toDelete = false;
+    targetPos = sf::Vector2f(-1, -1);
     id = gvars::globalid++;
     name = "";
     weight = 0;
@@ -496,30 +496,30 @@ Item::Item()
 
     // This may be a little confusing, This is so the item can stay
     // inside without being ejected because one function doesn't need it.
-    HasInternalUse = 0;
+    hasInternalUse = 0;
 
-    User = nullptr;
+    user = nullptr;
 
     hungervalue = 0;
     thirstvalue = 0;
-    MassGlass = 0;
-    MassFlesh = 0;
-    MassMetal = 0;
-    MassOil = 0;
-    MassPlastic = 0;
-    MassVeggy = 0;
-    MassWater = 0;
+    massGlass = 0;
+    massFlesh = 0;
+    massMetal = 0;
+    massOil = 0;
+    massPlastic = 0;
+    massVeggy = 0;
+    massWater = 0;
 
-    HasCell = false;
-    UseCell = false;
+    hasCell = false;
+    useCell = false;
 
-    Pickupable = true;
+    pickupable = true;
 
     celltype = 0;
     cellcharge = 0;
     cellcost = 0;
 
-    IsMagic = false;
+    isMagic = false;
     stacks = false;
 
     // 0 = none/melee, 6 = small bullet, 7 = large bullet
@@ -529,14 +529,14 @@ Item::Item()
     mindam = 1;
     maxdam = 2;
 
-    HasCell = false;
-    UseCell = false;
-    IsMagic = false;
+    hasCell = false;
+    useCell = false;
+    isMagic = false;
     stacks = false;
     rotten = false;
-    IsLiquidContainer = false;
-    IsObjectContainer = false;
-    Pushable = false;
+    isLiquidContainer = false;
+    isObjectContainer = false;
+    pushable = false;
     blocksmovement = false;
     collectssolar = false;
     collectsheat = false;
@@ -579,15 +579,15 @@ void cItemManager::InitializeItems()
             Item.hungervalue = StringFindNumber(line, "[hungervalue:");
             Item.thirstvalue = StringFindNumber(line, "[thirstvalue:");
 
-            Item.MassGlass = StringFindNumber(line, "[MassGlass:");
-            Item.MassFlesh = StringFindNumber(line, "[MassFlesh:");
-            Item.MassMetal = StringFindNumber(line, "[MassMetal:");
-            Item.MassOil = StringFindNumber(line, "[MassOil:");
-            Item.MassPlastic = StringFindNumber(line, "[MassPlastic:");
-            Item.MassVeggy = StringFindNumber(line, "[MassVeggy:");
-            Item.MassWater = StringFindNumber(line, "[MassWater:");
+            Item.massGlass = StringFindNumber(line, "[MassGlass:");
+            Item.massFlesh = StringFindNumber(line, "[MassFlesh:");
+            Item.massMetal = StringFindNumber(line, "[MassMetal:");
+            Item.massOil = StringFindNumber(line, "[MassOil:");
+            Item.massPlastic = StringFindNumber(line, "[MassPlastic:");
+            Item.massVeggy = StringFindNumber(line, "[MassVeggy:");
+            Item.massWater = StringFindNumber(line, "[MassWater:");
 
-            Item.Pickupable =
+            Item.pickupable =
                 Booleanize(StringFindNumber(line, "[Pickupable:"));
             Item.type = StringFindNumber(line, "[type:");
             Item.cbaseid = StringFindNumber(line, "[baseid:");
@@ -597,7 +597,7 @@ void cItemManager::InitializeItems()
             Item.mindam = StringFindNumber(line, "[mindam:");
             Item.maxdam = StringFindNumber(line, "[maxdam:");
             Item.range = StringFindNumber(line, "[range:");
-            Item.IsWeapon = Booleanize(StringFindNumber(line, "[IsWeapon:"));
+            Item.isWeapon = Booleanize(StringFindNumber(line, "[IsWeapon:"));
             std::string Imagery = StringFindString(line, "[image:");
             for (auto const &image : texturemanager.textures)
             {
