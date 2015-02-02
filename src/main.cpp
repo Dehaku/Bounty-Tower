@@ -3303,7 +3303,7 @@ void DrawStuffs()
 
     for (auto &button : vSquareButtonList)
     {
-        button.DrawButton();
+        button.draw();
     }
     vSquareButtonList.clear();
     debug("Drew and Cleared square buttons");
@@ -3313,7 +3313,7 @@ void DrawStuffs()
 
     for (auto &button : vButtonList)
     {
-        button.DrawButton();
+        button.draw();
     }
     vButtonList.clear();
     debug("Drew and Cleared buttons");
@@ -3640,14 +3640,14 @@ int main()
             {
 
                 GC.MenuType = "DebugCritterSpawn";
-                MenuPopUp();
+                menuPopUp();
             }
             else if (Key.tab == true &&
                      Key.lshift ==
                          false) // Debug Item Spawn Menu TODO: Sort them by Type.
             {
                 GC.MenuType = "DebugItemSpawn";
-                MenuPopUp();
+                menuPopUp();
             }
             else if (GC.MenuType == "DebugItemSpawn" ||
                      GC.MenuType == "DebugCritterSpawn")
@@ -3655,9 +3655,9 @@ int main()
                 GC.MenuType = "NULL";
                 GC.MenuPos = sf::Vector2f(-10000, -10000);
                 GC.MenuEndPos = sf::Vector2f(-10000, -10000);
-                MenuPtrCon.pItem = nullptr;
-                MenuPtrCon.pNPC = nullptr;
-                MenuPtrCon.pTile = nullptr;
+                menuPtrCon.pItem = nullptr;
+                menuPtrCon.pNPC = nullptr;
+                menuPtrCon.pTile = nullptr;
                 Con("Closing DebugMenus Due To Lack of Key Presses");
             }
             //                       if(Key.lshift && Key.z){GC.ZombieSwarmLocal();}
@@ -3665,7 +3665,7 @@ int main()
             if (Key.lshift && Key.z) // Debug Stuffs Menu
             {
                 GC.MenuType = "DebugFunctions";
-                MenuPopUp();
+                menuPopUp();
             }
 
             if (Key.left == true)
@@ -3692,7 +3692,7 @@ int main()
             if (gvars::InitalZeds)
                 GC.Wave();
 
-            RightMouseButtonContextMenu();
+            rightMouseButtonContextMenu();
 
             if (Key.bTime == 1)
             {
@@ -4408,13 +4408,13 @@ int main()
 
             //if(Key.b) Effectz.CreateBeam(1000,1000,MousePos.x,MousePos.y,50,Red,5,Blue,false,0);
 
-            button var;
-            var.Color = sf::Color::Red;
+            Button var;
+            var.color = sf::Color::Red;
             var.iSize = 5;
             var.vPos = sf::Vector2f(600, 600);
             var.sButtonText = "Howdy";
             vButtonList.push_back(var);
-            if (ButtonClicked(var.id))
+            if (buttonClicked(var.id))
             {
                 std::cout << "Twas' True \n";
             }
@@ -4454,7 +4454,7 @@ int main()
             //for (int i = 0; i <= gridy-1; i++){for( int t = 0; t <= gridx-1; t++){int z = globals::currentz;if(globals::sunmap[z][i][t] != 0){globals::sunmap[z][i][t] -= 5;}}} // Darkness
             if (GC.MenuType != "NULL")
             {
-                MenuPopUp();
+                menuPopUp();
             }
             else
             {
@@ -4743,13 +4743,13 @@ int main()
             cText.CreateText(Rez.x / 2, 70, 11, sf::Color::Blue,
                              "Squad Mates: ", "", Squady.SquadMates);
 
-            button var200;
-            var200.Color = sf::Color::Red;
+            Button var200;
+            var200.color = sf::Color::Red;
             var200.iSize = 5;
             var200.vPos = sf::Vector2f((Rez.x / 2) - 10, 75);
             var200.sButtonText = "Howdy";
             vButtonList.push_back(var200);
-            if (ButtonClicked(var200.id))
+            if (buttonClicked(var200.id))
             {
                 if (Squady.Squad.size() > 1)
                 {
@@ -4797,13 +4797,13 @@ int main()
                 //if(Squady.Aim > Squady.Squad.size()-1) Squady.Aim = Squady.Squad.size()-1;
                 fSleep(0.2);
             }
-            button var201;
-            var201.Color = sf::Color::Red;
+            Button var201;
+            var201.color = sf::Color::Red;
             var201.iSize = 5;
             var201.vPos = sf::Vector2f((Rez.x / 2) + 80, 75);
             var201.sButtonText = "Howdy";
             vButtonList.push_back(var201);
-            if (ButtonClicked(var201.id))
+            if (buttonClicked(var201.id))
             {
                 if (Squady.MakeSquadPoints > 99)
                 {
@@ -4908,14 +4908,14 @@ int main()
             int Spacing = 1;
             //NPC.Skills.
 
-            button var100;
-            var100.Color = sf::Color::Red;
+            Button var100;
+            var100.color = sf::Color::Red;
             var100.iSize = 5;
             var100.vPos =
                 sf::Vector2f((Rez.x / 2) - 10, 5 + (80 + (20 * Spacing)));
             var100.sButtonText = "Howdy";
             vButtonList.push_back(var100);
-            if (ButtonClicked(var100.id))
+            if (buttonClicked(var100.id))
             {
                 Squady.Aim--;
                 if (Squady.Aim < 0)
@@ -4924,14 +4924,14 @@ int main()
                     Squady.Aim = Squady.Squad.size() - 1;
                 fSleep(0.2);
             }
-            button var101;
-            var101.Color = sf::Color::Red;
+            Button var101;
+            var101.color = sf::Color::Red;
             var101.iSize = 5;
             var101.vPos =
                 sf::Vector2f((Rez.x / 2) + 80, 5 + (80 + (20 * Spacing)));
             var101.sButtonText = "Howdy";
             vButtonList.push_back(var101);
-            if (ButtonClicked(var101.id))
+            if (buttonClicked(var101.id))
             {
                 Squady.Aim++;
                 if (Squady.Aim < 0)
@@ -4949,14 +4949,14 @@ int main()
                              sf::Color::White, "Strength: ", "",
                              Squady.Squad.at(Squady.Aim).Skills.strength);
 
-            button var;
-            var.Color = sf::Color::Red;
+            Button var;
+            var.color = sf::Color::Red;
             var.iSize = 5;
             var.vPos =
                 sf::Vector2f((Rez.x / 2) - 10, 5 + (80 + (20 * Spacing)));
             var.sButtonText = "Howdy";
             vButtonList.push_back(var);
-            if (ButtonClicked(var.id))
+            if (buttonClicked(var.id))
             {
                 if (Squady.MakeSquadPoints < 1000)
                 {
@@ -4964,14 +4964,14 @@ int main()
                     Squady.Squad.at(Squady.Aim).Skills.strength -= 1;
                 }
             }
-            button var2;
-            var2.Color = sf::Color::Red;
+            Button var2;
+            var2.color = sf::Color::Red;
             var2.iSize = 5;
             var2.vPos =
                 sf::Vector2f((Rez.x / 2) + 80, 5 + (80 + (20 * Spacing++)));
             var2.sButtonText = "Howdy";
             vButtonList.push_back(var2);
-            if (ButtonClicked(var2.id))
+            if (buttonClicked(var2.id))
             {
                 if (Squady.MakeSquadPoints > 0)
                 {
@@ -4984,14 +4984,14 @@ int main()
                              sf::Color::White, "Perception: ", "",
                              Squady.Squad.at(Squady.Aim).Skills.perception);
 
-            button var3;
-            var3.Color = sf::Color::Red;
+            Button var3;
+            var3.color = sf::Color::Red;
             var3.iSize = 5;
             var3.vPos =
                 sf::Vector2f((Rez.x / 2) - 10, 5 + (80 + (20 * Spacing)));
             var3.sButtonText = "Howdy";
             vButtonList.push_back(var3);
-            if (ButtonClicked(var3.id))
+            if (buttonClicked(var3.id))
             {
                 if (Squady.MakeSquadPoints < 1000)
                 {
@@ -4999,14 +4999,14 @@ int main()
                     Squady.Squad.at(Squady.Aim).Skills.perception -= 1;
                 }
             }
-            button var4;
-            var4.Color = sf::Color::Red;
+            Button var4;
+            var4.color = sf::Color::Red;
             var4.iSize = 5;
             var4.vPos =
                 sf::Vector2f((Rez.x / 2) + 80, 5 + (80 + (20 * Spacing++)));
             var4.sButtonText = "Howdy";
             vButtonList.push_back(var4);
-            if (ButtonClicked(var4.id))
+            if (buttonClicked(var4.id))
             {
                 if (Squady.MakeSquadPoints > 0)
                 {
@@ -5019,14 +5019,14 @@ int main()
                              sf::Color::White, "Intelligence: ", "",
                              Squady.Squad.at(Squady.Aim).Skills.intelligence);
 
-            button var5;
-            var5.Color = sf::Color::Red;
+            Button var5;
+            var5.color = sf::Color::Red;
             var5.iSize = 5;
             var5.vPos =
                 sf::Vector2f((Rez.x / 2) - 10, 5 + (80 + (20 * Spacing)));
             var5.sButtonText = "Howdy";
             vButtonList.push_back(var5);
-            if (ButtonClicked(var5.id))
+            if (buttonClicked(var5.id))
             {
                 if (Squady.MakeSquadPoints < 1000)
                 {
@@ -5034,14 +5034,14 @@ int main()
                     Squady.Squad.at(Squady.Aim).Skills.intelligence -= 1;
                 }
             }
-            button var6;
-            var6.Color = sf::Color::Red;
+            Button var6;
+            var6.color = sf::Color::Red;
             var6.iSize = 5;
             var6.vPos =
                 sf::Vector2f((Rez.x / 2) + 80, 5 + (80 + (20 * Spacing++)));
             var6.sButtonText = "Howdy";
             vButtonList.push_back(var6);
-            if (ButtonClicked(var6.id))
+            if (buttonClicked(var6.id))
             {
                 if (Squady.MakeSquadPoints > 0)
                 {
@@ -5054,14 +5054,14 @@ int main()
                              sf::Color::White, "Charisma: ", "",
                              Squady.Squad.at(Squady.Aim).Skills.charisma);
 
-            button var7;
-            var7.Color = sf::Color::Red;
+            Button var7;
+            var7.color = sf::Color::Red;
             var7.iSize = 5;
             var7.vPos =
                 sf::Vector2f((Rez.x / 2) - 10, 5 + (80 + (20 * Spacing)));
             var7.sButtonText = "Howdy";
             vButtonList.push_back(var7);
-            if (ButtonClicked(var7.id))
+            if (buttonClicked(var7.id))
             {
                 if (Squady.MakeSquadPoints < 1000)
                 {
@@ -5069,14 +5069,14 @@ int main()
                     Squady.Squad.at(Squady.Aim).Skills.charisma -= 1;
                 }
             }
-            button var8;
-            var8.Color = sf::Color::Red;
+            Button var8;
+            var8.color = sf::Color::Red;
             var8.iSize = 5;
             var8.vPos =
                 sf::Vector2f((Rez.x / 2) + 80, 5 + (80 + (20 * Spacing++)));
             var8.sButtonText = "Howdy";
             vButtonList.push_back(var8);
-            if (ButtonClicked(var8.id))
+            if (buttonClicked(var8.id))
             {
                 if (Squady.MakeSquadPoints > 0)
                 {
@@ -5089,14 +5089,14 @@ int main()
                              sf::Color::White, "Endurance: ", "",
                              Squady.Squad.at(Squady.Aim).Skills.endurance);
 
-            button var9;
-            var9.Color = sf::Color::Red;
+            Button var9;
+            var9.color = sf::Color::Red;
             var9.iSize = 5;
             var9.vPos =
                 sf::Vector2f((Rez.x / 2) - 10, 5 + (80 + (20 * Spacing)));
             var9.sButtonText = "Howdy";
             vButtonList.push_back(var9);
-            if (ButtonClicked(var9.id))
+            if (buttonClicked(var9.id))
             {
                 if (Squady.MakeSquadPoints < 1000)
                 {
@@ -5104,14 +5104,14 @@ int main()
                     Squady.Squad.at(Squady.Aim).Skills.endurance -= 1;
                 }
             }
-            button var10;
-            var10.Color = sf::Color::Red;
+            Button var10;
+            var10.color = sf::Color::Red;
             var10.iSize = 5;
             var10.vPos =
                 sf::Vector2f((Rez.x / 2) + 80, 5 + (80 + (20 * Spacing++)));
             var10.sButtonText = "Howdy";
             vButtonList.push_back(var10);
-            if (ButtonClicked(var10.id))
+            if (buttonClicked(var10.id))
             {
                 if (Squady.MakeSquadPoints > 0)
                 {
@@ -5124,14 +5124,14 @@ int main()
                              sf::Color::White, "Dexterity: ", "",
                              Squady.Squad.at(Squady.Aim).Skills.dexterity);
 
-            button var11;
-            var11.Color = sf::Color::Red;
+            Button var11;
+            var11.color = sf::Color::Red;
             var11.iSize = 5;
             var11.vPos =
                 sf::Vector2f((Rez.x / 2) - 10, 5 + (80 + (20 * Spacing)));
             var11.sButtonText = "Howdy";
             vButtonList.push_back(var11);
-            if (ButtonClicked(var11.id))
+            if (buttonClicked(var11.id))
             {
                 if (Squady.MakeSquadPoints < 1000)
                 {
@@ -5139,14 +5139,14 @@ int main()
                     Squady.Squad.at(Squady.Aim).Skills.dexterity -= 1;
                 }
             }
-            button var12;
-            var12.Color = sf::Color::Red;
+            Button var12;
+            var12.color = sf::Color::Red;
             var12.iSize = 5;
             var12.vPos =
                 sf::Vector2f((Rez.x / 2) + 80, 5 + (80 + (20 * Spacing++)));
             var12.sButtonText = "Howdy";
             vButtonList.push_back(var12);
-            if (ButtonClicked(var12.id))
+            if (buttonClicked(var12.id))
             {
                 if (Squady.MakeSquadPoints > 0)
                 {
@@ -5159,14 +5159,14 @@ int main()
                              sf::Color::White, "Agility: ", "",
                              Squady.Squad.at(Squady.Aim).Skills.agility);
 
-            button var13;
-            var13.Color = sf::Color::Red;
+            Button var13;
+            var13.color = sf::Color::Red;
             var13.iSize = 5;
             var13.vPos =
                 sf::Vector2f((Rez.x / 2) - 10, 5 + (80 + (20 * Spacing)));
             var13.sButtonText = "Howdy";
             vButtonList.push_back(var13);
-            if (ButtonClicked(var13.id))
+            if (buttonClicked(var13.id))
             {
                 if (Squady.MakeSquadPoints < 1000)
                 {
@@ -5174,14 +5174,14 @@ int main()
                     Squady.Squad.at(Squady.Aim).Skills.agility -= 1;
                 }
             }
-            button var14;
-            var14.Color = sf::Color::Red;
+            Button var14;
+            var14.color = sf::Color::Red;
             var14.iSize = 5;
             var14.vPos =
                 sf::Vector2f((Rez.x / 2) + 80, 5 + (80 + (20 * Spacing++)));
             var14.sButtonText = "Howdy";
             vButtonList.push_back(var14);
-            if (ButtonClicked(var14.id))
+            if (buttonClicked(var14.id))
             {
                 if (Squady.MakeSquadPoints > 0)
                 {
@@ -5191,18 +5191,18 @@ int main()
             }
 
             //cText.CreateText(Rez.x/2,80+(20*Spacing),11,sf::Color::White," ");
-            button var50;
-            var50.Color = sf::Color::Yellow;
+            Button var50;
+            var50.color = sf::Color::Yellow;
             var50.iSize = 5;
             var50.vPos = sf::Vector2f((Rez.x / 2) + 180,
                                       5 + (80 + ((20 * Spacing++) / 2)));
 
             var50.sForwardText = "Done";
-            var50.TextColor = sf::Color::White;
-            var50.TextSize = 11;
+            var50.textColor = sf::Color::White;
+            var50.textSize = 11;
 
             vButtonList.push_back(var50);
-            if (ButtonClicked(var50.id))
+            if (buttonClicked(var50.id))
             {
 
                 GC.Phase = "World";
@@ -5399,11 +5399,11 @@ int main()
                             cText.CreateText(GC.MenuPos.x + 2,
                                              GC.MenuPos.y + (iY * 11), 11,
                                              sf::Color::Cyan, "Enter City");
-                            int Butt = CreateButton(
+                            int Butt = createButton(
                                 math::Vec2f(GC.MenuPos.x + 90,
                                             (GC.MenuPos.y + (iY * 11)) + 5),
                                 5, sf::Color::Red);
-                            if (ButtonClicked(Butt))
+                            if (buttonClicked(Butt))
                             {
                                 Con("Que?");
 
@@ -5465,11 +5465,11 @@ int main()
                             cText.CreateText(GC.MenuPos.x + 2,
                                              GC.MenuPos.y + (iY * 11), 11,
                                              sf::Color::Cyan, "Enter Land");
-                            int Butt = CreateButton(
+                            int Butt = createButton(
                                 math::Vec2f(GC.MenuPos.x + 90,
                                             (GC.MenuPos.y + (iY * 11)) + 5),
                                 5, sf::Color::Red);
-                            if (ButtonClicked(Butt))
+                            if (buttonClicked(Butt))
                             {
                                 Con("Button Get!");
                                 fSleep(0.2);
@@ -5498,8 +5498,8 @@ int main()
             cText.CreateText(450, 45, 11, sf::Color::White,
                              "Design Your Squad");
             // TODO: Simply add cText.CreateText for the Button Text, Or at least make it an option, Since sButtonText is designed for text 'on' the button.
-            button var;
-            var.Color = sf::Color::Red;
+            Button var;
+            var.color = sf::Color::Red;
             var.iSize = 5;
             var.vPos = sf::Vector2f(440, 52);
             var.sButtonText = "Howdy";
@@ -5512,7 +5512,7 @@ int main()
                              "debugger, If it slows down the "
                              "game, Minimize the console.");
 
-            if (ButtonClicked(var.id))
+            if (buttonClicked(var.id))
             {
                 if (gvars::Debug)
                     std::cout << "Switching to MakeSquad\n";
@@ -6025,13 +6025,13 @@ int main()
                         Nxpos + 65, Yv, 11, sf::Color(255, 150, 150),
                         "Blood: " + npclist.at(gvars::MyTarget).bloodcontent);
 
-                    button var;
-                    var.Color = sf::Color::Red;
+                    Button var;
+                    var.color = sf::Color::Red;
                     var.iSize = 5;
                     var.vPos = sf::Vector2f(Nxpos + 120, Nypos + 50);
                     var.sButtonText = "Howdy";
                     vButtonList.push_back(var);
-                    if (ButtonClicked(var.id))
+                    if (buttonClicked(var.id))
                     {
                         std::cout << "Twas' Truuuuuuue \n";
                     } // TODO: Get this before the MyTarget -1 check up there.

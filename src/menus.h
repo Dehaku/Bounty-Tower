@@ -9,69 +9,69 @@
 // TODO: Add a tooltip to the buttons, When you hover over it,
 // it will display some text
 
-class button
+class Button
 {
 public:
-    bool BeenPressed;
+    bool beenPressed;
     int iSize;
     sf::Vector2f vPos;
-    sf::Color Color;
+    sf::Color color;
     std::string sFunction;
     std::string sButtonText;
     std::string sForwardText;
-    int TextSize;
-    sf::Color TextColor;
+    int textSize;
+    sf::Color textColor;
     int id;
 
-    void DrawButton();
+    void draw();
 
-    button();
+    Button();
 };
 
-class squarebutton
+class SquareButton
 {
 public:
-    bool BeenPressed;
+    bool beenPressed;
     int iSizex;
     int iSizey;
     sf::Vector2f vPos;
-    sf::Color Color;
+    sf::Color color;
     std::string sFunction;
     std::string sButtonText;
     std::string sForwardText;
-    int TextSize;
-    sf::Color TextColor;
+    int textSize;
+    sf::Color textColor;
     int id;
 
-    void DrawButton();
+    void draw();
 
-    squarebutton();
+    SquareButton();
 };
 
-extern std::vector<button> vButtonList;
-extern std::vector<squarebutton> vSquareButtonList;
+extern std::vector<Button> vButtonList;
+extern std::vector<SquareButton> vSquareButtonList;
 
 class Buttons
 {
 public:
-    void ButtonPressed();
+    void pressed();
 };
 
 class SquareButtons
 {
 public:
-    void ButtonPressed();
+    void pressed();
 };
 
-int CreateButton(sf::Vector2f vPos, int iSize, sf::Color Color,
+int createButton(sf::Vector2f vPos, int iSize, sf::Color Color,
                  std::string Text = "");
 
-int CreateSquareButton(sf::Vector2f vPos, int iSizex, int iSizey,
+int createSquareButton(sf::Vector2f vPos, int iSizex, int iSizey,
                        sf::Color Color, std::string Text = "");
 
-bool ButtonClicked(int id);
+bool buttonClicked(int id);
 
-bool SquareButtonClicked(int id);
+bool squareButtonClicked(int id);
 
 class MenuPointerContainer
 {
@@ -81,10 +81,10 @@ public:
     Tile *pTile;
     MenuPointerContainer();
 };
-extern MenuPointerContainer MenuPtrCon;
+extern MenuPointerContainer menuPtrCon;
 
-void MenuPopUp();
+void menuPopUp();
 
-void RightMouseButtonContextMenu();
+void rightMouseButtonContextMenu();
 
 #endif // MENUS_H_INCLUDED

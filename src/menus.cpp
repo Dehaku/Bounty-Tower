@@ -12,20 +12,20 @@
 
 #include <iostream>
 
-std::vector<button> vButtonList;
-std::vector<squarebutton> vSquareButtonList;
-MenuPointerContainer MenuPtrCon;
+std::vector<Button> vButtonList;
+std::vector<SquareButton> vSquareButtonList;
+MenuPointerContainer menuPtrCon;
 
 using std::abs;
 
-void button::DrawButton()
+void Button::draw()
 {
-    if (BeenPressed == true)
+    if (beenPressed == true)
     {
         //Effectz.CreateCircle(vPos.x,vPos.y,iSize,sf::Color(Color.r/2,Color.g/2,Color.b/2),2,White);
         Effectz.CreateSquare(vPos.x - iSize, vPos.y - (iSize / 1.5),
                              vPos.x + iSize, vPos.y + (iSize / 1.5),
-                             sf::Color(Color.r / 2, Color.g / 2, Color.b / 2),
+                             sf::Color(color.r / 2, color.g / 2, color.b / 2),
                              2, sf::Color::White);
     }
     else if (math::closeish(gvars::MousePos.x, gvars::MousePos.y, vPos.x,
@@ -33,35 +33,35 @@ void button::DrawButton()
     {
         //Effectz.CreateCircle(vPos.x,vPos.y,iSize,Color,2,White);
         Effectz.CreateSquare(vPos.x - iSize, vPos.y - (iSize / 1.5),
-                             vPos.x + iSize, vPos.y + (iSize / 1.5), Color, 2,
+                             vPos.x + iSize, vPos.y + (iSize / 1.5), color, 2,
                              sf::Color::White);
     }
     else
     {
         //Effectz.CreateCircle(vPos.x,vPos.y,iSize,Color,1,Black);
         Effectz.CreateSquare(vPos.x - iSize, vPos.y - (iSize / 1.5),
-                             vPos.x + iSize, vPos.y + (iSize / 1.5), Color, 2,
+                             vPos.x + iSize, vPos.y + (iSize / 1.5), color, 2,
                              sf::Color::Black);
     }
-    cText.CreateText(vPos.x + 10, vPos.y - (TextSize / 2), TextSize, TextColor,
+    cText.CreateText(vPos.x + 10, vPos.y - (textSize / 2), textSize, textColor,
                      sForwardText);
     Effectz.DrawEffects();
 }
 
-button::button() : iSize{}, TextSize{}
+Button::Button() : iSize{}, textSize{}
 {
-    BeenPressed = false;
+    beenPressed = false;
     id = gvars::glbbtn++;
 }
 
-void squarebutton::DrawButton()
+void SquareButton::draw()
 {
-    if (BeenPressed == true)
+    if (beenPressed == true)
     {
         //Effectz.CreateCircle(vPos.x,vPos.y,iSize,sf::Color(Color.r/2,Color.g/2,Color.b/2),2,White);
         Effectz.CreateSquare(vPos.x - iSizex, vPos.y - iSizey, vPos.x + iSizex,
                              vPos.y + iSizey,
-                             sf::Color(Color.r / 2, Color.g / 2, Color.b / 2),
+                             sf::Color(color.r / 2, color.g / 2, color.b / 2),
                              2, sf::Color::White);
     }
     else if (AABB(gvars::MousePos, vPos.x - iSizex, vPos.x + iSizex,
@@ -69,7 +69,7 @@ void squarebutton::DrawButton()
     {
         //Effectz.CreateCircle(vPos.x,vPos.y,iSize,Color,2,White);
         Effectz.CreateSquare(vPos.x - iSizex, vPos.y - iSizey, vPos.x + iSizex,
-                             vPos.y + iSizey, Color, 2, sf::Color::White);
+                             vPos.y + iSizey, color, 2, sf::Color::White);
         if (gvars::MouseStagnation > 10 && sButtonText.length() != 0)
         {
             Effectz.CreateSquare(gvars::MousePos.x + 10, gvars::MousePos.y - 6,
@@ -77,28 +77,28 @@ void squarebutton::DrawButton()
                                  gvars::MousePos.y + 6, sf::Color::Black, 1,
                                  sf::Color(175, 175, 0));
             cText.CreateText(gvars::MousePos.x + 12, gvars::MousePos.y - 6, 11,
-                             TextColor, sButtonText);
+                             textColor, sButtonText);
         }
     }
     else
     {
         //Effectz.CreateCircle(vPos.x,vPos.y,iSize,Color,1,Black);
         Effectz.CreateSquare(vPos.x - iSizex, vPos.y - iSizey, vPos.x + iSizex,
-                             vPos.y + iSizey, Color, 2, sf::Color::Black);
+                             vPos.y + iSizey, color, 2, sf::Color::Black);
     }
-    cText.CreateText(vPos.x + 10, vPos.y - (TextSize / 2), TextSize, TextColor,
+    cText.CreateText(vPos.x + 10, vPos.y - (textSize / 2), textSize, textColor,
                      sForwardText);
     Effectz.DrawEffects();
 }
 
-squarebutton::squarebutton() : iSizex{}, iSizey{}, TextSize{}
+SquareButton::SquareButton() : iSizex{}, iSizey{}, textSize{}
 {
-    BeenPressed = false;
-    TextColor = sf::Color(175, 175, 0);
+    beenPressed = false;
+    textColor = sf::Color(175, 175, 0);
     id = gvars::glbbtn++;
 }
 
-void Buttons::ButtonPressed()
+void Buttons::pressed()
 {
     for (auto const &button : vButtonList)
     {
@@ -110,7 +110,7 @@ void Buttons::ButtonPressed()
     }
 }
 
-void SquareButtons::ButtonPressed()
+void SquareButtons::pressed()
 {
     for (auto const &button : vSquareButtonList)
     {
@@ -124,32 +124,32 @@ void SquareButtons::ButtonPressed()
     }
 }
 
-int CreateButton(sf::Vector2f vPos, int iSize, sf::Color Color,
+int createButton(sf::Vector2f vPos, int iSize, sf::Color Color,
                  std::string Text)
 {
-    button var;
+    Button var;
     var.vPos = vPos;
     var.iSize = iSize;
-    var.Color = Color;
+    var.color = Color;
     var.sButtonText = Text;
     vButtonList.push_back(var);
     return var.id;
 }
 
-int CreateSquareButton(sf::Vector2f vPos, int iSizex, int iSizey,
+int createSquareButton(sf::Vector2f vPos, int iSizex, int iSizey,
                        sf::Color Color, std::string Text)
 {
-    squarebutton var;
+    SquareButton var;
     var.vPos = vPos;
     var.iSizex = iSizex;
     var.iSizey = iSizey;
-    var.Color = Color;
+    var.color = Color;
     var.sButtonText = Text;
     vSquareButtonList.push_back(var);
     return var.id;
 }
 
-bool ButtonClicked(int id)
+bool buttonClicked(int id)
 {
     for (auto &button : vButtonList)
     {
@@ -159,7 +159,7 @@ bool ButtonClicked(int id)
                                button.vPos.x, button.vPos.y) < button.iSize &&
                 (Key.LMBTime == 1 || Key.LMBTime > 20))
             {
-                button.BeenPressed = true;
+                button.beenPressed = true;
                 std::cout << "Pressed! \n";
                 gvars::ButtonClicked = true;
                 return true;
@@ -169,7 +169,7 @@ bool ButtonClicked(int id)
     return false;
 }
 
-bool SquareButtonClicked(int id)
+bool squareButtonClicked(int id)
 {
     for (auto &button : vSquareButtonList)
     {
@@ -181,7 +181,7 @@ bool SquareButtonClicked(int id)
                      button.vPos.y + button.iSizey) &&
                 (Key.LMBTime == 1 || Key.LMBTime > 20))
             {
-                button.BeenPressed = true;
+                button.beenPressed = true;
                 std::cout << "Pressed! \n";
                 gvars::ButtonClicked = true;
                 gvars::ButtonClickedTime = 3;
@@ -201,7 +201,7 @@ MenuPointerContainer::MenuPointerContainer()
 
 // TODO: Add functionality to allow you to press 1-9
 // to activate the menu buttons.
-void MenuPopUp()
+void menuPopUp()
 {
 
     if (GC.MenuPos.x == -10000)
@@ -242,11 +242,11 @@ void MenuPopUp()
                     sf::Color::Cyan);
                 cText.CreateText(GC.MenuPos.x + 2, GC.MenuPos.y + (iY * 13), 12,
                                  sf::Color::White, "Orbital Drop - Missle");
-                int Butt = CreateSquareButton(
+                int Butt = createSquareButton(
                     math::Vec2f(GC.MenuPos.x + BRD,
                                 (GC.MenuPos.y + (iY * 13)) + MBD),
                     BS, BSY, ButCol, "Strikes the location!");
-                if (SquareButtonClicked(Butt) || Key.num1Time == 1)
+                if (squareButtonClicked(Butt) || Key.num1Time == 1)
                 {
                     Effectz.CreateSquare(GC.MenuPos.x - 10, GC.MenuPos.y - 2,
                                          GC.MenuPos.x + 10, GC.MenuPos.y + 2,
@@ -299,11 +299,11 @@ void MenuPopUp()
                     sf::Color::Cyan);
                 cText.CreateText(GC.MenuPos.x + 2, GC.MenuPos.y + (iY * 13), 12,
                                  sf::Color::White, "Build - Wall");
-                int Butt = CreateSquareButton(
+                int Butt = createSquareButton(
                     math::Vec2f(GC.MenuPos.x + BRD,
                                 (GC.MenuPos.y + (iY * 13)) + MBD),
                     BS, BSY, ButCol, "Makes a Wall!");
-                if (SquareButtonClicked(Butt) || Key.num1Time == 1)
+                if (squareButtonClicked(Butt) || Key.num1Time == 1)
                 {
                     RMBMenuTile(GC.MenuPos);
                 }
@@ -317,11 +317,11 @@ void MenuPopUp()
                     sf::Color::Cyan);
                 cText.CreateText(GC.MenuPos.x + 2, GC.MenuPos.y + (iY * 13), 12,
                                  sf::Color::White, "Dig - Natural Wall");
-                int Butt = CreateSquareButton(
+                int Butt = createSquareButton(
                     math::Vec2f(GC.MenuPos.x + BRD,
                                 (GC.MenuPos.y + (iY * 13)) + MBD),
                     BS, BSY, ButCol, "Digs out a natural wall.");
-                if (SquareButtonClicked(Butt) || Key.num1Time == 1)
+                if (squareButtonClicked(Butt) || Key.num1Time == 1)
                 {
                     DigWall(GC.MenuPos);
                 }
@@ -360,12 +360,12 @@ void MenuPopUp()
                     sf::Color::Cyan);
                 cText.CreateText(GC.MenuPos.x + 2, GC.MenuPos.y + (iY * 13), 12,
                                  sf::Color::White, "Build");
-                int Butt = CreateSquareButton(
+                int Butt = createSquareButton(
                     math::Vec2f(GC.MenuPos.x + BRD,
                                 (GC.MenuPos.y + (iY * 13)) + MBD),
                     BS, BSY, ButCol,
                     "This opens the menu to build various structures!");
-                if (SquareButtonClicked(Butt) || Key.num1Time == 1)
+                if (squareButtonClicked(Butt) || Key.num1Time == 1)
                 {
                     GC.MenuType = "BuildStructure";
                     //fSleep(0.2);
@@ -382,12 +382,12 @@ void MenuPopUp()
                     sf::Color::Cyan);
                 cText.CreateText(GC.MenuPos.x + 2, GC.MenuPos.y + (iY * 13), 12,
                                  sf::Color::White, "Orbital Drop");
-                int Butt = CreateSquareButton(
+                int Butt = createSquareButton(
                     math::Vec2f(GC.MenuPos.x + BRD,
                                 (GC.MenuPos.y + (iY * 13)) + MBD),
                     BS, BSY, ButCol, "Causes an orbital ship to release "
                                      "specific cargo at target location.");
-                if (SquareButtonClicked(Butt) || Key.num2Time == 1)
+                if (squareButtonClicked(Butt) || Key.num2Time == 1)
                 {
 
                     GC.MenuType = "Orbital Drop";
@@ -406,11 +406,11 @@ void MenuPopUp()
                     sf::Color::Cyan);
                 cText.CreateText(GC.MenuPos.x + 2, GC.MenuPos.y + (iY * 13), 12,
                                  sf::Color::White, "Dig");
-                int Butt = CreateSquareButton(
+                int Butt = createSquareButton(
                     math::Vec2f(GC.MenuPos.x + BRD,
                                 (GC.MenuPos.y + (iY * 13)) + MBD),
                     BS, BSY, ButCol, "Dig out the current wall tile");
-                if (SquareButtonClicked(Butt) || Key.num2Time == 1)
+                if (squareButtonClicked(Butt) || Key.num2Time == 1)
                 {
 
                     GC.MenuType = "Dig";
@@ -464,11 +464,11 @@ void MenuPopUp()
                                      12, sf::Color::White,
                                      GC.MenuPtrCon.pItem->name +
                                          " - xPickUpx, Cannot be picked up.");
-                int Butt = CreateSquareButton(
+                int Butt = createSquareButton(
                     math::Vec2f(GC.MenuPos.x + BRD,
                                 (GC.MenuPos.y + (iY * 13)) + MBD),
                     BS, BSY, ButCol, "Makes someone pickup this item.");
-                if ((SquareButtonClicked(Butt) &&
+                if ((squareButtonClicked(Butt) &&
                      GC.MenuPtrCon.pItem->Pickupable) ||
                     (Key.num1Time == 1 && GC.MenuPtrCon.pItem->Pickupable))
                 {
@@ -505,12 +505,12 @@ void MenuPopUp()
                         sf::Color::White,
                         GC.MenuPtrCon.pItem->name +
                             " - xChopDownx, Cannot be chopped up.");
-                int Butt = CreateSquareButton(
+                int Butt = createSquareButton(
                     math::Vec2f(GC.MenuPos.x + BRD,
                                 (GC.MenuPos.y + (iY * 13)) + MBD),
                     BS, BSY, ButCol,
                     "Makes someone seek and destroy this item.");
-                if ((SquareButtonClicked(Butt) &&
+                if ((squareButtonClicked(Butt) &&
                      !GC.MenuPtrCon.pItem->Pickupable) ||
                     (Key.num1Time == 1 && !GC.MenuPtrCon.pItem->Pickupable))
                 {
@@ -559,11 +559,11 @@ void MenuPopUp()
                                sf::Color::Cyan);
             cText.CreateText(GC.MenuPos.x + 2, GC.MenuPos.y + (iY * 13), 12,
                              sf::Color::White, GC.MenuPtrCon.pVecItem[i]->name);
-            int Butt = CreateSquareButton(
+            int Butt = createSquareButton(
                 math::Vec2f(GC.MenuPos.x + BRD,
                             (GC.MenuPos.y + (iY * 13)) + MBD),
                 BS, BSY, ButCol, "Strikes the location!");
-            if (SquareButtonClicked(Butt))
+            if (squareButtonClicked(Butt))
             {
 
                 GC.MenuType = "ItemContext";
@@ -581,11 +581,11 @@ void MenuPopUp()
                 cText.CreateText(GC.MenuPos.x + 2, GC.MenuPos.y + (iY * 13), 12,
                                  sf::Color::White,
                                  GC.MenuPtrCon.pVecItem[0]->name);
-                int Butt = CreateSquareButton(
+                int Butt = createSquareButton(
                     math::Vec2f(GC.MenuPos.x + BRD,
                                 (GC.MenuPos.y + (iY * 13)) + MBD),
                     BS, BSY, ButCol, "Strikes the location!");
-                if (SquareButtonClicked(Butt) || Key.num1Time == 1)
+                if (squareButtonClicked(Butt) || Key.num1Time == 1)
                 {
 
                     GC.MenuPos = sf::Vector2f(-10000, -10000);
@@ -627,11 +627,11 @@ void MenuPopUp()
                     sf::Color::Cyan);
                 cText.CreateText(GC.MenuPos.x + 2, GC.MenuPos.y + (iY * 13), 12,
                                  sf::Color::White, "Close Menu");
-                int Butt = CreateSquareButton(
+                int Butt = createSquareButton(
                     math::Vec2f(GC.MenuPos.x + BRD,
                                 (GC.MenuPos.y + (iY * 13)) + MBD),
                     BS, BSY, ButCol, "Close Menu");
-                if (SquareButtonClicked(Butt) || Key.num1Time == 1)
+                if (squareButtonClicked(Butt) || Key.num1Time == 1)
                 {
                     GC.MenuPos = sf::Vector2f(-10000, -10000);
                     GC.MenuType = "NULL";
@@ -648,11 +648,11 @@ void MenuPopUp()
                     sf::Color::Cyan);
                 cText.CreateText(GC.MenuPos.x + 2, GC.MenuPos.y + (iY * 13), 12,
                                  sf::Color::White, "Missile Strike");
-                int Butt = CreateSquareButton(
+                int Butt = createSquareButton(
                     math::Vec2f(GC.MenuPos.x + BRD,
                                 (GC.MenuPos.y + (iY * 13)) + MBD),
                     BS, BSY, ButCol, "Missile Strike");
-                if (SquareButtonClicked(Butt) || Key.num2Time == 1)
+                if (squareButtonClicked(Butt) || Key.num2Time == 1)
                 {
 
                     Effectz.CreateSquare(GC.MenuPos.x - 10, GC.MenuPos.y - 2,
@@ -687,11 +687,11 @@ void MenuPopUp()
                     sf::Color::Cyan);
                 cText.CreateText(GC.MenuPos.x + 2, GC.MenuPos.y + (iY * 13), 12,
                                  sf::Color::White, "Shift Wall/Stone");
-                int Butt = CreateSquareButton(
+                int Butt = createSquareButton(
                     math::Vec2f(GC.MenuPos.x + BRD,
                                 (GC.MenuPos.y + (iY * 13)) + MBD),
                     BS, BSY, ButCol);
-                if (SquareButtonClicked(Butt) || Key.num3Time == 1)
+                if (squareButtonClicked(Butt) || Key.num3Time == 1)
                 {
 
                     if (Tiles[abs_to_index(GC.MenuPos.x / GridSize)]
@@ -730,11 +730,11 @@ void MenuPopUp()
                     sf::Color::Cyan);
                 cText.CreateText(GC.MenuPos.x + 2, GC.MenuPos.y + (iY * 13), 12,
                                  sf::Color::White, "Spawn Zombie Horde");
-                int Butt = CreateSquareButton(
+                int Butt = createSquareButton(
                     math::Vec2f(GC.MenuPos.x + BRD,
                                 (GC.MenuPos.y + (iY * 13)) + MBD),
                     BS, BSY, ButCol);
-                if (SquareButtonClicked(Butt) || Key.num4Time == 1)
+                if (squareButtonClicked(Butt) || Key.num4Time == 1)
                 {
 
                     GC.ZombieSwarmLocal();
@@ -757,11 +757,11 @@ void MenuPopUp()
                     sf::Color::Cyan);
                 cText.CreateText(GC.MenuPos.x, GC.MenuPos.y + (iY * 13), 12,
                                  sf::Color::White, "Print NPC's ConsoleInfo");
-                int Butt = CreateSquareButton(
+                int Butt = createSquareButton(
                     math::Vec2f(GC.MenuPos.x + BRD,
                                 (GC.MenuPos.y + (iY * 13)) + MBD),
                     BS, BSY, ButCol);
-                if (SquareButtonClicked(Butt) || Key.num5Time == 1)
+                if (squareButtonClicked(Butt) || Key.num5Time == 1)
                 {
 
                     std::vector<NPC>::iterator zit;
@@ -792,12 +792,12 @@ void MenuPopUp()
                 cText.CreateText(GC.MenuPos.x, GC.MenuPos.y + (iY * 13), 12,
                                  sf::Color::White,
                                  "Give Everyone Zombification");
-                int Butt = CreateSquareButton(
+                int Butt = createSquareButton(
                     math::Vec2f(GC.MenuPos.x + BRD,
                                 (GC.MenuPos.y + (iY * 13)) + MBD),
                     BS, BSY, ButCol,
                     "You horrible monster, Why would you do this?!");
-                if (SquareButtonClicked(Butt) || Key.num6Time == 1)
+                if (squareButtonClicked(Butt) || Key.num6Time == 1)
                 {
 
                     std::vector<NPC>::iterator zit;
@@ -824,11 +824,11 @@ void MenuPopUp()
                     sf::Color::Cyan);
                 cText.CreateText(GC.MenuPos.x, GC.MenuPos.y + (iY * 13), 12,
                                  sf::Color::White, "Delete all critters");
-                int Butt = CreateSquareButton(
+                int Butt = createSquareButton(
                     math::Vec2f(GC.MenuPos.x + BRD,
                                 (GC.MenuPos.y + (iY * 13)) + MBD),
                     BS, BSY, ButCol);
-                if (SquareButtonClicked(Butt) || Key.num7Time == 1)
+                if (squareButtonClicked(Butt) || Key.num7Time == 1)
                 {
                     for (size_t i = 0; i != npclist.size(); i++)
                     {
@@ -847,11 +847,11 @@ void MenuPopUp()
                     sf::Color::Cyan);
                 cText.CreateText(GC.MenuPos.x, GC.MenuPos.y + (iY * 13), 12,
                                  sf::Color::White, "Starve all critters");
-                int Butt = CreateSquareButton(
+                int Butt = createSquareButton(
                     math::Vec2f(GC.MenuPos.x + BRD,
                                 (GC.MenuPos.y + (iY * 13)) + MBD),
                     BS, BSY, ButCol);
-                if (SquareButtonClicked(Butt) || Key.num8Time == 1)
+                if (squareButtonClicked(Butt) || Key.num8Time == 1)
                 {
                     for (size_t i = 0; i != npclist.size(); i++)
                     {
@@ -880,10 +880,10 @@ void MenuPopUp()
                                sf::Color::Black, 1, sf::Color::Yellow);
             cText.CreateText(GC.MenuPos.x, GC.MenuPos.y + (iY * 11), 11,
                              sf::Color::Cyan, elem.name);
-            int Butt = CreateButton(
+            int Butt = createButton(
                 math::Vec2f(GC.MenuPos.x + 90, (GC.MenuPos.y + (iY * 11)) + 5),
                 5, sf::Color::Red);
-            if (ButtonClicked(Butt))
+            if (buttonClicked(Butt))
             {
                 SpawnItem(elem.name, GC.MenuPos.x, GC.MenuPos.y);
                 fSleep(0.2);
@@ -908,10 +908,10 @@ void MenuPopUp()
                                sf::Color::Black, 1, sf::Color::Yellow);
             cText.CreateText(GC.MenuPos.x, GC.MenuPos.y + (iY * 11), 11,
                              sf::Color::Cyan, elem.name);
-            int Butt = CreateButton(
+            int Butt = createButton(
                 math::Vec2f(GC.MenuPos.x + 90, (GC.MenuPos.y + (iY * 11)) + 5),
                 5, sf::Color::Red);
-            if (ButtonClicked(Butt))
+            if (buttonClicked(Butt))
             {
                 SpawnCritter(elem.name, GC.MenuPos.x, GC.MenuPos.y);
                 fSleep(0.2);
@@ -942,10 +942,10 @@ void MenuPopUp()
                 cText.CreateText(GC.MenuPos.x, GC.MenuPos.y + (iY * 11), 11,
                                  sf::Color::Cyan, "Close Menu");
                 int Butt =
-                    CreateButton(math::Vec2f(GC.MenuPos.x + 90,
+                    createButton(math::Vec2f(GC.MenuPos.x + 90,
                                              (GC.MenuPos.y + (iY * 11)) + 5),
                                  5, sf::Color::Red);
-                if (ButtonClicked(Butt))
+                if (buttonClicked(Butt))
                 {
 
                     std::list<item>::iterator Item;
@@ -970,10 +970,10 @@ void MenuPopUp()
                 cText.CreateText(GC.MenuPos.x, GC.MenuPos.y + (iY * 11), 11,
                                  sf::Color::Cyan, "PickUp");
                 int Butt =
-                    CreateButton(math::Vec2f(GC.MenuPos.x + 90,
+                    createButton(math::Vec2f(GC.MenuPos.x + 90,
                                              (GC.MenuPos.y + (iY * 11)) + 5),
                                  5, sf::Color::Red);
-                if (ButtonClicked(Butt))
+                if (buttonClicked(Butt))
                 {
 
                     std::list<item>::iterator Item;
@@ -1017,7 +1017,7 @@ void MenuPopUp()
     }
 }
 
-void RightMouseButtonContextMenu()
+void rightMouseButtonContextMenu()
 {
     if (Key.RMBTime ==
         1) // This is the RightMouseButton's context menu for Tiles/Critters/Items, This will probably be rather robust
@@ -1030,7 +1030,7 @@ void RightMouseButtonContextMenu()
                                npclist[i].ypos) <= npclist[i].size)
             {
                 GC.MenuType = "CritterRMB";
-                MenuPopUp();
+                menuPopUp();
                 return;
             }
         }
@@ -1046,11 +1046,11 @@ void RightMouseButtonContextMenu()
         }
         if (GC.MenuPtrCon.pVecItem.size() != 0)
         {
-            MenuPopUp();
+            menuPopUp();
             return;
         }
 
         GC.MenuType = "BlankRMB";
-        MenuPopUp();
+        menuPopUp();
     }
 }
