@@ -117,7 +117,7 @@ Item *GetGlobalItem(std::string strtype);
 
 extern std::list<Item> worlditems;
 
-class cItemManager
+class ItemManager
 {
 public:
     std::vector<Item> GlobalItem;
@@ -128,7 +128,7 @@ public:
     void InitializeItems();
 };
 
-extern cItemManager itemmanager;
+extern ItemManager itemmanager;
 
 void RemoveItems(std::list<Item> &Items);
 

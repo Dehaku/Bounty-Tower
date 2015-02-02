@@ -12,7 +12,7 @@
 extern sf::RenderWindow window;
 
 std::list<Item> worlditems;
-cItemManager itemmanager;
+ItemManager itemmanager;
 
 void RemoveItems(std::list<Item> &Items)
 {
@@ -552,7 +552,7 @@ Item::Item()
     Sleepable = false;
 }
 
-void cItemManager::AddItems()
+void ItemManager::AddItems()
 {
     for (auto const &item : AddedItems)
     {
@@ -561,7 +561,7 @@ void cItemManager::AddItems()
     AddedItems.clear();
 }
 
-void cItemManager::InitializeItems()
+void ItemManager::InitializeItems()
 {
     // TODO: Have this read from an Items folder, and read from
     // all .txt files in it, Allowing greater compability between mods.
