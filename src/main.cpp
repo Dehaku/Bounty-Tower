@@ -1018,7 +1018,6 @@ void critterBrain(std::vector<NPC> &NPCs)
         if ((*HighestDesire).DesireType == "SelfDefense")
         {
             (*HighestDesire).Potency = 0;
-            std::cout << (*HighestDesire).Potency << std::endl;
             InComplete = true;
         }
         if ((*HighestDesire).DesireType == "Sustainence")
@@ -1027,7 +1026,7 @@ void critterBrain(std::vector<NPC> &NPCs)
             for (auto &Inv : npc.inventory)
                 if (Inv.massFlesh > 0)
                 {
-                    npc.Target.item = &Inv;
+                    //npc.Target.item = &Inv;
                     InInv = true;
                     break;
                 }
@@ -1058,6 +1057,21 @@ void critterBrain(std::vector<NPC> &NPCs)
                         }
                     }
                 }
+                if(npc.Target.item != nullptr)
+                {
+                    sf::Vector2f ItemPos( (*npc.Target.item).xpos,(*npc.Target.item).ypos );
+                    npc.DirMove(sf::Vector2f((*npc.Target.item).xpos,(*npc.Target.item).ypos));
+
+                    if(math::closeish(npc.xpos,npc.ypos,ItemPos.x,ItemPos.y) <= npc.size*2)
+                    {
+                        Item *Tar = npc.Target.item;
+                        npc.Target.item = nullptr;
+                        npc.inventory.push_back((*Tar));
+                        (*Tar).toDelete = true;
+                    }
+
+                }
+
             }
 
             if (npc.Target.item != nullptr && InInv == false)
@@ -1068,13 +1082,11 @@ void critterBrain(std::vector<NPC> &NPCs)
             }
         }
 
-        // Incase the highest desire isn't completable, Go through again for the next highest desire.
-        for (auto &i : Desires)
-        {
-            std::cout << npc.name << ":" << i.DesireType << ": " << i.Potency
-                      << std::endl;
-        }
 
+
+
+
+        // Incase the highest desire isn't completable, Go through again for the next highest desire.
         if (InComplete)
             goto ReDesire;
 
