@@ -989,7 +989,7 @@ void critterBrain(std::vector<NPC> &NPCs)
 
         // Finding the highest Desire
         bool InComplete;
-        Desire *HighestDesire;
+        Desire *HighestDesire = nullptr;
         bool FirstIter = true;
 
     ReDesire:
@@ -1004,6 +1004,11 @@ void critterBrain(std::vector<NPC> &NPCs)
             }
             if (i.Potency > (*HighestDesire).Potency)
                 HighestDesire = &i;
+        }
+
+        if (HighestDesire == nullptr)
+        {
+            throw std::runtime_error("critterBrain: Something went wrong!");
         }
 
         // Acting on Highest Desire
