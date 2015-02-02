@@ -16,7 +16,7 @@
 
 using std::abs;
 
-item *ListGet(std::list<item> &List, int Position)
+Item *ListGet(std::list<Item> &List, int Position)
 {
     auto i = List.begin();
     std::advance(i, Position);
@@ -88,7 +88,7 @@ int randzorz(int min, int max)
     return num;
 }
 
-void UnpointItems(std::list<item> &Items)
+void UnpointItems(std::list<Item> &Items)
 {
 
     //for(int i = 0; i != Items.size(); i++)
@@ -145,7 +145,7 @@ void UnpointItems(std::list<item> &Items)
 bool RemoveItem(int Id)
 {
     int TempInt = 0;
-    std::list<item>::iterator location;
+    std::list<Item>::iterator location;
     for (auto it = worlditems.begin(); it != worlditems.end(); ++it)
     {
         if (it->id == Id)
@@ -332,7 +332,7 @@ std::vector<int> NnGTrace(int xa, int ya, int xb, int yb, int id,
                 Count++;
             }
         }
-        std::list<item>::iterator Me;
+        std::list<Item>::iterator Me;
 
         for (Me = worlditems.begin(); Me != worlditems.end(); ++Me)
         {
@@ -706,7 +706,7 @@ void critterBrain(std::vector<NPC> &NPCs)
 
                 float PartNumber = 0;
                 std::string PartString = "";
-                item *PartItem;
+                Item *PartItem;
 
                 std::string CurrentPart =
                     StringFindString(WorkingLine, "[Name:");
@@ -1206,7 +1206,7 @@ void updateNpc()
 
                 float PartNumber = 0;
                 std::string PartString = "";
-                item *PartItem;
+                Item *PartItem;
 
                 std::string CurrentPart =
                     StringFindString(WorkingLine, "[Name:");
@@ -1625,12 +1625,12 @@ void updateNpc()
                     std::cout << "Pre Mel Ran \n";
                 }
                 bool bMel = npc.HasItemType(1);
-                item Mel;
+                Item Mel;
                 if (bMel)
                 {
                     Mel = *npc.GetItemType(1);
                 }
-                item Ran;
+                Item Ran;
                 bool bRan = npc.HasItemType(2);
                 if (bRan == true)
                 {
@@ -1933,7 +1933,7 @@ void updateNpc()
                 }
                 if (npc.target == "Food")
                 { // Compress this later by simply directly linking the target towards the search, Probably need a bool for Item or NPC to simplfy it.
-                    item *Item = FindClosestItemPtr(npc.xpos, npc.ypos, "Food");
+                    Item *Item = FindClosestItemPtr(npc.xpos, npc.ypos, "Food");
                     if (Item != nullptr)
                     {
                         if (Item->MassFlesh > 0)
@@ -2068,9 +2068,9 @@ void updateNpc()
                                     debug("Starting Build");
 
                                     //if(GetItemPtrfromVector(worlditems, "Wood") != NULL) item WorkLoad = *GetItemPtrfromVector(worlditems, "Wood");
-                                    item *InvWood = GetItemPtrfromVector(
+                                    Item *InvWood = GetItemPtrfromVector(
                                         npc.inventory, "Wood");
-                                    item *WldWood = GetItemPtrfromVector(
+                                    Item *WldWood = GetItemPtrfromVector(
                                         worlditems, "Wood");
 
                                     if (InvWood != nullptr)
@@ -2249,7 +2249,7 @@ void updateNpc()
                                         //Deleting = true;
                                         //npc.inventory.push_back(*UniFact[0].JobList[i].pItem);
                                         //FUCKNUTS start here, Just made the plank, Make the tree give the planks, MmkAY?!
-                                        item WoodStuffs =
+                                        Item WoodStuffs =
                                             *GetGlobalItem("Wood");
 
                                         debug("Post WoodStuffs");
@@ -2350,7 +2350,7 @@ void updateNpc()
                                                 3, 8); // Throw away random
                                             for (int z = 0; z != TAR; z++)
                                             {
-                                                item StoneStuffs =
+                                                Item StoneStuffs =
                                                     *GetGlobalItem("Rock");
 
                                                 StoneStuffs.xpos =
@@ -2526,7 +2526,7 @@ void updateNpc()
                                 npc.TentArm2.x = npclist.at(numba).xpos;
                                 npc.TentArm2.y = npclist.at(numba).ypos;
                                 //BLARGGITY
-                                item Blood;
+                                Item Blood;
                                 Blood.amount = zDamage;
                                 Blood.name = "Blood";
                                 Blood.InsidePart = "LowerTorso";

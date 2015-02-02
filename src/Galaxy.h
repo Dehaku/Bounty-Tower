@@ -31,11 +31,11 @@ public:
     class MenuPointerContainer
     {
     public:
-        item *pItem;
+        Item *pItem;
         NPC *pNPC;
         Tile *pTile;
 
-        std::vector<item *> pVecItem;
+        std::vector<Item *> pVecItem;
         std::vector<NPC *> pVecNPC;
         std::vector<Tile *> pVecTile;
 

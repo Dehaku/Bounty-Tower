@@ -11,10 +11,10 @@
 
 extern sf::RenderWindow window;
 
-std::list<item> worlditems;
+std::list<Item> worlditems;
 cItemManager itemmanager;
 
-void RemoveItems(std::list<item> &Items)
+void RemoveItems(std::list<Item> &Items)
 {
     bool Done = false;
     while (Done == false)
@@ -32,7 +32,7 @@ void RemoveItems(std::list<item> &Items)
     }
 }
 
-void zSaveItem(int /*planet*/, sf::Vector2i Region, item &object)
+void zSaveItem(int /*planet*/, sf::Vector2i Region, Item &object)
 {
 
     using namespace std;
@@ -88,7 +88,7 @@ void zSaveItem(int /*planet*/, sf::Vector2i Region, item &object)
     }
 }
 
-void SaveItem(int planet, sf::Vector2i Region, item &Critter)
+void SaveItem(int planet, sf::Vector2i Region, Item &Critter)
 {
     // I already did all the work once, Imma be lazy for some time.
     using namespace std;
@@ -154,7 +154,7 @@ std::string LoadItems(sf::Vector2i WorldPos, std::string Direction, int planet)
         {
             std::string line;
             getline(Input, line);
-            item Critter;
+            Item Critter;
 
             Critter.name = "Debuggery";
 
@@ -263,7 +263,7 @@ void RefreshImages()
     Con("Done");
 }
 
-item *GetItemPtrfromVector(std::list<item> &Vector, std::string Name)
+Item *GetItemPtrfromVector(std::list<Item> &Vector, std::string Name)
 {
     debug("Doing GetItmPtr");
     //*for(int i = 0; i != Vector.size(); i++)
@@ -280,7 +280,7 @@ item *GetItemPtrfromVector(std::list<item> &Vector, std::string Name)
     return nullptr;
 }
 
-item *GetItemPtrfromVector2(std::list<item> &Vector, std::string Name)
+Item *GetItemPtrfromVector2(std::list<Item> &Vector, std::string Name)
 {
     debug("Doing GetItmPtr");
     //for(int i = 0; i != Vector.size(); i++)
@@ -297,7 +297,7 @@ item *GetItemPtrfromVector2(std::list<item> &Vector, std::string Name)
     return nullptr;
 }
 
-item *GetItemPtrfromVectorVarSearch(std::list<item> &Vector,
+Item *GetItemPtrfromVectorVarSearch(std::list<Item> &Vector,
                                     std::string VarSearch, float AtLeast)
 {
     debug("Doing GetItmPtrVarSearch");
@@ -336,7 +336,7 @@ item *GetItemPtrfromVectorVarSearch(std::list<item> &Vector,
     return nullptr;
 }
 
-item *FindClosestItemPtr(int Orix, int Oriy, std::string TarItem, int /*Gxpos*/,
+Item *FindClosestItemPtr(int Orix, int Oriy, std::string TarItem, int /*Gxpos*/,
                          int /*Gypos*/, int /*Rxpos*/, int /*Rypos*/)
 {
     //std::vector<item>::iterator Items;
@@ -349,7 +349,7 @@ item *FindClosestItemPtr(int Orix, int Oriy, std::string TarItem, int /*Gxpos*/,
     int closy = -1000000;
     bool first = true;
 
-    item *Returns;
+    Item *Returns;
 
     for (auto i = worlditems.begin(); i != worlditems.end(); i++)
     {
@@ -386,17 +386,17 @@ item *FindClosestItemPtr(int Orix, int Oriy, std::string TarItem, int /*Gxpos*/,
         return nullptr;
 }
 
-void item::chargecell(int amount)
+void Item::chargecell(int amount)
 {
     cellcharge += amount;
 }
 
-void item::soulcell(int soultype)
+void Item::soulcell(int soultype)
 {
     chargecell(soultype * 10);
 }
 
-bool item::getid(int idz)
+bool Item::getid(int idz)
 {
     if (idz == id)
     {
@@ -408,7 +408,7 @@ bool item::getid(int idz)
     }
 }
 
-bool item::boolname(char *cakezebra)
+bool Item::boolname(char *cakezebra)
 {
     if (cakezebra == name)
     {
@@ -417,7 +417,7 @@ bool item::boolname(char *cakezebra)
     return false;
 }
 
-void item::printInfo()
+void Item::printInfo()
 {
 
     using namespace std;
@@ -448,14 +448,14 @@ void item::printInfo()
     }
 }
 
-void item::DrawImg()
+void Item::DrawImg()
 {
     img.setPosition(xpos, ypos);
     //img.setScale(globals::Scalex,globals::Scaley);
     window.draw(img);
 }
 
-void item::spawn(int /*gposx*/, int /*gposy*/, int /*rposx*/, int /*rposy*/,
+void Item::spawn(int /*gposx*/, int /*gposy*/, int /*rposx*/, int /*rposy*/,
                  int posx, int posy)
 {
     gxpos = 100;
@@ -466,7 +466,7 @@ void item::spawn(int /*gposx*/, int /*gposy*/, int /*rposx*/, int /*rposy*/,
     ypos = posy;
 }
 
-void item::PrintConsoleInfo()
+void Item::PrintConsoleInfo()
 {
     using namespace std;
     cout << "Name: " << name << endl;
@@ -478,7 +478,7 @@ void item::PrintConsoleInfo()
     cout << "Ypos: " << ypos << endl;
 }
 
-item::item()
+Item::Item()
     : cbaseid{}, range{}, xpos{}, ypos{}, zpos{}, rxpos{}, rypos{}, gxpos{},
       gypos{}, imgstrx{}, imgstry{}, imgendx{}, imgendy{}, IsWeapon{},
       tillrot{}, prodrate{}, prodratetimer{}, timerdecon{}, LiquidContainMax{},

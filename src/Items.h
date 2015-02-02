@@ -6,7 +6,7 @@
 #include <SFML/Graphics.hpp>
 
 class NPC;
-class item
+class Item
 {
 public:
     bool ToDelete;
@@ -110,22 +110,22 @@ public:
     void DrawImg();
     void spawn(int gposx, int gposy, int rposx, int rposy, int posx, int posy);
     void PrintConsoleInfo();
-    item();
+    Item();
 };
 
-class cItem : public item
+class cItem : public Item
 {
 };
 
 cItem *GetGlobalItem(std::string strtype);
 
-extern std::list<item> worlditems;
+extern std::list<Item> worlditems;
 
 class cItemManager
 {
 public:
     std::vector<cItem> GlobalItem;
-    std::vector<item> AddedItems;
+    std::vector<Item> AddedItems;
 
     void AddItems();
 
@@ -134,11 +134,11 @@ public:
 
 extern cItemManager itemmanager;
 
-void RemoveItems(std::list<item> &Items);
+void RemoveItems(std::list<Item> &Items);
 
-void zSaveItem(int planet, sf::Vector2i Region, item &object);
+void zSaveItem(int planet, sf::Vector2i Region, Item &object);
 
-void SaveItem(int planet, sf::Vector2i Region, item &Critter);
+void SaveItem(int planet, sf::Vector2i Region, Item &Critter);
 
 std::string LoadItems(sf::Vector2i WorldPos, std::string Direction,
                       int planet = 500);
@@ -147,14 +147,14 @@ void SpawnItem(std::string Object, int xpos, int ypos);
 
 void RefreshImages();
 
-item *GetItemPtrfromVector(std::list<item> &Vector, std::string Name);
+Item *GetItemPtrfromVector(std::list<Item> &Vector, std::string Name);
 
-item *GetItemPtrfromVector2(std::list<item> &Vector, std::string Name);
+Item *GetItemPtrfromVector2(std::list<Item> &Vector, std::string Name);
 
-item *GetItemPtrfromVectorVarSearch(std::list<item> &Vector,
+Item *GetItemPtrfromVectorVarSearch(std::list<Item> &Vector,
                                     std::string VarSearch, float AtLeast = 1);
 
-item *FindClosestItemPtr(int Orix, int Oriy, std::string TarItem, int Gxpos = 0,
+Item *FindClosestItemPtr(int Orix, int Oriy, std::string TarItem, int Gxpos = 0,
                          int Gypos = 0, int Rxpos = 0, int Rypos = 0);
 
 #endif // ITEMS_H_INCLUDED

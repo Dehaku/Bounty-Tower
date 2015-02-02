@@ -254,7 +254,7 @@ void menuPopUp()
                     effects.createSquare(GC.MenuPos.x - 2, GC.MenuPos.y - 10,
                                          GC.MenuPos.x + 2, GC.MenuPos.y + 10,
                                          sf::Color::Black);
-                    item Var;
+                    Item Var;
                     Var = *GetGlobalItem("Missile");
                     Var.TargetPos = sf::Vector2f(GC.MenuPos);
                     Var.xpos = GC.MenuPos.x - 200;
@@ -661,7 +661,7 @@ void menuPopUp()
                     effects.createSquare(GC.MenuPos.x - 2, GC.MenuPos.y - 10,
                                          GC.MenuPos.x + 2, GC.MenuPos.y + 10,
                                          sf::Color::Black);
-                    item Var;
+                    Item Var;
                     Var = *GetGlobalItem("Missile");
                     Var.TargetPos = sf::Vector2f(GC.MenuPos);
                     Var.xpos = GC.MenuPos.x - 200;
@@ -948,7 +948,7 @@ void menuPopUp()
                 if (buttonClicked(Butt))
                 {
 
-                    std::list<item>::iterator Item;
+                    std::list<Item>::iterator Item;
                     for (Item = worlditems.begin(); Item != worlditems.end();
                          Item++)
                     {
@@ -976,7 +976,7 @@ void menuPopUp()
                 if (buttonClicked(Butt))
                 {
 
-                    std::list<item>::iterator Item;
+                    std::list<Item>::iterator Item;
                     for (Item = worlditems.begin(); Item != worlditems.end();
                          Item++)
                     {

@@ -28,8 +28,8 @@ public:
     // TODO: Add racial defaults for attributes and skill growth,
     // Will allow interesting mechanics and fix spawning variety.
     sf::Sprite img;
-    std::list<item> inventory;
-    std::list<item> Equipped;
+    std::list<Item> inventory;
+    std::list<Item> Equipped;
     std::string bloodcontent;
     std::string tags;
     std::string Faction;
@@ -228,7 +228,7 @@ public:
     class TargetInfo
     {
     public:
-        item *Item;
+        Item *Item;
         NPC *npc;
         Tile *tile;
     };
@@ -245,7 +245,7 @@ public:
     void ReCreateSkills();
     void BlankSkills();
     bool HasWeapon(std::string weapon = "");
-    item *GetItemType(int type);
+    Item *GetItemType(int type);
     bool HasItemType(int type);
     void DrawImg();
     void Move(sf::Vector2f Tar);

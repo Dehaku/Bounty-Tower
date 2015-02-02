@@ -9,7 +9,7 @@
 
 using std::abs;
 
-void RMBMenuItem(item &pItem)
+void RMBMenuItem(Item &pItem)
 {
     /*
     std::cout << pItem.name << std::endl;

@@ -4,7 +4,7 @@
 #include "Items.h"
 #include "JobManager.h"
 
-void RMBMenuItem(item &pItem);
+void RMBMenuItem(Item &pItem);
 void DigWall(sf::Vector2f Pos);
 void RMBMenuTile(sf::Vector2f Pos);
 void DrawJobList(int DrawXPos, int DrawYPos);

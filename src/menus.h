@@ -76,7 +76,7 @@ bool squareButtonClicked(int id);
 class MenuPointerContainer
 {
 public:
-    item *pItem;
+    Item *pItem;
     NPC *pNPC;
     Tile *pTile;
     MenuPointerContainer();

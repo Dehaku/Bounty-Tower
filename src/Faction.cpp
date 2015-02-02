@@ -81,7 +81,7 @@ std::set<int> NPC::Melee(int /*min*/, int /*max*/, int range,
         effects.createLine(xpos, ypos, Xxx, Yyy, 2, sf::Color::Blue);
         Tar = NPCTrace(xpos, ypos, Xxx, Yyy, id, std::set<int>());
     }
-    std::list<item>::iterator Inv;
+    std::list<Item>::iterator Inv;
     for (Inv = inventory.begin(); Inv != inventory.end(); ++Inv)
     {
         if (Inv->name == "Sword")
@@ -545,7 +545,7 @@ bool NPC::HasWeapon(std::string weapon)
     return false;
 }
 
-item *NPC::GetItemType(int type)
+Item *NPC::GetItemType(int type)
 {
     //for(int i = 0; i < inventory.size(); i++)
     for (auto &elem : inventory)

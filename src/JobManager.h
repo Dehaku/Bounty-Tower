@@ -30,7 +30,7 @@ void RunItAll();
 class PointerContainer
 {
 public:
-    item *pItem;
+    Item *pItem;
     NPC *pNPC;
     Tile *pTile;
     PointerContainer();
@@ -44,7 +44,7 @@ public:
     float CompletionTimer;
     float CompletionProgress;
     std::string Type;
-    item *pItem;
+    Item *pItem;
     NPC *pWorker;
     //Tile * pTile;
     sf::Vector2i WorkPos;
