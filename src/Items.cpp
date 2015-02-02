@@ -224,7 +224,7 @@ void SpawnItem(std::string Object, int xpos, int ypos)
     {
         std::cout << "Spawning" << Object << " \n";
     }
-    cItem var;
+    Item var;
     if (gvars::Debug)
     {
         std::cout << "Pre var in SpawnItem"
@@ -572,7 +572,7 @@ void cItemManager::InitializeItems()
         {
             std::string line;
             getline(Input, line);
-            cItem Item;
+            Item Item;
             Item.name = "Debuggery";
             Item.name = StringFindString(line, "[name:");
 

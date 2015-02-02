@@ -367,7 +367,7 @@ public:
     std::vector<Territory> Territories;
 
     std::vector<std::string> KnownMagic;
-    std::vector<cItem> Items;
+    std::vector<Item> Items;
 
     std::vector<Job> JobList;
     Faction();

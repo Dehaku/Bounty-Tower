@@ -3321,7 +3321,7 @@ void DrawStuffs()
     gvars::DrawStuffsDone = true;
 }
 
-cItem *GetGlobalItem(std::string strtype)
+Item *GetGlobalItem(std::string strtype)
 {
     if (gvars::Debug)
     {

@@ -113,18 +113,14 @@ public:
     Item();
 };
 
-class cItem : public Item
-{
-};
-
-cItem *GetGlobalItem(std::string strtype);
+Item *GetGlobalItem(std::string strtype);
 
 extern std::list<Item> worlditems;
 
 class cItemManager
 {
 public:
-    std::vector<cItem> GlobalItem;
+    std::vector<Item> GlobalItem;
     std::vector<Item> AddedItems;
 
     void AddItems();
