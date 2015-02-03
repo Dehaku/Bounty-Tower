@@ -941,49 +941,53 @@ void critterBrain(std::vector<NPC> &NPCs)
         debug("Debug: Ending Part Loop");
         /* *BodyPart Loop* */
         /* Critter Vision   */
-        const sf::Vector2f npcPos(npc.xpos,npc.ypos);
-        npc.angle = math::angleBetweenVectors(npcPos,gvars::mousePos)-90;
+        const sf::Vector2f npcPos(npc.xpos, npc.ypos);
+        npc.angle = math::angleBetweenVectors(npcPos, gvars::mousePos) - 90;
 
-        int EndAngle = -(npc.angle-(npc.viewangle/2));
-        int StartAngle = -(npc.angle-(-npc.viewangle/2));
+        int EndAngle = -(npc.angle - (npc.viewangle / 2));
+        int StartAngle = -(npc.angle - (-npc.viewangle / 2));
 
         sf::ConvexShape Shape;
         int PointCounter = 1;
         Shape.setPointCount(PointCounter);
-        Shape.setPoint(0,sf::Vector2f(0,0));
+        Shape.setPoint(0, sf::Vector2f(0, 0));
 
-        for(int Rot = StartAngle; Rot != EndAngle; Rot++)
+        for (int Rot = StartAngle; Rot != EndAngle; Rot++)
         {
             float XPos = npc.xpos + sinf(Rot * PI / 180) * npc.viewrange;
             float YPos = npc.ypos + cosf(Rot * PI / 180) * npc.viewrange;
 
-            if(Rot == StartAngle)
+            if (Rot == StartAngle)
             {
                 PointCounter++;
                 Shape.setPointCount(PointCounter);
-                Shape.setPoint(PointCounter-1,sf::Vector2f(XPos-npc.xpos,YPos-npc.ypos));
+                Shape.setPoint(PointCounter - 1,
+                               sf::Vector2f(XPos - npc.xpos, YPos - npc.ypos));
             }
 
-            int CenterPoint = (StartAngle+EndAngle)/2;
-            if(Rot == CenterPoint)
+            int CenterPoint = (StartAngle + EndAngle) / 2;
+            if (Rot == CenterPoint)
             {
                 PointCounter++;
                 Shape.setPointCount(PointCounter);
-                Shape.setPoint(PointCounter-1,sf::Vector2f(XPos-npc.xpos,YPos-npc.ypos));
-                effects.createLine(npc.xpos,npc.ypos,
-                                XPos, YPos,1,sf::Color::Cyan);
+                Shape.setPoint(PointCounter - 1,
+                               sf::Vector2f(XPos - npc.xpos, YPos - npc.ypos));
+                effects.createLine(npc.xpos, npc.ypos, XPos, YPos, 1,
+                                   sf::Color::Cyan);
             }
-            if((Rot % 10) == 0 && Rot != 0)
+            if ((Rot % 10) == 0 && Rot != 0)
             {
                 PointCounter++;
                 Shape.setPointCount(PointCounter);
-                Shape.setPoint(PointCounter-1,sf::Vector2f(XPos-npc.xpos,YPos-npc.ypos));
+                Shape.setPoint(PointCounter - 1,
+                               sf::Vector2f(XPos - npc.xpos, YPos - npc.ypos));
             }
-            if(Rot == EndAngle-1)
+            if (Rot == EndAngle - 1)
             {
                 PointCounter++;
                 Shape.setPointCount(PointCounter);
-                Shape.setPoint(PointCounter-1,sf::Vector2f(XPos-npc.xpos,YPos-npc.ypos));
+                Shape.setPoint(PointCounter - 1,
+                               sf::Vector2f(XPos - npc.xpos, YPos - npc.ypos));
             }
         }
 
@@ -1119,12 +1123,15 @@ void critterBrain(std::vector<NPC> &NPCs)
                         }
                     }
                 }
-                if(npc.Target.item != nullptr)
+                if (npc.Target.item != nullptr)
                 {
-                    sf::Vector2f ItemPos( (*npc.Target.item).xpos,(*npc.Target.item).ypos );
-                    npc.DirMove(sf::Vector2f((*npc.Target.item).xpos,(*npc.Target.item).ypos));
+                    sf::Vector2f ItemPos((*npc.Target.item).xpos,
+                                         (*npc.Target.item).ypos);
+                    npc.DirMove(sf::Vector2f((*npc.Target.item).xpos,
+                                             (*npc.Target.item).ypos));
 
-                    if(math::closeish(npc.xpos,npc.ypos,ItemPos.x,ItemPos.y) <= npc.size*2)
+                    if (math::closeish(npc.xpos, npc.ypos, ItemPos.x,
+                                       ItemPos.y) <= npc.size * 2)
                     {
                         Item *Tar = npc.Target.item;
                         npc.Target.item = nullptr;
@@ -1143,10 +1150,6 @@ void critterBrain(std::vector<NPC> &NPCs)
             }
         }
 
-
-
-
-
         // Incase the highest desire isn't completable, Go through again for the next highest desire.
         if (InComplete)
             goto ReDesire;
@@ -1162,9 +1165,10 @@ void critterBrain(std::vector<NPC> &NPCs)
         removeItems(npc.inventory);
     }
 
-    if(Key.oTime == 1) RemoveMe++;
-    if(Key.lTime == 1) RemoveMe--;
-
+    if (Key.oTime == 1)
+        RemoveMe++;
+    if (Key.lTime == 1)
+        RemoveMe--;
 }
 
 void updateNpc()
@@ -3526,7 +3530,7 @@ int main()
 
     while (window.isOpen())
     {
-        if(gvars::cycleGrowth)
+        if (gvars::cycleGrowth)
         {
             gvars::cycleRed.g++;
             gvars::cycleRed.b++;
@@ -3534,7 +3538,7 @@ int main()
             gvars::cycleGreen.b++;
             gvars::cycleBlue.r++;
             gvars::cycleBlue.g++;
-            if(gvars::cycleRed.g >= 255)
+            if (gvars::cycleRed.g >= 255)
                 gvars::cycleGrowth = false;
         }
         else
@@ -3545,10 +3549,9 @@ int main()
             gvars::cycleGreen.b--;
             gvars::cycleBlue.r--;
             gvars::cycleBlue.g--;
-            if(gvars::cycleRed.g <= 0)
+            if (gvars::cycleRed.g <= 0)
                 gvars::cycleGrowth = true;
         }
-
 
         RemoveNPCs();
         sf::Event Event;
@@ -3639,7 +3642,6 @@ int main()
         { // Generates a random name from GenerateName(); and puts it into the console.
             std::cout << GenerateName() << std::endl;
         }
-
 
         if (Key.gTime == 1)
         { // Fling all critters south.
@@ -3827,7 +3829,6 @@ int main()
                 gvars::view1.setCenter(npclist.at(gvars::myTarget).xpos,
                                        npclist.at(gvars::myTarget).ypos);
             }
-
 
             effects.createSquare(
                 32 * 20, 32 * 20, 64 * 20, 64 * 20, sf::Color(0, 0, 0, 0), 1,
@@ -5235,7 +5236,7 @@ int main()
             DrawWorldTiles();
             int xMouse(gvars::mousePos.x / 20);
             int yMouse(gvars::mousePos.y / 20);
-            sf::Vector2f Pos(xMouse,yMouse);
+            sf::Vector2f Pos(xMouse, yMouse);
             effects.createSquare(Pos.x * 20, Pos.y * 20, (Pos.x * 20) + 20,
                                  (Pos.y * 20) + 20, sf::Color(0, 0, 0, 0), 2,
                                  sf::Color(0, 200, 200, 255));
@@ -5315,12 +5316,10 @@ int main()
             var.sButtonText = "Howdy";
             vSquareButtonList.push_back(var);
 
-
             cText.CreateText(450, 75, 11, sf::Color::Red,
                              "Press r to turn on the "
                              "debugger, If it slows down the "
                              "game, Minimize the console.");
-
 
             if (squareButtonClicked(var.id))
             {
@@ -5514,7 +5513,6 @@ int main()
             window.setView(Planetary);
             PlyAct = true;
         }
-
 
         if (Paused == false)
         {

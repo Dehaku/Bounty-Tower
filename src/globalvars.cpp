@@ -52,9 +52,9 @@ sf::Vector2i cords;
 bool initalZeds = false;
 float timeScale = 1;
 
-sf::Color cycleRed(255,255,255);
-sf::Color cycleGreen(255,255,255);
-sf::Color cycleBlue(255,255,255);
+sf::Color cycleRed(255, 255, 255);
+sf::Color cycleGreen(255, 255, 255);
+sf::Color cycleBlue(255, 255, 255);
 bool cycleGrowth = false;
 
 } // namespace gvars

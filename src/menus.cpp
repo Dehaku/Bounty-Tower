@@ -621,73 +621,66 @@ void menuPopUp()
             if (i == 0)
             {
 
-
-                if (WorldMap[abs_to_index(GC.MenuPos.x / 20)]
-                            [abs_to_index(GC.MenuPos.y / 20)].ID == 0)
-                     effects.createLine(
-                    GC.MenuPos.x, (GC.MenuPos.y + (iY * 13)) + 13,
-                    GC.MenuPos.x + 90, (GC.MenuPos.y + (iY * 13)) + 13, 1,
-                    sf::Color::Cyan);
+                if (WorldMap[abs_to_index(GC.MenuPos.x /
+                                          20)][abs_to_index(GC.MenuPos.y / 20)]
+                        .ID == 0)
+                    effects.createLine(
+                        GC.MenuPos.x, (GC.MenuPos.y + (iY * 13)) + 13,
+                        GC.MenuPos.x + 90, (GC.MenuPos.y + (iY * 13)) + 13, 1,
+                        sf::Color::Cyan);
                 cText.CreateText(GC.MenuPos.x, GC.MenuPos.y + (iY * 13), 12,
-                                 sf::Color::White,
-                                 "Enter city");
+                                 sf::Color::White, "Enter city");
                 int Butt = createSquareButton(
                     math::Vec2f(GC.MenuPos.x + BRD,
                                 (GC.MenuPos.y + (iY * 13)) + MBD),
-                    BS, BSY, ButCol,
-                    "Welcome to the jungle baby.");
+                    BS, BSY, ButCol, "Welcome to the jungle baby.");
                 if (squareButtonClicked(Butt) || Key.num1Time == 1)
                 {
-                        GenerateChunk(
-                            "Building", 500,
-                            sf::Vector2i(abs(GC.MenuPos.x / 20),
-                                            abs(GC.MenuPos.y / 20)));
-                        gvars::currentregionx = abs(GC.MenuPos.x / 20);
-                        gvars::currentregiony = abs(GC.MenuPos.y / 20);
-                        GC.Phase = "Local";
+                    GenerateChunk("Building", 500,
+                                  sf::Vector2i(abs(GC.MenuPos.x / 20),
+                                               abs(GC.MenuPos.y / 20)));
+                    gvars::currentregionx = abs(GC.MenuPos.x / 20);
+                    gvars::currentregiony = abs(GC.MenuPos.y / 20);
+                    GC.Phase = "Local";
 
-                        //GC.BuildLocal("City", WorldMap[abs_to_index(GC.MenuPos.x/20)][abs_to_index(GC.MenuPos.y/20)].Infected);
-                        BuildLocalfromWorld(
-                            sf::Vector2i(abs(GC.MenuPos.x / 20),
-                                            abs(GC.MenuPos.y / 20)));
-                        BuildStartingCritters(WorldMap[abs_to_index(
-                            GC.MenuPos.x /
-                            20)][abs_to_index(GC.MenuPos.y / 20)]
-                                                    .Infected);
-                        spawnItem("Sword", 990, 1020);
+                    //GC.BuildLocal("City", WorldMap[abs_to_index(GC.MenuPos.x/20)][abs_to_index(GC.MenuPos.y/20)].Infected);
+                    BuildLocalfromWorld(sf::Vector2i(abs(GC.MenuPos.x / 20),
+                                                     abs(GC.MenuPos.y / 20)));
+                    BuildStartingCritters(WorldMap[abs_to_index(
+                        GC.MenuPos.x / 20)][abs_to_index(GC.MenuPos.y / 20)]
+                                              .Infected);
+                    spawnItem("Sword", 990, 1020);
 
-                        spawnItem("Gun", 1010, 1020);
+                    spawnItem("Gun", 1010, 1020);
 
-                        Con("Hunting for Trees 4");
-                        for (int i = 0; i != 8; i++)
+                    Con("Hunting for Trees 4");
+                    for (int i = 0; i != 8; i++)
+                    {
+                        int Tx = randz(50, 1950);
+                        int Ty = randz(50, 1950);
+                        Con(Tx, false);
+                        Con(":", false);
+                        Con(Ty, false);
+                        if (Tiles[abs_to_index(Tx / 20)][abs_to_index(
+                                Ty / 20)][30].ID == 1001 ||
+                            Tiles[abs_to_index(Tx / 20)][abs_to_index(
+                                Ty / 20)][30].ID == 1003)
                         {
-                            int Tx = randz(50, 1950);
-                            int Ty = randz(50, 1950);
-                            Con(Tx, false);
-                            Con(":", false);
-                            Con(Ty, false);
-                            if (Tiles[abs_to_index(
-                                            Tx / 20)][abs_to_index(Ty / 20)][30]
-                                                .ID == 1001 ||
-                                        Tiles[abs_to_index(
-                                            Tx / 20)][abs_to_index(Ty / 20)][30]
-                                                .ID == 1003)
-                            {
-                                Con(", Is Plantable.");
-                                spawnItem("Fruit Tree", Tx, Ty);
-                            }
+                            Con(", Is Plantable.");
+                            spawnItem("Fruit Tree", Tx, Ty);
                         }
+                    }
 
-                        spawnItem("Broken Vending Machine", 1030, 1030);
+                    spawnItem("Broken Vending Machine", 1030, 1030);
 
-                        SpawnCritter("Mini Turret", 1000, 1070);
+                    SpawnCritter("Mini Turret", 1000, 1070);
 
-                        GC.MenuPos = sf::Vector2f(-10000, -10000);
+                    GC.MenuPos = sf::Vector2f(-10000, -10000);
                     GC.MenuType = "NULL";
 
                     fSleep(0.2);
                     break;
-                    }
+                }
                 iY++;
             }
         }
@@ -998,9 +991,9 @@ void menuPopUp()
                             for (int Rot = 1; Rot != 361; Rot++)
                             {
                                 int XPos = abs(GC.MenuPos.x / 20) +
-                                       sin(Rot * PI / 180) * ItLength;
+                                           sin(Rot * PI / 180) * ItLength;
                                 int YPos = abs(GC.MenuPos.y / 20) +
-                                       cos(Rot * PI / 180) * ItLength;
+                                           cos(Rot * PI / 180) * ItLength;
                                 Tiles[XPos][YPos][30].Stone();
                             }
                         }
@@ -1009,9 +1002,9 @@ void menuPopUp()
                             for (int Rot = 1; Rot != 361; Rot++)
                             {
                                 int XPos = abs(GC.MenuPos.x / 20) +
-                                       sin(Rot * PI / 180) * ItLength;
+                                           sin(Rot * PI / 180) * ItLength;
                                 int YPos = abs(GC.MenuPos.y / 20) +
-                                       cos(Rot * PI / 180) * ItLength;
+                                           cos(Rot * PI / 180) * ItLength;
                                 Tiles[XPos][YPos][30].Wall();
                             }
                         }
