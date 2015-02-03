@@ -69,19 +69,19 @@ public:
     std::vector<Square> squares;
     std::vector<sf::ConvexShape> polygons;
 
-    void createLine(int Sxpos, int Sypos, int Expos, int Eypos, int Size,
-                    sf::Color MainColor, float Outline = 0,
-                    sf::Color SecondaryColor = sf::Color(0, 0, 0),
-                    bool Fades = false, int Fadesrate = 255);
+    void createLine(int sxpos, int sypos, int expos, int eypos, int size,
+                    sf::Color mainColor, float outline = 0,
+                    sf::Color secondaryColor = sf::Color(0, 0, 0),
+                    bool fades = false, int fadesrate = 255);
 
-    void createBeam(int Sxpos, int Sypos, int Expos, int Eypos, int Size,
-                    sf::Color MainColor, float Outline = 0,
-                    sf::Color SecondaryColor = sf::Color(0, 0, 0),
-                    bool Fades = false, int Fadesrate = 255);
+    void createBeam(int sxpos, int sypos, int expos, int eypos, int size,
+                    sf::Color mainColor, float outline = 0,
+                    sf::Color secondaryColor = sf::Color(0, 0, 0),
+                    bool fades = false, int fadesrate = 255);
 
-    void createSquare(int Sxpos, int Sypos, int Expos, int Eypos,
-                      sf::Color MainColor, float Outline = 0,
-                      sf::Color SecondaryColor = sf::Color(0, 0, 0));
+    void createSquare(int sxpos, int sypos, int expos, int eypos,
+                      sf::Color mainColor, float outline = 0,
+                      sf::Color secondaryColor = sf::Color(0, 0, 0));
 
     void createCircle(int xpos, int ypos, int Size, sf::Color MainColor,
                       float Outline = 0,

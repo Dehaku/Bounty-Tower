@@ -17,13 +17,13 @@ void Effects::Line::draw()
 
     sf::RectangleShape rectangle;
 
-    int Length =
+    int length =
         sqrt(pow((endPos.x - startPos.x), 2) + pow((endPos.y - startPos.y), 2));
-    rectangle.setSize(sf::Vector2f(Length, size));
+    rectangle.setSize(sf::Vector2f(length, size));
     //rectangle.setSize(sf::Vector2f(StartPos.x-EndPos.x,StartPos.y-EndPos.y));
-    float Angle =
+    float angle =
         57.3065f * atan2(endPos.y - startPos.y, endPos.x - startPos.x);
-    rectangle.setRotation(Angle);
+    rectangle.setRotation(angle);
 
     rectangle.setOrigin(0, size / 2);
 
@@ -37,14 +37,14 @@ void Effects::Line::draw()
 void Effects::Circle::draw()
 {
     //sf::Shape Circle = sf::Shape::Circle(Pos.x,Pos.y,size, maincolor, outline, seccolor);
-    sf::CircleShape Circle;
-    Circle.setRadius(size);
-    Circle.setFillColor(maincolor);
-    Circle.setOutlineThickness(outline);
-    Circle.setOutlineColor(seccolor);
-    Circle.setPosition(pos.x, pos.y);
-    Circle.setOrigin(size, size);
-    window.draw(Circle);
+    sf::CircleShape circle;
+    circle.setRadius(size);
+    circle.setFillColor(maincolor);
+    circle.setOutlineThickness(outline);
+    circle.setOutlineColor(seccolor);
+    circle.setPosition(pos.x, pos.y);
+    circle.setOrigin(size, size);
+    window.draw(circle);
 }
 
 void Effects::Square::draw()
@@ -64,21 +64,21 @@ void Effects::Square::draw()
 void Effects::Beam::draw()
 {
     //sf::Shape Line = sf::Shape::Line(StartPos.x,StartPos.y,EndPos.x,EndPos.y, size, maincolor, outline, seccolor);
-    sf::Vertex Line[2] = {startPos, endPos};
+    sf::Vertex line[2] = {startPos, endPos};
     //Line.setFillColor(maincolor);
     //maincolor.a -= faderate;
     //if(maincolor.a < 0){maincolor.a = 0;}
-    window.draw(Line, 2, sf::Lines);
+    window.draw(line, 2, sf::Lines);
 
     sf::RectangleShape rectangle;
 
-    int Length =
+    int length =
         sqrt(pow((endPos.x - startPos.x), 2) + pow((endPos.y - startPos.y), 2));
-    rectangle.setSize(sf::Vector2f(Length, size));
+    rectangle.setSize(sf::Vector2f(length, size));
     //rectangle.setSize(sf::Vector2f(StartPos.x-EndPos.x,StartPos.y-EndPos.y));
-    float Angle =
+    float angle =
         57.3065f * atan2(endPos.y - startPos.y, endPos.x - startPos.x);
-    rectangle.setRotation(Angle);
+    rectangle.setRotation(angle);
 
     rectangle.setOrigin(0, size / 2);
 
@@ -89,60 +89,60 @@ void Effects::Beam::draw()
     window.draw(rectangle);
 }
 
-void Effects::createLine(int Sxpos, int Sypos, int Expos, int Eypos, int Size,
-                         sf::Color MainColor, float Outline,
-                         sf::Color SecondaryColor, bool Fades, int Fadesrate)
+void Effects::createLine(int sxpos, int sypos, int expos, int eypos, int size,
+                         sf::Color mainColor, float outline,
+                         sf::Color secondaryColor, bool fades, int fadesrate)
 {
     Line evar;
-    evar.startPos = sf::Vector2f(Sxpos, Sypos);
-    evar.endPos = sf::Vector2f(Expos, Eypos);
-    evar.size = Size;
-    evar.fading = Fades;
-    evar.faderate = Fadesrate;
-    evar.outline = Outline;
-    evar.maincolor = MainColor;
-    evar.seccolor = SecondaryColor;
+    evar.startPos = sf::Vector2f(sxpos, sypos);
+    evar.endPos = sf::Vector2f(expos, eypos);
+    evar.size = size;
+    evar.fading = fades;
+    evar.faderate = fadesrate;
+    evar.outline = outline;
+    evar.maincolor = mainColor;
+    evar.seccolor = secondaryColor;
     lines.push_back(evar);
 }
 
-void Effects::createBeam(int Sxpos, int Sypos, int Expos, int Eypos, int Size,
-                         sf::Color MainColor, float Outline,
-                         sf::Color SecondaryColor, bool Fades, int Fadesrate)
+void Effects::createBeam(int sxpos, int sypos, int expos, int eypos, int size,
+                         sf::Color mainColor, float outline,
+                         sf::Color secondaryColor, bool fades, int fadesrate)
 {
     Beam evar;
-    evar.startPos = sf::Vector2f(Sxpos, Sypos);
-    evar.endPos = sf::Vector2f(Expos, Eypos);
-    evar.size = Size;
-    evar.fading = Fades;
-    evar.faderate = Fadesrate;
-    evar.outline = Outline;
-    evar.maincolor = MainColor;
-    evar.seccolor = SecondaryColor;
+    evar.startPos = sf::Vector2f(sxpos, sypos);
+    evar.endPos = sf::Vector2f(expos, eypos);
+    evar.size = size;
+    evar.fading = fades;
+    evar.faderate = fadesrate;
+    evar.outline = outline;
+    evar.maincolor = mainColor;
+    evar.seccolor = secondaryColor;
     beams.push_back(evar);
 }
 
-void Effects::createSquare(int Sxpos, int Sypos, int Expos, int Eypos,
-                           sf::Color MainColor, float Outline,
-                           sf::Color SecondaryColor)
+void Effects::createSquare(int sxpos, int sypos, int expos, int eypos,
+                           sf::Color mainColor, float outline,
+                           sf::Color secondaryColor)
 {
     Square evar;
-    evar.startPos = sf::Vector2f(Sxpos, Sypos);
-    evar.endPos = sf::Vector2f(Expos, Eypos);
-    evar.outline = Outline;
-    evar.maincolor = MainColor;
-    evar.seccolor = SecondaryColor;
+    evar.startPos = sf::Vector2f(sxpos, sypos);
+    evar.endPos = sf::Vector2f(expos, eypos);
+    evar.outline = outline;
+    evar.maincolor = mainColor;
+    evar.seccolor = secondaryColor;
     squares.push_back(evar);
 }
 
-void Effects::createCircle(int xpos, int ypos, int Size, sf::Color MainColor,
-                           float Outline, sf::Color SecondaryColor)
+void Effects::createCircle(int xpos, int ypos, int size, sf::Color mainColor,
+                           float outline, sf::Color secondaryColor)
 {
     Circle evar;
     evar.pos = sf::Vector2f(xpos, ypos);
-    evar.size = Size;
-    evar.outline = Outline;
-    evar.maincolor = MainColor;
-    evar.seccolor = SecondaryColor;
+    evar.size = size;
+    evar.outline = outline;
+    evar.maincolor = mainColor;
+    evar.seccolor = secondaryColor;
     circles.push_back(evar);
 }
 
