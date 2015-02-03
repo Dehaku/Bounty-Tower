@@ -3283,30 +3283,30 @@ void drawNPCs()
         {
             if (npc.name == "Azabul")
             {
-                sf::Vector2f TA1 = npc.tentArm1;
-                sf::Vector2f TA2 = npc.tentArm2;
-                sf::Vector2f TE1 = npc.tentEnd1;
-                sf::Vector2f TE2 = npc.tentEnd2;
+                sf::Vector2f ta1 = npc.tentArm1;
+                sf::Vector2f ta2 = npc.tentArm2;
+                sf::Vector2f te1 = npc.tentEnd1;
+                sf::Vector2f te2 = npc.tentEnd2;
 
-                effects.createLine(npc.xpos, npc.ypos, TA1.x + npc.xpos,
-                                   TA1.y + npc.ypos, 2, sf::Color(0, 200, 200),
+                effects.createLine(npc.xpos, npc.ypos, ta1.x + npc.xpos,
+                                   ta1.y + npc.ypos, 2, sf::Color(0, 200, 200),
                                    1, sf::Color(0, 255, 255));
-                effects.createLine(npc.xpos, npc.ypos, TA2.x + npc.xpos,
-                                   TA2.y + npc.ypos, 2, sf::Color(0, 200, 200),
+                effects.createLine(npc.xpos, npc.ypos, ta2.x + npc.xpos,
+                                   ta2.y + npc.ypos, 2, sf::Color(0, 200, 200),
                                    1, sf::Color(0, 255, 255));
                 effects.createLine(
-                    TA1.x + npc.xpos, TA1.y + npc.ypos,
-                    TE1.x + TA1.x + npc.xpos, TE1.y + TA1.y + npc.ypos, 2,
+                    ta1.x + npc.xpos, ta1.y + npc.ypos,
+                    te1.x + ta1.x + npc.xpos, te1.y + ta1.y + npc.ypos, 2,
                     sf::Color(0, 200, 200), 1, sf::Color(0, 255, 255));
                 effects.createLine(
-                    TA2.x + npc.xpos, TA2.y + npc.ypos,
-                    TE2.x + TA2.x + npc.xpos, TE2.y + TA2.y + npc.ypos, 2,
+                    ta2.x + npc.xpos, ta2.y + npc.ypos,
+                    te2.x + ta2.x + npc.xpos, te2.y + ta2.y + npc.ypos, 2,
                     sf::Color(0, 200, 200), 1, sf::Color(0, 255, 255));
                 effects.drawEffects();
             }
 
-            int Alph = 255;
-            npc.img.setColor(sf::Color(255, 255, 255, Alph));
+            int alph = 255;
+            npc.img.setColor(sf::Color(255, 255, 255, alph));
             npc.img.setScale(gvars::scalex, gvars::scaley);
             npc.img.setOrigin(npc.img.getTextureRect().width / 2,
                               npc.img.getTextureRect().height / 2);
