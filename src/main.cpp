@@ -279,7 +279,7 @@ std::vector<int> nngTrace(int xa, int ya, int xb, int yb, int id,
     {
         x += xIncrement;
         y += yIncrement;
-        if (inputState.g)
+        if (inputState.key[Key::G])
         {
             effects.createCircle(x, y, 1, sf::Color::Blue);
         }
@@ -334,7 +334,7 @@ std::vector<int> nngTrace(int xa, int ya, int xb, int yb, int id,
             count++;
         }
 
-        if (inputState.period)
+        if (inputState.key[Key::Period])
         {
             effects.createCircle(x, y, 1, sf::Color::White);
         }
@@ -366,7 +366,7 @@ bool gridTrace(sf::Vector2f Ori, sf::Vector2f Tar)
                 .transparent == false)
         {
 
-            if (inputState.period)
+            if (inputState.key[Key::Period])
             {
                 effects.createLine(x, y, Ori.x, Ori.y, 1, sf::Color::Cyan);
             }
@@ -382,7 +382,7 @@ bool gridTrace(sf::Vector2f Ori, sf::Vector2f Tar)
             return true;
         } // Returns true and stops searching.
 
-        if (inputState.period)
+        if (inputState.key[Key::Period])
         {
             effects.createLine(x, y, Ori.x, Ori.y, 1, sf::Color::Blue);
         }
@@ -410,7 +410,7 @@ bool gridposTrace(int xa, int ya, int xb, int yb, int id, sf::Vector2f target)
         if (tiles[abs_to_index(x / GRID_SIZE)][abs_to_index(y / GRID_SIZE)][30]
                 .id == 1010)
         {
-            if (inputState.period && id == gvars::myTargetid)
+            if (inputState.key[Key::Period] && id == gvars::myTargetid)
             {
                 effects.createLine(x, y, xa, ya, 1, sf::Color::Blue);
             }
@@ -425,7 +425,7 @@ bool gridposTrace(int xa, int ya, int xb, int yb, int id, sf::Vector2f target)
         {
             return true;
         } // Returns true and stops searching.
-        if (inputState.period && id == gvars::myTargetid)
+        if (inputState.key[Key::Period] && id == gvars::myTargetid)
         {
             effects.createLine(x, y, xa, ya, 1, sf::Color::Blue);
         }
@@ -467,7 +467,7 @@ std::vector<int> npcTrace(int xa, int ya, int xb, int yb, int id,
         if (kill)
             return vectorID;
 
-        if (inputState.h)
+        if (inputState.key[Key::H])
         {
             effects.createCircle(x, y, 1, sf::Color::White);
         }
@@ -1599,7 +1599,7 @@ void updateNpc(Npc &npc, int integerIterator)
         npc.tentEnd2.y = math::clamp(npc.tentEnd2.y + randz(-3, 3), -20, 20);
     }
 
-    if (npc.id == gvars::myTargetid && inputState.space)
+    if (npc.id == gvars::myTargetid && inputState.key[Key::Space])
     {
         npc.attacking = true;
     }
@@ -1705,7 +1705,7 @@ void updateNpc(Npc &npc, int integerIterator)
 
         chatBox.addChat(chtStr, sf::Color(200, 0, 0));
     };
-    if (inputState.rshift && npc.id == gvars::myTargetid)
+    if (inputState.key[Key::RShift] && npc.id == gvars::myTargetid)
     {
         std::cout << npc.target << "At: " << npc.targetPos.x << ":"
                   << npc.targetPos.y << std::endl;
@@ -1921,15 +1921,14 @@ void updateNpc(Npc &npc, int integerIterator)
                 npc.target = "Flesh";
             }
 
-            if (npc.name == "Zombie" && inputState.lctrl == true)
+            if (npc.name == "Zombie" && inputState.key[Key::LControl] == true)
             {
                 npc.moverate = npc.moverateint * 4;
             }
-            if (npc.name == "Zombie" && inputState.lalt == true)
+            if (npc.name == "Zombie" && inputState.key[Key::LAlt] == true)
             {
                 npc.moverate = 4;
             }
-
             float shake = 0.2;
             int bumz = randz(1, 10);
             if (bumz == 1)
@@ -3539,6 +3538,7 @@ int main()
         sf::Event event;
         while (window.pollEvent(event))
         {
+            inputState.updateFromEvent(event);
             if (event.type == sf::Event::Closed)
             {
                 window.close();
@@ -3621,19 +3621,19 @@ int main()
                             (11) / gvars::cameraZoom, sf::Color::White, "x", "",
                             gvars::cameraZoom);
 
-        if (inputState.kTime == 1)
+        if (inputState.key[Key::K].time == 1)
         { // Generates a random name from GenerateName(); and puts it into the console.
             std::cout << generateName() << std::endl;
         }
 
-        if (inputState.gTime == 1)
+        if (inputState.key[Key::G].time == 1)
         { // Fling all critters south.
             for (auto &i : npclist)
             {
                 i.momentum = sf::Vector2f(0, 100);
             }
         }
-        if (inputState.hTime == 1)
+        if (inputState.key[Key::H].time == 1)
         { // Fling all critters north.
             for (auto &i : npclist)
             {
@@ -3643,7 +3643,7 @@ int main()
 
         // Game Mode Loops ================================================================================
 
-        if (inputState.r)
+        if (inputState.key[Key::R])
         { // Debug (de)activation
             if (!gvars::debug)
             {
@@ -3663,14 +3663,14 @@ int main()
                                     (gvars::currenty + 1) * GRID_SIZE, 11,
                                     sf::Color::Red, "Debug On");
 
-            if (inputState.vTime == 1)
+            if (inputState.key[Key::V].time == 1)
                 chatBox.addChat(
                     randomWindowName(),
                     sf::Color(randz(0, 255), randz(0, 255), randz(0, 255)));
 
             squadHud();
 
-            if (inputState.lshiftTime > 0)
+            if (inputState.key[Key::LShift].time > 0)
             {
                 int x = gvars::bottomLeft.x;
                 int y = gvars::bottomLeft.y;
@@ -3679,17 +3679,17 @@ int main()
                 textList.createText(x + 20, y - 30, 11, sf::Color::White,
                                     "Build");
             }
-            if (inputState.rmbTime == 1 && inputState.lshift)
+            if (inputState.rmbTime == 1 && inputState.key[Key::LShift])
                 rmbMenuTile(gvars::mousePos);
 
-            if (inputState.lshift && inputState.tab) // Debug NPC Spawn Menu
+            if (inputState.key[Key::LShift] && inputState.key[Key::Tab]) // Debug NPC Spawn Menu
             {
 
                 gCtrl.menuType = "DebugCritterSpawn";
                 menuPopUp();
             }
-            else if (inputState.tab == true &&
-                     inputState.lshift ==
+            else if (inputState.key[Key::Tab] == true &&
+                     inputState.key[Key::LShift] ==
                          false) // Debug Item Spawn Menu TODO: Sort them by Type.
             {
                 gCtrl.menuType = "DebugItemSpawn";
@@ -3708,28 +3708,28 @@ int main()
             }
             //                       if(Key.lshift && Key.z){GC.ZombieSwarmLocal();}
 
-            if (inputState.lshift && inputState.z) // Debug Stuffs Menu
+            if (inputState.key[Key::LShift] && inputState.key[Key::Z]) // Debug Stuffs Menu
             {
                 gCtrl.menuType = "DebugFunctions";
                 menuPopUp();
             }
 
-            if (inputState.left == true)
+            if (inputState.key[Key::Left] == true)
             {
                 gvars::currentx--;
                 plyAct = true;
             }
-            if (inputState.right == true)
+            if (inputState.key[Key::Right])
             {
                 gvars::currentx++;
                 plyAct = true;
             }
-            if (inputState.up == true)
+            if (inputState.key[Key::Up])
             {
                 gvars::currenty--;
                 plyAct = true;
             }
-            if (inputState.down == true)
+            if (inputState.key[Key::Down])
             {
                 gvars::currenty++;
                 plyAct = true;
@@ -3740,7 +3740,7 @@ int main()
 
             rightMouseButtonContextMenu();
 
-            if (inputState.lshift == true && inputState.left == true)
+            if (inputState.key[Key::LShift] == true && inputState.key[Key::Left])
             {
                 gvars::currentx--;
                 gvars::currentx--;
@@ -3748,7 +3748,7 @@ int main()
                 gvars::currentx--;
                 plyAct = true;
             } //Sprite.Move(-100 * ElapsedTime, 0);
-            if (inputState.lshift == true && inputState.right == true)
+            if (inputState.key[Key::LShift] == true && inputState.key[Key::Right])
             {
                 gvars::currentx++;
                 gvars::currentx++;
@@ -3756,7 +3756,7 @@ int main()
                 gvars::currentx++;
                 plyAct = true;
             } //Sprite.Move( 100 * ElapsedTime, 0);
-            if (inputState.lshift == true && inputState.up == true)
+            if (inputState.key[Key::LShift] == true && inputState.key[Key::Up])
             {
                 gvars::currenty--;
                 gvars::currenty--;
@@ -3764,7 +3764,7 @@ int main()
                 gvars::currenty--;
                 plyAct = true;
             } //Sprite.Move(0, -100 * ElapsedTime);
-            if (inputState.lshift == true && inputState.down == true)
+            if (inputState.key[Key::LShift] == true && inputState.key[Key::Down])
             {
                 gvars::currenty++;
                 gvars::currenty++;
@@ -3772,28 +3772,28 @@ int main()
                 gvars::currenty++;
                 plyAct = true;
             } //Sprite.Move(0,  100 * ElapsedTime);
-            if (inputState.comma == true && inputState.lshift == true &&
+            if (inputState.key[Key::Comma] == true && inputState.key[Key::LShift] == true &&
                 gvars::currentz <= GRID_Z - 1)
             {
                 gvars::currentz++;
                 plyAct = true;
                 fSleep(0.1f);
             } //Sprite.Move(0, -100 * ElapsedTime);
-            if (inputState.period == true && inputState.lshift == true &&
+            if (inputState.key[Key::Period] == true && inputState.key[Key::LShift] == true &&
                 gvars::currentz >= 1)
             {
                 gvars::currentz--;
                 plyAct = true;
                 fSleep(0.1f);
             } //Sprite.Move(0,  100 * ElapsedTime);
-            if (inputState.comma == true && inputState.rshift == true &&
+            if (inputState.key[Key::Comma] == true && inputState.key[Key::RShift] == true &&
                 gvars::currentz <= GRID_Z - 1)
             {
                 gvars::currentz++;
                 plyAct = true;
                 fSleep(0.1f);
             } //Sprite.Move(0, -100 * ElapsedTime);
-            if (inputState.period == true && inputState.rshift == true &&
+            if (inputState.key[Key::Period] == true && inputState.key[Key::RShift] == true &&
                 gvars::currentz >= 1)
             {
                 gvars::currentz--;
@@ -3804,7 +3804,7 @@ int main()
             {
                 gvars::following = false;
             }
-            else if (inputState.c)
+            else if (inputState.key[Key::C])
             {
                 gvars::following = true;
             }
@@ -3823,7 +3823,7 @@ int main()
                 sf::Color::
                     Red); // This one reachs from 0 to 32 only because it draws from the left, not the center.
 
-            if (inputState.lctrlTime > 10)
+            if (inputState.key[Key::LControl].time > 10)
             {
                 int Variable =
                     tiles[abs_to_index(gvars::mousePos.x / 20)][abs_to_index(
@@ -4326,7 +4326,7 @@ int main()
         } //=============================================================================*End of Local*========================================================================
         if (gCtrl.phase == "Solar")
         { //=======================================================*Solar*============================================================================
-            if (inputState.lshift)
+            if (inputState.key[Key::LShift])
             {
                 /*std::vector<planet>::iterator Me;
                 for(Me = Planets.begin(); Me != Planets.end(); ++Me )
@@ -4342,27 +4342,27 @@ int main()
             // TODO: Fix Laterif(Key.q){aim--; std::cout << aim << std::endl; sf::Sleep(0.2);}
             // TODO: Fix Laterif(Key.e){aim++; std::cout << aim << std::endl; sf::Sleep(0.2);}
 
-            if (inputState.left == true)
+            if (inputState.key[Key::Left])
             {
                 gvars::currentx--;
                 plyAct = true;
             }
-            if (inputState.right == true)
+            if (inputState.key[Key::Right])
             {
                 gvars::currentx++;
                 plyAct = true;
             }
-            if (inputState.up == true)
+            if (inputState.key[Key::Up])
             {
                 gvars::currenty--;
                 plyAct = true;
             }
-            if (inputState.down == true)
+            if (inputState.key[Key::Down])
             {
                 gvars::currenty++;
                 plyAct = true;
             }
-            if (inputState.lshift == true && inputState.left == true)
+            if (inputState.key[Key::LShift] == true && inputState.key[Key::Left])
             {
                 gvars::currentx--;
                 gvars::currentx--;
@@ -4370,7 +4370,7 @@ int main()
                 gvars::currentx--;
                 plyAct = true;
             } //Sprite.Move(-100 * ElapsedTime, 0);
-            if (inputState.lshift == true && inputState.right == true)
+            if (inputState.key[Key::LShift] == true && inputState.key[Key::Right])
             {
                 gvars::currentx++;
                 gvars::currentx++;
@@ -4378,7 +4378,7 @@ int main()
                 gvars::currentx++;
                 plyAct = true;
             } //Sprite.Move( 100 * ElapsedTime, 0);
-            if (inputState.lshift == true && inputState.up == true)
+            if (inputState.key[Key::LShift] == true && inputState.key[Key::Up])
             {
                 gvars::currenty--;
                 gvars::currenty--;
@@ -4386,7 +4386,7 @@ int main()
                 gvars::currenty--;
                 plyAct = true;
             } //Sprite.Move(0, -100 * ElapsedTime);
-            if (inputState.lshift == true && inputState.down == true)
+            if (inputState.key[Key::LShift] == true && inputState.key[Key::Down])
             {
                 gvars::currenty++;
                 gvars::currenty++;
@@ -4398,17 +4398,17 @@ int main()
         } //=============================================================================*End of Solar*========================================================================
         if (gCtrl.phase == "Test")
         {
-            if (inputState.up)
+            if (inputState.key[Key::Up])
                 testage++;
-            if (inputState.down)
+            if (inputState.key[Key::Down])
                 testage--;
-            if (inputState.right)
+            if (inputState.key[Key::Right])
                 testage2++;
-            if (inputState.left)
+            if (inputState.key[Key::Left])
                 testage2--;
-            if (inputState.pad2)
+            if (inputState.key[Key::Numpad2])
                 radius++;
-            if (inputState.pad8)
+            if (inputState.key[Key::Numpad8])
                 radius--;
 
             if (gvars::currenty >
@@ -4433,17 +4433,17 @@ int main()
                 gvars::currentx = 63;
             }
 
-            if (inputState.g)
+            if (inputState.key[Key::G])
                 initalizeWorldTiles();
             //DrawNewTiles();
 
             drawWorldTiles();
-            if (inputState.j)
+            if (inputState.key[Key::J])
                 tilesGoUp();
-            if (inputState.k)
+            if (inputState.key[Key::K])
                 tilesRandom();
 
-            if (inputState.m)
+            if (inputState.key[Key::M])
             {
                 std::set<int> setage;
                 setage.insert(1);
@@ -4458,27 +4458,27 @@ int main()
                 }
             }
 
-            if (inputState.left == true)
+            if (inputState.key[Key::Left])
             {
                 gvars::currentx--;
                 plyAct = true;
             }
-            if (inputState.right == true)
+            if (inputState.key[Key::Right])
             {
                 gvars::currentx++;
                 plyAct = true;
             }
-            if (inputState.up == true)
+            if (inputState.key[Key::Up])
             {
                 gvars::currenty--;
                 plyAct = true;
             }
-            if (inputState.down == true)
+            if (inputState.key[Key::Down])
             {
                 gvars::currenty++;
                 plyAct = true;
             }
-            if (inputState.lshift == true && inputState.left == true)
+            if (inputState.key[Key::LShift] == true && inputState.key[Key::Left])
             {
                 gvars::currentx--;
                 gvars::currentx--;
@@ -4486,7 +4486,7 @@ int main()
                 gvars::currentx--;
                 plyAct = true;
             } //Sprite.Move(-100 * ElapsedTime, 0);
-            if (inputState.lshift == true && inputState.right == true)
+            if (inputState.key[Key::LShift] == true && inputState.key[Key::Right])
             {
                 gvars::currentx++;
                 gvars::currentx++;
@@ -4494,7 +4494,7 @@ int main()
                 gvars::currentx++;
                 plyAct = true;
             } //Sprite.Move( 100 * ElapsedTime, 0);
-            if (inputState.lshift == true && inputState.up == true)
+            if (inputState.key[Key::LShift] == true && inputState.key[Key::Up])
             {
                 gvars::currenty--;
                 gvars::currenty--;
@@ -4502,7 +4502,7 @@ int main()
                 gvars::currenty--;
                 plyAct = true;
             } //Sprite.Move(0, -100 * ElapsedTime);
-            if (inputState.lshift == true && inputState.down == true)
+            if (inputState.key[Key::LShift] == true && inputState.key[Key::Down])
             {
                 gvars::currenty++;
                 gvars::currenty++;
@@ -4567,7 +4567,7 @@ int main()
         }*/
             }
 
-            if (inputState.space)
+            if (inputState.key[Key::Space])
             {
                 float xpos = xanchor;
                 float ypos = yanchor;
@@ -5130,13 +5130,13 @@ int main()
 
         if (gCtrl.phase == "World")
         {
-            if (inputState.left == true)
+            if (inputState.key[Key::Left])
                 gvars::currentx--;
-            if (inputState.right == true)
+            if (inputState.key[Key::Right])
                 gvars::currentx++;
-            if (inputState.up == true)
+            if (inputState.key[Key::Up])
                 gvars::currenty--;
-            if (inputState.down == true)
+            if (inputState.key[Key::Down])
                 gvars::currenty++;
 
             gCtrl.worldLoop();
@@ -5225,7 +5225,7 @@ int main()
                                  (pos.y * 20) + 20, sf::Color(0, 0, 0, 0), 2,
                                  sf::Color(0, 200, 200, 255));
 
-            if (inputState.c && true == false)
+            if (inputState.key[Key::C] && true == false)
             { // Not sure what this was for, Perhaps an early alpha planet builder?
                 for (int x = 0; x != GRIDS; x++)
                 {
@@ -5402,7 +5402,7 @@ int main()
                 }
             }
 
-            if (inputState.b)
+            if (inputState.key[Key::B])
             {
                 for (int i = 0; i <= 32; i++)
                 {
@@ -5410,7 +5410,7 @@ int main()
                 }
             }
 
-            if (inputState.comma)
+            if (inputState.key[Key::Comma])
             {
                 if (gvars::debug)
                     std::cout << "Comma was pressed \n";
@@ -5421,33 +5421,33 @@ int main()
                 if (gvars::debug)
                     std::cout << "Done Building Local Test\n";
             }
-            if (inputState.period)
+            if (inputState.key[Key::Period])
             {
                 gCtrl.phase = "World";
                 gCtrl.buildWorldTest();
             }
-            if (inputState.rctrl)
+            if (inputState.key[Key::RControl])
             {
                 gCtrl.phase = "Test";
             }
         } //=============================================================================*End of Main Menu*========================================================================
 
-        if (inputState.pad7)
+        if (inputState.key[Key::Numpad7])
         {
             gvars::scalex += 0.1;
             fSleep(0.1);
         }
-        if (inputState.pad8)
+        if (inputState.key[Key::Numpad8])
         {
             gvars::scaley += 0.1;
             fSleep(0.1);
         }
-        if (inputState.pad4)
+        if (inputState.key[Key::Numpad4])
         {
             gvars::scalex -= 0.1;
             fSleep(0.1);
         }
-        if (inputState.pad5)
+        if (inputState.key[Key::Numpad5])
         {
             gvars::scaley -= 0.1;
             fSleep(0.1);
@@ -5455,44 +5455,44 @@ int main()
         // End of Game Mode Loops =========================================================================
 
         { //======Camera Controls======
-            if (inputState.plus == true)
+            if (inputState.key[Key::Add] == true)
             {
                 gvars::view1.zoom(2);
                 fSleep(0.2);
             }
-            if (inputState.minus == true)
+            if (inputState.key[Key::Subtract] == true)
             {
                 gvars::view1.zoom(0.5);
                 fSleep(0.2);
             }
-            if (inputState.q && !inputState.lshift)
+            if (inputState.key[Key::Q] && !inputState.key[Key::LShift])
             {
                 gvars::gCtimescale -= 0.001;
             }
-            if (inputState.e && !inputState.lshift)
+            if (inputState.key[Key::E] && !inputState.key[Key::LShift])
             {
                 gvars::gCtimescale += 0.001;
             }
-            if (inputState.q && inputState.lshift)
+            if (inputState.key[Key::Q] && inputState.key[Key::LShift])
             {
                 gvars::gCtimescale -= 0.01;
             }
-            if (inputState.e && inputState.lshift)
+            if (inputState.key[Key::E] && inputState.key[Key::LShift])
             {
                 gvars::gCtimescale += 0.01;
             }
-            if (inputState.w)
+            if (inputState.key[Key::W])
             {
                 gvars::gCtimescale = 1;
             }
         }
 
-        if (inputState.pad0 == true)
+        if (inputState.key[Key::Numpad0] == true)
         {
             window.setView(gvars::view1);
             plyAct = true;
         }
-        if (inputState.pad2 == true)
+        if (inputState.key[Key::Numpad2] == true)
         {
             window.setView(planetary);
             plyAct = true;
