@@ -19,9 +19,9 @@ void RMBMenuItem(Item &pItem)
     job.pItem = &pItem;
     JobList.push_back(job);
     */
-    for (size_t i = 0; i != UniFact.size(); i++)
+    for (size_t i = 0; i != uniFact.size(); i++)
     {
-        if (UniFact[i].PlayerControlled)
+        if (uniFact[i].playerControlled)
         {
             Job job;
             job.pItem = &pItem;
@@ -36,16 +36,16 @@ void RMBMenuItem(Item &pItem)
                 job.Type = "PickUp";
             }
 
-            UniFact[i].JobList.push_back(job);
+            uniFact[i].jobList.push_back(job);
         }
     }
 }
 
 void DigWall(sf::Vector2f Pos)
 {
-    for (size_t i = 0; i != UniFact.size(); i++)
+    for (size_t i = 0; i != uniFact.size(); i++)
     {
-        if (UniFact[i].PlayerControlled)
+        if (uniFact[i].playerControlled)
         {
             Job job;
             std::cout << "Tile clicked: "
@@ -65,16 +65,16 @@ void DigWall(sf::Vector2f Pos)
                 return;
             }
 
-            UniFact[i].JobList.push_back(job);
+            uniFact[i].jobList.push_back(job);
         }
     }
 }
 
 void RMBMenuTile(sf::Vector2f Pos)
 {
-    for (size_t i = 0; i != UniFact.size(); i++)
+    for (size_t i = 0; i != uniFact.size(); i++)
     {
-        if (UniFact[i].PlayerControlled)
+        if (uniFact[i].playerControlled)
         {
             Job job;
             //job.pItem = &pItem;
@@ -96,7 +96,7 @@ void RMBMenuTile(sf::Vector2f Pos)
             }
 
             Con("Dafuqe4 \n");
-            UniFact[i].JobList.push_back(job);
+            uniFact[i].jobList.push_back(job);
             Con("Dafuqe5 \n");
         }
     }
@@ -105,17 +105,17 @@ void RMBMenuTile(sf::Vector2f Pos)
 void DrawJobList(int DrawXPos, int DrawYPos)
 {
     int YVariance = 1;
-    for (size_t i = 0; i != UniFact.size(); i++)
+    for (size_t i = 0; i != uniFact.size(); i++)
     {
-        if (UniFact[i].PlayerControlled)
+        if (uniFact[i].playerControlled)
         {
-            for (size_t t = 0; t != UniFact[i].JobList.size(); t++)
+            for (size_t t = 0; t != uniFact[i].jobList.size(); t++)
             {
 
                 //cText.CreateText(DrawXPos,DrawYPos+(YVariance*10),11,sf::Color::Yellow,AddString(UniFact[i].JobList[t].Type," "),UniFact[i].JobList[t].Name);
 
-                if (UniFact[i].JobList[t].pItem != nullptr &&
-                    UniFact[i].JobList[t].pWorker != nullptr)
+                if (uniFact[i].jobList[t].pItem != nullptr &&
+                    uniFact[i].jobList[t].pWorker != nullptr)
                 {
                     debug("First condition");
                     debug("CritterName");
@@ -123,38 +123,38 @@ void DrawJobList(int DrawXPos, int DrawYPos)
 
                     cText.CreateText(
                         DrawXPos, DrawYPos + (YVariance * 10), 11,
-                        sf::Color::Yellow, UniFact[i].JobList[t].pWorker->name +
-                                               UniFact[i].JobList[t].Name + " ",
-                        UniFact[i]
-                            .JobList[t]
+                        sf::Color::Yellow, uniFact[i].jobList[t].pWorker->name +
+                                               uniFact[i].jobList[t].Name + " ",
+                        uniFact[i]
+                            .jobList[t]
                             .pItem->name); // ,JobList.at(i).pItem.name
                 }
-                else if (UniFact[i].JobList[t].pItem != nullptr)
+                else if (uniFact[i].jobList[t].pItem != nullptr)
                 {
                     debug("Second condition");
                     cText.CreateText(
                         DrawXPos, DrawYPos + (YVariance * 10), 11,
-                        sf::Color::Yellow, UniFact[i].JobList[t].Name + " ",
-                        UniFact[i]
-                            .JobList[t]
+                        sf::Color::Yellow, uniFact[i].jobList[t].Name + " ",
+                        uniFact[i]
+                            .jobList[t]
                             .pItem->name); // ,JobList.at(i).pItem.name
                 }
-                else if (UniFact[i].JobList[t].pWorker != nullptr)
+                else if (uniFact[i].jobList[t].pWorker != nullptr)
                 {
                     debug("Third condition");
                     cText.CreateText(DrawXPos, DrawYPos + (YVariance * 10), 11,
                                      sf::Color::Yellow,
-                                     UniFact[i].JobList[t].pWorker->name +
-                                         UniFact[i].JobList[t].Type + " ",
-                                     UniFact[i].JobList[t].Name);
+                                     uniFact[i].jobList[t].pWorker->name +
+                                         uniFact[i].jobList[t].Type + " ",
+                                     uniFact[i].jobList[t].Name);
                 }
                 else
                 {
                     debug("Fourth condition");
                     cText.CreateText(DrawXPos, DrawYPos + (YVariance * 10), 11,
                                      sf::Color::Yellow,
-                                     UniFact[i].JobList[t].Type + " ",
-                                     UniFact[i].JobList[t].Name);
+                                     uniFact[i].jobList[t].Type + " ",
+                                     uniFact[i].jobList[t].Name);
                 }
 
                 YVariance++;

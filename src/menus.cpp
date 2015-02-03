@@ -483,9 +483,9 @@ void menuPopUp()
                     (Key.num1Time == 1 && gCtrl.menuPtrCon.pItem->pickupable))
                 {
 
-                    for (size_t i = 0; i != UniFact.size(); i++)
+                    for (size_t i = 0; i != uniFact.size(); i++)
                     {
-                        if (UniFact[i].PlayerControlled)
+                        if (uniFact[i].playerControlled)
                         {
                             Job job;
                             job.pItem = gCtrl.menuPtrCon.pItem;
@@ -493,7 +493,7 @@ void menuPopUp()
                             job.Name = "PickUpItem";
                             job.Type = "PickUp";
 
-                            UniFact[i].JobList.push_back(job);
+                            uniFact[i].jobList.push_back(job);
                         }
                     }
                 }
@@ -526,9 +526,9 @@ void menuPopUp()
                     (Key.num1Time == 1 && !gCtrl.menuPtrCon.pItem->pickupable))
                 {
 
-                    for (size_t i = 0; i != UniFact.size(); i++)
+                    for (size_t i = 0; i != uniFact.size(); i++)
                     {
-                        if (UniFact[i].PlayerControlled)
+                        if (uniFact[i].playerControlled)
                         {
                             Job job;
                             job.pItem = gCtrl.menuPtrCon.pItem;
@@ -536,7 +536,7 @@ void menuPopUp()
                             job.Name = "ChopDownTree";
                             job.Type = "Chop";
 
-                            UniFact[i].JobList.push_back(job);
+                            uniFact[i].jobList.push_back(job);
                         }
                     }
                 }
@@ -657,7 +657,7 @@ void menuPopUp()
                     //GC.BuildLocal("City", WorldMap[abs_to_index(GC.MenuPos.x/20)][abs_to_index(GC.MenuPos.y/20)].Infected);
                     BuildLocalfromWorld(sf::Vector2i(
                         abs(gCtrl.menuPos.x / 20), abs(gCtrl.menuPos.y / 20)));
-                    BuildStartingCritters(WorldMap[abs_to_index(
+                    buildStartingCritters(WorldMap[abs_to_index(
                         gCtrl.menuPos.x / 20)][abs_to_index(gCtrl.menuPos.y /
                                                             20)].Infected);
                     spawnItem("Sword", 990, 1020);
@@ -684,7 +684,7 @@ void menuPopUp()
 
                     spawnItem("Broken Vending Machine", 1030, 1030);
 
-                    SpawnCritter("Mini Turret", 1000, 1070);
+                    spawnCritter("Mini Turret", 1000, 1070);
 
                     gCtrl.menuPos = sf::Vector2f(-10000, -10000);
                     gCtrl.menuType = "NULL";
@@ -867,12 +867,12 @@ void menuPopUp()
                 if (squareButtonClicked(Butt) || Key.num5Time == 1)
                 {
 
-                    std::vector<NPC>::iterator zit;
+                    std::vector<Npc>::iterator zit;
                     for (zit = npclist.begin(); zit != npclist.end(); ++zit)
                     {
                         if (zit->alive == true)
                         {
-                            zit->PrintConsoleInfo();
+                            zit->printConsoleInfo();
                         }
                     }
 
@@ -902,7 +902,7 @@ void menuPopUp()
 
                     for (auto &elem : npclist)
                     {
-                        elem.PrintBloodContent();
+                        elem.printBloodContent();
                     }
 
                     gCtrl.menuPos = sf::Vector2f(-10000, -10000);
@@ -961,7 +961,7 @@ void menuPopUp()
                 {
                     for (auto &elem : npclist)
                     {
-                        elem.ToDelete = true;
+                        elem.toDelete = true;
                     }
                 }
             }
@@ -1070,12 +1070,12 @@ void menuPopUp()
     {
         gCtrl.menuEndPos = sf::Vector2f(
             gCtrl.menuPos.x + 100,
-            (gCtrl.menuPos.y + (npcmanager.GlobalCritter.size() * 10)) + 5);
+            (gCtrl.menuPos.y + (npcmanager.globalCritter.size() * 10)) + 5);
         effects.createSquare(gCtrl.menuPos.x, gCtrl.menuPos.y,
                              gCtrl.menuEndPos.x, gCtrl.menuEndPos.y,
                              sf::Color::White);
         int iY = 0;
-        for (auto &elem : npcmanager.GlobalCritter)
+        for (auto &elem : npcmanager.globalCritter)
         {
             effects.createLine(
                 gCtrl.menuPos.x, (gCtrl.menuPos.y + (iY * 11)) + 8,
@@ -1089,7 +1089,7 @@ void menuPopUp()
                              5, sf::Color::Red);
             if (buttonClicked(Butt))
             {
-                SpawnCritter(elem.name, gCtrl.menuPos.x, gCtrl.menuPos.y);
+                spawnCritter(elem.name, gCtrl.menuPos.x, gCtrl.menuPos.y);
                 fSleep(0.2);
                 break;
             }
@@ -1162,14 +1162,14 @@ void menuPopUp()
                         {
                             if (Item->pickupable == true)
                             {
-                                npclist.at(GetNpcVectorId(gvars::myTargetid))
+                                npclist.at(getNpcVectorId(gvars::myTargetid))
                                     .action = "Pickup";
-                                npclist.at(GetNpcVectorId(gvars::myTargetid))
+                                npclist.at(getNpcVectorId(gvars::myTargetid))
                                     .target = Item->name;
-                                npclist.at(GetNpcVectorId(gvars::myTargetid))
-                                    .TargetId = Item->id;
-                                npclist.at(GetNpcVectorId(gvars::myTargetid))
-                                    .TargetPos =
+                                npclist.at(getNpcVectorId(gvars::myTargetid))
+                                    .targetId = Item->id;
+                                npclist.at(getNpcVectorId(gvars::myTargetid))
+                                    .targetPos =
                                     sf::Vector2f(Item->xpos, Item->ypos);
                                 gCtrl.menuPos = sf::Vector2f(-10000, -10000);
                                 gCtrl.menuType = "NULL";

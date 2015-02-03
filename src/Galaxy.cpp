@@ -33,7 +33,7 @@ void GalaxyController::wave()
     bool FoundAny = false;
     for (auto &elem : npclist)
     {
-        if (elem.HasTag("[EatsFlesh:") && elem.health > 0)
+        if (elem.hasTag("[EatsFlesh:") && elem.health > 0)
         {
             FoundAny = true;
         }
@@ -157,7 +157,7 @@ void GalaxyController::buildLocal(std::string Type, int ZedAmount)
                 for (int count = 0; count <= 2; count++)
                 {
                     sf::Vector2f vPos = math::circleRandz(1000, 1000, 180);
-                    SpawnCritter("Human", vPos.x, vPos.y);
+                    spawnCritter("Human", vPos.x, vPos.y);
                 }
 
                 spawnItem("Sword", 1039, 1020);
@@ -181,7 +181,7 @@ void GalaxyController::buildLocal(std::string Type, int ZedAmount)
 
                 spawnItem("Broken Vending Machine", 1150, 1050);
 
-                SpawnCritter("Mini Turret", 1000, 1000);
+                spawnCritter("Mini Turret", 1000, 1000);
             }
             catch (std::exception &e)
             {
@@ -256,21 +256,21 @@ void GalaxyController::buildLocal(std::string Type, int ZedAmount)
                         sf::Vector2f vPos = Math::CircleRandz(1000,1000,180);
                         SpawnCritter("Human",vPos.x,vPos.y);
                     }*/
-                for (size_t count = 0; count != Squady.Squad.size(); count++)
+                for (size_t count = 0; count != squady.squad.size(); count++)
                 {
                     sf::Vector2f vPos = math::circleRandz(1000, 1000, 180);
                     //SpawnCritter("Human",vPos.x,vPos.y);
-                    Squady.Squad.at(count).xpos = vPos.x;
-                    Squady.Squad.at(count).ypos = vPos.y;
+                    squady.squad.at(count).xpos = vPos.x;
+                    squady.squad.at(count).ypos = vPos.y;
 
-                    npcmanager.AddedCritters.push_back(Squady.Squad.at(count));
+                    npcmanager.addedCritters.push_back(squady.squad.at(count));
                 }
 
                 for (int zeds = 0; zeds != ZedAmount; zeds++)
                 {
                     Con("Starting Zed");
                     sf::Vector2f vPos = math::circleRandz(1000, 1000, 580);
-                    SpawnCritter("Zombie", vPos.x, vPos.y);
+                    spawnCritter("Zombie", vPos.x, vPos.y);
                     Con("Ending Zed");
                 }
 
@@ -285,7 +285,7 @@ void GalaxyController::buildLocal(std::string Type, int ZedAmount)
 
                 spawnItem("Broken Vending Machine", 1150, 1050);
 
-                SpawnCritter("Mini Turret", 1000, 1000);
+                spawnCritter("Mini Turret", 1000, 1000);
             }
             catch (std::exception &e)
             {
@@ -381,7 +381,7 @@ void GalaxyController::buildLocalTest()
             for (int count = 0; count <= 2; count++)
             {
                 sf::Vector2f vPos = math::circleRandz(1000, 1000, 180);
-                SpawnCritter("Human", vPos.x, vPos.y);
+                spawnCritter("Human", vPos.x, vPos.y);
             }
 
             spawnItem("Sword", 1039, 1020);
@@ -396,7 +396,7 @@ void GalaxyController::buildLocalTest()
 
             spawnItem("Broken Vending Machine", 1150, 1050);
 
-            SpawnCritter("Mini Turret", 1000, 1000);
+            spawnCritter("Mini Turret", 1000, 1000);
         }
         catch (std::exception &e)
         {
@@ -415,7 +415,7 @@ void GalaxyController::zombieSwarmLocal(int num)
         for (int count = 0; count <= num; count++)
         {
             sf::Vector2f Pos = math::circleRandz(1000, 1000, 500);
-            SpawnCritter("Zombie", Pos.x, Pos.y);
+            spawnCritter("Zombie", Pos.x, Pos.y);
         }
     }
 }
@@ -460,59 +460,59 @@ void GalaxyController::buildWorldTest()
 void GalaxyController::worldLoop()
 {
     debug("Starting world loop");
-    for (size_t i = 0; i != UniFact.size(); i++)
+    for (size_t i = 0; i != uniFact.size(); i++)
     { // Running through factions, Probably needs it's own function.
-        debug("BeginningFaction" + UniFact[i].Name);
+        debug("BeginningFaction" + uniFact[i].name);
 
-        if (UniFact[i].Initialized == false)
+        if (uniFact[i].initialized == false)
         { // Spawning and assigning factions their starting territory.
 
             int x = randz(1, 99);
             int y = randz(1, 99);
             if (WorldMap[x][y].Owner == "")
             {
-                WorldMap[x][y].Owner = UniFact[i].Name;
+                WorldMap[x][y].Owner = uniFact[i].name;
 
                 Territory ClaimedTerritory;
 
-                ClaimedTerritory.WorldTile = sf::Vector2i(x, y);
+                ClaimedTerritory.worldTile = sf::Vector2i(x, y);
 
-                UniFact[i].Territories.push_back(ClaimedTerritory);
+                uniFact[i].territories.push_back(ClaimedTerritory);
 
-                UniFact[i].Initialized = true;
+                uniFact[i].initialized = true;
 
-                std::cout << UniFact[i].Name << " has claimed " << x << "/" << y
+                std::cout << uniFact[i].name << " has claimed " << x << "/" << y
                           << std::endl;
             }
         }
 
-        if (UniFact[i].Territories.size() != 0 &&
-            static_cast<size_t>(UniFact[i].Members) <=
-                UniFact[i].Territories.size() / 2)
+        if (uniFact[i].territories.size() != 0 &&
+            static_cast<size_t>(uniFact[i].members) <=
+                uniFact[i].territories.size() / 2)
         {
-            if (randz(1, 100) <= UniFact[i].Members * 4)
+            if (randz(1, 100) <= uniFact[i].members * 4)
             {
-                UniFact[i].Members++;
+                uniFact[i].members++;
             }
         }
 
-        if ((UniFact[i].Aggressiveness * UniFact[i].Members) >=
-            randz(0, 100 * (UniFact[i].Territories.size() / 4)))
+        if ((uniFact[i].aggressiveness * uniFact[i].members) >=
+            randz(0, 100 * (uniFact[i].territories.size() / 4)))
         { // Factions aggression causes them to seek more territory.
             bool TileChange = false;
 
-            if (UniFact[i].Territories.empty())
+            if (uniFact[i].territories.empty())
                 continue;
-            if (UniFact[i].Members <=
+            if (uniFact[i].members <=
                 0) /* Don't ask how it can be in the negatives. */
                 continue;
 
-            int ForMembers = UniFact[i].Members;
+            int ForMembers = uniFact[i].members;
             for (int t = 0; t != ForMembers; t++)
             {
-                int Territ = randz(0, UniFact[i].Territories.size() - 1);
+                int Territ = randz(0, uniFact[i].territories.size() - 1);
 
-                sf::Vector2i Short = UniFact[i].Territories[Territ].WorldTile;
+                sf::Vector2i Short = uniFact[i].territories[Territ].worldTile;
 
                 if (AABB(Short, 1, 98, 1, 98))
                 {
@@ -544,55 +544,55 @@ void GalaxyController::worldLoop()
 
                     if (WT->Owner == "")
                     { // Claim it for themselves.
-                        WT->Owner = UniFact[i].Name;
+                        WT->Owner = uniFact[i].name;
 
                         Territory CT;
 
-                        CT.WorldTile = sf::Vector2i(Short.x + X, Short.y + Y);
-                        UniFact[i].Territories.push_back(CT);
+                        CT.worldTile = sf::Vector2i(Short.x + X, Short.y + Y);
+                        uniFact[i].territories.push_back(CT);
                     }
-                    else if (WT->Owner != UniFact[i].Name)
+                    else if (WT->Owner != uniFact[i].name)
                     { // Declare War.
                         std::string Tenant = WT->Owner;
 
-                        for (size_t z = 0; z != UniFact.size(); z++)
+                        for (size_t z = 0; z != uniFact.size(); z++)
                         {
-                            if (UniFact[z].Name == Tenant)
+                            if (uniFact[z].name == Tenant)
                             {
                                 float TenantTech = 0;
                                 float InvaderTech = 0;
 
-                                TenantTech += UniFact[z].TechMedical;
-                                TenantTech += UniFact[z].TechWeaponryBlunt;
-                                TenantTech += UniFact[z].TechWeaponryEnergy;
-                                TenantTech += UniFact[z].TechWeaponryExplosive;
-                                TenantTech += UniFact[z].TechWeaponryMass;
-                                TenantTech += UniFact[z].TechWeaponrySharp;
+                                TenantTech += uniFact[z].techMedical;
+                                TenantTech += uniFact[z].techWeaponryBlunt;
+                                TenantTech += uniFact[z].techWeaponryEnergy;
+                                TenantTech += uniFact[z].techWeaponryExplosive;
+                                TenantTech += uniFact[z].techWeaponryMass;
+                                TenantTech += uniFact[z].techWeaponrySharp;
 
-                                InvaderTech += UniFact[i].TechMedical;
-                                InvaderTech += UniFact[i].TechWeaponryBlunt;
-                                InvaderTech += UniFact[i].TechWeaponryEnergy;
-                                InvaderTech += UniFact[i].TechWeaponryExplosive;
-                                InvaderTech += UniFact[i].TechWeaponryMass;
-                                InvaderTech += UniFact[i].TechWeaponrySharp;
+                                InvaderTech += uniFact[i].techMedical;
+                                InvaderTech += uniFact[i].techWeaponryBlunt;
+                                InvaderTech += uniFact[i].techWeaponryEnergy;
+                                InvaderTech += uniFact[i].techWeaponryExplosive;
+                                InvaderTech += uniFact[i].techWeaponryMass;
+                                InvaderTech += uniFact[i].techWeaponrySharp;
 
                                 float TenantTechnique =
                                     TenantTech +
                                     (TenantTech *
-                                     (PercentIs(UniFact[z].Creativity, 35) *
+                                     (PercentIs(uniFact[z].creativity, 35) *
                                       0.01));
                                 float InvaderTechnique =
                                     InvaderTech +
                                     (InvaderTech *
-                                     (PercentIs(UniFact[i].Creativity, 35) *
+                                     (PercentIs(uniFact[i].creativity, 35) *
                                       0.01));
 
                                 float TenantPower =
                                     TenantTechnique *
-                                    (PercentIs(UniFact[z].Members, 60) * 0.01);
+                                    (PercentIs(uniFact[z].members, 60) * 0.01);
                                 float InvaderPower =
                                     InvaderTechnique *
-                                    (PercentIs(UniFact[i].Members, 60) * 0.01);
+                                    (PercentIs(uniFact[i].members, 60) * 0.01);
 
                                 TenantPower = TenantPower * randz(7, 10);
                                 InvaderPower = InvaderPower * randz(7, 10);
@@ -602,28 +602,28 @@ void GalaxyController::worldLoop()
                                 {
                                     //UniFact[z].Members = Loss;
                                     //if(Members > 0) UniFact[i].Members = randz(UniFact[i].Members/16,UniFact[i].Members/4);
-                                    if (UniFact[z].Members > 0)
-                                        UniFact[z].Members -= 1;
+                                    if (uniFact[z].members > 0)
+                                        uniFact[z].members -= 1;
 
-                                    WT->Owner = UniFact[i].Name;
+                                    WT->Owner = uniFact[i].name;
 
                                     Territory CT;
 
-                                    CT.WorldTile =
+                                    CT.worldTile =
                                         sf::Vector2i(Short.x + X, Short.y + Y);
-                                    UniFact[i].Territories.push_back(CT);
+                                    uniFact[i].territories.push_back(CT);
 
                                     for (size_t k = 0;
-                                         k != UniFact[z].Territories.size();
+                                         k != uniFact[z].territories.size();
                                          k++)
                                     {
-                                        if (UniFact[z]
-                                                .Territories[k]
-                                                .WorldTile ==
+                                        if (uniFact[z]
+                                                .territories[k]
+                                                .worldTile ==
                                             sf::Vector2i(Short.x + X,
                                                          Short.y + Y))
                                         {
-                                            UniFact[z].Territories[k].ToDelete =
+                                            uniFact[z].territories[k].toDelete =
                                                 true;
                                             TileChange = true;
                                         }
@@ -631,8 +631,8 @@ void GalaxyController::worldLoop()
                                 }
                                 else
                                 {
-                                    if (UniFact[i].Members > 0)
-                                        UniFact[i].Members -= 1;
+                                    if (uniFact[i].members > 0)
+                                        uniFact[i].members -= 1;
                                     //UniFact[i].Members = randz(UniFact[i].Members/4,UniFact[i].Members);
                                     //UniFact[z].Members = randz(UniFact[z].Members/32,UniFact[z].Members/16);
                                 }
@@ -644,16 +644,16 @@ void GalaxyController::worldLoop()
 
             if (TileChange)
             {
-                for (size_t Fact = 0; Fact != UniFact.size(); Fact++)
+                for (size_t Fact = 0; Fact != uniFact.size(); Fact++)
                 {
                     //std::cout << UniFact[Fact].Name << " Factions: " << UniFact[Fact].Territories.size();
-                    CleanTerritories(UniFact[Fact].Territories);
+                    cleanTerritories(uniFact[Fact].territories);
                     //std::cout << ", " << UniFact[Fact].Name << "  Factions: " << UniFact[Fact].Territories.size() << std::endl;
                 }
             }
         }
 
-        debug("EndingFaction" + UniFact[i].Name);
+        debug("EndingFaction" + uniFact[i].name);
     }
     debug("Ending world loop");
 }

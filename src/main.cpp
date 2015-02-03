@@ -98,33 +98,33 @@ void UnpointItems(std::list<Item> &Items)
     {
         if ((*i).toDelete)
         {
-            std::cout << "JobList size: " << UniFact[0].JobList.size()
+            std::cout << "JobList size: " << uniFact[0].jobList.size()
                       << std::endl;
 
-            for (size_t t = 0; t != UniFact[0].JobList.size(); t++)
+            for (size_t t = 0; t != uniFact[0].jobList.size(); t++)
             {
-                std::cout << "Job Point: " << &UniFact[0].JobList[t].pItem
-                          << "/" << UniFact[0].JobList[t].pItem
+                std::cout << "Job Point: " << &uniFact[0].jobList[t].pItem
+                          << "/" << uniFact[0].jobList[t].pItem
                           << ", Item Point: " << &(*i) << "/" << &(*i)
                           << std::endl;
                 fSleep(1);
 
-                if (UniFact[0].JobList[t].pItem != nullptr &&
+                if (uniFact[0].jobList[t].pItem != nullptr &&
                     (&(*i)) != nullptr)
                 {
 
                     std::cout << "ID! ";
                     try
                     {
-                        std::cout << UniFact[0].JobList[t].pItem->id;
+                        std::cout << uniFact[0].jobList[t].pItem->id;
                     }
                     catch (std::exception &e)
                     {
                         std::cout << "Something went wrong in in here\n";
                     }
-                    std::cout << UniFact[0].JobList[t].pItem->id;
+                    std::cout << uniFact[0].jobList[t].pItem->id;
                     std::cout << " ; ";
-                    int ID1 = UniFact[0].JobList[t].pItem->id;
+                    int ID1 = uniFact[0].jobList[t].pItem->id;
                     std::cout << "ID 2! ";
                     std::cout << (*i).id;
                     std::cout << " ; ";
@@ -135,7 +135,7 @@ void UnpointItems(std::list<Item> &Items)
                         ID2) //if(UniFact[0].JobList[t].pItem != NULL && &(*i) != NULL && UniFact[0].JobList[t].pItem == &(*i)) //if(ID1 == ID2)
                     {
                         std::cout << "Match! \n";
-                        UniFact[0].JobList[t].pItem = nullptr;
+                        uniFact[0].jobList[t].pItem = nullptr;
                         //fSleep(1);
                     }
                 }
@@ -239,7 +239,7 @@ void updateItem()
                 if (item.age >= 10)
                 {
                     item.toDelete = true;
-                    Boom(item.xpos, item.ypos, randz(item.mindam, item.maxdam),
+                    boom(item.xpos, item.ypos, randz(item.mindam, item.maxdam),
                          item.range);
 
                     for (int ItLength = 0; ItLength != 5; ItLength++)
@@ -299,7 +299,7 @@ std::vector<int> NnGTrace(int xa, int ya, int xb, int yb, int id,
         int Count = 0;
 
         { // Merely doing this so I can reuse the same code, but for items, Hehe.
-            std::vector<NPC>::iterator Me;
+            std::vector<Npc>::iterator Me;
 
             for (Me = npclist.begin(); Me != npclist.end(); ++Me)
             {
@@ -322,7 +322,7 @@ std::vector<int> NnGTrace(int xa, int ya, int xb, int yb, int id,
                         if (Exists == false)
                         {
                             VectorID.push_back(69);
-                            VectorID.push_back(GetNpcVectorId(Me->id));
+                            VectorID.push_back(getNpcVectorId(Me->id));
                         }
                     }
                     catch (std::exception &e)
@@ -420,7 +420,7 @@ std::vector<int> npcTrace(int xa, int ya, int xb, int yb, int id,
         x += xIncrement;
         y += yIncrement;
         bool Kill = false;
-        std::vector<NPC>::iterator Me;
+        std::vector<Npc>::iterator Me;
         int Count = 0;
         for (Me = npclist.begin(); Me != npclist.end(); ++Me)
         {
@@ -462,7 +462,7 @@ int GetItemVectorId(int id)
     return -1;
 }
 
-int GetNpcVectorId(int id)
+int getNpcVectorId(int id)
 {
     int index = 0;
     for (auto const &npc : npclist)
@@ -479,10 +479,10 @@ int GetNpcVectorId(int id)
 bool RemoveNPC(char * /*NPCname*/, int /*Id*/)
 {
     int TempInt = 0;
-    std::vector<NPC>::iterator location;
+    std::vector<Npc>::iterator location;
     for (auto it = npclist.begin(); it != npclist.end(); ++it)
     {
-        if (it->health <= 0 || it->HasSpawned == false || it->alive == false)
+        if (it->health <= 0 || it->hasSpawned == false || it->alive == false)
         {
             location = it;
             TempInt = 1;
@@ -578,7 +578,7 @@ std::set<int> NpcList(int exceptions = -1)
             {
                 std::cout << "Post exception NpcList \n";
             }
-            Returns.insert(GetNpcVectorId(npc.id));
+            Returns.insert(getNpcVectorId(npc.id));
             if (gvars::debug)
             {
                 std::cout << "Post Returns NpcList \n";
@@ -596,7 +596,7 @@ std::set<int> NpcList(int exceptions = -1)
     throw std::runtime_error("NpcList: Couldn't return anything!");
 }
 
-void critterBrain(std::vector<NPC> &NPCs)
+void critterBrain(std::vector<Npc> &NPCs)
 {
     for (auto &npc : NPCs)
     {
@@ -624,17 +624,17 @@ void critterBrain(std::vector<NPC> &NPCs)
 
         //  *   Global Part Tag Variables   *
 
-        while (SearchPos != npc.Body.BodyParts.npos) // Global Part Tags
+        while (SearchPos != npc.body.bodyParts.npos) // Global Part Tags
         {
-            SearchPos = npc.Body.BodyParts.find("{", SearchPos);
+            SearchPos = npc.body.bodyParts.find("{", SearchPos);
 
-            if (SearchPos != npc.Body.BodyParts.npos)
+            if (SearchPos != npc.body.bodyParts.npos)
             {
-                EndPos = npc.Body.BodyParts.find("}", SearchPos);
+                EndPos = npc.body.bodyParts.find("}", SearchPos);
 
                 std::string WorkingLine;
 
-                WorkingLine.append(npc.Body.BodyParts, SearchPos,
+                WorkingLine.append(npc.body.bodyParts, SearchPos,
                                    EndPos - SearchPos);
                 float PartNumber = 0;
 
@@ -693,19 +693,19 @@ void critterBrain(std::vector<NPC> &NPCs)
             }
         }
 
-        while (SearchPos != npc.Body.BodyParts.npos) // Individual Part Tags
+        while (SearchPos != npc.body.bodyParts.npos) // Individual Part Tags
         {
 
-            SearchPos = npc.Body.BodyParts.find("{", SearchPos);
+            SearchPos = npc.body.bodyParts.find("{", SearchPos);
 
-            if (SearchPos != npc.Body.BodyParts.npos)
+            if (SearchPos != npc.body.bodyParts.npos)
             {
-                EndPos = npc.Body.BodyParts.find("}", SearchPos);
+                EndPos = npc.body.bodyParts.find("}", SearchPos);
                 Parts++;
 
                 std::string WorkingLine;
 
-                WorkingLine.append(npc.Body.BodyParts, SearchPos,
+                WorkingLine.append(npc.body.bodyParts, SearchPos,
                                    EndPos - SearchPos);
 
                 float PartNumber = 0;
@@ -1100,10 +1100,10 @@ void critterBrain(std::vector<NPC> &NPCs)
             {
                 for (auto &LclItms : worlditems)
                 {
-                    if (npc.Target.item == nullptr && LclItms.massFlesh > 0 &&
-                        LclItms.user == nullptr)
+                    if (npc.targetInfo.item == nullptr &&
+                        LclItms.massFlesh > 0 && LclItms.user == nullptr)
                     {
-                        npc.Target.item =
+                        npc.targetInfo.item =
                             &LclItms; // Is this creating a copy? The Behavior in testing still makes multiple critters target the same item.
                         LclItms.user = &npc;
                     }
@@ -1111,30 +1111,30 @@ void critterBrain(std::vector<NPC> &NPCs)
                     {
 
                         float CurrentItem = math::closeish(
-                            npc.xpos, npc.ypos, (*npc.Target.item).xpos,
-                            (*npc.Target.item).ypos);
+                            npc.xpos, npc.ypos, (*npc.targetInfo.item).xpos,
+                            (*npc.targetInfo.item).ypos);
                         float NewItem = math::closeish(
                             npc.xpos, npc.ypos, LclItms.xpos, LclItms.ypos);
                         if (NewItem < CurrentItem)
                         {
-                            (*npc.Target.item).user = nullptr;
-                            npc.Target.item = &LclItms;
-                            (*npc.Target.item).user = &npc;
+                            (*npc.targetInfo.item).user = nullptr;
+                            npc.targetInfo.item = &LclItms;
+                            (*npc.targetInfo.item).user = &npc;
                         }
                     }
                 }
-                if (npc.Target.item != nullptr)
+                if (npc.targetInfo.item != nullptr)
                 {
-                    sf::Vector2f ItemPos((*npc.Target.item).xpos,
-                                         (*npc.Target.item).ypos);
-                    npc.DirMove(sf::Vector2f((*npc.Target.item).xpos,
-                                             (*npc.Target.item).ypos));
+                    sf::Vector2f ItemPos((*npc.targetInfo.item).xpos,
+                                         (*npc.targetInfo.item).ypos);
+                    npc.dirMove(sf::Vector2f((*npc.targetInfo.item).xpos,
+                                             (*npc.targetInfo.item).ypos));
 
                     if (math::closeish(npc.xpos, npc.ypos, ItemPos.x,
                                        ItemPos.y) <= npc.size * 2)
                     {
-                        Item *Tar = npc.Target.item;
-                        npc.Target.item = nullptr;
+                        Item *Tar = npc.targetInfo.item;
+                        npc.targetInfo.item = nullptr;
                         (*Tar).user = nullptr;
                         npc.inventory.push_back((*Tar));
                         (*Tar).toDelete = true;
@@ -1142,11 +1142,11 @@ void critterBrain(std::vector<NPC> &NPCs)
                 }
             }
 
-            if (npc.Target.item != nullptr && InInv == false)
+            if (npc.targetInfo.item != nullptr && InInv == false)
             {
-                effects.createLine(npc.xpos, npc.ypos, (*npc.Target.item).xpos,
-                                   (*npc.Target.item).ypos, 2,
-                                   sf::Color::White);
+                effects.createLine(
+                    npc.xpos, npc.ypos, (*npc.targetInfo.item).xpos,
+                    (*npc.targetInfo.item).ypos, 2, sf::Color::White);
             }
         }
 
@@ -1158,7 +1158,7 @@ void critterBrain(std::vector<NPC> &NPCs)
                          (*HighestDesire).DesireType, ":",
                          (*HighestDesire).Potency);
         cText.CreateText(npc.xpos - 70, npc.ypos - 35, 10, sf::Color::Cyan,
-                         npc.Body.BodyParts);
+                         npc.body.bodyParts);
 
         /* End of Critter Prioritization */
 
@@ -1200,17 +1200,17 @@ void updateNpc()
 
         //  *   Global Part Tag Variables   *
 
-        while (SearchPos != npc.Body.BodyParts.npos) // Global Part Tags
+        while (SearchPos != npc.body.bodyParts.npos) // Global Part Tags
         {
-            SearchPos = npc.Body.BodyParts.find("{", SearchPos);
+            SearchPos = npc.body.bodyParts.find("{", SearchPos);
 
-            if (SearchPos != npc.Body.BodyParts.npos)
+            if (SearchPos != npc.body.bodyParts.npos)
             {
-                EndPos = npc.Body.BodyParts.find("}", SearchPos);
+                EndPos = npc.body.bodyParts.find("}", SearchPos);
 
                 std::string WorkingLine;
 
-                WorkingLine.append(npc.Body.BodyParts, SearchPos,
+                WorkingLine.append(npc.body.bodyParts, SearchPos,
                                    EndPos - SearchPos);
                 float PartNumber = 0;
 
@@ -1270,19 +1270,19 @@ void updateNpc()
             }
         }
 
-        while (SearchPos != npc.Body.BodyParts.npos) // Individual Part Tags
+        while (SearchPos != npc.body.bodyParts.npos) // Individual Part Tags
         {
 
-            SearchPos = npc.Body.BodyParts.find("{", SearchPos);
+            SearchPos = npc.body.bodyParts.find("{", SearchPos);
 
-            if (SearchPos != npc.Body.BodyParts.npos)
+            if (SearchPos != npc.body.bodyParts.npos)
             {
-                EndPos = npc.Body.BodyParts.find("}", SearchPos);
+                EndPos = npc.body.bodyParts.find("}", SearchPos);
                 Parts++;
 
                 std::string WorkingLine;
 
-                WorkingLine.append(npc.Body.BodyParts, SearchPos,
+                WorkingLine.append(npc.body.bodyParts, SearchPos,
                                    EndPos - SearchPos);
 
                 float PartNumber = 0;
@@ -1565,27 +1565,27 @@ void updateNpc()
         if (npc.name == "Azabul")
         {
 
-            npc.TentArm1.x =
-                math::clamp(npc.TentArm1.x + randz(-3, 3), -20, 20);
-            npc.TentArm1.y =
-                math::clamp(npc.TentArm1.y + randz(-3, 3), -20, 20);
-            npc.TentArm2.x =
-                math::clamp(npc.TentArm2.x + randz(-3, 3), -20, 20);
-            npc.TentArm2.y =
-                math::clamp(npc.TentArm2.y + randz(-3, 3), -20, 20);
-            npc.TentEnd1.x =
-                math::clamp(npc.TentEnd1.x + randz(-3, 3), -20, 20);
-            npc.TentEnd1.y =
-                math::clamp(npc.TentEnd1.y + randz(-3, 3), -20, 20);
-            npc.TentEnd2.x =
-                math::clamp(npc.TentEnd2.x + randz(-3, 3), -20, 20);
-            npc.TentEnd2.y =
-                math::clamp(npc.TentEnd2.y + randz(-3, 3), -20, 20);
+            npc.tentArm1.x =
+                math::clamp(npc.tentArm1.x + randz(-3, 3), -20, 20);
+            npc.tentArm1.y =
+                math::clamp(npc.tentArm1.y + randz(-3, 3), -20, 20);
+            npc.tentArm2.x =
+                math::clamp(npc.tentArm2.x + randz(-3, 3), -20, 20);
+            npc.tentArm2.y =
+                math::clamp(npc.tentArm2.y + randz(-3, 3), -20, 20);
+            npc.tentEnd1.x =
+                math::clamp(npc.tentEnd1.x + randz(-3, 3), -20, 20);
+            npc.tentEnd1.y =
+                math::clamp(npc.tentEnd1.y + randz(-3, 3), -20, 20);
+            npc.tentEnd2.x =
+                math::clamp(npc.tentEnd2.x + randz(-3, 3), -20, 20);
+            npc.tentEnd2.y =
+                math::clamp(npc.tentEnd2.y + randz(-3, 3), -20, 20);
         }
 
         if (npc.id == gvars::myTargetid && Key.space)
         {
-            npc.Attacking = true;
+            npc.attacking = true;
         }
         npc.hungertimer--;
         if (npc.hungertimer <= 0)
@@ -1642,8 +1642,8 @@ void updateNpc()
             npc.name != "Zombie")
         {
             npc.bloodwork("Zombification", -9999999);
-            npc.Tag("[ZombieHater:", -9999999);
-            npc.Tag("[EatsFlesh:", 1);
+            npc.tag("[ZombieHater:", -9999999);
+            npc.tag("[EatsFlesh:", 1);
             std::string OldName = npc.name;
             npc.name = "Zombie";
             npc.cbaseid = 666333;
@@ -1657,11 +1657,11 @@ void updateNpc()
                                       npc.img.getTextureRect().width / 2);
                 }
             }
-            npc.IsNPC = true;
-            npc.NeedsFood = true;
-            npc.AllowedFood = false;
-            npc.NeedsWater = false;
-            npc.AllowedDrink = false;
+            npc.isNPC = true;
+            npc.needsFood = true;
+            npc.allowedFood = false;
+            npc.needsWater = false;
+            npc.allowedDrink = false;
             npc.canmove = true;
             npc.alive = true;
             npc.maxhealth = 200;
@@ -1691,13 +1691,13 @@ void updateNpc()
         };
         if (Key.rshift && npc.id == gvars::myTargetid)
         {
-            std::cout << npc.target << "At: " << npc.TargetPos.x << ":"
-                      << npc.TargetPos.y << std::endl;
-            std::cout << "HasTarget: " << npc.HasTarget
-                      << " AtTarget: " << npc.AtTarget << std::endl;
+            std::cout << npc.target << "At: " << npc.targetPos.x << ":"
+                      << npc.targetPos.y << std::endl;
+            std::cout << "HasTarget: " << npc.hasTarget
+                      << " AtTarget: " << npc.atTarget << std::endl;
         }
 
-        if (npc.Attacking)
+        if (npc.attacking)
         {
             if (npc.attacktimer <= 0)
             {
@@ -1705,17 +1705,17 @@ void updateNpc()
                 {
                     std::cout << "Pre Mel Ran \n";
                 }
-                bool bMel = npc.HasItemType(1);
+                bool bMel = npc.hasItemType(1);
                 Item Mel;
                 if (bMel)
                 {
-                    Mel = *npc.GetItemType(1);
+                    Mel = *npc.getItemType(1);
                 }
                 Item Ran;
-                bool bRan = npc.HasItemType(2);
+                bool bRan = npc.hasItemType(2);
                 if (bRan == true)
                 {
-                    Ran = *npc.GetItemType(2);
+                    Ran = *npc.getItemType(2);
                     debug("Fish n Chips");
                 }
                 try
@@ -1728,27 +1728,27 @@ void updateNpc()
                     if (bMel == true)
                     {
                         if (Mel.type == 1 &&
-                            math::closeish(npc.xpos, npc.ypos, npc.ShootPos.x,
-                                           npc.ShootPos.y) < Mel.range)
+                            math::closeish(npc.xpos, npc.ypos, npc.shootPos.x,
+                                           npc.shootPos.y) < Mel.range)
                         {
                             Attacked = true;
                             std::set<int> Tarz;
-                            Tarz = npc.Melee(1, 1, GridSize);
+                            Tarz = npc.melee(1, 1, GridSize);
                             for (const auto &elem : Tarz)
                             {
                                 npclist.at(elem)
                                     .modhealth(-(randz(Mel.mindam, Mel.maxdam) +
-                                                 npc.Skills.strength));
-                                if (npc.HasTag("[CanLearn:"))
+                                                 npc.skills.strength));
+                                if (npc.hasTag("[CanLearn:"))
                                 {
-                                    npc.Skills.Train("strength");
+                                    npc.skills.Train("strength");
                                 }
                             }
-                            if (npc.Attacking == false)
+                            if (npc.attacking == false)
                             {
                                 npc.attacktimer =
                                     (npc.attacktimerint -
-                                     (math::clamp(npc.Skills.agility / 10, 10,
+                                     (math::clamp(npc.skills.agility / 10, 10,
                                                   100)));
                             } // Melee has a different method for saying it's done.
                             if (gvars::debug)
@@ -1767,8 +1767,8 @@ void updateNpc()
                         {
                             bool Friendly = false;
                             std::set<int> ids =
-                                NPCTrace(npc.xpos, npc.ypos, npc.TargetPos.x,
-                                         npc.TargetPos.y, npc.id);
+                                npcTrace(npc.xpos, npc.ypos, npc.targetPos.x,
+                                         npc.targetPos.y, npc.id);
                             if (!ids.empty())
                             {
                                 try
@@ -1787,24 +1787,24 @@ void updateNpc()
                                 }
                             }
                             if (Friendly == false &&
-                                gridposTrace(npc.xpos, npc.ypos, npc.ShootPos.x,
-                                             npc.ShootPos.y, npc.id,
-                                             npc.TargetPos) == true &&
+                                gridposTrace(npc.xpos, npc.ypos, npc.shootPos.x,
+                                             npc.shootPos.y, npc.id,
+                                             npc.targetPos) == true &&
                                 math::closeish(npc.xpos, npc.ypos,
-                                               npc.ShootPos.x,
-                                               npc.ShootPos.y) <= npc.viewrange)
+                                               npc.shootPos.x,
+                                               npc.shootPos.y) <= npc.viewrange)
                             {
                                 int Tempx = randz(
                                     0,
                                     math::clamp(
-                                        100 - npc.Skills.dexterity, 0,
+                                        100 - npc.skills.dexterity, 0,
                                         100)); // This is to mess up the aiming.
                                 int Tempy = randz(
-                                    0, math::clamp(100 - npc.Skills.dexterity,
+                                    0, math::clamp(100 - npc.skills.dexterity,
                                                    0, 100));
-                                if (npc.HasTag("[CanLearn:"))
+                                if (npc.hasTag("[CanLearn:"))
                                 {
-                                    npc.Skills.Train("dexterity");
+                                    npc.skills.Train("dexterity");
                                 }
                                 if (randz(0, 1) == 1)
                                 {
@@ -1816,11 +1816,11 @@ void updateNpc()
                                 }
                                 sf::Vector2f SP(gvars::mousePos.x,
                                                 gvars::mousePos.y);
-                                sf::Vector2f Targ(npc.ShootPos.x + Tempx,
-                                                  npc.ShootPos.y + Tempy);
+                                sf::Vector2f Targ(npc.shootPos.x + Tempx,
+                                                  npc.shootPos.y + Tempy);
                                 effects.createLine(npc.xpos, npc.ypos, Targ.x,
                                                    Targ.y, 2, sf::Color::White);
-                                std::set<int> ids = NPCTrace(
+                                std::set<int> ids = npcTrace(
                                     npc.xpos, npc.ypos, Targ.x, Targ.y, npc.id);
                                 if (!ids.empty())
                                 {
@@ -1833,10 +1833,10 @@ void updateNpc()
                                                 npclist.at(id).modhealth(
                                                     -(randz(Ran.mindam,
                                                             Ran.maxdam) +
-                                                      npc.Skills.perception));
-                                                if (npc.HasTag("[CanLearn:"))
+                                                      npc.skills.perception));
+                                                if (npc.hasTag("[CanLearn:"))
                                                 {
-                                                    npc.Skills.Train(
+                                                    npc.skills.Train(
                                                         "perception");
                                                 }
                                                 effects.createCircle(
@@ -1853,15 +1853,15 @@ void updateNpc()
                                                          "Bang!");
                                     }
                                 }
-                                npc.Attacking = false;
+                                npc.attacking = false;
                                 npc.attacktimer =
                                     (npc.attacktimerint -
-                                     (math::clamp(npc.Skills.agility / 10, 10,
+                                     (math::clamp(npc.skills.agility / 10, 10,
                                                   100)));
                             }
                             else
                             {
-                                npc.Attacking = false;
+                                npc.attacking = false;
                             }
                             if (gvars::debug)
                             {
@@ -1871,7 +1871,7 @@ void updateNpc()
                     }
                     else
                     {
-                        npc.Attacking = false;
+                        npc.attacking = false;
                     }
                 }
                 catch (std::exception &e)
@@ -1881,15 +1881,15 @@ void updateNpc()
             }
             else
             {
-                npc.Attacking = false;
+                npc.attacking = false;
             }
         } //End of Attacking
-        if (npc.canmove == true && npc.Attacking == false)
+        if (npc.canmove == true && npc.attacking == false)
         {
             //std::cout << id << " is acting." << std::endl;
             // First, Check values, to see if hungry/thirsty/hurt then check if being attacked
             // Add an IsSafe before these checks
-            if (npc.IsHungry() == false && npc.IsThirsty() == false)
+            if (npc.isHungry() == false && npc.isThirsty() == false)
             {
                 //npc.moverate = npc.moverateint;
                 npc.moverate = PartsWalkSpeed;
@@ -1947,15 +1947,15 @@ void updateNpc()
 
             if (npc.action == "Act")
             { // Start of "Act" action.
-                if (npc.IsHurt() == true)
+                if (npc.isHurt() == true)
                 {
                     //target = "Meds"; //std::cout << id << " is hurt." << std::endl;
                 }
-                else if (npc.IsHungry() == true && npc.AllowedFood == true)
+                else if (npc.isHungry() == true && npc.allowedFood == true)
                 {
                     npc.target =
                         "Food"; //std::cout << id << " is hungry." << std::endl;
-                    if (npc.IsThirsty())
+                    if (npc.isThirsty())
                     {
                         bool IsFood = false;
                         for (auto &worlditem : worlditems)
@@ -1977,7 +1977,7 @@ void updateNpc()
                 else if (npc.target == "Flesh" && npc.name == "Zombie")
                 {
                 }
-                else if (npc.IsThirsty() == true)
+                else if (npc.isThirsty() == true)
                 {
                     npc.target = "Water";
                     //std::cout << id << " is thirsty." << std::endl;
@@ -2002,14 +2002,14 @@ void updateNpc()
                     npc.target = "Wander";
                     //std::cout << id << " is fine." << std::endl;
                 }
-                if (npc.target == "Wander" && npc.HasTarget == true)
+                if (npc.target == "Wander" && npc.hasTarget == true)
                 { // TODO: Make sure this isn't needed anymore, Then delete it.
                     if (gvars::groundmap[gvars::currentz][abs_to_index(
-                            npc.TargetPos.x /
-                            GridSize)][abs_to_index(npc.TargetPos.y /
+                            npc.targetPos.x /
+                            GridSize)][abs_to_index(npc.targetPos.y /
                                                     GridSize)] == 10)
                     {
-                        npc.HasTarget = false;
+                        npc.hasTarget = false;
                     }
                 }
                 if (npc.target == "Food")
@@ -2019,12 +2019,12 @@ void updateNpc()
                     {
                         if (Item->massFlesh > 0)
                         {
-                            npc.TargetPos =
+                            npc.targetPos =
                                 sf::Vector2f(Item->xpos, Item->ypos);
-                            npc.TargetId = Item->id;
+                            npc.targetId = Item->id;
                             //npc.TargetVectorId = Item.at(3);
                             npc.target = "Food";
-                            npc.HasTarget = true;
+                            npc.hasTarget = true;
                         }
                     }
                     else
@@ -2037,11 +2037,11 @@ void updateNpc()
                     auto Item = FindClosestItem(npc.xpos, npc.ypos, "Water");
                     if (Item.found)
                     {
-                        npc.TargetPos = sf::Vector2f(Item.xpos, Item.ypos);
-                        npc.TargetId = Item.id;
-                        npc.TargetVectorId = Item.vectorPosition;
+                        npc.targetPos = sf::Vector2f(Item.xpos, Item.ypos);
+                        npc.targetId = Item.id;
+                        npc.targetVectorId = Item.vectorPosition;
                         npc.target = "Water";
-                        npc.HasTarget = true;
+                        npc.hasTarget = true;
                     }
                     else
                     {
@@ -2093,10 +2093,10 @@ void updateNpc()
                     }
                     if (first == false)
                     {
-                        npc.TargetPos = sf::Vector2f(closx, closy);
-                        npc.TargetId = ClosID;
+                        npc.targetPos = sf::Vector2f(closx, closy);
+                        npc.targetId = ClosID;
                         npc.target = "Flesh";
-                        npc.HasTarget = true;
+                        npc.hasTarget = true;
                     }
                     else
                     {
@@ -2106,45 +2106,45 @@ void updateNpc()
 
                 try
                 { // Jobs Section
-                    if (UniFact[0].JobList.size() != 0 &&
+                    if (uniFact[0].jobList.size() != 0 &&
                         npc.target == "Wander" && npc.Faction == "The Alphas")
                     {
                         debug("Preforming Job Routine; ");
-                        for (size_t i = 0; i != UniFact[0].JobList.size(); i++)
+                        for (size_t i = 0; i != uniFact[0].jobList.size(); i++)
                         {
                             debug("Starting Job " + std::to_string(i));
                             //if(!Deleting) Deleter++;
                             //Con(AddString(npc.name,JobList[i].Type));
-                            if (UniFact[0].JobList[i].pItem == nullptr &&
-                                UniFact[0].JobList[i].Type ==
+                            if (uniFact[0].jobList[i].pItem == nullptr &&
+                                uniFact[0].jobList[i].Type ==
                                     "PickUp") // Deleting objectless pickup jobs.
                             { // Deleting objectless pickup jobs.
-                                UniFact[0].JobList[i].ToDelete = true;
+                                uniFact[0].jobList[i].ToDelete = true;
                                 break;
                             }
 
-                            if ((UniFact[0].JobList[i].pWorker == nullptr &&
-                                 npc.HasJob == false &&
-                                 UniFact[0].JobList[i].ToDelete == false) ||
-                                (UniFact[0].JobList[i].pWorker != nullptr &&
-                                 UniFact[0].JobList[i].pWorker->id == npc.id &&
-                                 UniFact[0].JobList[i].ToDelete == false))
+                            if ((uniFact[0].jobList[i].pWorker == nullptr &&
+                                 npc.hasJob == false &&
+                                 uniFact[0].jobList[i].ToDelete == false) ||
+                                (uniFact[0].jobList[i].pWorker != nullptr &&
+                                 uniFact[0].jobList[i].pWorker->id == npc.id &&
+                                 uniFact[0].jobList[i].ToDelete == false))
                             {
                                 debug("Comparitive Success");
-                                if (UniFact[0].JobList[i].pWorker == nullptr)
+                                if (uniFact[0].jobList[i].pWorker == nullptr)
                                 {
                                     std::cout << npc.name
-                                              << " has job: " << npc.HasJob
+                                              << " has job: " << npc.hasJob
                                               << ", and yet :";
-                                    UniFact[0].JobList[i].pWorker = &npclist.at(
+                                    uniFact[0].jobList[i].pWorker = &npclist.at(
                                         IntegerIterator); // Not sure if this is technically better or worse than repointing every frame.
-                                    UniFact[0].JobList[i].pWorker->HasJob =
+                                    uniFact[0].jobList[i].pWorker->hasJob =
                                         true;
-                                    std::cout << npc.HasJob << " does now? \n";
+                                    std::cout << npc.hasJob << " does now? \n";
                                     //fSleep(2);
                                 }
 
-                                if (UniFact[0].JobList[i].Type == "Build")
+                                if (uniFact[0].jobList[i].Type == "Build")
                                 {
                                     debug("Starting Build");
 
@@ -2157,12 +2157,12 @@ void updateNpc()
                                     if (InvWood != nullptr)
                                     {
                                         Con("Success! I have Wood!");
-                                        int x = UniFact[0].JobList[i].WorkPos.x;
-                                        int y = UniFact[0].JobList[i].WorkPos.y;
+                                        int x = uniFact[0].jobList[i].WorkPos.x;
+                                        int y = uniFact[0].jobList[i].WorkPos.y;
 
-                                        npc.TargetPos.x = x;
-                                        npc.TargetPos.y = y;
-                                        npc.HasTarget = true;
+                                        npc.targetPos.x = x;
+                                        npc.targetPos.y = y;
+                                        npc.hasTarget = true;
                                         npc.target = "BuildWoodWall";
 
                                         if (math::closeish(npc.xpos, npc.ypos,
@@ -2170,13 +2170,13 @@ void updateNpc()
                                                            y) <= npc.size * 3)
                                         {
 
-                                            npc.TargetPos.x = npc.xpos;
-                                            npc.TargetPos.y = npc.ypos;
+                                            npc.targetPos.x = npc.xpos;
+                                            npc.targetPos.y = npc.ypos;
 
-                                            UniFact[0]
-                                                .JobList[i]
+                                            uniFact[0]
+                                                .jobList[i]
                                                 .CompletionProgress +=
-                                                npc.Skills.intelligence / 2;
+                                                npc.skills.intelligence / 2;
 
                                             //std::cout << "JobTimer: " << UniFact[0].JobList[i].CompletionProgress << std::endl;
                                             //Effectz.CreateCircle(UniFact[0].JobList[i].WorkPos.x,UniFact[0].JobList[i].WorkPos.y, (UniFact[0].JobList[i].CompletionProgress - UniFact[0].JobList[i].CompletionTimer)/10  ,sf::Color(150,150,150,150));
@@ -2188,11 +2188,11 @@ void updateNpc()
                                                 Rot <
                                                     361 *
                                                         (PercentIs(
-                                                             UniFact[0]
-                                                                 .JobList[i]
+                                                             uniFact[0]
+                                                                 .jobList[i]
                                                                  .CompletionTimer,
-                                                             UniFact[0]
-                                                                 .JobList[i]
+                                                             uniFact[0]
+                                                                 .jobList[i]
                                                                  .CompletionProgress) /
                                                          100);
                                                 Rot++)
@@ -2212,11 +2212,11 @@ void updateNpc()
                                                               150));
                                             }
 
-                                            if (UniFact[0]
-                                                    .JobList[i]
+                                            if (uniFact[0]
+                                                    .jobList[i]
                                                     .CompletionProgress >=
-                                                UniFact[0]
-                                                    .JobList[i]
+                                                uniFact[0]
+                                                    .jobList[i]
                                                     .CompletionTimer)
 
                                             {
@@ -2226,11 +2226,11 @@ void updateNpc()
                                                 //Tiles[abs_to_index(x/20)][abs_to_index(y/20)][30].ID = 1010;
                                                 //Tiles[abs_to_index(x/20)][abs_to_index(y/20)][30].Img.setTexture( *imagemanager.GetImage("Wall.png"));
                                                 InvWood->toDelete = true;
-                                                UniFact[0].JobList[i].ToDelete =
+                                                uniFact[0].jobList[i].ToDelete =
                                                     true;
-                                                UniFact[0]
-                                                    .JobList[i]
-                                                    .pWorker->HasJob = false;
+                                                uniFact[0]
+                                                    .jobList[i]
+                                                    .pWorker->hasJob = false;
                                                 //Crashed instantly;
                                             }
                                         }
@@ -2242,9 +2242,9 @@ void updateNpc()
                                         Con("Partial Success! World has Wood!");
                                         //item WorkLoad = *GetItemPtrfromVector(worlditems, "Wood");
 
-                                        npc.TargetPos.x = WldWood->xpos;
-                                        npc.TargetPos.y = WldWood->ypos;
-                                        npc.HasTarget = true;
+                                        npc.targetPos.x = WldWood->xpos;
+                                        npc.targetPos.y = WldWood->ypos;
+                                        npc.hasTarget = true;
                                         npc.target = WldWood->name;
 
                                         //Con(WorkLoad.id);
@@ -2267,35 +2267,35 @@ void updateNpc()
                                     debug("Ended Build");
                                 }
 
-                                else if (UniFact[0].JobList[i].pItem != nullptr)
+                                else if (uniFact[0].jobList[i].pItem != nullptr)
                                 {
                                     debug("Starting pItem != NULL");
 
-                                    npc.TargetPos.x =
-                                        UniFact[0].JobList[i].pItem->xpos;
-                                    npc.TargetPos.y =
-                                        UniFact[0].JobList[i].pItem->ypos;
-                                    npc.HasTarget = true;
+                                    npc.targetPos.x =
+                                        uniFact[0].jobList[i].pItem->xpos;
+                                    npc.targetPos.y =
+                                        uniFact[0].jobList[i].pItem->ypos;
+                                    npc.hasTarget = true;
                                     npc.target =
-                                        UniFact[0].JobList[i].pItem->name;
+                                        uniFact[0].jobList[i].pItem->name;
                                     debug("Post HasTarget");
 
-                                    if (UniFact[0].JobList[i].Type ==
+                                    if (uniFact[0].jobList[i].Type ==
                                             "PickUp" &&
                                         math::closeish(
                                             npc.xpos, npc.ypos,
-                                            UniFact[0].JobList[i].pItem->xpos,
-                                            UniFact[0]
-                                                .JobList[i]
+                                            uniFact[0].jobList[i].pItem->xpos,
+                                            uniFact[0]
+                                                .jobList[i]
                                                 .pItem->ypos) <= npc.size)
                                     {
                                         //Con("I'm there! \n");
                                         //Deleting = true;
                                         npc.inventory.push_back(
-                                            *UniFact[0].JobList[i].pItem);
+                                            *uniFact[0].jobList[i].pItem);
                                         debug("Post Inventory Pushback");
 
-                                        UniFact[0].JobList[i].pItem->toDelete =
+                                        uniFact[0].jobList[i].pItem->toDelete =
                                             true;
                                         /*
                                 for(std::list<item>::iterator v = worlditems.begin(); v != worlditems.end(); v++ )
@@ -2309,20 +2309,20 @@ void updateNpc()
                                 }
                                 */
 
-                                        UniFact[0].JobList[i].pItem = nullptr;
-                                        UniFact[0].JobList[i].ToDelete = true;
-                                        UniFact[0].JobList[i].pWorker->HasJob =
+                                        uniFact[0].jobList[i].pItem = nullptr;
+                                        uniFact[0].jobList[i].ToDelete = true;
+                                        uniFact[0].jobList[i].pWorker->hasJob =
                                             false;
                                         UnpointItems(worlditems);
                                         debug("Post Unpoint");
                                     }
 
-                                    if (UniFact[0].JobList[i].Type == "Chop" &&
+                                    if (uniFact[0].jobList[i].Type == "Chop" &&
                                         math::closeish(
                                             npc.xpos, npc.ypos,
-                                            UniFact[0].JobList[i].pItem->xpos,
-                                            UniFact[0]
-                                                .JobList[i]
+                                            uniFact[0].jobList[i].pItem->xpos,
+                                            uniFact[0]
+                                                .jobList[i]
                                                 .pItem->ypos) <= npc.size)
                                     {
                                         debug("Post Chopcheck");
@@ -2336,17 +2336,17 @@ void updateNpc()
                                         debug("Post WoodStuffs");
 
                                         WoodStuffs.xpos =
-                                            UniFact[0].JobList[i].pItem->xpos;
+                                            uniFact[0].jobList[i].pItem->xpos;
                                         WoodStuffs.ypos =
-                                            UniFact[0].JobList[i].pItem->ypos;
+                                            uniFact[0].jobList[i].pItem->ypos;
                                         worlditems.push_back(WoodStuffs);
                                         debug("Post WoodSpawn");
 
-                                        UniFact[0].JobList[i].pItem->toDelete =
+                                        uniFact[0].jobList[i].pItem->toDelete =
                                             true;
-                                        UniFact[0].JobList[i].pItem = nullptr;
-                                        UniFact[0].JobList[i].ToDelete = true;
-                                        UniFact[0].JobList[i].pWorker->HasJob =
+                                        uniFact[0].jobList[i].pItem = nullptr;
+                                        uniFact[0].jobList[i].ToDelete = true;
+                                        uniFact[0].jobList[i].pWorker->hasJob =
                                             false;
                                         debug("Post ToDelete");
                                         UnpointItems(worlditems);
@@ -2357,17 +2357,17 @@ void updateNpc()
                                     debug("Ending pItem != NULL");
                                 }
 
-                                if (UniFact[0].JobList[i].Type == "Dig")
+                                if (uniFact[0].jobList[i].Type == "Dig")
                                 {
 
                                     PathFindWorkPos.x =
-                                        UniFact[0].JobList[i].WorkPos.x;
+                                        uniFact[0].jobList[i].WorkPos.x;
                                     PathFindWorkPos.y =
-                                        UniFact[0].JobList[i].WorkPos.y;
+                                        uniFact[0].jobList[i].WorkPos.y;
 
-                                    npc.TargetPos.x = PathFindWorkPos.x;
-                                    npc.TargetPos.y = PathFindWorkPos.y;
-                                    npc.HasTarget = true;
+                                    npc.targetPos.x = PathFindWorkPos.x;
+                                    npc.targetPos.y = PathFindWorkPos.y;
+                                    npc.hasTarget = true;
                                     npc.target = "DigNaturalWall";
 
                                     if (math::closeish(npc.xpos, npc.ypos,
@@ -2376,24 +2376,24 @@ void updateNpc()
                                         npc.size * 3)
                                     {
 
-                                        npc.TargetPos.x = npc.xpos;
-                                        npc.TargetPos.y = npc.ypos;
+                                        npc.targetPos.x = npc.xpos;
+                                        npc.targetPos.y = npc.ypos;
 
-                                        UniFact[0]
-                                            .JobList[i]
+                                        uniFact[0]
+                                            .jobList[i]
                                             .CompletionProgress +=
-                                            npc.Skills.strength / 2;
+                                            npc.skills.strength / 2;
 
                                         for (
                                             float Rot = 1;
                                             Rot <
                                                 361 *
                                                     (PercentIs(
-                                                         UniFact[0]
-                                                             .JobList[i]
+                                                         uniFact[0]
+                                                             .jobList[i]
                                                              .CompletionTimer,
-                                                         UniFact[0]
-                                                             .JobList[i]
+                                                         uniFact[0]
+                                                             .jobList[i]
                                                              .CompletionProgress) /
                                                      100);
                                             Rot++)
@@ -2413,11 +2413,11 @@ void updateNpc()
                                                 sf::Color(150, 150, 150, 150));
                                         }
 
-                                        if (UniFact[0]
-                                                .JobList[i]
+                                        if (uniFact[0]
+                                                .jobList[i]
                                                 .CompletionProgress >=
-                                            UniFact[0]
-                                                .JobList[i]
+                                            uniFact[0]
+                                                .jobList[i]
                                                 .CompletionTimer)
 
                                         {
@@ -2444,11 +2444,11 @@ void updateNpc()
                                                     StoneStuffs);
                                             }
 
-                                            UniFact[0].JobList[i].ToDelete =
+                                            uniFact[0].jobList[i].ToDelete =
                                                 true;
-                                            UniFact[0]
-                                                .JobList[i]
-                                                .pWorker->HasJob = false;
+                                            uniFact[0]
+                                                .jobList[i]
+                                                .pWorker->hasJob = false;
                                             debug("Dig Wall Completed");
                                         }
                                     }
@@ -2458,22 +2458,22 @@ void updateNpc()
                             debug("End Job " + std::to_string(i));
                         }
 
-                        RemoveJobs(UniFact[0].JobList);
+                        RemoveJobs(uniFact[0].jobList);
 
                         debug("Finished Job Activity. \n ");
                     }
 
-                    if (npc.target == "Wander" && npc.HasTarget == false)
+                    if (npc.target == "Wander" && npc.hasTarget == false)
                     { // Find somewhere random to walk towards, so long as there isn't anything on that spot.
                         bool FindEmpty = false;
                         while (FindEmpty == false)
                         {
-                            npc.TargetPos = sf::Vector2f(randz(700, 1300),
+                            npc.targetPos = sf::Vector2f(randz(700, 1300),
                                                          randz(700, 1300));
-                            npc.HasTarget = true;
+                            npc.hasTarget = true;
                             if (gvars::groundmap[gvars::currentz][abs_to_index(
-                                    npc.TargetPos.x /
-                                    GridSize)][abs_to_index(npc.TargetPos.y /
+                                    npc.targetPos.x /
+                                    GridSize)][abs_to_index(npc.targetPos.y /
                                                             GridSize)] != 10)
                             {
                                 FindEmpty = true;
@@ -2486,28 +2486,28 @@ void updateNpc()
                     std::cout << "Something went wrong in NPC Job Routine \n";
                 }
 
-                if (npc.name == "Shinobi" && npc.HasWeapon() == false)
+                if (npc.name == "Shinobi" && npc.hasWeapon() == false)
                 {
                     auto Item = FindClosestItem(npc.xpos, npc.ypos, "Sword");
                     if (Item.found)
                     {
-                        npc.TargetPos = sf::Vector2f(Item.xpos, Item.ypos);
-                        npc.TargetId = Item.id;
-                        npc.TargetVectorId = Item.vectorPosition;
+                        npc.targetPos = sf::Vector2f(Item.xpos, Item.ypos);
+                        npc.targetId = Item.id;
+                        npc.targetVectorId = Item.vectorPosition;
                         npc.target = "Sword";
-                        npc.HasTarget = true;
+                        npc.hasTarget = true;
                     }
                     else
                     {
                         npc.target = "Wander";
                     }
                 }
-                if (npc.HasWeapon())
+                if (npc.hasWeapon())
                 { // Attack nearby Hostiles.
                     int closx = -100000;
                     int closy = -100000;
                     bool FoundOne = false;
-                    if (npc.HasTag("[ZombieHater:"))
+                    if (npc.hasTag("[ZombieHater:"))
                     {
                         bool first = true;
                         for (auto &elem : npclist)
@@ -2541,23 +2541,23 @@ void updateNpc()
                         }
                         if (first == false)
                         {
-                            npc.ShootPos = sf::Vector2f(closx, closy);
+                            npc.shootPos = sf::Vector2f(closx, closy);
                             if (math::closeish(npc.xpos, npc.ypos,
-                                               npc.ShootPos.x,
-                                               npc.ShootPos.y) <= npc.viewrange)
+                                               npc.shootPos.x,
+                                               npc.shootPos.y) <= npc.viewrange)
                             {
-                                npc.Attacking = true;
+                                npc.attacking = true;
                             }
                         }
                     }
-                    if (npc.IsHungry() == false && npc.IsThirsty() == false &&
+                    if (npc.isHungry() == false && npc.isThirsty() == false &&
                         FoundOne == true)
                     {
-                        npc.TargetPos = sf::Vector2f(closx, closy);
+                        npc.targetPos = sf::Vector2f(closx, closy);
                     }
                 }
 
-                if (npc.CloseToTarget(npc.reach, npc.TargetPos) == true &&
+                if (npc.closeToTarget(npc.reach, npc.targetPos) == true &&
                     npc.target == "Flesh")
                 {
                     if (npc.attacktimer == 0)
@@ -2566,7 +2566,7 @@ void updateNpc()
                         std::string AtkType;
                         npc.attacktimer =
                             (npc.attacktimerint -
-                             (math::clamp(npc.Skills.agility / 10, 10, 100))) *
+                             (math::clamp(npc.skills.agility / 10, 10, 100))) *
                             4;
                         int numba = -1;
                         int numbaz = -1;
@@ -2591,8 +2591,8 @@ void updateNpc()
                         }
                         if (foundit == true && npclist.at(numba).id == num)
                         {
-                            npc.AtTarget = false;
-                            npc.HasTarget =
+                            npc.atTarget = false;
+                            npc.hasTarget =
                                 false; // TODO: Fix Zombie Attacking, Give it some Delay, and some damage based on Strength and filled belly.
                             int zDamage = randz(0, npclist.at(numba).health);
                             if (npc.name != "Azabul")
@@ -2602,10 +2602,10 @@ void updateNpc()
                                     .bloodwork("Zombification", 100000);
                             if (npc.name == "Azabul")
                             {
-                                npc.TentArm1.x = npclist.at(numba).xpos;
-                                npc.TentArm1.y = npclist.at(numba).ypos;
-                                npc.TentArm2.x = npclist.at(numba).xpos;
-                                npc.TentArm2.y = npclist.at(numba).ypos;
+                                npc.tentArm1.x = npclist.at(numba).xpos;
+                                npc.tentArm1.y = npclist.at(numba).ypos;
+                                npc.tentArm2.x = npclist.at(numba).xpos;
+                                npc.tentArm2.y = npclist.at(numba).ypos;
                                 //BLARGGITY
                                 Item Blood;
                                 Blood.amount = zDamage;
@@ -2638,15 +2638,15 @@ void updateNpc()
                 }
                 if (npc.name == "Mini Turret")
                 {
-                    if (npc.HasWeapon() == false)
+                    if (npc.hasWeapon() == false)
                     {
-                        npc.AddItem("5mmCannon", 1);
-                        npc.Skills.dexterity = 90;
-                        npc.Skills.agility = 10;
+                        npc.addItem("5mmCannon", 1);
+                        npc.skills.dexterity = 90;
+                        npc.skills.agility = 10;
                     }
-                    if (npc.HasTag("[ZombieHater:") == false)
+                    if (npc.hasTag("[ZombieHater:") == false)
                     {
-                        npc.Tag("[ZombieHater:", 1);
+                        npc.tag("[ZombieHater:", 1);
                         std::cout << "Giving MiniTurret [ZombieHater: \n";
                     }
                 }
@@ -2659,13 +2659,13 @@ void updateNpc()
                     std::cout << "Pre 'set' vision. \n";
 
                 bool FoundGoal = false;
-                if (math::closeish(npc.TargetPos.x, npc.TargetPos.y, npc.xpos,
+                if (math::closeish(npc.targetPos.x, npc.targetPos.y, npc.xpos,
                                    npc.ypos) <= npc.viewrange &&
                     npc.cbaseid != -1337)
                 {
 
                     float Ang = math::angleBetweenVectors(
-                        math::Vec2f(npc.TargetPos.x, npc.TargetPos.y),
+                        math::Vec2f(npc.targetPos.x, npc.targetPos.y),
                         math::Vec2f(npc.xpos, npc.ypos));
                     float MyAngle = npc.angle;
                     float difference = abs(Ang - MyAngle);
@@ -2675,15 +2675,15 @@ void updateNpc()
                     }
                     if (difference >= -90.0f && difference <= 90.0f)
                     {
-                        if (gridposTrace(npc.xpos, npc.ypos, npc.TargetPos.x,
-                                         npc.TargetPos.y, npc.id,
-                                         npc.TargetPos) == true)
+                        if (gridposTrace(npc.xpos, npc.ypos, npc.targetPos.x,
+                                         npc.targetPos.y, npc.id,
+                                         npc.targetPos) == true)
                         {
                             FoundGoal = true;
                             effects.createLine(npc.xpos, npc.ypos,
-                                               npc.TargetPos.x, npc.TargetPos.y,
+                                               npc.targetPos.x, npc.targetPos.y,
                                                1, sf::Color::White);
-                            npc.NeedsPath = false;
+                            npc.needsPath = false;
                         }
                     }
                 }
@@ -2729,7 +2729,7 @@ void updateNpc()
                 {
                     if (gvars::debug)
                         std::cout << "FoundGoal == false";
-                    npc.NeedsPath = true;
+                    npc.needsPath = true;
 
                     int Previous = -1;
 
@@ -2744,9 +2744,9 @@ void updateNpc()
                             astar::walkable;
                     }
 
-                    npc.PathFinding.MyFindPath(
-                        npc.xpos, npc.ypos, npc.TargetPos.x,
-                        npc.TargetPos
+                    npc.pathFinding.myFindPath(
+                        npc.xpos, npc.ypos, npc.targetPos.x,
+                        npc.targetPos
                             .y); // TODO: This causes a crash for some reason.
 
                     if (PathFindWorkPos.x != 0)
@@ -2821,10 +2821,10 @@ void updateNpc()
                 {
                 }
                 //if(npc.NeedsPath == false){if(npc.target != "None"){ npc.DirMove(npc.TargetPos);}}
-                if (npc.AtTarget == true && npc.target == "Goto")
+                if (npc.atTarget == true && npc.target == "Goto")
                 {
-                    npc.AtTarget = false;
-                    npc.HasTarget = false;
+                    npc.atTarget = false;
+                    npc.hasTarget = false;
                     npc.target = "None";
                 }
             } // Ending of "Orders" action
@@ -2832,15 +2832,15 @@ void updateNpc()
             {
                 //if(npc.NeedsPath == false){if(npc.target != "None"){ npc.DirMove(npc.TargetPos);}}
             }
-            if ((npc.target != "None" && npc.AtTarget) ||
+            if ((npc.target != "None" && npc.atTarget) ||
                 (npc.target != "None" &&
-                 math::closeish(npc.xpos, npc.ypos, npc.TargetPos.x,
-                                npc.TargetPos.y) <= npc.size))
+                 math::closeish(npc.xpos, npc.ypos, npc.targetPos.x,
+                                npc.targetPos.y) <= npc.size))
             {
-                if (GetItemVectorId(npc.TargetId) != -1)
+                if (GetItemVectorId(npc.targetId) != -1)
                 {
                     auto ItemItr = worlditems.begin();
-                    std::advance(ItemItr, GetItemVectorId(npc.TargetId));
+                    std::advance(ItemItr, GetItemVectorId(npc.targetId));
 
                     //if(Math::Closeish(npc.xpos,npc.ypos,worlditems.at(GetItemVectorId(npc.TargetId)).xpos,worlditems.at(GetItemVectorId(npc.TargetId)).ypos) <= npc.reach && worlditems.at(GetItemVectorId(npc.TargetId)).Pickupable == true)
                     if (math::closeish(npc.xpos, npc.ypos, (*ItemItr).xpos,
@@ -2850,7 +2850,7 @@ void updateNpc()
                         try
                         {
                             npc.inventory.push_back((*ItemItr));
-                            RemoveItem(npc.TargetId);
+                            RemoveItem(npc.targetId);
                         }
                         catch (std::exception &e)
                         {
@@ -2862,22 +2862,22 @@ void updateNpc()
                 }
                 if (npc.target == "Wander")
                 {
-                    npc.AtTarget = false;
-                    npc.HasTarget = false;
+                    npc.atTarget = false;
+                    npc.hasTarget = false;
                 }
                 if (true == false)
                 {
                     if (npc.target == "Sword")
                     {
-                        if (GetItemVectorId(npc.TargetId) != -1)
+                        if (GetItemVectorId(npc.targetId) != -1)
                         {
                             if (math::closeish(
                                     npc.xpos, npc.ypos,
                                     (*ListGet(worlditems,
-                                              GetItemVectorId(npc.TargetId)))
+                                              GetItemVectorId(npc.targetId)))
                                         .xpos,
                                     (*ListGet(worlditems,
-                                              GetItemVectorId(npc.TargetId)))
+                                              GetItemVectorId(npc.targetId)))
                                         .ypos) <= npc.reach * 2)
                             {
                                 try
@@ -2885,8 +2885,8 @@ void updateNpc()
                                     npc.inventory.push_back(
                                         (*ListGet(
                                              worlditems,
-                                             GetItemVectorId(npc.TargetId))));
-                                    RemoveItem(npc.TargetId);
+                                             GetItemVectorId(npc.targetId))));
+                                    RemoveItem(npc.targetId);
                                 }
                                 catch (std::exception &e)
                                 {
@@ -2896,15 +2896,15 @@ void updateNpc()
                     }
                     else if (npc.target == "Food")
                     {
-                        if (GetItemVectorId(npc.TargetId) != -1)
+                        if (GetItemVectorId(npc.targetId) != -1)
                         {
                             if (math::closeish(
                                     npc.xpos, npc.ypos,
                                     (*ListGet(worlditems,
-                                              GetItemVectorId(npc.TargetId)))
+                                              GetItemVectorId(npc.targetId)))
                                         .xpos,
                                     (*ListGet(worlditems,
-                                              GetItemVectorId(npc.TargetId)))
+                                              GetItemVectorId(npc.targetId)))
                                         .ypos) <= npc.size * 2)
                             {
                                 try
@@ -2912,13 +2912,13 @@ void updateNpc()
                                     //npc.inventory.push_back(worlditems.at(GetItemVectorId(npc.TargetId)));
                                     npc.fillhunger((*ListGet(worlditems,
                                                              GetItemVectorId(
-                                                                 npc.TargetId)))
+                                                                 npc.targetId)))
                                                        .hungervalue);
-                                    RemoveItem(npc.TargetId);
-                                    npc.AtTarget = false;
-                                    npc.HasTarget = false;
-                                    npc.TargetId = -1;
-                                    npc.TargetVectorId = -1;
+                                    RemoveItem(npc.targetId);
+                                    npc.atTarget = false;
+                                    npc.hasTarget = false;
+                                    npc.targetId = -1;
+                                    npc.targetVectorId = -1;
                                     cText.CreateText(npc.xpos, npc.ypos, 11,
                                                      sf::Color::Blue,
                                                      "*Crunch!*");
@@ -2934,15 +2934,15 @@ void updateNpc()
                     }
                     else if (npc.target == "Water")
                     {
-                        if (GetItemVectorId(npc.TargetId) != -1)
+                        if (GetItemVectorId(npc.targetId) != -1)
                         {
                             if (math::closeish(
                                     npc.xpos, npc.ypos,
                                     (*ListGet(worlditems,
-                                              GetItemVectorId(npc.TargetId)))
+                                              GetItemVectorId(npc.targetId)))
                                         .xpos,
                                     (*ListGet(worlditems,
-                                              GetItemVectorId(npc.TargetId)))
+                                              GetItemVectorId(npc.targetId)))
                                         .ypos) <= npc.size * 2)
                             {
                                 try
@@ -2950,12 +2950,12 @@ void updateNpc()
                                     //npc.inventory.push_back(worlditems.at(GetItemVectorId(npc.TargetId)));
                                     npc.fillthirst((*ListGet(worlditems,
                                                              GetItemVectorId(
-                                                                 npc.TargetId)))
+                                                                 npc.targetId)))
                                                        .thirstvalue);
-                                    npc.AtTarget = false;
-                                    npc.HasTarget = false;
-                                    npc.TargetId = -1;
-                                    npc.TargetVectorId = -1;
+                                    npc.atTarget = false;
+                                    npc.hasTarget = false;
+                                    npc.targetId = -1;
+                                    npc.targetVectorId = -1;
                                     cText.CreateText(npc.xpos, npc.ypos, 11,
                                                      sf::Color::Blue,
                                                      "*Gulp!*");
@@ -2979,17 +2979,17 @@ void updateNpc()
                 npc.movetimer =
                     (npc.movetimerint +
                      npc.movetimer); // TODO: Figure out why I added 0 to this, Year later: It was because movetimer may be less than 0, I wanted the next to turn happen as soon as possible due to it.
-                if (npc.target != "None" && npc.NeedsPath == false &&
-                    math::Vec2f(npc.xpos, npc.ypos) != npc.TargetPos)
+                if (npc.target != "None" && npc.needsPath == false &&
+                    math::Vec2f(npc.xpos, npc.ypos) != npc.targetPos)
                 { // Walk Move
-                    if (npc.Attacking && npc.HasWeapon("Gun") &&
-                        math::closeish(npc.xpos, npc.ypos, npc.TargetPos.x,
-                                       npc.TargetPos.y) < npc.viewrange)
+                    if (npc.attacking && npc.hasWeapon("Gun") &&
+                        math::closeish(npc.xpos, npc.ypos, npc.targetPos.x,
+                                       npc.targetPos.y) < npc.viewrange)
                     {
                     }
-                    else if (npc.Attacking && npc.HasWeapon("Sword") &&
-                             math::closeish(npc.xpos, npc.ypos, npc.TargetPos.x,
-                                            npc.TargetPos.y) < 10)
+                    else if (npc.attacking && npc.hasWeapon("Sword") &&
+                             math::closeish(npc.xpos, npc.ypos, npc.targetPos.x,
+                                            npc.targetPos.y) < 10)
                     {
                     }
                     else
@@ -2998,11 +2998,11 @@ void updateNpc()
                         {
                             //npc.DirMove(npc.TargetPos);
                         }*/
-                        npc.DirMove(npc.TargetPos);
+                        npc.dirMove(npc.targetPos);
                     }
                 }
-                if (npc.NeedsPath == true &&
-                    math::Vec2f(npc.xpos, npc.ypos) != npc.TargetPos)
+                if (npc.needsPath == true &&
+                    math::Vec2f(npc.xpos, npc.ypos) != npc.targetPos)
                 { // Acting on Path Finding.
                     if (randz(0, 20) < 3)
                     {
@@ -3018,9 +3018,9 @@ void updateNpc()
                                 astar::walkable;
                         }
 
-                        npc.PathFinding.MyFindPath(npc.xpos, npc.ypos,
-                                                   npc.TargetPos.x,
-                                                   npc.TargetPos.y);
+                        npc.pathFinding.myFindPath(npc.xpos, npc.ypos,
+                                                   npc.targetPos.x,
+                                                   npc.targetPos.y);
 
                         if (PathFindWorkPos.x != 0)
                         {
@@ -3061,10 +3061,10 @@ void updateNpc()
                             astar::walkable;
                     }
 
-                    npc.PathFinding.MyReadPath(1, npc.xpos, npc.ypos,
+                    npc.pathFinding.myReadPath(1, npc.xpos, npc.ypos,
                                                npc.moverate);
-                    npc.DirMove(math::Vec2f(npc.PathFinding.MyxPath,
-                                            npc.PathFinding.MyyPath));
+                    npc.dirMove(math::Vec2f(npc.pathFinding.myxPath,
+                                            npc.pathFinding.myyPath));
 
                     if (PathFindWorkPos.x != 0)
                     {
@@ -3074,42 +3074,42 @@ void updateNpc()
                             Previous;
                     }
 
-                    /*if (npc.xpos > npc.PathFinding.MyxPath) {npc.xpos = npc.xpos - npc.moverate;}
-    if (npc.xpos < npc.PathFinding.MyxPath) {npc.xpos = npc.xpos + npc.moverate;}
-    if (npc.ypos > npc.PathFinding.MyyPath) {npc.ypos = npc.ypos - npc.moverate;}
-    if (npc.ypos < npc.PathFinding.MyyPath) {npc.ypos = npc.ypos + npc.moverate;}*/
+                    /*if (npc.xpos > npc.pathFinding.MyxPath) {npc.xpos = npc.xpos - npc.moverate;}
+    if (npc.xpos < npc.pathFinding.MyxPath) {npc.xpos = npc.xpos + npc.moverate;}
+    if (npc.ypos > npc.pathFinding.MyyPath) {npc.ypos = npc.ypos - npc.moverate;}
+    if (npc.ypos < npc.pathFinding.MyyPath) {npc.ypos = npc.ypos + npc.moverate;}*/
 
-                    //npc.PathFinding.MyFindPath(npc.xpos,npc.ypos,npc.TargetPos.x,npc.TargetPos.y);
+                    //npc.pathFinding.MyFindPath(npc.xpos,npc.ypos,npc.TargetPos.x,npc.TargetPos.y);
 
                     if (npc.id == gvars::myTargetid)
                     {
-                        for (int Stuff = npc.PathFinding.MypathLocation;
-                             Stuff != npc.PathFinding.MypathLength; ++Stuff)
+                        for (int Stuff = npc.pathFinding.mypathLocation;
+                             Stuff != npc.pathFinding.mypathLength; ++Stuff)
                         {
                             if (Stuff != 1)
                             {
                                 effects.createLine(
-                                    npc.PathFinding.MyReadPathX(1, Stuff - 1),
-                                    npc.PathFinding.MyReadPathY(1, Stuff - 1),
-                                    npc.PathFinding.MyReadPathX(1, Stuff),
-                                    npc.PathFinding.MyReadPathY(1, Stuff), 2,
+                                    npc.pathFinding.myReadPathX(1, Stuff - 1),
+                                    npc.pathFinding.myReadPathY(1, Stuff - 1),
+                                    npc.pathFinding.myReadPathX(1, Stuff),
+                                    npc.pathFinding.myReadPathY(1, Stuff), 2,
                                     sf::Color::Blue);
                             }
-                            //std::cout << npc.PathFinding.MyReadPathX(1,Stuff) << ":" << npc.PathFinding.MyReadPathY(1,Stuff) << std::endl;
+                            //std::cout << npc.pathFinding.MyReadPathX(1,Stuff) << ":" << npc.pathFinding.MyReadPathY(1,Stuff) << std::endl;
                         }
                     }
 
-                    if (npc.PathFinding.MypathLocation ==
-                        npc.PathFinding.MypathLength)
+                    if (npc.pathFinding.mypathLocation ==
+                        npc.pathFinding.mypathLength)
                     {
-                        if (abs(npc.xpos - npc.PathFinding.MyxPath) <
+                        if (abs(npc.xpos - npc.pathFinding.myxPath) <
                             npc.moverate)
-                            npc.xpos = npc.PathFinding.MyxPath;
-                        if (abs(npc.ypos - npc.PathFinding.MyyPath) <
+                            npc.xpos = npc.pathFinding.myxPath;
+                        if (abs(npc.ypos - npc.pathFinding.myyPath) <
                             npc.moverate)
-                            npc.ypos = npc.PathFinding.MyyPath;
+                            npc.ypos = npc.pathFinding.myyPath;
                         npc.action = "Act";
-                        npc.NeedsPath = false;
+                        npc.needsPath = false;
                     }
 
                     //npc.TargetPos.x = xPath[1];
@@ -3188,9 +3188,9 @@ void updateNpc()
 
         } // End of CanMove
         //npc.angle = Math::AngleBetweenVectors(Math::Vec(TempXpos,TempYpos),Math::Vec(npc.xpos,npc.ypos))-180;
-        npc.angle = math::angleBetweenVectors(npc.TargetPos,
+        npc.angle = math::angleBetweenVectors(npc.targetPos,
                                               math::Vec2f(npc.xpos, npc.ypos));
-        npc.MomMove();
+        npc.momMove();
         //float f=Math::AngleBetweenVectors(sf::Vector2f(npc.xpos,npc.ypos), npc.TargetPos);npc.img.setRotation(f);
         if (gvars::debug)
             std::cout << npc.name << npc.id << " is done. \n";
@@ -3279,14 +3279,14 @@ void DrawNPCs()
 {
     for (auto &npc : npclist)
     {
-        if (npc.HasSpawned == true)
+        if (npc.hasSpawned == true)
         {
             if (npc.name == "Azabul")
             {
-                sf::Vector2f TA1 = npc.TentArm1;
-                sf::Vector2f TA2 = npc.TentArm2;
-                sf::Vector2f TE1 = npc.TentEnd1;
-                sf::Vector2f TE2 = npc.TentEnd2;
+                sf::Vector2f TA1 = npc.tentArm1;
+                sf::Vector2f TA2 = npc.tentArm2;
+                sf::Vector2f TE1 = npc.tentEnd1;
+                sf::Vector2f TE2 = npc.tentEnd2;
 
                 effects.createLine(npc.xpos, npc.ypos, TA1.x + npc.xpos,
                                    TA1.y + npc.ypos, 2, sf::Color(0, 200, 200),
@@ -3310,7 +3310,7 @@ void DrawNPCs()
             npc.img.setScale(gvars::scalex, gvars::scaley);
             npc.img.setOrigin(npc.img.getTextureRect().width / 2,
                               npc.img.getTextureRect().height / 2);
-            npc.DrawImg();
+            npc.drawImg();
             effects.createCircle(npc.xpos, npc.ypos, npc.size,
                                  sf::Color(50, 50, 50, 50));
         }
@@ -3427,7 +3427,7 @@ Item *getGlobalItem(std::string strtype)
     return nullptr;
 }
 
-NPC *GetCritter(int id)
+Npc *GetCritter(int id)
 {
     if (gvars::debug)
     {
@@ -3459,7 +3459,7 @@ void RemoveNPCs()
         bool Yet = false;
         for (auto it = npclist.begin(); it != npclist.end(); ++it)
         {
-            if (it->ToDelete)
+            if (it->toDelete)
             {
                 std::cout << it->name << " to be deleted. \n";
                 npclist.erase(it);
@@ -3513,14 +3513,14 @@ int main()
 
     texturemanager.init();
     itemmanager.initializeItems();
-    npcmanager.InitializeCritters();
+    npcmanager.initializeCritters();
 
     // Building the players faction, This is temporary.
-    PF.Name = "The Alphas";
-    PF.PlayerControlled = true;
-    PF.Initialized = true;
-    UniFact.push_back(PF);
-    ConFact = &UniFact[0];
+    g_pf.name = "The Alphas";
+    g_pf.playerControlled = true;
+    g_pf.initialized = true;
+    uniFact.push_back(g_pf);
+    conFact = &uniFact[0];
 
     // Setting the initial game phase.
     gCtrl.phase = "MainMenu";
@@ -3647,14 +3647,14 @@ int main()
         { // Fling all critters south.
             for (auto &i : npclist)
             {
-                i.Momentum = sf::Vector2f(0, 100);
+                i.momentum = sf::Vector2f(0, 100);
             }
         }
         if (Key.hTime == 1)
         { // Fling all critters north.
             for (auto &i : npclist)
             {
-                i.Momentum = sf::Vector2f(0, -100);
+                i.momentum = sf::Vector2f(0, -100);
             }
         }
 
@@ -3685,7 +3685,7 @@ int main()
                     randomWindowName(),
                     sf::Color(randz(0, 255), randz(0, 255), randz(0, 255)));
 
-            SquadHud();
+            squadHud();
 
             if (Key.lshiftTime > 0)
             {
@@ -3857,27 +3857,27 @@ int main()
                 for (size_t i = 0; i != npclist.size(); i++)
                 {
                     npclist.at(i).ypos += -640;
-                    npclist.at(i).TargetPos.y += -640;
+                    npclist.at(i).targetPos.y += -640;
                 }
 
                 //for(int i = 0; i != worlditems.size(); i++) worlditems.at(i).ypos += -640;
                 for (auto &worlditem : worlditems)
                     (worlditem).ypos += -640;
 
-                for (size_t i = 0; i != UniFact[0].JobList.size(); i++)
-                    UniFact[0].JobList[i].WorkPos.y += -640;
+                for (size_t i = 0; i != uniFact[0].jobList.size(); i++)
+                    uniFact[0].jobList[i].WorkPos.y += -640;
 
                 Transitioning = true;
                 std::string Line;
-                Line = LoadCritters(sf::Vector2i(gvars::currentregionx - 1,
+                Line = loadCritters(sf::Vector2i(gvars::currentregionx - 1,
                                                  gvars::currentregiony + 1),
                                     "BottomLeft", gvars::currentplanet);
                 remove(Line.c_str());
-                Line = LoadCritters(sf::Vector2i(gvars::currentregionx,
+                Line = loadCritters(sf::Vector2i(gvars::currentregionx,
                                                  gvars::currentregiony + 1),
                                     "Bottom", gvars::currentplanet);
                 remove(Line.c_str());
-                Line = LoadCritters(sf::Vector2i(gvars::currentregionx + 1,
+                Line = loadCritters(sf::Vector2i(gvars::currentregionx + 1,
                                                  gvars::currentregiony + 1),
                                     "BottomRight", gvars::currentplanet);
                 remove(Line.c_str());
@@ -3901,27 +3901,27 @@ int main()
                 for (size_t i = 0; i != npclist.size(); i++)
                 {
                     npclist.at(i).ypos += 640;
-                    npclist.at(i).TargetPos.y += 640;
+                    npclist.at(i).targetPos.y += 640;
                 }
 
                 //for(int i = 0; i != worlditems.size(); i++) worlditems.at(i).ypos += 640;
                 for (auto &worlditem : worlditems)
                     (worlditem).ypos += 640;
 
-                for (size_t i = 0; i != UniFact[0].JobList.size(); i++)
-                    UniFact[0].JobList[i].WorkPos.y += 640;
+                for (size_t i = 0; i != uniFact[0].jobList.size(); i++)
+                    uniFact[0].jobList[i].WorkPos.y += 640;
 
                 Transitioning = true;
                 std::string Line;
-                Line = LoadCritters(sf::Vector2i(gvars::currentregionx - 1,
+                Line = loadCritters(sf::Vector2i(gvars::currentregionx - 1,
                                                  gvars::currentregiony - 1),
                                     "TopLeft", gvars::currentplanet);
                 remove(Line.c_str());
-                Line = LoadCritters(sf::Vector2i(gvars::currentregionx,
+                Line = loadCritters(sf::Vector2i(gvars::currentregionx,
                                                  gvars::currentregiony - 1),
                                     "Top", gvars::currentplanet);
                 remove(Line.c_str());
-                Line = LoadCritters(sf::Vector2i(gvars::currentregionx + 1,
+                Line = loadCritters(sf::Vector2i(gvars::currentregionx + 1,
                                                  gvars::currentregiony - 1),
                                     "TopRight", gvars::currentplanet);
                 remove(Line.c_str());
@@ -3945,27 +3945,27 @@ int main()
                 for (size_t i = 0; i != npclist.size(); i++)
                 {
                     npclist.at(i).xpos += -640;
-                    npclist.at(i).TargetPos.x += -640;
+                    npclist.at(i).targetPos.x += -640;
                 }
 
                 //for(int i = 0; i != worlditems.size(); i++) worlditems.at(i).xpos += -640;
                 for (auto &worlditem : worlditems)
                     (worlditem).xpos += -640;
 
-                for (size_t i = 0; i != UniFact[0].JobList.size(); i++)
-                    UniFact[0].JobList[i].WorkPos.x += -640;
+                for (size_t i = 0; i != uniFact[0].jobList.size(); i++)
+                    uniFact[0].jobList[i].WorkPos.x += -640;
 
                 Transitioning = true;
                 std::string Line;
-                Line = LoadCritters(sf::Vector2i(gvars::currentregionx + 1,
+                Line = loadCritters(sf::Vector2i(gvars::currentregionx + 1,
                                                  gvars::currentregiony - 1),
                                     "TopRight", gvars::currentplanet);
                 remove(Line.c_str());
-                Line = LoadCritters(sf::Vector2i(gvars::currentregionx + 1,
+                Line = loadCritters(sf::Vector2i(gvars::currentregionx + 1,
                                                  gvars::currentregiony),
                                     "Right", gvars::currentplanet);
                 remove(Line.c_str());
-                Line = LoadCritters(sf::Vector2i(gvars::currentregionx + 1,
+                Line = loadCritters(sf::Vector2i(gvars::currentregionx + 1,
                                                  gvars::currentregiony + 1),
                                     "BottomRight", gvars::currentplanet);
                 remove(Line.c_str());
@@ -3992,28 +3992,28 @@ int main()
                 for (size_t i = 0; i != npclist.size(); i++)
                 {
                     npclist.at(i).xpos += 640;
-                    npclist.at(i).TargetPos.x += 640;
+                    npclist.at(i).targetPos.x += 640;
                 }
 
                 //for(int i = 0; i != worlditems.size(); i++) worlditems.at(i).xpos += 640;
                 for (auto &worlditem : worlditems)
                     (worlditem).xpos += 640;
 
-                for (size_t i = 0; i != UniFact[0].JobList.size(); i++)
-                    UniFact[0].JobList[i].WorkPos.x += 640;
+                for (size_t i = 0; i != uniFact[0].jobList.size(); i++)
+                    uniFact[0].jobList[i].WorkPos.x += 640;
 
                 Con("Done GoRight with NPC's and Items");
                 Transitioning = true;
                 std::string Line;
-                Line = LoadCritters(sf::Vector2i(gvars::currentregionx - 1,
+                Line = loadCritters(sf::Vector2i(gvars::currentregionx - 1,
                                                  gvars::currentregiony - 1),
                                     "TopLeft", gvars::currentplanet);
                 remove(Line.c_str());
-                Line = LoadCritters(sf::Vector2i(gvars::currentregionx - 1,
+                Line = loadCritters(sf::Vector2i(gvars::currentregionx - 1,
                                                  gvars::currentregiony),
                                     "Left", gvars::currentplanet);
                 remove(Line.c_str());
-                Line = LoadCritters(sf::Vector2i(gvars::currentregionx - 1,
+                Line = loadCritters(sf::Vector2i(gvars::currentregionx - 1,
                                                  gvars::currentregiony + 1),
                                     "BottomLeft", gvars::currentplanet);
                 remove(Line.c_str());
@@ -4040,10 +4040,10 @@ int main()
                     {
                         npclist.at(i).xpos =
                             npclist.at(i).xpos - 640 - 640 - 640;
-                        SaveNPC(500, sf::Vector2i(gvars::currentregionx + 2,
+                        saveNPC(500, sf::Vector2i(gvars::currentregionx + 2,
                                                   gvars::currentregiony - 1),
                                 npclist.at(i));
-                        npclist.at(i).ToDelete = true;
+                        npclist.at(i).toDelete = true;
                     }
                     else if (npclist.at(i).xpos > 1920 &&
                              npclist.at(i).ypos > 1280)
@@ -4051,10 +4051,10 @@ int main()
                         npclist.at(i).xpos =
                             npclist.at(i).xpos - 640 - 640 - 640;
                         npclist.at(i).ypos = npclist.at(i).ypos - 640 - 640;
-                        SaveNPC(500, sf::Vector2i(gvars::currentregionx + 2,
+                        saveNPC(500, sf::Vector2i(gvars::currentregionx + 2,
                                                   gvars::currentregiony + 1),
                                 npclist.at(i));
-                        npclist.at(i).ToDelete = true;
+                        npclist.at(i).toDelete = true;
                     }
 
                     else if (npclist.at(i).xpos < 0 &&
@@ -4062,18 +4062,18 @@ int main()
                     {
                         npclist.at(i).xpos = npclist.at(i).xpos + 640;
                         npclist.at(i).ypos = npclist.at(i).ypos - 640 - 640;
-                        SaveNPC(500, sf::Vector2i(gvars::currentregionx - 2,
+                        saveNPC(500, sf::Vector2i(gvars::currentregionx - 2,
                                                   gvars::currentregiony + 1),
                                 npclist.at(i));
-                        npclist.at(i).ToDelete = true;
+                        npclist.at(i).toDelete = true;
                     }
                     else if (npclist.at(i).xpos < 0 && npclist.at(i).ypos < 640)
                     {
                         npclist.at(i).xpos = npclist.at(i).xpos + 640;
-                        SaveNPC(500, sf::Vector2i(gvars::currentregionx - 2,
+                        saveNPC(500, sf::Vector2i(gvars::currentregionx - 2,
                                                   gvars::currentregiony - 1),
                                 npclist.at(i));
-                        npclist.at(i).ToDelete = true;
+                        npclist.at(i).toDelete = true;
                     }
 
                     else if (npclist.at(i).ypos < 0 &&
@@ -4081,18 +4081,18 @@ int main()
                     {
                         npclist.at(i).xpos = npclist.at(i).xpos - 640 - 640;
                         npclist.at(i).ypos = npclist.at(i).ypos + 640;
-                        SaveNPC(500, sf::Vector2i(gvars::currentregionx + 1,
+                        saveNPC(500, sf::Vector2i(gvars::currentregionx + 1,
                                                   gvars::currentregiony - 2),
                                 npclist.at(i));
-                        npclist.at(i).ToDelete = true;
+                        npclist.at(i).toDelete = true;
                     }
                     else if (npclist.at(i).ypos < 0 && npclist.at(i).xpos < 640)
                     {
                         npclist.at(i).ypos = npclist.at(i).ypos + 640;
-                        SaveNPC(500, sf::Vector2i(gvars::currentregionx - 1,
+                        saveNPC(500, sf::Vector2i(gvars::currentregionx - 1,
                                                   gvars::currentregiony - 2),
                                 npclist.at(i));
-                        npclist.at(i).ToDelete = true;
+                        npclist.at(i).toDelete = true;
                     }
 
                     else if (npclist.at(i).ypos > 1920 &&
@@ -4101,20 +4101,20 @@ int main()
                         npclist.at(i).xpos = npclist.at(i).xpos - 640 - 640;
                         npclist.at(i).ypos =
                             npclist.at(i).ypos - 640 - 640 - 640;
-                        SaveNPC(500, sf::Vector2i(gvars::currentregionx + 1,
+                        saveNPC(500, sf::Vector2i(gvars::currentregionx + 1,
                                                   gvars::currentregiony + 2),
                                 npclist.at(i));
-                        npclist.at(i).ToDelete = true;
+                        npclist.at(i).toDelete = true;
                     }
                     else if (npclist.at(i).ypos > 1920 &&
                              npclist.at(i).xpos < 640)
                     {
                         npclist.at(i).ypos =
                             npclist.at(i).ypos - 640 - 640 - 640;
-                        SaveNPC(500, sf::Vector2i(gvars::currentregionx - 1,
+                        saveNPC(500, sf::Vector2i(gvars::currentregionx - 1,
                                                   gvars::currentregiony + 2),
                                 npclist.at(i));
-                        npclist.at(i).ToDelete = true;
+                        npclist.at(i).toDelete = true;
                     }
 
                     //HAGGINABAGGINA  Some reason, When a critter is saved, It'll have more than 640 for it's position, This is unacceptable.
@@ -4124,39 +4124,39 @@ int main()
                         npclist.at(i).xpos =
                             npclist.at(i).xpos - 640 - 640 - 640;
                         npclist.at(i).ypos = npclist.at(i).ypos - 640;
-                        SaveNPC(500, sf::Vector2i(gvars::currentregionx + 2,
+                        saveNPC(500, sf::Vector2i(gvars::currentregionx + 2,
                                                   gvars::currentregiony),
                                 npclist.at(i));
-                        npclist.at(i).ToDelete = true;
+                        npclist.at(i).toDelete = true;
                     }
                     else if (npclist.at(i).ypos > 1920)
                     {
                         npclist.at(i).xpos = npclist.at(i).xpos - 640;
                         npclist.at(i).ypos =
                             npclist.at(i).ypos - 640 - 640 - 640;
-                        SaveNPC(500, sf::Vector2i(gvars::currentregionx,
+                        saveNPC(500, sf::Vector2i(gvars::currentregionx,
                                                   gvars::currentregiony + 2),
                                 npclist.at(i));
-                        npclist.at(i).ToDelete = true;
+                        npclist.at(i).toDelete = true;
                     }
                     else if (npclist.at(i).xpos < 0)
                     {
                         npclist.at(i).xpos = npclist.at(i).xpos + 640;
                         npclist.at(i).ypos = npclist.at(i).ypos - 640;
-                        SaveNPC(500, sf::Vector2i(gvars::currentregionx - 2,
+                        saveNPC(500, sf::Vector2i(gvars::currentregionx - 2,
                                                   gvars::currentregiony),
                                 npclist.at(i));
-                        npclist.at(i).ToDelete = true;
+                        npclist.at(i).toDelete = true;
                     }
                     else if (npclist.at(i).ypos < 0)
                     {
                         npclist.at(i).xpos = npclist.at(i).xpos - 640;
                         npclist.at(i).ypos = npclist.at(i).ypos + 640;
-                        SaveNPC(500, sf::Vector2i(gvars::currentregionx,
+                        saveNPC(500, sf::Vector2i(gvars::currentregionx,
                                                   gvars::currentregiony - 2),
                                 npclist.at(i));
 
-                        npclist.at(i).ToDelete = true;
+                        npclist.at(i).toDelete = true;
                     }
                 }
 
@@ -4312,14 +4312,14 @@ int main()
                 Tiles[abs_to_index(gvars::mousePos.x / GridSize)][abs_to_index(
                     gvars::mousePos.y / GridSize)][30].ID != 1010)
             { // Giving Orders
-                npclist.at(gvars::myTarget).TargetPos = gvars::mousePos;
+                npclist.at(gvars::myTarget).targetPos = gvars::mousePos;
                 npclist.at(gvars::myTarget).action = "Orders";
                 if (math::closeish(npclist.at(gvars::myTarget).xpos,
                                    npclist.at(gvars::myTarget).ypos,
                                    gvars::mousePos.x, gvars::mousePos.y) <= 10)
                 {
                     npclist.at(gvars::myTarget).action = "Act";
-                    npclist.at(gvars::myTarget).NeedsPath = false;
+                    npclist.at(gvars::myTarget).needsPath = false;
                 }
 
                 for (auto const &item : worlditems)
@@ -4619,9 +4619,9 @@ int main()
             cText.CreateText(Rez.x / 2, 20, 20, gvars::cycleBlue,
                              "Design Your Squad");
             cText.CreateText(Rez.x / 2, 50, 15, sf::Color::Yellow,
-                             "Squad Points: ", "", Squady.MakeSquadPoints);
+                             "Squad Points: ", "", squady.makeSquadPoints);
             cText.CreateText(Rez.x / 2, 70, 11, sf::Color::Yellow,
-                             "Squad Mates: ", "", Squady.SquadMates);
+                             "Squad Mates: ", "", squady.squadMates);
 
             SquareButton var200;
             var200.color = sf::Color::Yellow;
@@ -4633,24 +4633,24 @@ int main()
             vSquareButtonList.push_back(var200);
             if (squareButtonClicked(var200.id))
             {
-                if (Squady.Squad.size() > 1)
+                if (squady.squad.size() > 1)
                 {
                     int stre, perc, inte, charis, endu, dext, agil = 0;
 
-                    stre = Squady.Squad.at(Squady.Squad.size() - 1)
-                               .Skills.strength;
-                    perc = Squady.Squad.at(Squady.Squad.size() - 1)
-                               .Skills.perception;
-                    inte = Squady.Squad.at(Squady.Squad.size() - 1)
-                               .Skills.intelligence;
-                    charis = Squady.Squad.at(Squady.Squad.size() - 1)
-                                 .Skills.charisma;
-                    endu = Squady.Squad.at(Squady.Squad.size() - 1)
-                               .Skills.endurance;
-                    dext = Squady.Squad.at(Squady.Squad.size() - 1)
-                               .Skills.dexterity;
+                    stre = squady.squad.at(squady.squad.size() - 1)
+                               .skills.strength;
+                    perc = squady.squad.at(squady.squad.size() - 1)
+                               .skills.perception;
+                    inte = squady.squad.at(squady.squad.size() - 1)
+                               .skills.intelligence;
+                    charis = squady.squad.at(squady.squad.size() - 1)
+                                 .skills.charisma;
+                    endu = squady.squad.at(squady.squad.size() - 1)
+                               .skills.endurance;
+                    dext = squady.squad.at(squady.squad.size() - 1)
+                               .skills.dexterity;
                     agil =
-                        Squady.Squad.at(Squady.Squad.size() - 1).Skills.agility;
+                        squady.squad.at(squady.squad.size() - 1).skills.agility;
                     int LeftOvers = 0;
                     if (stre >= 20)
                         LeftOvers += stre - 20;
@@ -4667,12 +4667,12 @@ int main()
                     if (agil >= 20)
                         LeftOvers += agil - 20;
 
-                    Squady.MakeSquadPoints += LeftOvers + 100;
-                    Squady.SquadMates--;
-                    if (static_cast<size_t>(Squady.Aim) ==
-                        Squady.Squad.size() - 1)
-                        Squady.Aim--;
-                    Squady.Squad.pop_back();
+                    squady.makeSquadPoints += LeftOvers + 100;
+                    squady.squadMates--;
+                    if (static_cast<size_t>(squady.aim) ==
+                        squady.squad.size() - 1)
+                        squady.aim--;
+                    squady.squad.pop_back();
                 }
 
                 //if(Squady.Aim < 0) Squady.Aim = 0;
@@ -4688,17 +4688,17 @@ int main()
             vSquareButtonList.push_back(var201);
             if (squareButtonClicked(var201.id))
             {
-                if (Squady.MakeSquadPoints > 99)
+                if (squady.makeSquadPoints > 99)
                 {
 
-                    Squady.SquadMates++;
+                    squady.squadMates++;
                     //if(Squady.Aim < 0) Squady.Aim = 0;
                     //if(Squady.Aim > Squady.Squad.size()-1) Squady.Aim = Squady.Squad.size()-1;
-                    NPC Squ;
+                    Npc Squ;
 
-                    Squ = *GetGlobalCritter("Human");
+                    Squ = *getGlobalCritter("Human");
                     Squ.id = gvars::globalid++;
-                    Squ.BlankSkills();
+                    Squ.blankSkills();
                     std::string name;
                     std::string gender;
                     int numz = randz(0, 1);
@@ -4778,9 +4778,9 @@ int main()
 
                     Squ.name = name;
                     Squ.gender = gender;
-                    Squ.Faction = PF.Name;
-                    Squady.Squad.push_back(Squ);
-                    Squady.MakeSquadPoints -= 100;
+                    Squ.Faction = g_pf.name;
+                    squady.squad.push_back(Squ);
+                    squady.makeSquadPoints -= 100;
                 }
 
                 fSleep(0.2);
@@ -4801,11 +4801,11 @@ int main()
             vSquareButtonList.push_back(var100);
             if (squareButtonClicked(var100.id))
             {
-                Squady.Aim--;
-                if (Squady.Aim < 0)
-                    Squady.Aim = 0;
-                if (static_cast<size_t>(Squady.Aim) > Squady.Squad.size() - 1)
-                    Squady.Aim = Squady.Squad.size() - 1;
+                squady.aim--;
+                if (squady.aim < 0)
+                    squady.aim = 0;
+                if (static_cast<size_t>(squady.aim) > squady.squad.size() - 1)
+                    squady.aim = squady.squad.size() - 1;
                 fSleep(0.2);
             }
             SquareButton var101;
@@ -4818,21 +4818,21 @@ int main()
             vSquareButtonList.push_back(var101);
             if (squareButtonClicked(var101.id))
             {
-                Squady.Aim++;
-                if (Squady.Aim < 0)
-                    Squady.Aim = 0;
-                if (static_cast<size_t>(Squady.Aim) > Squady.Squad.size() - 1)
-                    Squady.Aim = Squady.Squad.size() - 1;
+                squady.aim++;
+                if (squady.aim < 0)
+                    squady.aim = 0;
+                if (static_cast<size_t>(squady.aim) > squady.squad.size() - 1)
+                    squady.aim = squady.squad.size() - 1;
                 fSleep(0.2);
             }
 
             cText.CreateText(Rez.x / 2, 80 + (10 * Spacing++), 11,
                              sf::Color::Green, "Human: ",
-                             Squady.Squad.at(Squady.Aim).name);
+                             squady.squad.at(squady.aim).name);
 
             cText.CreateText(Rez.x / 2, 80 + (20 * Spacing), 11,
                              sf::Color::White, "Strength: ", "",
-                             Squady.Squad.at(Squady.Aim).Skills.strength);
+                             squady.squad.at(squady.aim).skills.strength);
 
             SquareButton var;
             var.color = sf::Color::Red;
@@ -4844,10 +4844,10 @@ int main()
             vSquareButtonList.push_back(var);
             if (squareButtonClicked(var.id))
             {
-                if (Squady.MakeSquadPoints < 1000)
+                if (squady.makeSquadPoints < 1000)
                 {
-                    Squady.MakeSquadPoints += 1;
-                    Squady.Squad.at(Squady.Aim).Skills.strength -= 1;
+                    squady.makeSquadPoints += 1;
+                    squady.squad.at(squady.aim).skills.strength -= 1;
                 }
             }
             SquareButton var2;
@@ -4860,16 +4860,16 @@ int main()
             vSquareButtonList.push_back(var2);
             if (squareButtonClicked(var2.id))
             {
-                if (Squady.MakeSquadPoints > 0)
+                if (squady.makeSquadPoints > 0)
                 {
-                    Squady.MakeSquadPoints -= 1;
-                    Squady.Squad.at(Squady.Aim).Skills.strength += 1;
+                    squady.makeSquadPoints -= 1;
+                    squady.squad.at(squady.aim).skills.strength += 1;
                 }
             }
 
             cText.CreateText(Rez.x / 2, 80 + (20 * Spacing), 11,
                              sf::Color::White, "Perception: ", "",
-                             Squady.Squad.at(Squady.Aim).Skills.perception);
+                             squady.squad.at(squady.aim).skills.perception);
 
             SquareButton var3;
             var3.color = sf::Color::Red;
@@ -4881,10 +4881,10 @@ int main()
             vSquareButtonList.push_back(var3);
             if (squareButtonClicked(var3.id))
             {
-                if (Squady.MakeSquadPoints < 1000)
+                if (squady.makeSquadPoints < 1000)
                 {
-                    Squady.MakeSquadPoints += 1;
-                    Squady.Squad.at(Squady.Aim).Skills.perception -= 1;
+                    squady.makeSquadPoints += 1;
+                    squady.squad.at(squady.aim).skills.perception -= 1;
                 }
             }
             SquareButton var4;
@@ -4897,16 +4897,16 @@ int main()
             vSquareButtonList.push_back(var4);
             if (squareButtonClicked(var4.id))
             {
-                if (Squady.MakeSquadPoints > 0)
+                if (squady.makeSquadPoints > 0)
                 {
-                    Squady.MakeSquadPoints -= 1;
-                    Squady.Squad.at(Squady.Aim).Skills.perception += 1;
+                    squady.makeSquadPoints -= 1;
+                    squady.squad.at(squady.aim).skills.perception += 1;
                 }
             }
 
             cText.CreateText(Rez.x / 2, 80 + (20 * Spacing), 11,
                              sf::Color::White, "Intelligence: ", "",
-                             Squady.Squad.at(Squady.Aim).Skills.intelligence);
+                             squady.squad.at(squady.aim).skills.intelligence);
 
             SquareButton var5;
             var5.color = sf::Color::Red;
@@ -4918,10 +4918,10 @@ int main()
             vSquareButtonList.push_back(var5);
             if (squareButtonClicked(var5.id))
             {
-                if (Squady.MakeSquadPoints < 1000)
+                if (squady.makeSquadPoints < 1000)
                 {
-                    Squady.MakeSquadPoints += 1;
-                    Squady.Squad.at(Squady.Aim).Skills.intelligence -= 1;
+                    squady.makeSquadPoints += 1;
+                    squady.squad.at(squady.aim).skills.intelligence -= 1;
                 }
             }
             SquareButton var6;
@@ -4934,16 +4934,16 @@ int main()
             vSquareButtonList.push_back(var6);
             if (squareButtonClicked(var6.id))
             {
-                if (Squady.MakeSquadPoints > 0)
+                if (squady.makeSquadPoints > 0)
                 {
-                    Squady.MakeSquadPoints -= 1;
-                    Squady.Squad.at(Squady.Aim).Skills.intelligence += 1;
+                    squady.makeSquadPoints -= 1;
+                    squady.squad.at(squady.aim).skills.intelligence += 1;
                 }
             }
 
             cText.CreateText(Rez.x / 2, 80 + (20 * Spacing), 11,
                              sf::Color::White, "Charisma: ", "",
-                             Squady.Squad.at(Squady.Aim).Skills.charisma);
+                             squady.squad.at(squady.aim).skills.charisma);
 
             SquareButton var7;
             var7.color = sf::Color::Red;
@@ -4955,10 +4955,10 @@ int main()
             vSquareButtonList.push_back(var7);
             if (squareButtonClicked(var7.id))
             {
-                if (Squady.MakeSquadPoints < 1000)
+                if (squady.makeSquadPoints < 1000)
                 {
-                    Squady.MakeSquadPoints += 1;
-                    Squady.Squad.at(Squady.Aim).Skills.charisma -= 1;
+                    squady.makeSquadPoints += 1;
+                    squady.squad.at(squady.aim).skills.charisma -= 1;
                 }
             }
             SquareButton var8;
@@ -4971,16 +4971,16 @@ int main()
             vSquareButtonList.push_back(var8);
             if (squareButtonClicked(var8.id))
             {
-                if (Squady.MakeSquadPoints > 0)
+                if (squady.makeSquadPoints > 0)
                 {
-                    Squady.MakeSquadPoints -= 1;
-                    Squady.Squad.at(Squady.Aim).Skills.charisma += 1;
+                    squady.makeSquadPoints -= 1;
+                    squady.squad.at(squady.aim).skills.charisma += 1;
                 }
             }
 
             cText.CreateText(Rez.x / 2, 80 + (20 * Spacing), 11,
                              sf::Color::White, "Endurance: ", "",
-                             Squady.Squad.at(Squady.Aim).Skills.endurance);
+                             squady.squad.at(squady.aim).skills.endurance);
 
             SquareButton var9;
             var9.color = sf::Color::Red;
@@ -4992,10 +4992,10 @@ int main()
             vSquareButtonList.push_back(var9);
             if (squareButtonClicked(var9.id))
             {
-                if (Squady.MakeSquadPoints < 1000)
+                if (squady.makeSquadPoints < 1000)
                 {
-                    Squady.MakeSquadPoints += 1;
-                    Squady.Squad.at(Squady.Aim).Skills.endurance -= 1;
+                    squady.makeSquadPoints += 1;
+                    squady.squad.at(squady.aim).skills.endurance -= 1;
                 }
             }
             SquareButton var10;
@@ -5008,16 +5008,16 @@ int main()
             vSquareButtonList.push_back(var10);
             if (squareButtonClicked(var10.id))
             {
-                if (Squady.MakeSquadPoints > 0)
+                if (squady.makeSquadPoints > 0)
                 {
-                    Squady.MakeSquadPoints -= 1;
-                    Squady.Squad.at(Squady.Aim).Skills.endurance += 1;
+                    squady.makeSquadPoints -= 1;
+                    squady.squad.at(squady.aim).skills.endurance += 1;
                 }
             }
 
             cText.CreateText(Rez.x / 2, 80 + (20 * Spacing), 11,
                              sf::Color::White, "Dexterity: ", "",
-                             Squady.Squad.at(Squady.Aim).Skills.dexterity);
+                             squady.squad.at(squady.aim).skills.dexterity);
 
             SquareButton var11;
             var11.color = sf::Color::Red;
@@ -5029,10 +5029,10 @@ int main()
             vSquareButtonList.push_back(var11);
             if (squareButtonClicked(var11.id))
             {
-                if (Squady.MakeSquadPoints < 1000)
+                if (squady.makeSquadPoints < 1000)
                 {
-                    Squady.MakeSquadPoints += 1;
-                    Squady.Squad.at(Squady.Aim).Skills.dexterity -= 1;
+                    squady.makeSquadPoints += 1;
+                    squady.squad.at(squady.aim).skills.dexterity -= 1;
                 }
             }
             SquareButton var12;
@@ -5045,16 +5045,16 @@ int main()
             vSquareButtonList.push_back(var12);
             if (squareButtonClicked(var12.id))
             {
-                if (Squady.MakeSquadPoints > 0)
+                if (squady.makeSquadPoints > 0)
                 {
-                    Squady.MakeSquadPoints -= 1;
-                    Squady.Squad.at(Squady.Aim).Skills.dexterity += 1;
+                    squady.makeSquadPoints -= 1;
+                    squady.squad.at(squady.aim).skills.dexterity += 1;
                 }
             }
 
             cText.CreateText(Rez.x / 2, 80 + (20 * Spacing), 11,
                              sf::Color::White, "Agility: ", "",
-                             Squady.Squad.at(Squady.Aim).Skills.agility);
+                             squady.squad.at(squady.aim).skills.agility);
 
             SquareButton var13;
             var13.color = sf::Color::Red;
@@ -5066,10 +5066,10 @@ int main()
             vSquareButtonList.push_back(var13);
             if (squareButtonClicked(var13.id))
             {
-                if (Squady.MakeSquadPoints < 1000)
+                if (squady.makeSquadPoints < 1000)
                 {
-                    Squady.MakeSquadPoints += 1;
-                    Squady.Squad.at(Squady.Aim).Skills.agility -= 1;
+                    squady.makeSquadPoints += 1;
+                    squady.squad.at(squady.aim).skills.agility -= 1;
                 }
             }
             SquareButton var14;
@@ -5082,10 +5082,10 @@ int main()
             vSquareButtonList.push_back(var14);
             if (squareButtonClicked(var14.id))
             {
-                if (Squady.MakeSquadPoints > 0)
+                if (squady.makeSquadPoints > 0)
                 {
-                    Squady.MakeSquadPoints -= 1;
-                    Squady.Squad.at(Squady.Aim).Skills.agility += 1;
+                    squady.makeSquadPoints -= 1;
+                    squady.squad.at(squady.aim).skills.agility += 1;
                 }
             }
 
@@ -5108,7 +5108,7 @@ int main()
                 gCtrl.phase = "World";
                 gCtrl.buildWorldTest();
 
-                InitializeFactions(13);
+                initializeFactions(13);
             }
 
             //DrawStuffs();
@@ -5183,7 +5183,7 @@ int main()
             cText.CreateText(gvars::topLeft.x + 2,
                              gvars::topLeft.y + (HUDZ++) * 11, 22,
                              sf::Color::Yellow, "World Population: ", "",
-                             FactionPopulation());
+                             factionPopulation());
             HUDZ++;
             HUDZ++;
             cText.CreateText(gvars::topLeft.x + 2,
@@ -5201,28 +5201,28 @@ int main()
             cText.CreateText(
                 gvars::topLeft.x + 2, gvars::topLeft.y + (HUDZ++) * 11, 11,
                 sf::Color::White, "FactionMembers: ", "",
-                FactionMembers(WorldMap[math::clamp(
+                factionMembers(WorldMap[math::clamp(
                     abs(gvars::mousePos.x / 20), 0,
                     99)][math::clamp(abs(gvars::mousePos.y / 20), 0, 99)]
                                    .Owner));
             cText.CreateText(
                 gvars::topLeft.x + 2, gvars::topLeft.y + (HUDZ++) * 11, 11,
                 sf::Color::White, "FactionAggression: ", "",
-                FactionAggression(WorldMap[math::clamp(
+                factionAggression(WorldMap[math::clamp(
                     abs(gvars::mousePos.x / 20), 0,
                     99)][math::clamp(abs(gvars::mousePos.y / 20), 0, 99)]
                                       .Owner));
             cText.CreateText(
                 gvars::topLeft.x + 2, gvars::topLeft.y + (HUDZ++) * 11, 11,
                 sf::Color::White, "FactionTerritories: ", "",
-                FactionTerritories(WorldMap[math::clamp(
+                factionTerritories(WorldMap[math::clamp(
                     abs(gvars::mousePos.x / 20), 0,
                     99)][math::clamp(abs(gvars::mousePos.y / 20), 0, 99)]
                                        .Owner));
             cText.CreateText(
                 gvars::topLeft.x + 2, gvars::topLeft.y + (HUDZ++) * 11, 11,
                 sf::Color::White, "FactionPower: ", "",
-                FactionPower(WorldMap[math::clamp(
+                factionPower(WorldMap[math::clamp(
                     abs(gvars::mousePos.x / 20), 0,
                     99)][math::clamp(abs(gvars::mousePos.y / 20), 0, 99)]
                                  .Owner));
@@ -5327,13 +5327,13 @@ int main()
                     std::cout << "Switching to MakeSquad\n";
                 gCtrl.phase = "MakeSquad";
 
-                for (int Amount = 0; Amount != Squady.SquadMates; Amount++)
+                for (int Amount = 0; Amount != squady.squadMates; Amount++)
                 {
 
-                    NPC var;
-                    var = *GetGlobalCritter("Human");
+                    Npc var;
+                    var = *getGlobalCritter("Human");
                     var.id = gvars::globalid++;
-                    var.BlankSkills();
+                    var.blankSkills();
                     std::string name;
                     std::string gender;
                     int numz = randz(0, 1);
@@ -5414,7 +5414,7 @@ int main()
                     var.name = name;
                     var.gender = gender;
 
-                    Squady.Squad.push_back(var);
+                    squady.squad.push_back(var);
                 }
             }
 
@@ -5537,7 +5537,7 @@ int main()
 
                 if (gvars::debug)
                     std::cout << "Pre Add Critters \n";
-                npcmanager.AddCritters();
+                npcmanager.addCritters();
                 if (gvars::debug)
                     std::cout << "Post Add Critters \n";
             }
@@ -5605,14 +5605,14 @@ int main()
                 }
                 for (auto &elem : npclist)
                 {
-                    if (elem.Attacking == true && elem.name == "Miniturret")
+                    if (elem.attacking == true && elem.name == "Miniturret")
                     {
                         if (gvars::debug)
                             std::cout
                                 << "Telling Turret to no longer attack \n";
                         // TODO: Fix Latersf::Shape Line = sf::Shape::Line(zit->TargetPos.x+randz(-4,4),zit->TargetPos.y+randz(-4,4), zit->xpos, zit->ypos, 1, sf::Color(200,200,200,255));
                         // TODO: Fix LaterApp.Draw(Line);
-                        elem.Attacking = false;
+                        elem.attacking = false;
                     }
                 }
                 if (gvars::debug)
@@ -5655,7 +5655,7 @@ int main()
 
             for (size_t i = 0; i != gvars::selected.size(); i++)
             {
-                NPC Var;
+                Npc Var;
                 Var = *GetCritter(gvars::selected[i]);
                 sf::Vector2f Pos = sf::Vector2f(Var.xpos, Var.ypos);
                 effects.createCircle(Pos.x, Pos.y, 5,
@@ -5674,7 +5674,7 @@ int main()
                         {
                             if (npclist[t].id == gvars::selected[i])
                             {
-                                npclist[t].TargetPos =
+                                npclist[t].targetPos =
                                     sf::Vector2f(gvars::mousePos);
                                 npclist[t].action = "Orders";
                             }
@@ -5724,7 +5724,7 @@ int main()
                 cText.CreateText(Nxpos, Nypos + 40, 11, sf::Color::White, "Id:",
                                  "", npclist.at(gvars::myTarget).id, "", "",
                                  -6698, "", "", -6698, 1, 0);
-                if (npclist.at(gvars::myTarget).NeedsPath == false)
+                if (npclist.at(gvars::myTarget).needsPath == false)
                 {
                     cText.CreateText(Nxpos, Nypos + 50, 11, sf::Color::Red,
                                      "Action:",
@@ -5738,8 +5738,8 @@ int main()
                 }
                 cText.CreateText(Nxpos, Nypos + 60, 11, sf::Color::Red,
                                  "Target:", npclist.at(gvars::myTarget).target,
-                                 npclist.at(gvars::myTarget).TargetPos.x, ":",
-                                 "", npclist.at(gvars::myTarget).TargetPos.y,
+                                 npclist.at(gvars::myTarget).targetPos.x, ":",
+                                 "", npclist.at(gvars::myTarget).targetPos.y,
                                  " Angle:", "",
                                  npclist.at(gvars::myTarget).angle);
 
@@ -5749,38 +5749,38 @@ int main()
                 int V = 1;
                 cText.CreateText(Nxpos + V, Nypos + (Y++ * 10), 11,
                                  sf::Color::White, "Strength:", "",
-                                 npclist.at(gvars::myTarget).Skills.strength,
+                                 npclist.at(gvars::myTarget).skills.strength,
                                  " : ", "",
-                                 npclist.at(gvars::myTarget).Skills.strengthxp);
+                                 npclist.at(gvars::myTarget).skills.strengthxp);
                 cText.CreateText(
                     Nxpos + V, Nypos + (Y++ * 10), 11, sf::Color::White,
                     "Perception:", "",
-                    npclist.at(gvars::myTarget).Skills.perception, " : ", "",
-                    npclist.at(gvars::myTarget).Skills.perceptionxp);
+                    npclist.at(gvars::myTarget).skills.perception, " : ", "",
+                    npclist.at(gvars::myTarget).skills.perceptionxp);
                 cText.CreateText(
                     Nxpos + V, Nypos + (Y++ * 10), 11, sf::Color::White,
                     "Intelligence:", "",
-                    npclist.at(gvars::myTarget).Skills.intelligence, " : ", "",
-                    npclist.at(gvars::myTarget).Skills.intelligencexp);
+                    npclist.at(gvars::myTarget).skills.intelligence, " : ", "",
+                    npclist.at(gvars::myTarget).skills.intelligencexp);
                 cText.CreateText(Nxpos + V, Nypos + (Y++ * 10), 11,
                                  sf::Color::White, "Charisma:", "",
-                                 npclist.at(gvars::myTarget).Skills.charisma,
+                                 npclist.at(gvars::myTarget).skills.charisma,
                                  " : ", "",
-                                 npclist.at(gvars::myTarget).Skills.charismaxp);
+                                 npclist.at(gvars::myTarget).skills.charismaxp);
                 cText.CreateText(
                     Nxpos + V, Nypos + (Y++ * 10), 11, sf::Color::White,
                     "Endurance:", "",
-                    npclist.at(gvars::myTarget).Skills.endurance, " : ", "",
-                    npclist.at(gvars::myTarget).Skills.endurancexp);
+                    npclist.at(gvars::myTarget).skills.endurance, " : ", "",
+                    npclist.at(gvars::myTarget).skills.endurancexp);
                 cText.CreateText(
                     Nxpos + V, Nypos + (Y++ * 10), 11, sf::Color::White,
                     "Dexterity:", "",
-                    npclist.at(gvars::myTarget).Skills.dexterity, " : ", "",
-                    npclist.at(gvars::myTarget).Skills.dexterityxp);
+                    npclist.at(gvars::myTarget).skills.dexterity, " : ", "",
+                    npclist.at(gvars::myTarget).skills.dexterityxp);
                 cText.CreateText(
                     Nxpos + V, Nypos + (Y++ * 10), 11, sf::Color::White,
-                    "Agility:", "", npclist.at(gvars::myTarget).Skills.agility,
-                    " : ", "", npclist.at(gvars::myTarget).Skills.agilityxp);
+                    "Agility:", "", npclist.at(gvars::myTarget).skills.agility,
+                    " : ", "", npclist.at(gvars::myTarget).skills.agilityxp);
                 cText.CreateText(Nxpos + V, Nypos + (Y++ * 10), 11,
                                  sf::Color::White, "Tags:",
                                  npclist.at(gvars::myTarget).tags);
@@ -5833,8 +5833,8 @@ int main()
                 //Effectz.CreateLine(Nxpos,Nypos,MousePos.x,MousePos.y,2,Green,0,White);
                 effects.createLine(npclist.at(gvars::myTarget).xpos,
                                    npclist.at(gvars::myTarget).ypos,
-                                   npclist.at(gvars::myTarget).TargetPos.x,
-                                   npclist.at(gvars::myTarget).TargetPos.y, 1,
+                                   npclist.at(gvars::myTarget).targetPos.x,
+                                   npclist.at(gvars::myTarget).targetPos.y, 1,
                                    sf::Color::Yellow);
             }
 

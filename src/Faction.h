@@ -15,45 +15,45 @@
 // Do the same with Allied Factions.
 class Faction;
 
-extern Faction *ConFact;
+extern Faction *conFact;
 
-class NPC;
-std::set<int> NPCTrace(int xa, int ya, int xb, int yb, int id,
+class Npc;
+std::set<int> npcTrace(int xa, int ya, int xb, int yb, int id,
                        std::set<int> exceptions);
-extern std::vector<NPC> npclist;
+extern std::vector<Npc> npclist;
 
-class NPC
+class Npc
 {
 public:
     // TODO: Add racial defaults for attributes and skill growth,
     // Will allow interesting mechanics and fix spawning variety.
     sf::Sprite img;
     std::list<Item> inventory;
-    std::list<Item> Equipped;
+    std::list<Item> equipped;
     std::string bloodcontent;
     std::string tags;
     std::string Faction;
-    bool Attacking;
-    bool FirstStrike;
-    bool ImgRotates;
+    bool attacking;
+    bool firstStrike;
+    bool imgRotates;
     float angle;
     sf::Vector2f speed;
-    sf::Vector2f ShootPos;
-    bool Prone;
-    bool NeedsPath;
-    bool ToDelete;
+    sf::Vector2f shootPos;
+    bool prone;
+    bool needsPath;
+    bool toDelete;
 
-    bool HasJob;
+    bool hasJob;
 
-    sf::Vector2f Momentum;
+    sf::Vector2f momentum;
 
     class BodyDefinition
     {
     public:
         // Supposed to house the creature when it's fully healthy.
-        std::string OriginalBodyParts;
+        std::string originalBodyParts;
 
-        std::string BodyParts;
+        std::string bodyParts;
 
         void BodyPartFind(std::string Part, int amount);
 
@@ -80,52 +80,52 @@ public:
         int leftlowerleg;  // lll
         int leftfoot;      // lf
     };
-    BodyDefinition Body;
+    BodyDefinition body;
 
     float rot;
-    float Xxx;
-    float Yyy;
-    float Degrees;
+    float xxx;
+    float yyy;
+    float degrees;
     std::vector<int> exceptions;
 
-    std::set<int> Melee(int min, int max, int range,
+    std::set<int> melee(int min, int max, int range,
                         std::set<int> exception = std::set<int>());
 
     class PathFinding
     {
     public:
-        int *MypathBank[1];
+        int *mypathBank[1];
         // stores length of the found path for critter
-        int MypathLength;
+        int mypathLength;
         // stores current position along the chosen path for critter
-        int MypathLocation;
-        int MypathStatus;
-        int MyxPath;
-        int MyyPath;
+        int mypathLocation;
+        int mypathStatus;
+        int myxPath;
+        int myyPath;
         std::vector<int> xPa;
         std::vector<int> yPa;
-        void EndMem();
-        void MyFindPath(int Sx, int Sy, int Ex, int Ey);
-        int MyReadPathX(int pathfinderID, int xpathLocation);
-        int MyReadPathY(int pathfinderID, int ypathLocation);
-        void MyReadPath(int pathfinderID, int currentX, int currentY,
+        void endMem();
+        void myFindPath(int Sx, int Sy, int Ex, int Ey);
+        int myReadPathX(int pathfinderID, int xpathLocation);
+        int myReadPathY(int pathfinderID, int ypathLocation);
+        void myReadPath(int pathfinderID, int currentX, int currentY,
                         int pixelsPerFrame);
     };
-    PathFinding PathFinding;
+    PathFinding pathFinding;
 
     short imgstrx;
     short imgstry;
     short imgendx;
     short imgendy;
-    bool IsPlayer;
-    bool IsNPC;
-    bool HasSpawned;
-    bool NeedsFood;
-    bool AllowedFood;
-    bool NeedsWater;
-    bool AllowedDrink;
-    bool AllowedMove;
-    bool Grappling;
+    bool isPlayer;
+    bool isNPC;
+    bool hasSpawned;
+    bool needsFood;
+    bool allowedFood;
+    bool needsWater;
+    bool allowedDrink;
+    bool allowedMove;
+    bool grappling;
     int cbaseid;
     int id;
     int id2;
@@ -137,11 +137,11 @@ public:
     bool useditem;
     bool canmove;
     std::string target;
-    sf::Vector2f TargetPos;
-    int TargetId;
-    int TargetVectorId;
-    bool AtTarget;
-    bool HasTarget;
+    sf::Vector2f targetPos;
+    int targetId;
+    int targetVectorId;
+    bool atTarget;
+    bool hasTarget;
     std::string action;
     short regenrate;
     short regentimer;
@@ -163,10 +163,10 @@ public:
     short breathtimer;
     short breathtimerint;
     std::string race;
-    int Age;
+    int age;
     // 1 = Babeh, 2 = Child, 3 = Teenager, 4 = Young Adult,
     // 5 = Aged Adult, 6 = Elder
-    int AgeType;
+    int ageType;
     std::string gender;
     char direction;
     int worshippers;
@@ -194,12 +194,12 @@ public:
     short stamina;
     int credits;
 
-    sf::Vector2f TentArm1;
-    sf::Vector2f TentArm2;
-    sf::Vector2f TentEnd1;
-    sf::Vector2f TentEnd2;
+    sf::Vector2f tentArm1;
+    sf::Vector2f tentArm2;
+    sf::Vector2f tentEnd1;
+    sf::Vector2f tentEnd2;
 
-    void EffectStats();
+    void effectStats();
 
     class Skill
     {
@@ -223,16 +223,16 @@ public:
 
         void Train(std::string skill, int amount = 1, int skillgain = 1);
     };
-    Skill Skills;
+    Skill skills;
 
     class TargetInfo
     {
     public:
         Item *item;
-        NPC *npc;
+        Npc *npc;
         Tile *tile;
     };
-    TargetInfo Target;
+    TargetInfo targetInfo;
 
     int killcount;
     short reach;
@@ -241,27 +241,27 @@ public:
     float viewangle;
     float viewrange;
 
-    NPC();
-    void ReCreateSkills();
-    void BlankSkills();
-    bool HasWeapon(std::string weapon = "");
-    Item *GetItemType(int type);
-    bool HasItemType(int type);
-    void DrawImg();
-    void Move(sf::Vector2f Tar);
-    void DirMove(sf::Vector2f Tar);
-    void MomMove();
-    void MoveNorth();
-    void MoveNorthEast();
-    void MoveEast();
-    void MoveSouthEast();
-    void MoveSouth();
-    void MoveSouthWest();
-    void MoveWest();
-    void MoveNorthWest();
-    bool IsHungry();
-    bool IsThirsty();
-    bool IsHurt();
+    Npc();
+    void reCreateSkills();
+    void blankSkills();
+    bool hasWeapon(std::string weapon = "");
+    Item *getItemType(int type);
+    bool hasItemType(int type);
+    void drawImg();
+    void move(sf::Vector2f Tar);
+    void dirMove(sf::Vector2f Tar);
+    void momMove();
+    void moveNorth();
+    void moveNorthEast();
+    void moveEast();
+    void moveSouthEast();
+    void moveSouth();
+    void moveSouthWest();
+    void moveWest();
+    void moveNorthWest();
+    bool isHungry();
+    bool isThirsty();
+    bool isHurt();
     void breath();
     void sethealth(float amount);
     bool modhealth(float amount);
@@ -270,12 +270,12 @@ public:
     std::string getname();
     void spawn(int gposx, int gposy, int rposx, int rposy, int posx, int posy);
     bool boolblood(std::string ailment);
-    bool HasTag(std::string tag);
-    void Tag(std::string tag, int amount);
+    bool hasTag(std::string tag);
+    void tag(std::string tag, int amount);
     float bloodwork(std::string aliment, float amount);
     float bloodworkXX(std::string aliment, int amount);
-    bool CloseToTarget(int distance, sf::Vector2f Tar);
-    void AddItem(std::string const &itemname, int amount);
+    bool closeToTarget(int distance, sf::Vector2f Tar);
+    void addItem(std::string const &itemname, int amount);
 
     short minmeleedamage;
     short maxmeleedamage;
@@ -286,110 +286,110 @@ public:
     unsigned char valuegrid[gridy][gridx];
     unsigned char followgrid[gridy][gridx];
 
-    void PrintConsoleInfo();
-    void PrintBloodContent();
-    bool operator<(NPC const &other) const;
+    void printConsoleInfo();
+    void printBloodContent();
+    bool operator<(Npc const &other) const;
 };
 
-void SetTestage();
+void setTestage();
 
-void TimeTest();
+void timeTest();
 
-class cNpcManager
+class NpcManager
 {
 public:
-    std::vector<NPC> GlobalCritter;
-    std::vector<NPC> AddedCritters;
+    std::vector<Npc> globalCritter;
+    std::vector<Npc> addedCritters;
 
-    void AddCritters();
-    void InitializeCritters();
+    void addCritters();
+    void initializeCritters();
 };
-extern cNpcManager npcmanager;
+extern NpcManager npcmanager;
 
 class MakeSquad
 {
 public:
-    float MakeSquadPoints;
-    int SquadMates;
-    std::vector<NPC> Squad;
-    int Aim;
+    float makeSquadPoints;
+    int squadMates;
+    std::vector<Npc> squad;
+    int aim;
 
     MakeSquad();
 };
 
-extern MakeSquad Squady;
-extern std::vector<NPC> WorldCritters;
+extern MakeSquad squady;
+extern std::vector<Npc> worldCritters;
 
-int GetNpcVectorId(int id);
-std::set<int> NPCTrace(int xa, int ya, int xb, int yb, int id,
+int getNpcVectorId(int id);
+std::set<int> npcTrace(int xa, int ya, int xb, int yb, int id,
                        std::set<int> exceptions = std::set<int>());
-void SaveNPC(int planet, sf::Vector2i Region, NPC &Critter);
+void saveNPC(int planet, sf::Vector2i Region, Npc &Critter);
 
 class Territory
 {
 public:
-    sf::Vector2i WorldTile;
-    sf::Vector2i GalaxyTile;
-    bool ToDelete;
+    sf::Vector2i worldTile;
+    sf::Vector2i galaxyTile;
+    bool toDelete;
 
     Territory();
 };
 
-void CleanTerritories(std::vector<Territory> &Territories);
+void cleanTerritories(std::vector<Territory> &Territories);
 
 class Faction
 {
 public:
-    std::string Name;
-    bool PlayerControlled;
-    bool Initialized;
+    std::string name;
+    bool playerControlled;
+    bool initialized;
 
-    int Members;
+    int members;
 
-    sf::Color PrimaryColor;
-    sf::Color SecondaryColor;
+    sf::Color primaryColor;
+    sf::Color secondaryColor;
 
-    int Creativity;
-    int Aggressiveness;
+    int creativity;
+    int aggressiveness;
 
-    float TechAgriculture;
-    float TechArchitecture;
-    float TechEnergyProduction;
-    float TechWeaponryMass;
-    float TechWeaponryEnergy;
-    float TechWeaponryExplosive;
-    float TechWeaponrySharp;
-    float TechWeaponryBlunt;
-    float TechDiplomacy;
-    float TechMedical;
-    float TechRobotics;
+    float techAgriculture;
+    float techArchitecture;
+    float techEnergyProduction;
+    float techWeaponryMass;
+    float techWeaponryEnergy;
+    float techWeaponryExplosive;
+    float techWeaponrySharp;
+    float techWeaponryBlunt;
+    float techDiplomacy;
+    float techMedical;
+    float techRobotics;
 
-    std::vector<Territory> Territories;
+    std::vector<Territory> territories;
 
-    std::vector<std::string> KnownMagic;
-    std::vector<Item> Items;
+    std::vector<std::string> knownMagic;
+    std::vector<Item> items;
 
-    std::vector<Job> JobList;
+    std::vector<Job> jobList;
     Faction();
 };
 
-extern std::vector<Faction> UniFact;
+extern std::vector<Faction> uniFact;
 
-int FactionMembers(std::string FactionName);
-float FactionAggression(std::string FactionName);
-int FactionTerritories(std::string FactionName);
-float FactionPower(std::string FactionName);
-int FactionPopulation();
-void InitializeFactions(int GenerateMax = 10);
-NPC *GetGlobalCritter(std::string strtype);
-void SpawnCritter(std::string Object, int xpos, int ypos);
+int factionMembers(std::string FactionName);
+float factionAggression(std::string FactionName);
+int factionTerritories(std::string FactionName);
+float factionPower(std::string FactionName);
+int factionPopulation();
+void initializeFactions(int GenerateMax = 10);
+Npc *getGlobalCritter(std::string strtype);
+void spawnCritter(std::string Object, int xpos, int ypos);
 
-extern Faction PF;
+extern Faction g_pf;
 
-void BuildStartingCritters(int ZedAmount = 0);
-std::string LoadCritters(sf::Vector2i WorldPos, std::string Direction,
+void buildStartingCritters(int ZedAmount = 0);
+std::string loadCritters(sf::Vector2i WorldPos, std::string Direction,
                          int planet = 500);
-void Boom(int xpos, int ypos, int damage, int size);
-void SquadHud();
+void boom(int xpos, int ypos, int damage, int size);
+void squadHud();
 
 #endif // FACTION_H_INCLUDED

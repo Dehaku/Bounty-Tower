@@ -32,11 +32,11 @@ public:
     {
     public:
         Item *pItem;
-        NPC *pNPC;
+        Npc *pNPC;
         Tile *pTile;
 
         std::vector<Item *> pVecItem;
-        std::vector<NPC *> pVecNPC;
+        std::vector<Npc *> pVecNPC;
         std::vector<Tile *> pVecTile;
 
         MenuPointerContainer();

@@ -5,7 +5,7 @@
 
 #include <SFML/Graphics.hpp>
 
-class NPC;
+class Npc;
 class Item
 {
 public:
@@ -25,7 +25,7 @@ public:
     std::string insidePart;
     int hasInternalUse;
 
-    NPC *user;
+    Npc *user;
 
     int range;
     int age;

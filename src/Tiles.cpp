@@ -612,13 +612,13 @@ void DrawWorldTiles()
                 }
                 if (WorldMap[i][t].Owner != "")
                 {
-                    for (size_t z = 0; z != UniFact.size(); z++)
+                    for (size_t z = 0; z != uniFact.size(); z++)
                     {
-                        if (WorldMap[i][t].Owner == UniFact[z].Name)
+                        if (WorldMap[i][t].Owner == uniFact[z].name)
                         {
-                            sf::Color Prim = UniFact[z].PrimaryColor;
+                            sf::Color Prim = uniFact[z].primaryColor;
                             Prim.a = Prim.a / 1.3;
-                            sf::Color Seco = UniFact[z].SecondaryColor;
+                            sf::Color Seco = uniFact[z].secondaryColor;
                             Seco.a = Seco.a / 1.3;
                             effects.createSquare(
                                 (i * 20) + 1, (t * 20) + 1, ((i * 20) + 20) - 1,
@@ -991,7 +991,7 @@ void TilesGoRight()
         }
     }
 
-    LoadCritters(
+    loadCritters(
         sf::Vector2i(gvars::currentregionx - 2, gvars::currentregiony + 1),
         "Left");
 

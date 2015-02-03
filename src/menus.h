@@ -77,7 +77,7 @@ class MenuPointerContainer
 {
 public:
     Item *pItem;
-    NPC *pNPC;
+    Npc *pNPC;
     Tile *pTile;
     MenuPointerContainer();
 };

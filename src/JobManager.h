@@ -3,7 +3,7 @@
 
 #include "Items.h"
 
-class NPC;
+class Npc;
 class Tile;
 
 class MyItem
@@ -31,7 +31,7 @@ class PointerContainer
 {
 public:
     Item *pItem;
-    NPC *pNPC;
+    Npc *pNPC;
     Tile *pTile;
     PointerContainer();
 };
@@ -45,7 +45,7 @@ public:
     float CompletionProgress;
     std::string Type;
     Item *pItem;
-    NPC *pWorker;
+    Npc *pWorker;
     //Tile * pTile;
     sf::Vector2i WorkPos;
     sf::Vector2i WorkplacePos;

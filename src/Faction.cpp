@@ -11,41 +11,41 @@
 #include <cstring>
 #include <iostream>
 
-Faction *ConFact;
-std::vector<NPC> npclist;
-MakeSquad Squady;
-std::vector<NPC> WorldCritters;
-std::vector<Faction> UniFact;
-Faction PF;
-cNpcManager npcmanager;
+Faction *conFact;
+std::vector<Npc> npclist;
+MakeSquad squady;
+std::vector<Npc> worldCritters;
+std::vector<Faction> uniFact;
+Faction g_pf;
+NpcManager npcmanager;
 extern sf::RenderWindow window;
 
-void NPC::BodyDefinition::BodyPartFind(std::string Part, int amount)
+void Npc::BodyDefinition::BodyPartFind(std::string Part, int amount)
 {
 
     size_t LinePosOne;
-    LinePosOne = BodyParts.find(Part);
+    LinePosOne = bodyParts.find(Part);
     if (LinePosOne != std::string::npos)
     {
 
         size_t LinePosTwo;
         std::string LineValue;
-        LinePosTwo = BodyParts.find("]", LinePosOne + 1);
+        LinePosTwo = bodyParts.find("]", LinePosOne + 1);
         if (LinePosTwo != std::string::npos)
         {
             int len = Part.length();
-            LineValue.assign(BodyParts, LinePosOne + len,
+            LineValue.assign(bodyParts, LinePosOne + len,
                              LinePosTwo - (LinePosOne + len));
             amount += atoi(LineValue.c_str());
 
             std::stringstream out;
             out << amount;
-            BodyParts.replace(LinePosOne + len, LinePosTwo - (LinePosOne + len),
+            bodyParts.replace(LinePosOne + len, LinePosTwo - (LinePosOne + len),
                               out.str());
 
             if (out.str() == "0")
             {
-                BodyParts.replace(LinePosOne, LinePosTwo, "");
+                bodyParts.replace(LinePosOne, LinePosTwo, "");
             }
         }
     }
@@ -55,31 +55,31 @@ void NPC::BodyDefinition::BodyPartFind(std::string Part, int amount)
     }
     else if (amount > 0)
     {
-        BodyParts.assign(Part);
+        bodyParts.assign(Part);
         std::stringstream out;
         out << amount;
-        BodyParts.append(out.str());
-        BodyParts.append("]");
+        bodyParts.append(out.str());
+        bodyParts.append("]");
     }
 }
 
-std::set<int> NPC::Melee(int /*min*/, int /*max*/, int range,
+std::set<int> Npc::melee(int /*min*/, int /*max*/, int range,
                          std::set<int> /*exception*/)
 {
     std::set<int> Tar;
-    if (FirstStrike == false)
+    if (firstStrike == false)
     {
-        Degrees =
-            math::angleBetweenVectors(sf::Vector2f(xpos, ypos), TargetPos) - 90;
-        FirstStrike = true;
+        degrees =
+            math::angleBetweenVectors(sf::Vector2f(xpos, ypos), targetPos) - 90;
+        firstStrike = true;
     }
     for (int i = 0; i != 30; i++)
     {
-        Xxx = xpos + cosf(Degrees * PI / 180) * range;
-        Yyy = ypos + sinf(Degrees * PI / 180) * range;
-        Degrees += 1;
-        effects.createLine(xpos, ypos, Xxx, Yyy, 2, sf::Color::Blue);
-        Tar = NPCTrace(xpos, ypos, Xxx, Yyy, id, std::set<int>());
+        xxx = xpos + cosf(degrees * PI / 180) * range;
+        yyy = ypos + sinf(degrees * PI / 180) * range;
+        degrees += 1;
+        effects.createLine(xpos, ypos, xxx, yyy, 2, sf::Color::Blue);
+        Tar = npcTrace(xpos, ypos, xxx, yyy, id, std::set<int>());
     }
     std::list<Item>::iterator Inv;
     for (Inv = inventory.begin(); Inv != inventory.end(); ++Inv)
@@ -88,21 +88,21 @@ std::set<int> NPC::Melee(int /*min*/, int /*max*/, int range,
         {
         }
     }
-    if (Degrees >=
-        math::angleBetweenVectors(sf::Vector2f(xpos, ypos), TargetPos) + 90)
+    if (degrees >=
+        math::angleBetweenVectors(sf::Vector2f(xpos, ypos), targetPos) + 90)
     {
-        Attacking = false;
-        FirstStrike = false;
+        attacking = false;
+        firstStrike = false;
     }
     return Tar;
 }
 
-void NPC::PathFinding::EndMem()
+void Npc::PathFinding::endMem()
 {
-    free(MypathBank[0]);
+    free(mypathBank[0]);
 }
 
-void NPC::PathFinding::MyFindPath(int Sx, int Sy, int Ex, int Ey)
+void Npc::PathFinding::myFindPath(int Sx, int Sy, int Ex, int Ey)
 {
     xPa.clear();
     yPa.clear();
@@ -110,7 +110,7 @@ void NPC::PathFinding::MyFindPath(int Sx, int Sy, int Ex, int Ey)
 
     try
     {
-        MypathStatus = astar::findPath(1, Sx, Sy, Ex, Ey);
+        mypathStatus = astar::findPath(1, Sx, Sy, Ex, Ey);
     }
     catch (std::exception &e)
     {
@@ -118,12 +118,12 @@ void NPC::PathFinding::MyFindPath(int Sx, int Sy, int Ex, int Ey)
         fSleep(60);
     }
 
-    MypathLocation = astar::pathLocation[1];
+    mypathLocation = astar::pathLocation[1];
 
-    MypathLength = astar::pathLength[1];
+    mypathLength = astar::pathLength[1];
     //MypathBank[1] = (int*) realloc (pathBank[1],pathLength[1]*8);
 
-    for (int i = 0; i != MypathLength; ++i)
+    for (int i = 0; i != mypathLength; ++i)
     {
 
         yPa.push_back(astar::pathBank[1][i * 2 - 1]);
@@ -131,9 +131,9 @@ void NPC::PathFinding::MyFindPath(int Sx, int Sy, int Ex, int Ey)
     }
 }
 
-int NPC::PathFinding::MyReadPathX(int /*pathfinderID*/, int xpathLocation)
+int Npc::PathFinding::myReadPathX(int /*pathfinderID*/, int xpathLocation)
 {
-    if (xpathLocation <= MypathLength)
+    if (xpathLocation <= mypathLength)
     {
         //Read coordinate from bank
         //x = MypathBank[pathfinderID] [xpathLocation*2-2];
@@ -150,9 +150,9 @@ int NPC::PathFinding::MyReadPathX(int /*pathfinderID*/, int xpathLocation)
         "MyReadPathX: Couldn't return a meaningful value!");
 }
 
-int NPC::PathFinding::MyReadPathY(int /*pathfinderID*/, int ypathLocation)
+int Npc::PathFinding::myReadPathY(int /*pathfinderID*/, int ypathLocation)
 {
-    if (ypathLocation <= MypathLength)
+    if (ypathLocation <= mypathLength)
     {
         //Read coordinate from bank
         //y = MypathBank[pathfinderID] [ypathLocation*2-1];
@@ -168,29 +168,29 @@ int NPC::PathFinding::MyReadPathY(int /*pathfinderID*/, int ypathLocation)
         "MyReadPathY: Couldn't return a meaningful value!");
 }
 
-void NPC::PathFinding::MyReadPath(int /*pathfinderID*/, int currentX,
+void Npc::PathFinding::myReadPath(int /*pathfinderID*/, int currentX,
                                   int currentY, int pixelsPerFrame)
 {
     //If a path has been found for the pathfinder	...
-    if (MypathStatus == astar::AStarFound)
+    if (mypathStatus == astar::AStarFound)
     {
         //If path finder is just starting a new path or has reached the
         //center of the current path square (and the end of the path
         //hasn't been reached), look up the next path square.
-        if (MypathLocation < MypathLength)
+        if (mypathLocation < mypathLength)
         {
             //if just starting or if close enough to center of square
-            if (MypathLocation == 0 ||
-                (abs(currentX - MyxPath) < pixelsPerFrame &&
-                 abs(currentY - MyyPath) < pixelsPerFrame))
-                MypathLocation = MypathLocation + 1;
+            if (mypathLocation == 0 ||
+                (abs(currentX - myxPath) < pixelsPerFrame &&
+                 abs(currentY - myyPath) < pixelsPerFrame))
+                mypathLocation = mypathLocation + 1;
         }
         //Read the path data.
         try
         {
             const int ID = 1;
-            MyxPath = MyReadPathX(ID, MypathLocation);
-            MyyPath = MyReadPathY(ID, MypathLocation);
+            myxPath = myReadPathX(ID, mypathLocation);
+            myyPath = myReadPathY(ID, mypathLocation);
         }
         catch (std::exception const &ex)
         {
@@ -201,30 +201,30 @@ void NPC::PathFinding::MyReadPath(int /*pathfinderID*/, int currentX,
 
         //If the center of the last path square on the path has been
         //reached then reset.
-        if (MypathLocation == MypathLength)
+        if (mypathLocation == mypathLength)
         {
-            if (abs(currentX - MyxPath) < pixelsPerFrame &&
-                abs(currentY - MyyPath) <
+            if (abs(currentX - myxPath) < pixelsPerFrame &&
+                abs(currentY - myyPath) <
                     pixelsPerFrame) //if close enough to center of square
-                MypathStatus = astar::notStarted;
+                mypathStatus = astar::notStarted;
         }
     }
     //If there is no path for this pathfinder, simply stay in the current
     //location.
     else
     {
-        MyxPath = currentX;
-        MyyPath = currentY;
+        myxPath = currentX;
+        myyPath = currentY;
     }
 }
 
-void NPC::EffectStats()
+void Npc::effectStats()
 {
-    maxhealth = Skills.endurance * 0.8;
-    regenrate = Skills.endurance / 10;
+    maxhealth = skills.endurance * 0.8;
+    regenrate = skills.endurance / 10;
 }
 
-void NPC::Skill::Train(std::string skill, int amount, int skillgain)
+void Npc::Skill::Train(std::string skill, int amount, int skillgain)
 {
     if (skill == "agility")
     {
@@ -300,36 +300,36 @@ void NPC::Skill::Train(std::string skill, int amount, int skillgain)
     }
 }
 
-NPC::NPC()
-    : Attacking{}, FirstStrike{}, ImgRotates{}, Prone{}, Body{}, rot{}, Xxx{},
-      Yyy{}, Degrees{}, PathFinding{}, imgstrx{}, imgstry{}, imgendx{},
-      imgendy{}, IsPlayer{}, HasSpawned{}, Grappling{}, cbaseid{}, id2{},
+Npc::Npc()
+    : attacking{}, firstStrike{}, imgRotates{}, prone{}, body{}, rot{}, xxx{},
+      yyy{}, degrees{}, pathFinding{}, imgstrx{}, imgstry{}, imgendx{},
+      imgendy{}, isPlayer{}, hasSpawned{}, grappling{}, cbaseid{}, id2{},
       surname{}, alive{}, stillalive{}, ticksalive{}, useditem{}, canmove{},
-      breathrate{}, breathtimer{}, breathtimerint{}, Age{}, AgeType{},
+      breathrate{}, breathtimer{}, breathtimerint{}, age{}, ageType{},
       direction{}, worshippers{}, gypos{}, gxpos{}, planet{}, ypos{}, xpos{},
       rypos{}, rxpos{}, mana{}, reginterntemp{}, interntemp{}, regtemp{},
       temp{}, breathmax{}, nutrition{}, maxstamina{}, stamina{}, credits{},
       size{}, minmeleedamage{}, maxmeleedamage{}, minrangeddamage{},
       maxrangeddamage{}, dirgrid{}, valuegrid{}, followgrid{}
 {
-    HasJob = false;
+    hasJob = false;
 
-    ToDelete = false;
+    toDelete = false;
     viewangle = 180;
     viewrange = 200;
     stench = 0;
     killcount = 0;
     id = gvars::globalid++;
-    NeedsFood = true;
-    NeedsWater = true;
-    TargetVectorId = -1;
-    TargetId = -1;
+    needsFood = true;
+    needsWater = true;
+    targetVectorId = -1;
+    targetId = -1;
     angle = 1;
-    AllowedDrink = true;
-    AllowedFood = true;
-    AllowedMove = true;
-    AtTarget = false;
-    HasTarget = false;
+    allowedDrink = true;
+    allowedFood = true;
+    allowedMove = true;
+    atTarget = false;
+    hasTarget = false;
     target = "Food";
     action = "Act";
     moverateint = 1;
@@ -350,31 +350,31 @@ NPC::NPC()
     thirstrate = 1;
     thirst = 600;
     reach = 10;
-    Skills.endurance = randz(20, 80);
-    Skills.strength = randz(20, 80);
-    Skills.dexterity = randz(20, 80);
-    Skills.intelligence = randz(20, 80);
-    Skills.wisdom = randz(20, 80);
-    Skills.charisma = randz(20, 80);
-    Skills.perception = randz(20, 80);
-    Skills.agility = randz(20, 80);
-    Skills.endurancexp = 0;
-    Skills.strengthxp = 0;
-    Skills.dexterityxp = 0;
-    Skills.intelligencexp = 0;
-    Skills.wisdomxp = 0;
-    Skills.charismaxp = 0;
-    Skills.perceptionxp = 0;
-    Skills.agilityxp = 0;
+    skills.endurance = randz(20, 80);
+    skills.strength = randz(20, 80);
+    skills.dexterity = randz(20, 80);
+    skills.intelligence = randz(20, 80);
+    skills.wisdom = randz(20, 80);
+    skills.charisma = randz(20, 80);
+    skills.perception = randz(20, 80);
+    skills.agility = randz(20, 80);
+    skills.endurancexp = 0;
+    skills.strengthxp = 0;
+    skills.dexterityxp = 0;
+    skills.intelligencexp = 0;
+    skills.wisdomxp = 0;
+    skills.charismaxp = 0;
+    skills.perceptionxp = 0;
+    skills.agilityxp = 0;
 
-    Target.item = nullptr;
-    Target.npc = nullptr;
-    Target.tile = nullptr;
+    targetInfo.item = nullptr;
+    targetInfo.npc = nullptr;
+    targetInfo.tile = nullptr;
 
-    maxhealth = Skills.endurance * 0.8;
+    maxhealth = skills.endurance * 0.8;
     regentimerint = 100;
     regentimer = regentimerint;
-    regenrate = Skills.endurance / 10;
+    regenrate = skills.endurance / 10;
     health = maxhealth;
     stench = 50;
     race = "Human";
@@ -457,67 +457,67 @@ NPC::NPC()
         }
     };
     //img.SetImage(Images);
-    IsNPC = true;
-    NeedsFood = true;
-    AllowedFood = true;
-    NeedsWater = true;
-    AllowedDrink = true;
-    NeedsPath = false;
+    isNPC = true;
+    needsFood = true;
+    allowedFood = true;
+    needsWater = true;
+    allowedDrink = true;
+    needsPath = false;
 }
 
-void NPC::ReCreateSkills()
+void Npc::reCreateSkills()
 {
 
-    Skills.endurance = randz(20, 80);
-    Skills.strength = randz(20, 80);
-    Skills.dexterity = randz(20, 80);
-    Skills.intelligence = randz(20, 80);
-    Skills.wisdom = randz(20, 80);
-    Skills.charisma = randz(20, 80);
-    Skills.perception = randz(20, 80);
-    Skills.agility = randz(20, 80);
-    Skills.endurancexp = 0;
-    Skills.strengthxp = 0;
-    Skills.dexterityxp = 0;
-    Skills.intelligencexp = 0;
-    Skills.wisdomxp = 0;
-    Skills.charismaxp = 0;
-    Skills.perceptionxp = 0;
-    Skills.agilityxp = 0;
-    maxhealth = Skills.endurance * 0.8;
+    skills.endurance = randz(20, 80);
+    skills.strength = randz(20, 80);
+    skills.dexterity = randz(20, 80);
+    skills.intelligence = randz(20, 80);
+    skills.wisdom = randz(20, 80);
+    skills.charisma = randz(20, 80);
+    skills.perception = randz(20, 80);
+    skills.agility = randz(20, 80);
+    skills.endurancexp = 0;
+    skills.strengthxp = 0;
+    skills.dexterityxp = 0;
+    skills.intelligencexp = 0;
+    skills.wisdomxp = 0;
+    skills.charismaxp = 0;
+    skills.perceptionxp = 0;
+    skills.agilityxp = 0;
+    maxhealth = skills.endurance * 0.8;
     regentimerint = 100;
     regentimer = regentimerint;
-    regenrate = Skills.endurance / 10;
+    regenrate = skills.endurance / 10;
     health = maxhealth;
 }
 
-void NPC::BlankSkills()
+void Npc::blankSkills()
 {
 
-    Skills.endurance = 20;
-    Skills.strength = 20;
-    Skills.dexterity = 20;
-    Skills.intelligence = 20;
-    Skills.wisdom = 20;
-    Skills.charisma = 20;
-    Skills.perception = 20;
-    Skills.agility = 20;
-    Skills.endurancexp = 0;
-    Skills.strengthxp = 0;
-    Skills.dexterityxp = 0;
-    Skills.intelligencexp = 0;
-    Skills.wisdomxp = 0;
-    Skills.charismaxp = 0;
-    Skills.perceptionxp = 0;
-    Skills.agilityxp = 0;
-    maxhealth = Skills.endurance * 0.8;
+    skills.endurance = 20;
+    skills.strength = 20;
+    skills.dexterity = 20;
+    skills.intelligence = 20;
+    skills.wisdom = 20;
+    skills.charisma = 20;
+    skills.perception = 20;
+    skills.agility = 20;
+    skills.endurancexp = 0;
+    skills.strengthxp = 0;
+    skills.dexterityxp = 0;
+    skills.intelligencexp = 0;
+    skills.wisdomxp = 0;
+    skills.charismaxp = 0;
+    skills.perceptionxp = 0;
+    skills.agilityxp = 0;
+    maxhealth = skills.endurance * 0.8;
     regentimerint = 100;
     regentimer = regentimerint;
-    regenrate = Skills.endurance / 10;
+    regenrate = skills.endurance / 10;
     health = maxhealth;
 }
 
-bool NPC::HasWeapon(std::string weapon)
+bool Npc::hasWeapon(std::string weapon)
 {
     bool Specific = false;
     bool HasSpecifiedWeapon = false;
@@ -545,7 +545,7 @@ bool NPC::HasWeapon(std::string weapon)
     return false;
 }
 
-Item *NPC::GetItemType(int type)
+Item *Npc::getItemType(int type)
 {
     //for(int i = 0; i < inventory.size(); i++)
     for (auto &elem : inventory)
@@ -566,7 +566,7 @@ Item *NPC::GetItemType(int type)
     return nullptr;
 }
 
-bool NPC::HasItemType(int type)
+bool Npc::hasItemType(int type)
 {
     //for(int i=0; i<inventory.size(); i++)
     for (auto &elem : inventory)
@@ -587,13 +587,13 @@ bool NPC::HasItemType(int type)
     return false;
 }
 
-void NPC::DrawImg()
+void Npc::drawImg()
 {
     img.setPosition(xpos, ypos);
     window.draw(img);
 }
 
-void NPC::Move(sf::Vector2f Tar)
+void Npc::move(sf::Vector2f Tar)
 {
     bool Above = false;
     bool Right = false;
@@ -627,7 +627,7 @@ void NPC::Move(sf::Vector2f Tar)
 
     if (AtTargetx == true && AtTargety == true)
     {
-        AtTarget = true;
+        atTarget = true;
     }
     else
     {
@@ -690,7 +690,7 @@ void NPC::Move(sf::Vector2f Tar)
     angle = (180 / PI) * (atan2f(xpos - Tar.x, ypos - Tar.y));
 }
 
-void NPC::DirMove(sf::Vector2f Tar)
+void Npc::dirMove(sf::Vector2f Tar)
 {
     bool AtTargetx = false;
     bool AtTargety = false;
@@ -720,7 +720,7 @@ void NPC::DirMove(sf::Vector2f Tar)
 
     if (AtTargetx == true && AtTargety == true)
     {
-        AtTarget = true;
+        atTarget = true;
     }
     else
     {
@@ -738,7 +738,7 @@ void NPC::DirMove(sf::Vector2f Tar)
         }
         else
         {
-            AtTarget = false;
+            atTarget = false;
         }
     }
 
@@ -760,62 +760,62 @@ void NPC::DirMove(sf::Vector2f Tar)
     }
 }
 
-void NPC::MomMove()
+void Npc::momMove()
 {
-    xpos += (Momentum.x / size);
-    ypos += (Momentum.y / size);
+    xpos += (momentum.x / size);
+    ypos += (momentum.y / size);
 
-    Momentum.x = math::clamp((Momentum.x - gvars::airPressure), 0, 9999999);
-    Momentum.y = math::clamp((Momentum.y - gvars::airPressure), 0, 9999999);
+    momentum.x = math::clamp((momentum.x - gvars::airPressure), 0, 9999999);
+    momentum.y = math::clamp((momentum.y - gvars::airPressure), 0, 9999999);
 }
 
-void NPC::MoveNorth()
+void Npc::moveNorth()
 {
     ypos -= moverate;
 }
 
-void NPC::MoveNorthEast()
+void Npc::moveNorthEast()
 {
     ypos -= moverate;
     xpos += moverate;
 }
 
-void NPC::MoveEast()
+void Npc::moveEast()
 {
     xpos += moverate;
 }
 
-void NPC::MoveSouthEast()
+void Npc::moveSouthEast()
 {
     ypos += moverate;
     xpos += moverate;
 }
 
-void NPC::MoveSouth()
+void Npc::moveSouth()
 {
     ypos += moverate;
 }
 
-void NPC::MoveSouthWest()
+void Npc::moveSouthWest()
 {
     ypos += moverate;
     xpos -= moverate;
 }
 
-void NPC::MoveWest()
+void Npc::moveWest()
 {
     xpos -= moverate;
 }
 
-void NPC::MoveNorthWest()
+void Npc::moveNorthWest()
 {
     ypos -= moverate;
     xpos -= moverate;
 }
 
-bool NPC::IsHungry()
+bool Npc::isHungry()
 {
-    if (AllowedFood == false)
+    if (allowedFood == false)
     {
         return false;
     }
@@ -829,9 +829,9 @@ bool NPC::IsHungry()
     }
 }
 
-bool NPC::IsThirsty()
+bool Npc::isThirsty()
 {
-    if (AllowedDrink == false)
+    if (allowedDrink == false)
     {
         return false;
     }
@@ -845,7 +845,7 @@ bool NPC::IsThirsty()
     }
 }
 
-bool NPC::IsHurt()
+bool Npc::isHurt()
 {
     if (health < (maxhealth * 0.60))
     {
@@ -857,16 +857,16 @@ bool NPC::IsHurt()
     }
 }
 
-void NPC::breath()
+void Npc::breath()
 {
 }
 
-void NPC::sethealth(float amount)
+void Npc::sethealth(float amount)
 {
     health = amount;
 }
 
-bool NPC::modhealth(float amount)
+bool Npc::modhealth(float amount)
 {
     health += amount;
     if (health < 1)
@@ -880,7 +880,7 @@ bool NPC::modhealth(float amount)
     }
 }
 
-void NPC::fillhunger(float amount)
+void Npc::fillhunger(float amount)
 {
     hunger += amount;
     if (hunger > maxhunger)
@@ -889,7 +889,7 @@ void NPC::fillhunger(float amount)
     }
 }
 
-void NPC::fillthirst(int amount)
+void Npc::fillthirst(int amount)
 {
     thirst += amount;
     if (thirst > maxthirst)
@@ -898,12 +898,12 @@ void NPC::fillthirst(int amount)
     }
 }
 
-std::string NPC::getname()
+std::string Npc::getname()
 {
     return name;
 }
 
-void NPC::spawn(int /*gposx*/, int /*gposy*/, int /*rposx*/, int /*rposy*/,
+void Npc::spawn(int /*gposx*/, int /*gposy*/, int /*rposx*/, int /*rposy*/,
                 int posx, int posy)
 {
     gxpos = 100;
@@ -912,10 +912,10 @@ void NPC::spawn(int /*gposx*/, int /*gposy*/, int /*rposx*/, int /*rposy*/,
     rypos = 100;
     xpos = posx;
     ypos = posy;
-    HasSpawned = true;
+    hasSpawned = true;
 }
 
-bool NPC::boolblood(std::string ailment)
+bool Npc::boolblood(std::string ailment)
 {
     using namespace std;
     size_t found;
@@ -929,7 +929,7 @@ bool NPC::boolblood(std::string ailment)
         return false;
 }
 
-bool NPC::HasTag(std::string tag)
+bool Npc::hasTag(std::string tag)
 {
     using namespace std;
     size_t found;
@@ -942,7 +942,7 @@ bool NPC::HasTag(std::string tag)
         return false;
 }
 
-void NPC::Tag(std::string tag, int amount)
+void Npc::tag(std::string tag, int amount)
 {
     using namespace std;
     size_t found;
@@ -987,7 +987,7 @@ void NPC::Tag(std::string tag, int amount)
         }*/
 }
 
-float NPC::bloodwork(std::string aliment, float amount)
+float Npc::bloodwork(std::string aliment, float amount)
 { // Returns the final altered value of the altered 'aliment'
 
     size_t tStart;
@@ -1048,7 +1048,7 @@ float NPC::bloodwork(std::string aliment, float amount)
     return Returns;
 }
 
-float NPC::bloodworkXX(std::string aliment, int amount)
+float Npc::bloodworkXX(std::string aliment, int amount)
 { // Returns the final altered value of the altered 'aliment'
 
     size_t tStart;
@@ -1105,7 +1105,7 @@ float NPC::bloodworkXX(std::string aliment, int amount)
     return Returns;
 }
 
-bool NPC::CloseToTarget(int distance, sf::Vector2f Tar)
+bool Npc::closeToTarget(int distance, sf::Vector2f Tar)
 {
     int numbz = 0;
     numbz = math::closeish(xpos, ypos, Tar.x, Tar.y);
@@ -1119,7 +1119,7 @@ bool NPC::CloseToTarget(int distance, sf::Vector2f Tar)
     }
 }
 
-void NPC::AddItem(const std::string &itemname, int amount)
+void Npc::addItem(const std::string &itemname, int amount)
 { // TODO: Set this to optionally receive an item class instead, Will be useful for modded weapons and ect.
     if (gvars::debug)
     {
@@ -1138,7 +1138,7 @@ void NPC::AddItem(const std::string &itemname, int amount)
     }
 }
 
-void NPC::PrintConsoleInfo()
+void Npc::printConsoleInfo()
 {
     using namespace std;
     cout << "Name: " << name << endl;
@@ -1158,23 +1158,23 @@ void NPC::PrintConsoleInfo()
     cout << "Hunger: " << hunger << endl;
     cout << "Thirst: " << thirst << endl;
     cout << "Kill Count: " << killcount << endl;
-    cout << "Target is " << target << " at:" << TargetPos.x << ","
-         << TargetPos.y << endl;
+    cout << "Target is " << target << " at:" << targetPos.x << ","
+         << targetPos.y << endl;
 }
 
-void NPC::PrintBloodContent()
+void Npc::printBloodContent()
 {
     using namespace std;
     cout << "Name: " << name << endl;
     cout << bloodcontent << endl;
 }
 
-bool NPC::operator<(const NPC &other) const
+bool Npc::operator<(const Npc &other) const
 {
     return other.id > id;
 }
 
-void TimeTest()
+void timeTest()
 {
 
     time_t timer;
@@ -1212,10 +1212,10 @@ void TimeTest()
     printf("%.f second difference", seconds);
 
     clock_t vInital = clock();
-    std::vector<NPC> TestVector;
+    std::vector<Npc> TestVector;
     for (int n = 0; n != 500; n++)
     {
-        NPC npc;
+        Npc npc;
         TestVector.push_back(npc);
     }
     clock_t vCreation = clock();
@@ -1255,10 +1255,10 @@ void TimeTest()
     clock_t vFinished = clock();
 
     clock_t sInital = clock();
-    std::list<NPC> TestSet;
+    std::list<Npc> TestSet;
     for (int n = 0; n != 500; n++)
     {
-        NPC npc;
+        Npc npc;
         TestSet.push_back(npc);
     }
     clock_t sCreation = clock();
@@ -1298,7 +1298,7 @@ void TimeTest()
     clock_t sFinished = clock();
 
     Con(TestSet.size());
-    Con(sizeof(NPC));
+    Con(sizeof(Npc));
     std::cout << "Vector Time, Creation: " << vCreation - vInital
               << ", John Counter: " << vFinished - vCreation << ", Total("
               << vFinished - vInital << "), Johns: " << vJohns << std::endl;
@@ -1307,16 +1307,16 @@ void TimeTest()
               << sFinished - sInital << "), Johns: " << sJohns << std::endl;
 }
 
-void cNpcManager::AddCritters()
+void NpcManager::addCritters()
 {
-    for (auto const &c : AddedCritters)
+    for (auto const &c : addedCritters)
     {
         npclist.push_back(c);
     }
-    AddedCritters.clear();
+    addedCritters.clear();
 }
 
-void cNpcManager::InitializeCritters()
+void NpcManager::initializeCritters()
 {
 
     /*using namespace std;  I'll be using this soon enough, It'll allow the program to surf through the folder, and create all the stuff it needs.
@@ -1339,7 +1339,7 @@ void cNpcManager::InitializeCritters()
         {
             std::string line;
             getline(Input, line);
-            NPC Critter;
+            Npc Critter;
             Critter.name = "Debuggery";
 
             //hungerrate = 1; // TODO: Should these be modded? Or only effected by Diseases/Bionics ect.
@@ -1357,13 +1357,13 @@ void cNpcManager::InitializeCritters()
             Critter.id = gvars::globalid++;
 
             Critter.target = StringFindString(line, "[Target:");
-            Critter.NeedsFood =
+            Critter.needsFood =
                 Booleanize(StringFindNumber(line, "[NeedsFood:"));
-            Critter.AllowedFood =
+            Critter.allowedFood =
                 Booleanize(StringFindNumber(line, "[AllowedFood:"));
-            Critter.NeedsWater =
+            Critter.needsWater =
                 Booleanize(StringFindNumber(line, "[NeedsWater:"));
-            Critter.AllowedDrink =
+            Critter.allowedDrink =
                 Booleanize(StringFindNumber(line, "[AllowedDrink:"));
             Critter.canmove = Booleanize(StringFindNumber(line, "[CanMove:"));
             if (gvars::debug)
@@ -1390,25 +1390,25 @@ void cNpcManager::InitializeCritters()
             {
                 std::cout << "2 \n";
             }
-            Critter.Skills.endurance =
+            Critter.skills.endurance =
                 randz(StringFindNumber(line, "[MinEnd:"),
                       StringFindNumber(line, "[MaxEnd:"));
-            Critter.Skills.strength = randz(StringFindNumber(line, "[MinStr:"),
+            Critter.skills.strength = randz(StringFindNumber(line, "[MinStr:"),
                                             StringFindNumber(line, "[MaxStr:"));
-            Critter.Skills.dexterity =
+            Critter.skills.dexterity =
                 randz(StringFindNumber(line, "[MinDex:"),
                       StringFindNumber(line, "[MaxDex:"));
-            Critter.Skills.intelligence =
+            Critter.skills.intelligence =
                 randz(StringFindNumber(line, "[MinInt:"),
                       StringFindNumber(line, "[MaxInt:"));
-            Critter.Skills.wisdom = randz(StringFindNumber(line, "[MinWis:"),
+            Critter.skills.wisdom = randz(StringFindNumber(line, "[MinWis:"),
                                           StringFindNumber(line, "[MaxWis:"));
-            Critter.Skills.charisma = randz(StringFindNumber(line, "[MinCha:"),
+            Critter.skills.charisma = randz(StringFindNumber(line, "[MinCha:"),
                                             StringFindNumber(line, "[MaxCha:"));
-            Critter.Skills.perception =
+            Critter.skills.perception =
                 randz(StringFindNumber(line, "[MinPer:"),
                       StringFindNumber(line, "[MaxPer:"));
-            Critter.Skills.agility = randz(StringFindNumber(line, "[MinAgi:"),
+            Critter.skills.agility = randz(StringFindNumber(line, "[MinAgi:"),
                                            StringFindNumber(line, "[MaxAgi:"));
             if (gvars::debug)
             {
@@ -1416,7 +1416,7 @@ void cNpcManager::InitializeCritters()
             }
             if (Critter.maxhealth == -1)
             {
-                Critter.maxhealth = Critter.Skills.endurance * 0.8;
+                Critter.maxhealth = Critter.skills.endurance * 0.8;
             }
             debug("v-Adding Tags-v");
             debug(StringFindChaos(line, "{Tags:", "}"));
@@ -1436,7 +1436,7 @@ void cNpcManager::InitializeCritters()
                 {
                     std::cout << "Pre Critter.AddItem \n";
                 }
-                Critter.AddItem(a, 1);
+                Critter.addItem(a, 1);
                 if (gvars::debug)
                 {
                     std::cout << "*Post Critter.AddItem* \n";
@@ -1447,76 +1447,76 @@ void cNpcManager::InitializeCritters()
 
             Critter.action = "Act";
             Critter.alive = true;
-            Critter.HasSpawned = true;
+            Critter.hasSpawned = true;
             Critter.movetimerint = 1000;
             Critter.moverate = Critter.moverateint;
 
             Critter.health = Critter.maxhealth;
             Critter.hunger = Critter.maxhunger;
             Critter.thirst = Critter.maxthirst;
-            if (Critter.HasTag("[EatsFlesh:"))
+            if (Critter.hasTag("[EatsFlesh:"))
             {
                 Critter.hunger = 10;
                 Critter.thirst = 0;
             }
             Critter.regentimer = Critter.regentimerint;
             Critter.regenrate =
-                Critter.Skills.endurance /
+                Critter.skills.endurance /
                 10; // TODO: Have Skill based values update in the Train() function, So that stuff like Regen doesn't fall behind.
 
             Critter.breathtimer = Critter.breathtimerint;
             Critter.hungertimer = Critter.hungertimerint;
             Critter.thirsttimer = Critter.thirsttimerint;
-            Critter.NeedsPath = false;
+            Critter.needsPath = false;
 
             // Critter Bodies
             {
                 if (Critter.race == "Human" || Critter.race == "Zombie")
                 {
-                    Critter.Body.BodyParts =
+                    Critter.body.bodyParts =
                         "{[Name:UpperTorso][BloodPumpRate:100][AirCapacity:"
                         "200][AirAbsorbtion:100][ObjectCapacity:1]["
                         "MassFlesh:15:1000]}";
-                    Critter.Body.BodyParts.append(
+                    Critter.body.bodyParts.append(
                         "{[Name:Head][Mind:true][Orafice:1][MassFlesh:5:"
                         "1000][Dependant:UpperTorso]}");
-                    Critter.Body.BodyParts.append(
+                    Critter.body.bodyParts.append(
                         "{[Name:LowerTorso][ObjectCapacity:10]["
                         "DigestionRate:125][NutritionExtraction:10]["
                         "DigestsFlesh:60][DigestsVeggy:60][DigestsWater:"
                         "100][MassFlesh:15:1000][Dependant:UpperTorso]}");
 
-                    Critter.Body.BodyParts.append("{[Name:Left "
+                    Critter.body.bodyParts.append("{[Name:Left "
                                                   "Leg][Walk:3][MassFlesh:"
                                                   "15:1000][Dependant:"
                                                   "LowerTorso]}");
-                    Critter.Body.BodyParts.append("{[Name:Right "
+                    Critter.body.bodyParts.append("{[Name:Right "
                                                   "Leg][Walk:3][MassFlesh:"
                                                   "15:1000][Dependant:"
                                                   "LowerTorso]}");
 
-                    Critter.Body.BodyParts.append("{[Name:Left "
+                    Critter.body.bodyParts.append("{[Name:Left "
                                                   "Arm][Grasp:2][MassFlesh:"
                                                   "10:1000][Dependant:"
                                                   "UpperTorso]}");
-                    Critter.Body.BodyParts.append("{[Name:Right "
+                    Critter.body.bodyParts.append("{[Name:Right "
                                                   "Arm][Grasp:2][MassFlesh:"
                                                   "10:1000][Dependant:"
                                                   "UpperTorso]}");
                 }
                 if (Critter.race == "Azabul")
                 {
-                    Critter.Body.BodyParts =
+                    Critter.body.bodyParts =
                         "{[Name:UpperTorso][BloodPumpRate:100][AirCapacity:200]"
                         "["
                         "AirAbsorbtion:100][ObjectCapacity:1]["
                         "NutritionExtraction:"
                         "25][MassFlesh:15:1000]}";
-                    Critter.Body.BodyParts.append(
+                    Critter.body.bodyParts.append(
                         "\n{[Name:Head][Mind:true]["
                         "Orafice:1][MassFlesh:5:1000]["
                         "Dependant:UpperTorso]}");
-                    Critter.Body.BodyParts.append(
+                    Critter.body.bodyParts.append(
                         "\n{[Name:LowerTorso][ObjectCapacity:10][DigestionRate:"
                         "125]"
                         "[NutritionExtraction:50][PoisonFilter:Zombification:"
@@ -1525,20 +1525,20 @@ void cNpcManager::InitializeCritters()
                         "UpperTorso]"
                         "}");
 
-                    Critter.Body.BodyParts.append(
+                    Critter.body.bodyParts.append(
                         "\n{[Name:Left "
                         "Leg][Walk:8][MassFlesh:15:1000]["
                         "Dependant:LowerTorso]}");
-                    Critter.Body.BodyParts.append(
+                    Critter.body.bodyParts.append(
                         "\n{[Name:Right "
                         "Leg][Walk:8][MassFlesh:15:1000]["
                         "Dependant:LowerTorso]}");
 
-                    Critter.Body.BodyParts.append(
+                    Critter.body.bodyParts.append(
                         "\n{[Name:Left "
                         "Arm][Grasp:2][MassFlesh:10:1000]"
                         "[Dependant:UpperTorso]}");
-                    Critter.Body.BodyParts.append(
+                    Critter.body.bodyParts.append(
                         "\n{[Name:Right "
                         "Arm][Grasp:2][MassFlesh:10:1000]"
                         "[Dependant:UpperTorso]}");
@@ -1561,7 +1561,7 @@ void cNpcManager::InitializeCritters()
             }
             if (Critter.name != "Debuggery")
             {
-                GlobalCritter.push_back(Critter);
+                globalCritter.push_back(Critter);
             }
             if (gvars::debug)
             {
@@ -1573,12 +1573,12 @@ void cNpcManager::InitializeCritters()
 
 MakeSquad::MakeSquad()
 {
-    MakeSquadPoints = 1000;
-    SquadMates = 3;
-    Aim = 0;
+    makeSquadPoints = 1000;
+    squadMates = 3;
+    aim = 0;
 }
 
-std::set<int> NPCTrace(int xa, int ya, int xb, int yb, int id,
+std::set<int> npcTrace(int xa, int ya, int xb, int yb, int id,
                        std::set<int> /*exceptions*/)
 { //.at(0) = Item/NPC(23/69) .at(1) = id
 
@@ -1604,7 +1604,7 @@ std::set<int> NPCTrace(int xa, int ya, int xb, int yb, int id,
 
         // Merely doing this so I can reuse the same code, but for items, Hehe.
         {
-            std::vector<NPC>::iterator Me;
+            std::vector<Npc>::iterator Me;
 
             for (Me = npclist.begin(); Me != npclist.end(); ++Me)
             {
@@ -1614,7 +1614,7 @@ std::set<int> NPCTrace(int xa, int ya, int xb, int yb, int id,
 
                     try
                     {
-                        SetID.insert(GetNpcVectorId(Me->id));
+                        SetID.insert(getNpcVectorId(Me->id));
                     }
                     catch (std::exception &e)
                     {
@@ -1632,7 +1632,7 @@ std::set<int> NPCTrace(int xa, int ya, int xb, int yb, int id,
     return SetID;
 }
 
-void SaveNPC(int planet, sf::Vector2i Region, NPC &Critter)
+void saveNPC(int planet, sf::Vector2i Region, Npc &Critter)
 {
     using namespace std;
     string line("data/maps/Planet");
@@ -1663,25 +1663,25 @@ void SaveNPC(int planet, sf::Vector2i Region, NPC &Critter)
              << "[race:" << Critter.race << "]"
              << "[xpos:" << Critter.xpos << "]"
              << "[ypos:" << Critter.ypos << "]"
-             << "[strength:" << Critter.Skills.strength << "]"
-             << "[perception:" << Critter.Skills.perception << "]"
-             << "[intelligence:" << Critter.Skills.intelligence << "]"
-             << "[charisma:" << Critter.Skills.charisma << "]"
-             << "[endurance:" << Critter.Skills.endurance << "]"
-             << "[dexterity:" << Critter.Skills.dexterity << "]"
-             << "[agility:" << Critter.Skills.agility << "]"
+             << "[strength:" << Critter.skills.strength << "]"
+             << "[perception:" << Critter.skills.perception << "]"
+             << "[intelligence:" << Critter.skills.intelligence << "]"
+             << "[charisma:" << Critter.skills.charisma << "]"
+             << "[endurance:" << Critter.skills.endurance << "]"
+             << "[dexterity:" << Critter.skills.dexterity << "]"
+             << "[agility:" << Critter.skills.agility << "]"
              << "[health:" << Critter.health << "]"
              << "[action:" << Critter.action << "]"
              << "[angle:" << Critter.angle << "]"
              << "[thirst:" << Critter.thirst << "]"
              << "[hunger:" << Critter.hunger << "]"
-             << "[strengthxp:" << Critter.Skills.strengthxp << "]"
-             << "[perceptionxp:" << Critter.Skills.perceptionxp << "]"
-             << "[intelligencexp:" << Critter.Skills.intelligencexp << "]"
-             << "[charismaxp:" << Critter.Skills.charismaxp << "]"
-             << "[endurancexp:" << Critter.Skills.endurancexp << "]"
-             << "[dexterityxp:" << Critter.Skills.dexterityxp << "]"
-             << "[agilityxp:" << Critter.Skills.agilityxp << "]"
+             << "[strengthxp:" << Critter.skills.strengthxp << "]"
+             << "[perceptionxp:" << Critter.skills.perceptionxp << "]"
+             << "[intelligencexp:" << Critter.skills.intelligencexp << "]"
+             << "[charismaxp:" << Critter.skills.charismaxp << "]"
+             << "[endurancexp:" << Critter.skills.endurancexp << "]"
+             << "[dexterityxp:" << Critter.skills.dexterityxp << "]"
+             << "[agilityxp:" << Critter.skills.agilityxp << "]"
              << "[cbaseid:" << Critter.cbaseid << "]"
              << "[maxhealth:" << Critter.maxhealth << "]"
              << "{Tags:" << Critter.tags << "}"
@@ -1727,25 +1727,25 @@ void SaveNPC(int planet, sf::Vector2i Region, NPC &Critter)
                    << "[race:" << Critter.race << "]"
                    << "[xpos:" << Critter.xpos << "]"
                    << "[ypos:" << Critter.ypos << "]"
-                   << "[strength:" << Critter.Skills.strength << "]"
-                   << "[perception:" << Critter.Skills.perception << "]"
-                   << "[intelligence:" << Critter.Skills.intelligence << "]"
-                   << "[charisma:" << Critter.Skills.charisma << "]"
-                   << "[endurance:" << Critter.Skills.endurance << "]"
-                   << "[dexterity:" << Critter.Skills.dexterity << "]"
-                   << "[agility:" << Critter.Skills.agility << "]"
+                   << "[strength:" << Critter.skills.strength << "]"
+                   << "[perception:" << Critter.skills.perception << "]"
+                   << "[intelligence:" << Critter.skills.intelligence << "]"
+                   << "[charisma:" << Critter.skills.charisma << "]"
+                   << "[endurance:" << Critter.skills.endurance << "]"
+                   << "[dexterity:" << Critter.skills.dexterity << "]"
+                   << "[agility:" << Critter.skills.agility << "]"
                    << "[health:" << Critter.health << "]"
                    << "[action:" << Critter.action << "]"
                    << "[angle:" << Critter.angle << "]"
                    << "[thirst:" << Critter.thirst << "]"
                    << "[hunger:" << Critter.hunger << "]"
-                   << "[strengthxp:" << Critter.Skills.strengthxp << "]"
-                   << "[perceptionxp:" << Critter.Skills.perceptionxp << "]"
-                   << "[intelligencexp:" << Critter.Skills.intelligencexp << "]"
-                   << "[charismaxp:" << Critter.Skills.charismaxp << "]"
-                   << "[endurancexp:" << Critter.Skills.endurancexp << "]"
-                   << "[dexterityxp:" << Critter.Skills.dexterityxp << "]"
-                   << "[agilityxp:" << Critter.Skills.agilityxp << "]"
+                   << "[strengthxp:" << Critter.skills.strengthxp << "]"
+                   << "[perceptionxp:" << Critter.skills.perceptionxp << "]"
+                   << "[intelligencexp:" << Critter.skills.intelligencexp << "]"
+                   << "[charismaxp:" << Critter.skills.charismaxp << "]"
+                   << "[endurancexp:" << Critter.skills.endurancexp << "]"
+                   << "[dexterityxp:" << Critter.skills.dexterityxp << "]"
+                   << "[agilityxp:" << Critter.skills.agilityxp << "]"
                    << "[cbaseid:" << Critter.cbaseid << "]"
                    << "[maxhealth:" << Critter.maxhealth << "]"
                    << "{Tags:" << Critter.tags << "}"
@@ -1762,10 +1762,10 @@ void SaveNPC(int planet, sf::Vector2i Region, NPC &Critter)
 
 Territory::Territory()
 {
-    ToDelete = false;
+    toDelete = false;
 }
 
-void CleanTerritories(std::vector<Territory> &Territories)
+void cleanTerritories(std::vector<Territory> &Territories)
 {
     bool Done = false;
     while (Done == false)
@@ -1773,7 +1773,7 @@ void CleanTerritories(std::vector<Territory> &Territories)
         Done = true;
         for (auto it = Territories.begin(); it != Territories.end(); ++it)
         {
-            if (it->ToDelete)
+            if (it->toDelete)
             {
                 Done = false;
                 Territories.erase(it);
@@ -1785,77 +1785,77 @@ void CleanTerritories(std::vector<Territory> &Territories)
 }
 
 Faction::Faction()
-    : Creativity{}, Aggressiveness{}, TechAgriculture{}, TechArchitecture{},
-      TechEnergyProduction{}, TechWeaponryMass{}, TechWeaponryEnergy{},
-      TechWeaponryExplosive{}, TechWeaponrySharp{}, TechWeaponryBlunt{},
-      TechDiplomacy{}, TechMedical{}, TechRobotics{}
+    : creativity{}, aggressiveness{}, techAgriculture{}, techArchitecture{},
+      techEnergyProduction{}, techWeaponryMass{}, techWeaponryEnergy{},
+      techWeaponryExplosive{}, techWeaponrySharp{}, techWeaponryBlunt{},
+      techDiplomacy{}, techMedical{}, techRobotics{}
 {
-    PlayerControlled = false;
-    Initialized = false;
+    playerControlled = false;
+    initialized = false;
 
-    Members = 0;
+    members = 0;
 
-    PrimaryColor = sf::Color(randz(0, 255), randz(0, 255), randz(0, 255));
-    SecondaryColor = sf::Color(randz(0, 255), randz(0, 255), randz(0, 255));
+    primaryColor = sf::Color(randz(0, 255), randz(0, 255), randz(0, 255));
+    secondaryColor = sf::Color(randz(0, 255), randz(0, 255), randz(0, 255));
 }
 
-int FactionMembers(std::string FactionName)
+int factionMembers(std::string FactionName)
 {
-    for (size_t i = 0; i != UniFact.size(); i++)
+    for (size_t i = 0; i != uniFact.size(); i++)
     {
-        if (UniFact[i].Name == FactionName)
+        if (uniFact[i].name == FactionName)
         {
-            return UniFact[i].Members;
+            return uniFact[i].members;
         }
     }
     return 0;
 }
 
-float FactionAggression(std::string FactionName)
+float factionAggression(std::string FactionName)
 {
-    for (size_t i = 0; i != UniFact.size(); i++)
+    for (size_t i = 0; i != uniFact.size(); i++)
     {
-        if (UniFact[i].Name == FactionName)
+        if (uniFact[i].name == FactionName)
         {
-            return UniFact[i].Aggressiveness;
+            return uniFact[i].aggressiveness;
         }
     }
     return 0;
 }
 
-int FactionTerritories(std::string FactionName)
+int factionTerritories(std::string FactionName)
 {
-    for (size_t i = 0; i != UniFact.size(); i++)
+    for (size_t i = 0; i != uniFact.size(); i++)
     {
-        if (UniFact[i].Name == FactionName)
+        if (uniFact[i].name == FactionName)
         {
-            return UniFact[i].Territories.size();
+            return uniFact[i].territories.size();
         }
     }
     return 0;
 }
 
-float FactionPower(std::string FactionName)
+float factionPower(std::string FactionName)
 {
-    for (size_t i = 0; i != UniFact.size(); i++)
+    for (size_t i = 0; i != uniFact.size(); i++)
     {
-        if (UniFact[i].Name == FactionName)
+        if (uniFact[i].name == FactionName)
         {
             float TenantTech = 0;
 
-            TenantTech += UniFact[i].TechMedical;
-            TenantTech += UniFact[i].TechWeaponryBlunt;
-            TenantTech += UniFact[i].TechWeaponryEnergy;
-            TenantTech += UniFact[i].TechWeaponryExplosive;
-            TenantTech += UniFact[i].TechWeaponryMass;
-            TenantTech += UniFact[i].TechWeaponrySharp;
+            TenantTech += uniFact[i].techMedical;
+            TenantTech += uniFact[i].techWeaponryBlunt;
+            TenantTech += uniFact[i].techWeaponryEnergy;
+            TenantTech += uniFact[i].techWeaponryExplosive;
+            TenantTech += uniFact[i].techWeaponryMass;
+            TenantTech += uniFact[i].techWeaponrySharp;
 
             float TenantTechnique =
                 TenantTech +
-                (TenantTech * (PercentIs(UniFact[i].Creativity, 35) * 0.01));
+                (TenantTech * (PercentIs(uniFact[i].creativity, 35) * 0.01));
 
             float TenantPower =
-                TenantTechnique * (PercentIs(UniFact[i].Members, 60) * 0.01);
+                TenantTechnique * (PercentIs(uniFact[i].members, 60) * 0.01);
 
             TenantPower = TenantPower * 8;
 
@@ -1865,54 +1865,54 @@ float FactionPower(std::string FactionName)
     return 0;
 }
 
-int FactionPopulation()
+int factionPopulation()
 {
     int Pop = 0;
-    for (size_t i = 0; i != UniFact.size(); i++)
+    for (size_t i = 0; i != uniFact.size(); i++)
     {
-        Pop += UniFact[i].Members;
+        Pop += uniFact[i].members;
     }
     return Pop;
 }
 
-void InitializeFactions(int GenerateMax)
+void initializeFactions(int GenerateMax)
 {
     for (int i = 0; i != GenerateMax; i++)
     {
         Faction GenFact;
 
-        GenFact.Name = GenerateName();
-        GenFact.PlayerControlled = false;
+        GenFact.name = GenerateName();
+        GenFact.playerControlled = false;
 
-        GenFact.Members = randz(1, 20);
+        GenFact.members = randz(1, 20);
 
-        GenFact.PrimaryColor =
+        GenFact.primaryColor =
             sf::Color(randz(0, 255), randz(0, 255), randz(0, 255));
-        GenFact.SecondaryColor =
+        GenFact.secondaryColor =
             sf::Color(randz(0, 255), randz(0, 255), randz(0, 255));
 
-        GenFact.Aggressiveness = randz(0, 100);
-        GenFact.Creativity = randz(0, 100);
+        GenFact.aggressiveness = randz(0, 100);
+        GenFact.creativity = randz(0, 100);
 
-        GenFact.TechAgriculture = randz(0, 100);
-        GenFact.TechArchitecture = randz(0, 100);
-        GenFact.TechDiplomacy = randz(0, 100);
-        GenFact.TechEnergyProduction = randz(0, 100);
-        GenFact.TechMedical = randz(0, 100);
-        GenFact.TechRobotics = randz(0, 100);
-        GenFact.TechWeaponryBlunt = randz(0, 100);
-        GenFact.TechWeaponryEnergy = randz(0, 100);
-        GenFact.TechWeaponryExplosive = randz(0, 100);
-        GenFact.TechWeaponryMass = randz(0, 100);
-        GenFact.TechWeaponrySharp = randz(0, 100);
+        GenFact.techAgriculture = randz(0, 100);
+        GenFact.techArchitecture = randz(0, 100);
+        GenFact.techDiplomacy = randz(0, 100);
+        GenFact.techEnergyProduction = randz(0, 100);
+        GenFact.techMedical = randz(0, 100);
+        GenFact.techRobotics = randz(0, 100);
+        GenFact.techWeaponryBlunt = randz(0, 100);
+        GenFact.techWeaponryEnergy = randz(0, 100);
+        GenFact.techWeaponryExplosive = randz(0, 100);
+        GenFact.techWeaponryMass = randz(0, 100);
+        GenFact.techWeaponrySharp = randz(0, 100);
 
-        UniFact.push_back(GenFact);
+        uniFact.push_back(GenFact);
     }
 }
 
-NPC *GetGlobalCritter(std::string strtype)
+Npc *getGlobalCritter(std::string strtype)
 {
-    for (auto &elem : npcmanager.GlobalCritter)
+    for (auto &elem : npcmanager.globalCritter)
     {
         if (elem.name == strtype)
         {
@@ -1922,21 +1922,21 @@ NPC *GetGlobalCritter(std::string strtype)
     return nullptr;
 }
 
-void SpawnCritter(std::string Object, int xpos, int ypos)
+void spawnCritter(std::string Object, int xpos, int ypos)
 {
     if (gvars::debug)
     {
         std::cout << "Spawning" << Object << " \n";
     }
-    NPC var;
-    var = *GetGlobalCritter(Object);
+    Npc var;
+    var = *getGlobalCritter(Object);
     // var.ReCreate();
     var.id = gvars::globalid++;
     var.xpos = xpos;
     var.ypos = ypos;
-    var.ReCreateSkills();
+    var.reCreateSkills();
 
-    npcmanager.AddedCritters.push_back(var);
+    npcmanager.addedCritters.push_back(var);
     if (gvars::debug)
     {
         std::cout << "Done Spawning. \n";
@@ -1969,7 +1969,7 @@ void SpawnCritter(std::string Object, int xpos, int ypos)
     }*/
 }
 
-void BuildStartingCritters(int ZedAmount)
+void buildStartingCritters(int ZedAmount)
 {
     {
         if (gvars::debug)
@@ -1983,22 +1983,22 @@ void BuildStartingCritters(int ZedAmount)
                         sf::Vector2f vPos = Math::CircleRandz(1000,1000,180);
                         SpawnCritter("Human",vPos.x,vPos.y);
                     }*/
-            for (size_t count = 0; count != Squady.Squad.size(); count++)
+            for (size_t count = 0; count != squady.squad.size(); count++)
             {
                 sf::Vector2f vPos = math::circleRandz(1000, 1000, 180);
                 //SpawnCritter("Human",vPos.x,vPos.y);
-                Squady.Squad.at(count).xpos = vPos.x;
-                Squady.Squad.at(count).ypos = vPos.y;
-                Squady.Squad[count].Faction = PF.Name;
+                squady.squad.at(count).xpos = vPos.x;
+                squady.squad.at(count).ypos = vPos.y;
+                squady.squad[count].Faction = g_pf.name;
 
-                npcmanager.AddedCritters.push_back(Squady.Squad.at(count));
+                npcmanager.addedCritters.push_back(squady.squad.at(count));
             }
 
             for (int zeds = 0; zeds != ZedAmount; zeds++)
             {
                 Con("Starting Zed");
                 sf::Vector2f vPos = math::circleRandz(1000, 1000, 580);
-                SpawnCritter("Zombie", vPos.x, vPos.y);
+                spawnCritter("Zombie", vPos.x, vPos.y);
                 Con("Ending Zed");
             }
         }
@@ -2013,7 +2013,7 @@ void BuildStartingCritters(int ZedAmount)
     }
 }
 
-std::string LoadCritters(sf::Vector2i WorldPos, std::string Direction,
+std::string loadCritters(sf::Vector2i WorldPos, std::string Direction,
                          int planet)
 {
 
@@ -2039,16 +2039,16 @@ std::string LoadCritters(sf::Vector2i WorldPos, std::string Direction,
         {
             std::string line;
             getline(Input, line);
-            NPC Critter;
+            Npc Critter;
 
             Critter.name = "Debuggery";
 
             Critter.name = StringFindString(line, "[name:");
             Critter.race = StringFindString(line, "[race:");
             if (Critter.name != "Debuggery" && Critter.name != "Zombie")
-                Critter = *GetGlobalCritter(Critter.race);
+                Critter = *getGlobalCritter(Critter.race);
             if (Critter.name == "Zombie")
-                Critter = *GetGlobalCritter("Zombie");
+                Critter = *getGlobalCritter("Zombie");
             Critter.id = gvars::globalid++;
             Critter.name = StringFindString(line, "[name:");
             Critter.race = StringFindString(line, "[race:");
@@ -2130,26 +2130,26 @@ std::string LoadCritters(sf::Vector2i WorldPos, std::string Direction,
             std::cout << "Xpos: " << Critter.xpos << "Ypos: " << Critter.ypos
                       << std::endl;
 
-            Critter.Skills.strength = StringFindNumber(line, "[strength:");
-            Critter.Skills.perception = StringFindNumber(line, "[perception:");
-            Critter.Skills.intelligence =
+            Critter.skills.strength = StringFindNumber(line, "[strength:");
+            Critter.skills.perception = StringFindNumber(line, "[perception:");
+            Critter.skills.intelligence =
                 StringFindNumber(line, "[intelligence:");
-            Critter.Skills.charisma = StringFindNumber(line, "[charisma:");
-            Critter.Skills.endurance = StringFindNumber(line, "[endurance:");
-            Critter.Skills.dexterity = StringFindNumber(line, "[dexterity:");
-            Critter.Skills.agility = StringFindNumber(line, "[agility:");
+            Critter.skills.charisma = StringFindNumber(line, "[charisma:");
+            Critter.skills.endurance = StringFindNumber(line, "[endurance:");
+            Critter.skills.dexterity = StringFindNumber(line, "[dexterity:");
+            Critter.skills.agility = StringFindNumber(line, "[agility:");
 
-            Critter.Skills.strengthxp = StringFindNumber(line, "[strengthxp:");
-            Critter.Skills.perceptionxp =
+            Critter.skills.strengthxp = StringFindNumber(line, "[strengthxp:");
+            Critter.skills.perceptionxp =
                 StringFindNumber(line, "[perceptionxp:");
-            Critter.Skills.intelligencexp =
+            Critter.skills.intelligencexp =
                 StringFindNumber(line, "[intelligencexp:");
-            Critter.Skills.charismaxp = StringFindNumber(line, "[charismaxp:");
-            Critter.Skills.endurancexp =
+            Critter.skills.charismaxp = StringFindNumber(line, "[charismaxp:");
+            Critter.skills.endurancexp =
                 StringFindNumber(line, "[endurancexp:");
-            Critter.Skills.dexterityxp =
+            Critter.skills.dexterityxp =
                 StringFindNumber(line, "[dexterityxp:");
-            Critter.Skills.agilityxp = StringFindNumber(line, "[agilityxp:");
+            Critter.skills.agilityxp = StringFindNumber(line, "[agilityxp:");
 
             /*std::string Imagery = StringFindString(line,"[Image:");
                 std::vector<cImageHolder>::iterator i;
@@ -2171,11 +2171,11 @@ std::string LoadCritters(sf::Vector2i WorldPos, std::string Direction,
     return line;
 }
 
-void Boom(int xpos, int ypos, int damage, int size)
+void boom(int xpos, int ypos, int damage, int size)
 {
     effects.createCircle(xpos, ypos, size, sf::Color(255, 0, 0, 150), 0,
                          sf::Color(0, 0, 0));
-    std::vector<NPC>::iterator Me;
+    std::vector<Npc>::iterator Me;
     for (Me = npclist.begin(); Me != npclist.end(); ++Me)
     {
         if (math::closeish(xpos, ypos, Me->xpos, Me->ypos) < size)
@@ -2186,7 +2186,7 @@ void Boom(int xpos, int ypos, int damage, int size)
 }
 
 void
-SquadHud() // This prints that "pretty" little Squad Unit display in the top left.
+squadHud() // This prints that "pretty" little Squad Unit display in the top left.
 {
     try
     {
@@ -2214,12 +2214,12 @@ SquadHud() // This prints that "pretty" little Squad Unit display in the top lef
     }
 }
 
-void SetTestage()
+void setTestage()
 {
-    std::set<NPC> TestSet;
+    std::set<Npc> TestSet;
     for (int n = 0; n != 500; n++)
     {
-        NPC npc;
+        Npc npc;
         TestSet.insert(npc);
     }
     int sJohns = 0;
