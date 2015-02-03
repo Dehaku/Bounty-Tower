@@ -4462,14 +4462,14 @@ int main()
 
             if (key.m)
             {
-                std::set<int> Setage;
-                Setage.insert(1);
-                Setage.insert(1);
-                Setage.insert(4);
-                Setage.insert(2);
-                Setage.insert(1);
-                Setage.insert(3);
-                for (const auto &elem : Setage)
+                std::set<int> setage;
+                setage.insert(1);
+                setage.insert(1);
+                setage.insert(4);
+                setage.insert(2);
+                setage.insert(1);
+                setage.insert(3);
+                for (const auto &elem : setage)
                 {
                     std::cout << elem << "\n";
                 }
