@@ -18,10 +18,10 @@ int RemoveMe = 0;
 
 using std::abs;
 
-Item *listGet(std::list<Item> &List, int Position)
+Item *listGet(std::list<Item> &list, int position)
 {
-    auto i = List.begin();
-    std::advance(i, Position);
+    auto i = list.begin();
+    std::advance(i, position);
     return &(*i);
 }
 
