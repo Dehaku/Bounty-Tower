@@ -40,7 +40,7 @@ std::vector<std::string> stringFindElements(std::string source,
                                             std::string seperater = ":");
 std::vector<float> numericSplitter(float received, float splitVariable = 100);
 float percentageBuff(float received);
-std::string stringFindChaos(std::string Stringy, std::string term,
+std::string stringFindChaos(std::string stringy, std::string term,
                             std::string ending);
 std::set<std::string> stringFindSetChaos(std::string stringy, std::string term,
                                          std::string ending);
