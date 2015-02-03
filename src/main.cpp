@@ -509,7 +509,7 @@ struct ItemFindResult
     int vectorPosition;
 };
 
-ItemFindResult findClosestItem(int Orix, int Oriy, std::string TarItem,
+ItemFindResult findClosestItem(int orix, int oriy, std::string tarItem,
                                int /*Gxpos*/ = 0, int /*Gypos*/ = 0,
                                int /*Rxpos*/ = 0, int /*Rypos*/ = 0)
 {
@@ -517,43 +517,43 @@ ItemFindResult findClosestItem(int Orix, int Oriy, std::string TarItem,
     int closx =
         -1000000; // Make sure the default starting number is far beyond being the closest one.
     int closy = -1000000;
-    int Closid;
+    int closid;
     int closVect;
-    int VectPos = 0;
+    int vectPos = 0;
     bool first = true;
     for (auto const &item : worlditems)
     {
         if (first == true)
         {
-            if (item.name == TarItem)
+            if (item.name == tarItem)
             {
                 closx = item.xpos;
                 closy = item.ypos;
-                Closid = item.id;
-                closVect = VectPos;
+                closid = item.id;
+                closVect = vectPos;
                 first = false;
             }
         }
         else
         {
-            if (item.name == TarItem)
+            if (item.name == tarItem)
             {
-                int one = math::closeish(Orix, Oriy, item.xpos, item.ypos);
-                int two = math::closeish(Orix, Oriy, closx, closy);
+                int one = math::closeish(orix, oriy, item.xpos, item.ypos);
+                int two = math::closeish(orix, oriy, closx, closy);
                 if (one < two)
                 {
                     closx = item.xpos;
                     closy = item.ypos;
-                    Closid = item.id;
-                    closVect = VectPos;
+                    closid = item.id;
+                    closVect = vectPos;
                 }
             }
         }
-        VectPos++;
+        vectPos++;
     }
     if (first != true)
     {
-        return {true, closx, closy, Closid, closVect};
+        return {true, closx, closy, closid, closVect};
     }
     return {false, 0, 0, 0, 0};
 }
