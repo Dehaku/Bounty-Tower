@@ -564,7 +564,7 @@ std::set<int> npcList(int exceptions = -1)
     {
         std::cout << "Pre npcList \n";
     }
-    std::set<int> Returns;
+    std::set<int> returns;
 
     for (auto const &npc : npclist)
     {
@@ -578,7 +578,7 @@ std::set<int> npcList(int exceptions = -1)
             {
                 std::cout << "Post exception NpcList \n";
             }
-            Returns.insert(getNpcVectorId(npc.id));
+            returns.insert(getNpcVectorId(npc.id));
             if (gvars::debug)
             {
                 std::cout << "Post Returns NpcList \n";
@@ -589,9 +589,9 @@ std::set<int> npcList(int exceptions = -1)
     {
         std::cout << "Post For NpcList \n";
     }
-    if (!Returns.empty())
+    if (!returns.empty())
     {
-        return Returns;
+        return returns;
     }
     throw std::runtime_error("NpcList: Couldn't return anything!");
 }
