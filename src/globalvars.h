@@ -46,6 +46,10 @@ extern std::string genString;
 extern sf::Vector2i cords;
 extern bool initalZeds;
 extern float timeScale;
+extern sf::Color cycleRed;
+extern sf::Color cycleGreen;
+extern sf::Color cycleBlue;
+extern bool cycleGrowth;
 }
 
 #endif // GLOBALS_H_INCLUDED

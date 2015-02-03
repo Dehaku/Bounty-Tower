@@ -3526,6 +3526,30 @@ int main()
 
     while (window.isOpen())
     {
+        if(gvars::cycleGrowth)
+        {
+            gvars::cycleRed.g;
+            gvars::cycleRed.b++;
+            gvars::cycleGreen.r++;
+            gvars::cycleGreen.b++;
+            gvars::cycleBlue.r++;
+            gvars::cycleBlue.g++;
+            if(gvars::cycleRed.g >= 255)
+                gvars::cycleGrowth = false;
+        }
+        else
+        {
+            gvars::cycleRed.g--;
+            gvars::cycleRed.b--;
+            gvars::cycleGreen.r--;
+            gvars::cycleGreen.b--;
+            gvars::cycleBlue.r--;
+            gvars::cycleBlue.g--;
+            if(gvars::cycleRed.g <= 0)
+                gvars::cycleGrowth = true;
+        }
+
+
         RemoveNPCs();
         if (Key.mTime > 5)
         {
@@ -5576,7 +5600,7 @@ int main()
                              "Design Your Squad");
             // TODO: Simply add cText.CreateText for the Button Text, Or at least make it an option, Since sButtonText is designed for text 'on' the button.
             SquareButton var;
-            var.color = sf::Color::Green;
+            var.color = gvars::cycleGreen;
             var.iSizex = 5;
             var.iSizey = 3;
 
