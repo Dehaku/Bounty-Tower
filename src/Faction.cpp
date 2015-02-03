@@ -143,7 +143,7 @@ int Npc::PathFinding::myReadPathX(int /*pathfinderID*/, int xpathLocation)
         //of the path square (optional). This assumes that you are using
         //sprites that are centered -- i.e., with the midHandle command.
         //Otherwise you will want to adjust this.
-        x = astar::tileSize * x + .5 * astar::tileSize;
+        x = astar::TILE_SIZE * x + .5 * astar::TILE_SIZE;
         return x;
     }
     throw std::runtime_error(
@@ -161,7 +161,7 @@ int Npc::PathFinding::myReadPathY(int /*pathfinderID*/, int ypathLocation)
         //of the path square (optional). This assumes that you are using
         //sprites that are centered -- i.e., with the midHandle command.
         //Otherwise you will want to adjust this.
-        y = astar::tileSize * y + .5 * astar::tileSize;
+        y = astar::TILE_SIZE * y + .5 * astar::TILE_SIZE;
         return y;
     }
     throw std::runtime_error(
@@ -172,7 +172,7 @@ void Npc::PathFinding::myReadPath(int /*pathfinderID*/, int currentX,
                                   int currentY, int pixelsPerFrame)
 {
     //If a path has been found for the pathfinder	...
-    if (mypathStatus == astar::AStarFound)
+    if (mypathStatus == astar::FOUND)
     {
         //If path finder is just starting a new path or has reached the
         //center of the current path square (and the end of the path
@@ -206,7 +206,7 @@ void Npc::PathFinding::myReadPath(int /*pathfinderID*/, int currentX,
             if (abs(currentX - myxPath) < pixelsPerFrame &&
                 abs(currentY - myyPath) <
                     pixelsPerFrame) //if close enough to center of square
-                mypathStatus = astar::notStarted;
+                mypathStatus = astar::NOT_STARTED;
         }
     }
     //If there is no path for this pathfinder, simply stay in the current

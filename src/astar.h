@@ -3,17 +3,18 @@
 
 namespace astar
 {
-const int mapWidth = 100, mapHeight = 100, tileSize = 20, numberPeople = 3;
-const int notfinished = 0, notStarted = 0; // path-related constants
-const int AStarFound = 1, nonexistent = 2;
-const int walkable = 0, unwalkable = 1; // walkability array constants
+const int MAP_WIDTH = 100, MAP_HEIGHT = 100, TILE_SIZE = 20,
+          NUMBER_OF_PEOPLE = 3;
+const int NOT_FINISHED = 0, NOT_STARTED = 0; // path-related constants
+const int FOUND = 1, NONEXISTENT = 2;
+const int WALKABLE = 0, UNWALKABLE = 1; // walkability array constants
 
-extern char walkability[mapWidth][mapHeight];
+extern char walkability[MAP_WIDTH][MAP_HEIGHT];
 //stores length of the AStarFound path for critter
-extern int pathLength[numberPeople + 1];
+extern int pathLength[NUMBER_OF_PEOPLE + 1];
 //stores current position along the chosen path for critter
-extern int pathLocation[numberPeople + 1];
-extern int *pathBank[numberPeople + 1];
+extern int pathLocation[NUMBER_OF_PEOPLE + 1];
+extern int *pathBank[NUMBER_OF_PEOPLE + 1];
 
 // Allocates memory for the pathfinder.
 void init(void);

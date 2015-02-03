@@ -6,33 +6,33 @@
 namespace astar
 {
 int onClosedList = 10;
-char walkability[mapWidth][mapHeight];
+char walkability[MAP_WIDTH][MAP_HEIGHT];
 //1 dimensional array holding ID# of open list items
-int openList[mapWidth * mapHeight + 2];
+int openList[MAP_WIDTH * MAP_HEIGHT + 2];
 // 2 dimensional array used to record
 // whether a cell is on the open list or on the closed list.
-int whichList[mapWidth + 1][mapHeight + 1];
+int whichList[MAP_WIDTH + 1][MAP_HEIGHT + 1];
 //1d array stores the x location of an item on the open list
-int openX[mapWidth * mapHeight + 2];
+int openX[MAP_WIDTH * MAP_HEIGHT + 2];
 //1d array stores the y location of an item on the open list
-int openY[mapWidth * mapHeight + 2];
+int openY[MAP_WIDTH * MAP_HEIGHT + 2];
 //2d array to store parent of each cell (x)
-int parentX[mapWidth + 1][mapHeight + 1];
+int parentX[MAP_WIDTH + 1][MAP_HEIGHT + 1];
 //2d array to store parent of each cell (y)
-int parentY[mapWidth + 1][mapHeight + 1];
+int parentY[MAP_WIDTH + 1][MAP_HEIGHT + 1];
 //1d array to store F cost of a cell on the open list
-int fcost[mapWidth * mapHeight + 2];
+int fcost[MAP_WIDTH * MAP_HEIGHT + 2];
 //2d array to store G cost for each cell.
-int gcost[mapWidth + 1][mapHeight + 1];
+int gcost[MAP_WIDTH + 1][MAP_HEIGHT + 1];
 //1d array to store H cost of a cell on the open list
-int hcost[mapWidth * mapHeight + 2];
-int pathLength[numberPeople + 1];
-int pathLocation[numberPeople + 1];
-int *pathBank[numberPeople + 1];
+int hcost[MAP_WIDTH * MAP_HEIGHT + 2];
+int pathLength[NUMBER_OF_PEOPLE + 1];
+int pathLocation[NUMBER_OF_PEOPLE + 1];
+int *pathBank[NUMBER_OF_PEOPLE + 1];
 //Path reading variables
-int pathStatus[numberPeople + 1];
-int xPath[numberPeople + 1];
-int yPath[numberPeople + 1];
+int pathStatus[NUMBER_OF_PEOPLE + 1];
+int xPath[NUMBER_OF_PEOPLE + 1];
+int yPath[NUMBER_OF_PEOPLE + 1];
 
 void init()
 {
@@ -58,10 +58,10 @@ int findPath(int pathfinderID, int startingX, int startingY, int targetX,
         cellPosition, newOpenListItemID = 0;
 
     //1. Convert location data (in pixels) to coordinates in the walkability array.
-    int startX = startingX / tileSize;
-    int startY = startingY / tileSize;
-    targetX = targetX / tileSize;
-    targetY = targetY / tileSize;
+    int startX = startingX / TILE_SIZE;
+    int startY = startingY / TILE_SIZE;
+    targetX = targetX / TILE_SIZE;
+    targetY = targetY / TILE_SIZE;
 
     //2.Quick Path Checks: Under the some circumstances no path needs to
     //	be generated ...
@@ -69,21 +69,21 @@ int findPath(int pathfinderID, int startingX, int startingY, int targetX,
     //	If starting location and target are in the same location...
     if (startX == targetX && startY == targetY &&
         pathLocation[pathfinderID] > 0)
-        return AStarFound;
+        return FOUND;
     if (startX == targetX && startY == targetY &&
         pathLocation[pathfinderID] == 0)
-        return nonexistent;
+        return NONEXISTENT;
 
     //	If target square is unwalkable, return that it's a nonexistent path.
-    if (walkability[targetX][targetY] == unwalkable)
+    if (walkability[targetX][targetY] == UNWALKABLE)
         goto noPath;
     //* std::cout << "Path Two";
     //3.Reset some variables that need to be cleared
     if (onClosedList > 1000000) //reset whichList occasionally
     {
-        for (int x = 0; x < mapWidth; x++)
+        for (int x = 0; x < MAP_WIDTH; x++)
         {
-            for (int y = 0; y < mapHeight; y++)
+            for (int y = 0; y < MAP_HEIGHT; y++)
                 whichList[x][y] = 0;
         }
         onClosedList = 10;
@@ -92,8 +92,8 @@ int findPath(int pathfinderID, int startingX, int startingY, int targetX,
         onClosedList +
         2; //changing the values of onOpenList and onClosed list is faster than redimming whichList() array
     onOpenList = onClosedList - 1;
-    pathLength[pathfinderID] = notStarted;   //i.e, = 0
-    pathLocation[pathfinderID] = notStarted; //i.e, = 0
+    pathLength[pathfinderID] = NOT_STARTED;   //i.e, = 0
+    pathLocation[pathfinderID] = NOT_STARTED; //i.e, = 0
     gcost[startX][startY] = 0; //reset starting square's G value to 0
 
     //4.Add the starting location to the open list of squares to be checked.
@@ -183,7 +183,7 @@ int findPath(int pathfinderID, int startingX, int startingY, int targetX,
                 {
 
                     //	If not off the map (do this first to avoid array out-of-bounds errors)
-                    if (a != -1 && b != -1 && a != mapWidth && b != mapHeight)
+                    if (a != -1 && b != -1 && a != MAP_WIDTH && b != MAP_HEIGHT)
                     {
 
                         //	If not already on the closed list (items on the closed list have
@@ -192,32 +192,32 @@ int findPath(int pathfinderID, int startingX, int startingY, int targetX,
                         {
 
                             //	If not a wall/obstacle square.
-                            if (walkability[a][b] != unwalkable)
+                            if (walkability[a][b] != UNWALKABLE)
                             {
 
                                 //	Don't cut across corners
-                                corner = walkable;
+                                corner = WALKABLE;
                                 if (a == parentXval - 1)
                                 {
                                     if (b == parentYval - 1)
                                     {
                                         if (walkability[parentXval -
                                                         1][parentYval] ==
-                                                unwalkable ||
+                                                UNWALKABLE ||
                                             walkability[parentXval][parentYval -
                                                                     1] ==
-                                                unwalkable)
-                                            corner = unwalkable;
+                                                UNWALKABLE)
+                                            corner = UNWALKABLE;
                                     }
                                     else if (b == parentYval + 1)
                                     {
                                         if (walkability[parentXval][parentYval +
                                                                     1] ==
-                                                unwalkable ||
+                                                UNWALKABLE ||
                                             walkability[parentXval -
                                                         1][parentYval] ==
-                                                unwalkable)
-                                            corner = unwalkable;
+                                                UNWALKABLE)
+                                            corner = UNWALKABLE;
                                     }
                                 }
                                 else if (a == parentXval + 1)
@@ -226,24 +226,24 @@ int findPath(int pathfinderID, int startingX, int startingY, int targetX,
                                     {
                                         if (walkability[parentXval][parentYval -
                                                                     1] ==
-                                                unwalkable ||
+                                                UNWALKABLE ||
                                             walkability[parentXval +
                                                         1][parentYval] ==
-                                                unwalkable)
-                                            corner = unwalkable;
+                                                UNWALKABLE)
+                                            corner = UNWALKABLE;
                                     }
                                     else if (b == parentYval + 1)
                                     {
                                         if (walkability[parentXval +
                                                         1][parentYval] ==
-                                                unwalkable ||
+                                                UNWALKABLE ||
                                             walkability[parentXval][parentYval +
                                                                     1] ==
-                                                unwalkable)
-                                            corner = unwalkable;
+                                                UNWALKABLE)
+                                            corner = UNWALKABLE;
                                     }
                                 }
-                                if (corner == walkable)
+                                if (corner == WALKABLE)
                                 {
 
                                     //	If not already on the open list, add it to the open list.
@@ -397,14 +397,14 @@ int findPath(int pathfinderID, int startingX, int startingY, int targetX,
         //9.If open list is empty then there is no path.
         else
         {
-            path = nonexistent;
+            path = NONEXISTENT;
             break;
         }
 
         //If target is added to open list then path has been AStarFound.
         if (whichList[targetX][targetY] == onOpenList)
         {
-            path = AStarFound;
+            path = FOUND;
             break;
         }
 
@@ -412,7 +412,7 @@ int findPath(int pathfinderID, int startingX, int startingY, int targetX,
     //* std::cout << "Path Ender";
 
     //10.Save the path if it exists.
-    if (path == AStarFound)
+    if (path == FOUND)
     {
         //* std::cout << "Path AStarFound";
 
@@ -477,7 +477,7 @@ noPath:
     //* std::cout << "Path Nonening \n";
     xPath[pathfinderID] = startingX;
     yPath[pathfinderID] = startingY;
-    return nonexistent;
+    return NONEXISTENT;
 }
 
 void readPath(int pathfinderID, int currentX, int currentY, int pixelsPerFrame)
@@ -509,7 +509,7 @@ void readPath(int pathfinderID, int currentX, int currentY, int pixelsPerFrame)
     int id = pathfinderID; //redundant, but makes the following easier to read
 
     //If a path has been AStarFound for the pathfinder	...
-    if (pathStatus[id] == AStarFound)
+    if (pathStatus[id] == FOUND)
     {
 
         //If path finder is just starting a new path or has reached the
@@ -535,7 +535,7 @@ void readPath(int pathfinderID, int currentX, int currentY, int pixelsPerFrame)
             if (abs(currentX - xPath[id]) < pixelsPerFrame &&
                 abs(currentY - yPath[id]) <
                     pixelsPerFrame) //if close enough to center of square
-                pathStatus[id] = notStarted;
+                pathStatus[id] = NOT_STARTED;
         }
     }
 
@@ -560,7 +560,7 @@ int readPathX(int pathfinderID, int pathLocation)
         //of the path square (optional). This assumes that you are using
         //sprites that are centered -- i.e., with the midHandle command.
         //Otherwise you will want to adjust this.
-        x = tileSize * x + .5 * tileSize;
+        x = TILE_SIZE * x + .5 * TILE_SIZE;
         return x;
     }
     throw std::runtime_error("ReadPathX: Couldn't return a meaningful value!");
@@ -578,7 +578,7 @@ int readPathY(int pathfinderID, int pathLocation)
         //of the path square (optional). This assumes that you are using
         //sprites that are centered -- i.e., with the midHandle command.
         //Otherwise you will want to adjust this.
-        y = tileSize * y + .5 * tileSize;
+        y = TILE_SIZE * y + .5 * TILE_SIZE;
         return y;
     }
     throw std::runtime_error("ReadPathY: Couldn't return a meaningful value!");

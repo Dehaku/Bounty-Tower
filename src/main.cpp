@@ -2723,7 +2723,7 @@ void updateNpc()
                         astar::walkability[abs_to_index(
                             pathFindWorkPos.x /
                             20)][abs_to_index(pathFindWorkPos.y / 20)] =
-                            astar::walkable;
+                            astar::WALKABLE;
                     }
 
                     npc.pathFinding.myFindPath(
@@ -2996,7 +2996,7 @@ void updateNpc()
                             astar::walkability[abs_to_index(
                                 pathFindWorkPos.x /
                                 20)][abs_to_index(pathFindWorkPos.y / 20)] =
-                                astar::walkable;
+                                astar::WALKABLE;
                         }
 
                         npc.pathFinding.myFindPath(npc.xpos, npc.ypos,
@@ -3018,11 +3018,11 @@ void updateNpc()
                             // Add an Item Check here later to see if it blocks movement
                             if (tiles[i][t][30].walkable == false)
                             {
-                                astar::walkability[i][t] = astar::unwalkable;
+                                astar::walkability[i][t] = astar::UNWALKABLE;
                             }
                             else
                             {
-                                astar::walkability[i][t] = astar::walkable;
+                                astar::walkability[i][t] = astar::WALKABLE;
                             }
                             if (astar::walkability[i][t] > 1)
                                 astar::walkability[i][t] = 0;
@@ -3039,7 +3039,7 @@ void updateNpc()
                         astar::walkability[abs_to_index(
                             pathFindWorkPos.x /
                             20)][abs_to_index(pathFindWorkPos.y / 20)] =
-                            astar::walkable;
+                            astar::WALKABLE;
                     }
 
                     npc.pathFinding.myReadPath(1, npc.xpos, npc.ypos,
