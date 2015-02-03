@@ -14,8 +14,6 @@
 #include "util.h"
 #include "globalvars.h"
 
-int removeMe = 0;
-
 using std::abs;
 
 Item *listGet(std::list<Item> &list, int position)
@@ -1164,11 +1162,6 @@ void critterBrain(std::vector<Npc> &npcs)
 
         removeItems(npc.inventory);
     }
-
-    if (key.oTime == 1)
-        removeMe++;
-    if (key.lTime == 1)
-        removeMe--;
 }
 
 void updateNpc()
