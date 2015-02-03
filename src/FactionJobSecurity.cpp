@@ -41,7 +41,7 @@ void rmbMenuItem(Item &pItem)
     }
 }
 
-void digWall(sf::Vector2f Pos)
+void digWall(sf::Vector2f pos)
 {
     for (size_t i = 0; i != uniFact.size(); i++)
     {
@@ -49,15 +49,15 @@ void digWall(sf::Vector2f Pos)
         {
             Job job;
             std::cout << "Tile clicked: "
-                      << tiles[abs_to_index(Pos.x / 20)][abs_to_index(
-                             Pos.y / 20)][6].id << std::endl;
-            if (tiles[abs_to_index(Pos.x / 20)][abs_to_index(Pos.y / 20)][30]
+                      << tiles[abs_to_index(pos.x / 20)][abs_to_index(
+                             pos.y / 20)][6].id << std::endl;
+            if (tiles[abs_to_index(pos.x / 20)][abs_to_index(pos.y / 20)][30]
                     .id == 1008)
             {
                 job.name = "DigNaturalWall";
                 job.type = "Dig";
-                job.workPos.x = (abs(Pos.x / 20) * 20) + 10;
-                job.workPos.y = (abs(Pos.y / 20) * 20) + 10;
+                job.workPos.x = (abs(pos.x / 20) * 20) + 10;
+                job.workPos.y = (abs(pos.y / 20) * 20) + 10;
             }
             else
             {
@@ -70,7 +70,7 @@ void digWall(sf::Vector2f Pos)
     }
 }
 
-void rmbMenuTile(sf::Vector2f Pos)
+void rmbMenuTile(sf::Vector2f pos)
 {
     for (size_t i = 0; i != uniFact.size(); i++)
     {
@@ -80,13 +80,13 @@ void rmbMenuTile(sf::Vector2f Pos)
             //job.pItem = &pItem;
             //globals::groundmap[abs_to_index(Pos.x/20)][abs_to_index(Pos.y/20)]
             con("Dafuqe \n");
-            if (tiles[abs_to_index(Pos.x / 20)][abs_to_index(Pos.y / 20)][30]
+            if (tiles[abs_to_index(pos.x / 20)][abs_to_index(pos.y / 20)][30]
                     .id != 1010)
             {
                 job.name = "BuildWoodWall";
                 job.type = "Build";
-                job.workPos.x = (abs(Pos.x / 20) * 20) + 10;
-                job.workPos.y = (abs(Pos.y / 20) * 20) + 10;
+                job.workPos.x = (abs(pos.x / 20) * 20) + 10;
+                job.workPos.y = (abs(pos.y / 20) * 20) + 10;
                 con("Dafuqe2 \n");
             }
             else
@@ -102,7 +102,7 @@ void rmbMenuTile(sf::Vector2f Pos)
     }
 }
 
-void drawJobList(int DrawXPos, int DrawYPos)
+void drawJobList(int x, int y)
 {
     int YVariance = 1;
     for (size_t i = 0; i != uniFact.size(); i++)
@@ -122,7 +122,7 @@ void drawJobList(int DrawXPos, int DrawYPos)
                     debug("ItemName");
 
                     textList.createText(
-                        DrawXPos, DrawYPos + (YVariance * 10), 11,
+                        x, y + (YVariance * 10), 11,
                         sf::Color::Yellow, uniFact[i].jobList[t].pWorker->name +
                                                uniFact[i].jobList[t].name + " ",
                         uniFact[i]
@@ -133,7 +133,7 @@ void drawJobList(int DrawXPos, int DrawYPos)
                 {
                     debug("Second condition");
                     textList.createText(
-                        DrawXPos, DrawYPos + (YVariance * 10), 11,
+                        x, y + (YVariance * 10), 11,
                         sf::Color::Yellow, uniFact[i].jobList[t].name + " ",
                         uniFact[i]
                             .jobList[t]
@@ -142,7 +142,7 @@ void drawJobList(int DrawXPos, int DrawYPos)
                 else if (uniFact[i].jobList[t].pWorker != nullptr)
                 {
                     debug("Third condition");
-                    textList.createText(DrawXPos, DrawYPos + (YVariance * 10),
+                    textList.createText(x, y + (YVariance * 10),
                                         11, sf::Color::Yellow,
                                         uniFact[i].jobList[t].pWorker->name +
                                             uniFact[i].jobList[t].type + " ",
@@ -151,7 +151,7 @@ void drawJobList(int DrawXPos, int DrawYPos)
                 else
                 {
                     debug("Fourth condition");
-                    textList.createText(DrawXPos, DrawYPos + (YVariance * 10),
+                    textList.createText(x, y + (YVariance * 10),
                                         11, sf::Color::Yellow,
                                         uniFact[i].jobList[t].type + " ",
                                         uniFact[i].jobList[t].name);
@@ -165,25 +165,25 @@ void drawJobList(int DrawXPos, int DrawYPos)
     }
 }
 
-void removeJobs(std::vector<Job> &JobList)
+void removeJobs(std::vector<Job> &jobList)
 {
     //debug("Removing Jobs")
-    bool Done = false;
-    while (Done == false)
+    bool done = false;
+    while (done == false)
     {
-        bool Yet = false;
-        for (size_t i = 0; i != JobList.size(); i++)
+        bool yet = false;
+        for (size_t i = 0; i != jobList.size(); i++)
         {
-            if (JobList.at(i).toDelete == true)
+            if (jobList.at(i).toDelete == true)
             {
-                JobList.erase(JobList.begin() + i);
-                Yet = true;
+                jobList.erase(jobList.begin() + i);
+                yet = true;
                 break;
             }
         }
-        if (Yet == false)
+        if (yet == false)
         {
-            Done = true;
+            done = true;
         }
     }
 }
