@@ -47,21 +47,21 @@ void GalaxyController::wave()
             waveTimer = 1000;
             waves++;
         }
-        textList.createText(((gvars::currentx - 2) * GridSize) + 1,
-                            ((gvars::currenty - 18) * GridSize) + 1, 11,
+        textList.createText(((gvars::currentx - 2) * GRID_SIZE) + 1,
+                            ((gvars::currenty - 18) * GRID_SIZE) + 1, 11,
                             sf::Color::Black, "Time Till Wave ", "", waves + 1,
                             ": ", "", waveTimer / 10);
         if (waveTimer / 2 < 50 && randz(0, 1) == 1)
         {
-            textList.createText((gvars::currentx - 2) * GridSize,
-                                (gvars::currenty - 18) * GridSize, 11,
+            textList.createText((gvars::currentx - 2) * GRID_SIZE,
+                                (gvars::currenty - 18) * GRID_SIZE, 11,
                                 sf::Color::White, "Time Till Wave ", "",
                                 waves + 1, ": ", "", waveTimer / 10);
         }
         else
         {
-            textList.createText((gvars::currentx - 2) * GridSize,
-                                (gvars::currenty - 18) * GridSize, 11,
+            textList.createText((gvars::currentx - 2) * GRID_SIZE,
+                                (gvars::currenty - 18) * GRID_SIZE, 11,
                                 sf::Color::Red, "Time Till Wave ", "",
                                 waves + 1, ": ", "", waveTimer / 10);
         }
@@ -84,9 +84,9 @@ void GalaxyController::buildLocal(std::string type, int zedAmount)
     {
         if (myDebug)
             std::cout << "Building Lightmap\n";
-        for (int i = 0; i != gridy; i++)
+        for (int i = 0; i != GRID_Y; i++)
         {
-            for (int t = 0; t != gridx; t++)
+            for (int t = 0; t != GRID_X; t++)
             {
                 //globals::sunmap[z][i][t] = 255;
             }
@@ -307,9 +307,9 @@ void GalaxyController::buildLocalTest()
 {
     if (myDebug)
         std::cout << "Building Lightmap\n";
-    for (int i = 0; i <= gridy - 1; i++)
+    for (int i = 0; i <= GRID_Y - 1; i++)
     {
-        for (int t = 0; t <= gridx - 1; t++)
+        for (int t = 0; t <= GRID_X - 1; t++)
         {
             //globals::sunmap[z][i][t] = 255;
         }

@@ -797,19 +797,19 @@ void menuPopUp()
                 if (squareButtonClicked(butt) || key.num3Time == 1)
                 {
 
-                    if (tiles[abs_to_index(gCtrl.menuPos.x / GridSize)]
-                             [abs_to_index(gCtrl.menuPos.y / GridSize)][30]
+                    if (tiles[abs_to_index(gCtrl.menuPos.x / GRID_SIZE)]
+                             [abs_to_index(gCtrl.menuPos.y / GRID_SIZE)][30]
                                  .id != 1010)
                     {
-                        tiles[abs_to_index(gCtrl.menuPos.x / GridSize)]
-                             [abs_to_index(gCtrl.menuPos.y / GridSize)][30]
+                        tiles[abs_to_index(gCtrl.menuPos.x / GRID_SIZE)]
+                             [abs_to_index(gCtrl.menuPos.y / GRID_SIZE)][30]
                                  .wall();
                         fSleep(0.2);
                     }
                     else
                     {
-                        tiles[abs_to_index(gCtrl.menuPos.x / GridSize)]
-                             [abs_to_index(gCtrl.menuPos.y / GridSize)][30]
+                        tiles[abs_to_index(gCtrl.menuPos.x / GRID_SIZE)]
+                             [abs_to_index(gCtrl.menuPos.y / GRID_SIZE)][30]
                                  .stone();
                         fSleep(0.2);
                     }

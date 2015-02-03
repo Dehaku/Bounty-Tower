@@ -282,9 +282,9 @@ public:
     short minrangeddamage;
     short maxrangeddamage;
 
-    unsigned char dirgrid[gridy][gridx];
-    unsigned char valuegrid[gridy][gridx];
-    unsigned char followgrid[gridy][gridx];
+    unsigned char dirgrid[GRID_Y][GRID_X];
+    unsigned char valuegrid[GRID_Y][GRID_X];
+    unsigned char followgrid[GRID_Y][GRID_X];
 
     void printConsoleInfo();
     void printBloodContent();

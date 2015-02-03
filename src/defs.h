@@ -3,13 +3,13 @@
 
 #include <SFML/Graphics.hpp>
 
-const sf::Vector2f Rez(1024, 768);
-const sf::Vector2f Center(500, 500);
-const sf::Vector2f HalfSize(Rez.x / 2, Rez.y / 2);
-const int gridx = 100;
-const int gridy = 100;
-const int gridz = 10;
-const int GridSize = 20;
-const sf::Color Brown(100, 100, 0, 255);
+const sf::Vector2f RESOLUTION(1024, 768);
+const sf::Vector2f CENTER(500, 500);
+const sf::Vector2f HALF_SIZE(RESOLUTION.x / 2, RESOLUTION.y / 2);
+const int GRID_X = 100;
+const int GRID_Y = 100;
+const int GRID_Z = 10;
+const int GRID_SIZE = 20;
+const sf::Color BROWN(100, 100, 0, 255);
 
 #endif // __DEFS_H_INCLUDED__

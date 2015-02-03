@@ -192,8 +192,8 @@ void updateItem()
                     {
                         x = randz(item.xpos - 10, item.xpos + 10);
                         y = randz(item.ypos - 10, item.ypos + 10);
-                        if (tiles[abs_to_index(x / GridSize)][abs_to_index(
-                                y / GridSize)][30].walkable == true)
+                        if (tiles[abs_to_index(x / GRID_SIZE)][abs_to_index(
+                                y / GRID_SIZE)][30].walkable == true)
                         {
                             findEmpty = true;
                         }
@@ -362,7 +362,7 @@ bool gridposTrace(int xa, int ya, int xb, int yb, int id, sf::Vector2f target)
     {
         x += xIncrement;
         y += yIncrement;
-        if (tiles[abs_to_index(x / GridSize)][abs_to_index(y / GridSize)][30]
+        if (tiles[abs_to_index(x / GRID_SIZE)][abs_to_index(y / GRID_SIZE)][30]
                 .id == 1010)
         {
             if (key.period && id == gvars::myTargetid)
@@ -374,8 +374,8 @@ bool gridposTrace(int xa, int ya, int xb, int yb, int id, sf::Vector2f target)
 
         } // Stops the trace if it hits a wall.
         //std::cout << "Stuffs " << std::endl;
-        sf::Vector2f pos(abs(x / GridSize), abs(y / GridSize));
-        sf::Vector2f tar(abs(target.x / GridSize), abs(target.y / GridSize));
+        sf::Vector2f pos(abs(x / GRID_SIZE), abs(y / GRID_SIZE));
+        sf::Vector2f tar(abs(target.x / GRID_SIZE), abs(target.y / GRID_SIZE));
         if (pos == tar)
         {
             return true;
@@ -1715,7 +1715,7 @@ void updateNpc()
                         {
                             attacked = true;
                             std::set<int> tarz;
-                            tarz = npc.melee(1, 1, GridSize);
+                            tarz = npc.melee(1, 1, GRID_SIZE);
                             for (const auto &elem : tarz)
                             {
                                 npclist.at(elem)
@@ -1919,8 +1919,8 @@ void updateNpc()
                     npc.xpos -= shake;
                 }
                 if (gvars::groundmap[gvars::currentz][abs_to_index(
-                        npc.xpos / GridSize)][abs_to_index(npc.ypos /
-                                                           GridSize)] == 10)
+                        npc.xpos / GRID_SIZE)][abs_to_index(npc.ypos /
+                                                            GRID_SIZE)] == 10)
                 {
                     npc.xpos = tempXpos;
                     npc.ypos = tempYpos;
@@ -1988,8 +1988,8 @@ void updateNpc()
                 { // TODO: Make sure this isn't needed anymore, Then delete it.
                     if (gvars::groundmap[gvars::currentz][abs_to_index(
                             npc.targetPos.x /
-                            GridSize)][abs_to_index(npc.targetPos.y /
-                                                    GridSize)] == 10)
+                            GRID_SIZE)][abs_to_index(npc.targetPos.y /
+                                                     GRID_SIZE)] == 10)
                     {
                         npc.hasTarget = false;
                     }
@@ -2455,8 +2455,8 @@ void updateNpc()
                             npc.hasTarget = true;
                             if (gvars::groundmap[gvars::currentz][abs_to_index(
                                     npc.targetPos.x /
-                                    GridSize)][abs_to_index(npc.targetPos.y /
-                                                            GridSize)] != 10)
+                                    GRID_SIZE)][abs_to_index(npc.targetPos.y /
+                                                             GRID_SIZE)] != 10)
                             {
                                 findEmpty = true;
                             }
@@ -2670,24 +2670,24 @@ void updateNpc()
                     }
                 }
                 gvars::sunmap[gvars::currentz][abs_to_index(
-                    npc.xpos / GridSize)][abs_to_index(npc.ypos / GridSize)] =
+                    npc.xpos / GRID_SIZE)][abs_to_index(npc.ypos / GRID_SIZE)] =
                     255;
-                for (int i = 0; i <= gridy - 1; i++)
+                for (int i = 0; i <= GRID_Y - 1; i++)
                 { // Vision Stuffs;
-                    for (int t = 0; t <= gridx - 1; t++)
+                    for (int t = 0; t <= GRID_X - 1; t++)
                     {
                         int z = gvars::currentz;
                         if (gvars::sunmap[z][i][t] != -1)
                         {
-                            if (math::closeish((i * GridSize) + 10,
-                                               (t * GridSize) + 10, npc.xpos,
+                            if (math::closeish((i * GRID_SIZE) + 10,
+                                               (t * GRID_SIZE) + 10, npc.xpos,
                                                npc.ypos) <= npc.viewrange &&
                                 npc.cbaseid != -1337)
                             {
 
                                 float ang = math::angleBetweenVectors(
-                                    math::Vec2f((i * GridSize) + 10,
-                                                (t * GridSize) + 10),
+                                    math::Vec2f((i * GRID_SIZE) + 10,
+                                                (t * GRID_SIZE) + 10),
                                     math::Vec2f(npc.xpos, npc.ypos));
                                 float myAngle = npc.angle;
                                 float difference = abs(ang - myAngle);
@@ -3185,19 +3185,19 @@ void updateNpc()
 void drawTiles()
 {
     int z = gvars::currentz;
-    int its = GridSize;
-    for (int i = 0; i <= gridy - 1; i++)
+    int its = GRID_SIZE;
+    for (int i = 0; i <= GRID_Y - 1; i++)
     {
-        for (int t = 0; t <= gridx - 1; t++)
+        for (int t = 0; t <= GRID_X - 1; t++)
         {
             if ((gvars::following == true &&
-                 i > (npclist.at(gvars::myTarget).xpos / GridSize) - 27 &&
-                 i < (npclist.at(gvars::myTarget).xpos / GridSize) + 26) ||
+                 i > (npclist.at(gvars::myTarget).xpos / GRID_SIZE) - 27 &&
+                 i < (npclist.at(gvars::myTarget).xpos / GRID_SIZE) + 26) ||
                 (i > gvars::currentx - 27 && i < gvars::currentx + 26))
             {
                 if ((gvars::following == true &&
-                     t > (npclist.at(gvars::myTarget).ypos / GridSize) - 21 &&
-                     t < (npclist.at(gvars::myTarget).ypos / GridSize) + 20) ||
+                     t > (npclist.at(gvars::myTarget).ypos / GRID_SIZE) - 21 &&
+                     t < (npclist.at(gvars::myTarget).ypos / GRID_SIZE) + 20) ||
                     (t > gvars::currenty - 21 && t < gvars::currenty + 20))
                 {
                     sf::Sprite tile;
@@ -3317,9 +3317,9 @@ void drawItems()
 
 void lightTrail(int x, int y, int z)
 {
-    int curx = math::clamp(x, 0, gridx - 1);
-    int cury = math::clamp(y, 0, gridy - 1);
-    int curz = math::clamp(z, 0, gridz - 1);
+    int curx = math::clamp(x, 0, GRID_X - 1);
+    int cury = math::clamp(y, 0, GRID_Y - 1);
+    int curz = math::clamp(z, 0, GRID_Z - 1);
     gvars::sunmap[curz][curx][cury] = 255;
 }
 
@@ -3457,7 +3457,8 @@ void removeNPCs()
 
 int main()
 {
-    window.create(sf::VideoMode(Rez.x, Rez.y, 32), randomWindowName());
+    window.create(sf::VideoMode(RESOLUTION.x, RESOLUTION.y, 32),
+                  randomWindowName());
 
     textList.loadFont();
 
@@ -3466,7 +3467,7 @@ int main()
 
     bool plyAct = false;
     window.setFramerateLimit(30); // 0 is unlimited
-    sf::View planetary(Center, HalfSize);
+    sf::View planetary(CENTER, HALF_SIZE);
 
     window.setVerticalSyncEnabled(true);
 
@@ -3601,16 +3602,17 @@ int main()
         else
             gvars::mouseStagnation = 0;
 
-        gvars::topLeft = sf::Vector2f(gvars::view1.getCenter().x - HalfSize.x,
-                                      gvars::view1.getCenter().y - HalfSize.y);
-        gvars::topRight = sf::Vector2f(gvars::view1.getCenter().x + HalfSize.x,
-                                       gvars::view1.getCenter().y - HalfSize.y);
+        gvars::topLeft = sf::Vector2f(gvars::view1.getCenter().x - HALF_SIZE.x,
+                                      gvars::view1.getCenter().y - HALF_SIZE.y);
+        gvars::topRight =
+            sf::Vector2f(gvars::view1.getCenter().x + HALF_SIZE.x,
+                         gvars::view1.getCenter().y - HALF_SIZE.y);
         gvars::bottomLeft =
-            sf::Vector2f(gvars::view1.getCenter().x - HalfSize.x,
-                         gvars::view1.getCenter().y + HalfSize.y);
+            sf::Vector2f(gvars::view1.getCenter().x - HALF_SIZE.x,
+                         gvars::view1.getCenter().y + HALF_SIZE.y);
         gvars::bottomRight =
-            sf::Vector2f(gvars::view1.getCenter().x + HalfSize.x,
-                         gvars::view1.getCenter().y + HalfSize.y);
+            sf::Vector2f(gvars::view1.getCenter().x + HALF_SIZE.x,
+                         gvars::view1.getCenter().y + HALF_SIZE.y);
 
         textList.createText(CZ(gvars::topRight.x - CZ(50)),
                             CZ(gvars::topRight.y + CZ(50)), CZ(11),
@@ -3657,8 +3659,8 @@ int main()
         if (gCtrl.phase == "Local")
         { //=======================================================*Local*============================================================================
             if (gvars::debug)
-                textList.createText((gvars::currentx - 2) * GridSize,
-                                    (gvars::currenty + 1) * GridSize, 11,
+                textList.createText((gvars::currentx - 2) * GRID_SIZE,
+                                    (gvars::currenty + 1) * GRID_SIZE, 11,
                                     sf::Color::Red, "Debug On");
 
             if (key.vTime == 1)
@@ -3771,7 +3773,7 @@ int main()
                 plyAct = true;
             } //Sprite.Move(0,  100 * ElapsedTime);
             if (key.comma == true && key.lshift == true &&
-                gvars::currentz <= gridz - 1)
+                gvars::currentz <= GRID_Z - 1)
             {
                 gvars::currentz++;
                 plyAct = true;
@@ -3785,7 +3787,7 @@ int main()
                 fSleep(0.1f);
             } //Sprite.Move(0,  100 * ElapsedTime);
             if (key.comma == true && key.rshift == true &&
-                gvars::currentz <= gridz - 1)
+                gvars::currentz <= GRID_Z - 1)
             {
                 gvars::currentz++;
                 plyAct = true;
@@ -4290,8 +4292,8 @@ int main()
             }
 
             if (gvars::myTarget != -1 && key.rmb &&
-                tiles[abs_to_index(gvars::mousePos.x / GridSize)][abs_to_index(
-                    gvars::mousePos.y / GridSize)][30].id != 1010)
+                tiles[abs_to_index(gvars::mousePos.x / GRID_SIZE)][abs_to_index(
+                    gvars::mousePos.y / GRID_SIZE)][30].id != 1010)
             { // Giving Orders
                 npclist.at(gvars::myTarget).targetPos = gvars::mousePos;
                 npclist.at(gvars::myTarget).action = "Orders";
@@ -4595,20 +4597,20 @@ int main()
         }
         if (gCtrl.phase == "MakeSquad") // Needs a heavy menu overhaul.
         {
-            gvars::view1.setCenter(Rez.x / 2, Rez.y / 2);
+            gvars::view1.setCenter(RESOLUTION.x / 2, RESOLUTION.y / 2);
 
-            textList.createText(Rez.x / 2, 20, 20, gvars::cycleBlue,
+            textList.createText(RESOLUTION.x / 2, 20, 20, gvars::cycleBlue,
                                 "Design Your Squad");
-            textList.createText(Rez.x / 2, 50, 15, sf::Color::Yellow,
+            textList.createText(RESOLUTION.x / 2, 50, 15, sf::Color::Yellow,
                                 "Squad Points: ", "", squady.makeSquadPoints);
-            textList.createText(Rez.x / 2, 70, 11, sf::Color::Yellow,
+            textList.createText(RESOLUTION.x / 2, 70, 11, sf::Color::Yellow,
                                 "Squad Mates: ", "", squady.squadMates);
 
             SquareButton var200;
             var200.color = sf::Color::Yellow;
             var200.iSizex = 5;
             var200.iSizey = 5;
-            var200.vPos = sf::Vector2f((Rez.x / 2) - 10, 75);
+            var200.vPos = sf::Vector2f((RESOLUTION.x / 2) - 10, 75);
             var200.sButtonText = "Howdy";
 
             vSquareButtonList.push_back(var200);
@@ -4664,7 +4666,7 @@ int main()
             var201.color = sf::Color::Yellow;
             var201.iSizex = 5;
             var201.iSizey = 5;
-            var201.vPos = sf::Vector2f((Rez.x / 2) + 150, 75);
+            var201.vPos = sf::Vector2f((RESOLUTION.x / 2) + 150, 75);
             var201.sButtonText = "Howdy";
             vSquareButtonList.push_back(var201);
             if (squareButtonClicked(var201.id))
@@ -4776,8 +4778,8 @@ int main()
             var100.color = sf::Color::Green;
             var100.iSizex = 5;
             var100.iSizey = 5;
-            var100.vPos =
-                sf::Vector2f((Rez.x / 2) - 10, 5 + (80 + (20 * spacing)));
+            var100.vPos = sf::Vector2f((RESOLUTION.x / 2) - 10,
+                                       5 + (80 + (20 * spacing)));
             var100.sButtonText = "Howdy";
             vSquareButtonList.push_back(var100);
             if (squareButtonClicked(var100.id))
@@ -4793,8 +4795,8 @@ int main()
             var101.color = sf::Color::Green;
             var101.iSizex = 5;
             var101.iSizey = 5;
-            var101.vPos =
-                sf::Vector2f((Rez.x / 2) + 150, 5 + (80 + (20 * spacing)));
+            var101.vPos = sf::Vector2f((RESOLUTION.x / 2) + 150,
+                                       5 + (80 + (20 * spacing)));
             var101.sButtonText = "Howdy";
             vSquareButtonList.push_back(var101);
             if (squareButtonClicked(var101.id))
@@ -4807,11 +4809,11 @@ int main()
                 fSleep(0.2);
             }
 
-            textList.createText(Rez.x / 2, 80 + (10 * spacing++), 11,
+            textList.createText(RESOLUTION.x / 2, 80 + (10 * spacing++), 11,
                                 sf::Color::Green, "Human: ",
                                 squady.squad.at(squady.aim).name);
 
-            textList.createText(Rez.x / 2, 80 + (20 * spacing), 11,
+            textList.createText(RESOLUTION.x / 2, 80 + (20 * spacing), 11,
                                 sf::Color::White, "Strength: ", "",
                                 squady.squad.at(squady.aim).skills.strength);
 
@@ -4819,8 +4821,8 @@ int main()
             var.color = sf::Color::Red;
             var.iSizex = 5;
             var.iSizey = 5;
-            var.vPos =
-                sf::Vector2f((Rez.x / 2) - 10, 5 + (80 + (20 * spacing)));
+            var.vPos = sf::Vector2f((RESOLUTION.x / 2) - 10,
+                                    5 + (80 + (20 * spacing)));
             var.sButtonText = "Howdy";
             vSquareButtonList.push_back(var);
             if (squareButtonClicked(var.id))
@@ -4835,8 +4837,8 @@ int main()
             var2.color = sf::Color::Red;
             var2.iSizex = 5;
             var2.iSizey = 5;
-            var2.vPos =
-                sf::Vector2f((Rez.x / 2) + 150, 5 + (80 + (20 * spacing++)));
+            var2.vPos = sf::Vector2f((RESOLUTION.x / 2) + 150,
+                                     5 + (80 + (20 * spacing++)));
             var2.sButtonText = "Howdy";
             vSquareButtonList.push_back(var2);
             if (squareButtonClicked(var2.id))
@@ -4848,7 +4850,7 @@ int main()
                 }
             }
 
-            textList.createText(Rez.x / 2, 80 + (20 * spacing), 11,
+            textList.createText(RESOLUTION.x / 2, 80 + (20 * spacing), 11,
                                 sf::Color::White, "Perception: ", "",
                                 squady.squad.at(squady.aim).skills.perception);
 
@@ -4856,8 +4858,8 @@ int main()
             var3.color = sf::Color::Red;
             var3.iSizex = 5;
             var3.iSizey = 5;
-            var3.vPos =
-                sf::Vector2f((Rez.x / 2) - 10, 5 + (80 + (20 * spacing)));
+            var3.vPos = sf::Vector2f((RESOLUTION.x / 2) - 10,
+                                     5 + (80 + (20 * spacing)));
             var3.sButtonText = "Howdy";
             vSquareButtonList.push_back(var3);
             if (squareButtonClicked(var3.id))
@@ -4872,8 +4874,8 @@ int main()
             var4.color = sf::Color::Red;
             var4.iSizex = 5;
             var4.iSizey = 5;
-            var4.vPos =
-                sf::Vector2f((Rez.x / 2) + 150, 5 + (80 + (20 * spacing++)));
+            var4.vPos = sf::Vector2f((RESOLUTION.x / 2) + 150,
+                                     5 + (80 + (20 * spacing++)));
             var4.sButtonText = "Howdy";
             vSquareButtonList.push_back(var4);
             if (squareButtonClicked(var4.id))
@@ -4886,7 +4888,7 @@ int main()
             }
 
             textList.createText(
-                Rez.x / 2, 80 + (20 * spacing), 11, sf::Color::White,
+                RESOLUTION.x / 2, 80 + (20 * spacing), 11, sf::Color::White,
                 "Intelligence: ", "",
                 squady.squad.at(squady.aim).skills.intelligence);
 
@@ -4894,8 +4896,8 @@ int main()
             var5.color = sf::Color::Red;
             var5.iSizex = 5;
             var5.iSizey = 5;
-            var5.vPos =
-                sf::Vector2f((Rez.x / 2) - 10, 5 + (80 + (20 * spacing)));
+            var5.vPos = sf::Vector2f((RESOLUTION.x / 2) - 10,
+                                     5 + (80 + (20 * spacing)));
             var5.sButtonText = "Howdy";
             vSquareButtonList.push_back(var5);
             if (squareButtonClicked(var5.id))
@@ -4910,8 +4912,8 @@ int main()
             var6.color = sf::Color::Red;
             var6.iSizex = 5;
             var6.iSizey = 5;
-            var6.vPos =
-                sf::Vector2f((Rez.x / 2) + 150, 5 + (80 + (20 * spacing++)));
+            var6.vPos = sf::Vector2f((RESOLUTION.x / 2) + 150,
+                                     5 + (80 + (20 * spacing++)));
             var6.sButtonText = "Howdy";
             vSquareButtonList.push_back(var6);
             if (squareButtonClicked(var6.id))
@@ -4923,7 +4925,7 @@ int main()
                 }
             }
 
-            textList.createText(Rez.x / 2, 80 + (20 * spacing), 11,
+            textList.createText(RESOLUTION.x / 2, 80 + (20 * spacing), 11,
                                 sf::Color::White, "Charisma: ", "",
                                 squady.squad.at(squady.aim).skills.charisma);
 
@@ -4931,8 +4933,8 @@ int main()
             var7.color = sf::Color::Red;
             var7.iSizex = 5;
             var7.iSizey = 5;
-            var7.vPos =
-                sf::Vector2f((Rez.x / 2) - 10, 5 + (80 + (20 * spacing)));
+            var7.vPos = sf::Vector2f((RESOLUTION.x / 2) - 10,
+                                     5 + (80 + (20 * spacing)));
             var7.sButtonText = "Howdy";
             vSquareButtonList.push_back(var7);
             if (squareButtonClicked(var7.id))
@@ -4947,8 +4949,8 @@ int main()
             var8.color = sf::Color::Red;
             var8.iSizex = 5;
             var8.iSizey = 5;
-            var8.vPos =
-                sf::Vector2f((Rez.x / 2) + 150, 5 + (80 + (20 * spacing++)));
+            var8.vPos = sf::Vector2f((RESOLUTION.x / 2) + 150,
+                                     5 + (80 + (20 * spacing++)));
             var8.sButtonText = "Howdy";
             vSquareButtonList.push_back(var8);
             if (squareButtonClicked(var8.id))
@@ -4960,7 +4962,7 @@ int main()
                 }
             }
 
-            textList.createText(Rez.x / 2, 80 + (20 * spacing), 11,
+            textList.createText(RESOLUTION.x / 2, 80 + (20 * spacing), 11,
                                 sf::Color::White, "Endurance: ", "",
                                 squady.squad.at(squady.aim).skills.endurance);
 
@@ -4968,8 +4970,8 @@ int main()
             var9.color = sf::Color::Red;
             var9.iSizex = 5;
             var9.iSizey = 5;
-            var9.vPos =
-                sf::Vector2f((Rez.x / 2) - 10, 5 + (80 + (20 * spacing)));
+            var9.vPos = sf::Vector2f((RESOLUTION.x / 2) - 10,
+                                     5 + (80 + (20 * spacing)));
             var9.sButtonText = "Howdy";
             vSquareButtonList.push_back(var9);
             if (squareButtonClicked(var9.id))
@@ -4984,8 +4986,8 @@ int main()
             var10.color = sf::Color::Red;
             var10.iSizex = 5;
             var10.iSizey = 5;
-            var10.vPos =
-                sf::Vector2f((Rez.x / 2) + 150, 5 + (80 + (20 * spacing++)));
+            var10.vPos = sf::Vector2f((RESOLUTION.x / 2) + 150,
+                                      5 + (80 + (20 * spacing++)));
             var10.sButtonText = "Howdy";
             vSquareButtonList.push_back(var10);
             if (squareButtonClicked(var10.id))
@@ -4997,7 +4999,7 @@ int main()
                 }
             }
 
-            textList.createText(Rez.x / 2, 80 + (20 * spacing), 11,
+            textList.createText(RESOLUTION.x / 2, 80 + (20 * spacing), 11,
                                 sf::Color::White, "Dexterity: ", "",
                                 squady.squad.at(squady.aim).skills.dexterity);
 
@@ -5005,8 +5007,8 @@ int main()
             var11.color = sf::Color::Red;
             var11.iSizex = 5;
             var11.iSizey = 5;
-            var11.vPos =
-                sf::Vector2f((Rez.x / 2) - 10, 5 + (80 + (20 * spacing)));
+            var11.vPos = sf::Vector2f((RESOLUTION.x / 2) - 10,
+                                      5 + (80 + (20 * spacing)));
             var11.sButtonText = "Howdy";
             vSquareButtonList.push_back(var11);
             if (squareButtonClicked(var11.id))
@@ -5021,8 +5023,8 @@ int main()
             var12.color = sf::Color::Red;
             var12.iSizex = 5;
             var12.iSizey = 5;
-            var12.vPos =
-                sf::Vector2f((Rez.x / 2) + 150, 5 + (80 + (20 * spacing++)));
+            var12.vPos = sf::Vector2f((RESOLUTION.x / 2) + 150,
+                                      5 + (80 + (20 * spacing++)));
             var12.sButtonText = "Howdy";
             vSquareButtonList.push_back(var12);
             if (squareButtonClicked(var12.id))
@@ -5034,7 +5036,7 @@ int main()
                 }
             }
 
-            textList.createText(Rez.x / 2, 80 + (20 * spacing), 11,
+            textList.createText(RESOLUTION.x / 2, 80 + (20 * spacing), 11,
                                 sf::Color::White, "Agility: ", "",
                                 squady.squad.at(squady.aim).skills.agility);
 
@@ -5042,8 +5044,8 @@ int main()
             var13.color = sf::Color::Red;
             var13.iSizex = 5;
             var13.iSizey = 5;
-            var13.vPos =
-                sf::Vector2f((Rez.x / 2) - 10, 5 + (80 + (20 * spacing)));
+            var13.vPos = sf::Vector2f((RESOLUTION.x / 2) - 10,
+                                      5 + (80 + (20 * spacing)));
             var13.sButtonText = "Howdy";
             vSquareButtonList.push_back(var13);
             if (squareButtonClicked(var13.id))
@@ -5058,8 +5060,8 @@ int main()
             var14.color = sf::Color::Red;
             var14.iSizex = 5;
             var14.iSizey = 5;
-            var14.vPos =
-                sf::Vector2f((Rez.x / 2) + 150, 5 + (80 + (20 * spacing++)));
+            var14.vPos = sf::Vector2f((RESOLUTION.x / 2) + 150,
+                                      5 + (80 + (20 * spacing++)));
             var14.sButtonText = "Howdy";
             vSquareButtonList.push_back(var14);
             if (squareButtonClicked(var14.id))
@@ -5071,12 +5073,12 @@ int main()
                 }
             }
 
-            //cText.CreateText(Rez.x/2,80+(20*Spacing),11,sf::Color::White," ");
+            //cText.CreateText(RESOLUTION.x/2,80+(20*Spacing),11,sf::Color::White," ");
             SquareButton var50;
             var50.color = sf::Color::Yellow;
             var50.iSizex = 5;
             var50.iSizey = 5;
-            var50.vPos = sf::Vector2f((Rez.x / 2) + 180,
+            var50.vPos = sf::Vector2f((RESOLUTION.x / 2) + 180,
                                       5 + (80 + ((20 * spacing++) / 2)));
 
             var50.sForwardText = "Done";
@@ -5280,7 +5282,7 @@ int main()
         if (gCtrl.phase == "MainMenu")
         { //=======================================================*Main Menu*============================================================================
             gCtrl.buildMainMenu();
-            gvars::view1.setCenter(HalfSize.x, HalfSize.y);
+            gvars::view1.setCenter(HALF_SIZE.x, HALF_SIZE.y);
             textList.createText(500, 0, 25, sf::Color::White, "Welcome!", "",
                                 -6698, "", "", -6698, "", "", -6698, 1, 0);
             textList.createText(
@@ -5527,8 +5529,8 @@ int main()
             if (gCtrl.phase != "MainMenu" && gvars::following == false &&
                 gCtrl.phase != "MakeSquad")
             {
-                gvars::view1.setCenter(gvars::currentx * GridSize,
-                                       gvars::currenty * GridSize);
+                gvars::view1.setCenter(gvars::currentx * GRID_SIZE,
+                                       gvars::currenty * GRID_SIZE);
             }
 
             if (gCtrl.phase == "Local")
@@ -5547,7 +5549,7 @@ int main()
                             int dist = math::closeish(gvars::mousePos.x,
                                                       gvars::mousePos.y,
                                                       elem.xpos, elem.ypos);
-                            if (dist <= GridSize)
+                            if (dist <= GRID_SIZE)
                             {
                                 gvars::myTarget = tfunz;
                                 foundOne = true;
@@ -5646,8 +5648,8 @@ int main()
             if (gvars::selected.size() > 0)
             {
                 if (key.rmb &&
-                    tiles[abs_to_index(gvars::mousePos.x / GridSize)]
-                         [abs_to_index(gvars::mousePos.y / GridSize)][30].id !=
+                    tiles[abs_to_index(gvars::mousePos.x / GRID_SIZE)]
+                         [abs_to_index(gvars::mousePos.y / GRID_SIZE)][30].id !=
                         1010)
                 {
                     for (size_t i = 0; i != gvars::selected.size(); i++)
@@ -5682,7 +5684,7 @@ int main()
                 gvars::myTargetid = npclist.at(gvars::myTarget).id;
 
                 int nxpos = gvars::topLeft.x;
-                int nypos = gvars::topLeft.y + (Rez.y / 2);
+                int nypos = gvars::topLeft.y + (RESOLUTION.y / 2);
 
                 //int Nxpos = npclist.at(MyTarget).xpos;
                 //int Nypos = npclist.at(MyTarget).ypos;
@@ -5693,7 +5695,7 @@ int main()
                                     "", npclist.at(gvars::myTarget).health, "",
                                     "(", npclist.at(gvars::myTarget).maxhealth,
                                     ")", "", -6698, 1, 0);
-                textList.createText(nxpos, nypos + 10, 11, Brown, "Hunger:", "",
+                textList.createText(nxpos, nypos + 10, 11, BROWN, "Hunger:", "",
                                     npclist.at(gvars::myTarget).hunger, "", "",
                                     -6698, "", "", -6698, 1, 0);
                 textList.createText(nxpos, nypos + 20, 11, sf::Color::Cyan,
