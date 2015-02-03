@@ -3289,6 +3289,12 @@ void drawNPCs()
             npc.img.setScale(gvars::scalex, gvars::scaley);
             npc.img.setOrigin(npc.img.getTextureRect().width / 2,
                               npc.img.getTextureRect().height / 2);
+            if (npc.race == "Human")
+            {
+                npc.img.setScale(0.5,0.5);
+                npc.img.setRotation(npc.angle);
+            }
+
             npc.drawImg();
             effects.createCircle(npc.xpos, npc.ypos, npc.size,
                                  sf::Color(50, 50, 50, 50));
