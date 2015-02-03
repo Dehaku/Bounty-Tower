@@ -5455,10 +5455,11 @@ int main()
                              abs(gvars::mousePos.y / 20));
 
             DrawWorldTiles();
-            sf::Vector2f Pos(abs(gvars::mousePos.x / 20),
-                             abs(gvars::mousePos.y / 20));
+            int xMouse(gvars::mousePos.x / 20);
+            int yMouse(gvars::mousePos.y / 20);
+            sf::Vector2f Pos(xMouse,yMouse);
             effects.createSquare(Pos.x * 20, Pos.y * 20, (Pos.x * 20) + 20,
-                                 (Pos.y * 20) + 20, sf::Color(0, 0, 0, 0), 1,
+                                 (Pos.y * 20) + 20, sf::Color(0, 0, 0, 0), 2,
                                  sf::Color(0, 200, 200, 255));
 
             if (Key.c && true == false)
