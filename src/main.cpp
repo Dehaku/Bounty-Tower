@@ -5328,7 +5328,7 @@ int main()
                     std::cout << "Switching to MakeSquad\n";
                 gCtrl.phase = "MakeSquad";
 
-                for (int Amount = 0; Amount != squady.squadMates; Amount++)
+                for (int amount = 0; amount != squady.squadMates; amount++)
                 {
 
                     Npc var;
@@ -5656,9 +5656,9 @@ int main()
 
             for (size_t i = 0; i != gvars::selected.size(); i++)
             {
-                Npc Var;
-                Var = *getCritter(gvars::selected[i]);
-                sf::Vector2f Pos = sf::Vector2f(Var.xpos, Var.ypos);
+                Npc var;
+                var = *getCritter(gvars::selected[i]);
+                sf::Vector2f Pos = sf::Vector2f(var.xpos, var.ypos);
                 effects.createCircle(Pos.x, Pos.y, 5,
                                      sf::Color(0, 255, 255, 100));
             }
