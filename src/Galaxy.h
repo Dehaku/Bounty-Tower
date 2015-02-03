@@ -12,19 +12,19 @@
 class GalaxyController
 {
 public:
-    std::string Phase;
+    std::string phase;
 
     float timescale;
     float timescalez;
     float timetilltick;
-    int Waves;
-    int WaveTimer;
-    int TickTimer;
+    int waves;
+    int waveTimer;
+    int tickTimer;
     bool bTest;
-    bool Debug;
-    sf::Vector2f MenuPos;
-    sf::Vector2f MenuEndPos;
-    std::string MenuType;
+    bool myDebug;
+    sf::Vector2f menuPos;
+    sf::Vector2f menuEndPos;
+    std::string menuType;
 
     GalaxyController();
 
@@ -41,19 +41,19 @@ public:
 
         MenuPointerContainer();
     };
-    MenuPointerContainer MenuPtrCon;
+    MenuPointerContainer menuPtrCon;
 
-    void AddvPlanet();
-    void Wave();
-    void Time(int Modify);
-    void BuildLocal(std::string Type = "Test", int ZedAmount = 0);
-    void BuildLocalTest();
-    void ZombieSwarmLocal(int num = 5);
-    void BuildMainMenu();
-    void BuildTileTest();
-    void BuildWorldTest();
-    void WorldLoop();
+    void addvPlanet();
+    void wave();
+    void time(int Modify);
+    void buildLocal(std::string Type = "Test", int ZedAmount = 0);
+    void buildLocalTest();
+    void zombieSwarmLocal(int num = 5);
+    void buildMainMenu();
+    void buildTileTest();
+    void buildWorldTest();
+    void worldLoop();
 };
-extern GalaxyController GC;
+extern GalaxyController gCtrl;
 
 #endif // GALAXY_H_INCLUDED

@@ -3344,7 +3344,7 @@ void LightTrail(int x, int y, int z)
 
 void DisplayChat(sf::Vector2f Position)
 {
-    if (GC.Phase != "MainMenu")
+    if (gCtrl.phase != "MainMenu")
         effects.createSquare(
             Position.x - 10, Position.y + 10, Position.x + 500,
             (Position.y - ((ChatBox.ChatStorage.size() + 1) * 10)),
@@ -3523,7 +3523,7 @@ int main()
     ConFact = &UniFact[0];
 
     // Setting the initial game phase.
-    GC.Phase = "MainMenu";
+    gCtrl.phase = "MainMenu";
 
     // For A*
     astar::init();
@@ -3673,7 +3673,7 @@ int main()
                 fSleep(0.2);
             }
         }
-        if (GC.Phase == "Local")
+        if (gCtrl.phase == "Local")
         { //=======================================================*Local*============================================================================
             if (gvars::debug)
                 cText.CreateText((gvars::currentx - 2) * GridSize,
@@ -3701,22 +3701,22 @@ int main()
             if (Key.lshift && Key.tab) // Debug NPC Spawn Menu
             {
 
-                GC.MenuType = "DebugCritterSpawn";
+                gCtrl.menuType = "DebugCritterSpawn";
                 menuPopUp();
             }
             else if (Key.tab == true &&
                      Key.lshift ==
                          false) // Debug Item Spawn Menu TODO: Sort them by Type.
             {
-                GC.MenuType = "DebugItemSpawn";
+                gCtrl.menuType = "DebugItemSpawn";
                 menuPopUp();
             }
-            else if (GC.MenuType == "DebugItemSpawn" ||
-                     GC.MenuType == "DebugCritterSpawn")
+            else if (gCtrl.menuType == "DebugItemSpawn" ||
+                     gCtrl.menuType == "DebugCritterSpawn")
             {
-                GC.MenuType = "NULL";
-                GC.MenuPos = sf::Vector2f(-10000, -10000);
-                GC.MenuEndPos = sf::Vector2f(-10000, -10000);
+                gCtrl.menuType = "NULL";
+                gCtrl.menuPos = sf::Vector2f(-10000, -10000);
+                gCtrl.menuEndPos = sf::Vector2f(-10000, -10000);
                 menuPtrCon.pItem = nullptr;
                 menuPtrCon.pNPC = nullptr;
                 menuPtrCon.pTile = nullptr;
@@ -3726,7 +3726,7 @@ int main()
 
             if (Key.lshift && Key.z) // Debug Stuffs Menu
             {
-                GC.MenuType = "DebugFunctions";
+                gCtrl.menuType = "DebugFunctions";
                 menuPopUp();
             }
 
@@ -3752,7 +3752,7 @@ int main()
             }
 
             if (gvars::initalZeds)
-                GC.Wave();
+                gCtrl.wave();
 
             rightMouseButtonContextMenu();
 
@@ -4327,21 +4327,21 @@ int main()
                     if (math::closeish(gvars::mousePos.x, gvars::mousePos.y,
                                        item.xpos, item.ypos) <= 10)
                     {
-                        GC.MenuType = "CritterContext";
+                        gCtrl.menuType = "CritterContext";
                     }
                 }
             } //End of Giving Orders
 
-            if (GC.MenuType != "NULL")
+            if (gCtrl.menuType != "NULL")
             {
                 menuPopUp();
             }
             else
             {
-                GC.MenuPos = math::Vec2f(-10000, -10000);
+                gCtrl.menuPos = math::Vec2f(-10000, -10000);
             }
         } //=============================================================================*End of Local*========================================================================
-        if (GC.Phase == "Solar")
+        if (gCtrl.phase == "Solar")
         { //=======================================================*Solar*============================================================================
             if (Key.lshift)
             {
@@ -4413,7 +4413,7 @@ int main()
             } //Sprite.Move(0,  100 * ElapsedTime);
 
         } //=============================================================================*End of Solar*========================================================================
-        if (GC.Phase == "Test")
+        if (gCtrl.phase == "Test")
         {
             if (Key.up)
                 testage++;
@@ -4545,7 +4545,7 @@ int main()
                              "Radius:", "", radius);
 
             //std::cout << testmonkey << std::endl;
-            if (GC.bTest == true)
+            if (gCtrl.bTest == true)
             {
                 // TODO: Fix Later
                 /*for(T = Tiles.begin(); T != Tiles.end(); T++){
@@ -4608,11 +4608,11 @@ int main()
                 }
             }
         }
-        if (GC.Phase == "Goo")
+        if (gCtrl.phase == "Goo")
         {
             // Herp
         }
-        if (GC.Phase == "MakeSquad") // Needs a heavy menu overhaul.
+        if (gCtrl.phase == "MakeSquad") // Needs a heavy menu overhaul.
         {
             gvars::view1.setCenter(Rez.x / 2, Rez.y / 2);
 
@@ -5105,8 +5105,8 @@ int main()
             if (squareButtonClicked(var50.id))
             {
 
-                GC.Phase = "World";
-                GC.BuildWorldTest();
+                gCtrl.phase = "World";
+                gCtrl.buildWorldTest();
 
                 InitializeFactions(13);
             }
@@ -5114,7 +5114,7 @@ int main()
             //DrawStuffs();
         }
 
-        if (GC.Phase == "System")
+        if (gCtrl.phase == "System")
         {
             class Planet
             {
@@ -5144,7 +5144,7 @@ int main()
             */
         }
 
-        if (GC.Phase == "World")
+        if (gCtrl.phase == "World")
         {
             if (Key.left == true)
                 gvars::currentx--;
@@ -5155,7 +5155,7 @@ int main()
             if (Key.down == true)
                 gvars::currenty++;
 
-            GC.WorldLoop();
+            gCtrl.worldLoop();
 
             effects.createSquare(gvars::topLeft.x, gvars::topLeft.y,
                                  gvars::topLeft.x + 300, gvars::topLeft.y + 150,
@@ -5274,30 +5274,30 @@ int main()
                 }
 
                 Con("Starting Now");
-                GC.AddvPlanet();
+                gCtrl.addvPlanet();
             }
 
             if (Key.RMB == true)
             { // Entering Menu and such.
                 debug("After RMB");
 
-                GC.MenuType = "WorldRMB";
+                gCtrl.menuType = "WorldRMB";
                 menuPopUp();
             }
             debug("Done with world.");
-            if (GC.MenuType != "NULL")
+            if (gCtrl.menuType != "NULL")
             {
                 menuPopUp();
             }
             else
             {
-                GC.MenuPos = math::Vec2f(-10000, -10000);
+                gCtrl.menuPos = math::Vec2f(-10000, -10000);
             }
         }
 
-        if (GC.Phase == "MainMenu")
+        if (gCtrl.phase == "MainMenu")
         { //=======================================================*Main Menu*============================================================================
-            GC.BuildMainMenu();
+            gCtrl.buildMainMenu();
             gvars::view1.setCenter(HalfSize.x, HalfSize.y);
             cText.CreateText(500, 0, 25, sf::Color::White, "Welcome!", "",
                              -6698, "", "", -6698, "", "", -6698, 1, 0);
@@ -5325,7 +5325,7 @@ int main()
             {
                 if (gvars::debug)
                     std::cout << "Switching to MakeSquad\n";
-                GC.Phase = "MakeSquad";
+                gCtrl.phase = "MakeSquad";
 
                 for (int Amount = 0; Amount != Squady.SquadMates; Amount++)
                 {
@@ -5430,21 +5430,21 @@ int main()
             {
                 if (gvars::debug)
                     std::cout << "Comma was pressed \n";
-                GC.Phase = "Local";
+                gCtrl.phase = "Local";
                 if (gvars::debug)
                     std::cout << "Building Local Test\n";
-                GC.BuildLocalTest();
+                gCtrl.buildLocalTest();
                 if (gvars::debug)
                     std::cout << "Done Building Local Test\n";
             }
             if (Key.period)
             {
-                GC.Phase = "World";
-                GC.BuildWorldTest();
+                gCtrl.phase = "World";
+                gCtrl.buildWorldTest();
             }
             if (Key.rctrl)
             {
-                GC.Phase = "Test";
+                gCtrl.phase = "Test";
             }
         } //=============================================================================*End of Main Menu*========================================================================
 
@@ -5521,7 +5521,7 @@ int main()
 
         if (PlyAct == true)
         {
-            if (GC.Phase == "Local")
+            if (gCtrl.phase == "Local")
             {
                 if (gvars::debug)
                     std::cout << "Doing Local Items \n";
@@ -5541,15 +5541,15 @@ int main()
                 if (gvars::debug)
                     std::cout << "Post Add Critters \n";
             }
-            GC.Time(0);
-            if (GC.Phase != "MainMenu" && gvars::following == false &&
-                GC.Phase != "MakeSquad")
+            gCtrl.time(0);
+            if (gCtrl.phase != "MainMenu" && gvars::following == false &&
+                gCtrl.phase != "MakeSquad")
             {
                 gvars::view1.setCenter(gvars::currentx * GridSize,
                                        gvars::currenty * GridSize);
             }
 
-            if (GC.Phase == "Local")
+            if (gCtrl.phase == "Local")
             {
                 bool FoundOne = false;
                 if (gvars::debug)
@@ -5877,28 +5877,28 @@ int main()
         UnpointItems(worlditems);
         removeItems(worlditems);
 
-        if (GC.MenuEndPos == sf::Vector2f(-10000, -10000))
+        if (gCtrl.menuEndPos == sf::Vector2f(-10000, -10000))
         {
-            GC.MenuPtrCon.pItem = nullptr;
-            GC.MenuPtrCon.pNPC = nullptr;
-            GC.MenuPtrCon.pTile = nullptr;
-            GC.MenuPtrCon.pVecItem.clear();
-            GC.MenuPtrCon.pVecNPC.clear();
-            GC.MenuPtrCon.pVecTile.clear();
+            gCtrl.menuPtrCon.pItem = nullptr;
+            gCtrl.menuPtrCon.pNPC = nullptr;
+            gCtrl.menuPtrCon.pTile = nullptr;
+            gCtrl.menuPtrCon.pVecItem.clear();
+            gCtrl.menuPtrCon.pVecNPC.clear();
+            gCtrl.menuPtrCon.pVecTile.clear();
         }
         debug("Finished removing process");
 
         if (Key.LMB && gvars::buttonClickedTime == 0 &&
-            !AABB(gvars::mousePos, GC.MenuPos.x, GC.MenuEndPos.x, GC.MenuPos.y,
-                  GC.MenuEndPos.y) &&
-            GC.MenuPos != sf::Vector2f(-10000, -10000))
+            !AABB(gvars::mousePos, gCtrl.menuPos.x, gCtrl.menuEndPos.x,
+                  gCtrl.menuPos.y, gCtrl.menuEndPos.y) &&
+            gCtrl.menuPos != sf::Vector2f(-10000, -10000))
         {
-            GC.MenuType = "NULL";
-            GC.MenuPos = sf::Vector2f(-10000, -10000);
-            GC.MenuEndPos = sf::Vector2f(-10000, -10000);
-            GC.MenuPtrCon.pItem = nullptr;
-            GC.MenuPtrCon.pNPC = nullptr;
-            GC.MenuPtrCon.pTile = nullptr;
+            gCtrl.menuType = "NULL";
+            gCtrl.menuPos = sf::Vector2f(-10000, -10000);
+            gCtrl.menuEndPos = sf::Vector2f(-10000, -10000);
+            gCtrl.menuPtrCon.pItem = nullptr;
+            gCtrl.menuPtrCon.pNPC = nullptr;
+            gCtrl.menuPtrCon.pTile = nullptr;
             Con("Closing Menus Due To Outside Clicking");
         }
 

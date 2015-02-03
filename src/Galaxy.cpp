@@ -8,17 +8,17 @@
 
 #include <iostream>
 
-GalaxyController GC;
+GalaxyController gCtrl;
 
 extern sf::RenderWindow window;
 
 GalaxyController::GalaxyController()
-    : timescale(10), timescalez(10), timetilltick(0), Waves(1), WaveTimer(1000),
-      TickTimer(10), bTest(false), Debug(false), MenuType("NULL")
+    : timescale(10), timescalez(10), timetilltick(0), waves(1), waveTimer(1000),
+      tickTimer(10), bTest(false), myDebug(false), menuType("NULL")
 {
 }
 
-void GalaxyController::AddvPlanet()
+void GalaxyController::addvPlanet()
 {
 
     //long long unsigned int Rawr = (sizeof(vChunk)*10000);
@@ -28,7 +28,7 @@ void GalaxyController::AddvPlanet()
     //std::cout << "Grid: " << (sizeof(Grid)) << " vs Tile:" << sizeof(xTile) << std::endl;
 }
 
-void GalaxyController::Wave()
+void GalaxyController::wave()
 {
     bool FoundAny = false;
     for (auto &elem : npclist)
@@ -40,37 +40,37 @@ void GalaxyController::Wave()
     }
     if (FoundAny == false)
     {
-        WaveTimer--;
-        if (WaveTimer <= 0)
+        waveTimer--;
+        if (waveTimer <= 0)
         {
-            ZombieSwarmLocal(Waves);
-            WaveTimer = 1000;
-            Waves++;
+            zombieSwarmLocal(waves);
+            waveTimer = 1000;
+            waves++;
         }
         cText.CreateText(((gvars::currentx - 2) * GridSize) + 1,
                          ((gvars::currenty - 18) * GridSize) + 1, 11,
-                         sf::Color::Black, "Time Till Wave ", "", Waves + 1,
-                         ": ", "", WaveTimer / 10);
-        if (WaveTimer / 2 < 50 && randz(0, 1) == 1)
+                         sf::Color::Black, "Time Till Wave ", "", waves + 1,
+                         ": ", "", waveTimer / 10);
+        if (waveTimer / 2 < 50 && randz(0, 1) == 1)
         {
             cText.CreateText((gvars::currentx - 2) * GridSize,
                              (gvars::currenty - 18) * GridSize, 11,
-                             sf::Color::White, "Time Till Wave ", "", Waves + 1,
-                             ": ", "", WaveTimer / 10);
+                             sf::Color::White, "Time Till Wave ", "", waves + 1,
+                             ": ", "", waveTimer / 10);
         }
         else
         {
             cText.CreateText((gvars::currentx - 2) * GridSize,
                              (gvars::currenty - 18) * GridSize, 11,
-                             sf::Color::Red, "Time Till Wave ", "", Waves + 1,
-                             ": ", "", WaveTimer / 10);
+                             sf::Color::Red, "Time Till Wave ", "", waves + 1,
+                             ": ", "", waveTimer / 10);
         }
     }
 }
 
-void GalaxyController::Time(int /*Modify*/)
+void GalaxyController::time(int /*Modify*/)
 {
-    if (timetilltick >= TickTimer)
+    if (timetilltick >= tickTimer)
     {
         timetilltick = 0;
         //UpdatePlanet();
@@ -78,11 +78,11 @@ void GalaxyController::Time(int /*Modify*/)
     timetilltick += timescalez;
 }
 
-void GalaxyController::BuildLocal(std::string Type, int ZedAmount)
+void GalaxyController::buildLocal(std::string Type, int ZedAmount)
 { // TODO: Replace this with a Class containing Critter types and amounts, Probably inventories as well, Or start up premade critters.
     if (Type == "Test")
     {
-        if (Debug)
+        if (myDebug)
             std::cout << "Building Lightmap\n";
         for (int i = 0; i != gridy; i++)
         {
@@ -93,7 +93,7 @@ void GalaxyController::BuildLocal(std::string Type, int ZedAmount)
         }
         // ----------------------------------------
         // 1 dirt 3 grass 6 sand 7 stone 10 wall 20 dirtchannel 52 deepwater 53 lava
-        if (Debug)
+        if (myDebug)
             std::cout << "Creating Mass Tiles\n";
         for (int i = 0; i != Grids; i++)
         {
@@ -109,7 +109,7 @@ void GalaxyController::BuildLocal(std::string Type, int ZedAmount)
                 Tiles[i][t][24].ID = 53;
             }
         }
-        if (Debug)
+        if (myDebug)
             std::cout << "Placing Dirt\n";
         for (int i = 32; i != 64; i++)
         {
@@ -118,7 +118,7 @@ void GalaxyController::BuildLocal(std::string Type, int ZedAmount)
                 Tiles[i][t][30].Dirt();
             }
         }
-        if (Debug)
+        if (myDebug)
             std::cout << "Placing Walls\n";
         for (int i = 40; i != 59; i++)
         {
@@ -127,7 +127,7 @@ void GalaxyController::BuildLocal(std::string Type, int ZedAmount)
                 Tiles[i][t][30].Wall();
             }
         }
-        if (Debug)
+        if (myDebug)
             std::cout << "Placing Stone \n";
         for (int i = 41; i != 58; i++)
         {
@@ -148,7 +148,7 @@ void GalaxyController::BuildLocal(std::string Type, int ZedAmount)
         // ----------------------------------------
 
         {
-            if (Debug)
+            if (myDebug)
             {
                 std::cout << "PreInt\n";
             }
@@ -187,7 +187,7 @@ void GalaxyController::BuildLocal(std::string Type, int ZedAmount)
             {
                 std::cout << "Problem during initalization of NPC Spawns. \n";
             }
-            if (Debug)
+            if (myDebug)
             {
                 std::cout << "PostInt\n";
             }
@@ -212,7 +212,7 @@ void GalaxyController::BuildLocal(std::string Type, int ZedAmount)
                 Tiles[i][t][24].ID = 53;
             }
         }
-        if (Debug)
+        if (myDebug)
             std::cout << "Placing Dirt\n";
         for (int i = 32; i != 64; i++)
         {
@@ -221,7 +221,7 @@ void GalaxyController::BuildLocal(std::string Type, int ZedAmount)
                 Tiles[i][t][30].Dirt();
             }
         }
-        if (Debug)
+        if (myDebug)
             std::cout << "Placing Walls\n";
         for (int i = 40; i != 59; i++)
         {
@@ -230,7 +230,7 @@ void GalaxyController::BuildLocal(std::string Type, int ZedAmount)
                 Tiles[i][t][30].Wall();
             }
         }
-        if (Debug)
+        if (myDebug)
             std::cout << "Placing Stone \n";
         for (int i = 41; i != 58; i++)
         {
@@ -245,7 +245,7 @@ void GalaxyController::BuildLocal(std::string Type, int ZedAmount)
         Tiles[49][57][30].Stone();
 
         {
-            if (Debug)
+            if (myDebug)
             {
                 std::cout << "PreInt\n";
             }
@@ -291,7 +291,7 @@ void GalaxyController::BuildLocal(std::string Type, int ZedAmount)
             {
                 std::cout << "Problem during initalization of NPC Spawns. \n";
             }
-            if (Debug)
+            if (myDebug)
             {
                 std::cout << "PostInt\n";
             }
@@ -303,9 +303,9 @@ void GalaxyController::BuildLocal(std::string Type, int ZedAmount)
     }
 }
 
-void GalaxyController::BuildLocalTest()
+void GalaxyController::buildLocalTest()
 {
-    if (Debug)
+    if (myDebug)
         std::cout << "Building Lightmap\n";
     for (int i = 0; i <= gridy - 1; i++)
     {
@@ -316,7 +316,7 @@ void GalaxyController::BuildLocalTest()
     }
     // ----------------------------------------
     // 1 dirt 3 grass 6 sand 7 stone 10 wall 20 dirtchannel 52 deepwater 53 lava
-    if (Debug)
+    if (myDebug)
         std::cout << "Creating Mass Tiles\n";
     for (int i = 0; i != Grids; i++)
     {
@@ -332,7 +332,7 @@ void GalaxyController::BuildLocalTest()
             Tiles[i][t][24].ID = 53;
         }
     }
-    if (Debug)
+    if (myDebug)
         std::cout << "Placing Dirt\n";
     for (int i = 31; i != 64; i++)
     {
@@ -342,7 +342,7 @@ void GalaxyController::BuildLocalTest()
             Con(t);
         }
     }
-    if (Debug)
+    if (myDebug)
         std::cout << "Placing Walls\n";
     for (int i = 40; i != 59; i++)
     {
@@ -351,7 +351,7 @@ void GalaxyController::BuildLocalTest()
             Tiles[i][t][30].Wall();
         }
     }
-    if (Debug)
+    if (myDebug)
         std::cout << "Placing Stone \n";
     for (int i = 41; i != 58; i++)
     {
@@ -372,7 +372,7 @@ void GalaxyController::BuildLocalTest()
     // ----------------------------------------
 
     {
-        if (Debug)
+        if (myDebug)
         {
             std::cout << "PreInt\n";
         }
@@ -402,14 +402,14 @@ void GalaxyController::BuildLocalTest()
         {
             std::cout << "Problem during initalization of NPC Spawns. \n";
         }
-        if (Debug)
+        if (myDebug)
         {
             std::cout << "PostInt\n";
         }
     }
 }
 
-void GalaxyController::ZombieSwarmLocal(int num)
+void GalaxyController::zombieSwarmLocal(int num)
 {
     {
         for (int count = 0; count <= num; count++)
@@ -420,7 +420,7 @@ void GalaxyController::ZombieSwarmLocal(int num)
     }
 }
 
-void GalaxyController::BuildMainMenu()
+void GalaxyController::buildMainMenu()
 {
     //Effectz.CreateSquare(-1000,-1000,10000,10000,Cyan);
     sf::Sprite Sprt;
@@ -429,7 +429,7 @@ void GalaxyController::BuildMainMenu()
     window.draw(Sprt);
 }
 
-void GalaxyController::BuildTileTest()
+void GalaxyController::buildTileTest()
 { // Build the galaxy.
     //for(int gx = 0; gx != 100; gx++){
     // for(int gy = 0; gy != 100; gy++){
@@ -449,7 +449,7 @@ void GalaxyController::BuildTileTest()
     }
 }
 
-void GalaxyController::BuildWorldTest()
+void GalaxyController::buildWorldTest()
 {
     debug("Worlding it up. ");
     InitalizeWorldTiles();
@@ -457,7 +457,7 @@ void GalaxyController::BuildWorldTest()
     //InitalizeFactions();
 }
 
-void GalaxyController::WorldLoop()
+void GalaxyController::worldLoop()
 {
     debug("Starting world loop");
     for (size_t i = 0; i != UniFact.size(); i++)

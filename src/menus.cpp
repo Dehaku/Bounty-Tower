@@ -204,26 +204,26 @@ MenuPointerContainer::MenuPointerContainer()
 void menuPopUp()
 {
 
-    if (GC.MenuPos.x == -10000)
+    if (gCtrl.menuPos.x == -10000)
     {
-        GC.MenuPos = gvars::mousePos;
+        gCtrl.menuPos = gvars::mousePos;
     }
 
-    sf::Vector2f Tiled(abs(GC.MenuPos.x / 20) * 20,
-                       abs(GC.MenuPos.y / 20) * 20);
+    sf::Vector2f Tiled(abs(gCtrl.menuPos.x / 20) * 20,
+                       abs(gCtrl.menuPos.y / 20) * 20);
 
     effects.createSquare(Tiled.x, Tiled.y, Tiled.x + 20, Tiled.y + 20,
                          sf::Color::Transparent, 1, sf::Color::Cyan);
 
-    if (GC.MenuType == "Orbital Drop")
+    if (gCtrl.menuType == "Orbital Drop")
     {
 
         int Options = 8;
-        GC.MenuEndPos = sf::Vector2f(GC.MenuPos.x + 150,
-                                     (GC.MenuPos.y + (Options * 13)) + 5);
-        effects.createSquare(GC.MenuPos.x, GC.MenuPos.y, GC.MenuEndPos.x,
-                             GC.MenuEndPos.y, sf::Color::Black, 2,
-                             sf::Color::Cyan);
+        gCtrl.menuEndPos = sf::Vector2f(gCtrl.menuPos.x + 150,
+                                        (gCtrl.menuPos.y + (Options * 13)) + 5);
+        effects.createSquare(gCtrl.menuPos.x, gCtrl.menuPos.y,
+                             gCtrl.menuEndPos.x, gCtrl.menuEndPos.y,
+                             sf::Color::Black, 2, sf::Color::Cyan);
         int iY = 0;
         int BRD = 140;                      // ButtonRightDisplacement.
         int BS = 7;                         // ButtonSize;
@@ -237,33 +237,36 @@ void menuPopUp()
             if (i == 0)
             {
                 effects.createLine(
-                    GC.MenuPos.x, (GC.MenuPos.y + (iY * 13)) + 13,
-                    GC.MenuPos.x + 90, (GC.MenuPos.y + (iY * 13)) + 13, 1,
+                    gCtrl.menuPos.x, (gCtrl.menuPos.y + (iY * 13)) + 13,
+                    gCtrl.menuPos.x + 90, (gCtrl.menuPos.y + (iY * 13)) + 13, 1,
                     sf::Color::Cyan);
-                cText.CreateText(GC.MenuPos.x + 2, GC.MenuPos.y + (iY * 13), 12,
+                cText.CreateText(gCtrl.menuPos.x + 2,
+                                 gCtrl.menuPos.y + (iY * 13), 12,
                                  sf::Color::White, "Orbital Drop - Missle");
                 int Butt = createSquareButton(
-                    math::Vec2f(GC.MenuPos.x + BRD,
-                                (GC.MenuPos.y + (iY * 13)) + MBD),
+                    math::Vec2f(gCtrl.menuPos.x + BRD,
+                                (gCtrl.menuPos.y + (iY * 13)) + MBD),
                     BS, BSY, ButCol, "Strikes the location!");
                 if (squareButtonClicked(Butt) || Key.num1Time == 1)
                 {
-                    effects.createSquare(GC.MenuPos.x - 10, GC.MenuPos.y - 2,
-                                         GC.MenuPos.x + 10, GC.MenuPos.y + 2,
-                                         sf::Color::Black);
-                    effects.createSquare(GC.MenuPos.x - 2, GC.MenuPos.y - 10,
-                                         GC.MenuPos.x + 2, GC.MenuPos.y + 10,
-                                         sf::Color::Black);
+                    effects.createSquare(gCtrl.menuPos.x - 10,
+                                         gCtrl.menuPos.y - 2,
+                                         gCtrl.menuPos.x + 10,
+                                         gCtrl.menuPos.y + 2, sf::Color::Black);
+                    effects.createSquare(
+                        gCtrl.menuPos.x - 2, gCtrl.menuPos.y - 10,
+                        gCtrl.menuPos.x + 2, gCtrl.menuPos.y + 10,
+                        sf::Color::Black);
                     Item Var;
                     Var = *getGlobalItem("Missile");
-                    Var.targetPos = sf::Vector2f(GC.MenuPos);
-                    Var.xpos = GC.MenuPos.x - 200;
-                    Var.ypos = GC.MenuPos.y - 200;
+                    Var.targetPos = sf::Vector2f(gCtrl.menuPos);
+                    Var.xpos = gCtrl.menuPos.x - 200;
+                    Var.ypos = gCtrl.menuPos.y - 200;
                     Var.zpos = 100;
                     worlditems.push_back(Var);
 
-                    GC.MenuPos = sf::Vector2f(-10000, -10000);
-                    GC.MenuType = "NULL";
+                    gCtrl.menuPos = sf::Vector2f(-10000, -10000);
+                    gCtrl.menuType = "NULL";
 
                     fSleep(0.2);
                     break;
@@ -272,15 +275,15 @@ void menuPopUp()
         }
     }
 
-    if (GC.MenuType == "BuildStructure")
+    if (gCtrl.menuType == "BuildStructure")
     {
 
         int Options = 8;
-        GC.MenuEndPos = sf::Vector2f(GC.MenuPos.x + 150,
-                                     (GC.MenuPos.y + (Options * 13)) + 5);
-        effects.createSquare(GC.MenuPos.x, GC.MenuPos.y, GC.MenuEndPos.x,
-                             GC.MenuEndPos.y, sf::Color::Black, 2,
-                             sf::Color::Cyan);
+        gCtrl.menuEndPos = sf::Vector2f(gCtrl.menuPos.x + 150,
+                                        (gCtrl.menuPos.y + (Options * 13)) + 5);
+        effects.createSquare(gCtrl.menuPos.x, gCtrl.menuPos.y,
+                             gCtrl.menuEndPos.x, gCtrl.menuEndPos.y,
+                             sf::Color::Black, 2, sf::Color::Cyan);
         int iY = 0;
         int BRD = 140;                      // ButtonRightDisplacement.
         int BS = 7;                         // ButtonSize;
@@ -294,36 +297,38 @@ void menuPopUp()
             if (i == 0)
             {
                 effects.createLine(
-                    GC.MenuPos.x, (GC.MenuPos.y + (iY * 13)) + 13,
-                    GC.MenuPos.x + 90, (GC.MenuPos.y + (iY * 13)) + 13, 1,
+                    gCtrl.menuPos.x, (gCtrl.menuPos.y + (iY * 13)) + 13,
+                    gCtrl.menuPos.x + 90, (gCtrl.menuPos.y + (iY * 13)) + 13, 1,
                     sf::Color::Cyan);
-                cText.CreateText(GC.MenuPos.x + 2, GC.MenuPos.y + (iY * 13), 12,
+                cText.CreateText(gCtrl.menuPos.x + 2,
+                                 gCtrl.menuPos.y + (iY * 13), 12,
                                  sf::Color::White, "Build - Wall");
                 int Butt = createSquareButton(
-                    math::Vec2f(GC.MenuPos.x + BRD,
-                                (GC.MenuPos.y + (iY * 13)) + MBD),
+                    math::Vec2f(gCtrl.menuPos.x + BRD,
+                                (gCtrl.menuPos.y + (iY * 13)) + MBD),
                     BS, BSY, ButCol, "Makes a Wall!");
                 if (squareButtonClicked(Butt) || Key.num1Time == 1)
                 {
-                    RMBMenuTile(GC.MenuPos);
+                    RMBMenuTile(gCtrl.menuPos);
                 }
             }
 
             if (i == 1)
             {
                 effects.createLine(
-                    GC.MenuPos.x, (GC.MenuPos.y + (iY * 13)) + 13,
-                    GC.MenuPos.x + 90, (GC.MenuPos.y + (iY * 13)) + 13, 1,
+                    gCtrl.menuPos.x, (gCtrl.menuPos.y + (iY * 13)) + 13,
+                    gCtrl.menuPos.x + 90, (gCtrl.menuPos.y + (iY * 13)) + 13, 1,
                     sf::Color::Cyan);
-                cText.CreateText(GC.MenuPos.x + 2, GC.MenuPos.y + (iY * 13), 12,
+                cText.CreateText(gCtrl.menuPos.x + 2,
+                                 gCtrl.menuPos.y + (iY * 13), 12,
                                  sf::Color::White, "Dig - Natural Wall");
                 int Butt = createSquareButton(
-                    math::Vec2f(GC.MenuPos.x + BRD,
-                                (GC.MenuPos.y + (iY * 13)) + MBD),
+                    math::Vec2f(gCtrl.menuPos.x + BRD,
+                                (gCtrl.menuPos.y + (iY * 13)) + MBD),
                     BS, BSY, ButCol, "Digs out a natural wall.");
                 if (squareButtonClicked(Butt) || Key.num1Time == 1)
                 {
-                    DigWall(GC.MenuPos);
+                    DigWall(gCtrl.menuPos);
                 }
             }
 
@@ -331,15 +336,15 @@ void menuPopUp()
         }
     }
 
-    if (GC.MenuType == "BlankRMB")
+    if (gCtrl.menuType == "BlankRMB")
     {
 
         int Options = 8;
-        GC.MenuEndPos = sf::Vector2f(GC.MenuPos.x + 150,
-                                     (GC.MenuPos.y + (Options * 13)) + 5);
-        effects.createSquare(GC.MenuPos.x, GC.MenuPos.y, GC.MenuEndPos.x,
-                             GC.MenuEndPos.y, sf::Color::Black, 2,
-                             sf::Color::Cyan);
+        gCtrl.menuEndPos = sf::Vector2f(gCtrl.menuPos.x + 150,
+                                        (gCtrl.menuPos.y + (Options * 13)) + 5);
+        effects.createSquare(gCtrl.menuPos.x, gCtrl.menuPos.y,
+                             gCtrl.menuEndPos.x, gCtrl.menuEndPos.y,
+                             sf::Color::Black, 2, sf::Color::Cyan);
         int iY = 0;
         int BRD = 140;                      // ButtonRightDisplacement.
         int BS = 7;                         // ButtonSize;
@@ -355,19 +360,20 @@ void menuPopUp()
 
                 //Effectz.CreateLine(GC.MenuPos.x,(GC.MenuPos.y+(iY*13))+8,GC.MenuPos.x+90,(GC.MenuPos.y+(iY*13))+8,3,Black,1,Yellow);
                 effects.createLine(
-                    GC.MenuPos.x, (GC.MenuPos.y + (iY * 13)) + 13,
-                    GC.MenuPos.x + 90, (GC.MenuPos.y + (iY * 13)) + 13, 1,
+                    gCtrl.menuPos.x, (gCtrl.menuPos.y + (iY * 13)) + 13,
+                    gCtrl.menuPos.x + 90, (gCtrl.menuPos.y + (iY * 13)) + 13, 1,
                     sf::Color::Cyan);
-                cText.CreateText(GC.MenuPos.x + 2, GC.MenuPos.y + (iY * 13), 12,
+                cText.CreateText(gCtrl.menuPos.x + 2,
+                                 gCtrl.menuPos.y + (iY * 13), 12,
                                  sf::Color::White, "Build");
                 int Butt = createSquareButton(
-                    math::Vec2f(GC.MenuPos.x + BRD,
-                                (GC.MenuPos.y + (iY * 13)) + MBD),
+                    math::Vec2f(gCtrl.menuPos.x + BRD,
+                                (gCtrl.menuPos.y + (iY * 13)) + MBD),
                     BS, BSY, ButCol,
                     "This opens the menu to build various structures!");
                 if (squareButtonClicked(Butt) || Key.num1Time == 1)
                 {
-                    GC.MenuType = "BuildStructure";
+                    gCtrl.menuType = "BuildStructure";
                     //fSleep(0.2);
                     return;
                 }
@@ -377,20 +383,21 @@ void menuPopUp()
 
                 //Effectz.CreateLine(GC.MenuPos.x,(GC.MenuPos.y+(iY*13))+8,GC.MenuPos.x+90,(GC.MenuPos.y+(iY*13))+8,3,Black,1,Yellow);
                 effects.createLine(
-                    GC.MenuPos.x, (GC.MenuPos.y + (iY * 13)) + 13,
-                    GC.MenuPos.x + 90, (GC.MenuPos.y + (iY * 13)) + 13, 1,
+                    gCtrl.menuPos.x, (gCtrl.menuPos.y + (iY * 13)) + 13,
+                    gCtrl.menuPos.x + 90, (gCtrl.menuPos.y + (iY * 13)) + 13, 1,
                     sf::Color::Cyan);
-                cText.CreateText(GC.MenuPos.x + 2, GC.MenuPos.y + (iY * 13), 12,
+                cText.CreateText(gCtrl.menuPos.x + 2,
+                                 gCtrl.menuPos.y + (iY * 13), 12,
                                  sf::Color::White, "Orbital Drop");
                 int Butt = createSquareButton(
-                    math::Vec2f(GC.MenuPos.x + BRD,
-                                (GC.MenuPos.y + (iY * 13)) + MBD),
+                    math::Vec2f(gCtrl.menuPos.x + BRD,
+                                (gCtrl.menuPos.y + (iY * 13)) + MBD),
                     BS, BSY, ButCol, "Causes an orbital ship to release "
                                      "specific cargo at target location.");
                 if (squareButtonClicked(Butt) || Key.num2Time == 1)
                 {
 
-                    GC.MenuType = "Orbital Drop";
+                    gCtrl.menuType = "Orbital Drop";
                     //fSleep(0.2);
                     return;
                 }
@@ -401,19 +408,20 @@ void menuPopUp()
 
                 //Effectz.CreateLine(GC.MenuPos.x,(GC.MenuPos.y+(iY*13))+8,GC.MenuPos.x+90,(GC.MenuPos.y+(iY*13))+8,3,Black,1,Yellow);
                 effects.createLine(
-                    GC.MenuPos.x, (GC.MenuPos.y + (iY * 13)) + 13,
-                    GC.MenuPos.x + 90, (GC.MenuPos.y + (iY * 13)) + 13, 1,
+                    gCtrl.menuPos.x, (gCtrl.menuPos.y + (iY * 13)) + 13,
+                    gCtrl.menuPos.x + 90, (gCtrl.menuPos.y + (iY * 13)) + 13, 1,
                     sf::Color::Cyan);
-                cText.CreateText(GC.MenuPos.x + 2, GC.MenuPos.y + (iY * 13), 12,
+                cText.CreateText(gCtrl.menuPos.x + 2,
+                                 gCtrl.menuPos.y + (iY * 13), 12,
                                  sf::Color::White, "Dig");
                 int Butt = createSquareButton(
-                    math::Vec2f(GC.MenuPos.x + BRD,
-                                (GC.MenuPos.y + (iY * 13)) + MBD),
+                    math::Vec2f(gCtrl.menuPos.x + BRD,
+                                (gCtrl.menuPos.y + (iY * 13)) + MBD),
                     BS, BSY, ButCol, "Dig out the current wall tile");
                 if (squareButtonClicked(Butt) || Key.num2Time == 1)
                 {
 
-                    GC.MenuType = "Dig";
+                    gCtrl.menuType = "Dig";
                     //fSleep(0.2);
                     return;
                 }
@@ -423,22 +431,22 @@ void menuPopUp()
         }
     }
 
-    if (GC.MenuType == "CritterRMB")
+    if (gCtrl.menuType == "CritterRMB")
     {
-        GC.MenuPos = sf::Vector2f(-10000, -10000);
-        GC.MenuEndPos = sf::Vector2f(-10000, -10000);
-        GC.MenuType = "NULL";
+        gCtrl.menuPos = sf::Vector2f(-10000, -10000);
+        gCtrl.menuEndPos = sf::Vector2f(-10000, -10000);
+        gCtrl.menuType = "NULL";
     }
 
-    if (GC.MenuType == "ItemContext")
+    if (gCtrl.menuType == "ItemContext")
     {
 
         int Options = 8;
-        GC.MenuEndPos = sf::Vector2f(GC.MenuPos.x + 150,
-                                     (GC.MenuPos.y + (Options * 13)) + 5);
-        effects.createSquare(GC.MenuPos.x, GC.MenuPos.y, GC.MenuEndPos.x,
-                             GC.MenuEndPos.y, sf::Color::Black, 2,
-                             sf::Color::Cyan);
+        gCtrl.menuEndPos = sf::Vector2f(gCtrl.menuPos.x + 150,
+                                        (gCtrl.menuPos.y + (Options * 13)) + 5);
+        effects.createSquare(gCtrl.menuPos.x, gCtrl.menuPos.y,
+                             gCtrl.menuEndPos.x, gCtrl.menuEndPos.y,
+                             sf::Color::Black, 2, sf::Color::Cyan);
         int iY = 0;
         int BRD = 140;                      // ButtonRightDisplacement.
         int BS = 7;                         // ButtonSize;
@@ -452,25 +460,27 @@ void menuPopUp()
             if (i == 0)
             {
                 effects.createLine(
-                    GC.MenuPos.x, (GC.MenuPos.y + (iY * 13)) + 13,
-                    GC.MenuPos.x + 90, (GC.MenuPos.y + (iY * 13)) + 13, 1,
+                    gCtrl.menuPos.x, (gCtrl.menuPos.y + (iY * 13)) + 13,
+                    gCtrl.menuPos.x + 90, (gCtrl.menuPos.y + (iY * 13)) + 13, 1,
                     sf::Color::Cyan);
-                if (GC.MenuPtrCon.pItem->pickupable)
-                    cText.CreateText(GC.MenuPos.x + 2, GC.MenuPos.y + (iY * 13),
-                                     12, sf::Color::White,
-                                     GC.MenuPtrCon.pItem->name + " - PickUp");
+                if (gCtrl.menuPtrCon.pItem->pickupable)
+                    cText.CreateText(
+                        gCtrl.menuPos.x + 2, gCtrl.menuPos.y + (iY * 13), 12,
+                        sf::Color::White,
+                        gCtrl.menuPtrCon.pItem->name + " - PickUp");
                 else
-                    cText.CreateText(GC.MenuPos.x + 2, GC.MenuPos.y + (iY * 13),
-                                     12, sf::Color::White,
-                                     GC.MenuPtrCon.pItem->name +
+                    cText.CreateText(gCtrl.menuPos.x + 2,
+                                     gCtrl.menuPos.y + (iY * 13), 12,
+                                     sf::Color::White,
+                                     gCtrl.menuPtrCon.pItem->name +
                                          " - xPickUpx, Cannot be picked up.");
                 int Butt = createSquareButton(
-                    math::Vec2f(GC.MenuPos.x + BRD,
-                                (GC.MenuPos.y + (iY * 13)) + MBD),
+                    math::Vec2f(gCtrl.menuPos.x + BRD,
+                                (gCtrl.menuPos.y + (iY * 13)) + MBD),
                     BS, BSY, ButCol, "Makes someone pickup this item.");
                 if ((squareButtonClicked(Butt) &&
-                     GC.MenuPtrCon.pItem->pickupable) ||
-                    (Key.num1Time == 1 && GC.MenuPtrCon.pItem->pickupable))
+                     gCtrl.menuPtrCon.pItem->pickupable) ||
+                    (Key.num1Time == 1 && gCtrl.menuPtrCon.pItem->pickupable))
                 {
 
                     for (size_t i = 0; i != UniFact.size(); i++)
@@ -478,7 +488,7 @@ void menuPopUp()
                         if (UniFact[i].PlayerControlled)
                         {
                             Job job;
-                            job.pItem = GC.MenuPtrCon.pItem;
+                            job.pItem = gCtrl.menuPtrCon.pItem;
 
                             job.Name = "PickUpItem";
                             job.Type = "PickUp";
@@ -492,27 +502,28 @@ void menuPopUp()
             if (i == 1)
             {
                 effects.createLine(
-                    GC.MenuPos.x, (GC.MenuPos.y + (iY * 13)) + 13,
-                    GC.MenuPos.x + 90, (GC.MenuPos.y + (iY * 13)) + 13, 1,
+                    gCtrl.menuPos.x, (gCtrl.menuPos.y + (iY * 13)) + 13,
+                    gCtrl.menuPos.x + 90, (gCtrl.menuPos.y + (iY * 13)) + 13, 1,
                     sf::Color::Cyan);
-                if (!GC.MenuPtrCon.pItem->pickupable)
-                    cText.CreateText(GC.MenuPos.x + 2, GC.MenuPos.y + (iY * 13),
-                                     12, sf::Color::White,
-                                     GC.MenuPtrCon.pItem->name + " - ChopDown");
+                if (!gCtrl.menuPtrCon.pItem->pickupable)
+                    cText.CreateText(
+                        gCtrl.menuPos.x + 2, gCtrl.menuPos.y + (iY * 13), 12,
+                        sf::Color::White,
+                        gCtrl.menuPtrCon.pItem->name + " - ChopDown");
                 else
                     cText.CreateText(
-                        GC.MenuPos.x + 2, GC.MenuPos.y + (iY * 13), 12,
+                        gCtrl.menuPos.x + 2, gCtrl.menuPos.y + (iY * 13), 12,
                         sf::Color::White,
-                        GC.MenuPtrCon.pItem->name +
+                        gCtrl.menuPtrCon.pItem->name +
                             " - xChopDownx, Cannot be chopped up.");
                 int Butt = createSquareButton(
-                    math::Vec2f(GC.MenuPos.x + BRD,
-                                (GC.MenuPos.y + (iY * 13)) + MBD),
+                    math::Vec2f(gCtrl.menuPos.x + BRD,
+                                (gCtrl.menuPos.y + (iY * 13)) + MBD),
                     BS, BSY, ButCol,
                     "Makes someone seek and destroy this item.");
                 if ((squareButtonClicked(Butt) &&
-                     !GC.MenuPtrCon.pItem->pickupable) ||
-                    (Key.num1Time == 1 && !GC.MenuPtrCon.pItem->pickupable))
+                     !gCtrl.menuPtrCon.pItem->pickupable) ||
+                    (Key.num1Time == 1 && !gCtrl.menuPtrCon.pItem->pickupable))
                 {
 
                     for (size_t i = 0; i != UniFact.size(); i++)
@@ -520,7 +531,7 @@ void menuPopUp()
                         if (UniFact[i].PlayerControlled)
                         {
                             Job job;
-                            job.pItem = GC.MenuPtrCon.pItem;
+                            job.pItem = gCtrl.menuPtrCon.pItem;
 
                             job.Name = "ChopDownTree";
                             job.Type = "Chop";
@@ -535,14 +546,14 @@ void menuPopUp()
         }
     }
 
-    if (GC.MenuType == "ItemRMB")
+    if (gCtrl.menuType == "ItemRMB")
     {
         int Options = 8;
-        GC.MenuEndPos = sf::Vector2f(GC.MenuPos.x + 150,
-                                     (GC.MenuPos.y + (Options * 13)) + 5);
-        effects.createSquare(GC.MenuPos.x, GC.MenuPos.y, GC.MenuEndPos.x,
-                             GC.MenuEndPos.y, sf::Color::Black, 2,
-                             sf::Color::Cyan);
+        gCtrl.menuEndPos = sf::Vector2f(gCtrl.menuPos.x + 150,
+                                        (gCtrl.menuPos.y + (Options * 13)) + 5);
+        effects.createSquare(gCtrl.menuPos.x, gCtrl.menuPos.y,
+                             gCtrl.menuEndPos.x, gCtrl.menuEndPos.y,
+                             sf::Color::Black, 2, sf::Color::Cyan);
         int iY = 0;
         int BRD = 140;                      // ButtonRightDisplacement.
         int BS = 7;                         // ButtonSize;
@@ -550,46 +561,47 @@ void menuPopUp()
         int MBD = 8;                        // MoveButtonDown
         sf::Color ButCol = sf::Color::Cyan; // ButtonColor.
 
-        for (size_t i = 0; i != GC.MenuPtrCon.pVecItem.size(); i++)
+        for (size_t i = 0; i != gCtrl.menuPtrCon.pVecItem.size(); i++)
         {
 
-            effects.createLine(GC.MenuPos.x, (GC.MenuPos.y + (iY * 13)) + 13,
-                               GC.MenuPos.x + 90,
-                               (GC.MenuPos.y + (iY * 13)) + 13, 1,
-                               sf::Color::Cyan);
-            cText.CreateText(GC.MenuPos.x + 2, GC.MenuPos.y + (iY * 13), 12,
-                             sf::Color::White, GC.MenuPtrCon.pVecItem[i]->name);
+            effects.createLine(
+                gCtrl.menuPos.x, (gCtrl.menuPos.y + (iY * 13)) + 13,
+                gCtrl.menuPos.x + 90, (gCtrl.menuPos.y + (iY * 13)) + 13, 1,
+                sf::Color::Cyan);
+            cText.CreateText(gCtrl.menuPos.x + 2, gCtrl.menuPos.y + (iY * 13),
+                             12, sf::Color::White,
+                             gCtrl.menuPtrCon.pVecItem[i]->name);
             int Butt = createSquareButton(
-                math::Vec2f(GC.MenuPos.x + BRD,
-                            (GC.MenuPos.y + (iY * 13)) + MBD),
+                math::Vec2f(gCtrl.menuPos.x + BRD,
+                            (gCtrl.menuPos.y + (iY * 13)) + MBD),
                 BS, BSY, ButCol, "Strikes the location!");
             if (squareButtonClicked(Butt))
             {
 
-                GC.MenuType = "ItemContext";
-                GC.MenuPtrCon.pItem = GC.MenuPtrCon.pVecItem[i];
-                GC.MenuPtrCon.pVecItem.clear();
+                gCtrl.menuType = "ItemContext";
+                gCtrl.menuPtrCon.pItem = gCtrl.menuPtrCon.pVecItem[i];
+                gCtrl.menuPtrCon.pVecItem.clear();
                 return;
             }
 
             if (/*i == -1*/ false) // `i` can't be -1
             {
                 effects.createLine(
-                    GC.MenuPos.x, (GC.MenuPos.y + (iY * 13)) + 13,
-                    GC.MenuPos.x + 90, (GC.MenuPos.y + (iY * 13)) + 13, 1,
+                    gCtrl.menuPos.x, (gCtrl.menuPos.y + (iY * 13)) + 13,
+                    gCtrl.menuPos.x + 90, (gCtrl.menuPos.y + (iY * 13)) + 13, 1,
                     sf::Color::Cyan);
-                cText.CreateText(GC.MenuPos.x + 2, GC.MenuPos.y + (iY * 13), 12,
-                                 sf::Color::White,
-                                 GC.MenuPtrCon.pVecItem[0]->name);
+                cText.CreateText(
+                    gCtrl.menuPos.x + 2, gCtrl.menuPos.y + (iY * 13), 12,
+                    sf::Color::White, gCtrl.menuPtrCon.pVecItem[0]->name);
                 int Butt = createSquareButton(
-                    math::Vec2f(GC.MenuPos.x + BRD,
-                                (GC.MenuPos.y + (iY * 13)) + MBD),
+                    math::Vec2f(gCtrl.menuPos.x + BRD,
+                                (gCtrl.menuPos.y + (iY * 13)) + MBD),
                     BS, BSY, ButCol, "Strikes the location!");
                 if (squareButtonClicked(Butt) || Key.num1Time == 1)
                 {
 
-                    GC.MenuPos = sf::Vector2f(-10000, -10000);
-                    GC.MenuType = "NULL";
+                    gCtrl.menuPos = sf::Vector2f(-10000, -10000);
+                    gCtrl.menuType = "NULL";
 
                     fSleep(0.2);
                     break;
@@ -600,14 +612,14 @@ void menuPopUp()
         }
     }
 
-    if (GC.MenuType == "WorldRMB")
+    if (gCtrl.menuType == "WorldRMB")
     {
         int Options = 1;
-        GC.MenuEndPos = sf::Vector2f(GC.MenuPos.x + 150,
-                                     (GC.MenuPos.y + (Options * 13)) + 5);
-        effects.createSquare(GC.MenuPos.x, GC.MenuPos.y, GC.MenuEndPos.x,
-                             GC.MenuEndPos.y, sf::Color::Black, 2,
-                             sf::Color::Cyan);
+        gCtrl.menuEndPos = sf::Vector2f(gCtrl.menuPos.x + 150,
+                                        (gCtrl.menuPos.y + (Options * 13)) + 5);
+        effects.createSquare(gCtrl.menuPos.x, gCtrl.menuPos.y,
+                             gCtrl.menuEndPos.x, gCtrl.menuEndPos.y,
+                             sf::Color::Black, 2, sf::Color::Cyan);
         int iY = 0;
         int BRD = 140;                      // ButtonRightDisplacement.
         int BS = 7;                         // ButtonSize;
@@ -621,34 +633,33 @@ void menuPopUp()
             if (i == 0)
             {
 
-                if (WorldMap[abs_to_index(GC.MenuPos.x /
-                                          20)][abs_to_index(GC.MenuPos.y / 20)]
-                        .ID == 0)
+                if (WorldMap[abs_to_index(gCtrl.menuPos.x / 20)]
+                            [abs_to_index(gCtrl.menuPos.y / 20)].ID == 0)
                     effects.createLine(
-                        GC.MenuPos.x, (GC.MenuPos.y + (iY * 13)) + 13,
-                        GC.MenuPos.x + 90, (GC.MenuPos.y + (iY * 13)) + 13, 1,
-                        sf::Color::Cyan);
-                cText.CreateText(GC.MenuPos.x, GC.MenuPos.y + (iY * 13), 12,
-                                 sf::Color::White, "Enter city");
+                        gCtrl.menuPos.x, (gCtrl.menuPos.y + (iY * 13)) + 13,
+                        gCtrl.menuPos.x + 90,
+                        (gCtrl.menuPos.y + (iY * 13)) + 13, 1, sf::Color::Cyan);
+                cText.CreateText(gCtrl.menuPos.x, gCtrl.menuPos.y + (iY * 13),
+                                 12, sf::Color::White, "Enter city");
                 int Butt = createSquareButton(
-                    math::Vec2f(GC.MenuPos.x + BRD,
-                                (GC.MenuPos.y + (iY * 13)) + MBD),
+                    math::Vec2f(gCtrl.menuPos.x + BRD,
+                                (gCtrl.menuPos.y + (iY * 13)) + MBD),
                     BS, BSY, ButCol, "Welcome to the jungle baby.");
                 if (squareButtonClicked(Butt) || Key.num1Time == 1)
                 {
                     GenerateChunk("Building", 500,
-                                  sf::Vector2i(abs(GC.MenuPos.x / 20),
-                                               abs(GC.MenuPos.y / 20)));
-                    gvars::currentregionx = abs(GC.MenuPos.x / 20);
-                    gvars::currentregiony = abs(GC.MenuPos.y / 20);
-                    GC.Phase = "Local";
+                                  sf::Vector2i(abs(gCtrl.menuPos.x / 20),
+                                               abs(gCtrl.menuPos.y / 20)));
+                    gvars::currentregionx = abs(gCtrl.menuPos.x / 20);
+                    gvars::currentregiony = abs(gCtrl.menuPos.y / 20);
+                    gCtrl.phase = "Local";
 
                     //GC.BuildLocal("City", WorldMap[abs_to_index(GC.MenuPos.x/20)][abs_to_index(GC.MenuPos.y/20)].Infected);
-                    BuildLocalfromWorld(sf::Vector2i(abs(GC.MenuPos.x / 20),
-                                                     abs(GC.MenuPos.y / 20)));
+                    BuildLocalfromWorld(sf::Vector2i(
+                        abs(gCtrl.menuPos.x / 20), abs(gCtrl.menuPos.y / 20)));
                     BuildStartingCritters(WorldMap[abs_to_index(
-                        GC.MenuPos.x / 20)][abs_to_index(GC.MenuPos.y / 20)]
-                                              .Infected);
+                        gCtrl.menuPos.x / 20)][abs_to_index(gCtrl.menuPos.y /
+                                                            20)].Infected);
                     spawnItem("Sword", 990, 1020);
 
                     spawnItem("Gun", 1010, 1020);
@@ -675,8 +686,8 @@ void menuPopUp()
 
                     SpawnCritter("Mini Turret", 1000, 1070);
 
-                    GC.MenuPos = sf::Vector2f(-10000, -10000);
-                    GC.MenuType = "NULL";
+                    gCtrl.menuPos = sf::Vector2f(-10000, -10000);
+                    gCtrl.menuType = "NULL";
 
                     fSleep(0.2);
                     break;
@@ -686,15 +697,15 @@ void menuPopUp()
         }
     }
 
-    if (GC.MenuType == "DebugFunctions")
+    if (gCtrl.menuType == "DebugFunctions")
     {
 
         int Options = 10;
-        GC.MenuEndPos = sf::Vector2f(GC.MenuPos.x + 150,
-                                     (GC.MenuPos.y + (Options * 13)) + 5);
-        effects.createSquare(GC.MenuPos.x, GC.MenuPos.y, GC.MenuEndPos.x,
-                             GC.MenuEndPos.y, sf::Color::Black, 2,
-                             sf::Color::Cyan);
+        gCtrl.menuEndPos = sf::Vector2f(gCtrl.menuPos.x + 150,
+                                        (gCtrl.menuPos.y + (Options * 13)) + 5);
+        effects.createSquare(gCtrl.menuPos.x, gCtrl.menuPos.y,
+                             gCtrl.menuEndPos.x, gCtrl.menuEndPos.y,
+                             sf::Color::Black, 2, sf::Color::Cyan);
         int iY = 0;
         int BRD = 140;                      // ButtonRightDisplacement.
         int BS = 7;                         // ButtonSize;
@@ -708,19 +719,20 @@ void menuPopUp()
             if (i == 0)
             {
                 effects.createLine(
-                    GC.MenuPos.x, (GC.MenuPos.y + (iY * 13)) + 13,
-                    GC.MenuPos.x + 90, (GC.MenuPos.y + (iY * 13)) + 13, 1,
+                    gCtrl.menuPos.x, (gCtrl.menuPos.y + (iY * 13)) + 13,
+                    gCtrl.menuPos.x + 90, (gCtrl.menuPos.y + (iY * 13)) + 13, 1,
                     sf::Color::Cyan);
-                cText.CreateText(GC.MenuPos.x + 2, GC.MenuPos.y + (iY * 13), 12,
+                cText.CreateText(gCtrl.menuPos.x + 2,
+                                 gCtrl.menuPos.y + (iY * 13), 12,
                                  sf::Color::White, "Close Menu");
                 int Butt = createSquareButton(
-                    math::Vec2f(GC.MenuPos.x + BRD,
-                                (GC.MenuPos.y + (iY * 13)) + MBD),
+                    math::Vec2f(gCtrl.menuPos.x + BRD,
+                                (gCtrl.menuPos.y + (iY * 13)) + MBD),
                     BS, BSY, ButCol, "Close Menu");
                 if (squareButtonClicked(Butt) || Key.num1Time == 1)
                 {
-                    GC.MenuPos = sf::Vector2f(-10000, -10000);
-                    GC.MenuType = "NULL";
+                    gCtrl.menuPos = sf::Vector2f(-10000, -10000);
+                    gCtrl.menuType = "NULL";
 
                     fSleep(0.2);
                     break;
@@ -729,34 +741,37 @@ void menuPopUp()
             if (i == 1)
             {
                 effects.createLine(
-                    GC.MenuPos.x, (GC.MenuPos.y + (iY * 13)) + 13,
-                    GC.MenuPos.x + 90, (GC.MenuPos.y + (iY * 13)) + 13, 1,
+                    gCtrl.menuPos.x, (gCtrl.menuPos.y + (iY * 13)) + 13,
+                    gCtrl.menuPos.x + 90, (gCtrl.menuPos.y + (iY * 13)) + 13, 1,
                     sf::Color::Cyan);
-                cText.CreateText(GC.MenuPos.x + 2, GC.MenuPos.y + (iY * 13), 12,
+                cText.CreateText(gCtrl.menuPos.x + 2,
+                                 gCtrl.menuPos.y + (iY * 13), 12,
                                  sf::Color::White, "Missile Strike");
                 int Butt = createSquareButton(
-                    math::Vec2f(GC.MenuPos.x + BRD,
-                                (GC.MenuPos.y + (iY * 13)) + MBD),
+                    math::Vec2f(gCtrl.menuPos.x + BRD,
+                                (gCtrl.menuPos.y + (iY * 13)) + MBD),
                     BS, BSY, ButCol, "Missile Strike");
                 if (squareButtonClicked(Butt) || Key.num2Time == 1)
                 {
 
-                    effects.createSquare(GC.MenuPos.x - 10, GC.MenuPos.y - 2,
-                                         GC.MenuPos.x + 10, GC.MenuPos.y + 2,
-                                         sf::Color::Black);
-                    effects.createSquare(GC.MenuPos.x - 2, GC.MenuPos.y - 10,
-                                         GC.MenuPos.x + 2, GC.MenuPos.y + 10,
-                                         sf::Color::Black);
+                    effects.createSquare(gCtrl.menuPos.x - 10,
+                                         gCtrl.menuPos.y - 2,
+                                         gCtrl.menuPos.x + 10,
+                                         gCtrl.menuPos.y + 2, sf::Color::Black);
+                    effects.createSquare(
+                        gCtrl.menuPos.x - 2, gCtrl.menuPos.y - 10,
+                        gCtrl.menuPos.x + 2, gCtrl.menuPos.y + 10,
+                        sf::Color::Black);
                     Item Var;
                     Var = *getGlobalItem("Missile");
-                    Var.targetPos = sf::Vector2f(GC.MenuPos);
-                    Var.xpos = GC.MenuPos.x - 200;
-                    Var.ypos = GC.MenuPos.y - 200;
+                    Var.targetPos = sf::Vector2f(gCtrl.menuPos);
+                    Var.xpos = gCtrl.menuPos.x - 200;
+                    Var.ypos = gCtrl.menuPos.y - 200;
                     Var.zpos = 100;
                     worlditems.push_back(Var);
 
-                    GC.MenuPos = sf::Vector2f(-10000, -10000);
-                    GC.MenuType = "NULL";
+                    gCtrl.menuPos = sf::Vector2f(-10000, -10000);
+                    gCtrl.menuType = "NULL";
 
                     fSleep(0.2);
                     break;
@@ -768,38 +783,40 @@ void menuPopUp()
 
                 //Effectz.CreateLine(GC.MenuPos.x,(GC.MenuPos.y+(iY*13))+8,GC.MenuPos.x+90,(GC.MenuPos.y+(iY*13))+8,3,Black,1,Yellow);
                 effects.createLine(
-                    GC.MenuPos.x, (GC.MenuPos.y + (iY * 13)) + 13,
-                    GC.MenuPos.x + 90, (GC.MenuPos.y + (iY * 13)) + 13, 1,
+                    gCtrl.menuPos.x, (gCtrl.menuPos.y + (iY * 13)) + 13,
+                    gCtrl.menuPos.x + 90, (gCtrl.menuPos.y + (iY * 13)) + 13, 1,
                     sf::Color::Cyan);
-                cText.CreateText(GC.MenuPos.x + 2, GC.MenuPos.y + (iY * 13), 12,
+                cText.CreateText(gCtrl.menuPos.x + 2,
+                                 gCtrl.menuPos.y + (iY * 13), 12,
                                  sf::Color::White, "Shift Wall/Stone");
                 int Butt = createSquareButton(
-                    math::Vec2f(GC.MenuPos.x + BRD,
-                                (GC.MenuPos.y + (iY * 13)) + MBD),
+                    math::Vec2f(gCtrl.menuPos.x + BRD,
+                                (gCtrl.menuPos.y + (iY * 13)) + MBD),
                     BS, BSY, ButCol);
                 if (squareButtonClicked(Butt) || Key.num3Time == 1)
                 {
 
-                    if (Tiles[abs_to_index(GC.MenuPos.x / GridSize)]
-                             [abs_to_index(GC.MenuPos.y / GridSize)][30].ID !=
-                        1010)
+                    if (Tiles[abs_to_index(gCtrl.menuPos.x / GridSize)]
+                             [abs_to_index(gCtrl.menuPos.y / GridSize)][30]
+                                 .ID != 1010)
                     {
-                        Tiles[abs_to_index(GC.MenuPos.x / GridSize)]
-                             [abs_to_index(GC.MenuPos.y / GridSize)][30].Wall();
+                        Tiles[abs_to_index(gCtrl.menuPos.x / GridSize)]
+                             [abs_to_index(gCtrl.menuPos.y / GridSize)][30]
+                                 .Wall();
                         fSleep(0.2);
                     }
                     else
                     {
-                        Tiles[abs_to_index(GC.MenuPos.x / GridSize)]
-                             [abs_to_index(GC.MenuPos.y / GridSize)][30]
+                        Tiles[abs_to_index(gCtrl.menuPos.x / GridSize)]
+                             [abs_to_index(gCtrl.menuPos.y / GridSize)][30]
                                  .Stone();
                         fSleep(0.2);
                     }
 
                     Con("TODO: Make this a Toggle Mode");
 
-                    GC.MenuPos = sf::Vector2f(-10000, -10000);
-                    GC.MenuType = "NULL";
+                    gCtrl.menuPos = sf::Vector2f(-10000, -10000);
+                    gCtrl.menuType = "NULL";
 
                     fSleep(0.2);
                     break;
@@ -811,22 +828,23 @@ void menuPopUp()
 
                 //Effectz.CreateLine(GC.MenuPos.x,(GC.MenuPos.y+(iY*13))+8,GC.MenuPos.x+90,(GC.MenuPos.y+(iY*13))+8,3,Black,1,Yellow);
                 effects.createLine(
-                    GC.MenuPos.x, (GC.MenuPos.y + (iY * 13)) + 13,
-                    GC.MenuPos.x + 90, (GC.MenuPos.y + (iY * 13)) + 13, 1,
+                    gCtrl.menuPos.x, (gCtrl.menuPos.y + (iY * 13)) + 13,
+                    gCtrl.menuPos.x + 90, (gCtrl.menuPos.y + (iY * 13)) + 13, 1,
                     sf::Color::Cyan);
-                cText.CreateText(GC.MenuPos.x + 2, GC.MenuPos.y + (iY * 13), 12,
+                cText.CreateText(gCtrl.menuPos.x + 2,
+                                 gCtrl.menuPos.y + (iY * 13), 12,
                                  sf::Color::White, "Spawn Zombie Horde");
                 int Butt = createSquareButton(
-                    math::Vec2f(GC.MenuPos.x + BRD,
-                                (GC.MenuPos.y + (iY * 13)) + MBD),
+                    math::Vec2f(gCtrl.menuPos.x + BRD,
+                                (gCtrl.menuPos.y + (iY * 13)) + MBD),
                     BS, BSY, ButCol);
                 if (squareButtonClicked(Butt) || Key.num4Time == 1)
                 {
 
-                    GC.ZombieSwarmLocal();
+                    gCtrl.zombieSwarmLocal();
 
-                    GC.MenuPos = sf::Vector2f(-10000, -10000);
-                    GC.MenuType = "NULL";
+                    gCtrl.menuPos = sf::Vector2f(-10000, -10000);
+                    gCtrl.menuType = "NULL";
 
                     fSleep(0.2);
                     break;
@@ -836,14 +854,15 @@ void menuPopUp()
             if (i == 4)
             {
                 effects.createLine(
-                    GC.MenuPos.x, (GC.MenuPos.y + (iY * 13)) + 13,
-                    GC.MenuPos.x + 90, (GC.MenuPos.y + (iY * 13)) + 13, 1,
+                    gCtrl.menuPos.x, (gCtrl.menuPos.y + (iY * 13)) + 13,
+                    gCtrl.menuPos.x + 90, (gCtrl.menuPos.y + (iY * 13)) + 13, 1,
                     sf::Color::Cyan);
-                cText.CreateText(GC.MenuPos.x, GC.MenuPos.y + (iY * 13), 12,
-                                 sf::Color::White, "Print NPC's ConsoleInfo");
+                cText.CreateText(gCtrl.menuPos.x, gCtrl.menuPos.y + (iY * 13),
+                                 12, sf::Color::White,
+                                 "Print NPC's ConsoleInfo");
                 int Butt = createSquareButton(
-                    math::Vec2f(GC.MenuPos.x + BRD,
-                                (GC.MenuPos.y + (iY * 13)) + MBD),
+                    math::Vec2f(gCtrl.menuPos.x + BRD,
+                                (gCtrl.menuPos.y + (iY * 13)) + MBD),
                     BS, BSY, ButCol);
                 if (squareButtonClicked(Butt) || Key.num5Time == 1)
                 {
@@ -857,8 +876,8 @@ void menuPopUp()
                         }
                     }
 
-                    GC.MenuPos = sf::Vector2f(-10000, -10000);
-                    GC.MenuType = "NULL";
+                    gCtrl.menuPos = sf::Vector2f(-10000, -10000);
+                    gCtrl.menuType = "NULL";
 
                     fSleep(0.2);
                     break;
@@ -868,14 +887,15 @@ void menuPopUp()
             if (i == 5)
             {
                 effects.createLine(
-                    GC.MenuPos.x, (GC.MenuPos.y + (iY * 13)) + 13,
-                    GC.MenuPos.x + 90, (GC.MenuPos.y + (iY * 13)) + 13, 1,
+                    gCtrl.menuPos.x, (gCtrl.menuPos.y + (iY * 13)) + 13,
+                    gCtrl.menuPos.x + 90, (gCtrl.menuPos.y + (iY * 13)) + 13, 1,
                     sf::Color::Cyan);
-                cText.CreateText(GC.MenuPos.x, GC.MenuPos.y + (iY * 13), 12,
-                                 sf::Color::White, "Print NPC's Bloodcontents");
+                cText.CreateText(gCtrl.menuPos.x, gCtrl.menuPos.y + (iY * 13),
+                                 12, sf::Color::White,
+                                 "Print NPC's Bloodcontents");
                 int Butt = createSquareButton(
-                    math::Vec2f(GC.MenuPos.x + BRD,
-                                (GC.MenuPos.y + (iY * 13)) + MBD),
+                    math::Vec2f(gCtrl.menuPos.x + BRD,
+                                (gCtrl.menuPos.y + (iY * 13)) + MBD),
                     BS, BSY, ButCol);
                 if (squareButtonClicked(Butt) || Key.num5Time == 1)
                 {
@@ -885,8 +905,8 @@ void menuPopUp()
                         elem.PrintBloodContent();
                     }
 
-                    GC.MenuPos = sf::Vector2f(-10000, -10000);
-                    GC.MenuType = "NULL";
+                    gCtrl.menuPos = sf::Vector2f(-10000, -10000);
+                    gCtrl.menuType = "NULL";
 
                     fSleep(0.2);
                     break;
@@ -896,15 +916,15 @@ void menuPopUp()
             if (i == 6)
             {
                 effects.createLine(
-                    GC.MenuPos.x, (GC.MenuPos.y + (iY * 13)) + 13,
-                    GC.MenuPos.x + 90, (GC.MenuPos.y + (iY * 13)) + 13, 1,
+                    gCtrl.menuPos.x, (gCtrl.menuPos.y + (iY * 13)) + 13,
+                    gCtrl.menuPos.x + 90, (gCtrl.menuPos.y + (iY * 13)) + 13, 1,
                     sf::Color::Cyan);
-                cText.CreateText(GC.MenuPos.x, GC.MenuPos.y + (iY * 13), 12,
-                                 sf::Color::White,
+                cText.CreateText(gCtrl.menuPos.x, gCtrl.menuPos.y + (iY * 13),
+                                 12, sf::Color::White,
                                  "Give Everyone Zombification");
                 int Butt = createSquareButton(
-                    math::Vec2f(GC.MenuPos.x + BRD,
-                                (GC.MenuPos.y + (iY * 13)) + MBD),
+                    math::Vec2f(gCtrl.menuPos.x + BRD,
+                                (gCtrl.menuPos.y + (iY * 13)) + MBD),
                     BS, BSY, ButCol,
                     "You horrible monster, Why would you do this?!");
                 if (squareButtonClicked(Butt) || Key.num6Time == 1)
@@ -915,8 +935,8 @@ void menuPopUp()
                         elem.bloodwork("Zombification", 100);
                     }
 
-                    GC.MenuPos = sf::Vector2f(-10000, -10000);
-                    GC.MenuType = "NULL";
+                    gCtrl.menuPos = sf::Vector2f(-10000, -10000);
+                    gCtrl.menuType = "NULL";
 
                     fSleep(0.2);
                     break;
@@ -928,14 +948,14 @@ void menuPopUp()
 
                 //Effectz.CreateLine(GC.MenuPos.x,(GC.MenuPos.y+(iY*13))+8,GC.MenuPos.x+90,(GC.MenuPos.y+(iY*13))+8,3,Black,1,Yellow);
                 effects.createLine(
-                    GC.MenuPos.x, (GC.MenuPos.y + (iY * 13)) + 13,
-                    GC.MenuPos.x + 90, (GC.MenuPos.y + (iY * 13)) + 13, 1,
+                    gCtrl.menuPos.x, (gCtrl.menuPos.y + (iY * 13)) + 13,
+                    gCtrl.menuPos.x + 90, (gCtrl.menuPos.y + (iY * 13)) + 13, 1,
                     sf::Color::Cyan);
-                cText.CreateText(GC.MenuPos.x, GC.MenuPos.y + (iY * 13), 12,
-                                 sf::Color::White, "Delete all critters");
+                cText.CreateText(gCtrl.menuPos.x, gCtrl.menuPos.y + (iY * 13),
+                                 12, sf::Color::White, "Delete all critters");
                 int Butt = createSquareButton(
-                    math::Vec2f(GC.MenuPos.x + BRD,
-                                (GC.MenuPos.y + (iY * 13)) + MBD),
+                    math::Vec2f(gCtrl.menuPos.x + BRD,
+                                (gCtrl.menuPos.y + (iY * 13)) + MBD),
                     BS, BSY, ButCol);
                 if (squareButtonClicked(Butt) || Key.num7Time == 1)
                 {
@@ -951,14 +971,14 @@ void menuPopUp()
 
                 //Effectz.CreateLine(GC.MenuPos.x,(GC.MenuPos.y+(iY*13))+8,GC.MenuPos.x+90,(GC.MenuPos.y+(iY*13))+8,3,Black,1,Yellow);
                 effects.createLine(
-                    GC.MenuPos.x, (GC.MenuPos.y + (iY * 13)) + 13,
-                    GC.MenuPos.x + 90, (GC.MenuPos.y + (iY * 13)) + 13, 1,
+                    gCtrl.menuPos.x, (gCtrl.menuPos.y + (iY * 13)) + 13,
+                    gCtrl.menuPos.x + 90, (gCtrl.menuPos.y + (iY * 13)) + 13, 1,
                     sf::Color::Cyan);
-                cText.CreateText(GC.MenuPos.x, GC.MenuPos.y + (iY * 13), 12,
-                                 sf::Color::White, "Starve all critters");
+                cText.CreateText(gCtrl.menuPos.x, gCtrl.menuPos.y + (iY * 13),
+                                 12, sf::Color::White, "Starve all critters");
                 int Butt = createSquareButton(
-                    math::Vec2f(GC.MenuPos.x + BRD,
-                                (GC.MenuPos.y + (iY * 13)) + MBD),
+                    math::Vec2f(gCtrl.menuPos.x + BRD,
+                                (gCtrl.menuPos.y + (iY * 13)) + MBD),
                     BS, BSY, ButCol);
                 if (squareButtonClicked(Butt) || Key.num8Time == 1)
                 {
@@ -973,14 +993,14 @@ void menuPopUp()
 
                 //Effectz.CreateLine(GC.MenuPos.x,(GC.MenuPos.y+(iY*13))+8,GC.MenuPos.x+90,(GC.MenuPos.y+(iY*13))+8,3,Black,1,Yellow);
                 effects.createLine(
-                    GC.MenuPos.x, (GC.MenuPos.y + (iY * 13)) + 13,
-                    GC.MenuPos.x + 90, (GC.MenuPos.y + (iY * 13)) + 13, 1,
+                    gCtrl.menuPos.x, (gCtrl.menuPos.y + (iY * 13)) + 13,
+                    gCtrl.menuPos.x + 90, (gCtrl.menuPos.y + (iY * 13)) + 13, 1,
                     sf::Color::Cyan);
-                cText.CreateText(GC.MenuPos.x, GC.MenuPos.y + (iY * 13), 12,
-                                 sf::Color::White, "Giant Enclosed Arena");
+                cText.CreateText(gCtrl.menuPos.x, gCtrl.menuPos.y + (iY * 13),
+                                 12, sf::Color::White, "Giant Enclosed Arena");
                 int Butt = createSquareButton(
-                    math::Vec2f(GC.MenuPos.x + BRD,
-                                (GC.MenuPos.y + (iY * 13)) + MBD),
+                    math::Vec2f(gCtrl.menuPos.x + BRD,
+                                (gCtrl.menuPos.y + (iY * 13)) + MBD),
                     BS, BSY, ButCol);
                 if (squareButtonClicked(Butt) || Key.num8Time == 1)
                 {
@@ -990,9 +1010,9 @@ void menuPopUp()
                         {
                             for (int Rot = 1; Rot != 361; Rot++)
                             {
-                                int XPos = abs(GC.MenuPos.x / 20) +
+                                int XPos = abs(gCtrl.menuPos.x / 20) +
                                            sin(Rot * PI / 180) * ItLength;
-                                int YPos = abs(GC.MenuPos.y / 20) +
+                                int YPos = abs(gCtrl.menuPos.y / 20) +
                                            cos(Rot * PI / 180) * ItLength;
                                 Tiles[XPos][YPos][30].Stone();
                             }
@@ -1001,9 +1021,9 @@ void menuPopUp()
                         {
                             for (int Rot = 1; Rot != 361; Rot++)
                             {
-                                int XPos = abs(GC.MenuPos.x / 20) +
+                                int XPos = abs(gCtrl.menuPos.x / 20) +
                                            sin(Rot * PI / 180) * ItLength;
-                                int YPos = abs(GC.MenuPos.y / 20) +
+                                int YPos = abs(gCtrl.menuPos.y / 20) +
                                            cos(Rot * PI / 180) * ItLength;
                                 Tiles[XPos][YPos][30].Wall();
                             }
@@ -1016,56 +1036,60 @@ void menuPopUp()
         }
     }
 
-    if (GC.MenuType == "DebugItemSpawn")
+    if (gCtrl.menuType == "DebugItemSpawn")
     {
-        GC.MenuEndPos = sf::Vector2f(
-            GC.MenuPos.x + 100,
-            (GC.MenuPos.y + (itemmanager.globalItems.size() * 10)) + 5);
-        effects.createSquare(GC.MenuPos.x, GC.MenuPos.y, GC.MenuEndPos.x,
-                             GC.MenuEndPos.y, sf::Color::White);
+        gCtrl.menuEndPos = sf::Vector2f(
+            gCtrl.menuPos.x + 100,
+            (gCtrl.menuPos.y + (itemmanager.globalItems.size() * 10)) + 5);
+        effects.createSquare(gCtrl.menuPos.x, gCtrl.menuPos.y,
+                             gCtrl.menuEndPos.x, gCtrl.menuEndPos.y,
+                             sf::Color::White);
         int iY = 0;
         for (auto &elem : itemmanager.globalItems)
         {
-            effects.createLine(GC.MenuPos.x, (GC.MenuPos.y + (iY * 11)) + 8,
-                               GC.MenuPos.x + 90,
-                               (GC.MenuPos.y + (iY * 11)) + 8, 3,
-                               sf::Color::Black, 1, sf::Color::Yellow);
-            cText.CreateText(GC.MenuPos.x, GC.MenuPos.y + (iY * 11), 11,
+            effects.createLine(
+                gCtrl.menuPos.x, (gCtrl.menuPos.y + (iY * 11)) + 8,
+                gCtrl.menuPos.x + 90, (gCtrl.menuPos.y + (iY * 11)) + 8, 3,
+                sf::Color::Black, 1, sf::Color::Yellow);
+            cText.CreateText(gCtrl.menuPos.x, gCtrl.menuPos.y + (iY * 11), 11,
                              sf::Color::Cyan, elem.name);
-            int Butt = createButton(
-                math::Vec2f(GC.MenuPos.x + 90, (GC.MenuPos.y + (iY * 11)) + 5),
-                5, sf::Color::Red);
+            int Butt =
+                createButton(math::Vec2f(gCtrl.menuPos.x + 90,
+                                         (gCtrl.menuPos.y + (iY * 11)) + 5),
+                             5, sf::Color::Red);
             if (buttonClicked(Butt))
             {
-                spawnItem(elem.name, GC.MenuPos.x, GC.MenuPos.y);
+                spawnItem(elem.name, gCtrl.menuPos.x, gCtrl.menuPos.y);
                 fSleep(0.2);
             }
             iY++;
         }
     }
 
-    if (GC.MenuType == "DebugCritterSpawn")
+    if (gCtrl.menuType == "DebugCritterSpawn")
     {
-        GC.MenuEndPos = sf::Vector2f(
-            GC.MenuPos.x + 100,
-            (GC.MenuPos.y + (npcmanager.GlobalCritter.size() * 10)) + 5);
-        effects.createSquare(GC.MenuPos.x, GC.MenuPos.y, GC.MenuEndPos.x,
-                             GC.MenuEndPos.y, sf::Color::White);
+        gCtrl.menuEndPos = sf::Vector2f(
+            gCtrl.menuPos.x + 100,
+            (gCtrl.menuPos.y + (npcmanager.GlobalCritter.size() * 10)) + 5);
+        effects.createSquare(gCtrl.menuPos.x, gCtrl.menuPos.y,
+                             gCtrl.menuEndPos.x, gCtrl.menuEndPos.y,
+                             sf::Color::White);
         int iY = 0;
         for (auto &elem : npcmanager.GlobalCritter)
         {
-            effects.createLine(GC.MenuPos.x, (GC.MenuPos.y + (iY * 11)) + 8,
-                               GC.MenuPos.x + 90,
-                               (GC.MenuPos.y + (iY * 11)) + 8, 3,
-                               sf::Color::Black, 1, sf::Color::Yellow);
-            cText.CreateText(GC.MenuPos.x, GC.MenuPos.y + (iY * 11), 11,
+            effects.createLine(
+                gCtrl.menuPos.x, (gCtrl.menuPos.y + (iY * 11)) + 8,
+                gCtrl.menuPos.x + 90, (gCtrl.menuPos.y + (iY * 11)) + 8, 3,
+                sf::Color::Black, 1, sf::Color::Yellow);
+            cText.CreateText(gCtrl.menuPos.x, gCtrl.menuPos.y + (iY * 11), 11,
                              sf::Color::Cyan, elem.name);
-            int Butt = createButton(
-                math::Vec2f(GC.MenuPos.x + 90, (GC.MenuPos.y + (iY * 11)) + 5),
-                5, sf::Color::Red);
+            int Butt =
+                createButton(math::Vec2f(gCtrl.menuPos.x + 90,
+                                         (gCtrl.menuPos.y + (iY * 11)) + 5),
+                             5, sf::Color::Red);
             if (buttonClicked(Butt))
             {
-                SpawnCritter(elem.name, GC.MenuPos.x, GC.MenuPos.y);
+                SpawnCritter(elem.name, gCtrl.menuPos.x, gCtrl.menuPos.y);
                 fSleep(0.2);
                 break;
             }
@@ -1073,13 +1097,14 @@ void menuPopUp()
         }
     }
 
-    if (GC.MenuType == "CritterContext" && true == false)
+    if (gCtrl.menuType == "CritterContext" && true == false)
     {
         int Options = 2;
-        GC.MenuEndPos = sf::Vector2f(GC.MenuPos.x + 100,
-                                     (GC.MenuPos.y + (Options * 10)) + 5);
-        effects.createSquare(GC.MenuPos.x, GC.MenuPos.y, GC.MenuEndPos.x,
-                             GC.MenuEndPos.y, sf::Color::White);
+        gCtrl.menuEndPos = sf::Vector2f(gCtrl.menuPos.x + 100,
+                                        (gCtrl.menuPos.y + (Options * 10)) + 5);
+        effects.createSquare(gCtrl.menuPos.x, gCtrl.menuPos.y,
+                             gCtrl.menuEndPos.x, gCtrl.menuEndPos.y,
+                             sf::Color::White);
         int iY = 0;
         for (int i = 0; i != Options; i++)
         {
@@ -1087,15 +1112,15 @@ void menuPopUp()
             if (i == 0)
             {
 
-                effects.createLine(GC.MenuPos.x, (GC.MenuPos.y + (iY * 11)) + 8,
-                                   GC.MenuPos.x + 90,
-                                   (GC.MenuPos.y + (iY * 11)) + 8, 3,
-                                   sf::Color::Black, 1, sf::Color::Yellow);
-                cText.CreateText(GC.MenuPos.x, GC.MenuPos.y + (iY * 11), 11,
-                                 sf::Color::Cyan, "Close Menu");
+                effects.createLine(
+                    gCtrl.menuPos.x, (gCtrl.menuPos.y + (iY * 11)) + 8,
+                    gCtrl.menuPos.x + 90, (gCtrl.menuPos.y + (iY * 11)) + 8, 3,
+                    sf::Color::Black, 1, sf::Color::Yellow);
+                cText.CreateText(gCtrl.menuPos.x, gCtrl.menuPos.y + (iY * 11),
+                                 11, sf::Color::Cyan, "Close Menu");
                 int Butt =
-                    createButton(math::Vec2f(GC.MenuPos.x + 90,
-                                             (GC.MenuPos.y + (iY * 11)) + 5),
+                    createButton(math::Vec2f(gCtrl.menuPos.x + 90,
+                                             (gCtrl.menuPos.y + (iY * 11)) + 5),
                                  5, sf::Color::Red);
                 if (buttonClicked(Butt))
                 {
@@ -1104,8 +1129,8 @@ void menuPopUp()
                     for (Item = worlditems.begin(); Item != worlditems.end();
                          Item++)
                     {
-                        GC.MenuPos = sf::Vector2f(-10000, -10000);
-                        GC.MenuType = "NULL";
+                        gCtrl.menuPos = sf::Vector2f(-10000, -10000);
+                        gCtrl.menuType = "NULL";
                     }
 
                     fSleep(0.2);
@@ -1115,15 +1140,15 @@ void menuPopUp()
             if (i == 1)
             {
 
-                effects.createLine(GC.MenuPos.x, (GC.MenuPos.y + (iY * 11)) + 8,
-                                   GC.MenuPos.x + 90,
-                                   (GC.MenuPos.y + (iY * 11)) + 8, 3,
-                                   sf::Color::Black, 1, sf::Color::Yellow);
-                cText.CreateText(GC.MenuPos.x, GC.MenuPos.y + (iY * 11), 11,
-                                 sf::Color::Cyan, "PickUp");
+                effects.createLine(
+                    gCtrl.menuPos.x, (gCtrl.menuPos.y + (iY * 11)) + 8,
+                    gCtrl.menuPos.x + 90, (gCtrl.menuPos.y + (iY * 11)) + 8, 3,
+                    sf::Color::Black, 1, sf::Color::Yellow);
+                cText.CreateText(gCtrl.menuPos.x, gCtrl.menuPos.y + (iY * 11),
+                                 11, sf::Color::Cyan, "PickUp");
                 int Butt =
-                    createButton(math::Vec2f(GC.MenuPos.x + 90,
-                                             (GC.MenuPos.y + (iY * 11)) + 5),
+                    createButton(math::Vec2f(gCtrl.menuPos.x + 90,
+                                             (gCtrl.menuPos.y + (iY * 11)) + 5),
                                  5, sf::Color::Red);
                 if (buttonClicked(Butt))
                 {
@@ -1132,7 +1157,7 @@ void menuPopUp()
                     for (Item = worlditems.begin(); Item != worlditems.end();
                          Item++)
                     {
-                        if (math::closeish(GC.MenuPos.x, GC.MenuPos.y,
+                        if (math::closeish(gCtrl.menuPos.x, gCtrl.menuPos.y,
                                            Item->xpos, Item->ypos) <= 10)
                         {
                             if (Item->pickupable == true)
@@ -1146,8 +1171,8 @@ void menuPopUp()
                                 npclist.at(GetNpcVectorId(gvars::myTargetid))
                                     .TargetPos =
                                     sf::Vector2f(Item->xpos, Item->ypos);
-                                GC.MenuPos = sf::Vector2f(-10000, -10000);
-                                GC.MenuType = "NULL";
+                                gCtrl.menuPos = sf::Vector2f(-10000, -10000);
+                                gCtrl.menuType = "NULL";
                             }
                         }
                     }
@@ -1160,10 +1185,10 @@ void menuPopUp()
             iY++;
         }
 
-        if (gvars::myTarget == -1 && GC.MenuType == "CritterContext")
+        if (gvars::myTarget == -1 && gCtrl.menuType == "CritterContext")
         {
-            GC.MenuPos = sf::Vector2f(-10000, -10000);
-            GC.MenuType = "NULL";
+            gCtrl.menuPos = sf::Vector2f(-10000, -10000);
+            gCtrl.menuType = "NULL";
             Con("Closing Menu due to No Target && CritterContext");
         }
     }
@@ -1181,7 +1206,7 @@ void rightMouseButtonContextMenu()
                                npclist[i].xpos,
                                npclist[i].ypos) <= npclist[i].size)
             {
-                GC.MenuType = "CritterRMB";
+                gCtrl.menuType = "CritterRMB";
                 menuPopUp();
                 return;
             }
@@ -1192,17 +1217,17 @@ void rightMouseButtonContextMenu()
             if (math::closeish(gvars::mousePos.x, gvars::mousePos.y,
                                (worlditem).xpos, (worlditem).ypos) <= 10)
             {
-                GC.MenuType = "ItemRMB";
-                GC.MenuPtrCon.pVecItem.push_back(&(worlditem));
+                gCtrl.menuType = "ItemRMB";
+                gCtrl.menuPtrCon.pVecItem.push_back(&(worlditem));
             }
         }
-        if (GC.MenuPtrCon.pVecItem.size() != 0)
+        if (gCtrl.menuPtrCon.pVecItem.size() != 0)
         {
             menuPopUp();
             return;
         }
 
-        GC.MenuType = "BlankRMB";
+        gCtrl.menuType = "BlankRMB";
         menuPopUp();
     }
 }
