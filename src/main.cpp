@@ -3342,19 +3342,19 @@ void lightTrail(int x, int y, int z)
     gvars::sunmap[curz][curx][cury] = 255;
 }
 
-void displayChat(sf::Vector2f Position)
+void displayChat(sf::Vector2f position)
 {
     if (gCtrl.phase != "MainMenu")
         effects.createSquare(
-            Position.x - 10, Position.y + 10, Position.x + 500,
-            (Position.y - ((chatBox.chatStorage.size() + 1) * 10)),
+            position.x - 10, position.y + 10, position.x + 500,
+            (position.y - ((chatBox.chatStorage.size() + 1) * 10)),
             sf::Color(0, 0, 0, 100), 2, sf::Color::Cyan);
 
     for (size_t i = 0; i != chatBox.chatStorage.size(); i++)
     {
         textList.createText(
-            Position.x,
-            (Position.y - ((chatBox.chatStorage.size()) * 10)) + (i * 10), 11,
+            position.x,
+            (position.y - ((chatBox.chatStorage.size()) * 10)) + (i * 10), 11,
             chatBox.chatStorage[i].color, chatBox.chatStorage[i].line);
     }
 }
