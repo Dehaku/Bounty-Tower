@@ -5501,111 +5501,19 @@ int main()
             if (Key.RMB == true)
             { // Entering Menu and such.
                 debug("After RMB");
-                if (GC.MenuPos.x == -10000)
-                {
-                    GC.MenuPos = gvars::mousePos;
-                }
-                int Options = 1;
-                effects.createSquare(
-                    GC.MenuPos.x, GC.MenuPos.y, GC.MenuPos.x + 100,
-                    (GC.MenuPos.y + (Options * 10)) + 5, sf::Color::Black);
-                int iY = 0;
-                for (int i = 0; i != Options; i++)
-                {
-                    if (i == 0)
-                    {
-                        if (WorldMap[abs_to_index(GC.MenuPos.x / 20)]
-                                    [abs_to_index(GC.MenuPos.y / 20)].ID == 0)
-                        {
-                            //Effectz.CreateLine(GC.MenuPos.x,(GC.MenuPos.y+(iY*11))+8,GC.MenuPos.x+90,(GC.MenuPos.y+(iY*11))+8,3,Black,1,Yellow);
-                            cText.CreateText(GC.MenuPos.x + 2,
-                                             GC.MenuPos.y + (iY * 11), 11,
-                                             sf::Color::Cyan, "Enter City");
-                            int Butt = createButton(
-                                math::Vec2f(GC.MenuPos.x + 90,
-                                            (GC.MenuPos.y + (iY * 11)) + 5),
-                                5, sf::Color::Red);
-                            if (buttonClicked(Butt))
-                            {
-                                Con("Que?");
 
-                                GenerateChunk(
-                                    "Building", 500,
-                                    sf::Vector2i(abs(GC.MenuPos.x / 20),
-                                                 abs(GC.MenuPos.y / 20)));
-                                gvars::currentregionx = abs(GC.MenuPos.x / 20);
-                                gvars::currentregiony = abs(GC.MenuPos.y / 20);
-                                GC.Phase = "Local";
-
-                                //GC.BuildLocal("City", WorldMap[abs_to_index(GC.MenuPos.x/20)][abs_to_index(GC.MenuPos.y/20)].Infected);
-                                BuildLocalfromWorld(
-                                    sf::Vector2i(abs(GC.MenuPos.x / 20),
-                                                 abs(GC.MenuPos.y / 20)));
-                                BuildStartingCritters(WorldMap[abs_to_index(
-                                    GC.MenuPos.x /
-                                    20)][abs_to_index(GC.MenuPos.y / 20)]
-                                                          .Infected);
-                                spawnItem("Sword", 990, 1020);
-
-                                spawnItem("Gun", 1010, 1020);
-
-                                //SpawnItem("Fruit Tree",970,1150);
-                                //SpawnItem("Fruit Tree",950,1150);
-                                //SpawnItem("Fruit Tree",930,1150);
-                                //Does Not Run
-                                Con("Hunting for Trees 4");
-                                for (int i = 0; i != 8; i++)
-                                {
-                                    int Tx = randz(50, 1950);
-                                    int Ty = randz(50, 1950);
-                                    Con(Tx, false);
-                                    Con(":", false);
-                                    Con(Ty, false);
-                                    if (Tiles[abs_to_index(
-                                            Tx / 20)][abs_to_index(Ty / 20)][30]
-                                                .ID == 1001 ||
-                                        Tiles[abs_to_index(
-                                            Tx / 20)][abs_to_index(Ty / 20)][30]
-                                                .ID == 1003)
-                                    {
-                                        Con(", Is Plantable.");
-                                        spawnItem("Fruit Tree", Tx, Ty);
-                                    }
-                                }
-
-                                spawnItem("Broken Vending Machine", 1030, 1030);
-
-                                SpawnCritter("Mini Turret", 1000, 1070);
-
-                                fSleep(0.2);
-                            }
-                            iY++;
-                        }
-                        else
-                        {
-                            //Effectz.CreateLine(GC.MenuPos.x,(GC.MenuPos.y+(iY*11))+8,GC.MenuPos.x+90,(GC.MenuPos.y+(iY*11))+8,3,Black,1,Yellow);
-                            cText.CreateText(GC.MenuPos.x + 2,
-                                             GC.MenuPos.y + (iY * 11), 11,
-                                             sf::Color::Cyan, "Enter Land");
-                            int Butt = createButton(
-                                math::Vec2f(GC.MenuPos.x + 90,
-                                            (GC.MenuPos.y + (iY * 11)) + 5),
-                                5, sf::Color::Red);
-                            if (buttonClicked(Butt))
-                            {
-                                Con("Button Get!");
-                                fSleep(0.2);
-                            }
-                            iY++;
-                        }
-                    }
-                }
+                GC.MenuType = "WorldRMB";
+                menuPopUp();
+            }
+            debug("Done with world.");
+            if (GC.MenuType != "NULL")
+            {
+                menuPopUp();
             }
             else
             {
                 GC.MenuPos = math::Vec2f(-10000, -10000);
             }
-            debug("Done with world.");
         }
 
         if (GC.Phase == "MainMenu")
