@@ -276,7 +276,7 @@ void updateItem()
     }
 }
 
-std::vector<int> nnGTrace(int xa, int ya, int xb, int yb, int id,
+std::vector<int> nngTrace(int xa, int ya, int xb, int yb, int id,
                           std::vector<int> /*exceptions*/)
 { //.at(0) = Item/NPC(23/69) .at(1) = id
     int dx = xb - xa, dy = yb - ya, steps;
@@ -287,7 +287,7 @@ std::vector<int> nnGTrace(int xa, int ya, int xb, int yb, int id,
         steps = abs(dy);
     xIncrement = dx / (float)steps;
     yIncrement = dy / (float)steps;
-    std::vector<int> VectorID;
+    std::vector<int> vectorID;
     for (int k = 0; k < steps; k++)
     {
         x += xIncrement;
@@ -296,33 +296,33 @@ std::vector<int> nnGTrace(int xa, int ya, int xb, int yb, int id,
         {
             effects.createCircle(x, y, 1, sf::Color::Blue);
         }
-        int Count = 0;
+        int count = 0;
 
         { // Merely doing this so I can reuse the same code, but for items, Hehe.
-            std::vector<Npc>::iterator Me;
+            std::vector<Npc>::iterator me;
 
-            for (Me = npclist.begin(); Me != npclist.end(); ++Me)
+            for (me = npclist.begin(); me != npclist.end(); ++me)
             {
-                if (math::closeish(x, y, Me->xpos, Me->ypos) <= Me->reach &&
-                    Me->id != id)
+                if (math::closeish(x, y, me->xpos, me->ypos) <= me->reach &&
+                    me->id != id)
                 {
 
-                    std::vector<int>::iterator Vec;
+                    std::vector<int>::iterator vec;
                     try
                     {
-                        bool Exists = false;
-                        for (Vec = VectorID.begin(); Vec != VectorID.end();
-                             ++Vec)
+                        bool exists = false;
+                        for (vec = vectorID.begin(); vec != vectorID.end();
+                             ++vec)
                         {
-                            if (*Vec == Me->id)
+                            if (*vec == me->id)
                             {
-                                Exists = true;
+                                exists = true;
                             }
                         }
-                        if (Exists == false)
+                        if (exists == false)
                         {
-                            VectorID.push_back(69);
-                            VectorID.push_back(getNpcVectorId(Me->id));
+                            vectorID.push_back(69);
+                            vectorID.push_back(getNpcVectorId(me->id));
                         }
                     }
                     catch (std::exception &e)
@@ -331,20 +331,20 @@ std::vector<int> nnGTrace(int xa, int ya, int xb, int yb, int id,
                     }
 
                 } //23 = Item, 69 = NPC
-                Count++;
+                count++;
             }
         }
-        std::list<Item>::iterator Me;
+        std::list<Item>::iterator me;
 
-        for (Me = worlditems.begin(); Me != worlditems.end(); ++Me)
+        for (me = worlditems.begin(); me != worlditems.end(); ++me)
         {
-            if (math::closeish(x, y, Me->xpos, Me->ypos) <= 10 && Me->id != id)
+            if (math::closeish(x, y, me->xpos, me->ypos) <= 10 && me->id != id)
             {
                 //Making sure not to constantly add the same
                 //try{if( VectorID.at(Count-1) != Me->id){ VectorID.push_back(23); VectorID.push_back( GetItemVectorId(Me->id)); }} catch (std::exception& e){}
 
             } //23 = Item, 69 = NPC
-            Count++;
+            count++;
         }
 
         if (key.period)
@@ -352,11 +352,11 @@ std::vector<int> nnGTrace(int xa, int ya, int xb, int yb, int id,
             effects.createCircle(x, y, 1, sf::Color::White);
         }
     }
-    if (VectorID.size() == 0)
+    if (vectorID.size() == 0)
     {
-        VectorID.push_back(-1);
+        vectorID.push_back(-1);
     }
-    return VectorID;
+    return vectorID;
 }
 
 bool gridposTrace(int xa, int ya, int xb, int yb, int id, sf::Vector2f Target)
