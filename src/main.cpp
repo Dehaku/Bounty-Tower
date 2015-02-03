@@ -3614,8 +3614,8 @@ int main()
             sf::Vector2f(gvars::view1.getCenter().x + HALF_SIZE.x,
                          gvars::view1.getCenter().y + HALF_SIZE.y);
 
-        textList.createText(CZ(gvars::topRight.x - CZ(50)),
-                            CZ(gvars::topRight.y + CZ(50)), CZ(11),
+        textList.createText(cz(gvars::topRight.x - cz(50)),
+                            cz(gvars::topRight.y + cz(50)), cz(11),
                             sf::Color::White, "x", "", gvars::cameraZoom);
         textList.createText((gvars::topRight.x - 50), (gvars::topRight.y + 50),
                             (11) / gvars::cameraZoom, sf::Color::White, "x", "",

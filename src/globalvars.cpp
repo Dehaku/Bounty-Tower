@@ -8,7 +8,7 @@ void debug(std::string info)
         std::cout << info << std::endl;
 }
 
-float CZ(float number)
+float cz(float number)
 {
     return number / gvars::cameraZoom;
 }
