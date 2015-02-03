@@ -490,8 +490,8 @@ void menuPopUp()
                             Job job;
                             job.pItem = gCtrl.menuPtrCon.pItem;
 
-                            job.Name = "PickUpItem";
-                            job.Type = "PickUp";
+                            job.name = "PickUpItem";
+                            job.type = "PickUp";
 
                             uniFact[i].jobList.push_back(job);
                         }
@@ -533,8 +533,8 @@ void menuPopUp()
                             Job job;
                             job.pItem = gCtrl.menuPtrCon.pItem;
 
-                            job.Name = "ChopDownTree";
-                            job.Type = "Chop";
+                            job.name = "ChopDownTree";
+                            job.type = "Chop";
 
                             uniFact[i].jobList.push_back(job);
                         }

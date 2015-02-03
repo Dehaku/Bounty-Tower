@@ -27,13 +27,13 @@ void rmbMenuItem(Item &pItem)
             job.pItem = &pItem;
             if (job.pItem->name == "Fruit Tree")
             {
-                job.Name = "ChopDownTree";
-                job.Type = "Chop";
+                job.name = "ChopDownTree";
+                job.type = "Chop";
             }
             else
             {
-                job.Name = "PickUpItem";
-                job.Type = "PickUp";
+                job.name = "PickUpItem";
+                job.type = "PickUp";
             }
 
             uniFact[i].jobList.push_back(job);
@@ -54,10 +54,10 @@ void digWall(sf::Vector2f Pos)
             if (Tiles[abs_to_index(Pos.x / 20)][abs_to_index(Pos.y / 20)][30]
                     .ID == 1008)
             {
-                job.Name = "DigNaturalWall";
-                job.Type = "Dig";
-                job.WorkPos.x = (abs(Pos.x / 20) * 20) + 10;
-                job.WorkPos.y = (abs(Pos.y / 20) * 20) + 10;
+                job.name = "DigNaturalWall";
+                job.type = "Dig";
+                job.workPos.x = (abs(Pos.x / 20) * 20) + 10;
+                job.workPos.y = (abs(Pos.y / 20) * 20) + 10;
             }
             else
             {
@@ -83,10 +83,10 @@ void rmbMenuTile(sf::Vector2f Pos)
             if (Tiles[abs_to_index(Pos.x / 20)][abs_to_index(Pos.y / 20)][30]
                     .ID != 1010)
             {
-                job.Name = "BuildWoodWall";
-                job.Type = "Build";
-                job.WorkPos.x = (abs(Pos.x / 20) * 20) + 10;
-                job.WorkPos.y = (abs(Pos.y / 20) * 20) + 10;
+                job.name = "BuildWoodWall";
+                job.type = "Build";
+                job.workPos.x = (abs(Pos.x / 20) * 20) + 10;
+                job.workPos.y = (abs(Pos.y / 20) * 20) + 10;
                 Con("Dafuqe2 \n");
             }
             else
@@ -124,7 +124,7 @@ void drawJobList(int DrawXPos, int DrawYPos)
                     cText.CreateText(
                         DrawXPos, DrawYPos + (YVariance * 10), 11,
                         sf::Color::Yellow, uniFact[i].jobList[t].pWorker->name +
-                                               uniFact[i].jobList[t].Name + " ",
+                                               uniFact[i].jobList[t].name + " ",
                         uniFact[i]
                             .jobList[t]
                             .pItem->name); // ,JobList.at(i).pItem.name
@@ -134,7 +134,7 @@ void drawJobList(int DrawXPos, int DrawYPos)
                     debug("Second condition");
                     cText.CreateText(
                         DrawXPos, DrawYPos + (YVariance * 10), 11,
-                        sf::Color::Yellow, uniFact[i].jobList[t].Name + " ",
+                        sf::Color::Yellow, uniFact[i].jobList[t].name + " ",
                         uniFact[i]
                             .jobList[t]
                             .pItem->name); // ,JobList.at(i).pItem.name
@@ -145,16 +145,16 @@ void drawJobList(int DrawXPos, int DrawYPos)
                     cText.CreateText(DrawXPos, DrawYPos + (YVariance * 10), 11,
                                      sf::Color::Yellow,
                                      uniFact[i].jobList[t].pWorker->name +
-                                         uniFact[i].jobList[t].Type + " ",
-                                     uniFact[i].jobList[t].Name);
+                                         uniFact[i].jobList[t].type + " ",
+                                     uniFact[i].jobList[t].name);
                 }
                 else
                 {
                     debug("Fourth condition");
                     cText.CreateText(DrawXPos, DrawYPos + (YVariance * 10), 11,
                                      sf::Color::Yellow,
-                                     uniFact[i].jobList[t].Type + " ",
-                                     uniFact[i].jobList[t].Name);
+                                     uniFact[i].jobList[t].type + " ",
+                                     uniFact[i].jobList[t].name);
                 }
 
                 YVariance++;
@@ -174,7 +174,7 @@ void removeJobs(std::vector<Job> &JobList)
         bool Yet = false;
         for (size_t i = 0; i != JobList.size(); i++)
         {
-            if (JobList.at(i).ToDelete == true)
+            if (JobList.at(i).toDelete == true)
             {
                 JobList.erase(JobList.begin() + i);
                 Yet = true;

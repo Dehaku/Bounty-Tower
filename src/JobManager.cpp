@@ -2,50 +2,50 @@
 #include "globalvars.h"
 #include "util.h"
 
-std::vector<MyItem> MyItemList;
-std::vector<ItemContainer> IC;
+std::vector<MyItem> myItemList;
+std::vector<ItemContainer> itemContainer;
 
-void InsertItems()
+void insertItems()
 {
     for (int i = 0; i != 10; i++)
     {
         MyItem TheItem;
-        MyItemList.push_back(TheItem);
+        myItemList.push_back(TheItem);
     }
 }
 
-void InsertItemsIntoContainers()
+void insertItemsIntoContainers()
 {
-    for (size_t i = 0; i != MyItemList.size(); i++)
+    for (size_t i = 0; i != myItemList.size(); i++)
     {
         ItemContainer ItemHolder;
-        ItemHolder.TheItemPtr = &MyItemList[i];
-        IC.push_back(ItemHolder);
+        ItemHolder.theItemPtr = &myItemList[i];
+        itemContainer.push_back(ItemHolder);
     }
 }
 
-void PrintIC()
+void printItemContainer()
 {
-    for (size_t i = 0; i != IC.size(); i++)
+    for (size_t i = 0; i != itemContainer.size(); i++)
     {
         //std::cout << IC[i].TheItemPtr->Name << std::endl;
     }
 }
 
-void RunItAll()
+void runItAll()
 {
-    InsertItems();
-    InsertItemsIntoContainers();
-    PrintIC();
+    insertItems();
+    insertItemsIntoContainers();
+    printItemContainer();
 }
 
 MyItem::MyItem()
 {
     int Random = randz(1, 2);
     if (Random == 1)
-        Name = "Tool";
+        name = "Tool";
     if (Random == 2)
-        Name = "Weapon";
+        name = "Weapon";
 }
 
 PointerContainer::PointerContainer()
@@ -55,7 +55,7 @@ PointerContainer::PointerContainer()
     pTile = nullptr;
 }
 
-std::string Job::GetItemName()
+std::string Job::getItemName()
 {
     return this->pItem->name;
 }
@@ -65,9 +65,9 @@ Job::Job()
     pItem = nullptr;
     pWorker = nullptr;
 
-    CompletionProgress = 0;
-    CompletionTimer = 1000;
+    completionProgress = 0;
+    completionTimer = 1000;
 
-    Priority = 4;
-    ToDelete = false;
+    priority = 4;
+    toDelete = false;
 }

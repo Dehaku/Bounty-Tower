@@ -9,23 +9,23 @@ class Tile;
 class MyItem
 {
 public:
-    std::string Name;
+    std::string name;
     MyItem();
 };
-extern std::vector<MyItem> MyItemList;
+extern std::vector<MyItem> myItemList;
 
 class ItemContainer
 {
 public:
-    MyItem *TheItemPtr;
+    MyItem *theItemPtr;
 };
 
-extern std::vector<ItemContainer> IC;
+extern std::vector<ItemContainer> itemContainer;
 
-void InsertItems();
-void InsertItemsIntoContainers();
-void PrintIC();
-void RunItAll();
+void insertItems();
+void insertItemsIntoContainers();
+void printItemContainer();
+void runItAll();
 
 class PointerContainer
 {
@@ -39,19 +39,19 @@ public:
 class Job
 {
 public:
-    std::string Name;
-    int Priority;
-    float CompletionTimer;
-    float CompletionProgress;
-    std::string Type;
+    std::string name;
+    int priority;
+    float completionTimer;
+    float completionProgress;
+    std::string type;
     Item *pItem;
     Npc *pWorker;
     //Tile * pTile;
-    sf::Vector2i WorkPos;
-    sf::Vector2i WorkplacePos;
+    sf::Vector2i workPos;
+    sf::Vector2i workplacePos;
 
-    bool ToDelete;
-    std::string GetItemName();
+    bool toDelete;
+    std::string getItemName();
 
     Job();
 };
