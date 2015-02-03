@@ -21,11 +21,11 @@ int parentX[mapWidth + 1][mapHeight + 1];
 //2d array to store parent of each cell (y)
 int parentY[mapWidth + 1][mapHeight + 1];
 //1d array to store F cost of a cell on the open list
-int Fcost[mapWidth * mapHeight + 2];
+int fcost[mapWidth * mapHeight + 2];
 //2d array to store G cost for each cell.
-int Gcost[mapWidth + 1][mapHeight + 1];
+int gcost[mapWidth + 1][mapHeight + 1];
 //1d array to store H cost of a cell on the open list
-int Hcost[mapWidth * mapHeight + 2];
+int hcost[mapWidth * mapHeight + 2];
 int pathLength[numberPeople + 1];
 int pathLocation[numberPeople + 1];
 int *pathBank[numberPeople + 1];
@@ -94,7 +94,7 @@ int findPath(int pathfinderID, int startingX, int startingY, int targetX,
     onOpenList = onClosedList - 1;
     pathLength[pathfinderID] = notStarted;   //i.e, = 0
     pathLocation[pathfinderID] = notStarted; //i.e, = 0
-    Gcost[startX][startY] = 0; //reset starting square's G value to 0
+    gcost[startX][startY] = 0; //reset starting square's G value to 0
 
     //4.Add the starting location to the open list of squares to be checked.
     numberOfOpenListItems = 1;
@@ -142,9 +142,9 @@ int findPath(int pathfinderID, int startingX, int startingY, int targetX,
 
                     //Check if the F cost of the parent is greater than each child.
                     //Select the lowest of the two children.
-                    if (Fcost[openList[u]] >= Fcost[openList[2 * u]])
+                    if (fcost[openList[u]] >= fcost[openList[2 * u]])
                         v = 2 * u;
-                    if (Fcost[openList[v]] >= Fcost[openList[2 * u + 1]])
+                    if (fcost[openList[v]] >= fcost[openList[2 * u + 1]])
                         v = 2 * u + 1;
                 }
                 else
@@ -153,7 +153,7 @@ int findPath(int pathfinderID, int startingX, int startingY, int targetX,
                         numberOfOpenListItems) //if only child #1 exists
                     {
                         //Check if the F cost of the parent is greater than child #1
-                        if (Fcost[openList[u]] >= Fcost[openList[2 * u]])
+                        if (fcost[openList[u]] >= fcost[openList[2 * u]])
                             v = 2 * u;
                     }
                 }
@@ -269,16 +269,16 @@ int findPath(int pathfinderID, int startingX, int startingY, int targetX,
                                         else
                                             addedGCost =
                                                 10; //cost of going to non-diagonal squares
-                                        Gcost[a][b] =
-                                            Gcost[parentXval][parentYval] +
+                                        gcost[a][b] =
+                                            gcost[parentXval][parentYval] +
                                             addedGCost;
 
                                         //Figure out its H and F costs and parent
-                                        Hcost[openList[m]] =
+                                        hcost[openList[m]] =
                                             10 * (abs(a - targetX) +
                                                   abs(b - targetY));
-                                        Fcost[openList[m]] =
-                                            Gcost[a][b] + Hcost[openList[m]];
+                                        fcost[openList[m]] =
+                                            gcost[a][b] + hcost[openList[m]];
                                         parentX[a][b] = parentXval;
                                         parentY[a][b] = parentYval;
 
@@ -291,8 +291,8 @@ int findPath(int pathfinderID, int startingX, int startingY, int targetX,
                                             1) //While item hasn't bubbled to the top (m=1)
                                         {
                                             //Check if child's F cost is < parent's F cost. If so, swap them.
-                                            if (Fcost[openList[m]] <=
-                                                Fcost[openList[m / 2]])
+                                            if (fcost[openList[m]] <=
+                                                fcost[openList[m / 2]])
                                             {
                                                 temp = openList[m / 2];
                                                 openList[m / 2] = openList[m];
@@ -325,18 +325,18 @@ int findPath(int pathfinderID, int startingX, int startingY, int targetX,
                                             addedGCost =
                                                 10; //cost of going to non-diagonal tiles
                                         tempGcost =
-                                            Gcost[parentXval][parentYval] +
+                                            gcost[parentXval][parentYval] +
                                             addedGCost;
 
                                         //If this path is shorter (G cost is lower) then change
                                         //the parent cell, G cost and F cost.
                                         if (tempGcost <
-                                            Gcost[a][b]) //if G cost is less,
+                                            gcost[a][b]) //if G cost is less,
                                         {
                                             parentX[a][b] =
                                                 parentXval; //change the square's parent
                                             parentY[a][b] = parentYval;
-                                            Gcost[a][b] =
+                                            gcost[a][b] =
                                                 tempGcost; //change the G cost
 
                                             //Because changing the G cost also changes the F cost, if
@@ -352,9 +352,9 @@ int findPath(int pathfinderID, int startingX, int startingY, int targetX,
                                                     openY[openList[x]] ==
                                                         b) //item AStarFound
                                                 {
-                                                    Fcost[openList[x]] =
-                                                        Gcost[a][b] +
-                                                        Hcost
+                                                    fcost[openList[x]] =
+                                                        gcost[a][b] +
+                                                        hcost
                                                             [openList
                                                                  [x]]; //change the F cost
 
@@ -365,8 +365,8 @@ int findPath(int pathfinderID, int startingX, int startingY, int targetX,
                                                         1) //While item hasn't bubbled to the top (m=1)
                                                     {
                                                         //Check if child is < parent. If so, swap them.
-                                                        if (Fcost[openList[m]] <
-                                                            Fcost[openList[m /
+                                                        if (fcost[openList[m]] <
+                                                            fcost[openList[m /
                                                                            2]])
                                                         {
                                                             temp =
@@ -506,36 +506,36 @@ void readPath(int pathfinderID, int currentX, int currentY, int pixelsPerFrame)
 ;	to being a problem.
 */
 
-    int ID = pathfinderID; //redundant, but makes the following easier to read
+    int id = pathfinderID; //redundant, but makes the following easier to read
 
     //If a path has been AStarFound for the pathfinder	...
-    if (pathStatus[ID] == AStarFound)
+    if (pathStatus[id] == AStarFound)
     {
 
         //If path finder is just starting a new path or has reached the
         //center of the current path square (and the end of the path
         //hasn't been reached), look up the next path square.
-        if (pathLocation[ID] < pathLength[ID])
+        if (pathLocation[id] < pathLength[id])
         {
             //if just starting or if close enough to center of square
-            if (pathLocation[ID] == 0 ||
-                (abs(currentX - xPath[ID]) < pixelsPerFrame &&
-                 abs(currentY - yPath[ID]) < pixelsPerFrame))
-                pathLocation[ID] = pathLocation[ID] + 1;
+            if (pathLocation[id] == 0 ||
+                (abs(currentX - xPath[id]) < pixelsPerFrame &&
+                 abs(currentY - yPath[id]) < pixelsPerFrame))
+                pathLocation[id] = pathLocation[id] + 1;
         }
 
         //Read the path data.
-        xPath[ID] = readPathX(ID, pathLocation[ID]);
-        yPath[ID] = readPathY(ID, pathLocation[ID]);
+        xPath[id] = readPathX(id, pathLocation[id]);
+        yPath[id] = readPathY(id, pathLocation[id]);
 
         //If the center of the last path square on the path has been
         //reached then reset.
-        if (pathLocation[ID] == pathLength[ID])
+        if (pathLocation[id] == pathLength[id])
         {
-            if (abs(currentX - xPath[ID]) < pixelsPerFrame &&
-                abs(currentY - yPath[ID]) <
+            if (abs(currentX - xPath[id]) < pixelsPerFrame &&
+                abs(currentY - yPath[id]) <
                     pixelsPerFrame) //if close enough to center of square
-                pathStatus[ID] = notStarted;
+                pathStatus[id] = notStarted;
         }
     }
 
@@ -543,8 +543,8 @@ void readPath(int pathfinderID, int currentX, int currentY, int pixelsPerFrame)
     //location.
     else
     {
-        xPath[ID] = currentX;
-        yPath[ID] = currentY;
+        xPath[id] = currentX;
+        yPath[id] = currentY;
     }
 }
 
