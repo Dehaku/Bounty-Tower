@@ -2202,9 +2202,9 @@ squadHud() // This prints that "pretty" little Squad Unit display in the top lef
 
                 std::string Output =
                     npclist[i].name + npclist[i].action + npclist[i].target;
-                cText.CreateText(gvars::topLeft.x + 20 + (20),
-                                 gvars::topLeft.y + (20 * i), 12,
-                                 sf::Color::White, Output);
+                textList.createText(gvars::topLeft.x + 20 + (20),
+                                    gvars::topLeft.y + (20 * i), 12,
+                                    sf::Color::White, Output);
             }
         }
     }

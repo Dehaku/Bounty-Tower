@@ -2,42 +2,42 @@
 
 #include <sstream>
 
-class ChatBox ChatBox;
-cTextList cText;
+class ChatBox chatBox;
+TextList textList;
 
 extern sf::RenderWindow window;
 
-void cTextList::Setup()
+void TextList::setup()
 {
-    sString.setColor(Color);
-    sString.setCharacterSize(Size);
+    sString.setColor(color);
+    sString.setCharacterSize(size);
 
-    if (Bold == true)
+    if (bold == true)
     {
         sString.setStyle(sf::Text::Bold);
     }
     sString.setPosition(xpos, ypos);
 }
 
-void cTextList::DrawMe()
+void TextList::drawMe()
 {
-    if (Shadow == true)
+    if (shadow == true)
     {
 
         sString.setPosition(xpos - 1, ypos - 1);
         sString.setColor(sf::Color(0, 0, 0));
         window.draw(sString);
     }
-    Setup();
+    setup();
     window.draw(sString);
 }
 
-void cTextList::CreateText(int xpos, int ypos, int SizeMe, sf::Color color,
-                           std::string stringvalue1, std::string String1,
-                           float int1, std::string stringvalue2,
-                           std::string String2, float int2,
-                           std::string stringvalue3, std::string String3,
-                           float int3, int Shadow, int /*NULL3*/)
+void TextList::createText(int xpos, int ypos, int SizeMe, sf::Color color,
+                          std::string stringvalue1, std::string String1,
+                          float int1, std::string stringvalue2,
+                          std::string String2, float int2,
+                          std::string stringvalue3, std::string String3,
+                          float int3, int Shadow, int /*NULL3*/)
 {
     int Size = SizeMe;
     bool Bold = true;
@@ -89,31 +89,31 @@ void cTextList::CreateText(int xpos, int ypos, int SizeMe, sf::Color color,
     //if(shadow == true){Textz.SetText(line1);Textz.SetColor(sf::Color(0,0,0));Textz.SetPosition(xpos+1,ypos+1);App.Draw(Textz);}
     Textz.setColor(color);
     Textz.setPosition(xpos, ypos); //App.Draw(Textz);
-    cTextList var;
+    TextList var;
     var.xpos = xpos;
     var.ypos = ypos;
-    var.Color = color;
+    var.color = color;
     var.sString = Textz;
-    var.Size = Size;
-    var.Shadow = Shadow;
-    var.Bold = Bold;
+    var.size = Size;
+    var.shadow = Shadow;
+    var.bold = Bold;
     textlist.push_back(var);
 }
 
-void cTextList::DrawTextz()
+void TextList::drawTextz()
 {
 
-    std::vector<cTextList>::iterator textz;
+    std::vector<TextList>::iterator textz;
     for (textz = textlist.begin(); textz != textlist.end(); ++textz)
     {
         //if(textz->Shadow == true){textz->SetColor(textz->Color);Textz.SetPosition(textz->xpos+1,textz->ypos+1);App.Draw(Textz);}Textz.SetPosition(textz->xpos,textz->ypos);
-        textz->DrawMe();
+        textz->drawMe();
     }
 
     textlist.clear();
 }
 
-void cTextList::LoadFont()
+void TextList::loadFont()
 {
     if (!font.loadFromFile("data/fonts/sansation.ttf"))
     {
@@ -121,25 +121,25 @@ void cTextList::LoadFont()
     }
 }
 
-cTextList::cTextList() : xpos{}, ypos{}, Shadow{}, Bold{}
+TextList::TextList() : xpos{}, ypos{}, shadow{}, bold{}
 {
-    Size = 11;
+    size = 11;
 }
 
-void ChatBox::AddChat(std::string Text, sf::Color Color)
+void ChatBox::addChat(std::string Text, sf::Color Color)
 {
     ChatLine NewLine;
-    NewLine.Line = Text;
-    NewLine.Color = Color;
-    ChatStorage.push_back(NewLine);
+    NewLine.line = Text;
+    NewLine.color = Color;
+    chatStorage.push_back(NewLine);
 }
 
-void ChatBox::DisplayChat(sf::Vector2f Position)
+void ChatBox::displayChat(sf::Vector2f Position)
 {
-    for (size_t i = 0; i != ChatStorage.size(); i++)
+    for (size_t i = 0; i != chatStorage.size(); i++)
     {
-        cText.CreateText(Position.x,
-                         (Position.y - (ChatStorage.size() * 10)) + (i * 10),
-                         11, ChatStorage[i].Color, ChatStorage[i].Line);
+        textList.createText(Position.x,
+                            (Position.y - (chatStorage.size() * 10)) + (i * 10),
+                            11, chatStorage[i].color, chatStorage[i].line);
     }
 }

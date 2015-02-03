@@ -47,23 +47,23 @@ void GalaxyController::wave()
             waveTimer = 1000;
             waves++;
         }
-        cText.CreateText(((gvars::currentx - 2) * GridSize) + 1,
-                         ((gvars::currenty - 18) * GridSize) + 1, 11,
-                         sf::Color::Black, "Time Till Wave ", "", waves + 1,
-                         ": ", "", waveTimer / 10);
+        textList.createText(((gvars::currentx - 2) * GridSize) + 1,
+                            ((gvars::currenty - 18) * GridSize) + 1, 11,
+                            sf::Color::Black, "Time Till Wave ", "", waves + 1,
+                            ": ", "", waveTimer / 10);
         if (waveTimer / 2 < 50 && randz(0, 1) == 1)
         {
-            cText.CreateText((gvars::currentx - 2) * GridSize,
-                             (gvars::currenty - 18) * GridSize, 11,
-                             sf::Color::White, "Time Till Wave ", "", waves + 1,
-                             ": ", "", waveTimer / 10);
+            textList.createText((gvars::currentx - 2) * GridSize,
+                                (gvars::currenty - 18) * GridSize, 11,
+                                sf::Color::White, "Time Till Wave ", "",
+                                waves + 1, ": ", "", waveTimer / 10);
         }
         else
         {
-            cText.CreateText((gvars::currentx - 2) * GridSize,
-                             (gvars::currenty - 18) * GridSize, 11,
-                             sf::Color::Red, "Time Till Wave ", "", waves + 1,
-                             ": ", "", waveTimer / 10);
+            textList.createText((gvars::currentx - 2) * GridSize,
+                                (gvars::currenty - 18) * GridSize, 11,
+                                sf::Color::Red, "Time Till Wave ", "",
+                                waves + 1, ": ", "", waveTimer / 10);
         }
     }
 }

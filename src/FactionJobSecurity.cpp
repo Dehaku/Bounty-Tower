@@ -121,7 +121,7 @@ void drawJobList(int DrawXPos, int DrawYPos)
                     debug("CritterName");
                     debug("ItemName");
 
-                    cText.CreateText(
+                    textList.createText(
                         DrawXPos, DrawYPos + (YVariance * 10), 11,
                         sf::Color::Yellow, uniFact[i].jobList[t].pWorker->name +
                                                uniFact[i].jobList[t].name + " ",
@@ -132,7 +132,7 @@ void drawJobList(int DrawXPos, int DrawYPos)
                 else if (uniFact[i].jobList[t].pItem != nullptr)
                 {
                     debug("Second condition");
-                    cText.CreateText(
+                    textList.createText(
                         DrawXPos, DrawYPos + (YVariance * 10), 11,
                         sf::Color::Yellow, uniFact[i].jobList[t].name + " ",
                         uniFact[i]
@@ -142,19 +142,19 @@ void drawJobList(int DrawXPos, int DrawYPos)
                 else if (uniFact[i].jobList[t].pWorker != nullptr)
                 {
                     debug("Third condition");
-                    cText.CreateText(DrawXPos, DrawYPos + (YVariance * 10), 11,
-                                     sf::Color::Yellow,
-                                     uniFact[i].jobList[t].pWorker->name +
-                                         uniFact[i].jobList[t].type + " ",
-                                     uniFact[i].jobList[t].name);
+                    textList.createText(DrawXPos, DrawYPos + (YVariance * 10),
+                                        11, sf::Color::Yellow,
+                                        uniFact[i].jobList[t].pWorker->name +
+                                            uniFact[i].jobList[t].type + " ",
+                                        uniFact[i].jobList[t].name);
                 }
                 else
                 {
                     debug("Fourth condition");
-                    cText.CreateText(DrawXPos, DrawYPos + (YVariance * 10), 11,
-                                     sf::Color::Yellow,
-                                     uniFact[i].jobList[t].type + " ",
-                                     uniFact[i].jobList[t].name);
+                    textList.createText(DrawXPos, DrawYPos + (YVariance * 10),
+                                        11, sf::Color::Yellow,
+                                        uniFact[i].jobList[t].type + " ",
+                                        uniFact[i].jobList[t].name);
                 }
 
                 YVariance++;

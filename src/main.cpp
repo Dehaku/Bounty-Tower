@@ -901,7 +901,7 @@ void critterBrain(std::vector<Npc> &NPCs)
                             ChtStr.append(std::to_string(PartNumber));
                             ChtStr.append(").");
 
-                            ChatBox.AddChat(ChtStr, sf::Color(150, 150, 0));
+                            chatBox.addChat(ChtStr, sf::Color(150, 150, 0));
                         }
                     }
                 }
@@ -1154,11 +1154,11 @@ void critterBrain(std::vector<Npc> &NPCs)
         if (InComplete)
             goto ReDesire;
 
-        cText.CreateText(npc.xpos - 30, npc.ypos - 15, 10, sf::Color::Red,
-                         (*HighestDesire).DesireType, ":",
-                         (*HighestDesire).Potency);
-        cText.CreateText(npc.xpos - 70, npc.ypos - 35, 10, sf::Color::Cyan,
-                         npc.body.bodyParts);
+        textList.createText(npc.xpos - 30, npc.ypos - 15, 10, sf::Color::Red,
+                            (*HighestDesire).DesireType, ":",
+                            (*HighestDesire).Potency);
+        textList.createText(npc.xpos - 70, npc.ypos - 35, 10, sf::Color::Cyan,
+                            npc.body.bodyParts);
 
         /* End of Critter Prioritization */
 
@@ -1478,7 +1478,7 @@ void updateNpc()
                             ChtStr.append(std::to_string(PartNumber));
                             ChtStr.append(").");
 
-                            ChatBox.AddChat(ChtStr, sf::Color(150, 150, 0));
+                            chatBox.addChat(ChtStr, sf::Color(150, 150, 0));
                         }
                     }
                 }
@@ -1539,7 +1539,7 @@ void updateNpc()
                 ChtStr.append(npc.inventory[i].InsidePart);
                 ChtStr.append(".");
 
-                ChatBox.AddChat(ChtStr,sf::Color(150,150,0));
+                chatBox.AddChat(ChtStr,sf::Color(150,150,0));
             }
         }
         */
@@ -1623,7 +1623,7 @@ void updateNpc()
                 ChtStr.append("(" + std::to_string(npc.id) + ")");
                 ChtStr.append(" has died! ");
 
-                ChatBox.AddChat(ChtStr, sf::Color(200, 0, 0));
+                chatBox.addChat(ChtStr, sf::Color(200, 0, 0));
             }
             npc.canmove = false;
         }
@@ -1687,7 +1687,7 @@ void updateNpc()
             ChtStr.append("(" + std::to_string(npc.id) + ")");
             ChtStr.append(" has been zombified by Zombification! ");
 
-            ChatBox.AddChat(ChtStr, sf::Color(200, 0, 0));
+            chatBox.addChat(ChtStr, sf::Color(200, 0, 0));
         };
         if (key.rshift && npc.id == gvars::myTargetid)
         {
@@ -1848,9 +1848,9 @@ void updateNpc()
                                         catch (std::exception &e)
                                         {
                                         }
-                                        cText.CreateText(npc.xpos, npc.ypos, 11,
-                                                         sf::Color::Red,
-                                                         "Bang!");
+                                        textList.createText(npc.xpos, npc.ypos,
+                                                            11, sf::Color::Red,
+                                                            "Bang!");
                                     }
                                 }
                                 npc.attacking = false;
@@ -2632,7 +2632,7 @@ void updateNpc()
                             AtkStr.append(std::to_string(zDamage));
                             AtkStr.append(" damage.");
 
-                            ChatBox.AddChat(AtkStr, sf::Color::Red);
+                            chatBox.addChat(AtkStr, sf::Color::Red);
                         }
                     }
                 }
@@ -2854,9 +2854,9 @@ void updateNpc()
                         }
                         catch (std::exception &e)
                         {
-                            cText.CreateText(npc.xpos, npc.ypos, 11,
-                                             sf::Color::Red,
-                                             "Somethings wrong!");
+                            textList.createText(npc.xpos, npc.ypos, 11,
+                                                sf::Color::Red,
+                                                "Somethings wrong!");
                         };
                     }
                 }
@@ -2919,15 +2919,15 @@ void updateNpc()
                                     npc.hasTarget = false;
                                     npc.targetId = -1;
                                     npc.targetVectorId = -1;
-                                    cText.CreateText(npc.xpos, npc.ypos, 11,
-                                                     sf::Color::Blue,
-                                                     "*Crunch!*");
+                                    textList.createText(npc.xpos, npc.ypos, 11,
+                                                        sf::Color::Blue,
+                                                        "*Crunch!*");
                                 }
                                 catch (std::exception &e)
                                 {
-                                    cText.CreateText(npc.xpos, npc.ypos, 11,
-                                                     sf::Color::Red,
-                                                     "What the FUCK?!");
+                                    textList.createText(npc.xpos, npc.ypos, 11,
+                                                        sf::Color::Red,
+                                                        "What the FUCK?!");
                                 };
                             }
                         }
@@ -2956,15 +2956,15 @@ void updateNpc()
                                     npc.hasTarget = false;
                                     npc.targetId = -1;
                                     npc.targetVectorId = -1;
-                                    cText.CreateText(npc.xpos, npc.ypos, 11,
-                                                     sf::Color::Blue,
-                                                     "*Gulp!*");
+                                    textList.createText(npc.xpos, npc.ypos, 11,
+                                                        sf::Color::Blue,
+                                                        "*Gulp!*");
                                 }
                                 catch (std::exception &e)
                                 {
-                                    cText.CreateText(npc.xpos, npc.ypos, 11,
-                                                     sf::Color::Red,
-                                                     "What the FUCK?!");
+                                    textList.createText(npc.xpos, npc.ypos, 11,
+                                                        sf::Color::Red,
+                                                        "What the FUCK?!");
                                 };
                             }
                         }
@@ -3135,7 +3135,7 @@ void updateNpc()
                     ChtStr.append(elem.name);
                     ChtStr.append(".");
 
-                    ChatBox.AddChat(ChtStr, sf::Color(150, 150, 0));
+                    chatBox.addChat(ChtStr, sf::Color(150, 150, 0));
                 }
                 if (elem.type == 5 &&
                     npc.thirst + elem.thirstvalue <= npc.maxthirst &&
@@ -3154,7 +3154,7 @@ void updateNpc()
                     ChtStr.append(elem.name);
                     ChtStr.append(".");
 
-                    ChatBox.AddChat(ChtStr, sf::Color(150, 150, 0));
+                    chatBox.addChat(ChtStr, sf::Color(150, 150, 0));
                 }
             }
             if (gvars::debug)
@@ -3347,15 +3347,15 @@ void DisplayChat(sf::Vector2f Position)
     if (gCtrl.phase != "MainMenu")
         effects.createSquare(
             Position.x - 10, Position.y + 10, Position.x + 500,
-            (Position.y - ((ChatBox.ChatStorage.size() + 1) * 10)),
+            (Position.y - ((chatBox.chatStorage.size() + 1) * 10)),
             sf::Color(0, 0, 0, 100), 2, sf::Color::Cyan);
 
-    for (size_t i = 0; i != ChatBox.ChatStorage.size(); i++)
+    for (size_t i = 0; i != chatBox.chatStorage.size(); i++)
     {
-        cText.CreateText(
+        textList.createText(
             Position.x,
-            (Position.y - ((ChatBox.ChatStorage.size()) * 10)) + (i * 10), 11,
-            ChatBox.ChatStorage[i].Color, ChatBox.ChatStorage[i].Line);
+            (Position.y - ((chatBox.chatStorage.size()) * 10)) + (i * 10), 11,
+            chatBox.chatStorage[i].color, chatBox.chatStorage[i].line);
     }
 }
 
@@ -3389,7 +3389,7 @@ void DrawStuffs()
     vSquareButtonList.clear();
     debug("Drew and Cleared square buttons");
 
-    cText.DrawTextz();
+    textList.drawTextz();
     debug("Drew Text");
 
     for (auto &button : vButtonList)
@@ -3478,7 +3478,7 @@ int main()
 {
     window.create(sf::VideoMode(Rez.x, Rez.y, 32), randomWindowName());
 
-    cText.LoadFont();
+    textList.loadFont();
 
     bool Paused = false;
     //Debug = true;
@@ -3631,12 +3631,12 @@ int main()
             sf::Vector2f(gvars::view1.getCenter().x + HalfSize.x,
                          gvars::view1.getCenter().y + HalfSize.y);
 
-        cText.CreateText(CZ(gvars::topRight.x - CZ(50)),
-                         CZ(gvars::topRight.y + CZ(50)), CZ(11),
-                         sf::Color::White, "x", "", gvars::cameraZoom);
-        cText.CreateText((gvars::topRight.x - 50), (gvars::topRight.y + 50),
-                         (11) / gvars::cameraZoom, sf::Color::White, "x", "",
-                         gvars::cameraZoom);
+        textList.createText(CZ(gvars::topRight.x - CZ(50)),
+                            CZ(gvars::topRight.y + CZ(50)), CZ(11),
+                            sf::Color::White, "x", "", gvars::cameraZoom);
+        textList.createText((gvars::topRight.x - 50), (gvars::topRight.y + 50),
+                            (11) / gvars::cameraZoom, sf::Color::White, "x", "",
+                            gvars::cameraZoom);
 
         if (key.kTime == 1)
         { // Generates a random name from GenerateName(); and puts it into the console.
@@ -3676,12 +3676,12 @@ int main()
         if (gCtrl.phase == "Local")
         { //=======================================================*Local*============================================================================
             if (gvars::debug)
-                cText.CreateText((gvars::currentx - 2) * GridSize,
-                                 (gvars::currenty + 1) * GridSize, 11,
-                                 sf::Color::Red, "Debug On");
+                textList.createText((gvars::currentx - 2) * GridSize,
+                                    (gvars::currenty + 1) * GridSize, 11,
+                                    sf::Color::Red, "Debug On");
 
             if (key.vTime == 1)
-                ChatBox.AddChat(
+                chatBox.addChat(
                     randomWindowName(),
                     sf::Color(randz(0, 255), randz(0, 255), randz(0, 255)));
 
@@ -3693,7 +3693,8 @@ int main()
                 int y = gvars::bottomLeft.y;
                 effects.createSquare(x + 20, y - 20, x + 40, y - 40,
                                      sf::Color(0, 100, 255));
-                cText.CreateText(x + 20, y - 30, 11, sf::Color::White, "Build");
+                textList.createText(x + 20, y - 30, 11, sf::Color::White,
+                                    "Build");
             }
             if (key.rmbTime == 1 && key.lshift)
                 rmbMenuTile(gvars::mousePos);
@@ -3844,8 +3845,8 @@ int main()
                 int Variable =
                     Tiles[abs_to_index(gvars::mousePos.x / 20)][abs_to_index(
                         gvars::mousePos.y / 20)][30].ID;
-                cText.CreateText(gvars::mousePos.x, gvars::mousePos.y, 11,
-                                 sf::Color::Red, "", "", Variable);
+                textList.createText(gvars::mousePos.x, gvars::mousePos.y, 11,
+                                    sf::Color::Red, "", "", Variable);
             }
 
             bool Transitioning = false;
@@ -4539,10 +4540,10 @@ int main()
             effects.createCircle(Xxx, Yyy, 5, sf::Color::White);
 
             int distence = math::closeish(xanchor, yanchor, Xxx, Yyy);
-            cText.CreateText(xanchor, yanchor, 11, sf::Color::White,
-                             "Distence:", "", distence);
-            cText.CreateText(xanchor, yanchor + 11, 11, sf::Color::White,
-                             "Radius:", "", radius);
+            textList.createText(xanchor, yanchor, 11, sf::Color::White,
+                                "Distence:", "", distence);
+            textList.createText(xanchor, yanchor + 11, 11, sf::Color::White,
+                                "Radius:", "", radius);
 
             //std::cout << testmonkey << std::endl;
             if (gCtrl.bTest == true)
@@ -4616,12 +4617,12 @@ int main()
         {
             gvars::view1.setCenter(Rez.x / 2, Rez.y / 2);
 
-            cText.CreateText(Rez.x / 2, 20, 20, gvars::cycleBlue,
-                             "Design Your Squad");
-            cText.CreateText(Rez.x / 2, 50, 15, sf::Color::Yellow,
-                             "Squad Points: ", "", squady.makeSquadPoints);
-            cText.CreateText(Rez.x / 2, 70, 11, sf::Color::Yellow,
-                             "Squad Mates: ", "", squady.squadMates);
+            textList.createText(Rez.x / 2, 20, 20, gvars::cycleBlue,
+                                "Design Your Squad");
+            textList.createText(Rez.x / 2, 50, 15, sf::Color::Yellow,
+                                "Squad Points: ", "", squady.makeSquadPoints);
+            textList.createText(Rez.x / 2, 70, 11, sf::Color::Yellow,
+                                "Squad Mates: ", "", squady.squadMates);
 
             SquareButton var200;
             var200.color = sf::Color::Yellow;
@@ -4826,13 +4827,13 @@ int main()
                 fSleep(0.2);
             }
 
-            cText.CreateText(Rez.x / 2, 80 + (10 * Spacing++), 11,
-                             sf::Color::Green, "Human: ",
-                             squady.squad.at(squady.aim).name);
+            textList.createText(Rez.x / 2, 80 + (10 * Spacing++), 11,
+                                sf::Color::Green, "Human: ",
+                                squady.squad.at(squady.aim).name);
 
-            cText.CreateText(Rez.x / 2, 80 + (20 * Spacing), 11,
-                             sf::Color::White, "Strength: ", "",
-                             squady.squad.at(squady.aim).skills.strength);
+            textList.createText(Rez.x / 2, 80 + (20 * Spacing), 11,
+                                sf::Color::White, "Strength: ", "",
+                                squady.squad.at(squady.aim).skills.strength);
 
             SquareButton var;
             var.color = sf::Color::Red;
@@ -4867,9 +4868,9 @@ int main()
                 }
             }
 
-            cText.CreateText(Rez.x / 2, 80 + (20 * Spacing), 11,
-                             sf::Color::White, "Perception: ", "",
-                             squady.squad.at(squady.aim).skills.perception);
+            textList.createText(Rez.x / 2, 80 + (20 * Spacing), 11,
+                                sf::Color::White, "Perception: ", "",
+                                squady.squad.at(squady.aim).skills.perception);
 
             SquareButton var3;
             var3.color = sf::Color::Red;
@@ -4904,9 +4905,10 @@ int main()
                 }
             }
 
-            cText.CreateText(Rez.x / 2, 80 + (20 * Spacing), 11,
-                             sf::Color::White, "Intelligence: ", "",
-                             squady.squad.at(squady.aim).skills.intelligence);
+            textList.createText(
+                Rez.x / 2, 80 + (20 * Spacing), 11, sf::Color::White,
+                "Intelligence: ", "",
+                squady.squad.at(squady.aim).skills.intelligence);
 
             SquareButton var5;
             var5.color = sf::Color::Red;
@@ -4941,9 +4943,9 @@ int main()
                 }
             }
 
-            cText.CreateText(Rez.x / 2, 80 + (20 * Spacing), 11,
-                             sf::Color::White, "Charisma: ", "",
-                             squady.squad.at(squady.aim).skills.charisma);
+            textList.createText(Rez.x / 2, 80 + (20 * Spacing), 11,
+                                sf::Color::White, "Charisma: ", "",
+                                squady.squad.at(squady.aim).skills.charisma);
 
             SquareButton var7;
             var7.color = sf::Color::Red;
@@ -4978,9 +4980,9 @@ int main()
                 }
             }
 
-            cText.CreateText(Rez.x / 2, 80 + (20 * Spacing), 11,
-                             sf::Color::White, "Endurance: ", "",
-                             squady.squad.at(squady.aim).skills.endurance);
+            textList.createText(Rez.x / 2, 80 + (20 * Spacing), 11,
+                                sf::Color::White, "Endurance: ", "",
+                                squady.squad.at(squady.aim).skills.endurance);
 
             SquareButton var9;
             var9.color = sf::Color::Red;
@@ -5015,9 +5017,9 @@ int main()
                 }
             }
 
-            cText.CreateText(Rez.x / 2, 80 + (20 * Spacing), 11,
-                             sf::Color::White, "Dexterity: ", "",
-                             squady.squad.at(squady.aim).skills.dexterity);
+            textList.createText(Rez.x / 2, 80 + (20 * Spacing), 11,
+                                sf::Color::White, "Dexterity: ", "",
+                                squady.squad.at(squady.aim).skills.dexterity);
 
             SquareButton var11;
             var11.color = sf::Color::Red;
@@ -5052,9 +5054,9 @@ int main()
                 }
             }
 
-            cText.CreateText(Rez.x / 2, 80 + (20 * Spacing), 11,
-                             sf::Color::White, "Agility: ", "",
-                             squady.squad.at(squady.aim).skills.agility);
+            textList.createText(Rez.x / 2, 80 + (20 * Spacing), 11,
+                                sf::Color::White, "Agility: ", "",
+                                squady.squad.at(squady.aim).skills.agility);
 
             SquareButton var13;
             var13.color = sf::Color::Red;
@@ -5180,46 +5182,46 @@ int main()
             debug("Pre-World HUD");
             int HUDZ = 0;
 
-            cText.CreateText(gvars::topLeft.x + 2,
-                             gvars::topLeft.y + (HUDZ++) * 11, 22,
-                             sf::Color::Yellow, "World Population: ", "",
-                             factionPopulation());
+            textList.createText(gvars::topLeft.x + 2,
+                                gvars::topLeft.y + (HUDZ++) * 11, 22,
+                                sf::Color::Yellow, "World Population: ", "",
+                                factionPopulation());
             HUDZ++;
             HUDZ++;
-            cText.CreateText(gvars::topLeft.x + 2,
-                             gvars::topLeft.y + (HUDZ++) * 11, 11,
-                             sf::Color::White, "CurrentTileID: ", "", ID);
-            cText.CreateText(
+            textList.createText(gvars::topLeft.x + 2,
+                                gvars::topLeft.y + (HUDZ++) * 11, 11,
+                                sf::Color::White, "CurrentTileID: ", "", ID);
+            textList.createText(
                 gvars::topLeft.x + 2, gvars::topLeft.y + (HUDZ++) * 11, 11,
                 sf::Color::White, "CurrentTileInfected: ", "", Infected);
-            cText.CreateText(
+            textList.createText(
                 gvars::topLeft.x + 2, gvars::topLeft.y + (HUDZ++) * 11, 11,
                 sf::Color::White, "FactionOwned: ",
                 WorldMap[math::clamp(abs(gvars::mousePos.x / 20), 0, 99)]
                         [math::clamp(abs(gvars::mousePos.y / 20), 0, 99)]
                             .Owner);
-            cText.CreateText(
+            textList.createText(
                 gvars::topLeft.x + 2, gvars::topLeft.y + (HUDZ++) * 11, 11,
                 sf::Color::White, "FactionMembers: ", "",
                 factionMembers(WorldMap[math::clamp(
                     abs(gvars::mousePos.x / 20), 0,
                     99)][math::clamp(abs(gvars::mousePos.y / 20), 0, 99)]
                                    .Owner));
-            cText.CreateText(
+            textList.createText(
                 gvars::topLeft.x + 2, gvars::topLeft.y + (HUDZ++) * 11, 11,
                 sf::Color::White, "FactionAggression: ", "",
                 factionAggression(WorldMap[math::clamp(
                     abs(gvars::mousePos.x / 20), 0,
                     99)][math::clamp(abs(gvars::mousePos.y / 20), 0, 99)]
                                       .Owner));
-            cText.CreateText(
+            textList.createText(
                 gvars::topLeft.x + 2, gvars::topLeft.y + (HUDZ++) * 11, 11,
                 sf::Color::White, "FactionTerritories: ", "",
                 factionTerritories(WorldMap[math::clamp(
                     abs(gvars::mousePos.x / 20), 0,
                     99)][math::clamp(abs(gvars::mousePos.y / 20), 0, 99)]
                                        .Owner));
-            cText.CreateText(
+            textList.createText(
                 gvars::topLeft.x + 2, gvars::topLeft.y + (HUDZ++) * 11, 11,
                 sf::Color::White, "FactionPower: ", "",
                 factionPower(WorldMap[math::clamp(
@@ -5227,11 +5229,11 @@ int main()
                     99)][math::clamp(abs(gvars::mousePos.y / 20), 0, 99)]
                                  .Owner));
 
-            cText.CreateText(gvars::topLeft.x + 2,
-                             gvars::topLeft.y + (HUDZ++) * 11, 11,
-                             sf::Color::White, "AimedPos(DELETEME): ", "",
-                             abs(gvars::mousePos.x / 20), "/", "",
-                             abs(gvars::mousePos.y / 20));
+            textList.createText(gvars::topLeft.x + 2,
+                                gvars::topLeft.y + (HUDZ++) * 11, 11,
+                                sf::Color::White, "AimedPos(DELETEME): ", "",
+                                abs(gvars::mousePos.x / 20), "/", "",
+                                abs(gvars::mousePos.y / 20));
 
             DrawWorldTiles();
             int xMouse(gvars::mousePos.x / 20);
@@ -5299,13 +5301,13 @@ int main()
         { //=======================================================*Main Menu*============================================================================
             gCtrl.buildMainMenu();
             gvars::view1.setCenter(HalfSize.x, HalfSize.y);
-            cText.CreateText(500, 0, 25, sf::Color::White, "Welcome!", "",
-                             -6698, "", "", -6698, "", "", -6698, 1, 0);
-            cText.CreateText(
+            textList.createText(500, 0, 25, sf::Color::White, "Welcome!", "",
+                                -6698, "", "", -6698, "", "", -6698, 1, 0);
+            textList.createText(
                 450, 25, 11, sf::Color::Red,
                 "Take this 'game' with a grain of salt, It's not done yet");
-            cText.CreateText(450, 45, 11, gvars::cycleGreen,
-                             "Design Your Squad");
+            textList.createText(450, 45, 11, gvars::cycleGreen,
+                                "Design Your Squad");
             // TODO: Simply add cText.CreateText for the Button Text, Or at least make it an option, Since sButtonText is designed for text 'on' the button.
             SquareButton var;
             var.color = gvars::cycleRed;
@@ -5316,10 +5318,10 @@ int main()
             var.sButtonText = "Howdy";
             vSquareButtonList.push_back(var);
 
-            cText.CreateText(450, 75, 11, sf::Color::Red,
-                             "Press r to turn on the "
-                             "debugger, If it slows down the "
-                             "game, Minimize the console.");
+            textList.createText(450, 75, 11, sf::Color::Red,
+                                "Press r to turn on the "
+                                "debugger, If it slows down the "
+                                "game, Minimize the console.");
 
             if (squareButtonClicked(var.id))
             {
@@ -5707,83 +5709,83 @@ int main()
 
                 effects.createSquare(Nxpos, Nypos, Nxpos + 65, Nypos + 70,
                                      sf::Color(0, 0, 0, 100));
-                cText.CreateText(Nxpos, Nypos, 11, sf::Color::Red, "Health:",
-                                 "", npclist.at(gvars::myTarget).health, "",
-                                 "(", npclist.at(gvars::myTarget).maxhealth,
-                                 ")", "", -6698, 1, 0);
-                cText.CreateText(Nxpos, Nypos + 10, 11, Brown, "Hunger:", "",
-                                 npclist.at(gvars::myTarget).hunger, "", "",
-                                 -6698, "", "", -6698, 1, 0);
-                cText.CreateText(Nxpos, Nypos + 20, 11, sf::Color::Cyan,
-                                 "Thirst:", "",
-                                 npclist.at(gvars::myTarget).thirst, "", "",
-                                 -6698, "", "", -6698, 1, 0);
-                cText.CreateText(Nxpos, Nypos + 30, 11, sf::Color::White,
-                                 "Name:", npclist.at(gvars::myTarget).name,
-                                 -6698, "", "", -6698, "", "", -6698, 1, 0);
-                cText.CreateText(Nxpos, Nypos + 40, 11, sf::Color::White, "Id:",
-                                 "", npclist.at(gvars::myTarget).id, "", "",
-                                 -6698, "", "", -6698, 1, 0);
+                textList.createText(Nxpos, Nypos, 11, sf::Color::Red, "Health:",
+                                    "", npclist.at(gvars::myTarget).health, "",
+                                    "(", npclist.at(gvars::myTarget).maxhealth,
+                                    ")", "", -6698, 1, 0);
+                textList.createText(Nxpos, Nypos + 10, 11, Brown, "Hunger:", "",
+                                    npclist.at(gvars::myTarget).hunger, "", "",
+                                    -6698, "", "", -6698, 1, 0);
+                textList.createText(Nxpos, Nypos + 20, 11, sf::Color::Cyan,
+                                    "Thirst:", "",
+                                    npclist.at(gvars::myTarget).thirst, "", "",
+                                    -6698, "", "", -6698, 1, 0);
+                textList.createText(Nxpos, Nypos + 30, 11, sf::Color::White,
+                                    "Name:", npclist.at(gvars::myTarget).name,
+                                    -6698, "", "", -6698, "", "", -6698, 1, 0);
+                textList.createText(Nxpos, Nypos + 40, 11, sf::Color::White,
+                                    "Id:", "", npclist.at(gvars::myTarget).id,
+                                    "", "", -6698, "", "", -6698, 1, 0);
                 if (npclist.at(gvars::myTarget).needsPath == false)
                 {
-                    cText.CreateText(Nxpos, Nypos + 50, 11, sf::Color::Red,
-                                     "Action:",
-                                     npclist.at(gvars::myTarget).action);
+                    textList.createText(Nxpos, Nypos + 50, 11, sf::Color::Red,
+                                        "Action:",
+                                        npclist.at(gvars::myTarget).action);
                 }
                 else
                 {
-                    cText.CreateText(Nxpos, Nypos + 50, 11, sf::Color::Blue,
-                                     "Action:",
-                                     npclist.at(gvars::myTarget).action);
+                    textList.createText(Nxpos, Nypos + 50, 11, sf::Color::Blue,
+                                        "Action:",
+                                        npclist.at(gvars::myTarget).action);
                 }
-                cText.CreateText(Nxpos, Nypos + 60, 11, sf::Color::Red,
-                                 "Target:", npclist.at(gvars::myTarget).target,
-                                 npclist.at(gvars::myTarget).targetPos.x, ":",
-                                 "", npclist.at(gvars::myTarget).targetPos.y,
-                                 " Angle:", "",
-                                 npclist.at(gvars::myTarget).angle);
+                textList.createText(
+                    Nxpos, Nypos + 60, 11, sf::Color::Red, "Target:",
+                    npclist.at(gvars::myTarget).target,
+                    npclist.at(gvars::myTarget).targetPos.x, ":", "",
+                    npclist.at(gvars::myTarget).targetPos.y, " Angle:", "",
+                    npclist.at(gvars::myTarget).angle);
 
                 effects.createSquare(Nxpos, Nypos + 70, Nxpos + 130,
                                      Nypos + 150, sf::Color(0, 0, 0, 200));
                 int Y = 7;
                 int V = 1;
-                cText.CreateText(Nxpos + V, Nypos + (Y++ * 10), 11,
-                                 sf::Color::White, "Strength:", "",
-                                 npclist.at(gvars::myTarget).skills.strength,
-                                 " : ", "",
-                                 npclist.at(gvars::myTarget).skills.strengthxp);
-                cText.CreateText(
+                textList.createText(
+                    Nxpos + V, Nypos + (Y++ * 10), 11, sf::Color::White,
+                    "Strength:", "",
+                    npclist.at(gvars::myTarget).skills.strength, " : ", "",
+                    npclist.at(gvars::myTarget).skills.strengthxp);
+                textList.createText(
                     Nxpos + V, Nypos + (Y++ * 10), 11, sf::Color::White,
                     "Perception:", "",
                     npclist.at(gvars::myTarget).skills.perception, " : ", "",
                     npclist.at(gvars::myTarget).skills.perceptionxp);
-                cText.CreateText(
+                textList.createText(
                     Nxpos + V, Nypos + (Y++ * 10), 11, sf::Color::White,
                     "Intelligence:", "",
                     npclist.at(gvars::myTarget).skills.intelligence, " : ", "",
                     npclist.at(gvars::myTarget).skills.intelligencexp);
-                cText.CreateText(Nxpos + V, Nypos + (Y++ * 10), 11,
-                                 sf::Color::White, "Charisma:", "",
-                                 npclist.at(gvars::myTarget).skills.charisma,
-                                 " : ", "",
-                                 npclist.at(gvars::myTarget).skills.charismaxp);
-                cText.CreateText(
+                textList.createText(
+                    Nxpos + V, Nypos + (Y++ * 10), 11, sf::Color::White,
+                    "Charisma:", "",
+                    npclist.at(gvars::myTarget).skills.charisma, " : ", "",
+                    npclist.at(gvars::myTarget).skills.charismaxp);
+                textList.createText(
                     Nxpos + V, Nypos + (Y++ * 10), 11, sf::Color::White,
                     "Endurance:", "",
                     npclist.at(gvars::myTarget).skills.endurance, " : ", "",
                     npclist.at(gvars::myTarget).skills.endurancexp);
-                cText.CreateText(
+                textList.createText(
                     Nxpos + V, Nypos + (Y++ * 10), 11, sf::Color::White,
                     "Dexterity:", "",
                     npclist.at(gvars::myTarget).skills.dexterity, " : ", "",
                     npclist.at(gvars::myTarget).skills.dexterityxp);
-                cText.CreateText(
+                textList.createText(
                     Nxpos + V, Nypos + (Y++ * 10), 11, sf::Color::White,
                     "Agility:", "", npclist.at(gvars::myTarget).skills.agility,
                     " : ", "", npclist.at(gvars::myTarget).skills.agilityxp);
-                cText.CreateText(Nxpos + V, Nypos + (Y++ * 10), 11,
-                                 sf::Color::White, "Tags:",
-                                 npclist.at(gvars::myTarget).tags);
+                textList.createText(Nxpos + V, Nypos + (Y++ * 10), 11,
+                                    sf::Color::White, "Tags:",
+                                    npclist.at(gvars::myTarget).tags);
 
                 if (npclist.at(gvars::myTarget).inventory.size() != 0 ||
                     npclist.at(gvars::myTarget).bloodcontent != "")
@@ -5796,9 +5798,9 @@ int main()
                     { // Listing all the current items from this critters inventory.
                         if (item.insidePart.size() == 0)
                         {
-                            cText.CreateText(Nxpos + 65, Yv, 11,
-                                             sf::Color::White, item.name, ": ",
-                                             item.amount);
+                            textList.createText(Nxpos + 65, Yv, 11,
+                                                sf::Color::White, item.name,
+                                                ": ", item.amount);
                             Yv += 10;
                         }
                     }
@@ -5808,14 +5810,14 @@ int main()
                     { // Listing all items from 'inside' the critter.
                         if (item.insidePart.size() != 0)
                         {
-                            cText.CreateText(Nxpos + 65, Yv, 11,
-                                             sf::Color(255, 200, 200),
-                                             "Inside " + item.insidePart + " :",
-                                             item.name + " :", item.amount);
+                            textList.createText(
+                                Nxpos + 65, Yv, 11, sf::Color(255, 200, 200),
+                                "Inside " + item.insidePart + " :",
+                                item.name + " :", item.amount);
                             Yv += 10;
                         }
                     }
-                    cText.CreateText(
+                    textList.createText(
                         Nxpos + 65, Yv, 11, sf::Color(255, 150, 150),
                         "Blood: " + npclist.at(gvars::myTarget).bloodcontent);
 
@@ -5845,9 +5847,9 @@ int main()
                     if (math::closeish(gvars::mousePos.x, gvars::mousePos.y,
                                        item.xpos, item.ypos) <= 10)
                     {
-                        cText.CreateText(item.xpos, item.ypos, 11,
-                                         sf::Color::White, item.name, " ID:",
-                                         item.id);
+                        textList.createText(item.xpos, item.ypos, 11,
+                                            sf::Color::White, item.name, " ID:",
+                                            item.id);
                     }
                 }
             }

@@ -3,36 +3,36 @@
 
 #include <SFML/Graphics.hpp>
 
-class cTextList
+class TextList
 {
 public:
     int xpos;
     int ypos;
-    sf::Color Color;
+    sf::Color color;
     sf::Text sString;
     sf::Font font;
-    int Size;
-    bool Shadow;
-    bool Bold;
+    int size;
+    bool shadow;
+    bool bold;
 
-    void Setup();
-    void DrawMe();
-    std::vector<cTextList> textlist;
+    void setup();
+    void drawMe();
+    std::vector<TextList> textlist;
 
-    void CreateText(int xpos, int ypos, int SizeMe, sf::Color color,
+    void createText(int xpos, int ypos, int SizeMe, sf::Color color,
                     std::string stringvalue1, std::string String1 = "",
                     float int1 = -6698, std::string stringvalue2 = "",
                     std::string String2 = "", float int2 = -6698,
                     std::string stringvalue3 = "", std::string String3 = "",
-                    float int3 = -6698, int Shadow = 1, int NULL3 = 0);
+                    float int3 = -6698, int shadow = 1, int NULL3 = 0);
 
-    void DrawTextz();
+    void drawTextz();
 
-    void LoadFont();
+    void loadFont();
 
-    cTextList();
+    TextList();
 };
-extern cTextList cText;
+extern TextList textList;
 
 class ChatBox
 {
@@ -40,16 +40,16 @@ public:
     class ChatLine
     {
     public:
-        std::string Line;
-        sf::Color Color;
+        std::string line;
+        sf::Color color;
     };
 
-    std::vector<ChatLine> ChatStorage;
+    std::vector<ChatLine> chatStorage;
 
-    void AddChat(std::string Text, sf::Color Color);
+    void addChat(std::string Text, sf::Color Color);
 
-    void DisplayChat(sf::Vector2f Position);
+    void displayChat(sf::Vector2f Position);
 };
-extern ChatBox ChatBox;
+extern ChatBox chatBox;
 
 #endif // TEXT_H_INCLUDED

@@ -43,8 +43,8 @@ void Button::draw()
                              vPos.x + iSize, vPos.y + (iSize / 1.5), color, 2,
                              sf::Color::Black);
     }
-    cText.CreateText(vPos.x + 10, vPos.y - (textSize / 2), textSize, textColor,
-                     sForwardText);
+    textList.createText(vPos.x + 10, vPos.y - (textSize / 2), textSize,
+                        textColor, sForwardText);
     effects.drawEffects();
 }
 
@@ -76,8 +76,8 @@ void SquareButton::draw()
                                  gvars::mousePos.x + (sButtonText.length() * 7),
                                  gvars::mousePos.y + 6, sf::Color::Black, 1,
                                  sf::Color(175, 175, 0));
-            cText.CreateText(gvars::mousePos.x + 12, gvars::mousePos.y - 6, 11,
-                             textColor, sButtonText);
+            textList.createText(gvars::mousePos.x + 12, gvars::mousePos.y - 6,
+                                11, textColor, sButtonText);
         }
     }
     else
@@ -86,8 +86,8 @@ void SquareButton::draw()
         effects.createSquare(vPos.x - iSizex, vPos.y - iSizey, vPos.x + iSizex,
                              vPos.y + iSizey, color, 2, sf::Color::Black);
     }
-    cText.CreateText(vPos.x + 10, vPos.y - (textSize / 2), textSize, textColor,
-                     sForwardText);
+    textList.createText(vPos.x + 10, vPos.y - (textSize / 2), textSize,
+                        textColor, sForwardText);
     effects.drawEffects();
 }
 
@@ -240,9 +240,9 @@ void menuPopUp()
                     gCtrl.menuPos.x, (gCtrl.menuPos.y + (iY * 13)) + 13,
                     gCtrl.menuPos.x + 90, (gCtrl.menuPos.y + (iY * 13)) + 13, 1,
                     sf::Color::Cyan);
-                cText.CreateText(gCtrl.menuPos.x + 2,
-                                 gCtrl.menuPos.y + (iY * 13), 12,
-                                 sf::Color::White, "Orbital Drop - Missle");
+                textList.createText(gCtrl.menuPos.x + 2,
+                                    gCtrl.menuPos.y + (iY * 13), 12,
+                                    sf::Color::White, "Orbital Drop - Missle");
                 int Butt = createSquareButton(
                     math::Vec2f(gCtrl.menuPos.x + BRD,
                                 (gCtrl.menuPos.y + (iY * 13)) + MBD),
@@ -300,9 +300,9 @@ void menuPopUp()
                     gCtrl.menuPos.x, (gCtrl.menuPos.y + (iY * 13)) + 13,
                     gCtrl.menuPos.x + 90, (gCtrl.menuPos.y + (iY * 13)) + 13, 1,
                     sf::Color::Cyan);
-                cText.CreateText(gCtrl.menuPos.x + 2,
-                                 gCtrl.menuPos.y + (iY * 13), 12,
-                                 sf::Color::White, "Build - Wall");
+                textList.createText(gCtrl.menuPos.x + 2,
+                                    gCtrl.menuPos.y + (iY * 13), 12,
+                                    sf::Color::White, "Build - Wall");
                 int Butt = createSquareButton(
                     math::Vec2f(gCtrl.menuPos.x + BRD,
                                 (gCtrl.menuPos.y + (iY * 13)) + MBD),
@@ -319,9 +319,9 @@ void menuPopUp()
                     gCtrl.menuPos.x, (gCtrl.menuPos.y + (iY * 13)) + 13,
                     gCtrl.menuPos.x + 90, (gCtrl.menuPos.y + (iY * 13)) + 13, 1,
                     sf::Color::Cyan);
-                cText.CreateText(gCtrl.menuPos.x + 2,
-                                 gCtrl.menuPos.y + (iY * 13), 12,
-                                 sf::Color::White, "Dig - Natural Wall");
+                textList.createText(gCtrl.menuPos.x + 2,
+                                    gCtrl.menuPos.y + (iY * 13), 12,
+                                    sf::Color::White, "Dig - Natural Wall");
                 int Butt = createSquareButton(
                     math::Vec2f(gCtrl.menuPos.x + BRD,
                                 (gCtrl.menuPos.y + (iY * 13)) + MBD),
@@ -363,9 +363,9 @@ void menuPopUp()
                     gCtrl.menuPos.x, (gCtrl.menuPos.y + (iY * 13)) + 13,
                     gCtrl.menuPos.x + 90, (gCtrl.menuPos.y + (iY * 13)) + 13, 1,
                     sf::Color::Cyan);
-                cText.CreateText(gCtrl.menuPos.x + 2,
-                                 gCtrl.menuPos.y + (iY * 13), 12,
-                                 sf::Color::White, "Build");
+                textList.createText(gCtrl.menuPos.x + 2,
+                                    gCtrl.menuPos.y + (iY * 13), 12,
+                                    sf::Color::White, "Build");
                 int Butt = createSquareButton(
                     math::Vec2f(gCtrl.menuPos.x + BRD,
                                 (gCtrl.menuPos.y + (iY * 13)) + MBD),
@@ -386,9 +386,9 @@ void menuPopUp()
                     gCtrl.menuPos.x, (gCtrl.menuPos.y + (iY * 13)) + 13,
                     gCtrl.menuPos.x + 90, (gCtrl.menuPos.y + (iY * 13)) + 13, 1,
                     sf::Color::Cyan);
-                cText.CreateText(gCtrl.menuPos.x + 2,
-                                 gCtrl.menuPos.y + (iY * 13), 12,
-                                 sf::Color::White, "Orbital Drop");
+                textList.createText(gCtrl.menuPos.x + 2,
+                                    gCtrl.menuPos.y + (iY * 13), 12,
+                                    sf::Color::White, "Orbital Drop");
                 int Butt = createSquareButton(
                     math::Vec2f(gCtrl.menuPos.x + BRD,
                                 (gCtrl.menuPos.y + (iY * 13)) + MBD),
@@ -411,9 +411,9 @@ void menuPopUp()
                     gCtrl.menuPos.x, (gCtrl.menuPos.y + (iY * 13)) + 13,
                     gCtrl.menuPos.x + 90, (gCtrl.menuPos.y + (iY * 13)) + 13, 1,
                     sf::Color::Cyan);
-                cText.CreateText(gCtrl.menuPos.x + 2,
-                                 gCtrl.menuPos.y + (iY * 13), 12,
-                                 sf::Color::White, "Dig");
+                textList.createText(gCtrl.menuPos.x + 2,
+                                    gCtrl.menuPos.y + (iY * 13), 12,
+                                    sf::Color::White, "Dig");
                 int Butt = createSquareButton(
                     math::Vec2f(gCtrl.menuPos.x + BRD,
                                 (gCtrl.menuPos.y + (iY * 13)) + MBD),
@@ -464,16 +464,16 @@ void menuPopUp()
                     gCtrl.menuPos.x + 90, (gCtrl.menuPos.y + (iY * 13)) + 13, 1,
                     sf::Color::Cyan);
                 if (gCtrl.menuPtrCon.pItem->pickupable)
-                    cText.CreateText(
+                    textList.createText(
                         gCtrl.menuPos.x + 2, gCtrl.menuPos.y + (iY * 13), 12,
                         sf::Color::White,
                         gCtrl.menuPtrCon.pItem->name + " - PickUp");
                 else
-                    cText.CreateText(gCtrl.menuPos.x + 2,
-                                     gCtrl.menuPos.y + (iY * 13), 12,
-                                     sf::Color::White,
-                                     gCtrl.menuPtrCon.pItem->name +
-                                         " - xPickUpx, Cannot be picked up.");
+                    textList.createText(
+                        gCtrl.menuPos.x + 2, gCtrl.menuPos.y + (iY * 13), 12,
+                        sf::Color::White,
+                        gCtrl.menuPtrCon.pItem->name +
+                            " - xPickUpx, Cannot be picked up.");
                 int Butt = createSquareButton(
                     math::Vec2f(gCtrl.menuPos.x + BRD,
                                 (gCtrl.menuPos.y + (iY * 13)) + MBD),
@@ -506,12 +506,12 @@ void menuPopUp()
                     gCtrl.menuPos.x + 90, (gCtrl.menuPos.y + (iY * 13)) + 13, 1,
                     sf::Color::Cyan);
                 if (!gCtrl.menuPtrCon.pItem->pickupable)
-                    cText.CreateText(
+                    textList.createText(
                         gCtrl.menuPos.x + 2, gCtrl.menuPos.y + (iY * 13), 12,
                         sf::Color::White,
                         gCtrl.menuPtrCon.pItem->name + " - ChopDown");
                 else
-                    cText.CreateText(
+                    textList.createText(
                         gCtrl.menuPos.x + 2, gCtrl.menuPos.y + (iY * 13), 12,
                         sf::Color::White,
                         gCtrl.menuPtrCon.pItem->name +
@@ -568,9 +568,9 @@ void menuPopUp()
                 gCtrl.menuPos.x, (gCtrl.menuPos.y + (iY * 13)) + 13,
                 gCtrl.menuPos.x + 90, (gCtrl.menuPos.y + (iY * 13)) + 13, 1,
                 sf::Color::Cyan);
-            cText.CreateText(gCtrl.menuPos.x + 2, gCtrl.menuPos.y + (iY * 13),
-                             12, sf::Color::White,
-                             gCtrl.menuPtrCon.pVecItem[i]->name);
+            textList.createText(
+                gCtrl.menuPos.x + 2, gCtrl.menuPos.y + (iY * 13), 12,
+                sf::Color::White, gCtrl.menuPtrCon.pVecItem[i]->name);
             int Butt = createSquareButton(
                 math::Vec2f(gCtrl.menuPos.x + BRD,
                             (gCtrl.menuPos.y + (iY * 13)) + MBD),
@@ -590,7 +590,7 @@ void menuPopUp()
                     gCtrl.menuPos.x, (gCtrl.menuPos.y + (iY * 13)) + 13,
                     gCtrl.menuPos.x + 90, (gCtrl.menuPos.y + (iY * 13)) + 13, 1,
                     sf::Color::Cyan);
-                cText.CreateText(
+                textList.createText(
                     gCtrl.menuPos.x + 2, gCtrl.menuPos.y + (iY * 13), 12,
                     sf::Color::White, gCtrl.menuPtrCon.pVecItem[0]->name);
                 int Butt = createSquareButton(
@@ -639,8 +639,9 @@ void menuPopUp()
                         gCtrl.menuPos.x, (gCtrl.menuPos.y + (iY * 13)) + 13,
                         gCtrl.menuPos.x + 90,
                         (gCtrl.menuPos.y + (iY * 13)) + 13, 1, sf::Color::Cyan);
-                cText.CreateText(gCtrl.menuPos.x, gCtrl.menuPos.y + (iY * 13),
-                                 12, sf::Color::White, "Enter city");
+                textList.createText(gCtrl.menuPos.x,
+                                    gCtrl.menuPos.y + (iY * 13), 12,
+                                    sf::Color::White, "Enter city");
                 int Butt = createSquareButton(
                     math::Vec2f(gCtrl.menuPos.x + BRD,
                                 (gCtrl.menuPos.y + (iY * 13)) + MBD),
@@ -722,9 +723,9 @@ void menuPopUp()
                     gCtrl.menuPos.x, (gCtrl.menuPos.y + (iY * 13)) + 13,
                     gCtrl.menuPos.x + 90, (gCtrl.menuPos.y + (iY * 13)) + 13, 1,
                     sf::Color::Cyan);
-                cText.CreateText(gCtrl.menuPos.x + 2,
-                                 gCtrl.menuPos.y + (iY * 13), 12,
-                                 sf::Color::White, "Close Menu");
+                textList.createText(gCtrl.menuPos.x + 2,
+                                    gCtrl.menuPos.y + (iY * 13), 12,
+                                    sf::Color::White, "Close Menu");
                 int Butt = createSquareButton(
                     math::Vec2f(gCtrl.menuPos.x + BRD,
                                 (gCtrl.menuPos.y + (iY * 13)) + MBD),
@@ -744,9 +745,9 @@ void menuPopUp()
                     gCtrl.menuPos.x, (gCtrl.menuPos.y + (iY * 13)) + 13,
                     gCtrl.menuPos.x + 90, (gCtrl.menuPos.y + (iY * 13)) + 13, 1,
                     sf::Color::Cyan);
-                cText.CreateText(gCtrl.menuPos.x + 2,
-                                 gCtrl.menuPos.y + (iY * 13), 12,
-                                 sf::Color::White, "Missile Strike");
+                textList.createText(gCtrl.menuPos.x + 2,
+                                    gCtrl.menuPos.y + (iY * 13), 12,
+                                    sf::Color::White, "Missile Strike");
                 int Butt = createSquareButton(
                     math::Vec2f(gCtrl.menuPos.x + BRD,
                                 (gCtrl.menuPos.y + (iY * 13)) + MBD),
@@ -786,9 +787,9 @@ void menuPopUp()
                     gCtrl.menuPos.x, (gCtrl.menuPos.y + (iY * 13)) + 13,
                     gCtrl.menuPos.x + 90, (gCtrl.menuPos.y + (iY * 13)) + 13, 1,
                     sf::Color::Cyan);
-                cText.CreateText(gCtrl.menuPos.x + 2,
-                                 gCtrl.menuPos.y + (iY * 13), 12,
-                                 sf::Color::White, "Shift Wall/Stone");
+                textList.createText(gCtrl.menuPos.x + 2,
+                                    gCtrl.menuPos.y + (iY * 13), 12,
+                                    sf::Color::White, "Shift Wall/Stone");
                 int Butt = createSquareButton(
                     math::Vec2f(gCtrl.menuPos.x + BRD,
                                 (gCtrl.menuPos.y + (iY * 13)) + MBD),
@@ -831,9 +832,9 @@ void menuPopUp()
                     gCtrl.menuPos.x, (gCtrl.menuPos.y + (iY * 13)) + 13,
                     gCtrl.menuPos.x + 90, (gCtrl.menuPos.y + (iY * 13)) + 13, 1,
                     sf::Color::Cyan);
-                cText.CreateText(gCtrl.menuPos.x + 2,
-                                 gCtrl.menuPos.y + (iY * 13), 12,
-                                 sf::Color::White, "Spawn Zombie Horde");
+                textList.createText(gCtrl.menuPos.x + 2,
+                                    gCtrl.menuPos.y + (iY * 13), 12,
+                                    sf::Color::White, "Spawn Zombie Horde");
                 int Butt = createSquareButton(
                     math::Vec2f(gCtrl.menuPos.x + BRD,
                                 (gCtrl.menuPos.y + (iY * 13)) + MBD),
@@ -857,9 +858,9 @@ void menuPopUp()
                     gCtrl.menuPos.x, (gCtrl.menuPos.y + (iY * 13)) + 13,
                     gCtrl.menuPos.x + 90, (gCtrl.menuPos.y + (iY * 13)) + 13, 1,
                     sf::Color::Cyan);
-                cText.CreateText(gCtrl.menuPos.x, gCtrl.menuPos.y + (iY * 13),
-                                 12, sf::Color::White,
-                                 "Print NPC's ConsoleInfo");
+                textList.createText(
+                    gCtrl.menuPos.x, gCtrl.menuPos.y + (iY * 13), 12,
+                    sf::Color::White, "Print NPC's ConsoleInfo");
                 int Butt = createSquareButton(
                     math::Vec2f(gCtrl.menuPos.x + BRD,
                                 (gCtrl.menuPos.y + (iY * 13)) + MBD),
@@ -890,9 +891,9 @@ void menuPopUp()
                     gCtrl.menuPos.x, (gCtrl.menuPos.y + (iY * 13)) + 13,
                     gCtrl.menuPos.x + 90, (gCtrl.menuPos.y + (iY * 13)) + 13, 1,
                     sf::Color::Cyan);
-                cText.CreateText(gCtrl.menuPos.x, gCtrl.menuPos.y + (iY * 13),
-                                 12, sf::Color::White,
-                                 "Print NPC's Bloodcontents");
+                textList.createText(
+                    gCtrl.menuPos.x, gCtrl.menuPos.y + (iY * 13), 12,
+                    sf::Color::White, "Print NPC's Bloodcontents");
                 int Butt = createSquareButton(
                     math::Vec2f(gCtrl.menuPos.x + BRD,
                                 (gCtrl.menuPos.y + (iY * 13)) + MBD),
@@ -919,9 +920,9 @@ void menuPopUp()
                     gCtrl.menuPos.x, (gCtrl.menuPos.y + (iY * 13)) + 13,
                     gCtrl.menuPos.x + 90, (gCtrl.menuPos.y + (iY * 13)) + 13, 1,
                     sf::Color::Cyan);
-                cText.CreateText(gCtrl.menuPos.x, gCtrl.menuPos.y + (iY * 13),
-                                 12, sf::Color::White,
-                                 "Give Everyone Zombification");
+                textList.createText(
+                    gCtrl.menuPos.x, gCtrl.menuPos.y + (iY * 13), 12,
+                    sf::Color::White, "Give Everyone Zombification");
                 int Butt = createSquareButton(
                     math::Vec2f(gCtrl.menuPos.x + BRD,
                                 (gCtrl.menuPos.y + (iY * 13)) + MBD),
@@ -951,8 +952,9 @@ void menuPopUp()
                     gCtrl.menuPos.x, (gCtrl.menuPos.y + (iY * 13)) + 13,
                     gCtrl.menuPos.x + 90, (gCtrl.menuPos.y + (iY * 13)) + 13, 1,
                     sf::Color::Cyan);
-                cText.CreateText(gCtrl.menuPos.x, gCtrl.menuPos.y + (iY * 13),
-                                 12, sf::Color::White, "Delete all critters");
+                textList.createText(gCtrl.menuPos.x,
+                                    gCtrl.menuPos.y + (iY * 13), 12,
+                                    sf::Color::White, "Delete all critters");
                 int Butt = createSquareButton(
                     math::Vec2f(gCtrl.menuPos.x + BRD,
                                 (gCtrl.menuPos.y + (iY * 13)) + MBD),
@@ -974,8 +976,9 @@ void menuPopUp()
                     gCtrl.menuPos.x, (gCtrl.menuPos.y + (iY * 13)) + 13,
                     gCtrl.menuPos.x + 90, (gCtrl.menuPos.y + (iY * 13)) + 13, 1,
                     sf::Color::Cyan);
-                cText.CreateText(gCtrl.menuPos.x, gCtrl.menuPos.y + (iY * 13),
-                                 12, sf::Color::White, "Starve all critters");
+                textList.createText(gCtrl.menuPos.x,
+                                    gCtrl.menuPos.y + (iY * 13), 12,
+                                    sf::Color::White, "Starve all critters");
                 int Butt = createSquareButton(
                     math::Vec2f(gCtrl.menuPos.x + BRD,
                                 (gCtrl.menuPos.y + (iY * 13)) + MBD),
@@ -996,8 +999,9 @@ void menuPopUp()
                     gCtrl.menuPos.x, (gCtrl.menuPos.y + (iY * 13)) + 13,
                     gCtrl.menuPos.x + 90, (gCtrl.menuPos.y + (iY * 13)) + 13, 1,
                     sf::Color::Cyan);
-                cText.CreateText(gCtrl.menuPos.x, gCtrl.menuPos.y + (iY * 13),
-                                 12, sf::Color::White, "Giant Enclosed Arena");
+                textList.createText(gCtrl.menuPos.x,
+                                    gCtrl.menuPos.y + (iY * 13), 12,
+                                    sf::Color::White, "Giant Enclosed Arena");
                 int Butt = createSquareButton(
                     math::Vec2f(gCtrl.menuPos.x + BRD,
                                 (gCtrl.menuPos.y + (iY * 13)) + MBD),
@@ -1051,8 +1055,8 @@ void menuPopUp()
                 gCtrl.menuPos.x, (gCtrl.menuPos.y + (iY * 11)) + 8,
                 gCtrl.menuPos.x + 90, (gCtrl.menuPos.y + (iY * 11)) + 8, 3,
                 sf::Color::Black, 1, sf::Color::Yellow);
-            cText.CreateText(gCtrl.menuPos.x, gCtrl.menuPos.y + (iY * 11), 11,
-                             sf::Color::Cyan, elem.name);
+            textList.createText(gCtrl.menuPos.x, gCtrl.menuPos.y + (iY * 11),
+                                11, sf::Color::Cyan, elem.name);
             int Butt =
                 createButton(math::Vec2f(gCtrl.menuPos.x + 90,
                                          (gCtrl.menuPos.y + (iY * 11)) + 5),
@@ -1081,8 +1085,8 @@ void menuPopUp()
                 gCtrl.menuPos.x, (gCtrl.menuPos.y + (iY * 11)) + 8,
                 gCtrl.menuPos.x + 90, (gCtrl.menuPos.y + (iY * 11)) + 8, 3,
                 sf::Color::Black, 1, sf::Color::Yellow);
-            cText.CreateText(gCtrl.menuPos.x, gCtrl.menuPos.y + (iY * 11), 11,
-                             sf::Color::Cyan, elem.name);
+            textList.createText(gCtrl.menuPos.x, gCtrl.menuPos.y + (iY * 11),
+                                11, sf::Color::Cyan, elem.name);
             int Butt =
                 createButton(math::Vec2f(gCtrl.menuPos.x + 90,
                                          (gCtrl.menuPos.y + (iY * 11)) + 5),
@@ -1116,8 +1120,9 @@ void menuPopUp()
                     gCtrl.menuPos.x, (gCtrl.menuPos.y + (iY * 11)) + 8,
                     gCtrl.menuPos.x + 90, (gCtrl.menuPos.y + (iY * 11)) + 8, 3,
                     sf::Color::Black, 1, sf::Color::Yellow);
-                cText.CreateText(gCtrl.menuPos.x, gCtrl.menuPos.y + (iY * 11),
-                                 11, sf::Color::Cyan, "Close Menu");
+                textList.createText(gCtrl.menuPos.x,
+                                    gCtrl.menuPos.y + (iY * 11), 11,
+                                    sf::Color::Cyan, "Close Menu");
                 int Butt =
                     createButton(math::Vec2f(gCtrl.menuPos.x + 90,
                                              (gCtrl.menuPos.y + (iY * 11)) + 5),
@@ -1144,8 +1149,9 @@ void menuPopUp()
                     gCtrl.menuPos.x, (gCtrl.menuPos.y + (iY * 11)) + 8,
                     gCtrl.menuPos.x + 90, (gCtrl.menuPos.y + (iY * 11)) + 8, 3,
                     sf::Color::Black, 1, sf::Color::Yellow);
-                cText.CreateText(gCtrl.menuPos.x, gCtrl.menuPos.y + (iY * 11),
-                                 11, sf::Color::Cyan, "PickUp");
+                textList.createText(gCtrl.menuPos.x,
+                                    gCtrl.menuPos.y + (iY * 11), 11,
+                                    sf::Color::Cyan, "PickUp");
                 int Butt =
                     createButton(math::Vec2f(gCtrl.menuPos.x + 90,
                                              (gCtrl.menuPos.y + (iY * 11)) + 5),
