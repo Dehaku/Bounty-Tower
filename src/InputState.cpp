@@ -5,7 +5,6 @@
 
 extern sf::RenderWindow window;
 
-bool plat = true;
 InputState inputState;
 
 void InputState::update()
