@@ -3861,7 +3861,6 @@ int main()
                     npclist.at(i).targetPos.y += -640;
                 }
 
-                //for(int i = 0; i != worlditems.size(); i++) worlditems.at(i).ypos += -640;
                 for (auto &worlditem : worlditems)
                     (worlditem).ypos += -640;
 
