@@ -4,11 +4,11 @@
 
 TextureManager texturemanager;
 
-sf::Texture &TextureManager::getTexture(std::string Input)
+sf::Texture &TextureManager::getTexture(std::string input)
 {
     for (size_t i = 0; i != textures.size(); i++)
     {
-        if (textures.at(i).name == Input)
+        if (textures.at(i).name == input)
         {
             return textures.at(i).texture;
         }
