@@ -95,9 +95,9 @@ void GalaxyController::buildLocal(std::string type, int zedAmount)
         // 1 dirt 3 grass 6 sand 7 stone 10 wall 20 dirtchannel 52 deepwater 53 lava
         if (myDebug)
             std::cout << "Creating Mass Tiles\n";
-        for (int i = 0; i != Grids; i++)
+        for (int i = 0; i != GRIDS; i++)
         {
-            for (int t = 0; t != Grids; t++)
+            for (int t = 0; t != GRIDS; t++)
             {
                 tiles[i][t][30].id = 3;
                 tiles[i][t][30].grass();
@@ -198,9 +198,9 @@ void GalaxyController::buildLocal(std::string type, int zedAmount)
         // ----------------------------------------
         // 1 dirt 3 grass 6 sand 7 stone 10 wall 20 dirtchannel 52 deepwater 53 lava
         debug("Creating Mass Tiles");
-        for (int i = 0; i != Grids; i++)
+        for (int i = 0; i != GRIDS; i++)
         {
-            for (int t = 0; t != Grids; t++)
+            for (int t = 0; t != GRIDS; t++)
             {
                 tiles[i][t][30].id = 3;
                 tiles[i][t][30].grass();
@@ -318,9 +318,9 @@ void GalaxyController::buildLocalTest()
     // 1 dirt 3 grass 6 sand 7 stone 10 wall 20 dirtchannel 52 deepwater 53 lava
     if (myDebug)
         std::cout << "Creating Mass Tiles\n";
-    for (int i = 0; i != Grids; i++)
+    for (int i = 0; i != GRIDS; i++)
     {
-        for (int t = 0; t != Grids; t++)
+        for (int t = 0; t != GRIDS; t++)
         {
             tiles[i][t][30].id = 3;
             //Tiles[i][t][30].Grass();

@@ -3011,9 +3011,9 @@ void updateNpc()
                                 previous;
                         }
                     }
-                    for (int i = 0; i != Grids; i++)
+                    for (int i = 0; i != GRIDS; i++)
                     {
-                        for (int t = 0; t != Grids; t++)
+                        for (int t = 0; t != GRIDS; t++)
                         {
                             // Add an Item Check here later to see if it blocks movement
                             if (tiles[i][t][30].walkable == false)
@@ -5227,9 +5227,9 @@ int main()
 
             if (key.c && true == false)
             { // Not sure what this was for, Perhaps an early alpha planet builder?
-                for (int x = 0; x != Grids; x++)
+                for (int x = 0; x != GRIDS; x++)
                 {
-                    for (int y = 0; y != Grids; y++)
+                    for (int y = 0; y != GRIDS; y++)
                     {
                         if (tiles[x][y][0].id == 1001)
                         {

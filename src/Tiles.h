@@ -3,9 +3,9 @@
 
 #include <SFML/Graphics.hpp>
 
-const int Grids = 96;
+const int GRIDS = 96;
 
-const int ChunkSize = 32;
+const int CHUNK_SIZE = 32;
 
 class WorldTileType
 {
@@ -62,7 +62,7 @@ public:
 class Chunk
 {
 public:
-    Tile zTiles[ChunkSize][ChunkSize][ChunkSize];
+    Tile zTiles[CHUNK_SIZE][CHUNK_SIZE][CHUNK_SIZE];
 };
 
 class Planet
@@ -97,13 +97,13 @@ public:
     WorldTile();
 };
 
-extern Tile tiles[Grids][Grids][Grids];
+extern Tile tiles[GRIDS][GRIDS][GRIDS];
 
 extern WorldTile worldMap[100][100];
 
-extern Tile vChunk[ChunkSize][ChunkSize][ChunkSize]; // 10223616
-extern Tile tempTile[Grids][Grids][Grids];
-extern XTile xChunk[ChunkSize][ChunkSize][ChunkSize];
+extern Tile vChunk[CHUNK_SIZE][CHUNK_SIZE][CHUNK_SIZE]; // 10223616
+extern Tile tempTile[GRIDS][GRIDS][GRIDS];
+extern XTile xChunk[CHUNK_SIZE][CHUNK_SIZE][CHUNK_SIZE];
 
 void zGenerateChunk(std::string type, int planet, sf::Vector2i cords,
                     sf::Vector2i Pos = sf::Vector2i(500, 500));
