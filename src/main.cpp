@@ -954,8 +954,8 @@ void critterBrain(std::vector<NPC> &NPCs)
 
         for(int Rot = StartAngle; Rot != EndAngle; Rot++)
         {
-            float XPos = npc.xpos + sin(Rot * PI / 180) * npc.viewrange;
-            float YPos = npc.ypos + cos(Rot * PI / 180) * npc.viewrange;
+            float XPos = npc.xpos + sinf(Rot * PI / 180) * npc.viewrange;
+            float YPos = npc.ypos + cosf(Rot * PI / 180) * npc.viewrange;
 
             if(Rot == StartAngle)
             {
@@ -3644,36 +3644,23 @@ int main()
             std::cout << GenerateName() << std::endl;
         }
 
-        if (Key.iTime == 10)
-        { // Attempt to fix item images that were vanishing.
-            Con("Doing");
-            itemmanager.globalItems.clear();
-            itemmanager.initializeItems();
-
-            refreshImages();
-        }
 
         if (Key.gTime == 1)
         { // Fling all critters south.
-            for (size_t i = 0; i != npclist.size(); i++)
+            for (auto &i : npclist)
             {
-                npclist[i].Momentum = sf::Vector2f(0, 100);
+                i.Momentum = sf::Vector2f(0, 100);
             }
         }
         if (Key.hTime == 1)
         { // Fling all critters north.
-            for (size_t i = 0; i != npclist.size(); i++)
+            for (auto &i : npclist)
             {
-                npclist[i].Momentum = sf::Vector2f(0, -100);
+                i.Momentum = sf::Vector2f(0, -100);
             }
         }
 
         // Game Mode Loops ================================================================================
-
-        if (Key.lTime == 1)
-        { // Print current clipboard contents to the console.
-            GetClipboardText();
-        }
 
         if (Key.r)
         { // Debug (de)activation
@@ -3699,16 +3686,6 @@ int main()
                 Boom(gvars::mousePos.x, gvars::mousePos.y, 10, 50);
             }
 
-            for (auto &worlditem : worlditems)
-            {
-                if (math::closeish(gvars::mousePos.x, gvars::mousePos.y,
-                                   (worlditem).xpos, (worlditem).ypos) <= 10)
-                {
-                    std::cout << "Found; " << (worlditem).name << std::endl;
-                    //fSleep(2);
-                }
-            }
-
             if (Key.vTime == 1)
                 ChatBox.AddChat(
                     randomWindowName(),
@@ -3718,8 +3695,6 @@ int main()
 
             if (Key.lshiftTime > 0)
             {
-                //int x = globals::TopLeft.x;
-                //int y = globals::TopLeft.y+Rez.y;
                 int x = gvars::bottomLeft.x;
                 int y = gvars::bottomLeft.y;
                 effects.createSquare(x + 20, y - 20, x + 40, y - 40,
@@ -3728,14 +3703,6 @@ int main()
             }
             if (Key.RMBTime == 1 && Key.lshift)
                 RMBMenuTile(gvars::mousePos);
-
-            if (Key.l == true)
-            {
-                for (auto &elem : npclist)
-                {
-                    elem.PrintBloodContent();
-                }
-            } // Zombification
 
             if (Key.lshift && Key.tab) // Debug NPC Spawn Menu
             {
@@ -3794,55 +3761,6 @@ int main()
                 GC.Wave();
 
             rightMouseButtonContextMenu();
-
-            if (Key.bTime == 1)
-            {
-                NPC Critter;
-                Critter = *GetGlobalCritter("Azabul");
-                Critter.xpos = gvars::mousePos.x;
-                Critter.ypos = gvars::mousePos.y;
-
-                Critter.Body.BodyParts =
-                    "{[Name:UpperTorso][BloodPumpRate:100][AirCapacity:200]["
-                    "AirAbsorbtion:100][ObjectCapacity:1][NutritionExtraction:"
-                    "25][MassFlesh:15:1000]}";
-                Critter.Body.BodyParts.append("\n{[Name:Head][Mind:true]["
-                                              "Orafice:1][MassFlesh:5:1000]["
-                                              "Dependant:UpperTorso]}");
-                Critter.Body.BodyParts.append(
-                    "\n{[Name:LowerTorso][ObjectCapacity:10][DigestionRate:125]"
-                    "[NutritionExtraction:50][PoisonFilter:Zombification:10]["
-                    "DigestsBlood:100][MassFlesh:15:1000][Dependant:UpperTorso]"
-                    "}");
-
-                Critter.Body.BodyParts.append("\n{[Name:Left "
-                                              "Leg][Walk:8][MassFlesh:15:1000]["
-                                              "Dependant:LowerTorso]}");
-                Critter.Body.BodyParts.append("\n{[Name:Right "
-                                              "Leg][Walk:8][MassFlesh:15:1000]["
-                                              "Dependant:LowerTorso]}");
-
-                Critter.Body.BodyParts.append("\n{[Name:Left "
-                                              "Arm][Grasp:2][MassFlesh:10:1000]"
-                                              "[Dependant:UpperTorso]}");
-                Critter.Body.BodyParts.append("\n{[Name:Right "
-                                              "Arm][Grasp:2][MassFlesh:10:1000]"
-                                              "[Dependant:UpperTorso]}");
-
-                npclist.push_back(Critter);
-            }
-
-            for (size_t i = 0; i != npclist.size(); i++)
-            {
-                if (npclist[i].name == "Azabul")
-                {
-                    cText.CreateText(
-                        (npclist[i].xpos) -
-                            ((npclist[i].Body.BodyParts.size() / 2) * 2),
-                        npclist[i].ypos + 10, 11, sf::Color::White,
-                        npclist[i].Body.BodyParts);
-                }
-            }
 
             if (Key.lshift == true && Key.left == true)
             {
@@ -3918,26 +3836,6 @@ int main()
                                        npclist.at(gvars::myTarget).ypos);
             }
 
-            if (Key.n)
-                GenerateChunk("Road", 500, sf::Vector2i(50, 50));
-            if (Key.m)
-                GenerateChunk("SouthernHouse", 500, sf::Vector2i(50, 50));
-
-            if (Key.qTime > 10 && gvars::myTarget == -1 && !Key.lshift)
-            {
-            }
-
-            if (Key.c)
-            {
-                for (int x = 0; x != ChunkSize; x++)
-                {
-                    for (int y = 0; y != ChunkSize; y++)
-                    {
-                        Tiles[x][y][30] = vChunk[x][y][0];
-                    }
-                }
-                //GenerateWorld();
-            }
 
             effects.createSquare(
                 32 * 20, 32 * 20, 64 * 20, 64 * 20, sf::Color(0, 0, 0, 0), 1,
@@ -3947,96 +3845,6 @@ int main()
                 0 * 20, 0 * 20, 32 * 20, 32 * 20, sf::Color(0, 0, 0, 0), 1,
                 sf::Color::
                     Red); // This one reachs from 0 to 32 only because it draws from the left, not the center.
-
-            /*
-
-            int Degrees = GX;
-            int Dist = 200;
-            if(Key.w) Degrees = 0;
-            if(Key.a) Degrees = 270;
-            if(Key.s) Degrees = 180;
-            if(Key.d) Degrees = 90;
-            float Xxx = MousePos.x + cosf(Degrees * PI/180) * Dist;
-            float Yyy = MousePos.y + sinf(Degrees * PI/180) * Dist;
-            Effectz.CreateCircle(MousePos.x,MousePos.y,5,Red);
-            Effectz.CreateCircle(Xxx,Yyy,5,White);
-
-            */
-
-            int Length = 200;
-
-            for (int Rot = 0; Rot != 360; Rot++)
-            {
-                /*int Rot = GX;
-                int XPos = ((abs(MousePos.x / 20) * 20) + 10 +
-                            cosf(Rot * PI / 180) * Length) /
-                           20;
-                int YPos = ((abs(MousePos.y / 20) * 20) + 10 +
-                            sinf(Rot * PI / 180) * Length) /
-                           20;
-                XPos *= 20;
-                YPos *= 20;
-
-                //Effectz.CreateCircle(MousePos.x,MousePos.y,5,Red);
-                //Effectz.CreateCircle(XPos,YPos,5,White);*/
-            }
-            if (Key.p && true == false)
-                for (int Rot = 0; Rot != 360; Rot++)
-                {
-                    //int Rot = GX;
-                    int XPos = ((abs(gvars::mousePos.x / 20) * 20) + 10 +
-                                cosf(Rot * PI / 180) * Length) /
-                               20;
-                    int YPos = ((abs(gvars::mousePos.y / 20) * 20) + 10 +
-                                sinf(Rot * PI / 180) * Length) /
-                               20;
-                    //XPos *= 20;
-                    //YPos *= 20;
-
-                    //Effectz.CreateCircle(MousePos.x,MousePos.y,5,Red);
-                    //Effectz.CreateCircle(XPos,YPos,5,White);
-                    Tiles[XPos][YPos][30].Stone();
-                }
-
-            if (Key.pTime == 1)
-            {
-
-                for (int ItLength = 0; ItLength != 16; ItLength++)
-                {
-
-                    if (ItLength != 15)
-                    {
-
-                        for (int Rot = 1; Rot != 361; Rot++)
-                        {
-
-                            int XPos = abs(gvars::mousePos.x / 20) +
-                                       sin(Rot * PI / 180) * ItLength;
-                            int YPos = abs(gvars::mousePos.y / 20) +
-                                       cos(Rot * PI / 180) * ItLength;
-
-                            Tiles[XPos][YPos][30].Stone();
-                        }
-                    }
-                    else
-                    {
-                        for (int Rot = 1; Rot != 361; Rot++)
-                        {
-
-                            int XPos = abs(gvars::mousePos.x / 20) +
-                                       sin(Rot * PI / 180) * ItLength;
-                            int YPos = abs(gvars::mousePos.y / 20) +
-                                       cos(Rot * PI / 180) * ItLength;
-
-                            Tiles[XPos][YPos][30].Wall();
-                        }
-                    }
-                }
-            }
-
-            //float XX = cos(GX * PI) / 180;
-            //float YY = sin(GY * PI) / 180;
-            //Effectz.CreateCircle(XX,YY,11,sf::Color::White);
 
             if (Key.lctrlTime > 10)
             {
@@ -4507,27 +4315,6 @@ int main()
                 removeItems(worlditems);
             }
 
-            //if(Key.b) Effectz.CreateBeam(1000,1000,MousePos.x,MousePos.y,50,Red,5,Blue,false,0);
-
-            Button var;
-            var.color = sf::Color::Red;
-            var.iSize = 5;
-            var.vPos = sf::Vector2f(600, 600);
-            var.sButtonText = "Howdy";
-            vButtonList.push_back(var);
-            if (buttonClicked(var.id))
-            {
-                std::cout << "Twas' True \n";
-            }
-
-            if (gvars::myTarget != -1 && npclist[gvars::myTarget].health <= 0 &&
-                Key.lshift && Key.q)
-            {
-                npclist[gvars::myTarget].ToDelete = true;
-                gvars::myTarget = -1;
-                gvars::myTargetid = -1;
-            }
-
             if (gvars::myTarget != -1 && Key.RMB &&
                 Tiles[abs_to_index(gvars::mousePos.x / GridSize)][abs_to_index(
                     gvars::mousePos.y / GridSize)][30].ID != 1010)
@@ -4552,7 +4339,6 @@ int main()
                 }
             } //End of Giving Orders
 
-            //for (int i = 0; i <= gridy-1; i++){for( int t = 0; t <= gridx-1; t++){int z = globals::currentz;if(globals::sunmap[z][i][t] != 0){globals::sunmap[z][i][t] -= 5;}}} // Darkness
             if (GC.MenuType != "NULL")
             {
                 menuPopUp();

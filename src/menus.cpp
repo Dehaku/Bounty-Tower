@@ -696,7 +696,7 @@ void menuPopUp()
     if (GC.MenuType == "DebugFunctions")
     {
 
-        int Options = 8;
+        int Options = 10;
         GC.MenuEndPos = sf::Vector2f(GC.MenuPos.x + 150,
                                      (GC.MenuPos.y + (Options * 13)) + 5);
         effects.createSquare(GC.MenuPos.x, GC.MenuPos.y, GC.MenuEndPos.x,
@@ -842,8 +842,6 @@ void menuPopUp()
 
             if (i == 4)
             {
-
-                //Effectz.CreateLine(GC.MenuPos.x,(GC.MenuPos.y+(iY*13))+8,GC.MenuPos.x+90,(GC.MenuPos.y+(iY*13))+8,3,Black,1,Yellow);
                 effects.createLine(
                     GC.MenuPos.x, (GC.MenuPos.y + (iY * 13)) + 13,
                     GC.MenuPos.x + 90, (GC.MenuPos.y + (iY * 13)) + 13, 1,
@@ -881,20 +879,17 @@ void menuPopUp()
                     GC.MenuPos.x + 90, (GC.MenuPos.y + (iY * 13)) + 13, 1,
                     sf::Color::Cyan);
                 cText.CreateText(GC.MenuPos.x, GC.MenuPos.y + (iY * 13), 12,
-                                 sf::Color::White,
-                                 "Give Everyone Zombification");
+                                 sf::Color::White, "Print NPC's Bloodcontents");
                 int Butt = createSquareButton(
                     math::Vec2f(GC.MenuPos.x + BRD,
                                 (GC.MenuPos.y + (iY * 13)) + MBD),
-                    BS, BSY, ButCol,
-                    "You horrible monster, Why would you do this?!");
-                if (squareButtonClicked(Butt) || Key.num6Time == 1)
+                    BS, BSY, ButCol);
+                if (squareButtonClicked(Butt) || Key.num5Time == 1)
                 {
 
-                    std::vector<NPC>::iterator zit;
-                    for (zit = npclist.begin(); zit != npclist.end(); ++zit)
+                    for (auto &elem : npclist)
                     {
-                        zit->bloodwork("Zombification", 100);
+                        elem.PrintBloodContent();
                     }
 
                     GC.MenuPos = sf::Vector2f(-10000, -10000);
@@ -906,6 +901,36 @@ void menuPopUp()
             }
 
             if (i == 6)
+            {
+                effects.createLine(
+                    GC.MenuPos.x, (GC.MenuPos.y + (iY * 13)) + 13,
+                    GC.MenuPos.x + 90, (GC.MenuPos.y + (iY * 13)) + 13, 1,
+                    sf::Color::Cyan);
+                cText.CreateText(GC.MenuPos.x, GC.MenuPos.y + (iY * 13), 12,
+                                 sf::Color::White,
+                                 "Give Everyone Zombification");
+                int Butt = createSquareButton(
+                    math::Vec2f(GC.MenuPos.x + BRD,
+                                (GC.MenuPos.y + (iY * 13)) + MBD),
+                    BS, BSY, ButCol,
+                    "You horrible monster, Why would you do this?!");
+                if (squareButtonClicked(Butt) || Key.num6Time == 1)
+                {
+
+                    for (auto &elem : npclist)
+                    {
+                        elem.bloodwork("Zombification", 100);
+                    }
+
+                    GC.MenuPos = sf::Vector2f(-10000, -10000);
+                    GC.MenuType = "NULL";
+
+                    fSleep(0.2);
+                    break;
+                }
+            }
+
+            if (i == 7)
             {
 
                 //Effectz.CreateLine(GC.MenuPos.x,(GC.MenuPos.y+(iY*13))+8,GC.MenuPos.x+90,(GC.MenuPos.y+(iY*13))+8,3,Black,1,Yellow);
@@ -921,14 +946,14 @@ void menuPopUp()
                     BS, BSY, ButCol);
                 if (squareButtonClicked(Butt) || Key.num7Time == 1)
                 {
-                    for (size_t i = 0; i != npclist.size(); i++)
+                    for (auto &elem : npclist)
                     {
-                        npclist.at(i).ToDelete = true;
+                        elem.ToDelete = true;
                     }
                 }
             }
 
-            if (i == 7)
+            if (i == 8)
             {
 
                 //Effectz.CreateLine(GC.MenuPos.x,(GC.MenuPos.y+(iY*13))+8,GC.MenuPos.x+90,(GC.MenuPos.y+(iY*13))+8,3,Black,1,Yellow);
@@ -944,9 +969,52 @@ void menuPopUp()
                     BS, BSY, ButCol);
                 if (squareButtonClicked(Butt) || Key.num8Time == 1)
                 {
-                    for (size_t i = 0; i != npclist.size(); i++)
+                    for (auto &elem : npclist)
                     {
-                        npclist.at(i).hunger = 50;
+                        elem.hunger = 50;
+                    }
+                }
+            }
+            if (i == 9)
+            {
+
+                //Effectz.CreateLine(GC.MenuPos.x,(GC.MenuPos.y+(iY*13))+8,GC.MenuPos.x+90,(GC.MenuPos.y+(iY*13))+8,3,Black,1,Yellow);
+                effects.createLine(
+                    GC.MenuPos.x, (GC.MenuPos.y + (iY * 13)) + 13,
+                    GC.MenuPos.x + 90, (GC.MenuPos.y + (iY * 13)) + 13, 1,
+                    sf::Color::Cyan);
+                cText.CreateText(GC.MenuPos.x, GC.MenuPos.y + (iY * 13), 12,
+                                 sf::Color::White, "Giant Enclosed Arena");
+                int Butt = createSquareButton(
+                    math::Vec2f(GC.MenuPos.x + BRD,
+                                (GC.MenuPos.y + (iY * 13)) + MBD),
+                    BS, BSY, ButCol);
+                if (squareButtonClicked(Butt) || Key.num8Time == 1)
+                {
+                    for (int ItLength = 0; ItLength != 16; ItLength++)
+                    {
+                        if (ItLength != 15)
+                        {
+                            for (int Rot = 1; Rot != 361; Rot++)
+                            {
+                                int XPos = abs(GC.MenuPos.x / 20) +
+                                       sin(Rot * PI / 180) * ItLength;
+                                int YPos = abs(GC.MenuPos.y / 20) +
+                                       cos(Rot * PI / 180) * ItLength;
+                                Tiles[XPos][YPos][30].Stone();
+                            }
+                        }
+                        else
+                        {
+                            for (int Rot = 1; Rot != 361; Rot++)
+                            {
+                                int XPos = abs(GC.MenuPos.x / 20) +
+                                       sin(Rot * PI / 180) * ItLength;
+                                int YPos = abs(GC.MenuPos.y / 20) +
+                                       cos(Rot * PI / 180) * ItLength;
+                                Tiles[XPos][YPos][30].Wall();
+                            }
+                        }
                     }
                 }
             }

@@ -1504,6 +1504,35 @@ void cNpcManager::InitializeCritters()
                                                   "10:1000][Dependant:"
                                                   "UpperTorso]}");
                 }
+                if(Critter.race == "Azabul")
+                {
+                    Critter.Body.BodyParts =
+                    "{[Name:UpperTorso][BloodPumpRate:100][AirCapacity:200]["
+                    "AirAbsorbtion:100][ObjectCapacity:1][NutritionExtraction:"
+                    "25][MassFlesh:15:1000]}";
+                Critter.Body.BodyParts.append("\n{[Name:Head][Mind:true]["
+                                              "Orafice:1][MassFlesh:5:1000]["
+                                              "Dependant:UpperTorso]}");
+                Critter.Body.BodyParts.append(
+                    "\n{[Name:LowerTorso][ObjectCapacity:10][DigestionRate:125]"
+                    "[NutritionExtraction:50][PoisonFilter:Zombification:10]["
+                    "DigestsBlood:100][MassFlesh:15:1000][Dependant:UpperTorso]"
+                    "}");
+
+                Critter.Body.BodyParts.append("\n{[Name:Left "
+                                              "Leg][Walk:8][MassFlesh:15:1000]["
+                                              "Dependant:LowerTorso]}");
+                Critter.Body.BodyParts.append("\n{[Name:Right "
+                                              "Leg][Walk:8][MassFlesh:15:1000]["
+                                              "Dependant:LowerTorso]}");
+
+                Critter.Body.BodyParts.append("\n{[Name:Left "
+                                              "Arm][Grasp:2][MassFlesh:10:1000]"
+                                              "[Dependant:UpperTorso]}");
+                Critter.Body.BodyParts.append("\n{[Name:Right "
+                                              "Arm][Grasp:2][MassFlesh:10:1000]"
+                                              "[Dependant:UpperTorso]}");
+                }
             }
 
             std::string Imagery = StringFindString(line, "[Image:");
