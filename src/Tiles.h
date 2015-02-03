@@ -105,11 +105,11 @@ extern Tile vChunk[ChunkSize][ChunkSize][ChunkSize]; // 10223616
 extern Tile tempTile[Grids][Grids][Grids];
 extern XTile xChunk[ChunkSize][ChunkSize][ChunkSize];
 
-void zGenerateChunk(std::string type, int planet, sf::Vector2i Cords,
+void zGenerateChunk(std::string type, int planet, sf::Vector2i cords,
                     sf::Vector2i Pos = sf::Vector2i(500, 500));
-void generateChunk(std::string type, int planet, sf::Vector2i Cords,
+void generateChunk(std::string type, int planet, sf::Vector2i cords,
                    sf::Vector2i Pos = sf::Vector2i(500, 500));
-void generateWorld(int RegionSize = 100, int PlanetNum = 500);
+void generateWorld(int regionSize = 100, int planetNum = 500);
 void saveMap(int planet, int xcord, int ycord, int xpos, int ypos);
 void loadMap(int planet, int xcord, int ycord, int xpos, int ypos);
 void initalizeWorldTiles();

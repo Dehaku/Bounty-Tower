@@ -19,15 +19,15 @@ XTile xChunk[ChunkSize][ChunkSize][ChunkSize];
 
 extern sf::RenderWindow window;
 
-void zGenerateChunk(std::string type, int planet, sf::Vector2i Cords,
+void zGenerateChunk(std::string type, int planet, sf::Vector2i cords,
                     sf::Vector2i /*Pos*/)
 {
 
     con("Queso?");
 
-    std::string Deb = "Creating Chunk: ";
-    Deb.append(type);
-    debug(Deb);
+    std::string deb = "Creating Chunk: ";
+    deb.append(type);
+    debug(deb);
 
     if (type == "Building")
     {
@@ -85,8 +85,8 @@ void zGenerateChunk(std::string type, int planet, sf::Vector2i Cords,
     string line("data/maps/map");
     stringstream convert;
     convert << planet;
-    convert << Cords.x;
-    convert << Cords.y;
+    convert << cords.x;
+    convert << cords.y;
     line.append(convert.str());
     string ending(".map");
     line.append(ending);
@@ -108,7 +108,7 @@ void zGenerateChunk(std::string type, int planet, sf::Vector2i Cords,
     }
 }
 
-void generateChunk(std::string type, int planet, sf::Vector2i Cords,
+void generateChunk(std::string type, int planet, sf::Vector2i cords,
                    sf::Vector2i /*Pos*/)
 {
     //std::string Deb = "Creating Chunk: ";
@@ -358,9 +358,9 @@ void generateChunk(std::string type, int planet, sf::Vector2i Cords,
     galaxy_mkdir(line);
     line.append("/map");
     convert << "x";
-    convert << Cords.x;
+    convert << cords.x;
     convert << "y";
-    convert << Cords.y;
+    convert << cords.y;
     line.append(convert.str());
     string ending(".map");
     line.append(ending);
@@ -375,12 +375,12 @@ void generateChunk(std::string type, int planet, sf::Vector2i Cords,
         int YY = 0;
         con("Post Image");
 
-        for (int i = Cords.x * ChunkSize;
-             i != (Cords.x * ChunkSize) + ChunkSize; i++)
+        for (int i = cords.x * ChunkSize;
+             i != (cords.x * ChunkSize) + ChunkSize; i++)
         {
 
-            for (int t = Cords.y * ChunkSize;
-                 t != (Cords.y * ChunkSize) + ChunkSize; t++)
+            for (int t = cords.y * ChunkSize;
+                 t != (cords.y * ChunkSize) + ChunkSize; t++)
             {
                 image.setPixel(
                     i, t,
@@ -416,26 +416,26 @@ void generateChunk(std::string type, int planet, sf::Vector2i Cords,
     //debug("Writting map to file...");
     for (int x = 0; x != ChunkSize; x++)
     {
-        auto ID = vChunk[0][0][x].id;
-        bool Same = true;
+        auto id = vChunk[0][0][x].id;
+        bool same = true;
         for (int i = 0; i != ChunkSize; i++)
         {
             for (int t = 0; t != ChunkSize; t++)
             {
-                if (vChunk[i][t][x].id != ID)
+                if (vChunk[i][t][x].id != id)
                 {
-                    Same = false;
+                    same = false;
                     //Con("Same = false;");
                 }
             }
         }
 
-        if (Same)
+        if (same)
         {
             outputFile << "[";
             outputFile << x;
             outputFile << ",";
-            outputFile << ID;
+            outputFile << id;
             outputFile << "]" << endl;
         }
         else
@@ -453,23 +453,23 @@ void generateChunk(std::string type, int planet, sf::Vector2i Cords,
     }
 }
 
-void generateWorld(int RegionSize, int PlanetNum)
+void generateWorld(int regionSize, int planetNum)
 {
 
-    for (int x = 0; x != RegionSize; x++)
+    for (int x = 0; x != regionSize; x++)
     {
-        for (int y = 0; y != RegionSize; y++)
+        for (int y = 0; y != regionSize; y++)
         {
-            int RanFor = randz(0, 10);
+            int ranFor = randz(0, 10);
 
-            if (RanFor == 10)
-                generateChunk("Building", PlanetNum, sf::Vector2i(x, y));
-            else if (RanFor == 9)
-                generateChunk("SouthernHouse", PlanetNum, sf::Vector2i(x, y));
-            else if (RanFor == 8)
-                generateChunk("Road", PlanetNum, sf::Vector2i(x, y));
-            else if (RanFor <= 7)
-                generateChunk("Building", PlanetNum, sf::Vector2i(x, y));
+            if (ranFor == 10)
+                generateChunk("Building", planetNum, sf::Vector2i(x, y));
+            else if (ranFor == 9)
+                generateChunk("SouthernHouse", planetNum, sf::Vector2i(x, y));
+            else if (ranFor == 8)
+                generateChunk("Road", planetNum, sf::Vector2i(x, y));
+            else if (ranFor <= 7)
+                generateChunk("Building", planetNum, sf::Vector2i(x, y));
 
             //GenerateChunk("Building",PlanetNum,x,y);
         }
@@ -506,7 +506,7 @@ void saveMap(int planet, int /*xcord*/, int /*ycord*/, int xpos, int ypos)
 void loadMap(int planet, int xcord, int ycord, int /*xpos*/, int /*ypos*/)
 {
     using namespace std;
-    fstream File; // Start to Load Map
+    fstream file; // Start to Load Map
     string newline("saves/maps/map");
     stringstream newconvert;
     newconvert << planet;
@@ -516,10 +516,10 @@ void loadMap(int planet, int xcord, int ycord, int /*xpos*/, int /*ypos*/)
     string newending(".txt");
     newline.append(newending);
 
-    File.open(newline.c_str(), fstream::in);
+    file.open(newline.c_str(), fstream::in);
     debug("looking for file...");
 
-    if (File.is_open())
+    if (file.is_open())
     {
         cout << "found file: " << newline << endl;
         cout << "Read string to file...\n";
@@ -528,19 +528,19 @@ void loadMap(int planet, int xcord, int ycord, int /*xpos*/, int /*ypos*/)
         {
             for (int t = 0; t != Grids; t++)
             {
-                File >> tiles[i][t][30].id;
+                file >> tiles[i][t][30].id;
             }
         }
-        File.close();
+        file.close();
     } // End to Load Map
 }
 
 void initalizeWorldTiles()
 {
-    sf::Texture Txtr;
-    sf::Sprite Sprt;
-    std::cout << "Texture SizeOf: " << sizeof(Txtr)
-              << ", Sprite: " << sizeof(Sprt) << std::endl;
+    sf::Texture txtr;
+    sf::Sprite sprt;
+    std::cout << "Texture SizeOf: " << sizeof(txtr)
+              << ", Sprite: " << sizeof(sprt) << std::endl;
     int Cities = 0;
     int Plains = 0;
     int Spires = 0;
@@ -616,13 +616,13 @@ void drawWorldTiles()
                     {
                         if (worldMap[i][t].owner == uniFact[z].name)
                         {
-                            sf::Color Prim = uniFact[z].primaryColor;
-                            Prim.a = Prim.a / 1.3;
-                            sf::Color Seco = uniFact[z].secondaryColor;
-                            Seco.a = Seco.a / 1.3;
+                            sf::Color prim = uniFact[z].primaryColor;
+                            prim.a = prim.a / 1.3;
+                            sf::Color seco = uniFact[z].secondaryColor;
+                            seco.a = seco.a / 1.3;
                             effects.createSquare(
                                 (i * 20) + 1, (t * 20) + 1, ((i * 20) + 20) - 1,
-                                ((t * 20) + 20) - 1, Prim, 10, Seco);
+                                ((t * 20) + 20) - 1, prim, 10, seco);
                         }
                     }
                 }
@@ -657,13 +657,13 @@ void initializeTiles()
 void drawTile(int xpos, int ypos, sf::Texture &Image)
 {
     con("1stBacon");
-    sf::Sprite Imgr;
+    sf::Sprite imgr;
     con("2ndBacon");
-    Imgr.setTexture(Image);
+    imgr.setTexture(Image);
     con("Bacon");
-    Imgr.setPosition(xpos, ypos);
+    imgr.setPosition(xpos, ypos);
     con("Bacon");
-    window.draw(Imgr);
+    window.draw(imgr);
 }
 
 void drawNewTiles()
@@ -689,18 +689,18 @@ void tilesRandom()
     {
         for (int t = 0; t != Grids; t++)
         {
-            int Ran = randz(0, 2);
-            if (Ran == 0)
+            int ran = randz(0, 2);
+            if (ran == 0)
             {
                 tiles[i][t][30].id = 10;
                 //                Tiles[i][t][30].Img.setTexture( *imagemanager.GetImage("Underground.png"));
             }
-            if (Ran == 1)
+            if (ran == 1)
             {
                 tiles[i][t][30].id = 20;
                 //                Tiles[i][t][30].Img.setTexture( *imagemanager.GetImage("Ground.bmp"));
             }
-            if (Ran == 2)
+            if (ran == 2)
             {
                 tiles[i][t][30].id = 30;
                 //                Tiles[i][t][30].Img.setTexture( *imagemanager.GetImage("Sky.bmp"));
@@ -1155,17 +1155,17 @@ void Tile::rendGrass()
 { // 1001
     id = 1001;
     worldColor = sf::Color(0, 150, 0);
-    sf::Image Grazz;
-    Grazz.create(20, 20, sf::Color(0, 0, 0, 255));
+    sf::Image grazz;
+    grazz.create(20, 20, sf::Color(0, 0, 0, 255));
     for (int i = 0; i != 20; i++)
     {
         for (int t = 0; t != 20; t++)
         {
-            int Pix = randz(0, 3);
-            if (Pix <= 2)
-                Grazz.setPixel(i, t, sf::Color(0, 128, 0, 255));
-            if (Pix == 3)
-                Grazz.setPixel(i, t, sf::Color(0, 255, 0, 255));
+            int pix = randz(0, 3);
+            if (pix <= 2)
+                grazz.setPixel(i, t, sf::Color(0, 128, 0, 255));
+            if (pix == 3)
+                grazz.setPixel(i, t, sf::Color(0, 255, 0, 255));
             //Grazz.setPixel(i,t,sf::Color(0,128,0,255));
         }
     }
