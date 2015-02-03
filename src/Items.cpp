@@ -267,12 +267,12 @@ Item *getItemPtrFromVector(std::list<Item> &vector, std::string name)
 {
     debug("Doing GetItmPtr");
     //*for(int i = 0; i != Vector.size(); i++)
-    for (auto i = vector.begin(); i != vector.end(); i++)
+    for (auto &elem : vector)
     {
-        if ((*i).name == name)
+        if ((elem).name == name)
         {
             debug("Returning GetItmPtr");
-            return &(*i);
+            return &(elem);
         }
     }
 
@@ -302,33 +302,33 @@ Item *getItemPtrfromVectorVarSearch(std::list<Item> &vector,
 {
     debug("Doing GetItmPtrVarSearch");
     //for(int i = 0; i != Vector.size(); i++)
-    for (auto i = vector.begin(); i != vector.end(); i++)
+    for (auto &elem : vector)
     {
 
-        if ((*i).massFlesh >= atLeast && varSearch == "MassFlesh")
+        if ((elem).massFlesh >= atLeast && varSearch == "MassFlesh")
         {
             debug("Returning GetItmPtrVarSearch");
-            return &(*i);
+            return &(elem);
         }
-        if ((*i).massVeggy >= atLeast && varSearch == "MassVeggy")
+        if ((elem).massVeggy >= atLeast && varSearch == "MassVeggy")
         {
             debug("Returning GetItmPtrVarSearch");
-            return &(*i);
+            return &(elem);
         }
-        if ((*i).massWater >= atLeast && varSearch == "MassWater")
+        if ((elem).massWater >= atLeast && varSearch == "MassWater")
         {
             debug("Returning GetItmPtrVarSearch");
-            return &(*i);
+            return &(elem);
         }
-        if ((*i).massMetal >= atLeast && varSearch == "MassMetal")
+        if ((elem).massMetal >= atLeast && varSearch == "MassMetal")
         {
             debug("Returning GetItmPtrVarSearch");
-            return &(*i);
+            return &(elem);
         }
-        if ((*i).massPlastic >= atLeast && varSearch == "MassPlastic")
+        if ((elem).massPlastic >= atLeast && varSearch == "MassPlastic")
         {
             debug("Returning GetItmPtrVarSearch");
-            return &(*i);
+            return &(elem);
         }
     }
 
@@ -351,29 +351,30 @@ Item *findClosestItemPtr(int orix, int oriy, std::string tarItem, int /*Gxpos*/,
 
     Item *returns;
 
-    for (auto i = worlditems.begin(); i != worlditems.end(); i++)
+    for (auto &worlditem : worlditems)
     {
         if (first == true)
         {
-            if ((*i).name == tarItem)
+            if ((worlditem).name == tarItem)
             {
-                closx = (*i).xpos;
-                closy = (*i).ypos;
+                closx = (worlditem).xpos;
+                closy = (worlditem).ypos;
                 first = false;
-                returns = &(*i);
+                returns = &(worlditem);
             }
         }
         else
         {
-            if ((*i).name == tarItem)
+            if ((worlditem).name == tarItem)
             {
-                int one = math::closeish(orix, oriy, (*i).xpos, (*i).ypos);
+                int one = math::closeish(orix, oriy, (worlditem).xpos,
+                                         (worlditem).ypos);
                 int two = math::closeish(orix, oriy, closx, closy);
                 if (one < two)
                 {
-                    closx = (*i).xpos;
-                    closy = (*i).ypos;
-                    returns = &(*i);
+                    closx = (worlditem).xpos;
+                    closy = (worlditem).ypos;
+                    returns = &(worlditem);
                 }
             }
         }

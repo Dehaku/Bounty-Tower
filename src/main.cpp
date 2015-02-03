@@ -685,11 +685,11 @@ void critterBrain(std::vector<Npc> &npcs)
 
         searchPos = 0;
 
-        for (auto i = npc.inventory.begin(); i != npc.inventory.end(); i++)
+        for (auto &elem : npc.inventory)
         {
-            if ((*i).insidePart != "")
+            if ((elem).insidePart != "")
             {
-                (*i).hasInternalUse--;
+                (elem).hasInternalUse--;
             }
         }
 
