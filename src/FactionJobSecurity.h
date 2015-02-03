@@ -4,10 +4,10 @@
 #include "Items.h"
 #include "JobManager.h"
 
-void RMBMenuItem(Item &pItem);
-void DigWall(sf::Vector2f Pos);
-void RMBMenuTile(sf::Vector2f Pos);
-void DrawJobList(int DrawXPos, int DrawYPos);
-void RemoveJobs(std::vector<Job> &JobList);
+void rmbMenuItem(Item &pItem);
+void digWall(sf::Vector2f Pos);
+void rmbMenuTile(sf::Vector2f Pos);
+void drawJobList(int DrawXPos, int DrawYPos);
+void removeJobs(std::vector<Job> &JobList);
 
 #endif // FACTIONJOBSECURITY_H_INCLUDED

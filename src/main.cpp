@@ -2458,7 +2458,7 @@ void updateNpc()
                             debug("End Job " + std::to_string(i));
                         }
 
-                        RemoveJobs(uniFact[0].jobList);
+                        removeJobs(uniFact[0].jobList);
 
                         debug("Finished Job Activity. \n ");
                     }
@@ -3371,7 +3371,7 @@ void DrawStuffs()
 
     DrawNPCs();
 
-    DrawJobList(window.getView().getCenter().x - 500,
+    drawJobList(window.getView().getCenter().x - 500,
                 window.getView().getCenter().y);
     debug("Drew Joblist");
 
@@ -3696,7 +3696,7 @@ int main()
                 cText.CreateText(x + 20, y - 30, 11, sf::Color::White, "Build");
             }
             if (Key.RMBTime == 1 && Key.lshift)
-                RMBMenuTile(gvars::mousePos);
+                rmbMenuTile(gvars::mousePos);
 
             if (Key.lshift && Key.tab) // Debug NPC Spawn Menu
             {

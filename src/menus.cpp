@@ -309,7 +309,7 @@ void menuPopUp()
                     BS, BSY, ButCol, "Makes a Wall!");
                 if (squareButtonClicked(Butt) || Key.num1Time == 1)
                 {
-                    RMBMenuTile(gCtrl.menuPos);
+                    rmbMenuTile(gCtrl.menuPos);
                 }
             }
 
@@ -328,7 +328,7 @@ void menuPopUp()
                     BS, BSY, ButCol, "Digs out a natural wall.");
                 if (squareButtonClicked(Butt) || Key.num1Time == 1)
                 {
-                    DigWall(gCtrl.menuPos);
+                    digWall(gCtrl.menuPos);
                 }
             }
 

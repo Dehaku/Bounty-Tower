@@ -9,7 +9,7 @@
 
 using std::abs;
 
-void RMBMenuItem(Item &pItem)
+void rmbMenuItem(Item &pItem)
 {
     /*
     std::cout << pItem.name << std::endl;
@@ -41,7 +41,7 @@ void RMBMenuItem(Item &pItem)
     }
 }
 
-void DigWall(sf::Vector2f Pos)
+void digWall(sf::Vector2f Pos)
 {
     for (size_t i = 0; i != uniFact.size(); i++)
     {
@@ -70,7 +70,7 @@ void DigWall(sf::Vector2f Pos)
     }
 }
 
-void RMBMenuTile(sf::Vector2f Pos)
+void rmbMenuTile(sf::Vector2f Pos)
 {
     for (size_t i = 0; i != uniFact.size(); i++)
     {
@@ -102,7 +102,7 @@ void RMBMenuTile(sf::Vector2f Pos)
     }
 }
 
-void DrawJobList(int DrawXPos, int DrawYPos)
+void drawJobList(int DrawXPos, int DrawYPos)
 {
     int YVariance = 1;
     for (size_t i = 0; i != uniFact.size(); i++)
@@ -165,7 +165,7 @@ void DrawJobList(int DrawXPos, int DrawYPos)
     }
 }
 
-void RemoveJobs(std::vector<Job> &JobList)
+void removeJobs(std::vector<Job> &JobList)
 {
     //debug("Removing Jobs")
     bool Done = false;
