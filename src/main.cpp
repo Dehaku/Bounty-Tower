@@ -90,11 +90,11 @@ int randzorz(int min, int max)
     return num;
 }
 
-void unpointItems(std::list<Item> &Items)
+void unpointItems(std::list<Item> &items)
 {
 
     //for(int i = 0; i != Items.size(); i++)
-    for (auto i = Items.begin(); i != Items.begin(); i++)
+    for (auto i = items.begin(); i != items.begin(); i++)
     {
         if ((*i).toDelete)
         {
@@ -124,15 +124,15 @@ void unpointItems(std::list<Item> &Items)
                     }
                     std::cout << uniFact[0].jobList[t].pItem->id;
                     std::cout << " ; ";
-                    int ID1 = uniFact[0].jobList[t].pItem->id;
+                    int id1 = uniFact[0].jobList[t].pItem->id;
                     std::cout << "ID 2! ";
                     std::cout << (*i).id;
                     std::cout << " ; ";
-                    int ID2 = (*i).id;
-                    std::cout << "ID's: " << ID1 << ":" << ID2 << std::endl;
+                    int id2 = (*i).id;
+                    std::cout << "ID's: " << id1 << ":" << id2 << std::endl;
 
-                    if (ID1 ==
-                        ID2) //if(UniFact[0].JobList[t].pItem != NULL && &(*i) != NULL && UniFact[0].JobList[t].pItem == &(*i)) //if(ID1 == ID2)
+                    if (id1 ==
+                        id2) //if(UniFact[0].JobList[t].pItem != NULL && &(*i) != NULL && UniFact[0].JobList[t].pItem == &(*i)) //if(ID1 == ID2)
                     {
                         std::cout << "Match! \n";
                         uniFact[0].jobList[t].pItem = nullptr;
