@@ -4651,23 +4651,23 @@ int main()
                                .skills.dexterity;
                     agil =
                         squady.squad.at(squady.squad.size() - 1).skills.agility;
-                    int LeftOvers = 0;
+                    int leftOvers = 0;
                     if (stre >= 20)
-                        LeftOvers += stre - 20;
+                        leftOvers += stre - 20;
                     if (perc >= 20)
-                        LeftOvers += perc - 20;
+                        leftOvers += perc - 20;
                     if (inte >= 20)
-                        LeftOvers += inte - 20;
+                        leftOvers += inte - 20;
                     if (charis >= 20)
-                        LeftOvers += charis - 20;
+                        leftOvers += charis - 20;
                     if (endu >= 20)
-                        LeftOvers += endu - 20;
+                        leftOvers += endu - 20;
                     if (dext >= 20)
-                        LeftOvers += dext - 20;
+                        leftOvers += dext - 20;
                     if (agil >= 20)
-                        LeftOvers += agil - 20;
+                        leftOvers += agil - 20;
 
-                    squady.makeSquadPoints += LeftOvers + 100;
+                    squady.makeSquadPoints += leftOvers + 100;
                     squady.squadMates--;
                     if (static_cast<size_t>(squady.aim) ==
                         squady.squad.size() - 1)
