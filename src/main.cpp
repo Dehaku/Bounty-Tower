@@ -349,7 +349,7 @@ std::vector<int> nngTrace(int xa, int ya, int xb, int yb, int id,
 bool gridTrace(sf::Vector2f Ori, sf::Vector2f Tar)
 { // Looking in a straight line for a specific spot, Walls block vision.
 
-    int dx = Tar.x - Ori.x, dy = Tar.y - Ori.y, steps;
+    float dx = Tar.x - Ori.x, dy = Tar.y - Ori.y, steps;
     float xIncrement, yIncrement, x = Ori.x, y = Ori.y;
     if (abs_to_index(dx) > abs_to_index(dy))
         steps = abs_to_index(dx);
@@ -959,10 +959,7 @@ void runCritterBody(Npc &npc)
 
 }
 
-
-
-
-void critterBrain(Npc &npc)
+void critterBrain(Npc &npc, std::vector<Npc> &container)
 {
     runCritterBody(npc);
     debug("Debug: Ending Part Loop");
@@ -975,17 +972,16 @@ void critterBrain(Npc &npc)
     /* *BodyPart Loop* */
     /* Critter Vision   */
     const sf::Vector2f npcPos(npc.xpos, npc.ypos);
+    sf::Vector2f targetPos(gvars::mousePos);
     const float npcAngle = math::constrainAngle(npc.angle);
-    const float angleTarget = math::constrainAngle(math::angleBetweenVectors(npcPos, gvars::mousePos) - 90);
+    const float targetAngle = math::constrainAngle(math::angleBetweenVectors(npcPos, targetPos) - 90);
 
-    if(math::angleDiff(npcAngle,angleTarget) > npc.turnSpeed)
-    {
+    if(math::angleDiff(npcAngle,targetAngle) > npc.turnSpeed)
         npc.angle++;
-    }
-    else if (math::angleDiff(npcAngle,angleTarget) < -npc.turnSpeed)
+    else if (math::angleDiff(npcAngle,targetAngle) < -npc.turnSpeed)
         npc.angle--;
     else
-        npc.angle = angleTarget;
+        npc.angle = targetAngle;
 
 
 
@@ -1022,8 +1018,19 @@ void critterBrain(Npc &npc)
             shape.setPointCount(pointCounter);
             shape.setPoint(pointCounter - 1,
                            sf::Vector2f(xPos - npc.xpos, yPos - npc.ypos));
-            effects.createLine(npc.xpos, npc.ypos, xPos, yPos, 1,
-                               sf::Color::Cyan);
+            bool failedAlign = true;
+            if(npc.angle == targetAngle)
+            {
+                if(gridTrace(npcPos,targetPos))
+                {
+                    effects.createLine(npc.xpos, npc.ypos, xPos, yPos, 1,
+                                    sf::Color::Cyan);
+                    failedAlign = false;
+                }
+            }
+            if(failedAlign)
+                effects.createLine(npc.xpos, npc.ypos, xPos, yPos, 1,
+                                    sf::Color::Red);
         }
         if ((rot % 10) == 0 && rot != 0)
         {
@@ -1218,7 +1225,7 @@ void critterBrain(std::vector<Npc> &npcs)
 {
     for (auto &npc : npcs)
     {
-        critterBrain(npc);
+        critterBrain(npc,npcs);
     }
 }
 
