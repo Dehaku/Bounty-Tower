@@ -124,27 +124,27 @@ void SquareButtons::pressed()
     }
 }
 
-int createButton(sf::Vector2f vPos, int iSize, sf::Color Color,
-                 std::string Text)
+int createButton(sf::Vector2f vPos, int iSize, sf::Color color,
+                 std::string text)
 {
     Button var;
     var.vPos = vPos;
     var.iSize = iSize;
-    var.color = Color;
-    var.sButtonText = Text;
+    var.color = color;
+    var.sButtonText = text;
     vButtonList.push_back(var);
     return var.id;
 }
 
 int createSquareButton(sf::Vector2f vPos, int iSizex, int iSizey,
-                       sf::Color Color, std::string Text)
+                       sf::Color color, std::string text)
 {
     SquareButton var;
     var.vPos = vPos;
     var.iSizex = iSizex;
     var.iSizey = iSizey;
-    var.color = Color;
-    var.sButtonText = Text;
+    var.color = color;
+    var.sButtonText = text;
     vSquareButtonList.push_back(var);
     return var.id;
 }
@@ -209,29 +209,29 @@ void menuPopUp()
         gCtrl.menuPos = gvars::mousePos;
     }
 
-    sf::Vector2f Tiled(abs(gCtrl.menuPos.x / 20) * 20,
+    sf::Vector2f tiled(abs(gCtrl.menuPos.x / 20) * 20,
                        abs(gCtrl.menuPos.y / 20) * 20);
 
-    effects.createSquare(Tiled.x, Tiled.y, Tiled.x + 20, Tiled.y + 20,
+    effects.createSquare(tiled.x, tiled.y, tiled.x + 20, tiled.y + 20,
                          sf::Color::Transparent, 1, sf::Color::Cyan);
 
     if (gCtrl.menuType == "Orbital Drop")
     {
 
-        int Options = 8;
+        int options = 8;
         gCtrl.menuEndPos = sf::Vector2f(gCtrl.menuPos.x + 150,
-                                        (gCtrl.menuPos.y + (Options * 13)) + 5);
+                                        (gCtrl.menuPos.y + (options * 13)) + 5);
         effects.createSquare(gCtrl.menuPos.x, gCtrl.menuPos.y,
                              gCtrl.menuEndPos.x, gCtrl.menuEndPos.y,
                              sf::Color::Black, 2, sf::Color::Cyan);
         int iY = 0;
-        int BRD = 140;                      // ButtonRightDisplacement.
-        int BS = 7;                         // ButtonSize;
-        int BSY = 5;                        // ButtonSize;
-        int MBD = 8;                        // MoveButtonDown
-        sf::Color ButCol = sf::Color::Cyan; // ButtonColor.
+        int brd = 140;                      // ButtonRightDisplacement.
+        int bs = 7;                         // ButtonSize;
+        int bsy = 5;                        // ButtonSize;
+        int mbd = 8;                        // MoveButtonDown
+        sf::Color butCol = sf::Color::Cyan; // ButtonColor.
 
-        for (int i = 0; i != Options; i++)
+        for (int i = 0; i != options; i++)
         {
 
             if (i == 0)
@@ -243,11 +243,11 @@ void menuPopUp()
                 textList.createText(gCtrl.menuPos.x + 2,
                                     gCtrl.menuPos.y + (iY * 13), 12,
                                     sf::Color::White, "Orbital Drop - Missle");
-                int Butt = createSquareButton(
-                    math::Vec2f(gCtrl.menuPos.x + BRD,
-                                (gCtrl.menuPos.y + (iY * 13)) + MBD),
-                    BS, BSY, ButCol, "Strikes the location!");
-                if (squareButtonClicked(Butt) || key.num1Time == 1)
+                int butt = createSquareButton(
+                    math::Vec2f(gCtrl.menuPos.x + brd,
+                                (gCtrl.menuPos.y + (iY * 13)) + mbd),
+                    bs, bsy, butCol, "Strikes the location!");
+                if (squareButtonClicked(butt) || key.num1Time == 1)
                 {
                     effects.createSquare(gCtrl.menuPos.x - 10,
                                          gCtrl.menuPos.y - 2,
@@ -257,13 +257,13 @@ void menuPopUp()
                         gCtrl.menuPos.x - 2, gCtrl.menuPos.y - 10,
                         gCtrl.menuPos.x + 2, gCtrl.menuPos.y + 10,
                         sf::Color::Black);
-                    Item Var;
-                    Var = *getGlobalItem("Missile");
-                    Var.targetPos = sf::Vector2f(gCtrl.menuPos);
-                    Var.xpos = gCtrl.menuPos.x - 200;
-                    Var.ypos = gCtrl.menuPos.y - 200;
-                    Var.zpos = 100;
-                    worlditems.push_back(Var);
+                    Item var;
+                    var = *getGlobalItem("Missile");
+                    var.targetPos = sf::Vector2f(gCtrl.menuPos);
+                    var.xpos = gCtrl.menuPos.x - 200;
+                    var.ypos = gCtrl.menuPos.y - 200;
+                    var.zpos = 100;
+                    worlditems.push_back(var);
 
                     gCtrl.menuPos = sf::Vector2f(-10000, -10000);
                     gCtrl.menuType = "NULL";
@@ -278,20 +278,20 @@ void menuPopUp()
     if (gCtrl.menuType == "BuildStructure")
     {
 
-        int Options = 8;
+        int options = 8;
         gCtrl.menuEndPos = sf::Vector2f(gCtrl.menuPos.x + 150,
-                                        (gCtrl.menuPos.y + (Options * 13)) + 5);
+                                        (gCtrl.menuPos.y + (options * 13)) + 5);
         effects.createSquare(gCtrl.menuPos.x, gCtrl.menuPos.y,
                              gCtrl.menuEndPos.x, gCtrl.menuEndPos.y,
                              sf::Color::Black, 2, sf::Color::Cyan);
         int iY = 0;
-        int BRD = 140;                      // ButtonRightDisplacement.
-        int BS = 7;                         // ButtonSize;
-        int BSY = 5;                        // ButtonSize;
-        int MBD = 8;                        // MoveButtonDown
-        sf::Color ButCol = sf::Color::Cyan; // ButtonColor.
+        int brd = 140;                      // ButtonRightDisplacement.
+        int bs = 7;                         // ButtonSize;
+        int bsy = 5;                        // ButtonSize;
+        int mbd = 8;                        // MoveButtonDown
+        sf::Color butCol = sf::Color::Cyan; // ButtonColor.
 
-        for (int i = 0; i != Options; i++)
+        for (int i = 0; i != options; i++)
         {
 
             if (i == 0)
@@ -303,11 +303,11 @@ void menuPopUp()
                 textList.createText(gCtrl.menuPos.x + 2,
                                     gCtrl.menuPos.y + (iY * 13), 12,
                                     sf::Color::White, "Build - Wall");
-                int Butt = createSquareButton(
-                    math::Vec2f(gCtrl.menuPos.x + BRD,
-                                (gCtrl.menuPos.y + (iY * 13)) + MBD),
-                    BS, BSY, ButCol, "Makes a Wall!");
-                if (squareButtonClicked(Butt) || key.num1Time == 1)
+                int butt = createSquareButton(
+                    math::Vec2f(gCtrl.menuPos.x + brd,
+                                (gCtrl.menuPos.y + (iY * 13)) + mbd),
+                    bs, bsy, butCol, "Makes a Wall!");
+                if (squareButtonClicked(butt) || key.num1Time == 1)
                 {
                     rmbMenuTile(gCtrl.menuPos);
                 }
@@ -323,9 +323,9 @@ void menuPopUp()
                                     gCtrl.menuPos.y + (iY * 13), 12,
                                     sf::Color::White, "Dig - Natural Wall");
                 int Butt = createSquareButton(
-                    math::Vec2f(gCtrl.menuPos.x + BRD,
-                                (gCtrl.menuPos.y + (iY * 13)) + MBD),
-                    BS, BSY, ButCol, "Digs out a natural wall.");
+                    math::Vec2f(gCtrl.menuPos.x + brd,
+                                (gCtrl.menuPos.y + (iY * 13)) + mbd),
+                    bs, bsy, butCol, "Digs out a natural wall.");
                 if (squareButtonClicked(Butt) || key.num1Time == 1)
                 {
                     digWall(gCtrl.menuPos);
@@ -339,20 +339,20 @@ void menuPopUp()
     if (gCtrl.menuType == "BlankRMB")
     {
 
-        int Options = 8;
+        int options = 8;
         gCtrl.menuEndPos = sf::Vector2f(gCtrl.menuPos.x + 150,
-                                        (gCtrl.menuPos.y + (Options * 13)) + 5);
+                                        (gCtrl.menuPos.y + (options * 13)) + 5);
         effects.createSquare(gCtrl.menuPos.x, gCtrl.menuPos.y,
                              gCtrl.menuEndPos.x, gCtrl.menuEndPos.y,
                              sf::Color::Black, 2, sf::Color::Cyan);
         int iY = 0;
-        int BRD = 140;                      // ButtonRightDisplacement.
-        int BS = 7;                         // ButtonSize;
-        int BSY = 5;                        // ButtonSize;
-        int MBD = 8;                        // MoveButtonDown
-        sf::Color ButCol = sf::Color::Cyan; // ButtonColor.
+        int brd = 140;                      // ButtonRightDisplacement.
+        int bs = 7;                         // ButtonSize;
+        int bsy = 5;                        // ButtonSize;
+        int mbd = 8;                        // MoveButtonDown
+        sf::Color butCol = sf::Color::Cyan; // ButtonColor.
 
-        for (int i = 0; i != Options; i++)
+        for (int i = 0; i != options; i++)
         {
 
             if (i == 0)
@@ -366,12 +366,12 @@ void menuPopUp()
                 textList.createText(gCtrl.menuPos.x + 2,
                                     gCtrl.menuPos.y + (iY * 13), 12,
                                     sf::Color::White, "Build");
-                int Butt = createSquareButton(
-                    math::Vec2f(gCtrl.menuPos.x + BRD,
-                                (gCtrl.menuPos.y + (iY * 13)) + MBD),
-                    BS, BSY, ButCol,
+                int butt = createSquareButton(
+                    math::Vec2f(gCtrl.menuPos.x + brd,
+                                (gCtrl.menuPos.y + (iY * 13)) + mbd),
+                    bs, bsy, butCol,
                     "This opens the menu to build various structures!");
-                if (squareButtonClicked(Butt) || key.num1Time == 1)
+                if (squareButtonClicked(butt) || key.num1Time == 1)
                 {
                     gCtrl.menuType = "BuildStructure";
                     //fSleep(0.2);
@@ -389,12 +389,12 @@ void menuPopUp()
                 textList.createText(gCtrl.menuPos.x + 2,
                                     gCtrl.menuPos.y + (iY * 13), 12,
                                     sf::Color::White, "Orbital Drop");
-                int Butt = createSquareButton(
-                    math::Vec2f(gCtrl.menuPos.x + BRD,
-                                (gCtrl.menuPos.y + (iY * 13)) + MBD),
-                    BS, BSY, ButCol, "Causes an orbital ship to release "
+                int butt = createSquareButton(
+                    math::Vec2f(gCtrl.menuPos.x + brd,
+                                (gCtrl.menuPos.y + (iY * 13)) + mbd),
+                    bs, bsy, butCol, "Causes an orbital ship to release "
                                      "specific cargo at target location.");
-                if (squareButtonClicked(Butt) || key.num2Time == 1)
+                if (squareButtonClicked(butt) || key.num2Time == 1)
                 {
 
                     gCtrl.menuType = "Orbital Drop";
@@ -414,11 +414,11 @@ void menuPopUp()
                 textList.createText(gCtrl.menuPos.x + 2,
                                     gCtrl.menuPos.y + (iY * 13), 12,
                                     sf::Color::White, "Dig");
-                int Butt = createSquareButton(
-                    math::Vec2f(gCtrl.menuPos.x + BRD,
-                                (gCtrl.menuPos.y + (iY * 13)) + MBD),
-                    BS, BSY, ButCol, "Dig out the current wall tile");
-                if (squareButtonClicked(Butt) || key.num2Time == 1)
+                int butt = createSquareButton(
+                    math::Vec2f(gCtrl.menuPos.x + brd,
+                                (gCtrl.menuPos.y + (iY * 13)) + mbd),
+                    bs, bsy, butCol, "Dig out the current wall tile");
+                if (squareButtonClicked(butt) || key.num2Time == 1)
                 {
 
                     gCtrl.menuType = "Dig";
@@ -441,20 +441,20 @@ void menuPopUp()
     if (gCtrl.menuType == "ItemContext")
     {
 
-        int Options = 8;
+        int options = 8;
         gCtrl.menuEndPos = sf::Vector2f(gCtrl.menuPos.x + 150,
-                                        (gCtrl.menuPos.y + (Options * 13)) + 5);
+                                        (gCtrl.menuPos.y + (options * 13)) + 5);
         effects.createSquare(gCtrl.menuPos.x, gCtrl.menuPos.y,
                              gCtrl.menuEndPos.x, gCtrl.menuEndPos.y,
                              sf::Color::Black, 2, sf::Color::Cyan);
         int iY = 0;
-        int BRD = 140;                      // ButtonRightDisplacement.
-        int BS = 7;                         // ButtonSize;
-        int BSY = 5;                        // ButtonSize;
-        int MBD = 8;                        // MoveButtonDown
-        sf::Color ButCol = sf::Color::Cyan; // ButtonColor.
+        int brd = 140;                      // ButtonRightDisplacement.
+        int bs = 7;                         // ButtonSize;
+        int bsy = 5;                        // ButtonSize;
+        int mbd = 8;                        // MoveButtonDown
+        sf::Color butCol = sf::Color::Cyan; // ButtonColor.
 
-        for (int i = 0; i != Options; i++)
+        for (int i = 0; i != options; i++)
         {
 
             if (i == 0)
@@ -474,11 +474,11 @@ void menuPopUp()
                         sf::Color::White,
                         gCtrl.menuPtrCon.pItem->name +
                             " - xPickUpx, Cannot be picked up.");
-                int Butt = createSquareButton(
-                    math::Vec2f(gCtrl.menuPos.x + BRD,
-                                (gCtrl.menuPos.y + (iY * 13)) + MBD),
-                    BS, BSY, ButCol, "Makes someone pickup this item.");
-                if ((squareButtonClicked(Butt) &&
+                int butt = createSquareButton(
+                    math::Vec2f(gCtrl.menuPos.x + brd,
+                                (gCtrl.menuPos.y + (iY * 13)) + mbd),
+                    bs, bsy, butCol, "Makes someone pickup this item.");
+                if ((squareButtonClicked(butt) &&
                      gCtrl.menuPtrCon.pItem->pickupable) ||
                     (key.num1Time == 1 && gCtrl.menuPtrCon.pItem->pickupable))
                 {
@@ -516,12 +516,12 @@ void menuPopUp()
                         sf::Color::White,
                         gCtrl.menuPtrCon.pItem->name +
                             " - xChopDownx, Cannot be chopped up.");
-                int Butt = createSquareButton(
-                    math::Vec2f(gCtrl.menuPos.x + BRD,
-                                (gCtrl.menuPos.y + (iY * 13)) + MBD),
-                    BS, BSY, ButCol,
+                int butt = createSquareButton(
+                    math::Vec2f(gCtrl.menuPos.x + brd,
+                                (gCtrl.menuPos.y + (iY * 13)) + mbd),
+                    bs, bsy, butCol,
                     "Makes someone seek and destroy this item.");
-                if ((squareButtonClicked(Butt) &&
+                if ((squareButtonClicked(butt) &&
                      !gCtrl.menuPtrCon.pItem->pickupable) ||
                     (key.num1Time == 1 && !gCtrl.menuPtrCon.pItem->pickupable))
                 {
@@ -548,18 +548,18 @@ void menuPopUp()
 
     if (gCtrl.menuType == "ItemRMB")
     {
-        int Options = 8;
+        int options = 8;
         gCtrl.menuEndPos = sf::Vector2f(gCtrl.menuPos.x + 150,
-                                        (gCtrl.menuPos.y + (Options * 13)) + 5);
+                                        (gCtrl.menuPos.y + (options * 13)) + 5);
         effects.createSquare(gCtrl.menuPos.x, gCtrl.menuPos.y,
                              gCtrl.menuEndPos.x, gCtrl.menuEndPos.y,
                              sf::Color::Black, 2, sf::Color::Cyan);
         int iY = 0;
-        int BRD = 140;                      // ButtonRightDisplacement.
-        int BS = 7;                         // ButtonSize;
-        int BSY = 5;                        // ButtonSize;
-        int MBD = 8;                        // MoveButtonDown
-        sf::Color ButCol = sf::Color::Cyan; // ButtonColor.
+        int brd = 140;                      // ButtonRightDisplacement.
+        int bs = 7;                         // ButtonSize;
+        int bsy = 5;                        // ButtonSize;
+        int mbd = 8;                        // MoveButtonDown
+        sf::Color butCol = sf::Color::Cyan; // ButtonColor.
 
         for (size_t i = 0; i != gCtrl.menuPtrCon.pVecItem.size(); i++)
         {
@@ -571,11 +571,11 @@ void menuPopUp()
             textList.createText(
                 gCtrl.menuPos.x + 2, gCtrl.menuPos.y + (iY * 13), 12,
                 sf::Color::White, gCtrl.menuPtrCon.pVecItem[i]->name);
-            int Butt = createSquareButton(
-                math::Vec2f(gCtrl.menuPos.x + BRD,
-                            (gCtrl.menuPos.y + (iY * 13)) + MBD),
-                BS, BSY, ButCol, "Strikes the location!");
-            if (squareButtonClicked(Butt))
+            int butt = createSquareButton(
+                math::Vec2f(gCtrl.menuPos.x + brd,
+                            (gCtrl.menuPos.y + (iY * 13)) + mbd),
+                bs, bsy, butCol, "Strikes the location!");
+            if (squareButtonClicked(butt))
             {
 
                 gCtrl.menuType = "ItemContext";
@@ -593,11 +593,11 @@ void menuPopUp()
                 textList.createText(
                     gCtrl.menuPos.x + 2, gCtrl.menuPos.y + (iY * 13), 12,
                     sf::Color::White, gCtrl.menuPtrCon.pVecItem[0]->name);
-                int Butt = createSquareButton(
-                    math::Vec2f(gCtrl.menuPos.x + BRD,
-                                (gCtrl.menuPos.y + (iY * 13)) + MBD),
-                    BS, BSY, ButCol, "Strikes the location!");
-                if (squareButtonClicked(Butt) || key.num1Time == 1)
+                int butt = createSquareButton(
+                    math::Vec2f(gCtrl.menuPos.x + brd,
+                                (gCtrl.menuPos.y + (iY * 13)) + mbd),
+                    bs, bsy, butCol, "Strikes the location!");
+                if (squareButtonClicked(butt) || key.num1Time == 1)
                 {
 
                     gCtrl.menuPos = sf::Vector2f(-10000, -10000);
@@ -614,20 +614,20 @@ void menuPopUp()
 
     if (gCtrl.menuType == "WorldRMB")
     {
-        int Options = 1;
+        int options = 1;
         gCtrl.menuEndPos = sf::Vector2f(gCtrl.menuPos.x + 150,
-                                        (gCtrl.menuPos.y + (Options * 13)) + 5);
+                                        (gCtrl.menuPos.y + (options * 13)) + 5);
         effects.createSquare(gCtrl.menuPos.x, gCtrl.menuPos.y,
                              gCtrl.menuEndPos.x, gCtrl.menuEndPos.y,
                              sf::Color::Black, 2, sf::Color::Cyan);
         int iY = 0;
-        int BRD = 140;                      // ButtonRightDisplacement.
-        int BS = 7;                         // ButtonSize;
-        int BSY = 5;                        // ButtonSize;
-        int MBD = 8;                        // MoveButtonDown
-        sf::Color ButCol = sf::Color::Cyan; // ButtonColor.
+        int brd = 140;                      // ButtonRightDisplacement.
+        int bs = 7;                         // ButtonSize;
+        int bsy = 5;                        // ButtonSize;
+        int mbd = 8;                        // MoveButtonDown
+        sf::Color butCol = sf::Color::Cyan; // ButtonColor.
 
-        for (int i = 0; i != Options; i++)
+        for (int i = 0; i != options; i++)
         {
 
             if (i == 0)
@@ -642,11 +642,11 @@ void menuPopUp()
                 textList.createText(gCtrl.menuPos.x,
                                     gCtrl.menuPos.y + (iY * 13), 12,
                                     sf::Color::White, "Enter city");
-                int Butt = createSquareButton(
-                    math::Vec2f(gCtrl.menuPos.x + BRD,
-                                (gCtrl.menuPos.y + (iY * 13)) + MBD),
-                    BS, BSY, ButCol, "Welcome to the jungle baby.");
-                if (squareButtonClicked(Butt) || key.num1Time == 1)
+                int butt = createSquareButton(
+                    math::Vec2f(gCtrl.menuPos.x + brd,
+                                (gCtrl.menuPos.y + (iY * 13)) + mbd),
+                    bs, bsy, butCol, "Welcome to the jungle baby.");
+                if (squareButtonClicked(butt) || key.num1Time == 1)
                 {
                     generateChunk("Building", 500,
                                   sf::Vector2i(abs(gCtrl.menuPos.x / 20),
@@ -701,20 +701,20 @@ void menuPopUp()
     if (gCtrl.menuType == "DebugFunctions")
     {
 
-        int Options = 10;
+        int options = 10;
         gCtrl.menuEndPos = sf::Vector2f(gCtrl.menuPos.x + 150,
-                                        (gCtrl.menuPos.y + (Options * 13)) + 5);
+                                        (gCtrl.menuPos.y + (options * 13)) + 5);
         effects.createSquare(gCtrl.menuPos.x, gCtrl.menuPos.y,
                              gCtrl.menuEndPos.x, gCtrl.menuEndPos.y,
                              sf::Color::Black, 2, sf::Color::Cyan);
         int iY = 0;
-        int BRD = 140;                      // ButtonRightDisplacement.
-        int BS = 7;                         // ButtonSize;
-        int BSY = 5;                        // ButtonSize;
-        int MBD = 8;                        // MoveButtonDown
-        sf::Color ButCol = sf::Color::Cyan; // ButtonColor.
+        int brd = 140;                      // ButtonRightDisplacement.
+        int bs = 7;                         // ButtonSize;
+        int bsy = 5;                        // ButtonSize;
+        int mbd = 8;                        // MoveButtonDown
+        sf::Color butCol = sf::Color::Cyan; // ButtonColor.
 
-        for (int i = 0; i != Options; i++)
+        for (int i = 0; i != options; i++)
         {
 
             if (i == 0)
@@ -726,11 +726,11 @@ void menuPopUp()
                 textList.createText(gCtrl.menuPos.x + 2,
                                     gCtrl.menuPos.y + (iY * 13), 12,
                                     sf::Color::White, "Close Menu");
-                int Butt = createSquareButton(
-                    math::Vec2f(gCtrl.menuPos.x + BRD,
-                                (gCtrl.menuPos.y + (iY * 13)) + MBD),
-                    BS, BSY, ButCol, "Close Menu");
-                if (squareButtonClicked(Butt) || key.num1Time == 1)
+                int butt = createSquareButton(
+                    math::Vec2f(gCtrl.menuPos.x + brd,
+                                (gCtrl.menuPos.y + (iY * 13)) + mbd),
+                    bs, bsy, butCol, "Close Menu");
+                if (squareButtonClicked(butt) || key.num1Time == 1)
                 {
                     gCtrl.menuPos = sf::Vector2f(-10000, -10000);
                     gCtrl.menuType = "NULL";
@@ -748,11 +748,11 @@ void menuPopUp()
                 textList.createText(gCtrl.menuPos.x + 2,
                                     gCtrl.menuPos.y + (iY * 13), 12,
                                     sf::Color::White, "Missile Strike");
-                int Butt = createSquareButton(
-                    math::Vec2f(gCtrl.menuPos.x + BRD,
-                                (gCtrl.menuPos.y + (iY * 13)) + MBD),
-                    BS, BSY, ButCol, "Missile Strike");
-                if (squareButtonClicked(Butt) || key.num2Time == 1)
+                int butt = createSquareButton(
+                    math::Vec2f(gCtrl.menuPos.x + brd,
+                                (gCtrl.menuPos.y + (iY * 13)) + mbd),
+                    bs, bsy, butCol, "Missile Strike");
+                if (squareButtonClicked(butt) || key.num2Time == 1)
                 {
 
                     effects.createSquare(gCtrl.menuPos.x - 10,
@@ -763,13 +763,13 @@ void menuPopUp()
                         gCtrl.menuPos.x - 2, gCtrl.menuPos.y - 10,
                         gCtrl.menuPos.x + 2, gCtrl.menuPos.y + 10,
                         sf::Color::Black);
-                    Item Var;
-                    Var = *getGlobalItem("Missile");
-                    Var.targetPos = sf::Vector2f(gCtrl.menuPos);
-                    Var.xpos = gCtrl.menuPos.x - 200;
-                    Var.ypos = gCtrl.menuPos.y - 200;
-                    Var.zpos = 100;
-                    worlditems.push_back(Var);
+                    Item var;
+                    var = *getGlobalItem("Missile");
+                    var.targetPos = sf::Vector2f(gCtrl.menuPos);
+                    var.xpos = gCtrl.menuPos.x - 200;
+                    var.ypos = gCtrl.menuPos.y - 200;
+                    var.zpos = 100;
+                    worlditems.push_back(var);
 
                     gCtrl.menuPos = sf::Vector2f(-10000, -10000);
                     gCtrl.menuType = "NULL";
@@ -790,11 +790,11 @@ void menuPopUp()
                 textList.createText(gCtrl.menuPos.x + 2,
                                     gCtrl.menuPos.y + (iY * 13), 12,
                                     sf::Color::White, "Shift Wall/Stone");
-                int Butt = createSquareButton(
-                    math::Vec2f(gCtrl.menuPos.x + BRD,
-                                (gCtrl.menuPos.y + (iY * 13)) + MBD),
-                    BS, BSY, ButCol);
-                if (squareButtonClicked(Butt) || key.num3Time == 1)
+                int butt = createSquareButton(
+                    math::Vec2f(gCtrl.menuPos.x + brd,
+                                (gCtrl.menuPos.y + (iY * 13)) + mbd),
+                    bs, bsy, butCol);
+                if (squareButtonClicked(butt) || key.num3Time == 1)
                 {
 
                     if (tiles[abs_to_index(gCtrl.menuPos.x / GridSize)]
@@ -835,11 +835,11 @@ void menuPopUp()
                 textList.createText(gCtrl.menuPos.x + 2,
                                     gCtrl.menuPos.y + (iY * 13), 12,
                                     sf::Color::White, "Spawn Zombie Horde");
-                int Butt = createSquareButton(
-                    math::Vec2f(gCtrl.menuPos.x + BRD,
-                                (gCtrl.menuPos.y + (iY * 13)) + MBD),
-                    BS, BSY, ButCol);
-                if (squareButtonClicked(Butt) || key.num4Time == 1)
+                int butt = createSquareButton(
+                    math::Vec2f(gCtrl.menuPos.x + brd,
+                                (gCtrl.menuPos.y + (iY * 13)) + mbd),
+                    bs, bsy, butCol);
+                if (squareButtonClicked(butt) || key.num4Time == 1)
                 {
 
                     gCtrl.zombieSwarmLocal();
@@ -861,11 +861,11 @@ void menuPopUp()
                 textList.createText(
                     gCtrl.menuPos.x, gCtrl.menuPos.y + (iY * 13), 12,
                     sf::Color::White, "Print NPC's ConsoleInfo");
-                int Butt = createSquareButton(
-                    math::Vec2f(gCtrl.menuPos.x + BRD,
-                                (gCtrl.menuPos.y + (iY * 13)) + MBD),
-                    BS, BSY, ButCol);
-                if (squareButtonClicked(Butt) || key.num5Time == 1)
+                int butt = createSquareButton(
+                    math::Vec2f(gCtrl.menuPos.x + brd,
+                                (gCtrl.menuPos.y + (iY * 13)) + mbd),
+                    bs, bsy, butCol);
+                if (squareButtonClicked(butt) || key.num5Time == 1)
                 {
 
                     std::vector<Npc>::iterator zit;
@@ -894,11 +894,11 @@ void menuPopUp()
                 textList.createText(
                     gCtrl.menuPos.x, gCtrl.menuPos.y + (iY * 13), 12,
                     sf::Color::White, "Print NPC's Bloodcontents");
-                int Butt = createSquareButton(
-                    math::Vec2f(gCtrl.menuPos.x + BRD,
-                                (gCtrl.menuPos.y + (iY * 13)) + MBD),
-                    BS, BSY, ButCol);
-                if (squareButtonClicked(Butt) || key.num5Time == 1)
+                int butt = createSquareButton(
+                    math::Vec2f(gCtrl.menuPos.x + brd,
+                                (gCtrl.menuPos.y + (iY * 13)) + mbd),
+                    bs, bsy, butCol);
+                if (squareButtonClicked(butt) || key.num5Time == 1)
                 {
 
                     for (auto &elem : npclist)
@@ -923,12 +923,12 @@ void menuPopUp()
                 textList.createText(
                     gCtrl.menuPos.x, gCtrl.menuPos.y + (iY * 13), 12,
                     sf::Color::White, "Give Everyone Zombification");
-                int Butt = createSquareButton(
-                    math::Vec2f(gCtrl.menuPos.x + BRD,
-                                (gCtrl.menuPos.y + (iY * 13)) + MBD),
-                    BS, BSY, ButCol,
+                int butt = createSquareButton(
+                    math::Vec2f(gCtrl.menuPos.x + brd,
+                                (gCtrl.menuPos.y + (iY * 13)) + mbd),
+                    bs, bsy, butCol,
                     "You horrible monster, Why would you do this?!");
-                if (squareButtonClicked(Butt) || key.num6Time == 1)
+                if (squareButtonClicked(butt) || key.num6Time == 1)
                 {
 
                     for (auto &elem : npclist)
@@ -955,11 +955,11 @@ void menuPopUp()
                 textList.createText(gCtrl.menuPos.x,
                                     gCtrl.menuPos.y + (iY * 13), 12,
                                     sf::Color::White, "Delete all critters");
-                int Butt = createSquareButton(
-                    math::Vec2f(gCtrl.menuPos.x + BRD,
-                                (gCtrl.menuPos.y + (iY * 13)) + MBD),
-                    BS, BSY, ButCol);
-                if (squareButtonClicked(Butt) || key.num7Time == 1)
+                int butt = createSquareButton(
+                    math::Vec2f(gCtrl.menuPos.x + brd,
+                                (gCtrl.menuPos.y + (iY * 13)) + mbd),
+                    bs, bsy, butCol);
+                if (squareButtonClicked(butt) || key.num7Time == 1)
                 {
                     for (auto &elem : npclist)
                     {
@@ -979,11 +979,11 @@ void menuPopUp()
                 textList.createText(gCtrl.menuPos.x,
                                     gCtrl.menuPos.y + (iY * 13), 12,
                                     sf::Color::White, "Starve all critters");
-                int Butt = createSquareButton(
-                    math::Vec2f(gCtrl.menuPos.x + BRD,
-                                (gCtrl.menuPos.y + (iY * 13)) + MBD),
-                    BS, BSY, ButCol);
-                if (squareButtonClicked(Butt) || key.num8Time == 1)
+                int butt = createSquareButton(
+                    math::Vec2f(gCtrl.menuPos.x + brd,
+                                (gCtrl.menuPos.y + (iY * 13)) + mbd),
+                    bs, bsy, butCol);
+                if (squareButtonClicked(butt) || key.num8Time == 1)
                 {
                     for (auto &elem : npclist)
                     {
@@ -1002,11 +1002,11 @@ void menuPopUp()
                 textList.createText(gCtrl.menuPos.x,
                                     gCtrl.menuPos.y + (iY * 13), 12,
                                     sf::Color::White, "Giant Enclosed Arena");
-                int Butt = createSquareButton(
-                    math::Vec2f(gCtrl.menuPos.x + BRD,
-                                (gCtrl.menuPos.y + (iY * 13)) + MBD),
-                    BS, BSY, ButCol);
-                if (squareButtonClicked(Butt) || key.num8Time == 1)
+                int butt = createSquareButton(
+                    math::Vec2f(gCtrl.menuPos.x + brd,
+                                (gCtrl.menuPos.y + (iY * 13)) + mbd),
+                    bs, bsy, butCol);
+                if (squareButtonClicked(butt) || key.num8Time == 1)
                 {
                     for (int ItLength = 0; ItLength != 16; ItLength++)
                     {
@@ -1057,11 +1057,11 @@ void menuPopUp()
                 sf::Color::Black, 1, sf::Color::Yellow);
             textList.createText(gCtrl.menuPos.x, gCtrl.menuPos.y + (iY * 11),
                                 11, sf::Color::Cyan, elem.name);
-            int Butt =
+            int butt =
                 createButton(math::Vec2f(gCtrl.menuPos.x + 90,
                                          (gCtrl.menuPos.y + (iY * 11)) + 5),
                              5, sf::Color::Red);
-            if (buttonClicked(Butt))
+            if (buttonClicked(butt))
             {
                 spawnItem(elem.name, gCtrl.menuPos.x, gCtrl.menuPos.y);
                 fSleep(0.2);
@@ -1087,11 +1087,11 @@ void menuPopUp()
                 sf::Color::Black, 1, sf::Color::Yellow);
             textList.createText(gCtrl.menuPos.x, gCtrl.menuPos.y + (iY * 11),
                                 11, sf::Color::Cyan, elem.name);
-            int Butt =
+            int butt =
                 createButton(math::Vec2f(gCtrl.menuPos.x + 90,
                                          (gCtrl.menuPos.y + (iY * 11)) + 5),
                              5, sf::Color::Red);
-            if (buttonClicked(Butt))
+            if (buttonClicked(butt))
             {
                 spawnCritter(elem.name, gCtrl.menuPos.x, gCtrl.menuPos.y);
                 fSleep(0.2);
@@ -1103,14 +1103,14 @@ void menuPopUp()
 
     if (gCtrl.menuType == "CritterContext" && true == false)
     {
-        int Options = 2;
+        int options = 2;
         gCtrl.menuEndPos = sf::Vector2f(gCtrl.menuPos.x + 100,
-                                        (gCtrl.menuPos.y + (Options * 10)) + 5);
+                                        (gCtrl.menuPos.y + (options * 10)) + 5);
         effects.createSquare(gCtrl.menuPos.x, gCtrl.menuPos.y,
                              gCtrl.menuEndPos.x, gCtrl.menuEndPos.y,
                              sf::Color::White);
         int iY = 0;
-        for (int i = 0; i != Options; i++)
+        for (int i = 0; i != options; i++)
         {
 
             if (i == 0)
@@ -1123,16 +1123,16 @@ void menuPopUp()
                 textList.createText(gCtrl.menuPos.x,
                                     gCtrl.menuPos.y + (iY * 11), 11,
                                     sf::Color::Cyan, "Close Menu");
-                int Butt =
+                int butt =
                     createButton(math::Vec2f(gCtrl.menuPos.x + 90,
                                              (gCtrl.menuPos.y + (iY * 11)) + 5),
                                  5, sf::Color::Red);
-                if (buttonClicked(Butt))
+                if (buttonClicked(butt))
                 {
 
-                    std::list<Item>::iterator Item;
-                    for (Item = worlditems.begin(); Item != worlditems.end();
-                         Item++)
+                    std::list<Item>::iterator item;
+                    for (item = worlditems.begin(); item != worlditems.end();
+                         item++)
                     {
                         gCtrl.menuPos = sf::Vector2f(-10000, -10000);
                         gCtrl.menuType = "NULL";
@@ -1152,31 +1152,31 @@ void menuPopUp()
                 textList.createText(gCtrl.menuPos.x,
                                     gCtrl.menuPos.y + (iY * 11), 11,
                                     sf::Color::Cyan, "PickUp");
-                int Butt =
+                int butt =
                     createButton(math::Vec2f(gCtrl.menuPos.x + 90,
                                              (gCtrl.menuPos.y + (iY * 11)) + 5),
                                  5, sf::Color::Red);
-                if (buttonClicked(Butt))
+                if (buttonClicked(butt))
                 {
 
-                    std::list<Item>::iterator Item;
-                    for (Item = worlditems.begin(); Item != worlditems.end();
-                         Item++)
+                    std::list<Item>::iterator item;
+                    for (item = worlditems.begin(); item != worlditems.end();
+                         item++)
                     {
                         if (math::closeish(gCtrl.menuPos.x, gCtrl.menuPos.y,
-                                           Item->xpos, Item->ypos) <= 10)
+                                           item->xpos, item->ypos) <= 10)
                         {
-                            if (Item->pickupable == true)
+                            if (item->pickupable == true)
                             {
                                 npclist.at(getNpcVectorId(gvars::myTargetid))
                                     .action = "Pickup";
                                 npclist.at(getNpcVectorId(gvars::myTargetid))
-                                    .target = Item->name;
+                                    .target = item->name;
                                 npclist.at(getNpcVectorId(gvars::myTargetid))
-                                    .targetId = Item->id;
+                                    .targetId = item->id;
                                 npclist.at(getNpcVectorId(gvars::myTargetid))
                                     .targetPos =
-                                    sf::Vector2f(Item->xpos, Item->ypos);
+                                    sf::Vector2f(item->xpos, item->ypos);
                                 gCtrl.menuPos = sf::Vector2f(-10000, -10000);
                                 gCtrl.menuType = "NULL";
                             }

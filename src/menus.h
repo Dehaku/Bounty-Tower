@@ -63,11 +63,11 @@ public:
     void pressed();
 };
 
-int createButton(sf::Vector2f vPos, int iSize, sf::Color Color,
-                 std::string Text = "");
+int createButton(sf::Vector2f vPos, int iSize, sf::Color color,
+                 std::string text = "");
 
 int createSquareButton(sf::Vector2f vPos, int iSizex, int iSizey,
-                       sf::Color Color, std::string Text = "");
+                       sf::Color color, std::string text = "");
 
 bool buttonClicked(int id);
 
