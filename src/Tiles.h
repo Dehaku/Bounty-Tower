@@ -46,7 +46,7 @@ public:
     Tile();
 };
 
-class xTile
+class XTile
 {
 public:
     unsigned short id;
@@ -55,7 +55,7 @@ public:
     sf::Texture *img;
     sf::Color worldColor;
 
-    xTile();
+    XTile();
     void initImage();
 };
 
@@ -103,7 +103,7 @@ extern WorldTile worldMap[100][100];
 
 extern Tile vChunk[ChunkSize][ChunkSize][ChunkSize]; // 10223616
 extern Tile tempTile[Grids][Grids][Grids];
-extern xTile xChunk[ChunkSize][ChunkSize][ChunkSize];
+extern XTile xChunk[ChunkSize][ChunkSize][ChunkSize];
 
 void zGenerateChunk(std::string type, int planet, sf::Vector2i Cords,
                     sf::Vector2i Pos = sf::Vector2i(500, 500));

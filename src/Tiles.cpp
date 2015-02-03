@@ -15,7 +15,7 @@ Tile tiles[Grids][Grids][Grids];
 WorldTile worldMap[100][100];
 Tile vChunk[ChunkSize][ChunkSize][ChunkSize]; // 10223616
 Tile tempTile[Grids][Grids][Grids];
-xTile xChunk[ChunkSize][ChunkSize][ChunkSize];
+XTile xChunk[ChunkSize][ChunkSize][ChunkSize];
 
 extern sf::RenderWindow window;
 
@@ -1268,14 +1268,14 @@ Tile::Tile() : id{}
     walkable = true;
 }
 
-xTile::xTile() : id{}, img{nullptr}
+XTile::XTile() : id{}, img{nullptr}
 {
     worldColor = sf::Color(0, 0, 0, 255);
     health = 10;
     deathID = id;
 }
 
-void xTile::initImage()
+void XTile::initImage()
 {
     img = &texturemanager.getTexture("City.png");
 }
