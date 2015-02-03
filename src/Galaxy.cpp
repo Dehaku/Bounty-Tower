@@ -609,8 +609,8 @@ void GalaxyController::worldLoop()
 
                                     Territory ct;
 
-                                    ct.worldTile =
-                                        sf::Vector2i(short_.x + x, short_.y + y);
+                                    ct.worldTile = sf::Vector2i(short_.x + x,
+                                                                short_.y + y);
                                     uniFact[i].territories.push_back(ct);
 
                                     for (size_t k = 0;

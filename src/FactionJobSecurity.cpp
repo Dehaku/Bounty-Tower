@@ -122,9 +122,9 @@ void drawJobList(int x, int y)
                     debug("ItemName");
 
                     textList.createText(
-                        x, y + (YVariance * 10), 11,
-                        sf::Color::Yellow, uniFact[i].jobList[t].pWorker->name +
-                                               uniFact[i].jobList[t].name + " ",
+                        x, y + (YVariance * 10), 11, sf::Color::Yellow,
+                        uniFact[i].jobList[t].pWorker->name +
+                            uniFact[i].jobList[t].name + " ",
                         uniFact[i]
                             .jobList[t]
                             .pItem->name); // ,JobList.at(i).pItem.name
@@ -133,8 +133,8 @@ void drawJobList(int x, int y)
                 {
                     debug("Second condition");
                     textList.createText(
-                        x, y + (YVariance * 10), 11,
-                        sf::Color::Yellow, uniFact[i].jobList[t].name + " ",
+                        x, y + (YVariance * 10), 11, sf::Color::Yellow,
+                        uniFact[i].jobList[t].name + " ",
                         uniFact[i]
                             .jobList[t]
                             .pItem->name); // ,JobList.at(i).pItem.name
@@ -142,8 +142,8 @@ void drawJobList(int x, int y)
                 else if (uniFact[i].jobList[t].pWorker != nullptr)
                 {
                     debug("Third condition");
-                    textList.createText(x, y + (YVariance * 10),
-                                        11, sf::Color::Yellow,
+                    textList.createText(x, y + (YVariance * 10), 11,
+                                        sf::Color::Yellow,
                                         uniFact[i].jobList[t].pWorker->name +
                                             uniFact[i].jobList[t].type + " ",
                                         uniFact[i].jobList[t].name);
@@ -151,8 +151,8 @@ void drawJobList(int x, int y)
                 else
                 {
                     debug("Fourth condition");
-                    textList.createText(x, y + (YVariance * 10),
-                                        11, sf::Color::Yellow,
+                    textList.createText(x, y + (YVariance * 10), 11,
+                                        sf::Color::Yellow,
                                         uniFact[i].jobList[t].type + " ",
                                         uniFact[i].jobList[t].name);
                 }
