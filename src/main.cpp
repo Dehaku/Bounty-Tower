@@ -16,11 +16,11 @@
 
 using std::abs;
 
-Item *listGet(std::list<Item> &list, int position)
+template <typename T> T &listAt(std::list<T> &list, size_t index)
 {
-    auto i = list.begin();
-    std::advance(i, position);
-    return &(*i);
+    auto it = list.begin();
+    std::advance(it, index);
+    return *it;
 }
 
 //-- Prototypes
@@ -2866,19 +2866,18 @@ void updateNpc()
                         {
                             if (math::closeish(
                                     npc.xpos, npc.ypos,
-                                    (*listGet(worlditems,
-                                              getItemVectorId(npc.targetId)))
+                                    (listAt(worlditems,
+                                            getItemVectorId(npc.targetId)))
                                         .xpos,
-                                    (*listGet(worlditems,
-                                              getItemVectorId(npc.targetId)))
+                                    (listAt(worlditems,
+                                            getItemVectorId(npc.targetId)))
                                         .ypos) <= npc.reach * 2)
                             {
                                 try
                                 {
-                                    npc.inventory.push_back(
-                                        (*listGet(
-                                             worlditems,
-                                             getItemVectorId(npc.targetId))));
+                                    npc.inventory.push_back((
+                                        listAt(worlditems,
+                                               getItemVectorId(npc.targetId))));
                                     removeItem(npc.targetId);
                                 }
                                 catch (std::exception &e)
@@ -2893,20 +2892,20 @@ void updateNpc()
                         {
                             if (math::closeish(
                                     npc.xpos, npc.ypos,
-                                    (*listGet(worlditems,
-                                              getItemVectorId(npc.targetId)))
+                                    (listAt(worlditems,
+                                            getItemVectorId(npc.targetId)))
                                         .xpos,
-                                    (*listGet(worlditems,
-                                              getItemVectorId(npc.targetId)))
+                                    (listAt(worlditems,
+                                            getItemVectorId(npc.targetId)))
                                         .ypos) <= npc.size * 2)
                             {
                                 try
                                 {
                                     //npc.inventory.push_back(worlditems.at(GetItemVectorId(npc.TargetId)));
-                                    npc.fillhunger((*listGet(worlditems,
-                                                             getItemVectorId(
-                                                                 npc.targetId)))
-                                                       .hungervalue);
+                                    npc.fillhunger(
+                                        (listAt(worlditems,
+                                                getItemVectorId(npc.targetId)))
+                                            .hungervalue);
                                     removeItem(npc.targetId);
                                     npc.atTarget = false;
                                     npc.hasTarget = false;
@@ -2931,20 +2930,20 @@ void updateNpc()
                         {
                             if (math::closeish(
                                     npc.xpos, npc.ypos,
-                                    (*listGet(worlditems,
-                                              getItemVectorId(npc.targetId)))
+                                    (listAt(worlditems,
+                                            getItemVectorId(npc.targetId)))
                                         .xpos,
-                                    (*listGet(worlditems,
-                                              getItemVectorId(npc.targetId)))
+                                    (listAt(worlditems,
+                                            getItemVectorId(npc.targetId)))
                                         .ypos) <= npc.size * 2)
                             {
                                 try
                                 {
                                     //npc.inventory.push_back(worlditems.at(GetItemVectorId(npc.TargetId)));
-                                    npc.fillthirst((*listGet(worlditems,
-                                                             getItemVectorId(
-                                                                 npc.targetId)))
-                                                       .thirstvalue);
+                                    npc.fillthirst(
+                                        (listAt(worlditems,
+                                                getItemVectorId(npc.targetId)))
+                                            .thirstvalue);
                                     npc.atTarget = false;
                                     npc.hasTarget = false;
                                     npc.targetId = -1;
