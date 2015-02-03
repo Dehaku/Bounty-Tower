@@ -5575,12 +5575,16 @@ int main()
             cText.CreateText(450, 45, 11, sf::Color::White,
                              "Design Your Squad");
             // TODO: Simply add cText.CreateText for the Button Text, Or at least make it an option, Since sButtonText is designed for text 'on' the button.
-            Button var;
-            var.color = sf::Color::Red;
-            var.iSize = 5;
+            SquareButton var;
+            var.color = sf::Color::Green;
+            var.iSizex = 5;
+            var.iSizey = 3;
+
             var.vPos = sf::Vector2f(440, 52);
             var.sButtonText = "Howdy";
-            vButtonList.push_back(var);
+            vSquareButtonList.push_back(var);
+
+
 
             cText.CreateText(450, 65, 11, sf::Color::White,
                              "Press Comma to test the Local System");
@@ -5589,33 +5593,8 @@ int main()
                              "debugger, If it slows down the "
                              "game, Minimize the console.");
 
-            std::vector<sf::ConvexShape> Polies;
 
-            sf::ConvexShape Shape;
-            Shape.setPointCount(1);
-            Shape.setPoint(0,sf::Vector2f(0,0));
-            Shape.setPointCount(2);
-            Shape.setPoint(1,sf::Vector2f(-5,15));
-            Shape.setPointCount(3);
-            Shape.setPoint(2,sf::Vector2f(0,25));
-            Shape.setPointCount(4);
-            Shape.setPoint(3,sf::Vector2f(5,15));
-            Shape.setFillColor(sf::Color::Yellow);
-            Shape.setPosition(50,50);
-            Polies.push_back(Shape);
-
-            for(auto &elem : Polies)
-            {
-                window.draw(elem);
-            }
-            Polies.clear();
-
-            //window.draw(Shape);
-
-
-
-
-            if (buttonClicked(var.id))
+            if (squareButtonClicked(var.id))
             {
                 if (gvars::debug)
                     std::cout << "Switching to MakeSquad\n";
