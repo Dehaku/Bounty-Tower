@@ -24,7 +24,7 @@ public:
                     float int1 = -6698, std::string stringvalue2 = "",
                     std::string string2 = "", float int2 = -6698,
                     std::string stringvalue3 = "", std::string string3 = "",
-                    float int3 = -6698, int shadow = 1, int NULL3 = 0);
+                    float int3 = -6698, int shadow = 1, int null3 = 0);
 
     void drawTextz();
 

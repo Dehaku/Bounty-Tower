@@ -45,7 +45,7 @@ public:
 
     void addvPlanet();
     void wave();
-    void time(int Modify);
+    void time(int modify);
     void buildLocal(std::string type = "Test", int zedAmount = 0);
     void buildLocalTest();
     void zombieSwarmLocal(int num = 5);

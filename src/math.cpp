@@ -60,19 +60,19 @@ int math::closeishS(int orix, int tarx)
     return num;
 }
 
-int math::clamp(int Value, int MinValue, int MaxValue)
+int math::clamp(int value, int minValue, int maxValue)
 {
-    if (Value > MaxValue)
+    if (value > maxValue)
     {
-        return MaxValue;
+        return maxValue;
     }
-    if (Value < MinValue)
+    if (value < minValue)
     {
-        return MinValue;
+        return minValue;
     }
     else
     {
-        return Value;
+        return value;
     }
 }
 
