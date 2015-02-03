@@ -292,7 +292,7 @@ std::vector<int> NnGTrace(int xa, int ya, int xb, int yb, int id,
     {
         x += xIncrement;
         y += yIncrement;
-        if (Key.g)
+        if (key.g)
         {
             effects.createCircle(x, y, 1, sf::Color::Blue);
         }
@@ -347,7 +347,7 @@ std::vector<int> NnGTrace(int xa, int ya, int xb, int yb, int id,
             Count++;
         }
 
-        if (Key.period)
+        if (key.period)
         {
             effects.createCircle(x, y, 1, sf::Color::White);
         }
@@ -378,7 +378,7 @@ bool gridposTrace(int xa, int ya, int xb, int yb, int id, sf::Vector2f Target)
         if (Tiles[abs_to_index(x / GridSize)][abs_to_index(y / GridSize)][30]
                 .ID == 1010)
         {
-            if (Key.period && id == gvars::myTargetid)
+            if (key.period && id == gvars::myTargetid)
             {
                 effects.createLine(x, y, xa, ya, 1, sf::Color::Blue);
             }
@@ -393,7 +393,7 @@ bool gridposTrace(int xa, int ya, int xb, int yb, int id, sf::Vector2f Target)
         {
             return true;
         } // Returns true and stops searching.
-        if (Key.period && id == gvars::myTargetid)
+        if (key.period && id == gvars::myTargetid)
         {
             effects.createLine(x, y, xa, ya, 1, sf::Color::Blue);
         }
@@ -435,7 +435,7 @@ std::vector<int> npcTrace(int xa, int ya, int xb, int yb, int id,
         if (Kill)
             return VectorID;
 
-        if (Key.h)
+        if (key.h)
         {
             effects.createCircle(x, y, 1, sf::Color::White);
         }
@@ -1165,9 +1165,9 @@ void critterBrain(std::vector<Npc> &NPCs)
         removeItems(npc.inventory);
     }
 
-    if (Key.oTime == 1)
+    if (key.oTime == 1)
         RemoveMe++;
-    if (Key.lTime == 1)
+    if (key.lTime == 1)
         RemoveMe--;
 }
 
@@ -1583,7 +1583,7 @@ void updateNpc()
                 math::clamp(npc.tentEnd2.y + randz(-3, 3), -20, 20);
         }
 
-        if (npc.id == gvars::myTargetid && Key.space)
+        if (npc.id == gvars::myTargetid && key.space)
         {
             npc.attacking = true;
         }
@@ -1689,7 +1689,7 @@ void updateNpc()
 
             ChatBox.AddChat(ChtStr, sf::Color(200, 0, 0));
         };
-        if (Key.rshift && npc.id == gvars::myTargetid)
+        if (key.rshift && npc.id == gvars::myTargetid)
         {
             std::cout << npc.target << "At: " << npc.targetPos.x << ":"
                       << npc.targetPos.y << std::endl;
@@ -1909,11 +1909,11 @@ void updateNpc()
                     npc.target = "Flesh";
                 }
 
-                if (npc.name == "Zombie" && Key.lctrl == true)
+                if (npc.name == "Zombie" && key.lctrl == true)
                 {
                     npc.moverate = npc.moverateint * 4;
                 }
-                if (npc.name == "Zombie" && Key.lalt == true)
+                if (npc.name == "Zombie" && key.lalt == true)
                 {
                     npc.moverate = 4;
                 }
@@ -3610,7 +3610,7 @@ int main()
         if (gvars::buttonClickedTime < 0)
             gvars::buttonClickedTime = 0;
 
-        Key.Update();
+        key.update();
         sf::Vector2f MouseStagnationCheck = gvars::mousePos;
 
         gvars::mousePos =
@@ -3638,19 +3638,19 @@ int main()
                          (11) / gvars::cameraZoom, sf::Color::White, "x", "",
                          gvars::cameraZoom);
 
-        if (Key.kTime == 1)
+        if (key.kTime == 1)
         { // Generates a random name from GenerateName(); and puts it into the console.
             std::cout << GenerateName() << std::endl;
         }
 
-        if (Key.gTime == 1)
+        if (key.gTime == 1)
         { // Fling all critters south.
             for (auto &i : npclist)
             {
                 i.momentum = sf::Vector2f(0, 100);
             }
         }
-        if (Key.hTime == 1)
+        if (key.hTime == 1)
         { // Fling all critters north.
             for (auto &i : npclist)
             {
@@ -3660,7 +3660,7 @@ int main()
 
         // Game Mode Loops ================================================================================
 
-        if (Key.r)
+        if (key.r)
         { // Debug (de)activation
             if (!gvars::debug)
             {
@@ -3680,14 +3680,14 @@ int main()
                                  (gvars::currenty + 1) * GridSize, 11,
                                  sf::Color::Red, "Debug On");
 
-            if (Key.vTime == 1)
+            if (key.vTime == 1)
                 ChatBox.AddChat(
                     randomWindowName(),
                     sf::Color(randz(0, 255), randz(0, 255), randz(0, 255)));
 
             squadHud();
 
-            if (Key.lshiftTime > 0)
+            if (key.lshiftTime > 0)
             {
                 int x = gvars::bottomLeft.x;
                 int y = gvars::bottomLeft.y;
@@ -3695,17 +3695,17 @@ int main()
                                      sf::Color(0, 100, 255));
                 cText.CreateText(x + 20, y - 30, 11, sf::Color::White, "Build");
             }
-            if (Key.RMBTime == 1 && Key.lshift)
+            if (key.rmbTime == 1 && key.lshift)
                 rmbMenuTile(gvars::mousePos);
 
-            if (Key.lshift && Key.tab) // Debug NPC Spawn Menu
+            if (key.lshift && key.tab) // Debug NPC Spawn Menu
             {
 
                 gCtrl.menuType = "DebugCritterSpawn";
                 menuPopUp();
             }
-            else if (Key.tab == true &&
-                     Key.lshift ==
+            else if (key.tab == true &&
+                     key.lshift ==
                          false) // Debug Item Spawn Menu TODO: Sort them by Type.
             {
                 gCtrl.menuType = "DebugItemSpawn";
@@ -3724,28 +3724,28 @@ int main()
             }
             //                       if(Key.lshift && Key.z){GC.ZombieSwarmLocal();}
 
-            if (Key.lshift && Key.z) // Debug Stuffs Menu
+            if (key.lshift && key.z) // Debug Stuffs Menu
             {
                 gCtrl.menuType = "DebugFunctions";
                 menuPopUp();
             }
 
-            if (Key.left == true)
+            if (key.left == true)
             {
                 gvars::currentx--;
                 PlyAct = true;
             }
-            if (Key.right == true)
+            if (key.right == true)
             {
                 gvars::currentx++;
                 PlyAct = true;
             }
-            if (Key.up == true)
+            if (key.up == true)
             {
                 gvars::currenty--;
                 PlyAct = true;
             }
-            if (Key.down == true)
+            if (key.down == true)
             {
                 gvars::currenty++;
                 PlyAct = true;
@@ -3756,7 +3756,7 @@ int main()
 
             rightMouseButtonContextMenu();
 
-            if (Key.lshift == true && Key.left == true)
+            if (key.lshift == true && key.left == true)
             {
                 gvars::currentx--;
                 gvars::currentx--;
@@ -3764,7 +3764,7 @@ int main()
                 gvars::currentx--;
                 PlyAct = true;
             } //Sprite.Move(-100 * ElapsedTime, 0);
-            if (Key.lshift == true && Key.right == true)
+            if (key.lshift == true && key.right == true)
             {
                 gvars::currentx++;
                 gvars::currentx++;
@@ -3772,7 +3772,7 @@ int main()
                 gvars::currentx++;
                 PlyAct = true;
             } //Sprite.Move( 100 * ElapsedTime, 0);
-            if (Key.lshift == true && Key.up == true)
+            if (key.lshift == true && key.up == true)
             {
                 gvars::currenty--;
                 gvars::currenty--;
@@ -3780,7 +3780,7 @@ int main()
                 gvars::currenty--;
                 PlyAct = true;
             } //Sprite.Move(0, -100 * ElapsedTime);
-            if (Key.lshift == true && Key.down == true)
+            if (key.lshift == true && key.down == true)
             {
                 gvars::currenty++;
                 gvars::currenty++;
@@ -3788,28 +3788,28 @@ int main()
                 gvars::currenty++;
                 PlyAct = true;
             } //Sprite.Move(0,  100 * ElapsedTime);
-            if (Key.comma == true && Key.lshift == true &&
+            if (key.comma == true && key.lshift == true &&
                 gvars::currentz <= gridz - 1)
             {
                 gvars::currentz++;
                 PlyAct = true;
                 fSleep(0.1f);
             } //Sprite.Move(0, -100 * ElapsedTime);
-            if (Key.period == true && Key.lshift == true &&
+            if (key.period == true && key.lshift == true &&
                 gvars::currentz >= 1)
             {
                 gvars::currentz--;
                 PlyAct = true;
                 fSleep(0.1f);
             } //Sprite.Move(0,  100 * ElapsedTime);
-            if (Key.comma == true && Key.rshift == true &&
+            if (key.comma == true && key.rshift == true &&
                 gvars::currentz <= gridz - 1)
             {
                 gvars::currentz++;
                 PlyAct = true;
                 fSleep(0.1f);
             } //Sprite.Move(0, -100 * ElapsedTime);
-            if (Key.period == true && Key.rshift == true &&
+            if (key.period == true && key.rshift == true &&
                 gvars::currentz >= 1)
             {
                 gvars::currentz--;
@@ -3820,7 +3820,7 @@ int main()
             {
                 gvars::following = false;
             }
-            else if (Key.c)
+            else if (key.c)
             {
                 gvars::following = true;
             }
@@ -3839,7 +3839,7 @@ int main()
                 sf::Color::
                     Red); // This one reachs from 0 to 32 only because it draws from the left, not the center.
 
-            if (Key.lctrlTime > 10)
+            if (key.lctrlTime > 10)
             {
                 int Variable =
                     Tiles[abs_to_index(gvars::mousePos.x / 20)][abs_to_index(
@@ -4308,7 +4308,7 @@ int main()
                 removeItems(worlditems);
             }
 
-            if (gvars::myTarget != -1 && Key.RMB &&
+            if (gvars::myTarget != -1 && key.rmb &&
                 Tiles[abs_to_index(gvars::mousePos.x / GridSize)][abs_to_index(
                     gvars::mousePos.y / GridSize)][30].ID != 1010)
             { // Giving Orders
@@ -4343,7 +4343,7 @@ int main()
         } //=============================================================================*End of Local*========================================================================
         if (gCtrl.phase == "Solar")
         { //=======================================================*Solar*============================================================================
-            if (Key.lshift)
+            if (key.lshift)
             {
                 /*std::vector<planet>::iterator Me;
                 for(Me = Planets.begin(); Me != Planets.end(); ++Me )
@@ -4359,27 +4359,27 @@ int main()
             // TODO: Fix Laterif(Key.q){aim--; std::cout << aim << std::endl; sf::Sleep(0.2);}
             // TODO: Fix Laterif(Key.e){aim++; std::cout << aim << std::endl; sf::Sleep(0.2);}
 
-            if (Key.left == true)
+            if (key.left == true)
             {
                 gvars::currentx--;
                 PlyAct = true;
             }
-            if (Key.right == true)
+            if (key.right == true)
             {
                 gvars::currentx++;
                 PlyAct = true;
             }
-            if (Key.up == true)
+            if (key.up == true)
             {
                 gvars::currenty--;
                 PlyAct = true;
             }
-            if (Key.down == true)
+            if (key.down == true)
             {
                 gvars::currenty++;
                 PlyAct = true;
             }
-            if (Key.lshift == true && Key.left == true)
+            if (key.lshift == true && key.left == true)
             {
                 gvars::currentx--;
                 gvars::currentx--;
@@ -4387,7 +4387,7 @@ int main()
                 gvars::currentx--;
                 PlyAct = true;
             } //Sprite.Move(-100 * ElapsedTime, 0);
-            if (Key.lshift == true && Key.right == true)
+            if (key.lshift == true && key.right == true)
             {
                 gvars::currentx++;
                 gvars::currentx++;
@@ -4395,7 +4395,7 @@ int main()
                 gvars::currentx++;
                 PlyAct = true;
             } //Sprite.Move( 100 * ElapsedTime, 0);
-            if (Key.lshift == true && Key.up == true)
+            if (key.lshift == true && key.up == true)
             {
                 gvars::currenty--;
                 gvars::currenty--;
@@ -4403,7 +4403,7 @@ int main()
                 gvars::currenty--;
                 PlyAct = true;
             } //Sprite.Move(0, -100 * ElapsedTime);
-            if (Key.lshift == true && Key.down == true)
+            if (key.lshift == true && key.down == true)
             {
                 gvars::currenty++;
                 gvars::currenty++;
@@ -4415,17 +4415,17 @@ int main()
         } //=============================================================================*End of Solar*========================================================================
         if (gCtrl.phase == "Test")
         {
-            if (Key.up)
+            if (key.up)
                 testage++;
-            if (Key.down)
+            if (key.down)
                 testage--;
-            if (Key.right)
+            if (key.right)
                 testage2++;
-            if (Key.left)
+            if (key.left)
                 testage2--;
-            if (Key.pad2)
+            if (key.pad2)
                 radius++;
-            if (Key.pad8)
+            if (key.pad8)
                 radius--;
 
             if (gvars::currenty >
@@ -4450,17 +4450,17 @@ int main()
                 gvars::currentx = 63;
             }
 
-            if (Key.g)
+            if (key.g)
                 InitalizeWorldTiles();
             //DrawNewTiles();
 
             DrawWorldTiles();
-            if (Key.j)
+            if (key.j)
                 TilesGoUp();
-            if (Key.k)
+            if (key.k)
                 TilesRandom();
 
-            if (Key.m)
+            if (key.m)
             {
                 std::set<int> Setage;
                 Setage.insert(1);
@@ -4475,27 +4475,27 @@ int main()
                 }
             }
 
-            if (Key.left == true)
+            if (key.left == true)
             {
                 gvars::currentx--;
                 PlyAct = true;
             }
-            if (Key.right == true)
+            if (key.right == true)
             {
                 gvars::currentx++;
                 PlyAct = true;
             }
-            if (Key.up == true)
+            if (key.up == true)
             {
                 gvars::currenty--;
                 PlyAct = true;
             }
-            if (Key.down == true)
+            if (key.down == true)
             {
                 gvars::currenty++;
                 PlyAct = true;
             }
-            if (Key.lshift == true && Key.left == true)
+            if (key.lshift == true && key.left == true)
             {
                 gvars::currentx--;
                 gvars::currentx--;
@@ -4503,7 +4503,7 @@ int main()
                 gvars::currentx--;
                 PlyAct = true;
             } //Sprite.Move(-100 * ElapsedTime, 0);
-            if (Key.lshift == true && Key.right == true)
+            if (key.lshift == true && key.right == true)
             {
                 gvars::currentx++;
                 gvars::currentx++;
@@ -4511,7 +4511,7 @@ int main()
                 gvars::currentx++;
                 PlyAct = true;
             } //Sprite.Move( 100 * ElapsedTime, 0);
-            if (Key.lshift == true && Key.up == true)
+            if (key.lshift == true && key.up == true)
             {
                 gvars::currenty--;
                 gvars::currenty--;
@@ -4519,7 +4519,7 @@ int main()
                 gvars::currenty--;
                 PlyAct = true;
             } //Sprite.Move(0, -100 * ElapsedTime);
-            if (Key.lshift == true && Key.down == true)
+            if (key.lshift == true && key.down == true)
             {
                 gvars::currenty++;
                 gvars::currenty++;
@@ -4584,7 +4584,7 @@ int main()
         }*/
             }
 
-            if (Key.space)
+            if (key.space)
             {
                 float xpos = xanchor;
                 float ypos = yanchor;
@@ -5146,13 +5146,13 @@ int main()
 
         if (gCtrl.phase == "World")
         {
-            if (Key.left == true)
+            if (key.left == true)
                 gvars::currentx--;
-            if (Key.right == true)
+            if (key.right == true)
                 gvars::currentx++;
-            if (Key.up == true)
+            if (key.up == true)
                 gvars::currenty--;
-            if (Key.down == true)
+            if (key.down == true)
                 gvars::currenty++;
 
             gCtrl.worldLoop();
@@ -5241,7 +5241,7 @@ int main()
                                  (Pos.y * 20) + 20, sf::Color(0, 0, 0, 0), 2,
                                  sf::Color(0, 200, 200, 255));
 
-            if (Key.c && true == false)
+            if (key.c && true == false)
             { // Not sure what this was for, Perhaps an early alpha planet builder?
                 for (int x = 0; x != Grids; x++)
                 {
@@ -5277,7 +5277,7 @@ int main()
                 gCtrl.addvPlanet();
             }
 
-            if (Key.RMB == true)
+            if (key.rmb == true)
             { // Entering Menu and such.
                 debug("After RMB");
 
@@ -5418,7 +5418,7 @@ int main()
                 }
             }
 
-            if (Key.b)
+            if (key.b)
             {
                 for (int i = 0; i <= 32; i++)
                 {
@@ -5426,7 +5426,7 @@ int main()
                 }
             }
 
-            if (Key.comma)
+            if (key.comma)
             {
                 if (gvars::debug)
                     std::cout << "Comma was pressed \n";
@@ -5437,33 +5437,33 @@ int main()
                 if (gvars::debug)
                     std::cout << "Done Building Local Test\n";
             }
-            if (Key.period)
+            if (key.period)
             {
                 gCtrl.phase = "World";
                 gCtrl.buildWorldTest();
             }
-            if (Key.rctrl)
+            if (key.rctrl)
             {
                 gCtrl.phase = "Test";
             }
         } //=============================================================================*End of Main Menu*========================================================================
 
-        if (Key.pad7)
+        if (key.pad7)
         {
             gvars::scalex += 0.1;
             fSleep(0.1);
         }
-        if (Key.pad8)
+        if (key.pad8)
         {
             gvars::scaley += 0.1;
             fSleep(0.1);
         }
-        if (Key.pad4)
+        if (key.pad4)
         {
             gvars::scalex -= 0.1;
             fSleep(0.1);
         }
-        if (Key.pad5)
+        if (key.pad5)
         {
             gvars::scaley -= 0.1;
             fSleep(0.1);
@@ -5471,44 +5471,44 @@ int main()
         // End of Game Mode Loops =========================================================================
 
         { //======Camera Controls======
-            if (Key.plus == true)
+            if (key.plus == true)
             {
                 gvars::view1.zoom(2);
                 fSleep(0.2);
             }
-            if (Key.minus == true)
+            if (key.minus == true)
             {
                 gvars::view1.zoom(0.5);
                 fSleep(0.2);
             }
-            if (Key.q && !Key.lshift)
+            if (key.q && !key.lshift)
             {
                 gvars::gCtimescale -= 0.001;
             }
-            if (Key.e && !Key.lshift)
+            if (key.e && !key.lshift)
             {
                 gvars::gCtimescale += 0.001;
             }
-            if (Key.q && Key.lshift)
+            if (key.q && key.lshift)
             {
                 gvars::gCtimescale -= 0.01;
             }
-            if (Key.e && Key.lshift)
+            if (key.e && key.lshift)
             {
                 gvars::gCtimescale += 0.01;
             }
-            if (Key.w)
+            if (key.w)
             {
                 gvars::gCtimescale = 1;
             }
         }
 
-        if (Key.pad0 == true)
+        if (key.pad0 == true)
         {
             window.setView(gvars::view1);
             PlyAct = true;
         }
-        if (Key.pad2 == true)
+        if (key.pad2 == true)
         {
             window.setView(Planetary);
             PlyAct = true;
@@ -5554,13 +5554,13 @@ int main()
                 bool FoundOne = false;
                 if (gvars::debug)
                     std::cout << "Pre Mouse Based Functions\n";
-                if (Key.LMB == true)
+                if (key.lmb == true)
                 {
                     int tfunz = -1;
                     for (auto &elem : npclist)
                     {
                         tfunz++;
-                        if (Key.LMB == true)
+                        if (key.lmb == true)
                         {
                             int Dist = math::closeish(gvars::mousePos.x,
                                                       gvars::mousePos.y,
@@ -5595,7 +5595,7 @@ int main()
                         }
                     }
                 }
-                if (FoundOne == false && Key.LMB == true &&
+                if (FoundOne == false && key.lmb == true &&
                     gvars::buttonClicked == false)
                 {
                     gvars::myTarget = -1;
@@ -5626,7 +5626,7 @@ int main()
                 }*/
             }
 
-            if (Key.LMBTime == 0 && gvars::heldClickPos != sf::Vector2f(-1, -1))
+            if (key.lmbTime == 0 && gvars::heldClickPos != sf::Vector2f(-1, -1))
             {
                 bool FoundAny = false;
                 sf::Vector2f S = gvars::heldClickPos;
@@ -5663,7 +5663,7 @@ int main()
             }
             if (gvars::selected.size() > 0)
             {
-                if (Key.RMB &&
+                if (key.rmb &&
                     Tiles[abs_to_index(gvars::mousePos.x / GridSize)]
                          [abs_to_index(gvars::mousePos.y / GridSize)][30].ID !=
                         1010)
@@ -5683,7 +5683,7 @@ int main()
                 }
             }
 
-            if (Key.LMBTime > 1)
+            if (key.lmbTime > 1)
             {
                 if (gvars::heldClickPos == sf::Vector2f(-1, -1))
                     gvars::heldClickPos = gvars::mousePos;
@@ -5888,7 +5888,7 @@ int main()
         }
         debug("Finished removing process");
 
-        if (Key.LMB && gvars::buttonClickedTime == 0 &&
+        if (key.lmb && gvars::buttonClickedTime == 0 &&
             !AABB(gvars::mousePos, gCtrl.menuPos.x, gCtrl.menuEndPos.x,
                   gCtrl.menuPos.y, gCtrl.menuEndPos.y) &&
             gCtrl.menuPos != sf::Vector2f(-10000, -10000))

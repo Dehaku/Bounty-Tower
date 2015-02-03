@@ -1597,7 +1597,7 @@ std::set<int> npcTrace(int xa, int ya, int xb, int yb, int id,
 
         x += xIncrement;
         y += yIncrement;
-        if (Key.g)
+        if (key.g)
         {
             effects.createCircle(x, y, 1, sf::Color::Blue);
         }

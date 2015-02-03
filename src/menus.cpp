@@ -157,7 +157,7 @@ bool buttonClicked(int id)
         {
             if (math::closeish(gvars::mousePos.x, gvars::mousePos.y,
                                button.vPos.x, button.vPos.y) < button.iSize &&
-                (Key.LMBTime == 1 || Key.LMBTime > 20))
+                (key.lmbTime == 1 || key.lmbTime > 20))
             {
                 button.beenPressed = true;
                 std::cout << "Pressed! \n";
@@ -179,7 +179,7 @@ bool squareButtonClicked(int id)
                      button.vPos.x + button.iSizex,
                      button.vPos.y - button.iSizey,
                      button.vPos.y + button.iSizey) &&
-                (Key.LMBTime == 1 || Key.LMBTime > 20))
+                (key.lmbTime == 1 || key.lmbTime > 20))
             {
                 button.beenPressed = true;
                 std::cout << "Pressed! \n";
@@ -247,7 +247,7 @@ void menuPopUp()
                     math::Vec2f(gCtrl.menuPos.x + BRD,
                                 (gCtrl.menuPos.y + (iY * 13)) + MBD),
                     BS, BSY, ButCol, "Strikes the location!");
-                if (squareButtonClicked(Butt) || Key.num1Time == 1)
+                if (squareButtonClicked(Butt) || key.num1Time == 1)
                 {
                     effects.createSquare(gCtrl.menuPos.x - 10,
                                          gCtrl.menuPos.y - 2,
@@ -307,7 +307,7 @@ void menuPopUp()
                     math::Vec2f(gCtrl.menuPos.x + BRD,
                                 (gCtrl.menuPos.y + (iY * 13)) + MBD),
                     BS, BSY, ButCol, "Makes a Wall!");
-                if (squareButtonClicked(Butt) || Key.num1Time == 1)
+                if (squareButtonClicked(Butt) || key.num1Time == 1)
                 {
                     rmbMenuTile(gCtrl.menuPos);
                 }
@@ -326,7 +326,7 @@ void menuPopUp()
                     math::Vec2f(gCtrl.menuPos.x + BRD,
                                 (gCtrl.menuPos.y + (iY * 13)) + MBD),
                     BS, BSY, ButCol, "Digs out a natural wall.");
-                if (squareButtonClicked(Butt) || Key.num1Time == 1)
+                if (squareButtonClicked(Butt) || key.num1Time == 1)
                 {
                     digWall(gCtrl.menuPos);
                 }
@@ -371,7 +371,7 @@ void menuPopUp()
                                 (gCtrl.menuPos.y + (iY * 13)) + MBD),
                     BS, BSY, ButCol,
                     "This opens the menu to build various structures!");
-                if (squareButtonClicked(Butt) || Key.num1Time == 1)
+                if (squareButtonClicked(Butt) || key.num1Time == 1)
                 {
                     gCtrl.menuType = "BuildStructure";
                     //fSleep(0.2);
@@ -394,7 +394,7 @@ void menuPopUp()
                                 (gCtrl.menuPos.y + (iY * 13)) + MBD),
                     BS, BSY, ButCol, "Causes an orbital ship to release "
                                      "specific cargo at target location.");
-                if (squareButtonClicked(Butt) || Key.num2Time == 1)
+                if (squareButtonClicked(Butt) || key.num2Time == 1)
                 {
 
                     gCtrl.menuType = "Orbital Drop";
@@ -418,7 +418,7 @@ void menuPopUp()
                     math::Vec2f(gCtrl.menuPos.x + BRD,
                                 (gCtrl.menuPos.y + (iY * 13)) + MBD),
                     BS, BSY, ButCol, "Dig out the current wall tile");
-                if (squareButtonClicked(Butt) || Key.num2Time == 1)
+                if (squareButtonClicked(Butt) || key.num2Time == 1)
                 {
 
                     gCtrl.menuType = "Dig";
@@ -480,7 +480,7 @@ void menuPopUp()
                     BS, BSY, ButCol, "Makes someone pickup this item.");
                 if ((squareButtonClicked(Butt) &&
                      gCtrl.menuPtrCon.pItem->pickupable) ||
-                    (Key.num1Time == 1 && gCtrl.menuPtrCon.pItem->pickupable))
+                    (key.num1Time == 1 && gCtrl.menuPtrCon.pItem->pickupable))
                 {
 
                     for (size_t i = 0; i != uniFact.size(); i++)
@@ -523,7 +523,7 @@ void menuPopUp()
                     "Makes someone seek and destroy this item.");
                 if ((squareButtonClicked(Butt) &&
                      !gCtrl.menuPtrCon.pItem->pickupable) ||
-                    (Key.num1Time == 1 && !gCtrl.menuPtrCon.pItem->pickupable))
+                    (key.num1Time == 1 && !gCtrl.menuPtrCon.pItem->pickupable))
                 {
 
                     for (size_t i = 0; i != uniFact.size(); i++)
@@ -597,7 +597,7 @@ void menuPopUp()
                     math::Vec2f(gCtrl.menuPos.x + BRD,
                                 (gCtrl.menuPos.y + (iY * 13)) + MBD),
                     BS, BSY, ButCol, "Strikes the location!");
-                if (squareButtonClicked(Butt) || Key.num1Time == 1)
+                if (squareButtonClicked(Butt) || key.num1Time == 1)
                 {
 
                     gCtrl.menuPos = sf::Vector2f(-10000, -10000);
@@ -645,7 +645,7 @@ void menuPopUp()
                     math::Vec2f(gCtrl.menuPos.x + BRD,
                                 (gCtrl.menuPos.y + (iY * 13)) + MBD),
                     BS, BSY, ButCol, "Welcome to the jungle baby.");
-                if (squareButtonClicked(Butt) || Key.num1Time == 1)
+                if (squareButtonClicked(Butt) || key.num1Time == 1)
                 {
                     GenerateChunk("Building", 500,
                                   sf::Vector2i(abs(gCtrl.menuPos.x / 20),
@@ -729,7 +729,7 @@ void menuPopUp()
                     math::Vec2f(gCtrl.menuPos.x + BRD,
                                 (gCtrl.menuPos.y + (iY * 13)) + MBD),
                     BS, BSY, ButCol, "Close Menu");
-                if (squareButtonClicked(Butt) || Key.num1Time == 1)
+                if (squareButtonClicked(Butt) || key.num1Time == 1)
                 {
                     gCtrl.menuPos = sf::Vector2f(-10000, -10000);
                     gCtrl.menuType = "NULL";
@@ -751,7 +751,7 @@ void menuPopUp()
                     math::Vec2f(gCtrl.menuPos.x + BRD,
                                 (gCtrl.menuPos.y + (iY * 13)) + MBD),
                     BS, BSY, ButCol, "Missile Strike");
-                if (squareButtonClicked(Butt) || Key.num2Time == 1)
+                if (squareButtonClicked(Butt) || key.num2Time == 1)
                 {
 
                     effects.createSquare(gCtrl.menuPos.x - 10,
@@ -793,7 +793,7 @@ void menuPopUp()
                     math::Vec2f(gCtrl.menuPos.x + BRD,
                                 (gCtrl.menuPos.y + (iY * 13)) + MBD),
                     BS, BSY, ButCol);
-                if (squareButtonClicked(Butt) || Key.num3Time == 1)
+                if (squareButtonClicked(Butt) || key.num3Time == 1)
                 {
 
                     if (Tiles[abs_to_index(gCtrl.menuPos.x / GridSize)]
@@ -838,7 +838,7 @@ void menuPopUp()
                     math::Vec2f(gCtrl.menuPos.x + BRD,
                                 (gCtrl.menuPos.y + (iY * 13)) + MBD),
                     BS, BSY, ButCol);
-                if (squareButtonClicked(Butt) || Key.num4Time == 1)
+                if (squareButtonClicked(Butt) || key.num4Time == 1)
                 {
 
                     gCtrl.zombieSwarmLocal();
@@ -864,7 +864,7 @@ void menuPopUp()
                     math::Vec2f(gCtrl.menuPos.x + BRD,
                                 (gCtrl.menuPos.y + (iY * 13)) + MBD),
                     BS, BSY, ButCol);
-                if (squareButtonClicked(Butt) || Key.num5Time == 1)
+                if (squareButtonClicked(Butt) || key.num5Time == 1)
                 {
 
                     std::vector<Npc>::iterator zit;
@@ -897,7 +897,7 @@ void menuPopUp()
                     math::Vec2f(gCtrl.menuPos.x + BRD,
                                 (gCtrl.menuPos.y + (iY * 13)) + MBD),
                     BS, BSY, ButCol);
-                if (squareButtonClicked(Butt) || Key.num5Time == 1)
+                if (squareButtonClicked(Butt) || key.num5Time == 1)
                 {
 
                     for (auto &elem : npclist)
@@ -927,7 +927,7 @@ void menuPopUp()
                                 (gCtrl.menuPos.y + (iY * 13)) + MBD),
                     BS, BSY, ButCol,
                     "You horrible monster, Why would you do this?!");
-                if (squareButtonClicked(Butt) || Key.num6Time == 1)
+                if (squareButtonClicked(Butt) || key.num6Time == 1)
                 {
 
                     for (auto &elem : npclist)
@@ -957,7 +957,7 @@ void menuPopUp()
                     math::Vec2f(gCtrl.menuPos.x + BRD,
                                 (gCtrl.menuPos.y + (iY * 13)) + MBD),
                     BS, BSY, ButCol);
-                if (squareButtonClicked(Butt) || Key.num7Time == 1)
+                if (squareButtonClicked(Butt) || key.num7Time == 1)
                 {
                     for (auto &elem : npclist)
                     {
@@ -980,7 +980,7 @@ void menuPopUp()
                     math::Vec2f(gCtrl.menuPos.x + BRD,
                                 (gCtrl.menuPos.y + (iY * 13)) + MBD),
                     BS, BSY, ButCol);
-                if (squareButtonClicked(Butt) || Key.num8Time == 1)
+                if (squareButtonClicked(Butt) || key.num8Time == 1)
                 {
                     for (auto &elem : npclist)
                     {
@@ -1002,7 +1002,7 @@ void menuPopUp()
                     math::Vec2f(gCtrl.menuPos.x + BRD,
                                 (gCtrl.menuPos.y + (iY * 13)) + MBD),
                     BS, BSY, ButCol);
-                if (squareButtonClicked(Butt) || Key.num8Time == 1)
+                if (squareButtonClicked(Butt) || key.num8Time == 1)
                 {
                     for (int ItLength = 0; ItLength != 16; ItLength++)
                     {
@@ -1196,7 +1196,7 @@ void menuPopUp()
 
 void rightMouseButtonContextMenu()
 {
-    if (Key.RMBTime ==
+    if (key.rmbTime ==
         1) // This is the RightMouseButton's context menu for Tiles/Critters/Items, This will probably be rather robust
     {
 

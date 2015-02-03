@@ -8,11 +8,11 @@ extern bool plat;
 class Ke
 {
 public:
-    bool AnyKey;
-    bool LMB;
-    int LMBTime;
-    bool RMB;
-    int RMBTime;
+    bool anyKey;
+    bool lmb;
+    int lmbTime;
+    bool rmb;
+    int rmbTime;
     bool left;
     int leftTime;
     bool right;
@@ -144,10 +144,10 @@ public:
     int yTime;
     int zTime;
 
-    void Update();
+    void update();
 
     Ke();
 };
-extern Ke Key;
+extern Ke key;
 
 #endif

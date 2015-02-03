@@ -6,9 +6,9 @@
 extern sf::RenderWindow window;
 
 bool plat = true;
-Ke Key;
+Ke key;
 
-void Ke::Update()
+void Ke::update()
 {
 
     if (gvars::inFocus)
@@ -659,23 +659,23 @@ void Ke::Update()
         }
         if (sf::Mouse::isButtonPressed(sf::Mouse::Right))
         {
-            RMBTime++;
-            RMB = true;
+            rmbTime++;
+            rmb = true;
         }
         else
         {
-            RMB = false;
-            RMBTime = 0;
+            rmb = false;
+            rmbTime = 0;
         }
         if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
         {
-            LMBTime++;
-            LMB = true;
+            lmbTime++;
+            lmb = true;
         }
         else
         {
-            LMB = false;
-            LMBTime = 0;
+            lmb = false;
+            lmbTime = 0;
         }
     }
 }
@@ -736,12 +736,12 @@ Ke::Ke()
     x = false;
     y = false;
     z = false;
-    LMB = false;
-    RMB = false;
+    lmb = false;
+    rmb = false;
     tab = false;
     home = false;
     end = false;
-    AnyKey = false;
+    anyKey = false;
 
     leftTime = 0;
     upTime = 0;
@@ -794,8 +794,8 @@ Ke::Ke()
     xTime = 0;
     yTime = 0;
     zTime = 0;
-    LMBTime = 0;
-    RMBTime = 0;
+    lmbTime = 0;
+    rmbTime = 0;
     tabTime = 0;
     homeTime = 0;
     endTime = 0;
