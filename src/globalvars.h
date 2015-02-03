@@ -5,8 +5,8 @@
 
 #include "defs.h"
 
-float CZ(float Number);
-void debug(std::string Info);
+float CZ(float number);
+void debug(std::string info);
 
 namespace gvars
 {

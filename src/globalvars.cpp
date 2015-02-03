@@ -2,15 +2,15 @@
 
 #include <iostream>
 
-void debug(std::string Info)
+void debug(std::string info)
 {
     if (gvars::debug)
-        std::cout << Info << std::endl;
+        std::cout << info << std::endl;
 }
 
-float CZ(float Number)
+float CZ(float number)
 {
-    return Number / gvars::cameraZoom;
+    return number / gvars::cameraZoom;
 }
 
 namespace gvars
