@@ -478,22 +478,22 @@ int getNpcVectorId(int id)
 
 bool removeNPC(char * /*NPCname*/, int /*Id*/)
 {
-    int TempInt = 0;
+    int tempInt = 0;
     std::vector<Npc>::iterator location;
     for (auto it = npclist.begin(); it != npclist.end(); ++it)
     {
         if (it->health <= 0 || it->hasSpawned == false || it->alive == false)
         {
             location = it;
-            TempInt = 1;
+            tempInt = 1;
         }
     }
-    if (TempInt == 1)
+    if (tempInt == 1)
     {
         npclist.erase(location);
         return true;
     }
-    else if (TempInt == 0)
+    else if (tempInt == 0)
     {
         return false;
     }
