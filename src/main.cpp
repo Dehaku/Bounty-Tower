@@ -5250,25 +5250,25 @@ int main()
                     {
                         if (tiles[x][y][0].id == 1001)
                         {
-                            sf::Image Grazz;
-                            Grazz.create(20, 20, sf::Color(0, 0, 0, 255));
+                            sf::Image grazz;
+                            grazz.create(20, 20, sf::Color(0, 0, 0, 255));
                             for (int i = 0; i != 20; i++)
                             {
                                 for (int t = 0; t != 20; t++)
                                 {
-                                    int Pix = randz(0, 1);
-                                    if (Pix == 0)
-                                        Grazz.setPixel(
+                                    int pix = randz(0, 1);
+                                    if (pix == 0)
+                                        grazz.setPixel(
                                             i, t, sf::Color(0, 255, 0, 255));
-                                    if (Pix == 1)
-                                        Grazz.setPixel(
+                                    if (pix == 1)
+                                        grazz.setPixel(
                                             i, t, sf::Color(0, 128, 0, 255));
-                                    Grazz.setPixel(i, t,
+                                    grazz.setPixel(i, t,
                                                    sf::Color(0, 128, 0, 255));
                                 }
                             }
-                            sf::Texture Why;
-                            Why.loadFromImage(Grazz);
+                            sf::Texture why;
+                            why.loadFromImage(grazz);
                             //                Tiles[x][y][0].Img.setTexture(Why);
                         }
                     }
