@@ -37,6 +37,7 @@ public:
     bool firstStrike;
     bool imgRotates;
     float angle;
+    float turnSpeed;
     sf::Vector2f speed;
     sf::Vector2f shootPos;
     bool prone;

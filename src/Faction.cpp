@@ -325,6 +325,7 @@ Npc::Npc()
     targetVectorId = -1;
     targetId = -1;
     angle = 1;
+    turnSpeed = 1;
     allowedDrink = true;
     allowedFood = true;
     allowedMove = true;
@@ -750,15 +751,15 @@ void Npc::dirMove(sf::Vector2f tar)
     {
         int xx = 0;
         int yy = 0;
-        angle =
+        int tempangle =
             90 -
             (180 / PI) *
                 (atan2f(
                     xpos - tar.x,
                     ypos -
                         tar.y)); //To be honest, I spent alot of time with trial and error to get this part to work.
-        xx = cosf((angle)*PI / 180) * moverate;
-        yy = sinf((angle)*PI / 180) * moverate;
+        xx = cosf((tempangle)*PI / 180) * moverate;
+        yy = sinf((tempangle)*PI / 180) * moverate;
         xpos -= xx;
         ypos -= yy;
     }

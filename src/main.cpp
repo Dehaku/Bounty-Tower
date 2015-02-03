@@ -959,6 +959,9 @@ void runCritterBody(Npc &npc)
 
 }
 
+
+
+
 void critterBrain(Npc &npc)
 {
     runCritterBody(npc);
@@ -972,11 +975,25 @@ void critterBrain(Npc &npc)
     /* *BodyPart Loop* */
     /* Critter Vision   */
     const sf::Vector2f npcPos(npc.xpos, npc.ypos);
-    npc.angle = math::angleBetweenVectors(npcPos, gvars::mousePos) - 90;
+    const float npcAngle = math::constrainAngle(npc.angle);
+    const float angleTarget = math::constrainAngle(math::angleBetweenVectors(npcPos, gvars::mousePos) - 90);
 
-    int endAngle = -(npc.angle - (npc.viewangle / 2));
-    int startAngle = -(npc.angle - (-npc.viewangle / 2));
+    if(math::angleDiff(npcAngle,angleTarget) > npc.turnSpeed)
+    {
+        npc.angle++;
+    }
+    else if (math::angleDiff(npcAngle,angleTarget) < -npc.turnSpeed)
+        npc.angle--;
+    else
+        npc.angle = angleTarget;
 
+
+
+
+    const int endAngle = -(npc.angle - (npc.viewangle / 2));
+    const int startAngle = -(npc.angle - (-npc.viewangle / 2));
+
+    /*Drawing Vision*/
     sf::ConvexShape shape;
     int pointCounter = 1;
     shape.setPointCount(pointCounter);
