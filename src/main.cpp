@@ -3204,7 +3204,7 @@ void updateNpc()
 void drawTiles()
 {
     int z = gvars::currentz;
-    int iTS = GridSize;
+    int its = GridSize;
     for (int i = 0; i <= gridy - 1; i++)
     {
         for (int t = 0; t <= gridx - 1; t++)
@@ -3219,55 +3219,55 @@ void drawTiles()
                      t < (npclist.at(gvars::myTarget).ypos / GridSize) + 20) ||
                     (t > gvars::currenty - 21 && t < gvars::currenty + 20))
                 {
-                    sf::Sprite Tile;
+                    sf::Sprite tile;
                     if (gvars::groundmap[gvars::currentz][i][t] == 1)
                     { // dirt
-                        Tile.setTexture(texturemanager.getTexture("Dirt.bmp"));
-                        Tile.setColor(
+                        tile.setTexture(texturemanager.getTexture("Dirt.bmp"));
+                        tile.setColor(
                             sf::Color(255, 255, 255, gvars::sunmap[z][i][t]));
-                        Tile.setPosition(i * iTS, t * iTS);
-                        window.draw(Tile);
+                        tile.setPosition(i * its, t * its);
+                        window.draw(tile);
                     }
                     if (gvars::groundmap[gvars::currentz][i][t] == 3)
                     { // grass
-                        Tile.setTexture(texturemanager.getTexture("Grass.bmp"));
-                        Tile.setColor(
+                        tile.setTexture(texturemanager.getTexture("Grass.bmp"));
+                        tile.setColor(
                             sf::Color(255, 255, 255, gvars::sunmap[z][i][t]));
-                        Tile.setPosition(i * iTS, t * iTS);
-                        window.draw(Tile);
+                        tile.setPosition(i * its, t * its);
+                        window.draw(tile);
                     }
                     if (gvars::groundmap[gvars::currentz][i][t] == 7)
                     { // stone
-                        Tile.setTexture(texturemanager.getTexture("Stone.bmp"));
-                        Tile.setColor(
+                        tile.setTexture(texturemanager.getTexture("Stone.bmp"));
+                        tile.setColor(
                             sf::Color(255, 255, 255, gvars::sunmap[z][i][t]));
-                        Tile.setPosition(i * iTS, t * iTS);
-                        window.draw(Tile);
+                        tile.setPosition(i * its, t * its);
+                        window.draw(tile);
                     }
                     if (gvars::groundmap[gvars::currentz][i][t] == 20)
                     { // water
-                        Tile.setTexture(texturemanager.getTexture("Water.bmp"));
-                        Tile.setColor(
+                        tile.setTexture(texturemanager.getTexture("Water.bmp"));
+                        tile.setColor(
                             sf::Color(255, 255, 255, gvars::sunmap[z][i][t]));
-                        Tile.setPosition(i * iTS, t * iTS);
-                        window.draw(Tile);
+                        tile.setPosition(i * its, t * its);
+                        window.draw(tile);
                     }
                     if (gvars::groundmap[gvars::currentz][i][t] == 53)
                     { // lava
-                        Tile.setTexture(texturemanager.getTexture("Lava.bmp"));
-                        Tile.setColor(
+                        tile.setTexture(texturemanager.getTexture("Lava.bmp"));
+                        tile.setColor(
                             sf::Color(255, 255, 255, gvars::sunmap[z][i][t]));
-                        Tile.setPosition(i * iTS, t * iTS);
-                        window.draw(Tile);
+                        tile.setPosition(i * its, t * its);
+                        window.draw(tile);
                     }
                     if (gvars::groundmap[gvars::currentz][i][t] == 52)
                     { // deepwater
-                        Tile.setTexture(
+                        tile.setTexture(
                             texturemanager.getTexture("DeepWater.bmp"));
-                        Tile.setColor(
+                        tile.setColor(
                             sf::Color(255, 255, 255, gvars::sunmap[z][i][t]));
-                        Tile.setPosition(i * iTS, t * iTS);
-                        window.draw(Tile);
+                        tile.setPosition(i * its, t * its);
+                        window.draw(tile);
                     }
                 }
             }
