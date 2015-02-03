@@ -55,7 +55,7 @@ public:
 
         std::string bodyParts;
 
-        void BodyPartFind(std::string Part, int amount);
+        void bodyPartFind(std::string Part, int amount);
 
         int head;
         int eyes;  // Mask = Eyes+Mouth

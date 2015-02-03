@@ -20,7 +20,7 @@ Faction g_pf;
 NpcManager npcmanager;
 extern sf::RenderWindow window;
 
-void Npc::BodyDefinition::BodyPartFind(std::string Part, int amount)
+void Npc::BodyDefinition::bodyPartFind(std::string Part, int amount)
 {
 
     size_t LinePosOne;
