@@ -3551,10 +3551,6 @@ int main()
 
 
         RemoveNPCs();
-        if (Key.mTime > 5)
-        {
-            GC.Phase = "MainMenu";
-        }
         sf::Event Event;
         while (window.pollEvent(Event))
         {
@@ -3613,7 +3609,7 @@ int main()
 
         Key.Update();
         sf::Vector2f MouseStagnationCheck = gvars::mousePos;
-        // For some reason, I have to manually modify the positions.
+
         gvars::mousePos =
             window.mapPixelToCoords(sf::Mouse::getPosition(window));
         if (MouseStagnationCheck == gvars::mousePos)
@@ -3681,10 +3677,6 @@ int main()
                 cText.CreateText((gvars::currentx - 2) * GridSize,
                                  (gvars::currenty + 1) * GridSize, 11,
                                  sf::Color::Red, "Debug On");
-            if (Key.lctrl && Key.LMB)
-            {
-                Boom(gvars::mousePos.x, gvars::mousePos.y, 10, 50);
-            }
 
             if (Key.vTime == 1)
                 ChatBox.AddChat(
@@ -4619,7 +4611,7 @@ int main()
         {
             // Herp
         }
-        if (GC.Phase == "MakeSquad")
+        if (GC.Phase == "MakeSquad") // Needs a heavy menu overhaul.
         {
             gvars::view1.setCenter(Rez.x / 2, Rez.y / 2);
 
@@ -5478,10 +5470,6 @@ int main()
             fSleep(0.1);
         }
         // End of Game Mode Loops =========================================================================
-        if (Key.z)
-        {
-            //Sleep(1);
-        }
 
         { //======Camera Controls======
             if (Key.plus == true)
@@ -5527,16 +5515,6 @@ int main()
             PlyAct = true;
         }
 
-        //--------------------[Hud]------------------------------------------
-
-        if (GC.Phase != "MainMenu")
-        {
-            //cText.CreateText((globals::currentx-2)*GridSize,(globals::currenty-1)*GridSize,11,White,"Aim Pos ","x:",globals::currentx," ","y:",globals::currenty," ","z:",globals::currentz,1,0);
-            //cText.CreateText((globals::currentx-2)*GridSize,(globals::currenty+1)*GridSize,11,White,"Scaling ","x:",globals::Scalex*10," ","y:",globals::Scaley*10);
-            //cText.CreateText((globals::currentx-2)*20,(globals::currenty-18)*20,11,White,"Timescale: ","",GCtimescale*100,"","",-6698,"","",-6698,1,0);
-        }
-
-        //--------------------[Hud]------------------------------------------
 
         if (Paused == false)
         {
@@ -5900,8 +5878,6 @@ int main()
         RemoveNPCs();
         UnpointItems(worlditems);
         removeItems(worlditems);
-
-        //std::cout << "AABB, " << MousePos.x << ":" << MousePos.y << " Vs (" << GC.MenuPos.x << ":" << Right << ") : (" << Up << ":" << Down << ") \n" ;
 
         if (GC.MenuEndPos == sf::Vector2f(-10000, -10000))
         {
