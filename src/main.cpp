@@ -144,24 +144,24 @@ void unpointItems(std::list<Item> &items)
     }
 }
 
-bool removeItem(int Id)
+bool removeItem(int id)
 {
-    int TempInt = 0;
+    int tempInt = 0;
     std::list<Item>::iterator location;
     for (auto it = worlditems.begin(); it != worlditems.end(); ++it)
     {
-        if (it->id == Id)
+        if (it->id == id)
         {
             location = it;
-            TempInt = 1;
+            tempInt = 1;
         }
     }
-    if (TempInt == 1)
+    if (tempInt == 1)
     {
         worlditems.erase(location);
         return true;
     }
-    else if (TempInt == 0)
+    else if (tempInt == 0)
     {
         return false;
     }
