@@ -163,7 +163,7 @@ void GalaxyController::buildLocal(std::string Type, int ZedAmount)
                 spawnItem("Sword", 1039, 1020);
 
                 spawnItem("Gun", 1059, 1020);
-                Con("Hunting for Trees 1");
+                con("Hunting for Trees 1");
                 for (int i = 0; i != 5; i++)
                 {
                     int Tx = randz(0, 2000), Ty = randz(0, 2000);
@@ -268,17 +268,17 @@ void GalaxyController::buildLocal(std::string Type, int ZedAmount)
 
                 for (int zeds = 0; zeds != ZedAmount; zeds++)
                 {
-                    Con("Starting Zed");
+                    con("Starting Zed");
                     sf::Vector2f vPos = math::circleRandz(1000, 1000, 580);
                     spawnCritter("Zombie", vPos.x, vPos.y);
-                    Con("Ending Zed");
+                    con("Ending Zed");
                 }
 
                 spawnItem("Sword", 1039, 1020);
 
                 spawnItem("Gun", 1059, 1020);
                 // Does Not Function
-                Con("Hunting for Trees 2");
+                con("Hunting for Trees 2");
                 //SpawnItem("Fruit Tree",970,1050);
                 //SpawnItem("Fruit Tree",950,1050);
                 //SpawnItem("Fruit Tree",930,1050);
@@ -339,7 +339,7 @@ void GalaxyController::buildLocalTest()
         for (int t = 31; t != 64; t++)
         {
             tiles[i][t][30].dirt();
-            Con(t);
+            con(t);
         }
     }
     if (myDebug)
@@ -389,7 +389,7 @@ void GalaxyController::buildLocalTest()
             spawnItem("Gun", 1059, 1020);
             for (int i = 0; i != 5; i++)
                 //Does not Run
-                Con("Hunting for Trees 3");
+                con("Hunting for Trees 3");
             //SpawnItem("Fruit Tree",970,1050);
             //SpawnItem("Fruit Tree",950,1050);
             //SpawnItem("Fruit Tree",930,1050);
@@ -514,7 +514,7 @@ void GalaxyController::worldLoop()
 
                 sf::Vector2i Short = uniFact[i].territories[Territ].worldTile;
 
-                if (AABB(Short, 1, 98, 1, 98))
+                if (aabb(Short, 1, 98, 1, 98))
                 {
                     int Direction = randz(0, 3);
                     int X = 0;
@@ -579,20 +579,20 @@ void GalaxyController::worldLoop()
                                 float TenantTechnique =
                                     TenantTech +
                                     (TenantTech *
-                                     (PercentIs(uniFact[z].creativity, 35) *
+                                     (percentIs(uniFact[z].creativity, 35) *
                                       0.01));
                                 float InvaderTechnique =
                                     InvaderTech +
                                     (InvaderTech *
-                                     (PercentIs(uniFact[i].creativity, 35) *
+                                     (percentIs(uniFact[i].creativity, 35) *
                                       0.01));
 
                                 float TenantPower =
                                     TenantTechnique *
-                                    (PercentIs(uniFact[z].members, 60) * 0.01);
+                                    (percentIs(uniFact[z].members, 60) * 0.01);
                                 float InvaderPower =
                                     InvaderTechnique *
-                                    (PercentIs(uniFact[i].members, 60) * 0.01);
+                                    (percentIs(uniFact[i].members, 60) * 0.01);
 
                                 TenantPower = TenantPower * randz(7, 10);
                                 InvaderPower = InvaderPower * randz(7, 10);

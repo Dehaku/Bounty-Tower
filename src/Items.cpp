@@ -48,7 +48,7 @@ void zSaveItem(int /*planet*/, sf::Vector2i Region, Item &object)
     newline.append(newconvert.str());
     string newending(".item");
     newline.append(newending);
-    Con(newline);
+    con(newline);
 
     File.open(newline.c_str(), fstream::in | fstream::ate);
     debug("looking for file...");
@@ -59,8 +59,8 @@ void zSaveItem(int /*planet*/, sf::Vector2i Region, Item &object)
         File << "[name:" << object.name << "]"
              << "[xpos:" << object.xpos << "]"
              << "[ypos:" << object.ypos << "]";
-        Con("Added", false);
-        Con(object.name);
+        con("Added", false);
+        con(object.name);
         File.close();
     }
     else
@@ -79,7 +79,7 @@ void zSaveItem(int /*planet*/, sf::Vector2i Region, Item &object)
         line.append(convert.str());
         string ending(".item");
         line.append(ending);
-        Con(line);
+        con(line);
 
         ofstream outputFile(line.c_str());
 
@@ -158,11 +158,11 @@ std::string loadItems(sf::Vector2i WorldPos, std::string Direction, int planet)
 
             Critter.name = "Debuggery";
 
-            Critter.name = StringFindString(line, "[name:");
+            Critter.name = stringFindString(line, "[name:");
             if (Critter.name != "Debuggery")
                 Critter = *getGlobalItem(Critter.name);
-            Critter.xpos = StringFindNumber(line, "[xpos:");
-            Critter.ypos = StringFindNumber(line, "[ypos:");
+            Critter.xpos = stringFindNumber(line, "[xpos:");
+            Critter.ypos = stringFindNumber(line, "[ypos:");
             std::cout << "Xpos: " << Critter.xpos << "Ypos: " << Critter.ypos
                       << std::endl;
 
@@ -260,7 +260,7 @@ void refreshImages()
             }
         }
     }
-    Con("Done");
+    con("Done");
 }
 
 Item *getItemPtrFromVector(std::list<Item> &Vector, std::string Name)
@@ -574,31 +574,31 @@ void ItemManager::initializeItems()
             getline(Input, line);
             Item Item;
             Item.name = "Debuggery";
-            Item.name = StringFindString(line, "[name:");
+            Item.name = stringFindString(line, "[name:");
 
-            Item.hungervalue = StringFindNumber(line, "[hungervalue:");
-            Item.thirstvalue = StringFindNumber(line, "[thirstvalue:");
+            Item.hungervalue = stringFindNumber(line, "[hungervalue:");
+            Item.thirstvalue = stringFindNumber(line, "[thirstvalue:");
 
-            Item.massGlass = StringFindNumber(line, "[MassGlass:");
-            Item.massFlesh = StringFindNumber(line, "[MassFlesh:");
-            Item.massMetal = StringFindNumber(line, "[MassMetal:");
-            Item.massOil = StringFindNumber(line, "[MassOil:");
-            Item.massPlastic = StringFindNumber(line, "[MassPlastic:");
-            Item.massVeggy = StringFindNumber(line, "[MassVeggy:");
-            Item.massWater = StringFindNumber(line, "[MassWater:");
+            Item.massGlass = stringFindNumber(line, "[MassGlass:");
+            Item.massFlesh = stringFindNumber(line, "[MassFlesh:");
+            Item.massMetal = stringFindNumber(line, "[MassMetal:");
+            Item.massOil = stringFindNumber(line, "[MassOil:");
+            Item.massPlastic = stringFindNumber(line, "[MassPlastic:");
+            Item.massVeggy = stringFindNumber(line, "[MassVeggy:");
+            Item.massWater = stringFindNumber(line, "[MassWater:");
 
             Item.pickupable =
-                Booleanize(StringFindNumber(line, "[Pickupable:"));
-            Item.type = StringFindNumber(line, "[type:");
-            Item.cbaseid = StringFindNumber(line, "[baseid:");
-            Item.produces = Booleanize(StringFindNumber(line, "[produces:"));
-            Item.prodrate = StringFindNumber(line, "[prodrate:");
-            Item.produce = StringFindString(line, "[produce:");
-            Item.mindam = StringFindNumber(line, "[mindam:");
-            Item.maxdam = StringFindNumber(line, "[maxdam:");
-            Item.range = StringFindNumber(line, "[range:");
-            Item.isWeapon = Booleanize(StringFindNumber(line, "[IsWeapon:"));
-            std::string Imagery = StringFindString(line, "[image:");
+                booleanize(stringFindNumber(line, "[Pickupable:"));
+            Item.type = stringFindNumber(line, "[type:");
+            Item.cbaseid = stringFindNumber(line, "[baseid:");
+            Item.produces = booleanize(stringFindNumber(line, "[produces:"));
+            Item.prodrate = stringFindNumber(line, "[prodrate:");
+            Item.produce = stringFindString(line, "[produce:");
+            Item.mindam = stringFindNumber(line, "[mindam:");
+            Item.maxdam = stringFindNumber(line, "[maxdam:");
+            Item.range = stringFindNumber(line, "[range:");
+            Item.isWeapon = booleanize(stringFindNumber(line, "[IsWeapon:"));
+            std::string Imagery = stringFindString(line, "[image:");
             for (auto const &image : texturemanager.textures)
             {
                 if (image.name == Imagery)

@@ -38,22 +38,22 @@ std::string GetClipboardText()
 #else
     // Try opening the clipboard
     if (!OpenClipboard(NULL))
-        Con("ClipError1");
+        con("ClipError1");
 
     // Get handle of clipboard object for ANSI text
     HANDLE hData = GetClipboardData(CF_TEXT);
     if (hData == NULL)
-        Con("ClipError1");
+        con("ClipError1");
 
     // Lock the handle to get the actual text pointer
     char *pszText = static_cast<char *>(GlobalLock(hData));
     if (pszText == NULL)
-        Con("ClipError1");
+        con("ClipError1");
 
     // Save text in a string class instance
     std::string text(pszText);
-    Con("Your Clipboard Contains: ", false);
-    Con(text);
+    con("Your Clipboard Contains: ", false);
+    con(text);
 
     // Release the lock
     GlobalUnlock(hData);
@@ -260,7 +260,7 @@ void updateItem()
                         }
                     }
 
-                    Con("Boom!");
+                    con("Boom!");
                 }
             }
             item.age = item.age + 1;
@@ -638,7 +638,7 @@ void critterBrain(std::vector<Npc> &NPCs)
                                    EndPos - SearchPos);
                 float PartNumber = 0;
 
-                PartNumber = StringFindNumber(WorkingLine, "[Walk:");
+                PartNumber = stringFindNumber(WorkingLine, "[Walk:");
                 if (PartNumber != 0)
                 {
 
@@ -653,27 +653,27 @@ void critterBrain(std::vector<Npc> &NPCs)
                 }
 
                 PartNumber =
-                    StringFindNumber(WorkingLine, "[NutritionExtraction:");
+                    stringFindNumber(WorkingLine, "[NutritionExtraction:");
                 if (PartNumber != 0)
                 {
                     GlobalNutritionPercentage += PartNumber;
                 }
 
-                PartNumber = StringFindNumber(WorkingLine, "[DigestsBlood:");
+                PartNumber = stringFindNumber(WorkingLine, "[DigestsBlood:");
                 if (PartNumber != 0)
                 {
                 }
-                PartNumber = StringFindNumber(WorkingLine, "[DigestsFlesh:");
+                PartNumber = stringFindNumber(WorkingLine, "[DigestsFlesh:");
                 if (PartNumber != 0)
                 {
                     ConsumeFlesh = true;
                 }
-                PartNumber = StringFindNumber(WorkingLine, "[DigestsVeggy:");
+                PartNumber = stringFindNumber(WorkingLine, "[DigestsVeggy:");
                 if (PartNumber != 0)
                 {
                     ConsumeVeggy = true;
                 }
-                PartNumber = StringFindNumber(WorkingLine, "[DigestsWater:");
+                PartNumber = stringFindNumber(WorkingLine, "[DigestsWater:");
                 if (PartNumber != 0)
                 {
                     ConsumeWater = true;
@@ -713,9 +713,9 @@ void critterBrain(std::vector<Npc> &NPCs)
                 Item *PartItem;
 
                 std::string CurrentPart =
-                    StringFindString(WorkingLine, "[Name:");
+                    stringFindString(WorkingLine, "[Name:");
 
-                PartNumber = StringFindNumber(WorkingLine, "[DigestsBlood:");
+                PartNumber = stringFindNumber(WorkingLine, "[DigestsBlood:");
                 PartItem = getItemPtrFromVector(npc.inventory, "Blood");
                 if (PartNumber != 0 && PartItem != nullptr)
                 {
@@ -730,7 +730,7 @@ void critterBrain(std::vector<Npc> &NPCs)
                                      100; // TODO: Figure this out better.
                         npc.bloodwork(
                             "Nutrients",
-                            Nutr * PercentageBuff(GlobalNutritionPercentage));
+                            Nutr * percentageBuff(GlobalNutritionPercentage));
                     }
                     else
                     {
@@ -741,11 +741,11 @@ void critterBrain(std::vector<Npc> &NPCs)
                             WorkAmount * 100; // TODO: Figure this out better.
                         npc.bloodwork(
                             "Nutrients",
-                            Nutr * PercentageBuff(GlobalNutritionPercentage));
+                            Nutr * percentageBuff(GlobalNutritionPercentage));
                     }
                 }
 
-                PartNumber = StringFindNumber(WorkingLine, "[DigestsFlesh:");
+                PartNumber = stringFindNumber(WorkingLine, "[DigestsFlesh:");
                 PartItem =
                     getItemPtrfromVectorVarSearch(npc.inventory, "MassFlesh");
                 //if(PartItem != NULL) PartItem->HasInternalUse++; // This is designed to keep items from being ejected until they are completely useless to a critter, I.E. Items with multiple Food Mass's.
@@ -765,7 +765,7 @@ void critterBrain(std::vector<Npc> &NPCs)
                                      100; // TODO: Figure this out better.
                         npc.bloodwork(
                             "Nutrients",
-                            Nutr * PercentageBuff(GlobalNutritionPercentage));
+                            Nutr * percentageBuff(GlobalNutritionPercentage));
                     }
                     if (PartItem->massFlesh <= 0)
                     {
@@ -776,7 +776,7 @@ void critterBrain(std::vector<Npc> &NPCs)
                     }
                 }
 
-                PartNumber = StringFindNumber(WorkingLine, "[DigestsVeggy:");
+                PartNumber = stringFindNumber(WorkingLine, "[DigestsVeggy:");
                 PartItem =
                     getItemPtrfromVectorVarSearch(npc.inventory, "MassVeggy");
                 //if(PartItem != NULL) PartItem->HasInternalUse++; // This is designed to keep items from being ejected until they are completely useless to a critter, I.E. Items with multiple Food Mass's.
@@ -796,7 +796,7 @@ void critterBrain(std::vector<Npc> &NPCs)
                                      100; // TODO: Figure this out better.
                         npc.bloodwork(
                             "Nutrients",
-                            Nutr * PercentageBuff(GlobalNutritionPercentage));
+                            Nutr * percentageBuff(GlobalNutritionPercentage));
                     }
                     if (PartItem->massVeggy <= 0)
                     {
@@ -805,7 +805,7 @@ void critterBrain(std::vector<Npc> &NPCs)
                     }
                 }
 
-                PartNumber = StringFindNumber(WorkingLine, "[DigestsWater:");
+                PartNumber = stringFindNumber(WorkingLine, "[DigestsWater:");
                 PartItem =
                     getItemPtrfromVectorVarSearch(npc.inventory, "MassWater");
                 //if(PartItem != NULL) PartItem->HasInternalUse++; // This is designed to keep items from being ejected until they are completely useless to a critter, I.E. Items with multiple Food Mass's.
@@ -825,7 +825,7 @@ void critterBrain(std::vector<Npc> &NPCs)
                                      100; // TODO: Figure this out better.
                         npc.bloodwork(
                             "Hydration",
-                            Nutr * PercentageBuff(GlobalNutritionPercentage));
+                            Nutr * percentageBuff(GlobalNutritionPercentage));
                     }
                     if (PartItem->massWater <= 0)
                     {
@@ -834,12 +834,12 @@ void critterBrain(std::vector<Npc> &NPCs)
                     }
                 }
 
-                PartString = StringFindString(WorkingLine, "[PoisonFilter:");
+                PartString = stringFindString(WorkingLine, "[PoisonFilter:");
                 if (PartString != "")
                 {
 
                     std::vector<std::string> StrVec =
-                        StringFindElements(PartString, ":");
+                        stringFindElements(PartString, ":");
                     if (gvars::debug)
                         std::cout << "StrVec[0]: " << StrVec[0] << std::endl;
                     float Leftover =
@@ -856,7 +856,7 @@ void critterBrain(std::vector<Npc> &NPCs)
                     }
                 }
 
-                PartNumber = StringFindNumber(WorkingLine, "[Orafice:");
+                PartNumber = stringFindNumber(WorkingLine, "[Orafice:");
                 if (PartNumber > 0)
                 {
                     //std::vector<item> * Inv = &npc.inventory;
@@ -906,12 +906,12 @@ void critterBrain(std::vector<Npc> &NPCs)
                     }
                 }
 
-                PartNumber = StringFindNumber(
+                PartNumber = stringFindNumber(
                     WorkingLine, "[BloodPumpRate:"); // TODO: Do this right.
                 if (PartNumber != 0)
                 {
                     float Blood =
-                        StringFindNumber(npc.bloodcontent, "[Nutrients:");
+                        stringFindNumber(npc.bloodcontent, "[Nutrients:");
                     if (Blood > PartNumber)
                     {
                         if ((npc.maxhunger - npc.hunger) > PartNumber)
@@ -920,7 +920,7 @@ void critterBrain(std::vector<Npc> &NPCs)
                             npc.bloodwork("Nutrients", -PartNumber);
                         }
                     }
-                    Blood = StringFindNumber(npc.bloodcontent, "[Hydration:");
+                    Blood = stringFindNumber(npc.bloodcontent, "[Hydration:");
                     if (Blood > PartNumber)
                     {
                         if ((npc.maxthirst - npc.thirst) > PartNumber)
@@ -1214,7 +1214,7 @@ void updateNpc()
                                    EndPos - SearchPos);
                 float PartNumber = 0;
 
-                PartNumber = StringFindNumber(WorkingLine, "[Walk:");
+                PartNumber = stringFindNumber(WorkingLine, "[Walk:");
                 if (PartNumber != 0)
                 {
 
@@ -1229,27 +1229,27 @@ void updateNpc()
                 }
 
                 PartNumber =
-                    StringFindNumber(WorkingLine, "[NutritionExtraction:");
+                    stringFindNumber(WorkingLine, "[NutritionExtraction:");
                 if (PartNumber != 0)
                 {
                     GlobalNutritionPercentage += PartNumber;
                 }
 
-                PartNumber = StringFindNumber(WorkingLine, "[DigestsBlood:");
+                PartNumber = stringFindNumber(WorkingLine, "[DigestsBlood:");
                 if (PartNumber != 0)
                 {
                 }
-                PartNumber = StringFindNumber(WorkingLine, "[DigestsFlesh:");
+                PartNumber = stringFindNumber(WorkingLine, "[DigestsFlesh:");
                 if (PartNumber != 0)
                 {
                     ConsumeFlesh = true;
                 }
-                PartNumber = StringFindNumber(WorkingLine, "[DigestsVeggy:");
+                PartNumber = stringFindNumber(WorkingLine, "[DigestsVeggy:");
                 if (PartNumber != 0)
                 {
                     ConsumeVeggy = true;
                 }
-                PartNumber = StringFindNumber(WorkingLine, "[DigestsWater:");
+                PartNumber = stringFindNumber(WorkingLine, "[DigestsWater:");
                 if (PartNumber != 0)
                 {
                     ConsumeWater = true;
@@ -1290,9 +1290,9 @@ void updateNpc()
                 Item *PartItem;
 
                 std::string CurrentPart =
-                    StringFindString(WorkingLine, "[Name:");
+                    stringFindString(WorkingLine, "[Name:");
 
-                PartNumber = StringFindNumber(WorkingLine, "[DigestsBlood:");
+                PartNumber = stringFindNumber(WorkingLine, "[DigestsBlood:");
                 PartItem = getItemPtrFromVector(npc.inventory, "Blood");
                 if (PartNumber != 0 && PartItem != nullptr)
                 {
@@ -1307,7 +1307,7 @@ void updateNpc()
                                      100; // TODO: Figure this out better.
                         npc.bloodwork(
                             "Nutrients",
-                            Nutr * PercentageBuff(GlobalNutritionPercentage));
+                            Nutr * percentageBuff(GlobalNutritionPercentage));
                     }
                     else
                     {
@@ -1318,11 +1318,11 @@ void updateNpc()
                             WorkAmount * 100; // TODO: Figure this out better.
                         npc.bloodwork(
                             "Nutrients",
-                            Nutr * PercentageBuff(GlobalNutritionPercentage));
+                            Nutr * percentageBuff(GlobalNutritionPercentage));
                     }
                 }
 
-                PartNumber = StringFindNumber(WorkingLine, "[DigestsFlesh:");
+                PartNumber = stringFindNumber(WorkingLine, "[DigestsFlesh:");
                 PartItem =
                     getItemPtrfromVectorVarSearch(npc.inventory, "MassFlesh");
                 //if(PartItem != NULL) PartItem->HasInternalUse++; // This is designed to keep items from being ejected until they are completely useless to a critter, I.E. Items with multiple Food Mass's.
@@ -1342,7 +1342,7 @@ void updateNpc()
                                      100; // TODO: Figure this out better.
                         npc.bloodwork(
                             "Nutrients",
-                            Nutr * PercentageBuff(GlobalNutritionPercentage));
+                            Nutr * percentageBuff(GlobalNutritionPercentage));
                     }
                     if (PartItem->massFlesh <= 0)
                     {
@@ -1353,7 +1353,7 @@ void updateNpc()
                     }
                 }
 
-                PartNumber = StringFindNumber(WorkingLine, "[DigestsVeggy:");
+                PartNumber = stringFindNumber(WorkingLine, "[DigestsVeggy:");
                 PartItem =
                     getItemPtrfromVectorVarSearch(npc.inventory, "MassVeggy");
                 //if(PartItem != NULL) PartItem->HasInternalUse++; // This is designed to keep items from being ejected until they are completely useless to a critter, I.E. Items with multiple Food Mass's.
@@ -1373,7 +1373,7 @@ void updateNpc()
                                      100; // TODO: Figure this out better.
                         npc.bloodwork(
                             "Nutrients",
-                            Nutr * PercentageBuff(GlobalNutritionPercentage));
+                            Nutr * percentageBuff(GlobalNutritionPercentage));
                     }
                     if (PartItem->massVeggy <= 0)
                     {
@@ -1382,7 +1382,7 @@ void updateNpc()
                     }
                 }
 
-                PartNumber = StringFindNumber(WorkingLine, "[DigestsWater:");
+                PartNumber = stringFindNumber(WorkingLine, "[DigestsWater:");
                 PartItem =
                     getItemPtrfromVectorVarSearch(npc.inventory, "MassWater");
                 //if(PartItem != NULL) PartItem->HasInternalUse++; // This is designed to keep items from being ejected until they are completely useless to a critter, I.E. Items with multiple Food Mass's.
@@ -1402,7 +1402,7 @@ void updateNpc()
                                      100; // TODO: Figure this out better.
                         npc.bloodwork(
                             "Hydration",
-                            Nutr * PercentageBuff(GlobalNutritionPercentage));
+                            Nutr * percentageBuff(GlobalNutritionPercentage));
                     }
                     if (PartItem->massWater <= 0)
                     {
@@ -1411,12 +1411,12 @@ void updateNpc()
                     }
                 }
 
-                PartString = StringFindString(WorkingLine, "[PoisonFilter:");
+                PartString = stringFindString(WorkingLine, "[PoisonFilter:");
                 if (PartString != "")
                 {
 
                     std::vector<std::string> StrVec =
-                        StringFindElements(PartString, ":");
+                        stringFindElements(PartString, ":");
                     if (gvars::debug)
                         std::cout << "StrVec[0]: " << StrVec[0] << std::endl;
                     float Leftover =
@@ -1433,7 +1433,7 @@ void updateNpc()
                     }
                 }
 
-                PartNumber = StringFindNumber(WorkingLine, "[Orafice:");
+                PartNumber = stringFindNumber(WorkingLine, "[Orafice:");
                 if (PartNumber > 0)
                 {
                     //std::vector<item> * Inv = &npc.inventory;
@@ -1483,12 +1483,12 @@ void updateNpc()
                     }
                 }
 
-                PartNumber = StringFindNumber(
+                PartNumber = stringFindNumber(
                     WorkingLine, "[BloodPumpRate:"); // TODO: Do this right.
                 if (PartNumber != 0)
                 {
                     float Blood =
-                        StringFindNumber(npc.bloodcontent, "[Nutrients:");
+                        stringFindNumber(npc.bloodcontent, "[Nutrients:");
                     if (Blood > PartNumber)
                     {
                         if ((npc.maxhunger - npc.hunger) > PartNumber)
@@ -1497,7 +1497,7 @@ void updateNpc()
                             npc.bloodwork("Nutrients", -PartNumber);
                         }
                     }
-                    Blood = StringFindNumber(npc.bloodcontent, "[Hydration:");
+                    Blood = stringFindNumber(npc.bloodcontent, "[Hydration:");
                     if (Blood > PartNumber)
                     {
                         if ((npc.maxthirst - npc.thirst) > PartNumber)
@@ -2156,7 +2156,7 @@ void updateNpc()
 
                                     if (InvWood != nullptr)
                                     {
-                                        Con("Success! I have Wood!");
+                                        con("Success! I have Wood!");
                                         int x = uniFact[0].jobList[i].workPos.x;
                                         int y = uniFact[0].jobList[i].workPos.y;
 
@@ -2187,7 +2187,7 @@ void updateNpc()
                                                 float Rot = 1;
                                                 Rot <
                                                     361 *
-                                                        (PercentIs(
+                                                        (percentIs(
                                                              uniFact[0]
                                                                  .jobList[i]
                                                                  .completionTimer,
@@ -2239,7 +2239,7 @@ void updateNpc()
                                     else if (WldWood != nullptr)
                                     {
 
-                                        Con("Partial Success! World has Wood!");
+                                        con("Partial Success! World has Wood!");
                                         //item WorkLoad = *GetItemPtrfromVector(worlditems, "Wood");
 
                                         npc.targetPos.x = WldWood->xpos;
@@ -2388,7 +2388,7 @@ void updateNpc()
                                             float Rot = 1;
                                             Rot <
                                                 361 *
-                                                    (PercentIs(
+                                                    (percentIs(
                                                          uniFact[0]
                                                              .jobList[i]
                                                              .completionTimer,
@@ -3640,7 +3640,7 @@ int main()
 
         if (key.kTime == 1)
         { // Generates a random name from GenerateName(); and puts it into the console.
-            std::cout << GenerateName() << std::endl;
+            std::cout << generateName() << std::endl;
         }
 
         if (key.gTime == 1)
@@ -3721,7 +3721,7 @@ int main()
                 menuPtrCon.pItem = nullptr;
                 menuPtrCon.pNPC = nullptr;
                 menuPtrCon.pTile = nullptr;
-                Con("Closing DebugMenus Due To Lack of Key Presses");
+                con("Closing DebugMenus Due To Lack of Key Presses");
             }
             //                       if(Key.lshift && Key.z){GC.ZombieSwarmLocal();}
 
@@ -3985,11 +3985,11 @@ int main()
             }
             if (gvars::currentx < 32)
             {
-                Con("Starting GoRight");
+                con("Starting GoRight");
                 tilesGoRight();
-                Con("Ending GoRight");
+                con("Ending GoRight");
                 gvars::currentx = 63;
-                Con("Starting GoRight with NPC's and Items");
+                con("Starting GoRight with NPC's and Items");
                 for (size_t i = 0; i != npclist.size(); i++)
                 {
                     npclist.at(i).xpos += 640;
@@ -4003,7 +4003,7 @@ int main()
                 for (size_t i = 0; i != uniFact[0].jobList.size(); i++)
                     uniFact[0].jobList[i].workPos.x += 640;
 
-                Con("Done GoRight with NPC's and Items");
+                con("Done GoRight with NPC's and Items");
                 Transitioning = true;
                 std::string Line;
                 Line = loadCritters(sf::Vector2i(gvars::currentregionx - 1,
@@ -5275,7 +5275,7 @@ int main()
                     }
                 }
 
-                Con("Starting Now");
+                con("Starting Now");
                 gCtrl.addvPlanet();
             }
 
@@ -5636,9 +5636,9 @@ int main()
                 for (size_t i = 0; i != npclist.size(); i++)
                 {
                     //if(npclist[i].xpos >= S.x && npclist[i].xpos <= E.x)
-                    if (Inbetween(S.x, E.x, npclist[i].xpos) == true)
+                    if (inbetween(S.x, E.x, npclist[i].xpos) == true)
                     {
-                        if (Inbetween(S.y, E.y, npclist[i].ypos) == true)
+                        if (inbetween(S.y, E.y, npclist[i].ypos) == true)
                         {
                             std::cout << npclist[i].name << std::endl;
                             gvars::selected.push_back(npclist[i].id);
@@ -5891,7 +5891,7 @@ int main()
         debug("Finished removing process");
 
         if (key.lmb && gvars::buttonClickedTime == 0 &&
-            !AABB(gvars::mousePos, gCtrl.menuPos.x, gCtrl.menuEndPos.x,
+            !aabb(gvars::mousePos, gCtrl.menuPos.x, gCtrl.menuEndPos.x,
                   gCtrl.menuPos.y, gCtrl.menuEndPos.y) &&
             gCtrl.menuPos != sf::Vector2f(-10000, -10000))
         {
@@ -5901,7 +5901,7 @@ int main()
             gCtrl.menuPtrCon.pItem = nullptr;
             gCtrl.menuPtrCon.pNPC = nullptr;
             gCtrl.menuPtrCon.pTile = nullptr;
-            Con("Closing Menus Due To Outside Clicking");
+            con("Closing Menus Due To Outside Clicking");
         }
 
     } // End of game loop

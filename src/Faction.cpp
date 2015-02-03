@@ -1297,8 +1297,8 @@ void timeTest()
     }
     clock_t sFinished = clock();
 
-    Con(TestSet.size());
-    Con(sizeof(Npc));
+    con(TestSet.size());
+    con(sizeof(Npc));
     std::cout << "Vector Time, Creation: " << vCreation - vInital
               << ", John Counter: " << vFinished - vCreation << ", Total("
               << vFinished - vInital << "), Johns: " << vJohns << std::endl;
@@ -1345,7 +1345,7 @@ void NpcManager::initializeCritters()
             //hungerrate = 1; // TODO: Should these be modded? Or only effected by Diseases/Bionics ect.
             //thirstrate = 1;
 
-            Critter.name = StringFindString(line, "[Name:");
+            Critter.name = stringFindString(line, "[Name:");
             Critter.race = Critter.name;
             if (Critter.name == "Zombie")
                 Critter.race = "Zombie";
@@ -1353,63 +1353,63 @@ void NpcManager::initializeCritters()
             {
                 std::cout << "Working on " << Critter.name << "\n";
             }
-            Critter.cbaseid = StringFindNumber(line, "[BaseId:");
+            Critter.cbaseid = stringFindNumber(line, "[BaseId:");
             Critter.id = gvars::globalid++;
 
-            Critter.target = StringFindString(line, "[Target:");
+            Critter.target = stringFindString(line, "[Target:");
             Critter.needsFood =
-                Booleanize(StringFindNumber(line, "[NeedsFood:"));
+                booleanize(stringFindNumber(line, "[NeedsFood:"));
             Critter.allowedFood =
-                Booleanize(StringFindNumber(line, "[AllowedFood:"));
+                booleanize(stringFindNumber(line, "[AllowedFood:"));
             Critter.needsWater =
-                Booleanize(StringFindNumber(line, "[NeedsWater:"));
+                booleanize(stringFindNumber(line, "[NeedsWater:"));
             Critter.allowedDrink =
-                Booleanize(StringFindNumber(line, "[AllowedDrink:"));
-            Critter.canmove = Booleanize(StringFindNumber(line, "[CanMove:"));
+                booleanize(stringFindNumber(line, "[AllowedDrink:"));
+            Critter.canmove = booleanize(stringFindNumber(line, "[CanMove:"));
             if (gvars::debug)
             {
                 std::cout << "1 \n";
             }
-            Critter.maxhealth = StringFindNumber(line, "[MaxHealth:");
-            Critter.maxhunger = StringFindNumber(line, "[MaxHunger:");
-            Critter.maxthirst = StringFindNumber(line, "[MaxThirst:");
-            Critter.regentimerint = StringFindNumber(line, "[RegenRate:");
+            Critter.maxhealth = stringFindNumber(line, "[MaxHealth:");
+            Critter.maxhunger = stringFindNumber(line, "[MaxHunger:");
+            Critter.maxthirst = stringFindNumber(line, "[MaxThirst:");
+            Critter.regentimerint = stringFindNumber(line, "[RegenRate:");
 
-            Critter.breathtimerint = StringFindNumber(line, "[BreathTimerInt:");
-            Critter.hungertimerint = StringFindNumber(line, "[HungerTimerInt:");
-            Critter.thirsttimerint = StringFindNumber(line, "[ThirstTimerInt:");
+            Critter.breathtimerint = stringFindNumber(line, "[BreathTimerInt:");
+            Critter.hungertimerint = stringFindNumber(line, "[HungerTimerInt:");
+            Critter.thirsttimerint = stringFindNumber(line, "[ThirstTimerInt:");
 
-            Critter.moverateint = StringFindNumber(line, "[MoveSpeed:");
-            Critter.movetimerrate = StringFindNumber(line, "[MoveRate:");
-            Critter.viewangle = StringFindNumber(line, "[ViewAngle:");
-            Critter.viewrange = StringFindNumber(line, "[ViewRange:");
-            Critter.size = StringFindNumber(line, "[Size:");
-            Critter.reach = StringFindNumber(line, "[Reach:");
-            Critter.stench = StringFindNumber(line, "[Stench:");
+            Critter.moverateint = stringFindNumber(line, "[MoveSpeed:");
+            Critter.movetimerrate = stringFindNumber(line, "[MoveRate:");
+            Critter.viewangle = stringFindNumber(line, "[ViewAngle:");
+            Critter.viewrange = stringFindNumber(line, "[ViewRange:");
+            Critter.size = stringFindNumber(line, "[Size:");
+            Critter.reach = stringFindNumber(line, "[Reach:");
+            Critter.stench = stringFindNumber(line, "[Stench:");
             if (gvars::debug)
             {
                 std::cout << "2 \n";
             }
             Critter.skills.endurance =
-                randz(StringFindNumber(line, "[MinEnd:"),
-                      StringFindNumber(line, "[MaxEnd:"));
-            Critter.skills.strength = randz(StringFindNumber(line, "[MinStr:"),
-                                            StringFindNumber(line, "[MaxStr:"));
+                randz(stringFindNumber(line, "[MinEnd:"),
+                      stringFindNumber(line, "[MaxEnd:"));
+            Critter.skills.strength = randz(stringFindNumber(line, "[MinStr:"),
+                                            stringFindNumber(line, "[MaxStr:"));
             Critter.skills.dexterity =
-                randz(StringFindNumber(line, "[MinDex:"),
-                      StringFindNumber(line, "[MaxDex:"));
+                randz(stringFindNumber(line, "[MinDex:"),
+                      stringFindNumber(line, "[MaxDex:"));
             Critter.skills.intelligence =
-                randz(StringFindNumber(line, "[MinInt:"),
-                      StringFindNumber(line, "[MaxInt:"));
-            Critter.skills.wisdom = randz(StringFindNumber(line, "[MinWis:"),
-                                          StringFindNumber(line, "[MaxWis:"));
-            Critter.skills.charisma = randz(StringFindNumber(line, "[MinCha:"),
-                                            StringFindNumber(line, "[MaxCha:"));
+                randz(stringFindNumber(line, "[MinInt:"),
+                      stringFindNumber(line, "[MaxInt:"));
+            Critter.skills.wisdom = randz(stringFindNumber(line, "[MinWis:"),
+                                          stringFindNumber(line, "[MaxWis:"));
+            Critter.skills.charisma = randz(stringFindNumber(line, "[MinCha:"),
+                                            stringFindNumber(line, "[MaxCha:"));
             Critter.skills.perception =
-                randz(StringFindNumber(line, "[MinPer:"),
-                      StringFindNumber(line, "[MaxPer:"));
-            Critter.skills.agility = randz(StringFindNumber(line, "[MinAgi:"),
-                                           StringFindNumber(line, "[MaxAgi:"));
+                randz(stringFindNumber(line, "[MinPer:"),
+                      stringFindNumber(line, "[MaxPer:"));
+            Critter.skills.agility = randz(stringFindNumber(line, "[MinAgi:"),
+                                           stringFindNumber(line, "[MaxAgi:"));
             if (gvars::debug)
             {
                 std::cout << "3 \n";
@@ -1419,13 +1419,13 @@ void NpcManager::initializeCritters()
                 Critter.maxhealth = Critter.skills.endurance * 0.8;
             }
             debug("v-Adding Tags-v");
-            debug(StringFindChaos(line, "{Tags:", "}"));
+            debug(stringFindChaos(line, "{Tags:", "}"));
             debug("^-Added Tags-^");
-            Critter.tags.append(StringFindChaos(line, "{Tags:", "}"));
+            Critter.tags.append(stringFindChaos(line, "{Tags:", "}"));
             std::set<std::string> Items;
             std::string List;
-            List.append(StringFindChaos(line, "{Items:", "}"));
-            Items = StringFindSetChaos(List, "[", "]");
+            List.append(stringFindChaos(line, "{Items:", "}"));
+            Items = stringFindSetChaos(List, "[", "]");
             for (auto OogaBooga : Items)
             {
 
@@ -1545,7 +1545,7 @@ void NpcManager::initializeCritters()
                 }
             }
 
-            std::string Imagery = StringFindString(line, "[Image:");
+            std::string Imagery = stringFindString(line, "[Image:");
             if (gvars::debug)
             {
                 std::cout << "Pre Imagery \n";
@@ -1658,7 +1658,7 @@ void saveNPC(int planet, sf::Vector2i Region, Npc &Critter)
     {
         //File << std::endl;
         File << std::endl;
-        Con("Problem? 3");
+        con("Problem? 3");
         File << "[name:" << Critter.name << "]"
              << "[race:" << Critter.race << "]"
              << "[xpos:" << Critter.xpos << "]"
@@ -1687,7 +1687,7 @@ void saveNPC(int planet, sf::Vector2i Region, Npc &Critter)
              << "{Tags:" << Critter.tags << "}"
              << "{Blood:" << Critter.bloodcontent << "}"
              << "{Items:";
-        Con("Problem? 4");
+        con("Problem? 4");
 
         //for(int i = 0; i != Critter.inventory.size(); i++)
         for (auto i = Critter.inventory.begin(); i != Critter.inventory.begin();
@@ -1696,7 +1696,7 @@ void saveNPC(int planet, sf::Vector2i Region, Npc &Critter)
             File << "[" << (*i).name << "]";
         }
         File << "}";
-        Con("Problem? 5");
+        con("Problem? 5");
         //Con("Added", false);
         //Con(object.name);
         File.close();
@@ -1852,10 +1852,10 @@ float factionPower(std::string FactionName)
 
             float TenantTechnique =
                 TenantTech +
-                (TenantTech * (PercentIs(uniFact[i].creativity, 35) * 0.01));
+                (TenantTech * (percentIs(uniFact[i].creativity, 35) * 0.01));
 
             float TenantPower =
-                TenantTechnique * (PercentIs(uniFact[i].members, 60) * 0.01);
+                TenantTechnique * (percentIs(uniFact[i].members, 60) * 0.01);
 
             TenantPower = TenantPower * 8;
 
@@ -1881,7 +1881,7 @@ void initializeFactions(int GenerateMax)
     {
         Faction GenFact;
 
-        GenFact.name = GenerateName();
+        GenFact.name = generateName();
         GenFact.playerControlled = false;
 
         GenFact.members = randz(1, 20);
@@ -1996,10 +1996,10 @@ void buildStartingCritters(int ZedAmount)
 
             for (int zeds = 0; zeds != ZedAmount; zeds++)
             {
-                Con("Starting Zed");
+                con("Starting Zed");
                 sf::Vector2f vPos = math::circleRandz(1000, 1000, 580);
                 spawnCritter("Zombie", vPos.x, vPos.y);
-                Con("Ending Zed");
+                con("Ending Zed");
             }
         }
         catch (std::exception &e)
@@ -2043,29 +2043,29 @@ std::string loadCritters(sf::Vector2i WorldPos, std::string Direction,
 
             Critter.name = "Debuggery";
 
-            Critter.name = StringFindString(line, "[name:");
-            Critter.race = StringFindString(line, "[race:");
+            Critter.name = stringFindString(line, "[name:");
+            Critter.race = stringFindString(line, "[race:");
             if (Critter.name != "Debuggery" && Critter.name != "Zombie")
                 Critter = *getGlobalCritter(Critter.race);
             if (Critter.name == "Zombie")
                 Critter = *getGlobalCritter("Zombie");
             Critter.id = gvars::globalid++;
-            Critter.name = StringFindString(line, "[name:");
-            Critter.race = StringFindString(line, "[race:");
-            Critter.xpos = StringFindNumber(line, "[xpos:");
-            Critter.cbaseid = StringFindNumber(line, "[cbaseid:");
-            Critter.ypos = StringFindNumber(line, "[ypos:");
-            Critter.health = StringFindNumber(line, "[health:");
-            Critter.maxhealth = StringFindNumber(line, "[maxhealth:");
-            Critter.action = StringFindString(line, "[action:");
-            Critter.angle = StringFindNumber(line, "[angle:");
-            Critter.thirst = StringFindNumber(line, "[thirst:");
-            Critter.hunger = StringFindNumber(line, "[hunger:");
-            Con("Problem?");
+            Critter.name = stringFindString(line, "[name:");
+            Critter.race = stringFindString(line, "[race:");
+            Critter.xpos = stringFindNumber(line, "[xpos:");
+            Critter.cbaseid = stringFindNumber(line, "[cbaseid:");
+            Critter.ypos = stringFindNumber(line, "[ypos:");
+            Critter.health = stringFindNumber(line, "[health:");
+            Critter.maxhealth = stringFindNumber(line, "[maxhealth:");
+            Critter.action = stringFindString(line, "[action:");
+            Critter.angle = stringFindNumber(line, "[angle:");
+            Critter.thirst = stringFindNumber(line, "[thirst:");
+            Critter.hunger = stringFindNumber(line, "[hunger:");
+            con("Problem?");
             Critter.tags.clear();
-            Critter.tags.append(StringFindChaos(line, "{Tags:", "}"));
-            Critter.bloodcontent.append(StringFindChaos(line, "{Blood:", "}"));
-            Con("Problem? 2");
+            Critter.tags.append(stringFindChaos(line, "{Tags:", "}"));
+            Critter.bloodcontent.append(stringFindChaos(line, "{Blood:", "}"));
+            con("Problem? 2");
 
             /*debug("v-Adding Tags-v");
                 debug(StringFindChaos(line,"{Tags:","}"));
@@ -2130,26 +2130,26 @@ std::string loadCritters(sf::Vector2i WorldPos, std::string Direction,
             std::cout << "Xpos: " << Critter.xpos << "Ypos: " << Critter.ypos
                       << std::endl;
 
-            Critter.skills.strength = StringFindNumber(line, "[strength:");
-            Critter.skills.perception = StringFindNumber(line, "[perception:");
+            Critter.skills.strength = stringFindNumber(line, "[strength:");
+            Critter.skills.perception = stringFindNumber(line, "[perception:");
             Critter.skills.intelligence =
-                StringFindNumber(line, "[intelligence:");
-            Critter.skills.charisma = StringFindNumber(line, "[charisma:");
-            Critter.skills.endurance = StringFindNumber(line, "[endurance:");
-            Critter.skills.dexterity = StringFindNumber(line, "[dexterity:");
-            Critter.skills.agility = StringFindNumber(line, "[agility:");
+                stringFindNumber(line, "[intelligence:");
+            Critter.skills.charisma = stringFindNumber(line, "[charisma:");
+            Critter.skills.endurance = stringFindNumber(line, "[endurance:");
+            Critter.skills.dexterity = stringFindNumber(line, "[dexterity:");
+            Critter.skills.agility = stringFindNumber(line, "[agility:");
 
-            Critter.skills.strengthxp = StringFindNumber(line, "[strengthxp:");
+            Critter.skills.strengthxp = stringFindNumber(line, "[strengthxp:");
             Critter.skills.perceptionxp =
-                StringFindNumber(line, "[perceptionxp:");
+                stringFindNumber(line, "[perceptionxp:");
             Critter.skills.intelligencexp =
-                StringFindNumber(line, "[intelligencexp:");
-            Critter.skills.charismaxp = StringFindNumber(line, "[charismaxp:");
+                stringFindNumber(line, "[intelligencexp:");
+            Critter.skills.charismaxp = stringFindNumber(line, "[charismaxp:");
             Critter.skills.endurancexp =
-                StringFindNumber(line, "[endurancexp:");
+                stringFindNumber(line, "[endurancexp:");
             Critter.skills.dexterityxp =
-                StringFindNumber(line, "[dexterityxp:");
-            Critter.skills.agilityxp = StringFindNumber(line, "[agilityxp:");
+                stringFindNumber(line, "[dexterityxp:");
+            Critter.skills.agilityxp = stringFindNumber(line, "[agilityxp:");
 
             /*std::string Imagery = StringFindString(line,"[Image:");
                 std::vector<cImageHolder>::iterator i;

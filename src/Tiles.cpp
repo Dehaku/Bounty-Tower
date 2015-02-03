@@ -23,7 +23,7 @@ void zGenerateChunk(std::string type, int planet, sf::Vector2i Cords,
                     sf::Vector2i /*Pos*/)
 {
 
-    Con("Queso?");
+    con("Queso?");
 
     std::string Deb = "Creating Chunk: ";
     Deb.append(type);
@@ -373,7 +373,7 @@ void generateChunk(std::string type, int planet, sf::Vector2i Cords,
         image.create(ChunkSize * 100, ChunkSize * 100, sf::Color(0, 0, 0, 255));
         int XX = 0;
         int YY = 0;
-        Con("Post Image");
+        con("Post Image");
 
         for (int i = Cords.x * ChunkSize;
              i != (Cords.x * ChunkSize) + ChunkSize; i++)
@@ -391,7 +391,7 @@ void generateChunk(std::string type, int planet, sf::Vector2i Cords,
             XX++;
         }
 
-        Con("Saving Image");
+        con("Saving Image");
         /*
     bool Doing = true;
     sf::Texture Imgr;
@@ -594,7 +594,7 @@ void drawWorldTiles()
         for (int t = 0; t != 100; t++)
         {
 
-            if (AABB(i * 20, t * 20, gvars::topLeft.x - 20, gvars::topRight.x,
+            if (aabb(i * 20, t * 20, gvars::topLeft.x - 20, gvars::topRight.x,
                      gvars::topLeft.y - 20, gvars::bottomRight.y))
             {
 
@@ -656,13 +656,13 @@ void initializeTiles()
 
 void drawTile(int xpos, int ypos, sf::Texture &Image)
 {
-    Con("1stBacon");
+    con("1stBacon");
     sf::Sprite Imgr;
-    Con("2ndBacon");
+    con("2ndBacon");
     Imgr.setTexture(Image);
-    Con("Bacon");
+    con("Bacon");
     Imgr.setPosition(xpos, ypos);
-    Con("Bacon");
+    con("Bacon");
     window.draw(Imgr);
 }
 
@@ -672,7 +672,7 @@ void drawNewTiles()
     {
         for (int t = 0; t != Grids; t++)
         {
-            if (AABB(i * 20, t * 20, gvars::topLeft.x - 20, gvars::topRight.x,
+            if (aabb(i * 20, t * 20, gvars::topLeft.x - 20, gvars::topRight.x,
                      gvars::topLeft.y - 20, gvars::bottomRight.y))
             {
                 tiles[i][t][30].img.setPosition(i * 20, t * 20);
@@ -922,7 +922,7 @@ void tilesGoLeft()
 
 void tilesGoRight()
 {
-    Con("Going Right");
+    con("Going Right");
     //Tile TempTile[Grids][Grids][Grids];
     //[][][] = [][][]
     //[][][] = [][][]

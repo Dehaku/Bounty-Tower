@@ -64,7 +64,7 @@ void SquareButton::draw()
                              sf::Color(color.r / 2, color.g / 2, color.b / 2),
                              2, sf::Color::White);
     }
-    else if (AABB(gvars::mousePos, vPos.x - iSizex, vPos.x + iSizex,
+    else if (aabb(gvars::mousePos, vPos.x - iSizex, vPos.x + iSizex,
                   vPos.y - iSizey, vPos.y + iSizey))
     {
         //Effectz.CreateCircle(vPos.x,vPos.y,iSize,Color,2,White);
@@ -114,7 +114,7 @@ void SquareButtons::pressed()
 {
     for (auto const &button : vSquareButtonList)
     {
-        if (AABB(gvars::mousePos, button.vPos.x - button.iSizex,
+        if (aabb(gvars::mousePos, button.vPos.x - button.iSizex,
                  button.vPos.x + button.iSizex, button.vPos.y - button.iSizey,
                  button.vPos.y + button.iSizey))
         {
@@ -175,7 +175,7 @@ bool squareButtonClicked(int id)
     {
         if (button.id == id)
         {
-            if (AABB(gvars::mousePos, button.vPos.x - button.iSizex,
+            if (aabb(gvars::mousePos, button.vPos.x - button.iSizex,
                      button.vPos.x + button.iSizex,
                      button.vPos.y - button.iSizey,
                      button.vPos.y + button.iSizey) &&
@@ -665,20 +665,20 @@ void menuPopUp()
 
                     spawnItem("Gun", 1010, 1020);
 
-                    Con("Hunting for Trees 4");
+                    con("Hunting for Trees 4");
                     for (int i = 0; i != 8; i++)
                     {
                         int Tx = randz(50, 1950);
                         int Ty = randz(50, 1950);
-                        Con(Tx, false);
-                        Con(":", false);
-                        Con(Ty, false);
+                        con(Tx, false);
+                        con(":", false);
+                        con(Ty, false);
                         if (tiles[abs_to_index(Tx / 20)][abs_to_index(
                                 Ty / 20)][30].id == 1001 ||
                             tiles[abs_to_index(Tx / 20)][abs_to_index(
                                 Ty / 20)][30].id == 1003)
                         {
-                            Con(", Is Plantable.");
+                            con(", Is Plantable.");
                             spawnItem("Fruit Tree", Tx, Ty);
                         }
                     }
@@ -814,7 +814,7 @@ void menuPopUp()
                         fSleep(0.2);
                     }
 
-                    Con("TODO: Make this a Toggle Mode");
+                    con("TODO: Make this a Toggle Mode");
 
                     gCtrl.menuPos = sf::Vector2f(-10000, -10000);
                     gCtrl.menuType = "NULL";
@@ -1195,7 +1195,7 @@ void menuPopUp()
         {
             gCtrl.menuPos = sf::Vector2f(-10000, -10000);
             gCtrl.menuType = "NULL";
-            Con("Closing Menu due to No Target && CritterContext");
+            con("Closing Menu due to No Target && CritterContext");
         }
     }
 }

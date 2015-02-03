@@ -5,7 +5,7 @@ void fSleep(float Time)
     sf::sleep(sf::seconds(Time));
 }
 
-bool Booleanize(int Num)
+bool booleanize(int Num)
 {
     if (Num <= 0)
     {
@@ -17,7 +17,7 @@ bool Booleanize(int Num)
     }
 }
 
-bool Inbetween(float First, float Second, float Number)
+bool inbetween(float First, float Second, float Number)
 {
     if (Number > First && Number < Second)
     {
@@ -44,7 +44,7 @@ int randz(int minValue, int maxValue)
     return (minValue + rawRand);
 }
 
-bool AABB(int Pointx, int Pointy, int Left, int Right, int Up, int Down)
+bool aabb(int Pointx, int Pointy, int Left, int Right, int Up, int Down)
 {
     // Point(100,100), Up 80, Down 120, Left, 80, Right 120
     sf::Vector2f Point(Pointx, Pointy);
@@ -53,7 +53,7 @@ bool AABB(int Pointx, int Pointy, int Left, int Right, int Up, int Down)
     return false;
 }
 
-bool AABB(sf::Vector2f Point, int Left, int Right, int Up, int Down)
+bool aabb(sf::Vector2f Point, int Left, int Right, int Up, int Down)
 {
 
     if (Point.x >= Left && Point.x <= Right && Point.y >= Up && Point.y <= Down)
@@ -61,7 +61,7 @@ bool AABB(sf::Vector2f Point, int Left, int Right, int Up, int Down)
     return false;
 }
 
-bool AABB(sf::Vector2i Point, int Left, int Right, int Up, int Down)
+bool aabb(sf::Vector2i Point, int Left, int Right, int Up, int Down)
 {
 
     if (Point.x >= Left && Point.x <= Right && Point.y >= Up && Point.y <= Down)
@@ -69,7 +69,7 @@ bool AABB(sf::Vector2i Point, int Left, int Right, int Up, int Down)
     return false;
 }
 
-int StringFindNumber(std::string Stringy, std::string Term)
+int stringFindNumber(std::string Stringy, std::string Term)
 {
     size_t tStart;
     tStart = Stringy.find(Term);
@@ -97,7 +97,7 @@ int StringFindNumber(std::string Stringy, std::string Term)
     return 0;
 }
 
-std::string StringFindString(std::string Stringy, std::string Term)
+std::string stringFindString(std::string Stringy, std::string Term)
 {
     std::string Returns;
     size_t tStart;
@@ -118,7 +118,7 @@ std::string StringFindString(std::string Stringy, std::string Term)
     return "";
 }
 
-std::string StringFindStringNpos(std::string Stringy, std::string Term)
+std::string stringFindStringNpos(std::string Stringy, std::string Term)
 {
     std::string Returns;
     size_t tStart;
@@ -139,7 +139,7 @@ std::string StringFindStringNpos(std::string Stringy, std::string Term)
     return "";
 }
 
-std::vector<std::string> StringFindElements(std::string Source,
+std::vector<std::string> stringFindElements(std::string Source,
                                             std::string Seperater)
 {
 
@@ -177,30 +177,30 @@ std::vector<std::string> StringFindElements(std::string Source,
     return Returns;
 }
 
-std::vector<float> NumericSplitter(float Received, float SplitVariable)
+std::vector<float> numericSplitter(float Received, float SplitVariable)
 {
-    Con("Beginning That Function, Recieved: ", false);
-    Con(Received);
+    con("Beginning That Function, Recieved: ", false);
+    con(Received);
 
     std::vector<float> Returns;
     for (int i = 0; i < Received; i += SplitVariable)
     {
-        Con("Running That Function");
+        con("Running That Function");
         if (Received - i > SplitVariable)
             Returns.push_back(SplitVariable);
         if (Received - i <= SplitVariable)
             Returns.push_back(Received - i);
     }
-    Con("Returning That Function");
+    con("Returning That Function");
     return Returns;
 }
 
-float PercentageBuff(float Received)
+float percentageBuff(float Received)
 {
     return Received / 100;
 }
 
-std::string StringFindChaos(std::string Stringy, std::string Term,
+std::string stringFindChaos(std::string Stringy, std::string Term,
                             std::string Ending)
 {
     std::string Returns;
@@ -224,7 +224,7 @@ std::string StringFindChaos(std::string Stringy, std::string Term,
     return "";
 }
 
-std::set<std::string> StringFindSetChaos(std::string Stringy, std::string Term,
+std::set<std::string> stringFindSetChaos(std::string Stringy, std::string Term,
                                          std::string Ending)
 {
     std::set<std::string> Returns;
@@ -266,7 +266,7 @@ std::set<std::string> StringFindSetChaos(std::string Stringy, std::string Term,
     return Returns;
 }
 
-float PercentIs(float Value, float Percentage)
+float percentIs(float Value, float Percentage)
 {
     // Divide the return by 100 for maths.
     if (Value == 0)
@@ -280,7 +280,7 @@ float PercentIs(float Value, float Percentage)
     return Percent;
 }
 
-bool Toggle(bool &Boolean)
+bool toggle(bool &Boolean)
 {
     if (Boolean == true)
         Boolean = false;
@@ -289,7 +289,7 @@ bool Toggle(bool &Boolean)
     return Boolean;
 }
 
-std::string GenerateName(int MinLength, int MaxLength)
+std::string generateName(int MinLength, int MaxLength)
 {
     // TODO: Add a rememberance for the last added letter,
     // and add a 50% chance to NOT do the same letter again.
