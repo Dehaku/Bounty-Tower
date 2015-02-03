@@ -987,7 +987,7 @@ void critterBrain(Npc &npc)
         float xPos = npc.xpos + sinf(rot * PI / 180) * npc.viewrange;
         float yPos = npc.ypos + cosf(rot * PI / 180) * npc.viewrange;
 
-        gridTrace(npcPos,sf::Vector2f(xPos,yPos), npc.id);
+        gridTrace(npcPos,sf::Vector2f(xPos,yPos));
 
 
         if (rot == startAngle)
@@ -3456,6 +3456,7 @@ void removeNPCs()
 
 int main()
 {
+    srand(clock());
     window.create(sf::VideoMode(RESOLUTION.x, RESOLUTION.y, 32),
                   randomWindowName());
 
