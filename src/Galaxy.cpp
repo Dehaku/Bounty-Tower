@@ -30,15 +30,15 @@ void GalaxyController::addvPlanet()
 
 void GalaxyController::wave()
 {
-    bool FoundAny = false;
+    bool foundAny = false;
     for (auto &elem : npclist)
     {
         if (elem.hasTag("[EatsFlesh:") && elem.health > 0)
         {
-            FoundAny = true;
+            foundAny = true;
         }
     }
-    if (FoundAny == false)
+    if (foundAny == false)
     {
         waveTimer--;
         if (waveTimer <= 0)
@@ -78,9 +78,9 @@ void GalaxyController::time(int /*Modify*/)
     timetilltick += timescalez;
 }
 
-void GalaxyController::buildLocal(std::string Type, int ZedAmount)
+void GalaxyController::buildLocal(std::string type, int zedAmount)
 { // TODO: Replace this with a Class containing Critter types and amounts, Probably inventories as well, Or start up premade critters.
-    if (Type == "Test")
+    if (type == "Test")
     {
         if (myDebug)
             std::cout << "Building Lightmap\n";
@@ -193,7 +193,7 @@ void GalaxyController::buildLocal(std::string Type, int ZedAmount)
             }
         }
     }
-    if (Type == "City")
+    if (type == "City")
     {
         // ----------------------------------------
         // 1 dirt 3 grass 6 sand 7 stone 10 wall 20 dirtchannel 52 deepwater 53 lava
@@ -266,7 +266,7 @@ void GalaxyController::buildLocal(std::string Type, int ZedAmount)
                     npcmanager.addedCritters.push_back(squady.squad.at(count));
                 }
 
-                for (int zeds = 0; zeds != ZedAmount; zeds++)
+                for (int zeds = 0; zeds != zedAmount; zeds++)
                 {
                     con("Starting Zed");
                     sf::Vector2f vPos = math::circleRandz(1000, 1000, 580);
@@ -298,7 +298,7 @@ void GalaxyController::buildLocal(std::string Type, int ZedAmount)
         }
     }
 
-    if (Type == "LoadTile")
+    if (type == "LoadTile")
     {
     }
 }
@@ -414,8 +414,8 @@ void GalaxyController::zombieSwarmLocal(int num)
     {
         for (int count = 0; count <= num; count++)
         {
-            sf::Vector2f Pos = math::circleRandz(1000, 1000, 500);
-            spawnCritter("Zombie", Pos.x, Pos.y);
+            sf::Vector2f pos = math::circleRandz(1000, 1000, 500);
+            spawnCritter("Zombie", pos.x, pos.y);
         }
     }
 }
@@ -473,11 +473,11 @@ void GalaxyController::worldLoop()
             {
                 worldMap[x][y].owner = uniFact[i].name;
 
-                Territory ClaimedTerritory;
+                Territory claimedTerritory;
 
-                ClaimedTerritory.worldTile = sf::Vector2i(x, y);
+                claimedTerritory.worldTile = sf::Vector2i(x, y);
 
-                uniFact[i].territories.push_back(ClaimedTerritory);
+                uniFact[i].territories.push_back(claimedTerritory);
 
                 uniFact[i].initialized = true;
 
@@ -499,7 +499,7 @@ void GalaxyController::worldLoop()
         if ((uniFact[i].aggressiveness * uniFact[i].members) >=
             randz(0, 100 * (uniFact[i].territories.size() / 4)))
         { // Factions aggression causes them to seek more territory.
-            bool TileChange = false;
+            bool tileChange = false;
 
             if (uniFact[i].territories.empty())
                 continue;
@@ -507,111 +507,111 @@ void GalaxyController::worldLoop()
                 0) /* Don't ask how it can be in the negatives. */
                 continue;
 
-            int ForMembers = uniFact[i].members;
-            for (int t = 0; t != ForMembers; t++)
+            int forMembers = uniFact[i].members;
+            for (int t = 0; t != forMembers; t++)
             {
-                int Territ = randz(0, uniFact[i].territories.size() - 1);
+                int territ = randz(0, uniFact[i].territories.size() - 1);
 
-                sf::Vector2i Short = uniFact[i].territories[Territ].worldTile;
+                sf::Vector2i short_ = uniFact[i].territories[territ].worldTile;
 
-                if (aabb(Short, 1, 98, 1, 98))
+                if (aabb(short_, 1, 98, 1, 98))
                 {
-                    int Direction = randz(0, 3);
-                    int X = 0;
-                    int Y = 0;
-                    if (Direction == 0)
+                    int direction = randz(0, 3);
+                    int x = 0;
+                    int y = 0;
+                    if (direction == 0)
                     {
-                        X = 0;
-                        Y = -1;
+                        x = 0;
+                        y = -1;
                     }
-                    if (Direction == 1)
+                    if (direction == 1)
                     {
-                        X = +1;
-                        Y = 0;
+                        x = +1;
+                        y = 0;
                     }
-                    if (Direction == 2)
+                    if (direction == 2)
                     {
-                        X = 0;
-                        Y = +1;
+                        x = 0;
+                        y = +1;
                     }
-                    if (Direction == 3)
+                    if (direction == 3)
                     {
-                        X = -1;
-                        Y = 0;
+                        x = -1;
+                        y = 0;
                     }
 
-                    WorldTile *WT = &worldMap[Short.x + X][Short.y + Y];
+                    WorldTile *wt = &worldMap[short_.x + x][short_.y + y];
 
-                    if (WT->owner == "")
+                    if (wt->owner == "")
                     { // Claim it for themselves.
-                        WT->owner = uniFact[i].name;
+                        wt->owner = uniFact[i].name;
 
-                        Territory CT;
+                        Territory ct;
 
-                        CT.worldTile = sf::Vector2i(Short.x + X, Short.y + Y);
-                        uniFact[i].territories.push_back(CT);
+                        ct.worldTile = sf::Vector2i(short_.x + x, short_.y + y);
+                        uniFact[i].territories.push_back(ct);
                     }
-                    else if (WT->owner != uniFact[i].name)
+                    else if (wt->owner != uniFact[i].name)
                     { // Declare War.
-                        std::string Tenant = WT->owner;
+                        std::string tenant = wt->owner;
 
                         for (size_t z = 0; z != uniFact.size(); z++)
                         {
-                            if (uniFact[z].name == Tenant)
+                            if (uniFact[z].name == tenant)
                             {
-                                float TenantTech = 0;
-                                float InvaderTech = 0;
+                                float tenantTech = 0;
+                                float invaderTech = 0;
 
-                                TenantTech += uniFact[z].techMedical;
-                                TenantTech += uniFact[z].techWeaponryBlunt;
-                                TenantTech += uniFact[z].techWeaponryEnergy;
-                                TenantTech += uniFact[z].techWeaponryExplosive;
-                                TenantTech += uniFact[z].techWeaponryMass;
-                                TenantTech += uniFact[z].techWeaponrySharp;
+                                tenantTech += uniFact[z].techMedical;
+                                tenantTech += uniFact[z].techWeaponryBlunt;
+                                tenantTech += uniFact[z].techWeaponryEnergy;
+                                tenantTech += uniFact[z].techWeaponryExplosive;
+                                tenantTech += uniFact[z].techWeaponryMass;
+                                tenantTech += uniFact[z].techWeaponrySharp;
 
-                                InvaderTech += uniFact[i].techMedical;
-                                InvaderTech += uniFact[i].techWeaponryBlunt;
-                                InvaderTech += uniFact[i].techWeaponryEnergy;
-                                InvaderTech += uniFact[i].techWeaponryExplosive;
-                                InvaderTech += uniFact[i].techWeaponryMass;
-                                InvaderTech += uniFact[i].techWeaponrySharp;
+                                invaderTech += uniFact[i].techMedical;
+                                invaderTech += uniFact[i].techWeaponryBlunt;
+                                invaderTech += uniFact[i].techWeaponryEnergy;
+                                invaderTech += uniFact[i].techWeaponryExplosive;
+                                invaderTech += uniFact[i].techWeaponryMass;
+                                invaderTech += uniFact[i].techWeaponrySharp;
 
-                                float TenantTechnique =
-                                    TenantTech +
-                                    (TenantTech *
+                                float tenantTechnique =
+                                    tenantTech +
+                                    (tenantTech *
                                      (percentIs(uniFact[z].creativity, 35) *
                                       0.01));
-                                float InvaderTechnique =
-                                    InvaderTech +
-                                    (InvaderTech *
+                                float invaderTechnique =
+                                    invaderTech +
+                                    (invaderTech *
                                      (percentIs(uniFact[i].creativity, 35) *
                                       0.01));
 
-                                float TenantPower =
-                                    TenantTechnique *
+                                float tenantPower =
+                                    tenantTechnique *
                                     (percentIs(uniFact[z].members, 60) * 0.01);
-                                float InvaderPower =
-                                    InvaderTechnique *
+                                float invaderPower =
+                                    invaderTechnique *
                                     (percentIs(uniFact[i].members, 60) * 0.01);
 
-                                TenantPower = TenantPower * randz(7, 10);
-                                InvaderPower = InvaderPower * randz(7, 10);
+                                tenantPower = tenantPower * randz(7, 10);
+                                invaderPower = invaderPower * randz(7, 10);
 
                                 //std::cout << "Tenant's Power: " << TenantPower << ", Invader's Power: " << InvaderPower << std::endl;
-                                if (InvaderPower > TenantPower)
+                                if (invaderPower > tenantPower)
                                 {
                                     //UniFact[z].Members = Loss;
                                     //if(Members > 0) UniFact[i].Members = randz(UniFact[i].Members/16,UniFact[i].Members/4);
                                     if (uniFact[z].members > 0)
                                         uniFact[z].members -= 1;
 
-                                    WT->owner = uniFact[i].name;
+                                    wt->owner = uniFact[i].name;
 
-                                    Territory CT;
+                                    Territory ct;
 
-                                    CT.worldTile =
-                                        sf::Vector2i(Short.x + X, Short.y + Y);
-                                    uniFact[i].territories.push_back(CT);
+                                    ct.worldTile =
+                                        sf::Vector2i(short_.x + x, short_.y + y);
+                                    uniFact[i].territories.push_back(ct);
 
                                     for (size_t k = 0;
                                          k != uniFact[z].territories.size();
@@ -620,12 +620,12 @@ void GalaxyController::worldLoop()
                                         if (uniFact[z]
                                                 .territories[k]
                                                 .worldTile ==
-                                            sf::Vector2i(Short.x + X,
-                                                         Short.y + Y))
+                                            sf::Vector2i(short_.x + x,
+                                                         short_.y + y))
                                         {
                                             uniFact[z].territories[k].toDelete =
                                                 true;
-                                            TileChange = true;
+                                            tileChange = true;
                                         }
                                     }
                                 }
@@ -642,12 +642,12 @@ void GalaxyController::worldLoop()
                 }
             }
 
-            if (TileChange)
+            if (tileChange)
             {
-                for (size_t Fact = 0; Fact != uniFact.size(); Fact++)
+                for (size_t fact = 0; fact != uniFact.size(); fact++)
                 {
                     //std::cout << UniFact[Fact].Name << " Factions: " << UniFact[Fact].Territories.size();
-                    cleanTerritories(uniFact[Fact].territories);
+                    cleanTerritories(uniFact[fact].territories);
                     //std::cout << ", " << UniFact[Fact].Name << "  Factions: " << UniFact[Fact].Territories.size() << std::endl;
                 }
             }
