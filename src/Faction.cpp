@@ -20,32 +20,32 @@ Faction g_pf;
 NpcManager npcmanager;
 extern sf::RenderWindow window;
 
-void Npc::BodyDefinition::bodyPartFind(std::string Part, int amount)
+void Npc::BodyDefinition::bodyPartFind(std::string part, int amount)
 {
 
-    size_t LinePosOne;
-    LinePosOne = bodyParts.find(Part);
-    if (LinePosOne != std::string::npos)
+    size_t linePosOne;
+    linePosOne = bodyParts.find(part);
+    if (linePosOne != std::string::npos)
     {
 
-        size_t LinePosTwo;
-        std::string LineValue;
-        LinePosTwo = bodyParts.find("]", LinePosOne + 1);
-        if (LinePosTwo != std::string::npos)
+        size_t linePosTwo;
+        std::string lineValue;
+        linePosTwo = bodyParts.find("]", linePosOne + 1);
+        if (linePosTwo != std::string::npos)
         {
-            int len = Part.length();
-            LineValue.assign(bodyParts, LinePosOne + len,
-                             LinePosTwo - (LinePosOne + len));
-            amount += atoi(LineValue.c_str());
+            int len = part.length();
+            lineValue.assign(bodyParts, linePosOne + len,
+                             linePosTwo - (linePosOne + len));
+            amount += atoi(lineValue.c_str());
 
             std::stringstream out;
             out << amount;
-            bodyParts.replace(LinePosOne + len, LinePosTwo - (LinePosOne + len),
+            bodyParts.replace(linePosOne + len, linePosTwo - (linePosOne + len),
                               out.str());
 
             if (out.str() == "0")
             {
-                bodyParts.replace(LinePosOne, LinePosTwo, "");
+                bodyParts.replace(linePosOne, linePosTwo, "");
             }
         }
     }
@@ -55,7 +55,7 @@ void Npc::BodyDefinition::bodyPartFind(std::string Part, int amount)
     }
     else if (amount > 0)
     {
-        bodyParts.assign(Part);
+        bodyParts.assign(part);
         std::stringstream out;
         out << amount;
         bodyParts.append(out.str());
@@ -66,7 +66,7 @@ void Npc::BodyDefinition::bodyPartFind(std::string Part, int amount)
 std::set<int> Npc::melee(int /*min*/, int /*max*/, int range,
                          std::set<int> /*exception*/)
 {
-    std::set<int> Tar;
+    std::set<int> tar;
     if (firstStrike == false)
     {
         degrees =
@@ -79,12 +79,12 @@ std::set<int> Npc::melee(int /*min*/, int /*max*/, int range,
         yyy = ypos + sinf(degrees * PI / 180) * range;
         degrees += 1;
         effects.createLine(xpos, ypos, xxx, yyy, 2, sf::Color::Blue);
-        Tar = npcTrace(xpos, ypos, xxx, yyy, id, std::set<int>());
+        tar = npcTrace(xpos, ypos, xxx, yyy, id, std::set<int>());
     }
-    std::list<Item>::iterator Inv;
-    for (Inv = inventory.begin(); Inv != inventory.end(); ++Inv)
+    std::list<Item>::iterator inv;
+    for (inv = inventory.begin(); inv != inventory.end(); ++inv)
     {
-        if (Inv->name == "Sword")
+        if (inv->name == "Sword")
         {
         }
     }
@@ -94,7 +94,7 @@ std::set<int> Npc::melee(int /*min*/, int /*max*/, int range,
         attacking = false;
         firstStrike = false;
     }
-    return Tar;
+    return tar;
 }
 
 void Npc::PathFinding::endMem()
@@ -102,7 +102,7 @@ void Npc::PathFinding::endMem()
     free(mypathBank[0]);
 }
 
-void Npc::PathFinding::myFindPath(int Sx, int Sy, int Ex, int Ey)
+void Npc::PathFinding::myFindPath(int sx, int sy, int ex, int ey)
 {
     xPa.clear();
     yPa.clear();
@@ -110,7 +110,7 @@ void Npc::PathFinding::myFindPath(int Sx, int Sy, int Ex, int Ey)
 
     try
     {
-        mypathStatus = astar::findPath(1, Sx, Sy, Ex, Ey);
+        mypathStatus = astar::findPath(1, sx, sy, ex, ey);
     }
     catch (std::exception &e)
     {
@@ -188,9 +188,9 @@ void Npc::PathFinding::myReadPath(int /*pathfinderID*/, int currentX,
         //Read the path data.
         try
         {
-            const int ID = 1;
-            myxPath = myReadPathX(ID, mypathLocation);
-            myyPath = myReadPathY(ID, mypathLocation);
+            const int id = 1;
+            myxPath = myReadPathX(id, mypathLocation);
+            myyPath = myReadPathY(id, mypathLocation);
         }
         catch (std::exception const &ex)
         {
@@ -519,26 +519,26 @@ void Npc::blankSkills()
 
 bool Npc::hasWeapon(std::string weapon)
 {
-    bool Specific = false;
-    bool HasSpecifiedWeapon = false;
-    bool FoundWeapon = false;
+    bool specific = false;
+    bool hasSpecifiedWeapon = false;
+    bool foundWeapon = false;
     if (weapon != "")
-        Specific = true;
+        specific = true;
     for (auto const &item : inventory)
     {
         if (item.isWeapon)
-            FoundWeapon = true;
+            foundWeapon = true;
         if (weapon != "")
         {
             if (item.name == weapon)
-                HasSpecifiedWeapon = true;
+                hasSpecifiedWeapon = true;
         }
     }
-    if (HasSpecifiedWeapon)
+    if (hasSpecifiedWeapon)
     {
         return true;
     }
-    if (FoundWeapon && Specific == false)
+    if (foundWeapon && specific == false)
     {
         return true;
     }
@@ -593,50 +593,50 @@ void Npc::drawImg()
     window.draw(img);
 }
 
-void Npc::move(sf::Vector2f Tar)
+void Npc::move(sf::Vector2f tar)
 {
-    bool Above = false;
-    bool Right = false;
-    bool AtTargetx = false;
-    bool AtTargety = false;
-    if (Tar.x < xpos)
+    bool above = false;
+    bool right = false;
+    bool atTargetx = false;
+    bool atTargety = false;
+    if (tar.x < xpos)
     {
-        Right = false;
+        right = false;
     }
-    else if (Tar.x == xpos)
+    else if (tar.x == xpos)
     {
-        AtTargetx = true;
-    }
-    else
-    {
-        Right = true;
-    }
-
-    if (Tar.y < ypos)
-    {
-        Above = true;
-    }
-    else if (Tar.y == ypos)
-    {
-        AtTargety = true;
+        atTargetx = true;
     }
     else
     {
-        Above = false;
+        right = true;
     }
 
-    if (AtTargetx == true && AtTargety == true)
+    if (tar.y < ypos)
+    {
+        above = true;
+    }
+    else if (tar.y == ypos)
+    {
+        atTargety = true;
+    }
+    else
+    {
+        above = false;
+    }
+
+    if (atTargetx == true && atTargety == true)
     {
         atTarget = true;
     }
     else
     {
-        if (AtTargety == true)
+        if (atTargety == true)
         {
         }
-        else if (Above == true)
+        else if (above == true)
         {
-            int numz = math::closeishS(Tar.y, ypos);
+            int numz = math::closeishS(tar.y, ypos);
             if (numz < moverate)
             {
                 ypos += numz;
@@ -648,7 +648,7 @@ void Npc::move(sf::Vector2f Tar)
         }
         else
         {
-            int numz = math::closeishS(Tar.y, ypos);
+            int numz = math::closeishS(tar.y, ypos);
             if (numz < moverate)
             {
                 ypos -= numz;
@@ -659,12 +659,12 @@ void Npc::move(sf::Vector2f Tar)
             }
         }
 
-        if (AtTargetx == true)
+        if (atTargetx == true)
         {
         }
-        else if (Right == true)
+        else if (right == true)
         {
-            int numz = math::closeishS(Tar.x, xpos);
+            int numz = math::closeishS(tar.x, xpos);
             if (numz < moverate)
             {
                 xpos += numz;
@@ -676,7 +676,7 @@ void Npc::move(sf::Vector2f Tar)
         }
         else
         {
-            int numz = math::closeishS(Tar.x, xpos);
+            int numz = math::closeishS(tar.x, xpos);
             if (numz < moverate)
             {
                 xpos -= numz;
@@ -687,54 +687,54 @@ void Npc::move(sf::Vector2f Tar)
             }
         }
     }
-    angle = (180 / PI) * (atan2f(xpos - Tar.x, ypos - Tar.y));
+    angle = (180 / PI) * (atan2f(xpos - tar.x, ypos - tar.y));
 }
 
-void Npc::dirMove(sf::Vector2f Tar)
+void Npc::dirMove(sf::Vector2f tar)
 {
-    bool AtTargetx = false;
-    bool AtTargety = false;
-    bool CloseX = false;
-    bool CloseY = false;
-    if (Tar.x < xpos)
+    bool atTargetx = false;
+    bool atTargety = false;
+    bool closeX = false;
+    bool closeY = false;
+    if (tar.x < xpos)
     {
     }
-    else if (Tar.x == xpos)
+    else if (tar.x == xpos)
     {
-        AtTargetx = true;
-    }
-    else
-    {
-    }
-
-    if (Tar.y < ypos)
-    {
-    }
-    else if (Tar.y == ypos)
-    {
-        AtTargety = true;
+        atTargetx = true;
     }
     else
     {
     }
 
-    if (AtTargetx == true && AtTargety == true)
+    if (tar.y < ypos)
+    {
+    }
+    else if (tar.y == ypos)
+    {
+        atTargety = true;
+    }
+    else
+    {
+    }
+
+    if (atTargetx == true && atTargety == true)
     {
         atTarget = true;
     }
     else
     {
-        if (AtTargetx == false && AtTargety == false)
+        if (atTargetx == false && atTargety == false)
         {
         }
-        int numz0 = math::closeishS(Tar.y, ypos);
-        int numz1 = math::closeishS(Tar.x, xpos);
+        int numz0 = math::closeishS(tar.y, ypos);
+        int numz1 = math::closeishS(tar.x, xpos);
         if (numz1 < moverate && numz0 < moverate)
         {
-            xpos = Tar.x;
-            ypos = Tar.y;
-            CloseX = true;
-            CloseY = true;
+            xpos = tar.x;
+            ypos = tar.y;
+            closeX = true;
+            closeY = true;
         }
         else
         {
@@ -742,7 +742,7 @@ void Npc::dirMove(sf::Vector2f Tar)
         }
     }
 
-    if (CloseY == false && CloseX == false)
+    if (closeY == false && closeX == false)
     {
         int xx = 0;
         int yy = 0;
@@ -750,9 +750,9 @@ void Npc::dirMove(sf::Vector2f Tar)
             90 -
             (180 / PI) *
                 (atan2f(
-                    xpos - Tar.x,
+                    xpos - tar.x,
                     ypos -
-                        Tar.y)); //To be honest, I spent alot of time with trial and error to get this part to work.
+                        tar.y)); //To be honest, I spent alot of time with trial and error to get this part to work.
         xx = cosf((angle)*PI / 180) * moverate;
         yy = sinf((angle)*PI / 180) * moverate;
         xpos -= xx;
@@ -917,10 +917,9 @@ void Npc::spawn(int /*gposx*/, int /*gposy*/, int /*rposx*/, int /*rposy*/,
 
 bool Npc::boolblood(std::string ailment)
 {
-    using namespace std;
     size_t found;
     found = bloodcontent.find(ailment);
-    if (found != string::npos)
+    if (found != std::string::npos)
     {
         //cout <<aliment<<" found at: " << int(found) << endl;
         return true;
@@ -931,10 +930,9 @@ bool Npc::boolblood(std::string ailment)
 
 bool Npc::hasTag(std::string tag)
 {
-    using namespace std;
     size_t found;
     found = tags.find(tag);
-    if (found != string::npos)
+    if (found != std::string::npos)
     {
         return true;
     }
@@ -994,7 +992,7 @@ float Npc::bloodwork(std::string aliment, float amount)
     aliment = "[" + aliment +
               ":"; // Doing this so the rest of the code is much, much simplier.
     tStart = bloodcontent.find(aliment);
-    float Returns = amount;
+    float returns = amount;
 
     if (tStart != std::string::npos)
     {
@@ -1011,7 +1009,7 @@ float Npc::bloodwork(std::string aliment, float amount)
             //std::cout << "StrNum: " << StrNum;
             amount += atoi(StrNum.c_str());
             //std::cout << ", became: " << amount << std::endl;
-            Returns = amount;
+            returns = amount;
 
             std::stringstream out;
             //Hargendy!
@@ -1035,7 +1033,7 @@ float Npc::bloodwork(std::string aliment, float amount)
     {
         bloodcontent.append(aliment);
         std::stringstream out;
-        Returns = amount;
+        returns = amount;
         out << amount;
         bloodcontent.append(out.str());
         bloodcontent.append("]");
@@ -1045,7 +1043,7 @@ float Npc::bloodwork(std::string aliment, float amount)
         found=bloodcontent.find(Zom);if (found!=string::npos){cout << "Zombification found at: " << int(found) << endl;}else{cout<<"No Zombification Here\n";}
 
         }*/
-    return Returns;
+    return returns;
 }
 
 float Npc::bloodworkXX(std::string aliment, int amount)
@@ -1053,7 +1051,7 @@ float Npc::bloodworkXX(std::string aliment, int amount)
 
     size_t tStart;
     tStart = bloodcontent.find(aliment);
-    float Returns = amount;
+    float returns = amount;
 
     if (tStart != std::string::npos)
     {
@@ -1068,7 +1066,7 @@ float Npc::bloodworkXX(std::string aliment, int amount)
 
             StrNum.append(bloodcontent, tStart + len, tEnd - (tStart + len));
             amount += atoi(StrNum.c_str());
-            Returns = amount;
+            returns = amount;
 
             std::stringstream out;
             //Hargendy!
@@ -1092,7 +1090,7 @@ float Npc::bloodworkXX(std::string aliment, int amount)
     {
         bloodcontent.append(aliment);
         std::stringstream out;
-        Returns = amount;
+        returns = amount;
         out << amount;
         bloodcontent.append(out.str());
         bloodcontent.append("]");
@@ -1102,7 +1100,7 @@ float Npc::bloodworkXX(std::string aliment, int amount)
         found=bloodcontent.find(Zom);if (found!=string::npos){cout << "Zombification found at: " << int(found) << endl;}else{cout<<"No Zombification Here\n";}
 
         }*/
-    return Returns;
+    return returns;
 }
 
 bool Npc::closeToTarget(int distance, sf::Vector2f Tar)
@@ -1199,7 +1197,7 @@ void timeTest()
 
     //
 
-    clock_t Start = clock();
+    clock_t start = clock();
 
     for (unsigned int i = 0; i != 100; i++)
     {
@@ -1208,45 +1206,45 @@ void timeTest()
         //PrintToFile("Cake.txt",AddString("Cake Is: ",NumbertoString(Cake)), true);
     }
 
-    std::cout << "Time Difference: " << clock() - Start << std::endl;
+    std::cout << "Time Difference: " << clock() - start << std::endl;
     printf("%.f second difference", seconds);
 
     clock_t vInital = clock();
-    std::vector<Npc> TestVector;
+    std::vector<Npc> testVector;
     for (int n = 0; n != 500; n++)
     {
         Npc npc;
-        TestVector.push_back(npc);
+        testVector.push_back(npc);
     }
     clock_t vCreation = clock();
     int vJohns = 0;
-    for (size_t n = 0; n != TestVector.size(); n++)
+    for (size_t n = 0; n != testVector.size(); n++)
     {
-        if (TestVector[n].name == "John")
+        if (testVector[n].name == "John")
         {
             vJohns++;
         }
-        if (TestVector[n].id == 10)
+        if (testVector[n].id == 10)
         {
             //vJohns++;
         }
-        if (TestVector[n].health == 10)
+        if (testVector[n].health == 10)
         {
             //vJohns++;
         }
-        if (TestVector[n].id == 10)
+        if (testVector[n].id == 10)
         {
             //vJohns++;
         }
-        if (TestVector[n].health == 10)
+        if (testVector[n].health == 10)
         {
             //vJohns++;
         }
-        if (TestVector[n].id == 10)
+        if (testVector[n].id == 10)
         {
             //vJohns++;
         }
-        if (TestVector[n].health == 10)
+        if (testVector[n].health == 10)
         {
             //vJohns++;
         }
@@ -1255,15 +1253,15 @@ void timeTest()
     clock_t vFinished = clock();
 
     clock_t sInital = clock();
-    std::list<Npc> TestSet;
+    std::list<Npc> testSet;
     for (int n = 0; n != 500; n++)
     {
         Npc npc;
-        TestSet.push_back(npc);
+        testSet.push_back(npc);
     }
     clock_t sCreation = clock();
     int sJohns = 0;
-    for (auto const &elem : TestSet)
+    for (auto const &elem : testSet)
     {
         if (elem.name == "John")
         {
@@ -1297,7 +1295,7 @@ void timeTest()
     }
     clock_t sFinished = clock();
 
-    con(TestSet.size());
+    con(testSet.size());
     con(sizeof(Npc));
     std::cout << "Vector Time, Creation: " << vCreation - vInital
               << ", John Counter: " << vFinished - vCreation << ", Total("
@@ -1331,112 +1329,112 @@ void NpcManager::initializeCritters()
             if( remove(line.c_str()) != 0 ){}
         } */
 
-    std::ifstream Input(
+    std::ifstream input(
         "data/npcs.txt"); // TODO: Have this read from an Items folder, and read from all .txt files in it, Allowing greater compability between mods.
-    if (Input.is_open())
+    if (input.is_open())
     {
-        while (Input.good())
+        while (input.good())
         {
             std::string line;
-            getline(Input, line);
-            Npc Critter;
-            Critter.name = "Debuggery";
+            getline(input, line);
+            Npc critter;
+            critter.name = "Debuggery";
 
             //hungerrate = 1; // TODO: Should these be modded? Or only effected by Diseases/Bionics ect.
             //thirstrate = 1;
 
-            Critter.name = stringFindString(line, "[Name:");
-            Critter.race = Critter.name;
-            if (Critter.name == "Zombie")
-                Critter.race = "Zombie";
+            critter.name = stringFindString(line, "[Name:");
+            critter.race = critter.name;
+            if (critter.name == "Zombie")
+                critter.race = "Zombie";
             if (gvars::debug)
             {
-                std::cout << "Working on " << Critter.name << "\n";
+                std::cout << "Working on " << critter.name << "\n";
             }
-            Critter.cbaseid = stringFindNumber(line, "[BaseId:");
-            Critter.id = gvars::globalid++;
+            critter.cbaseid = stringFindNumber(line, "[BaseId:");
+            critter.id = gvars::globalid++;
 
-            Critter.target = stringFindString(line, "[Target:");
-            Critter.needsFood =
+            critter.target = stringFindString(line, "[Target:");
+            critter.needsFood =
                 booleanize(stringFindNumber(line, "[NeedsFood:"));
-            Critter.allowedFood =
+            critter.allowedFood =
                 booleanize(stringFindNumber(line, "[AllowedFood:"));
-            Critter.needsWater =
+            critter.needsWater =
                 booleanize(stringFindNumber(line, "[NeedsWater:"));
-            Critter.allowedDrink =
+            critter.allowedDrink =
                 booleanize(stringFindNumber(line, "[AllowedDrink:"));
-            Critter.canmove = booleanize(stringFindNumber(line, "[CanMove:"));
+            critter.canmove = booleanize(stringFindNumber(line, "[CanMove:"));
             if (gvars::debug)
             {
                 std::cout << "1 \n";
             }
-            Critter.maxhealth = stringFindNumber(line, "[MaxHealth:");
-            Critter.maxhunger = stringFindNumber(line, "[MaxHunger:");
-            Critter.maxthirst = stringFindNumber(line, "[MaxThirst:");
-            Critter.regentimerint = stringFindNumber(line, "[RegenRate:");
+            critter.maxhealth = stringFindNumber(line, "[MaxHealth:");
+            critter.maxhunger = stringFindNumber(line, "[MaxHunger:");
+            critter.maxthirst = stringFindNumber(line, "[MaxThirst:");
+            critter.regentimerint = stringFindNumber(line, "[RegenRate:");
 
-            Critter.breathtimerint = stringFindNumber(line, "[BreathTimerInt:");
-            Critter.hungertimerint = stringFindNumber(line, "[HungerTimerInt:");
-            Critter.thirsttimerint = stringFindNumber(line, "[ThirstTimerInt:");
+            critter.breathtimerint = stringFindNumber(line, "[BreathTimerInt:");
+            critter.hungertimerint = stringFindNumber(line, "[HungerTimerInt:");
+            critter.thirsttimerint = stringFindNumber(line, "[ThirstTimerInt:");
 
-            Critter.moverateint = stringFindNumber(line, "[MoveSpeed:");
-            Critter.movetimerrate = stringFindNumber(line, "[MoveRate:");
-            Critter.viewangle = stringFindNumber(line, "[ViewAngle:");
-            Critter.viewrange = stringFindNumber(line, "[ViewRange:");
-            Critter.size = stringFindNumber(line, "[Size:");
-            Critter.reach = stringFindNumber(line, "[Reach:");
-            Critter.stench = stringFindNumber(line, "[Stench:");
+            critter.moverateint = stringFindNumber(line, "[MoveSpeed:");
+            critter.movetimerrate = stringFindNumber(line, "[MoveRate:");
+            critter.viewangle = stringFindNumber(line, "[ViewAngle:");
+            critter.viewrange = stringFindNumber(line, "[ViewRange:");
+            critter.size = stringFindNumber(line, "[Size:");
+            critter.reach = stringFindNumber(line, "[Reach:");
+            critter.stench = stringFindNumber(line, "[Stench:");
             if (gvars::debug)
             {
                 std::cout << "2 \n";
             }
-            Critter.skills.endurance =
+            critter.skills.endurance =
                 randz(stringFindNumber(line, "[MinEnd:"),
                       stringFindNumber(line, "[MaxEnd:"));
-            Critter.skills.strength = randz(stringFindNumber(line, "[MinStr:"),
+            critter.skills.strength = randz(stringFindNumber(line, "[MinStr:"),
                                             stringFindNumber(line, "[MaxStr:"));
-            Critter.skills.dexterity =
+            critter.skills.dexterity =
                 randz(stringFindNumber(line, "[MinDex:"),
                       stringFindNumber(line, "[MaxDex:"));
-            Critter.skills.intelligence =
+            critter.skills.intelligence =
                 randz(stringFindNumber(line, "[MinInt:"),
                       stringFindNumber(line, "[MaxInt:"));
-            Critter.skills.wisdom = randz(stringFindNumber(line, "[MinWis:"),
+            critter.skills.wisdom = randz(stringFindNumber(line, "[MinWis:"),
                                           stringFindNumber(line, "[MaxWis:"));
-            Critter.skills.charisma = randz(stringFindNumber(line, "[MinCha:"),
+            critter.skills.charisma = randz(stringFindNumber(line, "[MinCha:"),
                                             stringFindNumber(line, "[MaxCha:"));
-            Critter.skills.perception =
+            critter.skills.perception =
                 randz(stringFindNumber(line, "[MinPer:"),
                       stringFindNumber(line, "[MaxPer:"));
-            Critter.skills.agility = randz(stringFindNumber(line, "[MinAgi:"),
+            critter.skills.agility = randz(stringFindNumber(line, "[MinAgi:"),
                                            stringFindNumber(line, "[MaxAgi:"));
             if (gvars::debug)
             {
                 std::cout << "3 \n";
             }
-            if (Critter.maxhealth == -1)
+            if (critter.maxhealth == -1)
             {
-                Critter.maxhealth = Critter.skills.endurance * 0.8;
+                critter.maxhealth = critter.skills.endurance * 0.8;
             }
             debug("v-Adding Tags-v");
             debug(stringFindChaos(line, "{Tags:", "}"));
             debug("^-Added Tags-^");
-            Critter.tags.append(stringFindChaos(line, "{Tags:", "}"));
-            std::set<std::string> Items;
-            std::string List;
-            List.append(stringFindChaos(line, "{Items:", "}"));
-            Items = stringFindSetChaos(List, "[", "]");
-            for (auto OogaBooga : Items)
+            critter.tags.append(stringFindChaos(line, "{Tags:", "}"));
+            std::set<std::string> items;
+            std::string list;
+            list.append(stringFindChaos(line, "{Items:", "}"));
+            items = stringFindSetChaos(list, "[", "]");
+            for (auto item : items)
             {
 
-                auto a = new char[OogaBooga.size() + 1];
-                a[OogaBooga.size()] = 0;
-                memcpy(a, OogaBooga.c_str(), OogaBooga.size());
+                auto a = new char[item.size() + 1];
+                a[item.size()] = 0;
+                memcpy(a, item.c_str(), item.size());
                 if (gvars::debug)
                 {
                     std::cout << "Pre Critter.AddItem \n";
                 }
-                Critter.addItem(a, 1);
+                critter.addItem(a, 1);
                 if (gvars::debug)
                 {
                     std::cout << "*Post Critter.AddItem* \n";
@@ -1445,78 +1443,78 @@ void NpcManager::initializeCritters()
 
             /*===================================================*/
 
-            Critter.action = "Act";
-            Critter.alive = true;
-            Critter.hasSpawned = true;
-            Critter.movetimerint = 1000;
-            Critter.moverate = Critter.moverateint;
+            critter.action = "Act";
+            critter.alive = true;
+            critter.hasSpawned = true;
+            critter.movetimerint = 1000;
+            critter.moverate = critter.moverateint;
 
-            Critter.health = Critter.maxhealth;
-            Critter.hunger = Critter.maxhunger;
-            Critter.thirst = Critter.maxthirst;
-            if (Critter.hasTag("[EatsFlesh:"))
+            critter.health = critter.maxhealth;
+            critter.hunger = critter.maxhunger;
+            critter.thirst = critter.maxthirst;
+            if (critter.hasTag("[EatsFlesh:"))
             {
-                Critter.hunger = 10;
-                Critter.thirst = 0;
+                critter.hunger = 10;
+                critter.thirst = 0;
             }
-            Critter.regentimer = Critter.regentimerint;
-            Critter.regenrate =
-                Critter.skills.endurance /
+            critter.regentimer = critter.regentimerint;
+            critter.regenrate =
+                critter.skills.endurance /
                 10; // TODO: Have Skill based values update in the Train() function, So that stuff like Regen doesn't fall behind.
 
-            Critter.breathtimer = Critter.breathtimerint;
-            Critter.hungertimer = Critter.hungertimerint;
-            Critter.thirsttimer = Critter.thirsttimerint;
-            Critter.needsPath = false;
+            critter.breathtimer = critter.breathtimerint;
+            critter.hungertimer = critter.hungertimerint;
+            critter.thirsttimer = critter.thirsttimerint;
+            critter.needsPath = false;
 
             // Critter Bodies
             {
-                if (Critter.race == "Human" || Critter.race == "Zombie")
+                if (critter.race == "Human" || critter.race == "Zombie")
                 {
-                    Critter.body.bodyParts =
+                    critter.body.bodyParts =
                         "{[Name:UpperTorso][BloodPumpRate:100][AirCapacity:"
                         "200][AirAbsorbtion:100][ObjectCapacity:1]["
                         "MassFlesh:15:1000]}";
-                    Critter.body.bodyParts.append(
+                    critter.body.bodyParts.append(
                         "{[Name:Head][Mind:true][Orafice:1][MassFlesh:5:"
                         "1000][Dependant:UpperTorso]}");
-                    Critter.body.bodyParts.append(
+                    critter.body.bodyParts.append(
                         "{[Name:LowerTorso][ObjectCapacity:10]["
                         "DigestionRate:125][NutritionExtraction:10]["
                         "DigestsFlesh:60][DigestsVeggy:60][DigestsWater:"
                         "100][MassFlesh:15:1000][Dependant:UpperTorso]}");
 
-                    Critter.body.bodyParts.append("{[Name:Left "
+                    critter.body.bodyParts.append("{[Name:Left "
                                                   "Leg][Walk:3][MassFlesh:"
                                                   "15:1000][Dependant:"
                                                   "LowerTorso]}");
-                    Critter.body.bodyParts.append("{[Name:Right "
+                    critter.body.bodyParts.append("{[Name:Right "
                                                   "Leg][Walk:3][MassFlesh:"
                                                   "15:1000][Dependant:"
                                                   "LowerTorso]}");
 
-                    Critter.body.bodyParts.append("{[Name:Left "
+                    critter.body.bodyParts.append("{[Name:Left "
                                                   "Arm][Grasp:2][MassFlesh:"
                                                   "10:1000][Dependant:"
                                                   "UpperTorso]}");
-                    Critter.body.bodyParts.append("{[Name:Right "
+                    critter.body.bodyParts.append("{[Name:Right "
                                                   "Arm][Grasp:2][MassFlesh:"
                                                   "10:1000][Dependant:"
                                                   "UpperTorso]}");
                 }
-                if (Critter.race == "Azabul")
+                if (critter.race == "Azabul")
                 {
-                    Critter.body.bodyParts =
+                    critter.body.bodyParts =
                         "{[Name:UpperTorso][BloodPumpRate:100][AirCapacity:200]"
                         "["
                         "AirAbsorbtion:100][ObjectCapacity:1]["
                         "NutritionExtraction:"
                         "25][MassFlesh:15:1000]}";
-                    Critter.body.bodyParts.append(
+                    critter.body.bodyParts.append(
                         "\n{[Name:Head][Mind:true]["
                         "Orafice:1][MassFlesh:5:1000]["
                         "Dependant:UpperTorso]}");
-                    Critter.body.bodyParts.append(
+                    critter.body.bodyParts.append(
                         "\n{[Name:LowerTorso][ObjectCapacity:10][DigestionRate:"
                         "125]"
                         "[NutritionExtraction:50][PoisonFilter:Zombification:"
@@ -1525,43 +1523,43 @@ void NpcManager::initializeCritters()
                         "UpperTorso]"
                         "}");
 
-                    Critter.body.bodyParts.append(
+                    critter.body.bodyParts.append(
                         "\n{[Name:Left "
                         "Leg][Walk:8][MassFlesh:15:1000]["
                         "Dependant:LowerTorso]}");
-                    Critter.body.bodyParts.append(
+                    critter.body.bodyParts.append(
                         "\n{[Name:Right "
                         "Leg][Walk:8][MassFlesh:15:1000]["
                         "Dependant:LowerTorso]}");
 
-                    Critter.body.bodyParts.append(
+                    critter.body.bodyParts.append(
                         "\n{[Name:Left "
                         "Arm][Grasp:2][MassFlesh:10:1000]"
                         "[Dependant:UpperTorso]}");
-                    Critter.body.bodyParts.append(
+                    critter.body.bodyParts.append(
                         "\n{[Name:Right "
                         "Arm][Grasp:2][MassFlesh:10:1000]"
                         "[Dependant:UpperTorso]}");
                 }
             }
 
-            std::string Imagery = stringFindString(line, "[Image:");
+            std::string imagery = stringFindString(line, "[Image:");
             if (gvars::debug)
             {
                 std::cout << "Pre Imagery \n";
             }
             for (auto const &image : texturemanager.textures)
             {
-                if (image.name == Imagery)
+                if (image.name == imagery)
                 {
-                    Critter.img.setTexture(image.texture);
+                    critter.img.setTexture(image.texture);
                     //Critter.img.SetSubRect(sf::IntRect(0, 0, i->Image.GetWidth(),i->Image.GetHeight()));
                     //Critter.img.SetCenter(i->Image.GetWidth()/2,i->Image.GetHeight()/2);
                 }
             }
-            if (Critter.name != "Debuggery")
+            if (critter.name != "Debuggery")
             {
-                globalCritter.push_back(Critter);
+                globalCritter.push_back(critter);
             }
             if (gvars::debug)
             {
@@ -1590,7 +1588,7 @@ std::set<int> npcTrace(int xa, int ya, int xb, int yb, int id,
         steps = abs(dy);
     xIncrement = dx / (float)steps;
     yIncrement = dy / (float)steps;
-    std::set<int> SetID;
+    std::set<int> setID;
 
     for (int k = 0; k < steps; k++)
     {
@@ -1604,17 +1602,17 @@ std::set<int> npcTrace(int xa, int ya, int xb, int yb, int id,
 
         // Merely doing this so I can reuse the same code, but for items, Hehe.
         {
-            std::vector<Npc>::iterator Me;
+            std::vector<Npc>::iterator me;
 
-            for (Me = npclist.begin(); Me != npclist.end(); ++Me)
+            for (me = npclist.begin(); me != npclist.end(); ++me)
             {
-                if (math::closeish(x, y, Me->xpos, Me->ypos) <= Me->size &&
-                    Me->id != id)
+                if (math::closeish(x, y, me->xpos, me->ypos) <= me->size &&
+                    me->id != id)
                 {
 
                     try
                     {
-                        SetID.insert(getNpcVectorId(Me->id));
+                        setID.insert(getNpcVectorId(me->id));
                     }
                     catch (std::exception &e)
                     {
@@ -1625,14 +1623,14 @@ std::set<int> npcTrace(int xa, int ya, int xb, int yb, int id,
             }
         }
     }
-    if (SetID.empty())
+    if (setID.empty())
     {
-        SetID.insert(-1);
+        setID.insert(-1);
     }
-    return SetID;
+    return setID;
 }
 
-void saveNPC(int planet, sf::Vector2i Region, Npc &Critter)
+void saveNPC(int planet, sf::Vector2i region, Npc &critter)
 {
     using namespace std;
     string line("data/maps/Planet");
@@ -1643,63 +1641,63 @@ void saveNPC(int planet, sf::Vector2i Region, Npc &Critter)
     galaxy_mkdir(line);
     line.append("/npc");
     convert << "x";
-    convert << Region.x;
+    convert << region.x;
     convert << "y";
-    convert << Region.y;
+    convert << region.y;
     line.append(convert.str());
     string ending(".crit");
     line.append(ending);
 
-    ofstream File;
-    File.open(line.c_str(), fstream::in | fstream::ate);
+    ofstream file;
+    file.open(line.c_str(), fstream::in | fstream::ate);
     debug("looking for file...");
 
-    if (File.is_open())
+    if (file.is_open())
     {
         //File << std::endl;
-        File << std::endl;
+        file << std::endl;
         con("Problem? 3");
-        File << "[name:" << Critter.name << "]"
-             << "[race:" << Critter.race << "]"
-             << "[xpos:" << Critter.xpos << "]"
-             << "[ypos:" << Critter.ypos << "]"
-             << "[strength:" << Critter.skills.strength << "]"
-             << "[perception:" << Critter.skills.perception << "]"
-             << "[intelligence:" << Critter.skills.intelligence << "]"
-             << "[charisma:" << Critter.skills.charisma << "]"
-             << "[endurance:" << Critter.skills.endurance << "]"
-             << "[dexterity:" << Critter.skills.dexterity << "]"
-             << "[agility:" << Critter.skills.agility << "]"
-             << "[health:" << Critter.health << "]"
-             << "[action:" << Critter.action << "]"
-             << "[angle:" << Critter.angle << "]"
-             << "[thirst:" << Critter.thirst << "]"
-             << "[hunger:" << Critter.hunger << "]"
-             << "[strengthxp:" << Critter.skills.strengthxp << "]"
-             << "[perceptionxp:" << Critter.skills.perceptionxp << "]"
-             << "[intelligencexp:" << Critter.skills.intelligencexp << "]"
-             << "[charismaxp:" << Critter.skills.charismaxp << "]"
-             << "[endurancexp:" << Critter.skills.endurancexp << "]"
-             << "[dexterityxp:" << Critter.skills.dexterityxp << "]"
-             << "[agilityxp:" << Critter.skills.agilityxp << "]"
-             << "[cbaseid:" << Critter.cbaseid << "]"
-             << "[maxhealth:" << Critter.maxhealth << "]"
-             << "{Tags:" << Critter.tags << "}"
-             << "{Blood:" << Critter.bloodcontent << "}"
+        file << "[name:" << critter.name << "]"
+             << "[race:" << critter.race << "]"
+             << "[xpos:" << critter.xpos << "]"
+             << "[ypos:" << critter.ypos << "]"
+             << "[strength:" << critter.skills.strength << "]"
+             << "[perception:" << critter.skills.perception << "]"
+             << "[intelligence:" << critter.skills.intelligence << "]"
+             << "[charisma:" << critter.skills.charisma << "]"
+             << "[endurance:" << critter.skills.endurance << "]"
+             << "[dexterity:" << critter.skills.dexterity << "]"
+             << "[agility:" << critter.skills.agility << "]"
+             << "[health:" << critter.health << "]"
+             << "[action:" << critter.action << "]"
+             << "[angle:" << critter.angle << "]"
+             << "[thirst:" << critter.thirst << "]"
+             << "[hunger:" << critter.hunger << "]"
+             << "[strengthxp:" << critter.skills.strengthxp << "]"
+             << "[perceptionxp:" << critter.skills.perceptionxp << "]"
+             << "[intelligencexp:" << critter.skills.intelligencexp << "]"
+             << "[charismaxp:" << critter.skills.charismaxp << "]"
+             << "[endurancexp:" << critter.skills.endurancexp << "]"
+             << "[dexterityxp:" << critter.skills.dexterityxp << "]"
+             << "[agilityxp:" << critter.skills.agilityxp << "]"
+             << "[cbaseid:" << critter.cbaseid << "]"
+             << "[maxhealth:" << critter.maxhealth << "]"
+             << "{Tags:" << critter.tags << "}"
+             << "{Blood:" << critter.bloodcontent << "}"
              << "{Items:";
         con("Problem? 4");
 
         //for(int i = 0; i != Critter.inventory.size(); i++)
-        for (auto i = Critter.inventory.begin(); i != Critter.inventory.begin();
+        for (auto i = critter.inventory.begin(); i != critter.inventory.begin();
              i++)
         {
-            File << "[" << (*i).name << "]";
+            file << "[" << (*i).name << "]";
         }
-        File << "}";
+        file << "}";
         con("Problem? 5");
         //Con("Added", false);
         //Con(object.name);
-        File.close();
+        file.close();
     } // End to Load Map
 
     /*debug("v-Adding Tags-v");
@@ -1723,35 +1721,35 @@ void saveNPC(int planet, sf::Vector2i Region, Npc &Critter)
     {
         ofstream outputFile(line.c_str());
 
-        outputFile << "[name:" << Critter.name << "]"
-                   << "[race:" << Critter.race << "]"
-                   << "[xpos:" << Critter.xpos << "]"
-                   << "[ypos:" << Critter.ypos << "]"
-                   << "[strength:" << Critter.skills.strength << "]"
-                   << "[perception:" << Critter.skills.perception << "]"
-                   << "[intelligence:" << Critter.skills.intelligence << "]"
-                   << "[charisma:" << Critter.skills.charisma << "]"
-                   << "[endurance:" << Critter.skills.endurance << "]"
-                   << "[dexterity:" << Critter.skills.dexterity << "]"
-                   << "[agility:" << Critter.skills.agility << "]"
-                   << "[health:" << Critter.health << "]"
-                   << "[action:" << Critter.action << "]"
-                   << "[angle:" << Critter.angle << "]"
-                   << "[thirst:" << Critter.thirst << "]"
-                   << "[hunger:" << Critter.hunger << "]"
-                   << "[strengthxp:" << Critter.skills.strengthxp << "]"
-                   << "[perceptionxp:" << Critter.skills.perceptionxp << "]"
-                   << "[intelligencexp:" << Critter.skills.intelligencexp << "]"
-                   << "[charismaxp:" << Critter.skills.charismaxp << "]"
-                   << "[endurancexp:" << Critter.skills.endurancexp << "]"
-                   << "[dexterityxp:" << Critter.skills.dexterityxp << "]"
-                   << "[agilityxp:" << Critter.skills.agilityxp << "]"
-                   << "[cbaseid:" << Critter.cbaseid << "]"
-                   << "[maxhealth:" << Critter.maxhealth << "]"
-                   << "{Tags:" << Critter.tags << "}"
-                   << "{Blood:" << Critter.bloodcontent << "}"
+        outputFile << "[name:" << critter.name << "]"
+                   << "[race:" << critter.race << "]"
+                   << "[xpos:" << critter.xpos << "]"
+                   << "[ypos:" << critter.ypos << "]"
+                   << "[strength:" << critter.skills.strength << "]"
+                   << "[perception:" << critter.skills.perception << "]"
+                   << "[intelligence:" << critter.skills.intelligence << "]"
+                   << "[charisma:" << critter.skills.charisma << "]"
+                   << "[endurance:" << critter.skills.endurance << "]"
+                   << "[dexterity:" << critter.skills.dexterity << "]"
+                   << "[agility:" << critter.skills.agility << "]"
+                   << "[health:" << critter.health << "]"
+                   << "[action:" << critter.action << "]"
+                   << "[angle:" << critter.angle << "]"
+                   << "[thirst:" << critter.thirst << "]"
+                   << "[hunger:" << critter.hunger << "]"
+                   << "[strengthxp:" << critter.skills.strengthxp << "]"
+                   << "[perceptionxp:" << critter.skills.perceptionxp << "]"
+                   << "[intelligencexp:" << critter.skills.intelligencexp << "]"
+                   << "[charismaxp:" << critter.skills.charismaxp << "]"
+                   << "[endurancexp:" << critter.skills.endurancexp << "]"
+                   << "[dexterityxp:" << critter.skills.dexterityxp << "]"
+                   << "[agilityxp:" << critter.skills.agilityxp << "]"
+                   << "[cbaseid:" << critter.cbaseid << "]"
+                   << "[maxhealth:" << critter.maxhealth << "]"
+                   << "{Tags:" << critter.tags << "}"
+                   << "{Blood:" << critter.bloodcontent << "}"
                    << "{Items:";
-        for (auto i = Critter.inventory.begin(); i != Critter.inventory.begin();
+        for (auto i = critter.inventory.begin(); i != critter.inventory.begin();
              i++)
         {
             outputFile << "[" << (*i).name << "]";
@@ -1765,18 +1763,18 @@ Territory::Territory()
     toDelete = false;
 }
 
-void cleanTerritories(std::vector<Territory> &Territories)
+void cleanTerritories(std::vector<Territory> &territories)
 {
-    bool Done = false;
-    while (Done == false)
+    bool done = false;
+    while (done == false)
     {
-        Done = true;
-        for (auto it = Territories.begin(); it != Territories.end(); ++it)
+        done = true;
+        for (auto it = territories.begin(); it != territories.end(); ++it)
         {
             if (it->toDelete)
             {
-                Done = false;
-                Territories.erase(it);
+                done = false;
+                territories.erase(it);
                 debug("Territory deleted.");
                 break;
             }
@@ -1799,11 +1797,11 @@ Faction::Faction()
     secondaryColor = sf::Color(randz(0, 255), randz(0, 255), randz(0, 255));
 }
 
-int factionMembers(std::string FactionName)
+int factionMembers(std::string factionName)
 {
     for (size_t i = 0; i != uniFact.size(); i++)
     {
-        if (uniFact[i].name == FactionName)
+        if (uniFact[i].name == factionName)
         {
             return uniFact[i].members;
         }
@@ -1811,11 +1809,11 @@ int factionMembers(std::string FactionName)
     return 0;
 }
 
-float factionAggression(std::string FactionName)
+float factionAggression(std::string factionName)
 {
     for (size_t i = 0; i != uniFact.size(); i++)
     {
-        if (uniFact[i].name == FactionName)
+        if (uniFact[i].name == factionName)
         {
             return uniFact[i].aggressiveness;
         }
@@ -1823,11 +1821,11 @@ float factionAggression(std::string FactionName)
     return 0;
 }
 
-int factionTerritories(std::string FactionName)
+int factionTerritories(std::string factionName)
 {
     for (size_t i = 0; i != uniFact.size(); i++)
     {
-        if (uniFact[i].name == FactionName)
+        if (uniFact[i].name == factionName)
         {
             return uniFact[i].territories.size();
         }
@@ -1835,31 +1833,31 @@ int factionTerritories(std::string FactionName)
     return 0;
 }
 
-float factionPower(std::string FactionName)
+float factionPower(std::string factionName)
 {
     for (size_t i = 0; i != uniFact.size(); i++)
     {
-        if (uniFact[i].name == FactionName)
+        if (uniFact[i].name == factionName)
         {
-            float TenantTech = 0;
+            float tenantTech = 0;
 
-            TenantTech += uniFact[i].techMedical;
-            TenantTech += uniFact[i].techWeaponryBlunt;
-            TenantTech += uniFact[i].techWeaponryEnergy;
-            TenantTech += uniFact[i].techWeaponryExplosive;
-            TenantTech += uniFact[i].techWeaponryMass;
-            TenantTech += uniFact[i].techWeaponrySharp;
+            tenantTech += uniFact[i].techMedical;
+            tenantTech += uniFact[i].techWeaponryBlunt;
+            tenantTech += uniFact[i].techWeaponryEnergy;
+            tenantTech += uniFact[i].techWeaponryExplosive;
+            tenantTech += uniFact[i].techWeaponryMass;
+            tenantTech += uniFact[i].techWeaponrySharp;
 
-            float TenantTechnique =
-                TenantTech +
-                (TenantTech * (percentIs(uniFact[i].creativity, 35) * 0.01));
+            float tenantTechnique =
+                tenantTech +
+                (tenantTech * (percentIs(uniFact[i].creativity, 35) * 0.01));
 
-            float TenantPower =
-                TenantTechnique * (percentIs(uniFact[i].members, 60) * 0.01);
+            float tenantPower =
+                tenantTechnique * (percentIs(uniFact[i].members, 60) * 0.01);
 
-            TenantPower = TenantPower * 8;
+            tenantPower = tenantPower * 8;
 
-            return TenantPower;
+            return tenantPower;
         }
     }
     return 0;
@@ -1867,46 +1865,46 @@ float factionPower(std::string FactionName)
 
 int factionPopulation()
 {
-    int Pop = 0;
+    int pop = 0;
     for (size_t i = 0; i != uniFact.size(); i++)
     {
-        Pop += uniFact[i].members;
+        pop += uniFact[i].members;
     }
-    return Pop;
+    return pop;
 }
 
-void initializeFactions(int GenerateMax)
+void initializeFactions(int generateMax)
 {
-    for (int i = 0; i != GenerateMax; i++)
+    for (int i = 0; i != generateMax; i++)
     {
-        Faction GenFact;
+        Faction genFact;
 
-        GenFact.name = generateName();
-        GenFact.playerControlled = false;
+        genFact.name = generateName();
+        genFact.playerControlled = false;
 
-        GenFact.members = randz(1, 20);
+        genFact.members = randz(1, 20);
 
-        GenFact.primaryColor =
+        genFact.primaryColor =
             sf::Color(randz(0, 255), randz(0, 255), randz(0, 255));
-        GenFact.secondaryColor =
+        genFact.secondaryColor =
             sf::Color(randz(0, 255), randz(0, 255), randz(0, 255));
 
-        GenFact.aggressiveness = randz(0, 100);
-        GenFact.creativity = randz(0, 100);
+        genFact.aggressiveness = randz(0, 100);
+        genFact.creativity = randz(0, 100);
 
-        GenFact.techAgriculture = randz(0, 100);
-        GenFact.techArchitecture = randz(0, 100);
-        GenFact.techDiplomacy = randz(0, 100);
-        GenFact.techEnergyProduction = randz(0, 100);
-        GenFact.techMedical = randz(0, 100);
-        GenFact.techRobotics = randz(0, 100);
-        GenFact.techWeaponryBlunt = randz(0, 100);
-        GenFact.techWeaponryEnergy = randz(0, 100);
-        GenFact.techWeaponryExplosive = randz(0, 100);
-        GenFact.techWeaponryMass = randz(0, 100);
-        GenFact.techWeaponrySharp = randz(0, 100);
+        genFact.techAgriculture = randz(0, 100);
+        genFact.techArchitecture = randz(0, 100);
+        genFact.techDiplomacy = randz(0, 100);
+        genFact.techEnergyProduction = randz(0, 100);
+        genFact.techMedical = randz(0, 100);
+        genFact.techRobotics = randz(0, 100);
+        genFact.techWeaponryBlunt = randz(0, 100);
+        genFact.techWeaponryEnergy = randz(0, 100);
+        genFact.techWeaponryExplosive = randz(0, 100);
+        genFact.techWeaponryMass = randz(0, 100);
+        genFact.techWeaponrySharp = randz(0, 100);
 
-        uniFact.push_back(GenFact);
+        uniFact.push_back(genFact);
     }
 }
 
@@ -1922,14 +1920,14 @@ Npc *getGlobalCritter(std::string strtype)
     return nullptr;
 }
 
-void spawnCritter(std::string Object, int xpos, int ypos)
+void spawnCritter(std::string object, int xpos, int ypos)
 {
     if (gvars::debug)
     {
-        std::cout << "Spawning" << Object << " \n";
+        std::cout << "Spawning" << object << " \n";
     }
     Npc var;
-    var = *getGlobalCritter(Object);
+    var = *getGlobalCritter(object);
     // var.ReCreate();
     var.id = gvars::globalid++;
     var.xpos = xpos;
@@ -1969,7 +1967,7 @@ void spawnCritter(std::string Object, int xpos, int ypos)
     }*/
 }
 
-void buildStartingCritters(int ZedAmount)
+void buildStartingCritters(int zedAmount)
 {
     {
         if (gvars::debug)
@@ -1994,7 +1992,7 @@ void buildStartingCritters(int ZedAmount)
                 npcmanager.addedCritters.push_back(squady.squad.at(count));
             }
 
-            for (int zeds = 0; zeds != ZedAmount; zeds++)
+            for (int zeds = 0; zeds != zedAmount; zeds++)
             {
                 con("Starting Zed");
                 sf::Vector2f vPos = math::circleRandz(1000, 1000, 580);
@@ -2013,7 +2011,7 @@ void buildStartingCritters(int ZedAmount)
     }
 }
 
-std::string loadCritters(sf::Vector2i WorldPos, std::string Direction,
+std::string loadCritters(sf::Vector2i worldPos, std::string direction,
                          int planet)
 {
 
@@ -2025,46 +2023,46 @@ std::string loadCritters(sf::Vector2i WorldPos, std::string Direction,
     galaxy_mkdir(line);
     line.append("/npc");
     convert << "x";
-    convert << WorldPos.x;
+    convert << worldPos.x;
     convert << "y";
-    convert << WorldPos.y;
+    convert << worldPos.y;
     line.append(convert.str());
     std::string ending(".crit");
     line.append(ending);
 
-    std::ifstream Input(line.c_str());
-    if (Input.is_open())
+    std::ifstream input(line.c_str());
+    if (input.is_open())
     {
-        while (Input.good())
+        while (input.good())
         {
             std::string line;
-            getline(Input, line);
-            Npc Critter;
+            getline(input, line);
+            Npc critter;
 
-            Critter.name = "Debuggery";
+            critter.name = "Debuggery";
 
-            Critter.name = stringFindString(line, "[name:");
-            Critter.race = stringFindString(line, "[race:");
-            if (Critter.name != "Debuggery" && Critter.name != "Zombie")
-                Critter = *getGlobalCritter(Critter.race);
-            if (Critter.name == "Zombie")
-                Critter = *getGlobalCritter("Zombie");
-            Critter.id = gvars::globalid++;
-            Critter.name = stringFindString(line, "[name:");
-            Critter.race = stringFindString(line, "[race:");
-            Critter.xpos = stringFindNumber(line, "[xpos:");
-            Critter.cbaseid = stringFindNumber(line, "[cbaseid:");
-            Critter.ypos = stringFindNumber(line, "[ypos:");
-            Critter.health = stringFindNumber(line, "[health:");
-            Critter.maxhealth = stringFindNumber(line, "[maxhealth:");
-            Critter.action = stringFindString(line, "[action:");
-            Critter.angle = stringFindNumber(line, "[angle:");
-            Critter.thirst = stringFindNumber(line, "[thirst:");
-            Critter.hunger = stringFindNumber(line, "[hunger:");
+            critter.name = stringFindString(line, "[name:");
+            critter.race = stringFindString(line, "[race:");
+            if (critter.name != "Debuggery" && critter.name != "Zombie")
+                critter = *getGlobalCritter(critter.race);
+            if (critter.name == "Zombie")
+                critter = *getGlobalCritter("Zombie");
+            critter.id = gvars::globalid++;
+            critter.name = stringFindString(line, "[name:");
+            critter.race = stringFindString(line, "[race:");
+            critter.xpos = stringFindNumber(line, "[xpos:");
+            critter.cbaseid = stringFindNumber(line, "[cbaseid:");
+            critter.ypos = stringFindNumber(line, "[ypos:");
+            critter.health = stringFindNumber(line, "[health:");
+            critter.maxhealth = stringFindNumber(line, "[maxhealth:");
+            critter.action = stringFindString(line, "[action:");
+            critter.angle = stringFindNumber(line, "[angle:");
+            critter.thirst = stringFindNumber(line, "[thirst:");
+            critter.hunger = stringFindNumber(line, "[hunger:");
             con("Problem?");
-            Critter.tags.clear();
-            Critter.tags.append(stringFindChaos(line, "{Tags:", "}"));
-            Critter.bloodcontent.append(stringFindChaos(line, "{Blood:", "}"));
+            critter.tags.clear();
+            critter.tags.append(stringFindChaos(line, "{Tags:", "}"));
+            critter.bloodcontent.append(stringFindChaos(line, "{Blood:", "}"));
             con("Problem? 2");
 
             /*debug("v-Adding Tags-v");
@@ -2084,72 +2082,72 @@ std::string loadCritters(sf::Vector2i WorldPos, std::string Direction,
                     if(Debug){ std::cout << "*Post Critter.AddItem* \n";}
                 }*/
 
-            std::cout << "Xpos: " << Critter.xpos << "Ypos: " << Critter.ypos
+            std::cout << "Xpos: " << critter.xpos << "Ypos: " << critter.ypos
                       << std::endl;
 
-            if (Direction == "TopLeft")
+            if (direction == "TopLeft")
             {
             }
-            if (Direction == "Top")
+            if (direction == "Top")
             {
-                Critter.xpos += 640;
+                critter.xpos += 640;
             }
-            if (Direction == "TopRight")
+            if (direction == "TopRight")
             {
-                Critter.xpos += 640;
-                Critter.xpos += 640;
+                critter.xpos += 640;
+                critter.xpos += 640;
             }
-            if (Direction == "Right")
+            if (direction == "Right")
             {
-                Critter.xpos += 640;
-                Critter.xpos += 640;
-                Critter.ypos += 640;
+                critter.xpos += 640;
+                critter.xpos += 640;
+                critter.ypos += 640;
             }
-            if (Direction == "BottomRight")
+            if (direction == "BottomRight")
             {
-                Critter.xpos += 640;
-                Critter.xpos += 640;
-                Critter.ypos += 640;
-                Critter.ypos += 640;
+                critter.xpos += 640;
+                critter.xpos += 640;
+                critter.ypos += 640;
+                critter.ypos += 640;
             }
-            if (Direction == "Bottom")
+            if (direction == "Bottom")
             {
-                Critter.xpos += 640;
-                Critter.ypos += 640;
-                Critter.ypos += 640;
+                critter.xpos += 640;
+                critter.ypos += 640;
+                critter.ypos += 640;
             }
-            if (Direction == "BottomLeft")
+            if (direction == "BottomLeft")
             {
-                Critter.ypos += 640;
-                Critter.ypos += 640;
+                critter.ypos += 640;
+                critter.ypos += 640;
             }
-            if (Direction == "Left")
+            if (direction == "Left")
             {
-                Critter.ypos += 640;
+                critter.ypos += 640;
             }
-            std::cout << "Xpos: " << Critter.xpos << "Ypos: " << Critter.ypos
+            std::cout << "Xpos: " << critter.xpos << "Ypos: " << critter.ypos
                       << std::endl;
 
-            Critter.skills.strength = stringFindNumber(line, "[strength:");
-            Critter.skills.perception = stringFindNumber(line, "[perception:");
-            Critter.skills.intelligence =
+            critter.skills.strength = stringFindNumber(line, "[strength:");
+            critter.skills.perception = stringFindNumber(line, "[perception:");
+            critter.skills.intelligence =
                 stringFindNumber(line, "[intelligence:");
-            Critter.skills.charisma = stringFindNumber(line, "[charisma:");
-            Critter.skills.endurance = stringFindNumber(line, "[endurance:");
-            Critter.skills.dexterity = stringFindNumber(line, "[dexterity:");
-            Critter.skills.agility = stringFindNumber(line, "[agility:");
+            critter.skills.charisma = stringFindNumber(line, "[charisma:");
+            critter.skills.endurance = stringFindNumber(line, "[endurance:");
+            critter.skills.dexterity = stringFindNumber(line, "[dexterity:");
+            critter.skills.agility = stringFindNumber(line, "[agility:");
 
-            Critter.skills.strengthxp = stringFindNumber(line, "[strengthxp:");
-            Critter.skills.perceptionxp =
+            critter.skills.strengthxp = stringFindNumber(line, "[strengthxp:");
+            critter.skills.perceptionxp =
                 stringFindNumber(line, "[perceptionxp:");
-            Critter.skills.intelligencexp =
+            critter.skills.intelligencexp =
                 stringFindNumber(line, "[intelligencexp:");
-            Critter.skills.charismaxp = stringFindNumber(line, "[charismaxp:");
-            Critter.skills.endurancexp =
+            critter.skills.charismaxp = stringFindNumber(line, "[charismaxp:");
+            critter.skills.endurancexp =
                 stringFindNumber(line, "[endurancexp:");
-            Critter.skills.dexterityxp =
+            critter.skills.dexterityxp =
                 stringFindNumber(line, "[dexterityxp:");
-            Critter.skills.agilityxp = stringFindNumber(line, "[agilityxp:");
+            critter.skills.agilityxp = stringFindNumber(line, "[agilityxp:");
 
             /*std::string Imagery = StringFindString(line,"[Image:");
                 std::vector<cImageHolder>::iterator i;
@@ -2162,9 +2160,9 @@ std::string loadCritters(sf::Vector2i WorldPos, std::string Direction,
                     }
                 }*/
 
-            if (Critter.name != "Debuggery")
+            if (critter.name != "Debuggery")
             {
-                npclist.push_back(Critter);
+                npclist.push_back(critter);
             }
         }
     }
@@ -2175,12 +2173,12 @@ void boom(int xpos, int ypos, int damage, int size)
 {
     effects.createCircle(xpos, ypos, size, sf::Color(255, 0, 0, 150), 0,
                          sf::Color(0, 0, 0));
-    std::vector<Npc>::iterator Me;
-    for (Me = npclist.begin(); Me != npclist.end(); ++Me)
+    std::vector<Npc>::iterator me;
+    for (me = npclist.begin(); me != npclist.end(); ++me)
     {
-        if (math::closeish(xpos, ypos, Me->xpos, Me->ypos) < size)
+        if (math::closeish(xpos, ypos, me->xpos, me->ypos) < size)
         {
-            Me->modhealth(-damage);
+            me->modhealth(-damage);
         }
     }
 }
@@ -2200,11 +2198,11 @@ squadHud() // This prints that "pretty" little Squad Unit display in the top lef
                     gvars::topLeft.x + 20 + (20),
                     gvars::topLeft.y + 20 + (20 * i), sf::Color::Black);
 
-                std::string Output =
+                std::string output =
                     npclist[i].name + npclist[i].action + npclist[i].target;
                 textList.createText(gvars::topLeft.x + 20 + (20),
                                     gvars::topLeft.y + (20 * i), 12,
-                                    sf::Color::White, Output);
+                                    sf::Color::White, output);
             }
         }
     }
@@ -2216,14 +2214,14 @@ squadHud() // This prints that "pretty" little Squad Unit display in the top lef
 
 void setTestage()
 {
-    std::set<Npc> TestSet;
+    std::set<Npc> testSet;
     for (int n = 0; n != 500; n++)
     {
         Npc npc;
-        TestSet.insert(npc);
+        testSet.insert(npc);
     }
     int sJohns = 0;
-    for (const auto &npc : TestSet)
+    for (const auto &npc : testSet)
     {
         if (npc.name == "John")
         {

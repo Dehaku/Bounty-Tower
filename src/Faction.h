@@ -55,7 +55,7 @@ public:
 
         std::string bodyParts;
 
-        void bodyPartFind(std::string Part, int amount);
+        void bodyPartFind(std::string part, int amount);
 
         int head;
         int eyes;  // Mask = Eyes+Mouth
@@ -105,7 +105,7 @@ public:
         std::vector<int> xPa;
         std::vector<int> yPa;
         void endMem();
-        void myFindPath(int Sx, int Sy, int Ex, int Ey);
+        void myFindPath(int sx, int sy, int ex, int ey);
         int myReadPathX(int pathfinderID, int xpathLocation);
         int myReadPathY(int pathfinderID, int ypathLocation);
         void myReadPath(int pathfinderID, int currentX, int currentY,
@@ -248,8 +248,8 @@ public:
     Item *getItemType(int type);
     bool hasItemType(int type);
     void drawImg();
-    void move(sf::Vector2f Tar);
-    void dirMove(sf::Vector2f Tar);
+    void move(sf::Vector2f tar);
+    void dirMove(sf::Vector2f tar);
     void momMove();
     void moveNorth();
     void moveNorthEast();
@@ -323,7 +323,7 @@ extern std::vector<Npc> worldCritters;
 int getNpcVectorId(int id);
 std::set<int> npcTrace(int xa, int ya, int xb, int yb, int id,
                        std::set<int> exceptions = std::set<int>());
-void saveNPC(int planet, sf::Vector2i Region, Npc &Critter);
+void saveNPC(int planet, sf::Vector2i region, Npc &critter);
 
 class Territory
 {
@@ -335,7 +335,7 @@ public:
     Territory();
 };
 
-void cleanTerritories(std::vector<Territory> &Territories);
+void cleanTerritories(std::vector<Territory> &territories);
 
 class Faction
 {
@@ -375,19 +375,19 @@ public:
 
 extern std::vector<Faction> uniFact;
 
-int factionMembers(std::string FactionName);
-float factionAggression(std::string FactionName);
-int factionTerritories(std::string FactionName);
-float factionPower(std::string FactionName);
+int factionMembers(std::string factionName);
+float factionAggression(std::string factionName);
+int factionTerritories(std::string factionName);
+float factionPower(std::string factionName);
 int factionPopulation();
-void initializeFactions(int GenerateMax = 10);
+void initializeFactions(int generateMax = 10);
 Npc *getGlobalCritter(std::string strtype);
-void spawnCritter(std::string Object, int xpos, int ypos);
+void spawnCritter(std::string object, int xpos, int ypos);
 
 extern Faction g_pf;
 
-void buildStartingCritters(int ZedAmount = 0);
-std::string loadCritters(sf::Vector2i WorldPos, std::string Direction,
+void buildStartingCritters(int zedAmount = 0);
+std::string loadCritters(sf::Vector2i worldPos, std::string direction,
                          int planet = 500);
 void boom(int xpos, int ypos, int damage, int size);
 void squadHud();
