@@ -1,13 +1,13 @@
 #include "util.h"
 
-void fSleep(float Time)
+void fSleep(float time)
 {
-    sf::sleep(sf::seconds(Time));
+    sf::sleep(sf::seconds(time));
 }
 
-bool booleanize(int Num)
+bool booleanize(int num)
 {
-    if (Num <= 0)
+    if (num <= 0)
     {
         return false;
     }
@@ -17,13 +17,13 @@ bool booleanize(int Num)
     }
 }
 
-bool inbetween(float First, float Second, float Number)
+bool inbetween(float first, float second, float number)
 {
-    if (Number > First && Number < Second)
+    if (number > first && number < second)
     {
         return true;
     }
-    if (Number > Second && Number < First)
+    if (number > second && number < first)
     {
         return true;
     }
@@ -44,179 +44,179 @@ int randz(int minValue, int maxValue)
     return (minValue + rawRand);
 }
 
-bool aabb(int Pointx, int Pointy, int Left, int Right, int Up, int Down)
+bool aabb(int pointx, int pointy, int left, int right, int up, int down)
 {
     // Point(100,100), Up 80, Down 120, Left, 80, Right 120
-    sf::Vector2f Point(Pointx, Pointy);
-    if (Point.x >= Left && Point.x <= Right && Point.y >= Up && Point.y <= Down)
+    sf::Vector2f point(pointx, pointy);
+    if (point.x >= left && point.x <= right && point.y >= up && point.y <= down)
         return true;
     return false;
 }
 
-bool aabb(sf::Vector2f Point, int Left, int Right, int Up, int Down)
+bool aabb(sf::Vector2f point, int left, int right, int up, int down)
 {
 
-    if (Point.x >= Left && Point.x <= Right && Point.y >= Up && Point.y <= Down)
+    if (point.x >= left && point.x <= right && point.y >= up && point.y <= down)
         return true;
     return false;
 }
 
-bool aabb(sf::Vector2i Point, int Left, int Right, int Up, int Down)
+bool aabb(sf::Vector2i point, int left, int right, int up, int down)
 {
 
-    if (Point.x >= Left && Point.x <= Right && Point.y >= Up && Point.y <= Down)
+    if (point.x >= left && point.x <= right && point.y >= up && point.y <= down)
         return true;
     return false;
 }
 
-int stringFindNumber(std::string Stringy, std::string Term)
+int stringFindNumber(std::string stringy, std::string term)
 {
     size_t tStart;
-    tStart = Stringy.find(Term);
+    tStart = stringy.find(term);
     if (tStart != std::string::npos)
     {
         size_t tEnd;
-        std::string Output;
-        tEnd = Stringy.find("]", tStart + 1);
+        std::string output;
+        tEnd = stringy.find("]", tStart + 1);
         if (tEnd != std::string::npos)
         {
-            int iLength = Term.length();
-            Output.assign(Stringy, tStart + iLength, tEnd - (tStart + iLength));
-            auto Returns = atof(Output.c_str());
-            if (Output == "true")
+            int iLength = term.length();
+            output.assign(stringy, tStart + iLength, tEnd - (tStart + iLength));
+            auto returns = atof(output.c_str());
+            if (output == "true")
             {
-                Returns = 1;
+                returns = 1;
             }
-            if (Output == "false")
+            if (output == "false")
             {
-                Returns = 0;
+                returns = 0;
             }
-            return Returns;
+            return returns;
         }
     }
     return 0;
 }
 
-std::string stringFindString(std::string Stringy, std::string Term)
+std::string stringFindString(std::string stringy, std::string term)
 {
-    std::string Returns;
+    std::string returns;
     size_t tStart;
-    tStart = Stringy.find(Term);
+    tStart = stringy.find(term);
     if (tStart != std::string::npos)
     {
         size_t tEnd;
-        std::string Output;
-        tEnd = Stringy.find("]", tStart + 1);
+        std::string output;
+        tEnd = stringy.find("]", tStart + 1);
         if (tEnd != std::string::npos)
         {
-            int iLength = Term.length();
-            Output.assign(Stringy, tStart + iLength, tEnd - (tStart + iLength));
-            Returns = Output;
-            return Returns;
+            int iLength = term.length();
+            output.assign(stringy, tStart + iLength, tEnd - (tStart + iLength));
+            returns = output;
+            return returns;
         }
     }
     return "";
 }
 
-std::string stringFindStringNpos(std::string Stringy, std::string Term)
+std::string stringFindStringNpos(std::string stringy, std::string term)
 {
-    std::string Returns;
+    std::string returns;
     size_t tStart;
-    tStart = Stringy.find(Term);
+    tStart = stringy.find(term);
     if (tStart != std::string::npos)
     {
         size_t tEnd;
-        std::string Output;
-        tEnd = Stringy.find("]", tStart + 1);
+        std::string output;
+        tEnd = stringy.find("]", tStart + 1);
 
         {
-            int iLength = Term.length();
-            Output.assign(Stringy, tStart + iLength, tEnd - (tStart + iLength));
-            Returns = Output;
-            return Returns;
+            int iLength = term.length();
+            output.assign(stringy, tStart + iLength, tEnd - (tStart + iLength));
+            returns = output;
+            return returns;
         }
     }
     return "";
 }
 
-std::vector<std::string> stringFindElements(std::string Source,
-                                            std::string Seperater)
+std::vector<std::string> stringFindElements(std::string source,
+                                            std::string seperater)
 {
 
-    std::vector<std::string> Returns;
-    bool FirstRun = true;
+    std::vector<std::string> returns;
+    bool firstRun = true;
 
-    bool WhileBreaker = false;
-    while (WhileBreaker == false)
+    bool whileBreaker = false;
+    while (whileBreaker == false)
     {
         size_t tStart = 0;
         size_t tEnd = 0;
-        tEnd = Source.find(Seperater, tStart + 1);
+        tEnd = source.find(seperater, tStart + 1);
 
-        std::string Element;
+        std::string element;
 
-        if (FirstRun)
+        if (firstRun)
         {
             // Ignoring the later +1, since we don't want it ignoring the
             // first character if it's not a seperater
-            Element.append(Source, tStart, tEnd - tStart);
-            FirstRun = false;
+            element.append(source, tStart, tEnd - tStart);
+            firstRun = false;
         }
         else
             // +1 so it ignores the : that was used to find it,
             // -1 since the +1 pushed it over, causing it to grab the 'next' :
-            Element.append(Source, tStart + 1, tEnd - tStart - 1);
+            element.append(source, tStart + 1, tEnd - tStart - 1);
 
-        Returns.push_back(Element);
+        returns.push_back(element);
 
         if (tEnd >= std::string::npos)
         {
-            WhileBreaker = true;
+            whileBreaker = true;
         }
     }
-    return Returns;
+    return returns;
 }
 
-std::vector<float> numericSplitter(float Received, float SplitVariable)
+std::vector<float> numericSplitter(float received, float splitVariable)
 {
     con("Beginning That Function, Recieved: ", false);
-    con(Received);
+    con(received);
 
-    std::vector<float> Returns;
-    for (int i = 0; i < Received; i += SplitVariable)
+    std::vector<float> returns;
+    for (int i = 0; i < received; i += splitVariable)
     {
         con("Running That Function");
-        if (Received - i > SplitVariable)
-            Returns.push_back(SplitVariable);
-        if (Received - i <= SplitVariable)
-            Returns.push_back(Received - i);
+        if (received - i > splitVariable)
+            returns.push_back(splitVariable);
+        if (received - i <= splitVariable)
+            returns.push_back(received - i);
     }
     con("Returning That Function");
-    return Returns;
+    return returns;
 }
 
-float percentageBuff(float Received)
+float percentageBuff(float received)
 {
-    return Received / 100;
+    return received / 100;
 }
 
-std::string stringFindChaos(std::string Stringy, std::string Term,
-                            std::string Ending)
+std::string stringFindChaos(std::string stringy, std::string term,
+                            std::string ending)
 {
-    std::string Returns;
+    std::string returns;
     size_t tStart;
-    tStart = Stringy.find(Term);
+    tStart = stringy.find(term);
     if (tStart != std::string::npos)
     {
         size_t tEnd;
-        std::string Output;
-        tEnd = Stringy.find(Ending, tStart + 1);
+        std::string output;
+        tEnd = stringy.find(ending, tStart + 1);
         if (tEnd != std::string::npos)
         {
-            int iLength = Term.length();
-            Output.assign(Stringy, tStart + iLength, tEnd - (tStart + iLength));
-            Returns = Output;
-            return Returns;
+            int iLength = term.length();
+            output.assign(stringy, tStart + iLength, tEnd - (tStart + iLength));
+            returns = output;
+            return returns;
         }
     }
 
@@ -224,186 +224,186 @@ std::string stringFindChaos(std::string Stringy, std::string Term,
     return "";
 }
 
-std::set<std::string> stringFindSetChaos(std::string Stringy, std::string Term,
-                                         std::string Ending)
+std::set<std::string> stringFindSetChaos(std::string stringy, std::string term,
+                                         std::string ending)
 {
-    std::set<std::string> Returns;
-    bool NotDone = true;
+    std::set<std::string> returns;
+    bool notDone = true;
     // std::cout <<"Working With:" << Stringy << std::endl;
-    int Goal = 0;
-    while (NotDone)
+    int goal = 0;
+    while (notDone)
     {
-        NotDone = false;
-        size_t tStart = Stringy.find(Term);
+        notDone = false;
+        size_t tStart = stringy.find(term);
         size_t tEnd;
-        std::string Output;
-        tEnd = Stringy.find(Ending, tStart + 1);
+        std::string output;
+        tEnd = stringy.find(ending, tStart + 1);
         if (tEnd != std::string::npos)
         {
             std::cout << tEnd << std::endl;
             sf::sleep(sf::seconds(0.2));
-            int iLength = Term.length();
-            Output.assign(Stringy, tStart + iLength, tEnd - (tStart + iLength));
-            Returns.insert(Output);
-            Stringy.replace((tStart + iLength) - 1,
+            int iLength = term.length();
+            output.assign(stringy, tStart + iLength, tEnd - (tStart + iLength));
+            returns.insert(output);
+            stringy.replace((tStart + iLength) - 1,
                             (tEnd - ((tStart)+iLength)) + 2, "");
-            std::cout << Stringy << std::endl;
-            if (Goal < 500)
+            std::cout << stringy << std::endl;
+            if (goal < 500)
             {
-                NotDone = true;
+                notDone = true;
             }
-            Goal++;
+            goal++;
             //tStart = tEnd;
         }
         else
         {
         }
     }
-    for (const auto &Return : Returns)
+    for (const auto &Return : returns)
     {
         std::cout << Return << std::endl;
     }
-    return Returns;
+    return returns;
 }
 
-float percentIs(float Value, float Percentage)
+float percentIs(float value, float percentage)
 {
     // Divide the return by 100 for maths.
-    if (Value == 0)
-        Value = 0.000000001;
-    if (Percentage == 0)
-        Percentage = 0.000000001;
+    if (value == 0)
+        value = 0.000000001;
+    if (percentage == 0)
+        percentage = 0.000000001;
 
-    float Percent = Percentage / Value * 100;
-    if (Percent == 0)
+    float percent = percentage / value * 100;
+    if (percent == 0)
         return 0.00000000001;
-    return Percent;
+    return percent;
 }
 
-bool toggle(bool &Boolean)
+bool toggle(bool &boolean)
 {
-    if (Boolean == true)
-        Boolean = false;
-    else if (Boolean == false)
-        Boolean = true;
-    return Boolean;
+    if (boolean == true)
+        boolean = false;
+    else if (boolean == false)
+        boolean = true;
+    return boolean;
 }
 
-std::string generateName(int MinLength, int MaxLength)
+std::string generateName(int minLength, int maxLength)
 {
     // TODO: Add a rememberance for the last added letter,
     // and add a 50% chance to NOT do the same letter again.
-    std::string Inserter;
-    std::string Name;
-    int Length = randz(MinLength, MaxLength);
-    bool Vowel = true;
-    bool DoubleLetter = false;
+    std::string inserter;
+    std::string name;
+    int length = randz(minLength, maxLength);
+    bool vowel = true;
+    bool doubleLetter = false;
     if (randz(0, 1) == 1)
-        Vowel = false;
+        vowel = false;
 
-    for (int i = 0; i != Length; i++)
+    for (int i = 0; i != length; i++)
     {
-        if (Vowel)
+        if (vowel)
         {
-            int VowelGen = randz(0, 5);
-            if (VowelGen == 0)
-                Inserter = "A";
-            if (VowelGen == 1)
-                Inserter = "E";
-            if (VowelGen == 2)
-                Inserter = "I";
-            if (VowelGen == 3)
-                Inserter = "O";
-            if (VowelGen == 4)
-                Inserter = "U";
-            if (VowelGen == 5)
-                Inserter = "Y";
+            int vowelGen = randz(0, 5);
+            if (vowelGen == 0)
+                inserter = "A";
+            if (vowelGen == 1)
+                inserter = "E";
+            if (vowelGen == 2)
+                inserter = "I";
+            if (vowelGen == 3)
+                inserter = "O";
+            if (vowelGen == 4)
+                inserter = "U";
+            if (vowelGen == 5)
+                inserter = "Y";
 
-            Name.append(Inserter);
+            name.append(inserter);
 
-            if (DoubleLetter)
+            if (doubleLetter)
             {
-                DoubleLetter = false;
-                Vowel = false;
+                doubleLetter = false;
+                vowel = false;
             }
             else if (randz(0, 2) > 0)
             {
-                Vowel = false;
+                vowel = false;
             }
             else
             {
-                DoubleLetter = true;
+                doubleLetter = true;
             }
         }
         else
         {
-            int ConsenantGen = randz(0, 24);
+            int consenantGen = randz(0, 24);
 
-            if (ConsenantGen == 0)
-                Inserter = "B";
-            if (ConsenantGen == 1)
-                Inserter = "C";
-            if (ConsenantGen == 2)
-                Inserter = "D";
-            if (ConsenantGen == 3)
-                Inserter = "F";
-            if (ConsenantGen == 4)
-                Inserter = "G";
-            if (ConsenantGen == 5)
-                Inserter = "H";
-            if (ConsenantGen == 6)
-                Inserter = "J";
-            if (ConsenantGen == 7)
-                Inserter = "K";
-            if (ConsenantGen == 8)
-                Inserter = "L";
-            if (ConsenantGen == 9)
-                Inserter = "M";
-            if (ConsenantGen == 10)
-                Inserter = "N";
-            if (ConsenantGen == 11)
-                Inserter = "P";
-            if (ConsenantGen == 12)
-                Inserter = "QU";
+            if (consenantGen == 0)
+                inserter = "B";
+            if (consenantGen == 1)
+                inserter = "C";
+            if (consenantGen == 2)
+                inserter = "D";
+            if (consenantGen == 3)
+                inserter = "F";
+            if (consenantGen == 4)
+                inserter = "G";
+            if (consenantGen == 5)
+                inserter = "H";
+            if (consenantGen == 6)
+                inserter = "J";
+            if (consenantGen == 7)
+                inserter = "K";
+            if (consenantGen == 8)
+                inserter = "L";
+            if (consenantGen == 9)
+                inserter = "M";
+            if (consenantGen == 10)
+                inserter = "N";
+            if (consenantGen == 11)
+                inserter = "P";
+            if (consenantGen == 12)
+                inserter = "QU";
             //if(ConsenantGen == 12) Inserter = "Q";
-            if (ConsenantGen == 13)
-                Inserter = "R";
-            if (ConsenantGen == 14)
-                Inserter = "S";
-            if (ConsenantGen == 15)
-                Inserter = "T";
-            if (ConsenantGen == 16)
-                Inserter = "V";
-            if (ConsenantGen == 17)
-                Inserter = "W";
-            if (ConsenantGen == 18)
-                Inserter = "X";
-            if (ConsenantGen == 19)
-                Inserter = "Y";
-            if (ConsenantGen == 20)
-                Inserter = "Z";
+            if (consenantGen == 13)
+                inserter = "R";
+            if (consenantGen == 14)
+                inserter = "S";
+            if (consenantGen == 15)
+                inserter = "T";
+            if (consenantGen == 16)
+                inserter = "V";
+            if (consenantGen == 17)
+                inserter = "W";
+            if (consenantGen == 18)
+                inserter = "X";
+            if (consenantGen == 19)
+                inserter = "Y";
+            if (consenantGen == 20)
+                inserter = "Z";
 
-            if (ConsenantGen == 21)
-                Inserter = "CH";
-            if (ConsenantGen == 22)
-                Inserter = "SH";
-            if (ConsenantGen == 23)
-                Inserter = "TH";
-            if (ConsenantGen == 24)
-                Inserter = "LL";
+            if (consenantGen == 21)
+                inserter = "CH";
+            if (consenantGen == 22)
+                inserter = "SH";
+            if (consenantGen == 23)
+                inserter = "TH";
+            if (consenantGen == 24)
+                inserter = "LL";
 
-            Name.append(Inserter);
+            name.append(inserter);
 
-            if (DoubleLetter)
+            if (doubleLetter)
             {
-                DoubleLetter = false;
-                Vowel = true;
+                doubleLetter = false;
+                vowel = true;
             }
             else if (randz(0, 2) > 0)
-                Vowel = true;
+                vowel = true;
             else
-                DoubleLetter = true;
+                doubleLetter = true;
         }
     }
-    return Name;
+    return name;
 }
