@@ -48,13 +48,6 @@ MyItem::MyItem()
         name = "Weapon";
 }
 
-PointerContainer::PointerContainer()
-{
-    pItem = nullptr;
-    pNPC = nullptr;
-    pTile = nullptr;
-}
-
 std::string Job::getItemName()
 {
     return this->pItem->name;

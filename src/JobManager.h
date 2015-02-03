@@ -27,15 +27,6 @@ void insertItemsIntoContainers();
 void printItemContainer();
 void runItAll();
 
-class PointerContainer
-{
-public:
-    Item *pItem;
-    Npc *pNPC;
-    Tile *pTile;
-    PointerContainer();
-};
-
 class Job
 {
 public:
