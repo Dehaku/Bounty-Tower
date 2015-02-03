@@ -359,7 +359,7 @@ std::vector<int> nngTrace(int xa, int ya, int xb, int yb, int id,
     return vectorID;
 }
 
-bool gridposTrace(int xa, int ya, int xb, int yb, int id, sf::Vector2f Target)
+bool gridposTrace(int xa, int ya, int xb, int yb, int id, sf::Vector2f target)
 { // Looking in a straight line for a specific spot, Walls block vision.
 
     int dx = xb - xa, dy = yb - ya, steps;
@@ -387,9 +387,9 @@ bool gridposTrace(int xa, int ya, int xb, int yb, int id, sf::Vector2f Target)
 
         } // Stops the trace if it hits a wall.
         //std::cout << "Stuffs " << std::endl;
-        sf::Vector2f Pos(abs(x / GridSize), abs(y / GridSize));
-        sf::Vector2f Tar(abs(Target.x / GridSize), abs(Target.y / GridSize));
-        if (Pos == Tar)
+        sf::Vector2f pos(abs(x / GridSize), abs(y / GridSize));
+        sf::Vector2f tar(abs(target.x / GridSize), abs(target.y / GridSize));
+        if (pos == tar)
         {
             return true;
         } // Returns true and stops searching.
