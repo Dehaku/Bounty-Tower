@@ -413,36 +413,36 @@ std::vector<int> npcTrace(int xa, int ya, int xb, int yb, int id,
         steps = abs(dy);
     xIncrement = dx / (float)steps;
     yIncrement = dy / (float)steps;
-    std::vector<int> VectorID;
+    std::vector<int> vectorID;
 
     for (int k = 0; k < steps; k++)
     {
         x += xIncrement;
         y += yIncrement;
-        bool Kill = false;
-        std::vector<Npc>::iterator Me;
-        int Count = 0;
-        for (Me = npclist.begin(); Me != npclist.end(); ++Me)
+        bool kill = false;
+        std::vector<Npc>::iterator me;
+        int count = 0;
+        for (me = npclist.begin(); me != npclist.end(); ++me)
         {
-            if (math::closeish(x, y, Me->xpos, Me->ypos) <= Me->reach &&
-                Me->id != id)
+            if (math::closeish(x, y, me->xpos, me->ypos) <= me->reach &&
+                me->id != id)
             {
-                VectorID.push_back(Count);
-                Kill = true;
+                vectorID.push_back(count);
+                kill = true;
             }
-            Count++;
+            count++;
         }
-        if (Kill)
-            return VectorID;
+        if (kill)
+            return vectorID;
 
         if (key.h)
         {
             effects.createCircle(x, y, 1, sf::Color::White);
         }
     }
-    if (VectorID.size() == 0)
+    if (vectorID.size() == 0)
     {
-        VectorID.push_back(-1);
+        vectorID.push_back(-1);
     }
 
     throw std::runtime_error("npcTrace: couldn't return a value");
