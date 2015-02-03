@@ -198,17 +198,17 @@ void updateItem()
                     auto a = new char[s.size() + 1];
                     a[s.size()] = 0;
                     memcpy(a, s.c_str(), s.size());
-                    bool FindEmpty = false;
+                    bool findEmpty = false;
                     int x;
                     int y;
-                    while (FindEmpty == false)
+                    while (findEmpty == false)
                     {
                         x = randz(item.xpos - 10, item.xpos + 10);
                         y = randz(item.ypos - 10, item.ypos + 10);
                         if (tiles[abs_to_index(x / GridSize)][abs_to_index(
                                 y / GridSize)][30].walkable == true)
                         {
-                            FindEmpty = true;
+                            findEmpty = true;
                         }
                     }
                     if (gvars::debug)
@@ -242,15 +242,15 @@ void updateItem()
                     boom(item.xpos, item.ypos, randz(item.mindam, item.maxdam),
                          item.range);
 
-                    for (int ItLength = 0; ItLength != 5; ItLength++)
+                    for (int itLength = 0; itLength != 5; itLength++)
                     {
-                        for (int Rot = 1; Rot != 361; Rot++)
+                        for (int rot = 1; rot != 361; rot++)
                         {
                             //int Rot = GX;
                             int XPos = ((abs(item.xpos / 20)) +
-                                        cosf(Rot * PI / 180) * ItLength);
+                                        cosf(rot * PI / 180) * itLength);
                             int YPos = ((abs(item.ypos / 20)) +
-                                        sinf(Rot * PI / 180) * ItLength);
+                                        sinf(rot * PI / 180) * itLength);
                             //XPos *= 20;
                             //YPos *= 20;
 
