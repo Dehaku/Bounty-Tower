@@ -5,7 +5,7 @@
 // TODO: Add a Holding integer for each one If Key.Qheld > 10
 extern bool plat;
 
-class Ke
+class InputState
 {
 public:
     bool anyKey;
@@ -146,8 +146,8 @@ public:
 
     void update();
 
-    Ke();
+    InputState();
 };
-extern Ke key;
+extern InputState inputState;
 
 #endif

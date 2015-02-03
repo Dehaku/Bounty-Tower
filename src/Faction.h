@@ -3,7 +3,7 @@
 
 #include "Items.h"
 #include "Effects.h"
-#include "keys.h"
+#include "InputState.h"
 #include "JobManager.h"
 #include "Text.h"
 #include "defs.h"

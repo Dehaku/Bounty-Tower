@@ -1,4 +1,4 @@
-#include "keys.h"
+#include "InputState.h"
 #include "globalvars.h"
 
 #include <SFML/Graphics.hpp>
@@ -6,9 +6,9 @@
 extern sf::RenderWindow window;
 
 bool plat = true;
-Ke key;
+InputState inputState;
 
-void Ke::update()
+void InputState::update()
 {
 
     if (gvars::inFocus)
@@ -680,7 +680,7 @@ void Ke::update()
     }
 }
 
-Ke::Ke()
+InputState::InputState()
     : num1{}, num1Time{}, num2{}, num2Time{}, num3{}, num3Time{}, num4{},
       num4Time{}, num5{}, num5Time{}, num6{}, num6Time{}, num7{}, num7Time{},
       num8{}, num8Time{}, num9{}, num9Time{}, num0{}, num0Time{}
