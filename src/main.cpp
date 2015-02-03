@@ -18,7 +18,7 @@ int RemoveMe = 0;
 
 using std::abs;
 
-Item *ListGet(std::list<Item> &List, int Position)
+Item *listGet(std::list<Item> &List, int Position)
 {
     auto i = List.begin();
     std::advance(i, Position);
@@ -28,10 +28,10 @@ Item *ListGet(std::list<Item> &List, int Position)
 //-- Prototypes
 //
 
-void DrawStuffs();
-int GetItemVectorId(int id);
+void drawStuffs();
+int getItemVectorId(int id);
 
-std::string GetClipboardText()
+std::string getClipboardText()
 {
 #ifdef GALAXY_LINUX
     return "Not implemented.";
@@ -90,7 +90,7 @@ int randzorz(int min, int max)
     return num;
 }
 
-void UnpointItems(std::list<Item> &Items)
+void unpointItems(std::list<Item> &Items)
 {
 
     //for(int i = 0; i != Items.size(); i++)
@@ -144,7 +144,7 @@ void UnpointItems(std::list<Item> &Items)
     }
 }
 
-bool RemoveItem(int Id)
+bool removeItem(int Id)
 {
     int TempInt = 0;
     std::list<Item>::iterator location;
@@ -276,7 +276,7 @@ void updateItem()
     }
 }
 
-std::vector<int> NnGTrace(int xa, int ya, int xb, int yb, int id,
+std::vector<int> nnGTrace(int xa, int ya, int xb, int yb, int id,
                           std::vector<int> /*exceptions*/)
 { //.at(0) = Item/NPC(23/69) .at(1) = id
     int dx = xb - xa, dy = yb - ya, steps;
@@ -448,7 +448,7 @@ std::vector<int> npcTrace(int xa, int ya, int xb, int yb, int id,
     throw std::runtime_error("npcTrace: couldn't return a value");
 }
 
-int GetItemVectorId(int id)
+int getItemVectorId(int id)
 {
     int index = 0;
     for (auto const &item : worlditems)
@@ -476,7 +476,7 @@ int getNpcVectorId(int id)
     return -1;
 }
 
-bool RemoveNPC(char * /*NPCname*/, int /*Id*/)
+bool removeNPC(char * /*NPCname*/, int /*Id*/)
 {
     int TempInt = 0;
     std::vector<Npc>::iterator location;
@@ -509,7 +509,7 @@ struct ItemFindResult
     int vectorPosition;
 };
 
-ItemFindResult FindClosestItem(int Orix, int Oriy, std::string TarItem,
+ItemFindResult findClosestItem(int Orix, int Oriy, std::string TarItem,
                                int /*Gxpos*/ = 0, int /*Gypos*/ = 0,
                                int /*Rxpos*/ = 0, int /*Rypos*/ = 0)
 {
@@ -558,7 +558,7 @@ ItemFindResult FindClosestItem(int Orix, int Oriy, std::string TarItem,
     return {false, 0, 0, 0, 0};
 }
 
-std::set<int> NpcList(int exceptions = -1)
+std::set<int> npcList(int exceptions = -1)
 {
     if (gvars::debug)
     {
@@ -2034,7 +2034,7 @@ void updateNpc()
                 }
                 if (npc.target == "Water")
                 {
-                    auto Item = FindClosestItem(npc.xpos, npc.ypos, "Water");
+                    auto Item = findClosestItem(npc.xpos, npc.ypos, "Water");
                     if (Item.found)
                     {
                         npc.targetPos = sf::Vector2f(Item.xpos, Item.ypos);
@@ -2313,7 +2313,7 @@ void updateNpc()
                                         uniFact[0].jobList[i].toDelete = true;
                                         uniFact[0].jobList[i].pWorker->hasJob =
                                             false;
-                                        UnpointItems(worlditems);
+                                        unpointItems(worlditems);
                                         debug("Post Unpoint");
                                     }
 
@@ -2349,7 +2349,7 @@ void updateNpc()
                                         uniFact[0].jobList[i].pWorker->hasJob =
                                             false;
                                         debug("Post ToDelete");
-                                        UnpointItems(worlditems);
+                                        unpointItems(worlditems);
 
                                         //items are not getting deleted, ugh.
                                     }
@@ -2488,7 +2488,7 @@ void updateNpc()
 
                 if (npc.name == "Shinobi" && npc.hasWeapon() == false)
                 {
-                    auto Item = FindClosestItem(npc.xpos, npc.ypos, "Sword");
+                    auto Item = findClosestItem(npc.xpos, npc.ypos, "Sword");
                     if (Item.found)
                     {
                         npc.targetPos = sf::Vector2f(Item.xpos, Item.ypos);
@@ -2837,10 +2837,10 @@ void updateNpc()
                  math::closeish(npc.xpos, npc.ypos, npc.targetPos.x,
                                 npc.targetPos.y) <= npc.size))
             {
-                if (GetItemVectorId(npc.targetId) != -1)
+                if (getItemVectorId(npc.targetId) != -1)
                 {
                     auto ItemItr = worlditems.begin();
-                    std::advance(ItemItr, GetItemVectorId(npc.targetId));
+                    std::advance(ItemItr, getItemVectorId(npc.targetId));
 
                     //if(Math::Closeish(npc.xpos,npc.ypos,worlditems.at(GetItemVectorId(npc.TargetId)).xpos,worlditems.at(GetItemVectorId(npc.TargetId)).ypos) <= npc.reach && worlditems.at(GetItemVectorId(npc.TargetId)).Pickupable == true)
                     if (math::closeish(npc.xpos, npc.ypos, (*ItemItr).xpos,
@@ -2850,7 +2850,7 @@ void updateNpc()
                         try
                         {
                             npc.inventory.push_back((*ItemItr));
-                            RemoveItem(npc.targetId);
+                            removeItem(npc.targetId);
                         }
                         catch (std::exception &e)
                         {
@@ -2869,24 +2869,24 @@ void updateNpc()
                 {
                     if (npc.target == "Sword")
                     {
-                        if (GetItemVectorId(npc.targetId) != -1)
+                        if (getItemVectorId(npc.targetId) != -1)
                         {
                             if (math::closeish(
                                     npc.xpos, npc.ypos,
-                                    (*ListGet(worlditems,
-                                              GetItemVectorId(npc.targetId)))
+                                    (*listGet(worlditems,
+                                              getItemVectorId(npc.targetId)))
                                         .xpos,
-                                    (*ListGet(worlditems,
-                                              GetItemVectorId(npc.targetId)))
+                                    (*listGet(worlditems,
+                                              getItemVectorId(npc.targetId)))
                                         .ypos) <= npc.reach * 2)
                             {
                                 try
                                 {
                                     npc.inventory.push_back(
-                                        (*ListGet(
+                                        (*listGet(
                                              worlditems,
-                                             GetItemVectorId(npc.targetId))));
-                                    RemoveItem(npc.targetId);
+                                             getItemVectorId(npc.targetId))));
+                                    removeItem(npc.targetId);
                                 }
                                 catch (std::exception &e)
                                 {
@@ -2896,25 +2896,25 @@ void updateNpc()
                     }
                     else if (npc.target == "Food")
                     {
-                        if (GetItemVectorId(npc.targetId) != -1)
+                        if (getItemVectorId(npc.targetId) != -1)
                         {
                             if (math::closeish(
                                     npc.xpos, npc.ypos,
-                                    (*ListGet(worlditems,
-                                              GetItemVectorId(npc.targetId)))
+                                    (*listGet(worlditems,
+                                              getItemVectorId(npc.targetId)))
                                         .xpos,
-                                    (*ListGet(worlditems,
-                                              GetItemVectorId(npc.targetId)))
+                                    (*listGet(worlditems,
+                                              getItemVectorId(npc.targetId)))
                                         .ypos) <= npc.size * 2)
                             {
                                 try
                                 {
                                     //npc.inventory.push_back(worlditems.at(GetItemVectorId(npc.TargetId)));
-                                    npc.fillhunger((*ListGet(worlditems,
-                                                             GetItemVectorId(
+                                    npc.fillhunger((*listGet(worlditems,
+                                                             getItemVectorId(
                                                                  npc.targetId)))
                                                        .hungervalue);
-                                    RemoveItem(npc.targetId);
+                                    removeItem(npc.targetId);
                                     npc.atTarget = false;
                                     npc.hasTarget = false;
                                     npc.targetId = -1;
@@ -2934,22 +2934,22 @@ void updateNpc()
                     }
                     else if (npc.target == "Water")
                     {
-                        if (GetItemVectorId(npc.targetId) != -1)
+                        if (getItemVectorId(npc.targetId) != -1)
                         {
                             if (math::closeish(
                                     npc.xpos, npc.ypos,
-                                    (*ListGet(worlditems,
-                                              GetItemVectorId(npc.targetId)))
+                                    (*listGet(worlditems,
+                                              getItemVectorId(npc.targetId)))
                                         .xpos,
-                                    (*ListGet(worlditems,
-                                              GetItemVectorId(npc.targetId)))
+                                    (*listGet(worlditems,
+                                              getItemVectorId(npc.targetId)))
                                         .ypos) <= npc.size * 2)
                             {
                                 try
                                 {
                                     //npc.inventory.push_back(worlditems.at(GetItemVectorId(npc.TargetId)));
-                                    npc.fillthirst((*ListGet(worlditems,
-                                                             GetItemVectorId(
+                                    npc.fillthirst((*listGet(worlditems,
+                                                             getItemVectorId(
                                                                  npc.targetId)))
                                                        .thirstvalue);
                                     npc.atTarget = false;
@@ -3160,7 +3160,7 @@ void updateNpc()
             if (gvars::debug)
                 std::cout << "Post Item Usages. \n";
 
-            UnpointItems(npc.inventory);
+            unpointItems(npc.inventory);
 
             bool Done = false;
 
@@ -3201,7 +3201,7 @@ void updateNpc()
         std::cout << "Post NPC\n";
 }
 
-void DrawTiles()
+void drawTiles()
 {
     int z = gvars::currentz;
     int iTS = GridSize;
@@ -3275,7 +3275,7 @@ void DrawTiles()
     }
 }
 
-void DrawNPCs()
+void drawNPCs()
 {
     for (auto &npc : npclist)
     {
@@ -3318,7 +3318,7 @@ void DrawNPCs()
     debug("Done drawing NPCs");
 }
 
-void DrawItems()
+void drawItems()
 {
     //App.setActive(true);
 
@@ -3334,7 +3334,7 @@ void DrawItems()
     debug("Done Drawing Items");
 }
 
-void LightTrail(int x, int y, int z)
+void lightTrail(int x, int y, int z)
 {
     int curx = math::clamp(x, 0, gridx - 1);
     int cury = math::clamp(y, 0, gridy - 1);
@@ -3342,7 +3342,7 @@ void LightTrail(int x, int y, int z)
     gvars::sunmap[curz][curx][cury] = 255;
 }
 
-void DisplayChat(sf::Vector2f Position)
+void displayChat(sf::Vector2f Position)
 {
     if (gCtrl.phase != "MainMenu")
         effects.createSquare(
@@ -3359,7 +3359,7 @@ void DisplayChat(sf::Vector2f Position)
     }
 }
 
-void DrawStuffs()
+void drawStuffs()
 {
 
     //sf::Context context;
@@ -3367,15 +3367,15 @@ void DrawStuffs()
     drawNewTiles();
 
     //DrawPlanets();
-    DrawItems();
+    drawItems();
 
-    DrawNPCs();
+    drawNPCs();
 
     drawJobList(window.getView().getCenter().x - 500,
                 window.getView().getCenter().y);
     debug("Drew Joblist");
 
-    DisplayChat(sf::Vector2f(gvars::bottomLeft.x + 5, gvars::bottomLeft.y - 5));
+    displayChat(sf::Vector2f(gvars::bottomLeft.x + 5, gvars::bottomLeft.y - 5));
     debug("Drew Chat");
 
     effects.drawEffects();
@@ -3427,7 +3427,7 @@ Item *getGlobalItem(std::string strtype)
     return nullptr;
 }
 
-Npc *GetCritter(int id)
+Npc *getCritter(int id)
 {
     if (gvars::debug)
     {
@@ -3451,7 +3451,7 @@ Npc *GetCritter(int id)
     return nullptr;
 }
 
-void RemoveNPCs()
+void removeNPCs()
 {
     bool Done = false;
     while (Done == false)
@@ -3553,7 +3553,7 @@ int main()
                 gvars::cycleGrowth = true;
         }
 
-        RemoveNPCs();
+        removeNPCs();
         sf::Event Event;
         while (window.pollEvent(Event))
         {
@@ -4161,7 +4161,7 @@ int main()
                     }
                 }
 
-                RemoveNPCs();
+                removeNPCs();
                 /*
                 for(int i = 0; i != worlditems.size(); i++)
                 {
@@ -4305,7 +4305,7 @@ int main()
                         (worlditem).toDelete = true;
                     }
                 }
-                UnpointItems(worlditems);
+                unpointItems(worlditems);
                 removeItems(worlditems);
             }
 
@@ -5658,7 +5658,7 @@ int main()
             for (size_t i = 0; i != gvars::selected.size(); i++)
             {
                 Npc Var;
-                Var = *GetCritter(gvars::selected[i]);
+                Var = *getCritter(gvars::selected[i]);
                 sf::Vector2f Pos = sf::Vector2f(Var.xpos, Var.ypos);
                 effects.createCircle(Pos.x, Pos.y, 5,
                                      sf::Color(0, 255, 255, 100));
@@ -5863,7 +5863,7 @@ int main()
             {
                 //App.setActive(false);
                 gvars::drawStuffsDone = false;
-                DrawStuffs();
+                drawStuffs();
                 //ThreadDrawStuffs.launch();
             }
 
@@ -5875,8 +5875,8 @@ int main()
         }
         PlyAct = false;
         debug("Starting Removing process, NPC/Unpoint/Items/GC.Menu");
-        RemoveNPCs();
-        UnpointItems(worlditems);
+        removeNPCs();
+        unpointItems(worlditems);
         removeItems(worlditems);
 
         if (gCtrl.menuEndPos == sf::Vector2f(-10000, -10000))
