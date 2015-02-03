@@ -14,7 +14,7 @@
 #include "util.h"
 #include "globalvars.h"
 
-int RemoveMe = 0;
+int removeMe = 0;
 
 using std::abs;
 
@@ -596,9 +596,9 @@ std::set<int> npcList(int exceptions = -1)
     throw std::runtime_error("NpcList: Couldn't return anything!");
 }
 
-void critterBrain(std::vector<Npc> &NPCs)
+void critterBrain(std::vector<Npc> &npcs)
 {
-    for (auto &npc : NPCs)
+    for (auto &npc : npcs)
     {
 
         /*  BodyPart Loop
@@ -608,82 +608,82 @@ void critterBrain(std::vector<Npc> &NPCs)
                 the local tags.
         */
 
-        short int Parts = 0;
-        size_t SearchPos = 0;
-        size_t EndPos = 0;
+        short int parts = 0;
+        size_t searchPos = 0;
+        size_t endPos = 0;
 
         debug("Debug: Beginning Part Loop for" + npc.name);
 
         //  Global Part Tag Variables
 
-        float PartsWalkSpeed = 0;
-        float GlobalNutritionPercentage = 100;
-        bool ConsumeFlesh = false;
-        bool ConsumeVeggy = false;
-        bool ConsumeWater = false;
+        float partsWalkSpeed = 0;
+        float globalNutritionPercentage = 100;
+        bool consumeFlesh = false;
+        bool consumeVeggy = false;
+        bool consumeWater = false;
 
         //  *   Global Part Tag Variables   *
 
-        while (SearchPos != npc.body.bodyParts.npos) // Global Part Tags
+        while (searchPos != npc.body.bodyParts.npos) // Global Part Tags
         {
-            SearchPos = npc.body.bodyParts.find("{", SearchPos);
+            searchPos = npc.body.bodyParts.find("{", searchPos);
 
-            if (SearchPos != npc.body.bodyParts.npos)
+            if (searchPos != npc.body.bodyParts.npos)
             {
-                EndPos = npc.body.bodyParts.find("}", SearchPos);
+                endPos = npc.body.bodyParts.find("}", searchPos);
 
-                std::string WorkingLine;
+                std::string workingLine;
 
-                WorkingLine.append(npc.body.bodyParts, SearchPos,
-                                   EndPos - SearchPos);
-                float PartNumber = 0;
+                workingLine.append(npc.body.bodyParts, searchPos,
+                                   endPos - searchPos);
+                float partNumber = 0;
 
-                PartNumber = stringFindNumber(WorkingLine, "[Walk:");
-                if (PartNumber != 0)
+                partNumber = stringFindNumber(workingLine, "[Walk:");
+                if (partNumber != 0)
                 {
 
-                    if (PartsWalkSpeed != 0)
+                    if (partsWalkSpeed != 0)
                     {
-                        PartsWalkSpeed = PartNumber;
+                        partsWalkSpeed = partNumber;
                     }
                     else
                     {
-                        PartsWalkSpeed += (PartNumber * 0.5);
+                        partsWalkSpeed += (partNumber * 0.5);
                     }
                 }
 
-                PartNumber =
-                    stringFindNumber(WorkingLine, "[NutritionExtraction:");
-                if (PartNumber != 0)
+                partNumber =
+                    stringFindNumber(workingLine, "[NutritionExtraction:");
+                if (partNumber != 0)
                 {
-                    GlobalNutritionPercentage += PartNumber;
+                    globalNutritionPercentage += partNumber;
                 }
 
-                PartNumber = stringFindNumber(WorkingLine, "[DigestsBlood:");
-                if (PartNumber != 0)
+                partNumber = stringFindNumber(workingLine, "[DigestsBlood:");
+                if (partNumber != 0)
                 {
                 }
-                PartNumber = stringFindNumber(WorkingLine, "[DigestsFlesh:");
-                if (PartNumber != 0)
+                partNumber = stringFindNumber(workingLine, "[DigestsFlesh:");
+                if (partNumber != 0)
                 {
-                    ConsumeFlesh = true;
+                    consumeFlesh = true;
                 }
-                PartNumber = stringFindNumber(WorkingLine, "[DigestsVeggy:");
-                if (PartNumber != 0)
+                partNumber = stringFindNumber(workingLine, "[DigestsVeggy:");
+                if (partNumber != 0)
                 {
-                    ConsumeVeggy = true;
+                    consumeVeggy = true;
                 }
-                PartNumber = stringFindNumber(WorkingLine, "[DigestsWater:");
-                if (PartNumber != 0)
+                partNumber = stringFindNumber(workingLine, "[DigestsWater:");
+                if (partNumber != 0)
                 {
-                    ConsumeWater = true;
+                    consumeWater = true;
                 }
 
-                SearchPos = EndPos;
+                searchPos = endPos;
             }
         }
 
-        SearchPos = 0;
+        searchPos = 0;
 
         for (auto i = npc.inventory.begin(); i != npc.inventory.end(); i++)
         {
@@ -693,171 +693,171 @@ void critterBrain(std::vector<Npc> &NPCs)
             }
         }
 
-        while (SearchPos != npc.body.bodyParts.npos) // Individual Part Tags
+        while (searchPos != npc.body.bodyParts.npos) // Individual Part Tags
         {
 
-            SearchPos = npc.body.bodyParts.find("{", SearchPos);
+            searchPos = npc.body.bodyParts.find("{", searchPos);
 
-            if (SearchPos != npc.body.bodyParts.npos)
+            if (searchPos != npc.body.bodyParts.npos)
             {
-                EndPos = npc.body.bodyParts.find("}", SearchPos);
-                Parts++;
+                endPos = npc.body.bodyParts.find("}", searchPos);
+                parts++;
 
-                std::string WorkingLine;
+                std::string workingLine;
 
-                WorkingLine.append(npc.body.bodyParts, SearchPos,
-                                   EndPos - SearchPos);
+                workingLine.append(npc.body.bodyParts, searchPos,
+                                   endPos - searchPos);
 
-                float PartNumber = 0;
-                std::string PartString = "";
-                Item *PartItem;
+                float partNumber = 0;
+                std::string partString = "";
+                Item *partItem;
 
-                std::string CurrentPart =
-                    stringFindString(WorkingLine, "[Name:");
+                std::string currentPart =
+                    stringFindString(workingLine, "[Name:");
 
-                PartNumber = stringFindNumber(WorkingLine, "[DigestsBlood:");
-                PartItem = getItemPtrFromVector(npc.inventory, "Blood");
-                if (PartNumber != 0 && PartItem != nullptr)
+                partNumber = stringFindNumber(workingLine, "[DigestsBlood:");
+                partItem = getItemPtrFromVector(npc.inventory, "Blood");
+                if (partNumber != 0 && partItem != nullptr)
                 {
 
-                    float WorkAmount = PartItem->amount;
-                    float Diff = WorkAmount - (PartNumber / 1000);
+                    float workAmount = partItem->amount;
+                    float diff = workAmount - (partNumber / 1000);
 
-                    if (Diff > 0)
+                    if (diff > 0)
                     {
-                        PartItem->amount = Diff;
-                        float Nutr = (WorkAmount - Diff) *
+                        partItem->amount = diff;
+                        float Nutr = (workAmount - diff) *
                                      100; // TODO: Figure this out better.
                         npc.bloodwork(
                             "Nutrients",
-                            Nutr * percentageBuff(GlobalNutritionPercentage));
+                            Nutr * percentageBuff(globalNutritionPercentage));
                     }
                     else
                     {
                         //*GetItemPtrfromVector(npc.inventory,"Blood").amount = 0;
                         getItemPtrFromVector(npc.inventory, "Blood")->toDelete =
                             true;
-                        float Nutr =
-                            WorkAmount * 100; // TODO: Figure this out better.
+                        float nutr =
+                            workAmount * 100; // TODO: Figure this out better.
                         npc.bloodwork(
                             "Nutrients",
-                            Nutr * percentageBuff(GlobalNutritionPercentage));
+                            nutr * percentageBuff(globalNutritionPercentage));
                     }
                 }
 
-                PartNumber = stringFindNumber(WorkingLine, "[DigestsFlesh:");
-                PartItem =
+                partNumber = stringFindNumber(workingLine, "[DigestsFlesh:");
+                partItem =
                     getItemPtrfromVectorVarSearch(npc.inventory, "MassFlesh");
                 //if(PartItem != NULL) PartItem->HasInternalUse++; // This is designed to keep items from being ejected until they are completely useless to a critter, I.E. Items with multiple Food Mass's.
-                if (PartNumber != 0 && PartItem != nullptr &&
-                    PartItem->massFlesh >
+                if (partNumber != 0 && partItem != nullptr &&
+                    partItem->massFlesh >
                         0) // TODO: Make sure the item is in THIS PART before digesting it!
                 {
                     //std::cout << "HasInternalUse: " << PartItem->HasInternalUse << std::endl;
-                    float WorkAmount = PartItem->massFlesh;
-                    float Diff = WorkAmount - (PartNumber / 1000);
+                    float workAmount = partItem->massFlesh;
+                    float diff = workAmount - (partNumber / 1000);
 
-                    if (Diff > 0)
+                    if (diff > 0)
                     {
-                        PartItem->massFlesh = Diff;
-                        PartItem->hasInternalUse = 0;
-                        float Nutr = (WorkAmount - Diff) *
+                        partItem->massFlesh = diff;
+                        partItem->hasInternalUse = 0;
+                        float Nutr = (workAmount - diff) *
                                      100; // TODO: Figure this out better.
                         npc.bloodwork(
                             "Nutrients",
-                            Nutr * percentageBuff(GlobalNutritionPercentage));
+                            Nutr * percentageBuff(globalNutritionPercentage));
                     }
-                    if (PartItem->massFlesh <= 0)
+                    if (partItem->massFlesh <= 0)
                     {
                         //*GetItemPtrfromVector(npc.inventory,"Blood").amount = 0;
-                        PartItem->toDelete = true;
+                        partItem->toDelete = true;
                         //Add Food to everyone, Make sure they go hungry to eat it, Figure out a way to Eject the empty item, Or do water! Everyone starts with water.
                         //npc.bloodwork("Nutrients",Nutr*PercentageBuff(GlobalNutritionPercentage));
                     }
                 }
 
-                PartNumber = stringFindNumber(WorkingLine, "[DigestsVeggy:");
-                PartItem =
+                partNumber = stringFindNumber(workingLine, "[DigestsVeggy:");
+                partItem =
                     getItemPtrfromVectorVarSearch(npc.inventory, "MassVeggy");
                 //if(PartItem != NULL) PartItem->HasInternalUse++; // This is designed to keep items from being ejected until they are completely useless to a critter, I.E. Items with multiple Food Mass's.
-                if (PartNumber != 0 && PartItem != nullptr &&
-                    PartItem->massVeggy >
+                if (partNumber != 0 && partItem != nullptr &&
+                    partItem->massVeggy >
                         0) // TODO: Make sure the item is in THIS PART before digesting it!
                 {
                     //std::cout << "HasInternalUse: " << PartItem->HasInternalUse << std::endl;
-                    float WorkAmount = PartItem->massVeggy;
-                    float Diff = WorkAmount - (PartNumber / 1000);
+                    float workAmount = partItem->massVeggy;
+                    float diff = workAmount - (partNumber / 1000);
 
-                    if (Diff > 0)
+                    if (diff > 0)
                     {
-                        PartItem->massVeggy = Diff;
-                        PartItem->hasInternalUse = 0;
-                        float Nutr = (WorkAmount - Diff) *
+                        partItem->massVeggy = diff;
+                        partItem->hasInternalUse = 0;
+                        float nutr = (workAmount - diff) *
                                      100; // TODO: Figure this out better.
                         npc.bloodwork(
                             "Nutrients",
-                            Nutr * percentageBuff(GlobalNutritionPercentage));
+                            nutr * percentageBuff(globalNutritionPercentage));
                     }
-                    if (PartItem->massVeggy <= 0)
+                    if (partItem->massVeggy <= 0)
                     {
-                        PartItem->toDelete = true;
+                        partItem->toDelete = true;
                         //npc.bloodwork("Nutrients",Nutr*PercentageBuff(GlobalNutritionPercentage));
                     }
                 }
 
-                PartNumber = stringFindNumber(WorkingLine, "[DigestsWater:");
-                PartItem =
+                partNumber = stringFindNumber(workingLine, "[DigestsWater:");
+                partItem =
                     getItemPtrfromVectorVarSearch(npc.inventory, "MassWater");
                 //if(PartItem != NULL) PartItem->HasInternalUse++; // This is designed to keep items from being ejected until they are completely useless to a critter, I.E. Items with multiple Food Mass's.
-                if (PartNumber != 0 && PartItem != nullptr &&
-                    PartItem->massWater >
+                if (partNumber != 0 && partItem != nullptr &&
+                    partItem->massWater >
                         0) // TODO: Make sure the item is in THIS PART before digesting it!
                 {
                     //std::cout << "HasInternalUse: " << PartItem->HasInternalUse << std::endl;
-                    float WorkAmount = PartItem->massWater;
-                    float Diff = WorkAmount - (PartNumber / 1000);
+                    float workAmount = partItem->massWater;
+                    float diff = workAmount - (partNumber / 1000);
 
-                    if (Diff > 0)
+                    if (diff > 0)
                     {
-                        PartItem->massWater = Diff;
-                        PartItem->hasInternalUse = 0;
-                        float Nutr = (WorkAmount - Diff) *
+                        partItem->massWater = diff;
+                        partItem->hasInternalUse = 0;
+                        float nutr = (workAmount - diff) *
                                      100; // TODO: Figure this out better.
                         npc.bloodwork(
                             "Hydration",
-                            Nutr * percentageBuff(GlobalNutritionPercentage));
+                            nutr * percentageBuff(globalNutritionPercentage));
                     }
-                    if (PartItem->massWater <= 0)
+                    if (partItem->massWater <= 0)
                     {
-                        PartItem->toDelete = true;
+                        partItem->toDelete = true;
                         //npc.bloodwork("Nutrients",Nutr*PercentageBuff(GlobalNutritionPercentage));
                     }
                 }
 
-                PartString = stringFindString(WorkingLine, "[PoisonFilter:");
-                if (PartString != "")
+                partString = stringFindString(workingLine, "[PoisonFilter:");
+                if (partString != "")
                 {
 
-                    std::vector<std::string> StrVec =
-                        stringFindElements(PartString, ":");
+                    std::vector<std::string> strVec =
+                        stringFindElements(partString, ":");
                     if (gvars::debug)
-                        std::cout << "StrVec[0]: " << StrVec[0] << std::endl;
-                    float Leftover =
-                        npc.bloodwork(StrVec[0], -atof(StrVec[1].c_str()));
+                        std::cout << "StrVec[0]: " << strVec[0] << std::endl;
+                    float leftover =
+                        npc.bloodwork(strVec[0], -atof(strVec[1].c_str()));
                     if (gvars::debug)
-                        std::cout << "Bloodwork leftover is: " << Leftover
+                        std::cout << "Bloodwork leftover is: " << leftover
                                   << std::endl;
                     //NPC Critter;
 
-                    for (size_t i = 0; i != StrVec.size(); i++)
+                    for (size_t i = 0; i != strVec.size(); i++)
                     {
                         if (gvars::debug)
-                            std::cout << StrVec[i] << std::endl;
+                            std::cout << strVec[i] << std::endl;
                     }
                 }
 
-                PartNumber = stringFindNumber(WorkingLine, "[Orafice:");
-                if (PartNumber > 0)
+                partNumber = stringFindNumber(workingLine, "[Orafice:");
+                if (partNumber > 0)
                 {
                     //std::vector<item> * Inv = &npc.inventory;
 
@@ -865,72 +865,72 @@ void critterBrain(std::vector<Npc> &NPCs)
                     for (auto i = npc.inventory.begin();
                          i != npc.inventory.end(); i++)
                     {
-                        bool FoundIt = false;
+                        bool foundIt = false;
                         if ((*i).insidePart == "" && (*i).massFlesh > 0 &&
-                            ConsumeFlesh) // Awww yeeessss, We gonna eat some flesh with our Orafice!
+                            consumeFlesh) // Awww yeeessss, We gonna eat some flesh with our Orafice!
                         {
-                            (*i).insidePart = CurrentPart;
-                            FoundIt = true;
+                            (*i).insidePart = currentPart;
+                            foundIt = true;
                         }
 
                         if ((*i).insidePart == "" && (*i).massVeggy > 0 &&
-                            ConsumeVeggy) // Awww yeeessss, We gonna eat something with our Orafice!
+                            consumeVeggy) // Awww yeeessss, We gonna eat something with our Orafice!
                         {
-                            (*i).insidePart = CurrentPart;
-                            FoundIt = true;
+                            (*i).insidePart = currentPart;
+                            foundIt = true;
                         }
 
                         if ((*i).insidePart == "" && (*i).massWater > 0 &&
-                            ConsumeWater) // Awww yeeessss, We gonna eat something with our Orafice!
+                            consumeWater) // Awww yeeessss, We gonna eat something with our Orafice!
                         {
-                            (*i).insidePart = CurrentPart;
-                            FoundIt = true;
+                            (*i).insidePart = currentPart;
+                            foundIt = true;
                         }
 
-                        if (FoundIt)
+                        if (foundIt)
                         {
-                            std::string ChtStr;
-                            ChtStr.append("* ");
-                            ChtStr.append(npc.name);
-                            ChtStr.append("(" + std::to_string(npc.id) + ")");
-                            ChtStr.append(" has inserted ");
-                            ChtStr.append((*i).name);
-                            ChtStr.append(" into their ");
-                            ChtStr.append(CurrentPart);
-                            ChtStr.append("'s Orafice(");
-                            ChtStr.append(std::to_string(PartNumber));
-                            ChtStr.append(").");
+                            std::string chtStr;
+                            chtStr.append("* ");
+                            chtStr.append(npc.name);
+                            chtStr.append("(" + std::to_string(npc.id) + ")");
+                            chtStr.append(" has inserted ");
+                            chtStr.append((*i).name);
+                            chtStr.append(" into their ");
+                            chtStr.append(currentPart);
+                            chtStr.append("'s Orafice(");
+                            chtStr.append(std::to_string(partNumber));
+                            chtStr.append(").");
 
-                            chatBox.addChat(ChtStr, sf::Color(150, 150, 0));
+                            chatBox.addChat(chtStr, sf::Color(150, 150, 0));
                         }
                     }
                 }
 
-                PartNumber = stringFindNumber(
-                    WorkingLine, "[BloodPumpRate:"); // TODO: Do this right.
-                if (PartNumber != 0)
+                partNumber = stringFindNumber(
+                    workingLine, "[BloodPumpRate:"); // TODO: Do this right.
+                if (partNumber != 0)
                 {
-                    float Blood =
+                    float blood =
                         stringFindNumber(npc.bloodcontent, "[Nutrients:");
-                    if (Blood > PartNumber)
+                    if (blood > partNumber)
                     {
-                        if ((npc.maxhunger - npc.hunger) > PartNumber)
+                        if ((npc.maxhunger - npc.hunger) > partNumber)
                         {
-                            npc.hunger += PartNumber;
-                            npc.bloodwork("Nutrients", -PartNumber);
+                            npc.hunger += partNumber;
+                            npc.bloodwork("Nutrients", -partNumber);
                         }
                     }
-                    Blood = stringFindNumber(npc.bloodcontent, "[Hydration:");
-                    if (Blood > PartNumber)
+                    blood = stringFindNumber(npc.bloodcontent, "[Hydration:");
+                    if (blood > partNumber)
                     {
-                        if ((npc.maxthirst - npc.thirst) > PartNumber)
+                        if ((npc.maxthirst - npc.thirst) > partNumber)
                         {
-                            npc.thirst += PartNumber;
-                            npc.bloodwork("Hydration", -PartNumber);
+                            npc.thirst += partNumber;
+                            npc.bloodwork("Hydration", -partNumber);
                         }
                     }
                 }
-                SearchPos = EndPos;
+                searchPos = endPos;
             }
         }
 
@@ -944,181 +944,181 @@ void critterBrain(std::vector<Npc> &NPCs)
         const sf::Vector2f npcPos(npc.xpos, npc.ypos);
         npc.angle = math::angleBetweenVectors(npcPos, gvars::mousePos) - 90;
 
-        int EndAngle = -(npc.angle - (npc.viewangle / 2));
-        int StartAngle = -(npc.angle - (-npc.viewangle / 2));
+        int endAngle = -(npc.angle - (npc.viewangle / 2));
+        int startAngle = -(npc.angle - (-npc.viewangle / 2));
 
-        sf::ConvexShape Shape;
-        int PointCounter = 1;
-        Shape.setPointCount(PointCounter);
-        Shape.setPoint(0, sf::Vector2f(0, 0));
+        sf::ConvexShape shape;
+        int pointCounter = 1;
+        shape.setPointCount(pointCounter);
+        shape.setPoint(0, sf::Vector2f(0, 0));
 
-        for (int Rot = StartAngle; Rot != EndAngle; Rot++)
+        for (int rot = startAngle; rot != endAngle; rot++)
         {
-            float XPos = npc.xpos + sinf(Rot * PI / 180) * npc.viewrange;
-            float YPos = npc.ypos + cosf(Rot * PI / 180) * npc.viewrange;
+            float xPos = npc.xpos + sinf(rot * PI / 180) * npc.viewrange;
+            float yPos = npc.ypos + cosf(rot * PI / 180) * npc.viewrange;
 
-            if (Rot == StartAngle)
+            if (rot == startAngle)
             {
-                PointCounter++;
-                Shape.setPointCount(PointCounter);
-                Shape.setPoint(PointCounter - 1,
-                               sf::Vector2f(XPos - npc.xpos, YPos - npc.ypos));
+                pointCounter++;
+                shape.setPointCount(pointCounter);
+                shape.setPoint(pointCounter - 1,
+                               sf::Vector2f(xPos - npc.xpos, yPos - npc.ypos));
             }
 
-            int CenterPoint = (StartAngle + EndAngle) / 2;
-            if (Rot == CenterPoint)
+            int CenterPoint = (startAngle + endAngle) / 2;
+            if (rot == CenterPoint)
             {
-                PointCounter++;
-                Shape.setPointCount(PointCounter);
-                Shape.setPoint(PointCounter - 1,
-                               sf::Vector2f(XPos - npc.xpos, YPos - npc.ypos));
-                effects.createLine(npc.xpos, npc.ypos, XPos, YPos, 1,
+                pointCounter++;
+                shape.setPointCount(pointCounter);
+                shape.setPoint(pointCounter - 1,
+                               sf::Vector2f(xPos - npc.xpos, yPos - npc.ypos));
+                effects.createLine(npc.xpos, npc.ypos, xPos, yPos, 1,
                                    sf::Color::Cyan);
             }
-            if ((Rot % 10) == 0 && Rot != 0)
+            if ((rot % 10) == 0 && rot != 0)
             {
-                PointCounter++;
-                Shape.setPointCount(PointCounter);
-                Shape.setPoint(PointCounter - 1,
-                               sf::Vector2f(XPos - npc.xpos, YPos - npc.ypos));
+                pointCounter++;
+                shape.setPointCount(pointCounter);
+                shape.setPoint(pointCounter - 1,
+                               sf::Vector2f(xPos - npc.xpos, yPos - npc.ypos));
             }
-            if (Rot == EndAngle - 1)
+            if (rot == endAngle - 1)
             {
-                PointCounter++;
-                Shape.setPointCount(PointCounter);
-                Shape.setPoint(PointCounter - 1,
-                               sf::Vector2f(XPos - npc.xpos, YPos - npc.ypos));
+                pointCounter++;
+                shape.setPointCount(pointCounter);
+                shape.setPoint(pointCounter - 1,
+                               sf::Vector2f(xPos - npc.xpos, yPos - npc.ypos));
             }
         }
 
-        sf::Color Filling(sf::Color::Yellow);
-        Filling.a = (100);
-        Shape.setFillColor(Filling);
-        Shape.setOutlineColor(sf::Color::Yellow);
-        Shape.setOutlineThickness(1);
-        Shape.setPosition(npcPos);
-        effects.polygons.push_back(Shape);
+        sf::Color filling(sf::Color::Yellow);
+        filling.a = (100);
+        shape.setFillColor(filling);
+        shape.setOutlineColor(sf::Color::Yellow);
+        shape.setOutlineThickness(1);
+        shape.setPosition(npcPos);
+        effects.polygons.push_back(shape);
 
         /* Critter Prioritization */
         // Method Two, Struct Desires
         struct Desire
         {
-            std::string DesireType;
-            float Potency;
+            std::string type;
+            float potency;
         };
-        std::vector<Desire> Desires;
+        std::vector<Desire> desires;
 
         // Declaring and adding Desires
-        Desire NewDesire;
+        Desire newDesire;
         { //Sustainence
-            NewDesire.DesireType = "Sustainence";
-            NewDesire.Potency = 0;
+            newDesire.type = "Sustainence";
+            newDesire.potency = 0;
         }
-        Desires.push_back(NewDesire);
+        desires.push_back(newDesire);
         { //Apathy
-            NewDesire.DesireType = "Apathy";
-            NewDesire.Potency = 100;
+            newDesire.type = "Apathy";
+            newDesire.potency = 100;
         }
-        Desires.push_back(NewDesire);
+        desires.push_back(newDesire);
         { //SelfDefense
-            NewDesire.DesireType = "SelfDefense";
-            NewDesire.Potency = 0;
+            newDesire.type = "SelfDefense";
+            newDesire.potency = 0;
         }
-        Desires.push_back(NewDesire);
+        desires.push_back(newDesire);
         { //Social
-            NewDesire.DesireType = "Social";
-            NewDesire.Potency = 0;
+            newDesire.type = "Social";
+            newDesire.potency = 0;
         }
-        Desires.push_back(NewDesire);
+        desires.push_back(newDesire);
         { //Work
-            NewDesire.DesireType = "Work";
-            NewDesire.Potency = 0;
+            newDesire.type = "Work";
+            newDesire.potency = 0;
         }
-        Desires.push_back(NewDesire);
+        desires.push_back(newDesire);
 
         /*Causation to Desires*/
         // Get Critters max nutrition, then reduce it by critters nutrients in blood
-        float Nutrients = npc.maxhunger - npc.bloodwork("Nutrients", 0);
-        float Hydration = npc.maxthirst - npc.bloodwork("Hydration", 0);
+        float nutrients = npc.maxhunger - npc.bloodwork("Nutrients", 0);
+        float hydration = npc.maxthirst - npc.bloodwork("Hydration", 0);
 
-        for (auto &Sus : Desires)
+        for (auto &sus : desires)
         {
-            if (Sus.DesireType == "Sustainence")
-                Sus.Potency += Hydration + Nutrients;
-            if (Sus.DesireType == "SelfDefense")
+            if (sus.type == "Sustainence")
+                sus.potency += hydration + nutrients;
+            if (sus.type == "SelfDefense")
             {
                 // This line makes the game freeze
-                Sus.Potency = 10000;
+                sus.potency = 10000;
             }
         }
 
         // Finding the highest Desire
-        bool InComplete;
-        Desire *HighestDesire = nullptr;
-        bool FirstIter = true;
+        bool inComplete;
+        Desire *highestDesire = nullptr;
+        bool firstIter = true;
 
     ReDesire:
-        InComplete = false;
+        inComplete = false;
 
-        for (auto &i : Desires)
+        for (auto &i : desires)
         {
-            if (FirstIter)
+            if (firstIter)
             {
-                HighestDesire = &i;
-                FirstIter = false;
+                highestDesire = &i;
+                firstIter = false;
             }
-            if (i.Potency > (*HighestDesire).Potency)
-                HighestDesire = &i;
+            if (i.potency > (*highestDesire).potency)
+                highestDesire = &i;
         }
 
-        if (HighestDesire == nullptr)
+        if (highestDesire == nullptr)
         {
             throw std::runtime_error("critterBrain: Something went wrong!");
         }
 
         // Acting on Highest Desire
-        if ((*HighestDesire).DesireType == "Apathy")
+        if ((*highestDesire).type == "Apathy")
         {
             effects.createCircle(npc.xpos, npc.ypos, 11, sf::Color::Red);
         }
-        if ((*HighestDesire).DesireType == "SelfDefense")
+        if ((*highestDesire).type == "SelfDefense")
         {
-            (*HighestDesire).Potency = 0;
-            InComplete = true;
+            (*highestDesire).potency = 0;
+            inComplete = true;
         }
-        if ((*HighestDesire).DesireType == "Sustainence")
+        if ((*highestDesire).type == "Sustainence")
         {
-            bool InInv = false;
-            for (auto &Inv : npc.inventory)
-                if (Inv.massFlesh > 0)
+            bool inInv = false;
+            for (auto &inv : npc.inventory)
+                if (inv.massFlesh > 0)
                 {
                     //npc.Target.item = &Inv;
-                    InInv = true;
+                    inInv = true;
                     break;
                 }
-            if (InInv == false)
+            if (inInv == false)
             {
-                for (auto &LclItms : worlditems)
+                for (auto &lclItms : worlditems)
                 {
                     if (npc.targetInfo.item == nullptr &&
-                        LclItms.massFlesh > 0 && LclItms.user == nullptr)
+                        lclItms.massFlesh > 0 && lclItms.user == nullptr)
                     {
                         npc.targetInfo.item =
-                            &LclItms; // Is this creating a copy? The Behavior in testing still makes multiple critters target the same item.
-                        LclItms.user = &npc;
+                            &lclItms; // Is this creating a copy? The Behavior in testing still makes multiple critters target the same item.
+                        lclItms.user = &npc;
                     }
-                    else if (LclItms.massFlesh > 0 && LclItms.user == nullptr)
+                    else if (lclItms.massFlesh > 0 && lclItms.user == nullptr)
                     {
 
                         float CurrentItem = math::closeish(
                             npc.xpos, npc.ypos, (*npc.targetInfo.item).xpos,
                             (*npc.targetInfo.item).ypos);
                         float NewItem = math::closeish(
-                            npc.xpos, npc.ypos, LclItms.xpos, LclItms.ypos);
+                            npc.xpos, npc.ypos, lclItms.xpos, lclItms.ypos);
                         if (NewItem < CurrentItem)
                         {
                             (*npc.targetInfo.item).user = nullptr;
-                            npc.targetInfo.item = &LclItms;
+                            npc.targetInfo.item = &lclItms;
                             (*npc.targetInfo.item).user = &npc;
                         }
                     }
@@ -1133,16 +1133,16 @@ void critterBrain(std::vector<Npc> &NPCs)
                     if (math::closeish(npc.xpos, npc.ypos, ItemPos.x,
                                        ItemPos.y) <= npc.size * 2)
                     {
-                        Item *Tar = npc.targetInfo.item;
+                        Item *tar = npc.targetInfo.item;
                         npc.targetInfo.item = nullptr;
-                        (*Tar).user = nullptr;
-                        npc.inventory.push_back((*Tar));
-                        (*Tar).toDelete = true;
+                        (*tar).user = nullptr;
+                        npc.inventory.push_back((*tar));
+                        (*tar).toDelete = true;
                     }
                 }
             }
 
-            if (npc.targetInfo.item != nullptr && InInv == false)
+            if (npc.targetInfo.item != nullptr && inInv == false)
             {
                 effects.createLine(
                     npc.xpos, npc.ypos, (*npc.targetInfo.item).xpos,
@@ -1151,12 +1151,12 @@ void critterBrain(std::vector<Npc> &NPCs)
         }
 
         // Incase the highest desire isn't completable, Go through again for the next highest desire.
-        if (InComplete)
+        if (inComplete)
             goto ReDesire;
 
         textList.createText(npc.xpos - 30, npc.ypos - 15, 10, sf::Color::Red,
-                            (*HighestDesire).DesireType, ":",
-                            (*HighestDesire).Potency);
+                            (*highestDesire).type, ":",
+                            (*highestDesire).potency);
         textList.createText(npc.xpos - 70, npc.ypos - 35, 10, sf::Color::Cyan,
                             npc.body.bodyParts);
 
@@ -1166,9 +1166,9 @@ void critterBrain(std::vector<Npc> &NPCs)
     }
 
     if (key.oTime == 1)
-        RemoveMe++;
+        removeMe++;
     if (key.lTime == 1)
-        RemoveMe--;
+        removeMe--;
 }
 
 void updateNpc()
