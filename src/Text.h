@@ -19,11 +19,11 @@ public:
     void drawMe();
     std::vector<TextList> textlist;
 
-    void createText(int xpos, int ypos, int SizeMe, sf::Color color,
-                    std::string stringvalue1, std::string String1 = "",
+    void createText(int xpos, int ypos, int sizeMe, sf::Color color,
+                    std::string stringvalue1, std::string string1 = "",
                     float int1 = -6698, std::string stringvalue2 = "",
-                    std::string String2 = "", float int2 = -6698,
-                    std::string stringvalue3 = "", std::string String3 = "",
+                    std::string string2 = "", float int2 = -6698,
+                    std::string stringvalue3 = "", std::string string3 = "",
                     float int3 = -6698, int shadow = 1, int NULL3 = 0);
 
     void drawTextz();
@@ -46,9 +46,9 @@ public:
 
     std::vector<ChatLine> chatStorage;
 
-    void addChat(std::string Text, sf::Color Color);
+    void addChat(std::string text, sf::Color color);
 
-    void displayChat(sf::Vector2f Position);
+    void displayChat(sf::Vector2f position);
 };
 extern ChatBox chatBox;
 

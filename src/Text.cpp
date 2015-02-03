@@ -32,15 +32,15 @@ void TextList::drawMe()
     window.draw(sString);
 }
 
-void TextList::createText(int xpos, int ypos, int SizeMe, sf::Color color,
-                          std::string stringvalue1, std::string String1,
+void TextList::createText(int xpos, int ypos, int sizeMe, sf::Color color,
+                          std::string stringvalue1, std::string string1,
                           float int1, std::string stringvalue2,
-                          std::string String2, float int2,
-                          std::string stringvalue3, std::string String3,
-                          float int3, int Shadow, int /*NULL3*/)
+                          std::string string2, float int2,
+                          std::string stringvalue3, std::string string3,
+                          float int3, int shadow, int /*NULL3*/)
 {
-    int Size = SizeMe;
-    bool Bold = true;
+    int size = sizeMe;
+    bool bold = true;
 
     using namespace std;
     string line1("");
@@ -50,7 +50,7 @@ void TextList::createText(int xpos, int ypos, int SizeMe, sf::Color color,
 
     line1.append(stringvalue1);
 
-    line1.append(String1);
+    line1.append(string1);
 
     if (int1 != -6698)
     {
@@ -60,7 +60,7 @@ void TextList::createText(int xpos, int ypos, int SizeMe, sf::Color color,
 
     line1.append(stringvalue2);
 
-    line1.append(String2);
+    line1.append(string2);
 
     if (int2 != -6698)
     {
@@ -70,7 +70,7 @@ void TextList::createText(int xpos, int ypos, int SizeMe, sf::Color color,
 
     line1.append(stringvalue3);
 
-    line1.append(String3);
+    line1.append(string3);
 
     if (int3 != -6698)
     {
@@ -78,25 +78,25 @@ void TextList::createText(int xpos, int ypos, int SizeMe, sf::Color color,
         line1.append(convert3.str());
     }
 
-    sf::Text Textz(line1, font);
+    sf::Text textz(line1, font);
 
-    Textz.setCharacterSize(Size);
-    if (Bold == true)
+    textz.setCharacterSize(size);
+    if (bold == true)
     {
-        Textz.setStyle(sf::Text::Bold);
+        textz.setStyle(sf::Text::Bold);
     }
 
     //if(shadow == true){Textz.SetText(line1);Textz.SetColor(sf::Color(0,0,0));Textz.SetPosition(xpos+1,ypos+1);App.Draw(Textz);}
-    Textz.setColor(color);
-    Textz.setPosition(xpos, ypos); //App.Draw(Textz);
+    textz.setColor(color);
+    textz.setPosition(xpos, ypos); //App.Draw(Textz);
     TextList var;
     var.xpos = xpos;
     var.ypos = ypos;
     var.color = color;
-    var.sString = Textz;
-    var.size = Size;
-    var.shadow = Shadow;
-    var.bold = Bold;
+    var.sString = textz;
+    var.size = size;
+    var.shadow = shadow;
+    var.bold = bold;
     textlist.push_back(var);
 }
 
@@ -126,20 +126,20 @@ TextList::TextList() : xpos{}, ypos{}, shadow{}, bold{}
     size = 11;
 }
 
-void ChatBox::addChat(std::string Text, sf::Color Color)
+void ChatBox::addChat(std::string text, sf::Color color)
 {
-    ChatLine NewLine;
-    NewLine.line = Text;
-    NewLine.color = Color;
-    chatStorage.push_back(NewLine);
+    ChatLine newLine;
+    newLine.line = text;
+    newLine.color = color;
+    chatStorage.push_back(newLine);
 }
 
-void ChatBox::displayChat(sf::Vector2f Position)
+void ChatBox::displayChat(sf::Vector2f position)
 {
     for (size_t i = 0; i != chatStorage.size(); i++)
     {
-        textList.createText(Position.x,
-                            (Position.y - (chatStorage.size() * 10)) + (i * 10),
+        textList.createText(position.x,
+                            (position.y - (chatStorage.size() * 10)) + (i * 10),
                             11, chatStorage[i].color, chatStorage[i].line);
     }
 }
