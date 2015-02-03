@@ -9,8 +9,8 @@ void insertItems()
 {
     for (int i = 0; i != 10; i++)
     {
-        MyItem TheItem;
-        myItemList.push_back(TheItem);
+        MyItem theItem;
+        myItemList.push_back(theItem);
     }
 }
 
@@ -18,9 +18,9 @@ void insertItemsIntoContainers()
 {
     for (size_t i = 0; i != myItemList.size(); i++)
     {
-        ItemContainer ItemHolder;
-        ItemHolder.theItemPtr = &myItemList[i];
-        itemContainer.push_back(ItemHolder);
+        ItemContainer itemHolder;
+        itemHolder.theItemPtr = &myItemList[i];
+        itemContainer.push_back(itemHolder);
     }
 }
 
@@ -41,10 +41,10 @@ void runItAll()
 
 MyItem::MyItem()
 {
-    int Random = randz(1, 2);
-    if (Random == 1)
+    int random = randz(1, 2);
+    if (random == 1)
         name = "Tool";
-    if (Random == 2)
+    if (random == 2)
         name = "Weapon";
 }
 
