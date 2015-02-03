@@ -3453,23 +3453,23 @@ Npc *getCritter(int id)
 
 void removeNPCs()
 {
-    bool Done = false;
-    while (Done == false)
+    bool done = false;
+    while (done == false)
     {
-        bool Yet = false;
+        bool yet = false;
         for (auto it = npclist.begin(); it != npclist.end(); ++it)
         {
             if (it->toDelete)
             {
                 std::cout << it->name << " to be deleted. \n";
                 npclist.erase(it);
-                Yet = true;
+                yet = true;
                 break;
             }
         }
-        if (Yet == false)
+        if (yet == false)
         {
-            Done = true;
+            done = true;
         }
     }
 }
