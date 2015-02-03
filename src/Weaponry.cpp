@@ -3,7 +3,7 @@
 
 #include <iostream>
 
-void Explosion(int xpos, int ypos, int /*size*/, int /*power*/, bool /*frag*/)
+void explosion(int xpos, int ypos, int /*size*/, int /*power*/, bool /*frag*/)
 {
     std::cout << math::closeishS(xpos, ypos) << " Is the stuff\n";
     //  std::cout << plat << std::endl;
