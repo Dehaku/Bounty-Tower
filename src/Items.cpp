@@ -14,54 +14,54 @@ extern sf::RenderWindow window;
 std::list<Item> worlditems;
 ItemManager itemmanager;
 
-void removeItems(std::list<Item> &Items)
+void removeItems(std::list<Item> &items)
 {
-    bool Done = false;
-    while (Done == false)
+    bool done = false;
+    while (done == false)
     {
-        Done = true;
-        for (auto it = Items.begin(); it != Items.end(); ++it)
+        done = true;
+        for (auto it = items.begin(); it != items.end(); ++it)
         {
             if (it->toDelete)
             {
-                Done = false;
-                Items.erase(it);
+                done = false;
+                items.erase(it);
                 break;
             }
         }
     }
 }
 
-void zSaveItem(int /*planet*/, sf::Vector2i Region, Item &object)
+void zSaveItem(int /*planet*/, sf::Vector2i region, Item &object)
 {
 
     using namespace std;
-    ofstream File; // Start to Load Map
+    ofstream file; // Start to Load Map
     string newline("data/maps/Planet");
     stringstream newconvert;
     newline.append("500");
     newline.append("/stuff");
     newconvert << "x";
-    newconvert << Region.x;
+    newconvert << region.x;
     newconvert << "y";
-    newconvert << Region.y;
+    newconvert << region.y;
     newline.append(newconvert.str());
     string newending(".item");
     newline.append(newending);
     con(newline);
 
-    File.open(newline.c_str(), fstream::in | fstream::ate);
+    file.open(newline.c_str(), fstream::in | fstream::ate);
     debug("looking for file...");
 
-    if (File.is_open())
+    if (file.is_open())
     {
-        File << std::endl;
-        File << "[name:" << object.name << "]"
+        file << std::endl;
+        file << "[name:" << object.name << "]"
              << "[xpos:" << object.xpos << "]"
              << "[ypos:" << object.ypos << "]";
         con("Added", false);
         con(object.name);
-        File.close();
+        file.close();
     }
     else
     {
@@ -73,9 +73,9 @@ void zSaveItem(int /*planet*/, sf::Vector2i Region, Item &object)
         galaxy_mkdir(line);
         line.append("/stuff");
         convert << "x";
-        convert << Region.x;
+        convert << region.x;
         convert << "y";
-        convert << Region.y;
+        convert << region.y;
         line.append(convert.str());
         string ending(".item");
         line.append(ending);
@@ -88,7 +88,7 @@ void zSaveItem(int /*planet*/, sf::Vector2i Region, Item &object)
     }
 }
 
-void saveItem(int planet, sf::Vector2i Region, Item &Critter)
+void saveItem(int planet, sf::Vector2i region, Item &critter)
 {
     // I already did all the work once, Imma be lazy for some time.
     using namespace std;
@@ -100,36 +100,36 @@ void saveItem(int planet, sf::Vector2i Region, Item &Critter)
     galaxy_mkdir(line);
     line.append("/stuff");
     convert << "x";
-    convert << Region.x;
+    convert << region.x;
     convert << "y";
-    convert << Region.y;
+    convert << region.y;
     line.append(convert.str());
     string ending(".item");
     line.append(ending);
 
-    ofstream File;
-    File.open(line.c_str(), fstream::in | fstream::ate);
+    ofstream file;
+    file.open(line.c_str(), fstream::in | fstream::ate);
     debug("looking for file...");
 
-    if (File.is_open())
+    if (file.is_open())
     {
-        File << std::endl;
-        File << "[name:" << Critter.name << "]"
-             << "[xpos:" << Critter.xpos << "]"
-             << "[ypos:" << Critter.ypos << "]";
-        File.close();
+        file << std::endl;
+        file << "[name:" << critter.name << "]"
+             << "[xpos:" << critter.xpos << "]"
+             << "[ypos:" << critter.ypos << "]";
+        file.close();
     }
     else
     {
         ofstream outputFile(line.c_str());
 
-        outputFile << "[name:" << Critter.name << "]"
-                   << "[xpos:" << Critter.xpos << "]"
-                   << "[ypos:" << Critter.ypos << "]";
+        outputFile << "[name:" << critter.name << "]"
+                   << "[xpos:" << critter.xpos << "]"
+                   << "[ypos:" << critter.ypos << "]";
     }
 }
 
-std::string loadItems(sf::Vector2i WorldPos, std::string Direction, int planet)
+std::string loadItems(sf::Vector2i worldPos, std::string direction, int planet)
 {
 
     std::string line("data/maps/Planet");
@@ -140,89 +140,89 @@ std::string loadItems(sf::Vector2i WorldPos, std::string Direction, int planet)
     galaxy_mkdir(line);
     line.append("/stuff");
     convert << "x";
-    convert << WorldPos.x;
+    convert << worldPos.x;
     convert << "y";
-    convert << WorldPos.y;
+    convert << worldPos.y;
     line.append(convert.str());
     std::string ending(".item");
     line.append(ending);
 
-    std::ifstream Input(line.c_str());
-    if (Input.is_open())
+    std::ifstream input(line.c_str());
+    if (input.is_open())
     {
-        while (Input.good())
+        while (input.good())
         {
             std::string line;
-            getline(Input, line);
-            Item Critter;
+            getline(input, line);
+            Item critter;
 
-            Critter.name = "Debuggery";
+            critter.name = "Debuggery";
 
-            Critter.name = stringFindString(line, "[name:");
-            if (Critter.name != "Debuggery")
-                Critter = *getGlobalItem(Critter.name);
-            Critter.xpos = stringFindNumber(line, "[xpos:");
-            Critter.ypos = stringFindNumber(line, "[ypos:");
-            std::cout << "Xpos: " << Critter.xpos << "Ypos: " << Critter.ypos
+            critter.name = stringFindString(line, "[name:");
+            if (critter.name != "Debuggery")
+                critter = *getGlobalItem(critter.name);
+            critter.xpos = stringFindNumber(line, "[xpos:");
+            critter.ypos = stringFindNumber(line, "[ypos:");
+            std::cout << "Xpos: " << critter.xpos << "Ypos: " << critter.ypos
                       << std::endl;
 
-            if (Direction == "TopLeft")
+            if (direction == "TopLeft")
             {
             }
-            if (Direction == "Top")
+            if (direction == "Top")
             {
-                Critter.xpos += 640;
+                critter.xpos += 640;
             }
-            if (Direction == "TopRight")
+            if (direction == "TopRight")
             {
-                Critter.xpos += 640;
-                Critter.xpos += 640;
+                critter.xpos += 640;
+                critter.xpos += 640;
             }
-            if (Direction == "Right")
+            if (direction == "Right")
             {
-                Critter.xpos += 640;
-                Critter.xpos += 640;
-                Critter.ypos += 640;
+                critter.xpos += 640;
+                critter.xpos += 640;
+                critter.ypos += 640;
             }
-            if (Direction == "BottomRight")
+            if (direction == "BottomRight")
             {
-                Critter.xpos += 640;
-                Critter.xpos += 640;
-                Critter.ypos += 640;
-                Critter.ypos += 640;
+                critter.xpos += 640;
+                critter.xpos += 640;
+                critter.ypos += 640;
+                critter.ypos += 640;
             }
-            if (Direction == "Bottom")
+            if (direction == "Bottom")
             {
-                Critter.xpos += 640;
-                Critter.ypos += 640;
-                Critter.ypos += 640;
+                critter.xpos += 640;
+                critter.ypos += 640;
+                critter.ypos += 640;
             }
-            if (Direction == "BottomLeft")
+            if (direction == "BottomLeft")
             {
-                Critter.ypos += 640;
-                Critter.ypos += 640;
+                critter.ypos += 640;
+                critter.ypos += 640;
             }
-            if (Direction == "Left")
+            if (direction == "Left")
             {
-                Critter.ypos += 640;
+                critter.ypos += 640;
             }
-            std::cout << "Xpos: " << Critter.xpos << "Ypos: " << Critter.ypos
+            std::cout << "Xpos: " << critter.xpos << "Ypos: " << critter.ypos
                       << std::endl;
 
-            if (Critter.name != "Debuggery")
+            if (critter.name != "Debuggery")
             {
-                worlditems.push_back(Critter);
+                worlditems.push_back(critter);
             }
         }
     }
     return line;
 }
 
-void spawnItem(std::string Object, int xpos, int ypos)
+void spawnItem(std::string object, int xpos, int ypos)
 {
     if (gvars::debug)
     {
-        std::cout << "Spawning" << Object << " \n";
+        std::cout << "Spawning" << object << " \n";
     }
     Item var;
     if (gvars::debug)
@@ -230,7 +230,7 @@ void spawnItem(std::string Object, int xpos, int ypos)
         std::cout << "Pre var in SpawnItem"
                   << " \n";
     }
-    var = *getGlobalItem(Object);
+    var = *getGlobalItem(object);
     if (gvars::debug)
     {
         std::cout << "Post var in SpawnItem"
@@ -263,13 +263,13 @@ void refreshImages()
     con("Done");
 }
 
-Item *getItemPtrFromVector(std::list<Item> &Vector, std::string Name)
+Item *getItemPtrFromVector(std::list<Item> &vector, std::string name)
 {
     debug("Doing GetItmPtr");
     //*for(int i = 0; i != Vector.size(); i++)
-    for (auto i = Vector.begin(); i != Vector.end(); i++)
+    for (auto i = vector.begin(); i != vector.end(); i++)
     {
-        if ((*i).name == Name)
+        if ((*i).name == name)
         {
             debug("Returning GetItmPtr");
             return &(*i);
@@ -280,13 +280,13 @@ Item *getItemPtrFromVector(std::list<Item> &Vector, std::string Name)
     return nullptr;
 }
 
-Item *getItemPtrfromVector2(std::list<Item> &Vector, std::string Name)
+Item *getItemPtrfromVector2(std::list<Item> &vector, std::string name)
 {
     debug("Doing GetItmPtr");
     //for(int i = 0; i != Vector.size(); i++)
-    for (auto &elem : Vector)
+    for (auto &elem : vector)
     {
-        if ((elem).name == Name)
+        if ((elem).name == name)
         {
             debug("Returning GetItmPtr");
             return &(elem);
@@ -297,35 +297,35 @@ Item *getItemPtrfromVector2(std::list<Item> &Vector, std::string Name)
     return nullptr;
 }
 
-Item *getItemPtrfromVectorVarSearch(std::list<Item> &Vector,
-                                    std::string VarSearch, float AtLeast)
+Item *getItemPtrfromVectorVarSearch(std::list<Item> &vector,
+                                    std::string varSearch, float atLeast)
 {
     debug("Doing GetItmPtrVarSearch");
     //for(int i = 0; i != Vector.size(); i++)
-    for (auto i = Vector.begin(); i != Vector.end(); i++)
+    for (auto i = vector.begin(); i != vector.end(); i++)
     {
 
-        if ((*i).massFlesh >= AtLeast && VarSearch == "MassFlesh")
+        if ((*i).massFlesh >= atLeast && varSearch == "MassFlesh")
         {
             debug("Returning GetItmPtrVarSearch");
             return &(*i);
         }
-        if ((*i).massVeggy >= AtLeast && VarSearch == "MassVeggy")
+        if ((*i).massVeggy >= atLeast && varSearch == "MassVeggy")
         {
             debug("Returning GetItmPtrVarSearch");
             return &(*i);
         }
-        if ((*i).massWater >= AtLeast && VarSearch == "MassWater")
+        if ((*i).massWater >= atLeast && varSearch == "MassWater")
         {
             debug("Returning GetItmPtrVarSearch");
             return &(*i);
         }
-        if ((*i).massMetal >= AtLeast && VarSearch == "MassMetal")
+        if ((*i).massMetal >= atLeast && varSearch == "MassMetal")
         {
             debug("Returning GetItmPtrVarSearch");
             return &(*i);
         }
-        if ((*i).massPlastic >= AtLeast && VarSearch == "MassPlastic")
+        if ((*i).massPlastic >= atLeast && varSearch == "MassPlastic")
         {
             debug("Returning GetItmPtrVarSearch");
             return &(*i);
@@ -336,7 +336,7 @@ Item *getItemPtrfromVectorVarSearch(std::list<Item> &Vector,
     return nullptr;
 }
 
-Item *findClosestItemPtr(int Orix, int Oriy, std::string TarItem, int /*Gxpos*/,
+Item *findClosestItemPtr(int orix, int oriy, std::string tarItem, int /*Gxpos*/,
                          int /*Gypos*/, int /*Rxpos*/, int /*Rypos*/)
 {
     //std::vector<item>::iterator Items;
@@ -349,38 +349,38 @@ Item *findClosestItemPtr(int Orix, int Oriy, std::string TarItem, int /*Gxpos*/,
     int closy = -1000000;
     bool first = true;
 
-    Item *Returns;
+    Item *returns;
 
     for (auto i = worlditems.begin(); i != worlditems.end(); i++)
     {
         if (first == true)
         {
-            if ((*i).name == TarItem)
+            if ((*i).name == tarItem)
             {
                 closx = (*i).xpos;
                 closy = (*i).ypos;
                 first = false;
-                Returns = &(*i);
+                returns = &(*i);
             }
         }
         else
         {
-            if ((*i).name == TarItem)
+            if ((*i).name == tarItem)
             {
-                int one = math::closeish(Orix, Oriy, (*i).xpos, (*i).ypos);
-                int two = math::closeish(Orix, Oriy, closx, closy);
+                int one = math::closeish(orix, oriy, (*i).xpos, (*i).ypos);
+                int two = math::closeish(orix, oriy, closx, closy);
                 if (one < two)
                 {
                     closx = (*i).xpos;
                     closy = (*i).ypos;
-                    Returns = &(*i);
+                    returns = &(*i);
                 }
             }
         }
     }
     if (first != true)
     {
-        return Returns; // Returns = (xpos,ypos,id,Vector Position)
+        return returns; // Returns = (xpos,ypos,id,Vector Position)
     }
     else
         return nullptr;
@@ -565,58 +565,58 @@ void ItemManager::initializeItems()
 {
     // TODO: Have this read from an Items folder, and read from
     // all .txt files in it, Allowing greater compability between mods.
-    std::ifstream Input("data/items.txt");
-    if (Input.is_open())
+    std::ifstream input("data/items.txt");
+    if (input.is_open())
     {
-        while (Input.good())
+        while (input.good())
         {
             std::string line;
-            getline(Input, line);
-            Item Item;
-            Item.name = "Debuggery";
-            Item.name = stringFindString(line, "[name:");
+            getline(input, line);
+            Item item;
+            item.name = "Debuggery";
+            item.name = stringFindString(line, "[name:");
 
-            Item.hungervalue = stringFindNumber(line, "[hungervalue:");
-            Item.thirstvalue = stringFindNumber(line, "[thirstvalue:");
+            item.hungervalue = stringFindNumber(line, "[hungervalue:");
+            item.thirstvalue = stringFindNumber(line, "[thirstvalue:");
 
-            Item.massGlass = stringFindNumber(line, "[MassGlass:");
-            Item.massFlesh = stringFindNumber(line, "[MassFlesh:");
-            Item.massMetal = stringFindNumber(line, "[MassMetal:");
-            Item.massOil = stringFindNumber(line, "[MassOil:");
-            Item.massPlastic = stringFindNumber(line, "[MassPlastic:");
-            Item.massVeggy = stringFindNumber(line, "[MassVeggy:");
-            Item.massWater = stringFindNumber(line, "[MassWater:");
+            item.massGlass = stringFindNumber(line, "[MassGlass:");
+            item.massFlesh = stringFindNumber(line, "[MassFlesh:");
+            item.massMetal = stringFindNumber(line, "[MassMetal:");
+            item.massOil = stringFindNumber(line, "[MassOil:");
+            item.massPlastic = stringFindNumber(line, "[MassPlastic:");
+            item.massVeggy = stringFindNumber(line, "[MassVeggy:");
+            item.massWater = stringFindNumber(line, "[MassWater:");
 
-            Item.pickupable =
+            item.pickupable =
                 booleanize(stringFindNumber(line, "[Pickupable:"));
-            Item.type = stringFindNumber(line, "[type:");
-            Item.cbaseid = stringFindNumber(line, "[baseid:");
-            Item.produces = booleanize(stringFindNumber(line, "[produces:"));
-            Item.prodrate = stringFindNumber(line, "[prodrate:");
-            Item.produce = stringFindString(line, "[produce:");
-            Item.mindam = stringFindNumber(line, "[mindam:");
-            Item.maxdam = stringFindNumber(line, "[maxdam:");
-            Item.range = stringFindNumber(line, "[range:");
-            Item.isWeapon = booleanize(stringFindNumber(line, "[IsWeapon:"));
-            std::string Imagery = stringFindString(line, "[image:");
+            item.type = stringFindNumber(line, "[type:");
+            item.cbaseid = stringFindNumber(line, "[baseid:");
+            item.produces = booleanize(stringFindNumber(line, "[produces:"));
+            item.prodrate = stringFindNumber(line, "[prodrate:");
+            item.produce = stringFindString(line, "[produce:");
+            item.mindam = stringFindNumber(line, "[mindam:");
+            item.maxdam = stringFindNumber(line, "[maxdam:");
+            item.range = stringFindNumber(line, "[range:");
+            item.isWeapon = booleanize(stringFindNumber(line, "[IsWeapon:"));
+            std::string imagery = stringFindString(line, "[image:");
             for (auto const &image : texturemanager.textures)
             {
-                if (image.name == Imagery)
+                if (image.name == imagery)
                 {
-                    Item.img.setTexture(image.texture);
-                    sf::IntRect Tempz = Item.img.getTextureRect();
-                    sf::Vector2f Size(Tempz.height, Tempz.width);
+                    item.img.setTexture(image.texture);
+                    sf::IntRect tempz = item.img.getTextureRect();
+                    sf::Vector2f size(tempz.height, tempz.width);
                     if (gvars::debug)
                     {
-                        std::cout << "TextRect: " << Tempz.height << ":"
-                                  << Tempz.width << std::endl;
+                        std::cout << "TextRect: " << tempz.height << ":"
+                                  << tempz.width << std::endl;
                     }
-                    Item.img.setOrigin(Size.x / 2, Size.y / 2);
+                    item.img.setOrigin(size.x / 2, size.y / 2);
                 }
             }
-            if (Item.name != "Debuggery")
+            if (item.name != "Debuggery")
             {
-                globalItems.push_back(Item);
+                globalItems.push_back(item);
             }
         }
     }
