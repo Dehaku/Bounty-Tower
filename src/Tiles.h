@@ -38,7 +38,7 @@ public:
     void stoneWall();
     void wall();
     void woodFloor();
-    void road(bool Center = false);
+    void road(bool center = false);
     void door();
     void lava();
     void sky();
@@ -115,13 +115,13 @@ void loadMap(int planet, int xcord, int ycord, int xpos, int ypos);
 void initalizeWorldTiles();
 void drawWorldTiles();
 void initializeTiles();
-void drawTile(int xpos, int ypos, sf::Texture &Image);
+void drawTile(int xpos, int ypos, sf::Texture &image);
 void drawNewTiles();
 void tilesRandom();
 void tilesGoUp();
 void tilesGoDown();
 void tilesGoLeft();
 void tilesGoRight();
-void buildLocalfromWorld(sf::Vector2i WorldPos);
+void buildLocalfromWorld(sf::Vector2i worldPos);
 
 #endif // TILES_H_INCLUDED

@@ -654,12 +654,12 @@ void initializeTiles()
     }
 }
 
-void drawTile(int xpos, int ypos, sf::Texture &Image)
+void drawTile(int xpos, int ypos, sf::Texture &image)
 {
     con("1stBacon");
     sf::Sprite imgr;
     con("2ndBacon");
-    imgr.setTexture(Image);
+    imgr.setTexture(image);
     con("Bacon");
     imgr.setPosition(xpos, ypos);
     con("Bacon");
@@ -1025,12 +1025,12 @@ void tilesGoRight()
     }*/
 }
 
-void buildLocalfromWorld(sf::Vector2i WorldPos)
+void buildLocalfromWorld(sf::Vector2i worldPos)
 {
     debug("Starting BLfW");
-    generateChunk(worldMap[WorldPos.x - 1][WorldPos.y - 1].type,
+    generateChunk(worldMap[worldPos.x - 1][worldPos.y - 1].type,
                   gvars::currentplanet,
-                  sf::Vector2i(WorldPos.x - 1, WorldPos.y - 1));
+                  sf::Vector2i(worldPos.x - 1, worldPos.y - 1));
     for (int x = 0; x != ChunkSize; x++)
     {
         for (int y = 0; y != ChunkSize; y++)
@@ -1039,9 +1039,9 @@ void buildLocalfromWorld(sf::Vector2i WorldPos)
         }
     }
     debug("Starting 2");
-    generateChunk(worldMap[WorldPos.x - 1][WorldPos.y].type,
+    generateChunk(worldMap[worldPos.x - 1][worldPos.y].type,
                   gvars::currentplanet,
-                  sf::Vector2i(WorldPos.x - 1, WorldPos.y));
+                  sf::Vector2i(worldPos.x - 1, worldPos.y));
     for (int x = 0; x != ChunkSize; x++)
     {
 
@@ -1054,9 +1054,9 @@ void buildLocalfromWorld(sf::Vector2i WorldPos)
         }
     }
     debug("Starting 3");
-    generateChunk(worldMap[WorldPos.x - 1][WorldPos.y + 1].type,
+    generateChunk(worldMap[worldPos.x - 1][worldPos.y + 1].type,
                   gvars::currentplanet,
-                  sf::Vector2i(WorldPos.x - 1, WorldPos.y + 1));
+                  sf::Vector2i(worldPos.x - 1, worldPos.y + 1));
     for (int x = 0; x != ChunkSize; x++)
     {
         for (int y = 0 + 32 + 32; y != ChunkSize + 32 + 32; y++)
@@ -1065,9 +1065,9 @@ void buildLocalfromWorld(sf::Vector2i WorldPos)
         }
     }
 
-    generateChunk(worldMap[WorldPos.x + 1][WorldPos.y - 1].type,
+    generateChunk(worldMap[worldPos.x + 1][worldPos.y - 1].type,
                   gvars::currentplanet,
-                  sf::Vector2i(WorldPos.x + 1, WorldPos.y - 1));
+                  sf::Vector2i(worldPos.x + 1, worldPos.y - 1));
     for (int x = 0 + 32 + 32; x != ChunkSize + 32 + 32; x++)
     {
         for (int y = 0; y != ChunkSize; y++)
@@ -1076,9 +1076,9 @@ void buildLocalfromWorld(sf::Vector2i WorldPos)
         }
     }
     debug("Starting 2");
-    generateChunk(worldMap[WorldPos.x + 1][WorldPos.y].type,
+    generateChunk(worldMap[worldPos.x + 1][worldPos.y].type,
                   gvars::currentplanet,
-                  sf::Vector2i(WorldPos.x + 1, WorldPos.y));
+                  sf::Vector2i(worldPos.x + 1, worldPos.y));
     for (int x = 0 + 32 + 32; x != ChunkSize + 32 + 32; x++)
     {
 
@@ -1091,9 +1091,9 @@ void buildLocalfromWorld(sf::Vector2i WorldPos)
         }
     }
     debug("Starting 3");
-    generateChunk(worldMap[WorldPos.x + 1][WorldPos.y + 1].type,
+    generateChunk(worldMap[worldPos.x + 1][worldPos.y + 1].type,
                   gvars::currentplanet,
-                  sf::Vector2i(WorldPos.x + 1, WorldPos.y + 1));
+                  sf::Vector2i(worldPos.x + 1, worldPos.y + 1));
     for (int x = 0 + 32 + 32; x != ChunkSize + 32 + 32; x++)
     {
         for (int y = 0 + 32 + 32; y != ChunkSize + 32 + 32; y++)
@@ -1102,9 +1102,9 @@ void buildLocalfromWorld(sf::Vector2i WorldPos)
         }
     }
 
-    generateChunk(worldMap[WorldPos.x][WorldPos.y + 1].type,
+    generateChunk(worldMap[worldPos.x][worldPos.y + 1].type,
                   gvars::currentplanet,
-                  sf::Vector2i(WorldPos.x, WorldPos.y + 1));
+                  sf::Vector2i(worldPos.x, worldPos.y + 1));
     for (int x = 0 + 32; x != ChunkSize + 32; x++)
     {
         for (int y = 0 + 32 + 32; y != ChunkSize + 32 + 32; y++)
@@ -1116,9 +1116,9 @@ void buildLocalfromWorld(sf::Vector2i WorldPos)
         }
     }
 
-    generateChunk(worldMap[WorldPos.x][WorldPos.y - 1].type,
+    generateChunk(worldMap[worldPos.x][worldPos.y - 1].type,
                   gvars::currentplanet,
-                  sf::Vector2i(WorldPos.x, WorldPos.y - 1));
+                  sf::Vector2i(worldPos.x, worldPos.y - 1));
     for (int x = 0 + 32; x != ChunkSize + 32; x++)
     {
         for (int y = 0; y != ChunkSize; y++)
@@ -1129,8 +1129,8 @@ void buildLocalfromWorld(sf::Vector2i WorldPos)
         }
     }
 
-    generateChunk(worldMap[WorldPos.x][WorldPos.y].type, gvars::currentplanet,
-                  sf::Vector2i(WorldPos.x, WorldPos.y));
+    generateChunk(worldMap[worldPos.x][worldPos.y].type, gvars::currentplanet,
+                  sf::Vector2i(worldPos.x, worldPos.y));
     for (int x = 0 + 32; x != ChunkSize + 32; x++)
     {
         for (int y = 0 + 32; y != ChunkSize + 32; y++)
@@ -1217,13 +1217,13 @@ void Tile::woodFloor()
     img.setTexture(texturemanager.getTexture("WoodFloor.png"));
 }
 
-void Tile::road(bool Center)
+void Tile::road(bool center)
 { // 1050
     id = 1050;
     worldColor = sf::Color(0, 0, 0);
-    if (Center)
+    if (center)
         img.setTexture(texturemanager.getTexture("MiddleRoad.png"));
-    if (!Center)
+    if (!center)
         img.setTexture(texturemanager.getTexture("Black.png"));
 }
 
