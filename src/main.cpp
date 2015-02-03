@@ -346,6 +346,51 @@ std::vector<int> nngTrace(int xa, int ya, int xb, int yb, int id,
     return vectorID;
 }
 
+bool gridTrace(sf::Vector2f Ori, sf::Vector2f Tar)
+{ // Looking in a straight line for a specific spot, Walls block vision.
+
+    int dx = Tar.x - Ori.x, dy = Tar.y - Ori.y, steps;
+    float xIncrement, yIncrement, x = Ori.x, y = Ori.y;
+    if (abs_to_index(dx) > abs_to_index(dy))
+        steps = abs_to_index(dx);
+    else
+        steps = abs_to_index(dy);
+    xIncrement = dx / (float)steps;
+    yIncrement = dy / (float)steps;
+
+    for (int k = 0; k < steps; k++)
+    {
+        x += xIncrement;
+        y += yIncrement;
+        if (tiles[abs_to_index(x / GRID_SIZE)][abs_to_index(y / GRID_SIZE)][30]
+                .transparent == false)
+        {
+
+            if (inputState.period)
+            {
+                effects.createLine(x, y, Ori.x, Ori.y, 1, sf::Color::Cyan);
+            }
+            //std::cout << "Shoulda Broke. " << std::endl;
+            break;
+
+        } // Stops the trace if it hits a wall.
+        //std::cout << "Stuffs " << std::endl;
+        sf::Vector2f pos(abs_to_index(x / GRID_SIZE), abs_to_index(y / GRID_SIZE));
+        sf::Vector2f tar(abs_to_index(Tar.x / GRID_SIZE), abs_to_index(Tar.y / GRID_SIZE));
+        if (pos == tar)
+        {
+            return true;
+        } // Returns true and stops searching.
+
+        if (inputState.period)
+        {
+            effects.createLine(x, y, Ori.x, Ori.y, 1, sf::Color::Blue);
+        }
+    }
+    return false; // Returns false if the target was never found.
+}
+
+
 bool gridposTrace(int xa, int ya, int xb, int yb, int id, sf::Vector2f target)
 { // Looking in a straight line for a specific spot, Walls block vision.
 
@@ -917,12 +962,13 @@ void runCritterBody(Npc &npc)
 void critterBrain(Npc &npc)
 {
     runCritterBody(npc);
+    debug("Debug: Ending Part Loop");
 
     /*Simulating Hunger/Thirst, Needs to be nerfed/formulated to conditions, I.E. Attributes/Parts/Weather*/
     npc.bloodwork("Nutrients", -1);
     npc.bloodwork("Hydration", -1);
 
-    debug("Debug: Ending Part Loop");
+
     /* *BodyPart Loop* */
     /* Critter Vision   */
     const sf::Vector2f npcPos(npc.xpos, npc.ypos);
@@ -940,6 +986,9 @@ void critterBrain(Npc &npc)
     {
         float xPos = npc.xpos + sinf(rot * PI / 180) * npc.viewrange;
         float yPos = npc.ypos + cosf(rot * PI / 180) * npc.viewrange;
+
+        gridTrace(npcPos,sf::Vector2f(xPos,yPos), npc.id);
+
 
         if (rot == startAngle)
         {
@@ -976,7 +1025,7 @@ void critterBrain(Npc &npc)
     }
 
     sf::Color filling(sf::Color::Yellow);
-    filling.a = (100);
+    filling.a = (50);
     shape.setFillColor(filling);
     shape.setOutlineColor(sf::Color::Yellow);
     shape.setOutlineThickness(1);

@@ -26,6 +26,7 @@ class Tile
 public:
     unsigned int id;
     int deathID;
+    bool transparent;
     float health;
     bool walkable;
     sf::Sprite img;

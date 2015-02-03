@@ -1189,6 +1189,7 @@ void Tile::stone()
 { // 1007
     id = 1007;
     worldColor = sf::Color(150, 150, 150);
+    transparent = true;
     walkable = true;
     img.setTexture(texturemanager.getTexture("Underground.png"));
 }
@@ -1197,6 +1198,7 @@ void Tile::stoneWall()
 { // 1008
     id = 1008;
     worldColor = sf::Color(150, 150, 150);
+    transparent = false;
     walkable = false;
     img.setTexture(texturemanager.getTexture("StoneWall.png"));
 }
@@ -1206,6 +1208,7 @@ void Tile::wall()
     id = 1010;
     worldColor = sf::Color(100, 100, 100);
     img.setTexture(texturemanager.getTexture("Wall.png"));
+    transparent = false;
     health = 200;
     deathID = 1007;
     walkable = false;
@@ -1233,6 +1236,7 @@ void Tile::door()
     id = 1100;
     worldColor = sf::Color(255, 0, 0);
     img.setTexture(texturemanager.getTexture("Door.png"));
+    transparent = true;
     walkable = true;
     health = 15;
     deathID = 7;
@@ -1265,6 +1269,7 @@ Tile::Tile() : id{}
 {
     worldColor = sf::Color(0, 0, 0, 255);
     health = 10;
+    transparent = true;
     deathID = id;
     walkable = true;
 }
