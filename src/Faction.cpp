@@ -371,6 +371,10 @@ Npc::Npc()
     targetInfo.npc = nullptr;
     targetInfo.tile = nullptr;
 
+    consumeFlesh = false;
+    consumeVeggy = false;
+    consumeWater = false;
+
     maxhealth = skills.endurance * 0.8;
     regentimerint = 100;
     regentimer = regentimerint;

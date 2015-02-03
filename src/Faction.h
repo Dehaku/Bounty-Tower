@@ -199,6 +199,10 @@ public:
     sf::Vector2f tentEnd1;
     sf::Vector2f tentEnd2;
 
+    bool consumeFlesh;
+    bool consumeVeggy;
+    bool consumeWater;
+
     void effectStats();
 
     class Skill

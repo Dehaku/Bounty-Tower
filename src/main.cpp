@@ -583,9 +583,9 @@ std::set<int> npcList(int exceptions = -1)
     throw std::runtime_error("NpcList: Couldn't return anything!");
 }
 
-void critterBrain(Npc &npc)
+void runCritterBody(Npc &npc)
 {
-    /*  BodyPart Loop
+     /*  BodyPart Loop
         First, Run through the bodyparts finding the 'global' tags, like
             Nutrient Extraction and such.
         Second, Run through each individual part running through all
@@ -602,9 +602,6 @@ void critterBrain(Npc &npc)
 
     float partsWalkSpeed = 0;
     float globalNutritionPercentage = 100;
-    bool consumeFlesh = false;
-    bool consumeVeggy = false;
-    bool consumeWater = false;
 
     //  *   Global Part Tag Variables   *
 
@@ -649,17 +646,17 @@ void critterBrain(Npc &npc)
             partNumber = stringFindNumber(workingLine, "[DigestsFlesh:");
             if (partNumber != 0)
             {
-                consumeFlesh = true;
+                npc.consumeFlesh = true;
             }
             partNumber = stringFindNumber(workingLine, "[DigestsVeggy:");
             if (partNumber != 0)
             {
-                consumeVeggy = true;
+                npc.consumeVeggy = true;
             }
             partNumber = stringFindNumber(workingLine, "[DigestsWater:");
             if (partNumber != 0)
             {
-                consumeWater = true;
+                npc.consumeWater = true;
             }
 
             searchPos = endPos;
@@ -849,21 +846,21 @@ void critterBrain(Npc &npc)
                 {
                     bool foundIt = false;
                     if ((*i).insidePart == "" && (*i).massFlesh > 0 &&
-                        consumeFlesh) // Awww yeeessss, We gonna eat some flesh with our Orafice!
+                        npc.consumeFlesh) // Awww yeeessss, We gonna eat some flesh with our Orafice!
                     {
                         (*i).insidePart = currentPart;
                         foundIt = true;
                     }
 
                     if ((*i).insidePart == "" && (*i).massVeggy > 0 &&
-                        consumeVeggy) // Awww yeeessss, We gonna eat something with our Orafice!
+                        npc.consumeVeggy) // Awww yeeessss, We gonna eat something with our Orafice!
                     {
                         (*i).insidePart = currentPart;
                         foundIt = true;
                     }
 
                     if ((*i).insidePart == "" && (*i).massWater > 0 &&
-                        consumeWater) // Awww yeeessss, We gonna eat something with our Orafice!
+                        npc.consumeWater) // Awww yeeessss, We gonna eat something with our Orafice!
                     {
                         (*i).insidePart = currentPart;
                         foundIt = true;
@@ -914,6 +911,12 @@ void critterBrain(Npc &npc)
             searchPos = endPos;
         }
     }
+
+}
+
+void critterBrain(Npc &npc)
+{
+    runCritterBody(npc);
 
     /*Simulating Hunger/Thirst, Needs to be nerfed/formulated to conditions, I.E. Attributes/Parts/Weather*/
     npc.bloodwork("Nutrients", -1);
