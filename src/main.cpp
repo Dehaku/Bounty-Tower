@@ -77,17 +77,6 @@ std::string randomWindowName()
 
 sf::RenderWindow window;
 
-int randzorz(int min, int max)
-{
-    int num = 0;
-    if (min == max)
-    {
-        return min;
-    } // It will crash if it tries to randomize the same two numbers.
-    //num = sf::Randomizer::Random(min, max);
-    return num;
-}
-
 void unpointItems(std::list<Item> &items)
 {
 
