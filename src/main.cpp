@@ -3956,31 +3956,31 @@ int main()
                     uniFact[0].jobList[i].workPos.x += -640;
 
                 transitioning = true;
-                std::string Line;
-                Line = loadCritters(sf::Vector2i(gvars::currentregionx + 1,
+                std::string line;
+                line = loadCritters(sf::Vector2i(gvars::currentregionx + 1,
                                                  gvars::currentregiony - 1),
                                     "TopRight", gvars::currentplanet);
-                remove(Line.c_str());
-                Line = loadCritters(sf::Vector2i(gvars::currentregionx + 1,
+                remove(line.c_str());
+                line = loadCritters(sf::Vector2i(gvars::currentregionx + 1,
                                                  gvars::currentregiony),
                                     "Right", gvars::currentplanet);
-                remove(Line.c_str());
-                Line = loadCritters(sf::Vector2i(gvars::currentregionx + 1,
+                remove(line.c_str());
+                line = loadCritters(sf::Vector2i(gvars::currentregionx + 1,
                                                  gvars::currentregiony + 1),
                                     "BottomRight", gvars::currentplanet);
-                remove(Line.c_str());
-                Line = loadItems(sf::Vector2i(gvars::currentregionx + 1,
+                remove(line.c_str());
+                line = loadItems(sf::Vector2i(gvars::currentregionx + 1,
                                               gvars::currentregiony - 1),
                                  "TopRight", gvars::currentplanet);
-                remove(Line.c_str());
-                Line = loadItems(sf::Vector2i(gvars::currentregionx + 1,
+                remove(line.c_str());
+                line = loadItems(sf::Vector2i(gvars::currentregionx + 1,
                                               gvars::currentregiony),
                                  "Right", gvars::currentplanet);
-                remove(Line.c_str());
-                Line = loadItems(sf::Vector2i(gvars::currentregionx + 1,
+                remove(line.c_str());
+                line = loadItems(sf::Vector2i(gvars::currentregionx + 1,
                                               gvars::currentregiony + 1),
                                  "BottomRight", gvars::currentplanet);
-                remove(Line.c_str());
+                remove(line.c_str());
             }
             if (gvars::currentx < 32)
             {
