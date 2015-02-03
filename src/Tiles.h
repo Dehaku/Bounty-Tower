@@ -24,36 +24,36 @@ public:
 class Tile
 {
 public:
-    unsigned int ID;
-    int DeathID;
-    float Health;
-    bool Walkable;
-    sf::Sprite Img;
-    sf::Color WorldColor;
+    unsigned int id;
+    int deathID;
+    float health;
+    bool walkable;
+    sf::Sprite img;
+    sf::Color worldColor;
 
-    void Dirt();
-    void RendGrass();
-    void Grass();
-    void Stone();
-    void StoneWall();
-    void Wall();
-    void WoodFloor();
-    void Road(bool Center = false);
-    void Door();
-    void Lava();
-    void Sky();
-    void Cake();
+    void dirt();
+    void rendGrass();
+    void grass();
+    void stone();
+    void stoneWall();
+    void wall();
+    void woodFloor();
+    void road(bool Center = false);
+    void door();
+    void lava();
+    void sky();
+    void cake();
     Tile();
 };
 
 class xTile
 {
 public:
-    unsigned short ID;
-    unsigned short DeathID;
-    float Health;
-    sf::Texture *Img;
-    sf::Color WorldColor;
+    unsigned short id;
+    unsigned short deathID;
+    float health;
+    sf::Texture *img;
+    sf::Color worldColor;
 
     xTile();
     void initImage();
@@ -68,60 +68,60 @@ public:
 class Planet
 {
 public:
-    std::vector<Chunk> Chunks;
+    std::vector<Chunk> chunks;
 };
 
 class WorldTile
 {
 public:
-    sf::Sprite Img;
-    int ID;
-    sf::Vector2f GalPos;
-    sf::Vector2f RegPos;
-    sf::Vector2f LocPos;
-    int Infected;
-    int Tiles;
-    std::string Type;
+    sf::Sprite img;
+    int id;
+    sf::Vector2f galPos;
+    sf::Vector2f regPos;
+    sf::Vector2f locPos;
+    int infected;
+    int tiles;
+    std::string type;
 
-    std::string Owner;
+    std::string owner;
 
     class Building
     {
     public:
-        sf::Vector2f Pos;
-        int Size;
+        sf::Vector2f pos;
+        int size;
     };
 
-    std::vector<Building> Builds;
+    std::vector<Building> builds;
 
     WorldTile();
 };
 
-extern Tile Tiles[Grids][Grids][Grids];
+extern Tile tiles[Grids][Grids][Grids];
 
-extern WorldTile WorldMap[100][100];
+extern WorldTile worldMap[100][100];
 
 extern Tile vChunk[ChunkSize][ChunkSize][ChunkSize]; // 10223616
-extern Tile TempTile[Grids][Grids][Grids];
+extern Tile tempTile[Grids][Grids][Grids];
 extern xTile xChunk[ChunkSize][ChunkSize][ChunkSize];
 
 void zGenerateChunk(std::string type, int planet, sf::Vector2i Cords,
                     sf::Vector2i Pos = sf::Vector2i(500, 500));
-void GenerateChunk(std::string type, int planet, sf::Vector2i Cords,
+void generateChunk(std::string type, int planet, sf::Vector2i Cords,
                    sf::Vector2i Pos = sf::Vector2i(500, 500));
-void GenerateWorld(int RegionSize = 100, int PlanetNum = 500);
-void SaveMap(int planet, int xcord, int ycord, int xpos, int ypos);
-void LoadMap(int planet, int xcord, int ycord, int xpos, int ypos);
-void InitalizeWorldTiles();
-void DrawWorldTiles();
-void InitializeTiles();
-void DrawTile(int xpos, int ypos, sf::Texture &Image);
-void DrawNewTiles();
-void TilesRandom();
-void TilesGoUp();
-void TilesGoDown();
-void TilesGoLeft();
-void TilesGoRight();
-void BuildLocalfromWorld(sf::Vector2i WorldPos);
+void generateWorld(int RegionSize = 100, int PlanetNum = 500);
+void saveMap(int planet, int xcord, int ycord, int xpos, int ypos);
+void loadMap(int planet, int xcord, int ycord, int xpos, int ypos);
+void initalizeWorldTiles();
+void drawWorldTiles();
+void initializeTiles();
+void drawTile(int xpos, int ypos, sf::Texture &Image);
+void drawNewTiles();
+void tilesRandom();
+void tilesGoUp();
+void tilesGoDown();
+void tilesGoLeft();
+void tilesGoRight();
+void buildLocalfromWorld(sf::Vector2i WorldPos);
 
 #endif // TILES_H_INCLUDED

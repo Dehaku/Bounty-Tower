@@ -49,10 +49,10 @@ void digWall(sf::Vector2f Pos)
         {
             Job job;
             std::cout << "Tile clicked: "
-                      << Tiles[abs_to_index(Pos.x / 20)][abs_to_index(
-                             Pos.y / 20)][6].ID << std::endl;
-            if (Tiles[abs_to_index(Pos.x / 20)][abs_to_index(Pos.y / 20)][30]
-                    .ID == 1008)
+                      << tiles[abs_to_index(Pos.x / 20)][abs_to_index(
+                             Pos.y / 20)][6].id << std::endl;
+            if (tiles[abs_to_index(Pos.x / 20)][abs_to_index(Pos.y / 20)][30]
+                    .id == 1008)
             {
                 job.name = "DigNaturalWall";
                 job.type = "Dig";
@@ -80,8 +80,8 @@ void rmbMenuTile(sf::Vector2f Pos)
             //job.pItem = &pItem;
             //globals::groundmap[abs_to_index(Pos.x/20)][abs_to_index(Pos.y/20)]
             Con("Dafuqe \n");
-            if (Tiles[abs_to_index(Pos.x / 20)][abs_to_index(Pos.y / 20)][30]
-                    .ID != 1010)
+            if (tiles[abs_to_index(Pos.x / 20)][abs_to_index(Pos.y / 20)][30]
+                    .id != 1010)
             {
                 job.name = "BuildWoodWall";
                 job.type = "Build";

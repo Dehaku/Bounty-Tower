@@ -633,8 +633,8 @@ void menuPopUp()
             if (i == 0)
             {
 
-                if (WorldMap[abs_to_index(gCtrl.menuPos.x / 20)]
-                            [abs_to_index(gCtrl.menuPos.y / 20)].ID == 0)
+                if (worldMap[abs_to_index(gCtrl.menuPos.x / 20)]
+                            [abs_to_index(gCtrl.menuPos.y / 20)].id == 0)
                     effects.createLine(
                         gCtrl.menuPos.x, (gCtrl.menuPos.y + (iY * 13)) + 13,
                         gCtrl.menuPos.x + 90,
@@ -648,7 +648,7 @@ void menuPopUp()
                     BS, BSY, ButCol, "Welcome to the jungle baby.");
                 if (squareButtonClicked(Butt) || key.num1Time == 1)
                 {
-                    GenerateChunk("Building", 500,
+                    generateChunk("Building", 500,
                                   sf::Vector2i(abs(gCtrl.menuPos.x / 20),
                                                abs(gCtrl.menuPos.y / 20)));
                     gvars::currentregionx = abs(gCtrl.menuPos.x / 20);
@@ -656,11 +656,11 @@ void menuPopUp()
                     gCtrl.phase = "Local";
 
                     //GC.BuildLocal("City", WorldMap[abs_to_index(GC.MenuPos.x/20)][abs_to_index(GC.MenuPos.y/20)].Infected);
-                    BuildLocalfromWorld(sf::Vector2i(
+                    buildLocalfromWorld(sf::Vector2i(
                         abs(gCtrl.menuPos.x / 20), abs(gCtrl.menuPos.y / 20)));
-                    buildStartingCritters(WorldMap[abs_to_index(
+                    buildStartingCritters(worldMap[abs_to_index(
                         gCtrl.menuPos.x / 20)][abs_to_index(gCtrl.menuPos.y /
-                                                            20)].Infected);
+                                                            20)].infected);
                     spawnItem("Sword", 990, 1020);
 
                     spawnItem("Gun", 1010, 1020);
@@ -673,10 +673,10 @@ void menuPopUp()
                         Con(Tx, false);
                         Con(":", false);
                         Con(Ty, false);
-                        if (Tiles[abs_to_index(Tx / 20)][abs_to_index(
-                                Ty / 20)][30].ID == 1001 ||
-                            Tiles[abs_to_index(Tx / 20)][abs_to_index(
-                                Ty / 20)][30].ID == 1003)
+                        if (tiles[abs_to_index(Tx / 20)][abs_to_index(
+                                Ty / 20)][30].id == 1001 ||
+                            tiles[abs_to_index(Tx / 20)][abs_to_index(
+                                Ty / 20)][30].id == 1003)
                         {
                             Con(", Is Plantable.");
                             spawnItem("Fruit Tree", Tx, Ty);
@@ -797,20 +797,20 @@ void menuPopUp()
                 if (squareButtonClicked(Butt) || key.num3Time == 1)
                 {
 
-                    if (Tiles[abs_to_index(gCtrl.menuPos.x / GridSize)]
+                    if (tiles[abs_to_index(gCtrl.menuPos.x / GridSize)]
                              [abs_to_index(gCtrl.menuPos.y / GridSize)][30]
-                                 .ID != 1010)
+                                 .id != 1010)
                     {
-                        Tiles[abs_to_index(gCtrl.menuPos.x / GridSize)]
+                        tiles[abs_to_index(gCtrl.menuPos.x / GridSize)]
                              [abs_to_index(gCtrl.menuPos.y / GridSize)][30]
-                                 .Wall();
+                                 .wall();
                         fSleep(0.2);
                     }
                     else
                     {
-                        Tiles[abs_to_index(gCtrl.menuPos.x / GridSize)]
+                        tiles[abs_to_index(gCtrl.menuPos.x / GridSize)]
                              [abs_to_index(gCtrl.menuPos.y / GridSize)][30]
-                                 .Stone();
+                                 .stone();
                         fSleep(0.2);
                     }
 
@@ -1018,7 +1018,7 @@ void menuPopUp()
                                            sin(Rot * PI / 180) * ItLength;
                                 int YPos = abs(gCtrl.menuPos.y / 20) +
                                            cos(Rot * PI / 180) * ItLength;
-                                Tiles[XPos][YPos][30].Stone();
+                                tiles[XPos][YPos][30].stone();
                             }
                         }
                         else
@@ -1029,7 +1029,7 @@ void menuPopUp()
                                            sin(Rot * PI / 180) * ItLength;
                                 int YPos = abs(gCtrl.menuPos.y / 20) +
                                            cos(Rot * PI / 180) * ItLength;
-                                Tiles[XPos][YPos][30].Wall();
+                                tiles[XPos][YPos][30].wall();
                             }
                         }
                     }

@@ -205,8 +205,8 @@ void updateItem()
                     {
                         x = randz(item.xpos - 10, item.xpos + 10);
                         y = randz(item.ypos - 10, item.ypos + 10);
-                        if (Tiles[abs_to_index(x / GridSize)][abs_to_index(
-                                y / GridSize)][30].Walkable == true)
+                        if (tiles[abs_to_index(x / GridSize)][abs_to_index(
+                                y / GridSize)][30].walkable == true)
                         {
                             FindEmpty = true;
                         }
@@ -256,7 +256,7 @@ void updateItem()
 
                             //Effectz.CreateCircle(MousePos.x,MousePos.y,5,Red);
                             //Effectz.CreateCircle(XPos,YPos,5,White);
-                            Tiles[XPos][YPos][30].Stone();
+                            tiles[XPos][YPos][30].stone();
                         }
                     }
 
@@ -375,8 +375,8 @@ bool gridposTrace(int xa, int ya, int xb, int yb, int id, sf::Vector2f Target)
     {
         x += xIncrement;
         y += yIncrement;
-        if (Tiles[abs_to_index(x / GridSize)][abs_to_index(y / GridSize)][30]
-                .ID == 1010)
+        if (tiles[abs_to_index(x / GridSize)][abs_to_index(y / GridSize)][30]
+                .id == 1010)
         {
             if (key.period && id == gvars::myTargetid)
             {
@@ -2220,9 +2220,9 @@ void updateNpc()
                                                     .completionTimer)
 
                                             {
-                                                Tiles[abs_to_index(x / 20)]
+                                                tiles[abs_to_index(x / 20)]
                                                      [abs_to_index(y / 20)][30]
-                                                         .Wall();
+                                                         .wall();
                                                 //Tiles[abs_to_index(x/20)][abs_to_index(y/20)][30].ID = 1010;
                                                 //Tiles[abs_to_index(x/20)][abs_to_index(y/20)][30].Img.setTexture( *imagemanager.GetImage("Wall.png"));
                                                 InvWood->toDelete = true;
@@ -2421,11 +2421,11 @@ void updateNpc()
                                                 .completionTimer)
 
                                         {
-                                            Tiles[abs_to_index(
+                                            tiles[abs_to_index(
                                                 PathFindWorkPos.x / 20)]
                                                  [abs_to_index(
                                                      PathFindWorkPos.y /
-                                                     20)][30].Stone();
+                                                     20)][30].stone();
                                             debug("Spawning Rocks");
                                             int TAR = randz(
                                                 3, 8); // Throw away random
@@ -3035,7 +3035,7 @@ void updateNpc()
                         for (int t = 0; t != Grids; t++)
                         {
                             // Add an Item Check here later to see if it blocks movement
-                            if (Tiles[i][t][30].Walkable == false)
+                            if (tiles[i][t][30].walkable == false)
                             {
                                 astar::walkability[i][t] = astar::unwalkable;
                             }
@@ -3364,7 +3364,7 @@ void DrawStuffs()
 
     //sf::Context context;
     //App.setActive(true);
-    DrawNewTiles();
+    drawNewTiles();
 
     //DrawPlanets();
     DrawItems();
@@ -3843,8 +3843,8 @@ int main()
             if (key.lctrlTime > 10)
             {
                 int Variable =
-                    Tiles[abs_to_index(gvars::mousePos.x / 20)][abs_to_index(
-                        gvars::mousePos.y / 20)][30].ID;
+                    tiles[abs_to_index(gvars::mousePos.x / 20)][abs_to_index(
+                        gvars::mousePos.y / 20)][30].id;
                 textList.createText(gvars::mousePos.x, gvars::mousePos.y, 11,
                                     sf::Color::Red, "", "", Variable);
             }
@@ -3852,7 +3852,7 @@ int main()
             bool Transitioning = false;
             if (gvars::currenty > 64)
             {
-                TilesGoUp();
+                tilesGoUp();
                 gvars::currenty = 33;
 
                 for (size_t i = 0; i != npclist.size(); i++)
@@ -3897,7 +3897,7 @@ int main()
             }
             if (gvars::currenty < 32)
             {
-                TilesGoDown();
+                tilesGoDown();
                 gvars::currenty = 63;
                 for (size_t i = 0; i != npclist.size(); i++)
                 {
@@ -3941,7 +3941,7 @@ int main()
             }
             if (gvars::currentx > 64)
             {
-                TilesGoLeft();
+                tilesGoLeft();
                 gvars::currentx = 33;
                 for (size_t i = 0; i != npclist.size(); i++)
                 {
@@ -3986,7 +3986,7 @@ int main()
             if (gvars::currentx < 32)
             {
                 Con("Starting GoRight");
-                TilesGoRight();
+                tilesGoRight();
                 Con("Ending GoRight");
                 gvars::currentx = 63;
                 Con("Starting GoRight with NPC's and Items");
@@ -4310,8 +4310,8 @@ int main()
             }
 
             if (gvars::myTarget != -1 && key.rmb &&
-                Tiles[abs_to_index(gvars::mousePos.x / GridSize)][abs_to_index(
-                    gvars::mousePos.y / GridSize)][30].ID != 1010)
+                tiles[abs_to_index(gvars::mousePos.x / GridSize)][abs_to_index(
+                    gvars::mousePos.y / GridSize)][30].id != 1010)
             { // Giving Orders
                 npclist.at(gvars::myTarget).targetPos = gvars::mousePos;
                 npclist.at(gvars::myTarget).action = "Orders";
@@ -4432,34 +4432,34 @@ int main()
             if (gvars::currenty >
                 64) // TODO: Make the auto removing tiles use the current windows border to get it's range, Allowing proper resizing and stuffs. Edit: Herp, That's not what this is.
             {
-                TilesGoUp();
+                tilesGoUp();
                 gvars::currenty = 33;
             }
             if (gvars::currenty < 32)
             {
-                TilesGoDown();
+                tilesGoDown();
                 gvars::currenty = 63;
             }
             if (gvars::currentx > 64)
             {
-                TilesGoLeft();
+                tilesGoLeft();
                 gvars::currentx = 33;
             }
             if (gvars::currentx < 32)
             {
-                TilesGoRight();
+                tilesGoRight();
                 gvars::currentx = 63;
             }
 
             if (key.g)
-                InitalizeWorldTiles();
+                initalizeWorldTiles();
             //DrawNewTiles();
 
-            DrawWorldTiles();
+            drawWorldTiles();
             if (key.j)
-                TilesGoUp();
+                tilesGoUp();
             if (key.k)
-                TilesRandom();
+                tilesRandom();
 
             if (key.m)
             {
@@ -5173,11 +5173,11 @@ int main()
             }
             else
             {
-                ID = WorldMap[abs_to_index(gvars::mousePos.x / 20)]
-                             [abs_to_index(gvars::mousePos.y / 20)].ID;
-                Infected = WorldMap[abs_to_index(
+                ID = worldMap[abs_to_index(gvars::mousePos.x / 20)]
+                             [abs_to_index(gvars::mousePos.y / 20)].id;
+                Infected = worldMap[abs_to_index(
                     gvars::mousePos.x / 20)][abs_to_index(gvars::mousePos.y /
-                                                          20)].Infected;
+                                                          20)].infected;
             }
             debug("Pre-World HUD");
             int HUDZ = 0;
@@ -5197,37 +5197,37 @@ int main()
             textList.createText(
                 gvars::topLeft.x + 2, gvars::topLeft.y + (HUDZ++) * 11, 11,
                 sf::Color::White, "FactionOwned: ",
-                WorldMap[math::clamp(abs(gvars::mousePos.x / 20), 0, 99)]
+                worldMap[math::clamp(abs(gvars::mousePos.x / 20), 0, 99)]
                         [math::clamp(abs(gvars::mousePos.y / 20), 0, 99)]
-                            .Owner);
+                            .owner);
             textList.createText(
                 gvars::topLeft.x + 2, gvars::topLeft.y + (HUDZ++) * 11, 11,
                 sf::Color::White, "FactionMembers: ", "",
-                factionMembers(WorldMap[math::clamp(
+                factionMembers(worldMap[math::clamp(
                     abs(gvars::mousePos.x / 20), 0,
                     99)][math::clamp(abs(gvars::mousePos.y / 20), 0, 99)]
-                                   .Owner));
+                                   .owner));
             textList.createText(
                 gvars::topLeft.x + 2, gvars::topLeft.y + (HUDZ++) * 11, 11,
                 sf::Color::White, "FactionAggression: ", "",
-                factionAggression(WorldMap[math::clamp(
+                factionAggression(worldMap[math::clamp(
                     abs(gvars::mousePos.x / 20), 0,
                     99)][math::clamp(abs(gvars::mousePos.y / 20), 0, 99)]
-                                      .Owner));
+                                      .owner));
             textList.createText(
                 gvars::topLeft.x + 2, gvars::topLeft.y + (HUDZ++) * 11, 11,
                 sf::Color::White, "FactionTerritories: ", "",
-                factionTerritories(WorldMap[math::clamp(
+                factionTerritories(worldMap[math::clamp(
                     abs(gvars::mousePos.x / 20), 0,
                     99)][math::clamp(abs(gvars::mousePos.y / 20), 0, 99)]
-                                       .Owner));
+                                       .owner));
             textList.createText(
                 gvars::topLeft.x + 2, gvars::topLeft.y + (HUDZ++) * 11, 11,
                 sf::Color::White, "FactionPower: ", "",
-                factionPower(WorldMap[math::clamp(
+                factionPower(worldMap[math::clamp(
                     abs(gvars::mousePos.x / 20), 0,
                     99)][math::clamp(abs(gvars::mousePos.y / 20), 0, 99)]
-                                 .Owner));
+                                 .owner));
 
             textList.createText(gvars::topLeft.x + 2,
                                 gvars::topLeft.y + (HUDZ++) * 11, 11,
@@ -5235,7 +5235,7 @@ int main()
                                 abs(gvars::mousePos.x / 20), "/", "",
                                 abs(gvars::mousePos.y / 20));
 
-            DrawWorldTiles();
+            drawWorldTiles();
             int xMouse(gvars::mousePos.x / 20);
             int yMouse(gvars::mousePos.y / 20);
             sf::Vector2f Pos(xMouse, yMouse);
@@ -5249,7 +5249,7 @@ int main()
                 {
                     for (int y = 0; y != Grids; y++)
                     {
-                        if (Tiles[x][y][0].ID == 1001)
+                        if (tiles[x][y][0].id == 1001)
                         {
                             sf::Image Grazz;
                             Grazz.create(20, 20, sf::Color(0, 0, 0, 255));
@@ -5666,8 +5666,8 @@ int main()
             if (gvars::selected.size() > 0)
             {
                 if (key.rmb &&
-                    Tiles[abs_to_index(gvars::mousePos.x / GridSize)]
-                         [abs_to_index(gvars::mousePos.y / GridSize)][30].ID !=
+                    tiles[abs_to_index(gvars::mousePos.x / GridSize)]
+                         [abs_to_index(gvars::mousePos.y / GridSize)][30].id !=
                         1010)
                 {
                     for (size_t i = 0; i != gvars::selected.size(); i++)

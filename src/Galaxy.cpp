@@ -99,14 +99,14 @@ void GalaxyController::buildLocal(std::string Type, int ZedAmount)
         {
             for (int t = 0; t != Grids; t++)
             {
-                Tiles[i][t][30].ID = 3;
-                Tiles[i][t][30].Grass();
-                Tiles[i][t][29].ID = 1;
-                Tiles[i][t][28].ID = 1;
-                Tiles[i][t][27].ID = 7;
-                Tiles[i][t][26].ID = 7;
-                Tiles[i][t][25].ID = 7;
-                Tiles[i][t][24].ID = 53;
+                tiles[i][t][30].id = 3;
+                tiles[i][t][30].grass();
+                tiles[i][t][29].id = 1;
+                tiles[i][t][28].id = 1;
+                tiles[i][t][27].id = 7;
+                tiles[i][t][26].id = 7;
+                tiles[i][t][25].id = 7;
+                tiles[i][t][24].id = 53;
             }
         }
         if (myDebug)
@@ -115,7 +115,7 @@ void GalaxyController::buildLocal(std::string Type, int ZedAmount)
         {
             for (int t = 32; t != 64; t++)
             {
-                Tiles[i][t][30].Dirt();
+                tiles[i][t][30].dirt();
             }
         }
         if (myDebug)
@@ -124,7 +124,7 @@ void GalaxyController::buildLocal(std::string Type, int ZedAmount)
         {
             for (int t = 40; t != 58; t++)
             {
-                Tiles[i][t][30].Wall();
+                tiles[i][t][30].wall();
             }
         }
         if (myDebug)
@@ -133,13 +133,13 @@ void GalaxyController::buildLocal(std::string Type, int ZedAmount)
         {
             for (int t = 41; t != 57; t++)
             {
-                Tiles[i][t][30].Stone();
+                tiles[i][t][30].stone();
             }
         }
-        Tiles[40][48][30].Stone();
-        Tiles[58][48][30].Stone();
-        Tiles[49][40][30].Stone();
-        Tiles[49][57][30].Stone();
+        tiles[40][48][30].stone();
+        tiles[58][48][30].stone();
+        tiles[49][40][30].stone();
+        tiles[49][57][30].stone();
         //globals::groundmap[6][49][49] = 10;
         //globals::groundmap[6][49][50] = 10;
         //globals::groundmap[6][49][51] = 10;
@@ -167,10 +167,10 @@ void GalaxyController::buildLocal(std::string Type, int ZedAmount)
                 for (int i = 0; i != 5; i++)
                 {
                     int Tx = randz(0, 2000), Ty = randz(0, 2000);
-                    if (Tiles[abs_to_index(Tx / 20)][abs_to_index(Ty / 20)][30]
-                                .ID == 1001 ||
-                        Tiles[abs_to_index(Tx / 20)][abs_to_index(Ty / 20)][30]
-                                .ID == 1003)
+                    if (tiles[abs_to_index(Tx / 20)][abs_to_index(Ty / 20)][30]
+                                .id == 1001 ||
+                        tiles[abs_to_index(Tx / 20)][abs_to_index(Ty / 20)][30]
+                                .id == 1003)
                     {
                         spawnItem("Fruit Tree", Tx, Ty);
                     }
@@ -202,14 +202,14 @@ void GalaxyController::buildLocal(std::string Type, int ZedAmount)
         {
             for (int t = 0; t != Grids; t++)
             {
-                Tiles[i][t][30].ID = 3;
-                Tiles[i][t][30].Grass();
-                Tiles[i][t][29].ID = 1;
-                Tiles[i][t][28].ID = 1;
-                Tiles[i][t][27].ID = 7;
-                Tiles[i][t][26].ID = 7;
-                Tiles[i][t][25].ID = 7;
-                Tiles[i][t][24].ID = 53;
+                tiles[i][t][30].id = 3;
+                tiles[i][t][30].grass();
+                tiles[i][t][29].id = 1;
+                tiles[i][t][28].id = 1;
+                tiles[i][t][27].id = 7;
+                tiles[i][t][26].id = 7;
+                tiles[i][t][25].id = 7;
+                tiles[i][t][24].id = 53;
             }
         }
         if (myDebug)
@@ -218,7 +218,7 @@ void GalaxyController::buildLocal(std::string Type, int ZedAmount)
         {
             for (int t = 32; t != 64; t++)
             {
-                Tiles[i][t][30].Dirt();
+                tiles[i][t][30].dirt();
             }
         }
         if (myDebug)
@@ -227,7 +227,7 @@ void GalaxyController::buildLocal(std::string Type, int ZedAmount)
         {
             for (int t = 40; t != 58; t++)
             {
-                Tiles[i][t][30].Wall();
+                tiles[i][t][30].wall();
             }
         }
         if (myDebug)
@@ -236,13 +236,13 @@ void GalaxyController::buildLocal(std::string Type, int ZedAmount)
         {
             for (int t = 41; t != 57; t++)
             {
-                Tiles[i][t][30].Stone();
+                tiles[i][t][30].stone();
             }
         }
-        Tiles[40][48][30].Stone();
-        Tiles[58][48][30].Stone();
-        Tiles[49][40][30].Stone();
-        Tiles[49][57][30].Stone();
+        tiles[40][48][30].stone();
+        tiles[58][48][30].stone();
+        tiles[49][40][30].stone();
+        tiles[49][57][30].stone();
 
         {
             if (myDebug)
@@ -322,14 +322,14 @@ void GalaxyController::buildLocalTest()
     {
         for (int t = 0; t != Grids; t++)
         {
-            Tiles[i][t][30].ID = 3;
+            tiles[i][t][30].id = 3;
             //Tiles[i][t][30].Grass();
-            Tiles[i][t][29].ID = 1;
-            Tiles[i][t][28].ID = 1;
-            Tiles[i][t][27].ID = 7;
-            Tiles[i][t][26].ID = 7;
-            Tiles[i][t][25].ID = 7;
-            Tiles[i][t][24].ID = 53;
+            tiles[i][t][29].id = 1;
+            tiles[i][t][28].id = 1;
+            tiles[i][t][27].id = 7;
+            tiles[i][t][26].id = 7;
+            tiles[i][t][25].id = 7;
+            tiles[i][t][24].id = 53;
         }
     }
     if (myDebug)
@@ -338,7 +338,7 @@ void GalaxyController::buildLocalTest()
     {
         for (int t = 31; t != 64; t++)
         {
-            Tiles[i][t][30].Dirt();
+            tiles[i][t][30].dirt();
             Con(t);
         }
     }
@@ -348,7 +348,7 @@ void GalaxyController::buildLocalTest()
     {
         for (int t = 40; t != 58; t++)
         {
-            Tiles[i][t][30].Wall();
+            tiles[i][t][30].wall();
         }
     }
     if (myDebug)
@@ -357,13 +357,13 @@ void GalaxyController::buildLocalTest()
     {
         for (int t = 41; t != 57; t++)
         {
-            Tiles[i][t][30].Stone();
+            tiles[i][t][30].stone();
         }
     }
-    Tiles[40][48][30].Stone();
-    Tiles[58][48][30].Stone();
-    Tiles[49][40][30].Stone();
-    Tiles[49][57][30].Stone();
+    tiles[40][48][30].stone();
+    tiles[58][48][30].stone();
+    tiles[49][40][30].stone();
+    tiles[49][57][30].stone();
     //globals::groundmap[6][49][49] = 10;
     //globals::groundmap[6][49][50] = 10;
     //globals::groundmap[6][49][51] = 10;
@@ -443,7 +443,7 @@ void GalaxyController::buildTileTest()
             //T.GalPos = sf::Vector2f(50,50);
             //T.RegPos = sf::Vector2f(50,50);
             //T.LocPos = sf::Vector2f(lx,ly);
-            T.ID = randz(0, 10);
+            T.id = randz(0, 10);
             //Tiles.push_back(T);
         }
     }
@@ -452,7 +452,7 @@ void GalaxyController::buildTileTest()
 void GalaxyController::buildWorldTest()
 {
     debug("Worlding it up. ");
-    InitalizeWorldTiles();
+    initalizeWorldTiles();
     debug("Factioning it up. \n");
     //InitalizeFactions();
 }
@@ -469,9 +469,9 @@ void GalaxyController::worldLoop()
 
             int x = randz(1, 99);
             int y = randz(1, 99);
-            if (WorldMap[x][y].Owner == "")
+            if (worldMap[x][y].owner == "")
             {
-                WorldMap[x][y].Owner = uniFact[i].name;
+                worldMap[x][y].owner = uniFact[i].name;
 
                 Territory ClaimedTerritory;
 
@@ -540,20 +540,20 @@ void GalaxyController::worldLoop()
                         Y = 0;
                     }
 
-                    WorldTile *WT = &WorldMap[Short.x + X][Short.y + Y];
+                    WorldTile *WT = &worldMap[Short.x + X][Short.y + Y];
 
-                    if (WT->Owner == "")
+                    if (WT->owner == "")
                     { // Claim it for themselves.
-                        WT->Owner = uniFact[i].name;
+                        WT->owner = uniFact[i].name;
 
                         Territory CT;
 
                         CT.worldTile = sf::Vector2i(Short.x + X, Short.y + Y);
                         uniFact[i].territories.push_back(CT);
                     }
-                    else if (WT->Owner != uniFact[i].name)
+                    else if (WT->owner != uniFact[i].name)
                     { // Declare War.
-                        std::string Tenant = WT->Owner;
+                        std::string Tenant = WT->owner;
 
                         for (size_t z = 0; z != uniFact.size(); z++)
                         {
@@ -605,7 +605,7 @@ void GalaxyController::worldLoop()
                                     if (uniFact[z].members > 0)
                                         uniFact[z].members -= 1;
 
-                                    WT->Owner = uniFact[i].name;
+                                    WT->owner = uniFact[i].name;
 
                                     Territory CT;
 
