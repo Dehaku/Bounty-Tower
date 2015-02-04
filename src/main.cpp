@@ -16,6 +16,8 @@
 
 #include "micropather.h"
 
+
+
 using std::abs;
 
 template <typename T> T &listAt(std::list<T> &list, size_t index)
@@ -3485,8 +3487,45 @@ void removeNPCs()
     }
 }
 
+
+const int worldSizeX = 32;
+const int worldSizeY = 32;
+const int worldSizeZ = 3;
+int world[worldSizeX][worldSizeY][worldSizeZ];
+
+
+
+
+
 int main()
 {
+    /* Perhaps have both Upstairs and Downstairs as the same thing? would this work? How to deal with the 'recieving' position.
+            I.E. What if there's a staircase that leads up, but on the upper level, there's a wall where the stairs lead.*/
+    /* 0 = open, 1 = wall, 2 = upstairs, 3 = downstairs */
+    for(int x = 0; x != worldSizeX; x++)
+        for(int y = 0; y != worldSizeY; y++)
+            for(int z = 0; z != worldSizeZ; z++)
+    {
+        world[x][y][z] = 0;
+        if(randz(0,20) == 20)
+            world[x][y][z] = 1;
+    }
+
+    world[16][16][0] = 2;
+    world[16][16][1] = 3;
+
+    world[16][8][1] = 2;
+    world[16][8][2] = 3;
+
+
+
+
+
+
+
+
+
+
     srand(clock());
     window.create(sf::VideoMode(RESOLUTION.x, RESOLUTION.y, 32),
                   randomWindowName());
@@ -3536,7 +3575,8 @@ int main()
     conFact = &uniFact[0];
 
     // Setting the initial game phase.
-    gCtrl.phase = "MainMenu";
+    //gCtrl.phase = "MainMenu";
+    gCtrl.phase = "MicroPatherTest";
 
     // For A*
     astar::init();
@@ -3618,7 +3658,7 @@ int main()
                 gvars::inFocus = true;
             }
         }
-        window.setView(gvars::view1);
+        // window.setView(gvars::view1); TODO: Don't forget me!
         gvars::buttonClicked = false;
         gvars::buttonClickedTime--; // Misleading Variable name, Sorry!
         if (gvars::buttonClickedTime < 0)
@@ -3688,6 +3728,58 @@ int main()
                 fSleep(0.2);
             }
         }
+
+        if (gCtrl.phase == "MicroPatherTest")
+        {
+            if (inputState.key[Key::Left])
+            {
+                gvars::currentx--;
+                plyAct = true;
+            }
+            if (inputState.key[Key::Right])
+            {
+                gvars::currentx++;
+                plyAct = true;
+            }
+            if (inputState.key[Key::Up])
+            {
+                gvars::currenty--;
+                plyAct = true;
+            }
+            if (inputState.key[Key::Down])
+            {
+                gvars::currenty++;
+                plyAct = true;
+            }
+
+            for (int x = 0; x != worldSizeX; x++)
+                for (int y = 0; y != worldSizeY; y++)
+                    for (int z = 0; z != worldSizeZ; z++)
+            {
+                sf::Color wallColor(0,0,0);
+                if (z == 0)
+                    wallColor.r = 150;
+                else if (z == 1)
+                    wallColor.g = 150;
+                else
+                    wallColor.b = 150;
+
+                if(world[x][y][z] == 1)
+                    effects.createSquare(x*20,y*20,(x+1)*20,(y+1)*20,wallColor);
+            }
+            /* Adding a second loop to make sure the yellow squares are on top of the display, Temporary only. */
+            for (int x = 0; x != worldSizeX; x++)
+                for (int y = 0; y != worldSizeY; y++)
+                    for (int z = 0; z != worldSizeZ; z++)
+            {
+                if(world[x][y][z] == 2)
+                    effects.createSquare((x*20)+2,(y*20)+2,((x+1)*20)-2,((y+1)*20)-2,sf::Color::Yellow,4,sf::Color::White);
+
+            }
+
+        }
+
+
         if (gCtrl.phase == "Local")
         { //=======================================================*Local*============================================================================
             if (gvars::debug)
@@ -3746,7 +3838,7 @@ int main()
                 menuPopUp();
             }
 
-            if (inputState.key[Key::Left] == true)
+            if (inputState.key[Key::Left])
             {
                 gvars::currentx--;
                 plyAct = true;
@@ -5559,7 +5651,7 @@ int main()
             }
             gCtrl.time(0);
             if (gCtrl.phase != "MainMenu" && gvars::following == false &&
-                gCtrl.phase != "MakeSquad")
+                gCtrl.phase != "MakeSquad" && gCtrl.phase != "MicroPatherTest")
             {
                 gvars::view1.setCenter(gvars::currentx * GRID_SIZE,
                                        gvars::currenty * GRID_SIZE);
