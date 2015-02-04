@@ -14,6 +14,8 @@
 #include "util.h"
 #include "globalvars.h"
 
+#include "micropather.h"
+
 using std::abs;
 
 template <typename T> T &listAt(std::list<T> &list, size_t index)
