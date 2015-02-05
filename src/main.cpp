@@ -3535,6 +3535,9 @@ public:
 		return (void*) &(grid[x][y][z]);
 	}
 
+    #ifdef USE_PATHER
+
+
     virtual float LeastCostEstimate( void* nodeStart, void* nodeEnd )
 	{
 		double xStart, yStart, zStart, xEnd, yEnd, zEnd;
@@ -3549,6 +3552,46 @@ public:
 		return d;
 	}
 
+    virtual void AdjacentCost( void* node, micropather::MPVector< StateCost > *neighbors )
+	{
+		int x, y, z;
+		NodeToXY( node, &x, &y, &z );
+		//const int dx[8] = { 1, 1, 0, -1, -1, -1, 0, 1 };
+		//const int dy[8] = { 0, 1, 1, 1, 0, -1, -1, -1 };
+		const int dx[26] = { -1, 0, 1, -1, 0, 1, -1, 0, 1, -1, 0, 1, -1, 1, -1, 0, 1, -1, 0, 1, -1, 0, 1, -1, 0, 1};
+		const int dy[26] = { -1, -1, -1, 0, 0, 0, 1, 1, 1, -1, -1, -1, 0, 0, 1, 1, 1, -1, -1, -1, 0, 0, 0, 1, 1, 1};
+		const int dz[26] = { -1, -1, -1, -1, -1, -1, -1, -1, -1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1};
+		//const float cost[8] = { 1.0f, 1.41f, 1.0f, 1.41f, 1.0f, 1.41f, 1.0f, 1.41f };
+		float One = 1;
+		float Two = 1.41f;
+		float Three = 1.44f;
+		const float cost[26] = { Three, Two, Three, Two, One, Two, Three, Two, Three, Two, One, Two, One, One, Two, One, Two, Three, Two, Three, Two, One, Two, Three, Two, Three};
+
+
+		for( int i=0; i<26; ++i ) {
+			int nx = x + dx[i];
+			int ny = y + dy[i];
+			int nz = z + dz[i];
+
+			int pass = Passable( nx, ny );
+			if ( pass > 0 ) {
+				if ( pass == 1 || doorsOpen )
+				{
+					// Normal floor
+					StateCost nodeCost = { XYZToNode( nx, ny, nz ), cost[i] };
+					neighbors->push_back( nodeCost );
+				}
+				else
+				{
+					// Normal floor
+					StateCost nodeCost = { XYZToNode( nx, ny, nz ), FLT_MAX };
+					neighbors->push_back( nodeCost );
+				}
+			}
+		}
+	}
+
+    #endif
 
 
 };
