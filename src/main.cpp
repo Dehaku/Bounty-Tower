@@ -3491,7 +3491,63 @@ void removeNPCs()
 const int worldSizeX = 32;
 const int worldSizeY = 32;
 const int worldSizeZ = 3;
-int world[worldSizeX][worldSizeY][worldSizeZ];
+
+struct Vec3
+    {
+        double x;
+        double y;
+        double z;
+    };
+
+class worldclass
+#ifdef USE_PATHER
+    : public Graph
+#endif
+{
+public:
+    int grid[worldSizeX][worldSizeY][worldSizeZ];
+
+
+
+    void NodeToXYZ( void* node, double* x, double* y, double* z )
+	{
+	    worldclass* WC = static_cast<worldclass*>(node);
+
+	    //*x = WC.x;
+
+		// intptr_t index = (intptr_t)node;
+		// *y = index / MAPX;
+		// *x = index - *y * MAPX;
+	}
+
+	void* XYZToNode( double x, double y, double z )
+	{
+		// return (void*) ( y*MAPX + x );
+	}
+
+    virtual float LeastCostEstimate( void* nodeStart, void* nodeEnd )
+	{
+		double xStart, yStart, zStart, xEnd, yEnd, zEnd;
+		NodeToXYZ( nodeStart, &xStart, &yStart, &zStart );
+		NodeToXYZ( nodeEnd, &xEnd, &yEnd, &zEnd );
+
+		//worldclass* WC = static_cast<worldclass*>(node);
+
+        double d = sqrt( pow(xEnd-xStart,2)+pow(yEnd-yStart,2)+pow(zEnd-zStart,2) );
+
+		/* Compute the minimum path cost using distance measurement. It is possible
+		   to compute the exact minimum path using the fact that you can move only
+		   on a straight line or on a diagonal, and this will yield a better result.
+		*/
+		int dx = xStart - xEnd;
+		int dy = yStart - yEnd;
+		return (float) sqrt( (double)(dx*dx) + (double)(dy*dy) );
+	}
+
+
+
+};
+worldclass world;
 
 
 
@@ -3506,21 +3562,29 @@ int main()
         for(int y = 0; y != worldSizeY; y++)
             for(int z = 0; z != worldSizeZ; z++)
     {
-        world[x][y][z] = 0;
+        world.grid[x][y][z] = 0;
         if(randz(0,20) == 20)
-            world[x][y][z] = 1;
+            world.grid[x][y][z] = 1;
     }
 
-    world[16][16][0] = 2;
-    world[16][16][1] = 3;
+    world.grid[16][16][0] = 2;
+    world.grid[16][16][1] = 3;
 
-    world[16][8][1] = 2;
-    world[16][8][2] = 3;
-
-
+    world.grid[16][8][1] = 2;
+    world.grid[16][8][2] = 3;
 
 
+    Vec3 Start, End;
+    Start.x = 3;
+    Start.y = 3;
+    Start.z = 0;
+    End.x = 16;
+    End.y = 16;
+    End.z = 3;
+    std::cout << "X: " << pow(End.x-Start.x,2) << " Y: " << pow(End.y-Start.y,2) << " Z: " << pow(End.z-Start.z,2) << std::endl;
 
+    double d = sqrt( pow(End.x-Start.x,2)+pow(End.y-Start.y,2)+pow(End.z-Start.z,2) );
+    std::cout << "Distance: " << d << std::endl;
 
 
 
@@ -3764,7 +3828,7 @@ int main()
                 else
                     wallColor.b = 150;
 
-                if(world[x][y][z] == 1)
+                if(world.grid[x][y][z] == 1)
                     effects.createSquare(x*20,y*20,(x+1)*20,(y+1)*20,wallColor);
             }
             /* Adding a second loop to make sure the yellow squares are on top of the display, Temporary only. */
@@ -3772,7 +3836,7 @@ int main()
                 for (int y = 0; y != worldSizeY; y++)
                     for (int z = 0; z != worldSizeZ; z++)
             {
-                if(world[x][y][z] == 2)
+                if(world.grid[x][y][z] == 2)
                     effects.createSquare((x*20)+2,(y*20)+2,((x+1)*20)-2,((y+1)*20)-2,sf::Color::Yellow,4,sf::Color::White);
 
             }
