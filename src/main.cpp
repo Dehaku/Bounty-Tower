@@ -3492,12 +3492,27 @@ const int worldSizeX = 32;
 const int worldSizeY = 32;
 const int worldSizeZ = 3;
 
-struct Vec3
+class cTile
+{
+public:
+    Vec3 Position;
+    int Type;
+    void setPos(int x, int y, int z)
     {
-        double x;
-        double y;
-        double z;
-    };
+        Position = Vec3(x,y,z);
+    }
+    Vec3 getPos()
+    {
+        return Position;
+    }
+    cTile()
+    {
+        Type = 0;
+    }
+};
+
+cTile grid[worldSizeX][worldSizeY][worldSizeZ];
+
 
 class worldclass
 #ifdef USE_PATHER
@@ -3505,24 +3520,19 @@ class worldclass
 #endif
 {
 public:
-    int grid[worldSizeX][worldSizeY][worldSizeZ];
-
-
 
     void NodeToXYZ( void* node, double* x, double* y, double* z )
 	{
-	    worldclass* WC = static_cast<worldclass*>(node);
+	    cTile* Nodeling = static_cast<cTile*>(node);
 
-	    //*x = WC.x;
-
-		// intptr_t index = (intptr_t)node;
-		// *y = index / MAPX;
-		// *x = index - *y * MAPX;
+	    *x = Nodeling->Position.x;
+	    *y = Nodeling->Position.y;
+	    *z = Nodeling->Position.z;
 	}
 
-	void* XYZToNode( double x, double y, double z )
+	void* XYZToNode( int x, int y, int z )
 	{
-		// return (void*) ( y*MAPX + x );
+		return (void*) &(grid[x][y][z]);
 	}
 
     virtual float LeastCostEstimate( void* nodeStart, void* nodeEnd )
@@ -3531,17 +3541,12 @@ public:
 		NodeToXYZ( nodeStart, &xStart, &yStart, &zStart );
 		NodeToXYZ( nodeEnd, &xEnd, &yEnd, &zEnd );
 
-		//worldclass* WC = static_cast<worldclass*>(node);
-
         double d = sqrt( pow(xEnd-xStart,2)+pow(yEnd-yStart,2)+pow(zEnd-zStart,2) );
-
 		/* Compute the minimum path cost using distance measurement. It is possible
 		   to compute the exact minimum path using the fact that you can move only
 		   on a straight line or on a diagonal, and this will yield a better result.
 		*/
-		int dx = xStart - xEnd;
-		int dy = yStart - yEnd;
-		return (float) sqrt( (double)(dx*dx) + (double)(dy*dy) );
+		return d;
 	}
 
 
@@ -3555,6 +3560,7 @@ worldclass world;
 
 int main()
 {
+    srand(clock());
     /* Perhaps have both Upstairs and Downstairs as the same thing? would this work? How to deal with the 'recieving' position.
             I.E. What if there's a staircase that leads up, but on the upper level, there's a wall where the stairs lead.*/
     /* 0 = open, 1 = wall, 2 = upstairs, 3 = downstairs */
@@ -3562,16 +3568,20 @@ int main()
         for(int y = 0; y != worldSizeY; y++)
             for(int z = 0; z != worldSizeZ; z++)
     {
-        world.grid[x][y][z] = 0;
+        grid[x][y][z].setPos(x,y,z);
+        grid[x][y][z].Type = 0;
         if(randz(0,20) == 20)
-            world.grid[x][y][z] = 1;
+            grid[x][y][z].Type = 1;
     }
 
-    world.grid[16][16][0] = 2;
-    world.grid[16][16][1] = 3;
+    grid[16][16][0].Type = 2;
+    grid[16][16][1].Type = 3;
 
-    world.grid[16][8][1] = 2;
-    world.grid[16][8][2] = 3;
+    grid[16][8][1].Type = 2;
+    grid[16][8][2].Type = 3;
+
+    grid[0][0][0].Type = 0;
+    grid[worldSizeX-1][worldSizeY-1][worldSizeZ-1].Type = 0;
 
 
     Vec3 Start, End;
@@ -3590,7 +3600,7 @@ int main()
 
 
 
-    srand(clock());
+
     window.create(sf::VideoMode(RESOLUTION.x, RESOLUTION.y, 32),
                   randomWindowName());
 
@@ -3828,7 +3838,7 @@ int main()
                 else
                     wallColor.b = 150;
 
-                if(world.grid[x][y][z] == 1)
+                if(grid[x][y][z].Type == 1)
                     effects.createSquare(x*20,y*20,(x+1)*20,(y+1)*20,wallColor);
             }
             /* Adding a second loop to make sure the yellow squares are on top of the display, Temporary only. */
@@ -3836,7 +3846,7 @@ int main()
                 for (int y = 0; y != worldSizeY; y++)
                     for (int z = 0; z != worldSizeZ; z++)
             {
-                if(world.grid[x][y][z] == 2)
+                if(grid[x][y][z].Type == 2)
                     effects.createSquare((x*20)+2,(y*20)+2,((x+1)*20)-2,((y+1)*20)-2,sf::Color::Yellow,4,sf::Color::White);
 
             }

@@ -12,4 +12,18 @@ const int GRID_Z = 10;
 const int GRID_SIZE = 20;
 const sf::Color BROWN(100, 100, 0, 255);
 
+struct Vec3
+{
+    double x;
+    double y;
+    double z;
+    Vec3(double First = 0, double Second = 0, double Third = 0)
+    {
+        x = First;
+        y = Second;
+        z = Third;
+    }
+};
+
+
 #endif // __DEFS_H_INCLUDED__
