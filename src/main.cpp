@@ -14,8 +14,13 @@
 #include "util.h"
 #include "globalvars.h"
 
-#include "micropather.h"
+#define USE_PATHER
 
+#ifdef USE_PATHER
+
+#include "micropather.h"
+using namespace micropather;
+#endif
 
 
 using std::abs;
@@ -3519,9 +3524,13 @@ class worldclass
     : public Graph
 #endif
 {
+private:
+    worldclass( const worldclass& );
+	void operator=( const worldclass& );
+
 public:
 
-    void NodeToXYZ( void* node, double* x, double* y, double* z )
+    void NodeToXYZ( void* node, int* x, int* y, int* z )
 	{
 	    cTile* Nodeling = static_cast<cTile*>(node);
 
@@ -3535,12 +3544,60 @@ public:
 		return (void*) &(grid[x][y][z]);
 	}
 
+    int Passable( int nx, int ny, int nz )
+	{
+		if (    nx >= 0 && nx < worldSizeX
+			 && ny >= 0 && ny < worldSizeY
+			 && nz >= 0 && nz < worldSizeZ
+			 )
+		{
+		    if(grid[nx][ny][nz].Type == 0)
+                return 1;
+            if(grid[nx][ny][nz].Type == 2)
+                return 2;
+            if(grid[nx][ny][nz].Type == 3)
+                return 3;
+		}
+		return 0;
+	}
+
     #ifdef USE_PATHER
 
+    MPVector<void*> microPath;
+    MicroPather* pather;
+
+    worldclass() : pather( 0 )
+	{
+		pather = new MicroPather( this, 20 );	// Use a very small memory block to stress the pather
+	}
+
+	void DrawPath()
+	{
+	    unsigned int k;
+        unsigned int pathSize = microPath.size();
+        Vec3 oldPos;
+        for( k = 0; k < pathSize; ++k )
+        {
+            Vec3 pathPos;
+            NodeToXYZ( microPath[k], &pathPos.x, &pathPos.y, &pathPos.z );
+
+            oldPos = pathPos;
+        }
+	}
+
+	void MakePath(Vec3 Ori, Vec3 Tar)
+	{
+
+	}
+
+
+    virtual ~worldclass() {
+		delete pather;
+	}
 
     virtual float LeastCostEstimate( void* nodeStart, void* nodeEnd )
 	{
-		double xStart, yStart, zStart, xEnd, yEnd, zEnd;
+		int xStart, yStart, zStart, xEnd, yEnd, zEnd;
 		NodeToXYZ( nodeStart, &xStart, &yStart, &zStart );
 		NodeToXYZ( nodeEnd, &xEnd, &yEnd, &zEnd );
 
@@ -3555,7 +3612,7 @@ public:
     virtual void AdjacentCost( void* node, micropather::MPVector< StateCost > *neighbors )
 	{
 		int x, y, z;
-		NodeToXY( node, &x, &y, &z );
+		NodeToXYZ( node, &x, &y, &z );
 		//const int dx[8] = { 1, 1, 0, -1, -1, -1, 0, 1 };
 		//const int dy[8] = { 0, 1, 1, 1, 0, -1, -1, -1 };
 		const int dx[26] = { -1, 0, 1, -1, 0, 1, -1, 0, 1, -1, 0, 1, -1, 1, -1, 0, 1, -1, 0, 1, -1, 0, 1, -1, 0, 1};
@@ -3573,9 +3630,9 @@ public:
 			int ny = y + dy[i];
 			int nz = z + dz[i];
 
-			int pass = Passable( nx, ny );
+			int pass = Passable( nx, ny, nz );
 			if ( pass > 0 ) {
-				if ( pass == 1 || doorsOpen )
+				if ( pass == 1)
 				{
 					// Normal floor
 					StateCost nodeCost = { XYZToNode( nx, ny, nz ), cost[i] };
@@ -3589,6 +3646,13 @@ public:
 				}
 			}
 		}
+	}
+
+    virtual void PrintStateInfo( void* node )
+	{
+		int x, y, z;
+		NodeToXYZ( node, &x, &y, &z );
+		printf( "(%d,%d,%d)", x, y, &z );
 	}
 
     #endif
@@ -3893,6 +3957,11 @@ int main()
                     effects.createSquare((x*20)+2,(y*20)+2,((x+1)*20)-2,((y+1)*20)-2,sf::Color::Yellow,4,sf::Color::White);
 
             }
+
+            Vec3 startPos(0,0,0);
+            Vec3 endPos(worldSizeX-1, worldSizeY-1, worldSizeZ-1);
+            world.MakePath(startPos,endPos);
+
 
         }
 

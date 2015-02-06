@@ -14,10 +14,10 @@ const sf::Color BROWN(100, 100, 0, 255);
 
 struct Vec3
 {
-    double x;
-    double y;
-    double z;
-    Vec3(double First = 0, double Second = 0, double Third = 0)
+    int x;
+    int y;
+    int z;
+    Vec3(int First = 0, int Second = 0, int Third = 0)
     {
         x = First;
         y = Second;
