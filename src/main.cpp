@@ -3589,7 +3589,7 @@ public:
                 pathColor.b = 255;
 
             if(k != 0)
-                effects.createLine((oldPos.x+1)*20,(oldPos.y+1)*20,(pathPos.x+1)*20,(pathPos.y+1)*20,5,pathColor);
+                effects.createLine((oldPos.x+1)*20-10,(oldPos.y+1)*20-10,(pathPos.x+1)*20-10,(pathPos.y+1)*20-10,5,pathColor);
 
             oldPos = pathPos;
         }
@@ -3643,29 +3643,41 @@ public:
 		NodeToXYZ( node, &x, &y, &z );
 		//const int dx[8] = { 1, 1, 0, -1, -1, -1, 0, 1 };
 		//const int dy[8] = { 0, 1, 1, 1, 0, -1, -1, -1 };
-		const int dx[26] = { -1, 0, 1, -1, 0, 1, -1, 0, 1, -1, 0, 1, -1, 1, -1, 0, 1, -1, 0, 1, -1, 0, 1, -1, 0, 1};
-		const int dy[26] = { -1, -1, -1, 0, 0, 0, 1, 1, 1, -1, -1, -1, 0, 0, 1, 1, 1, -1, -1, -1, 0, 0, 0, 1, 1, 1};
-		const int dz[26] = { -1, -1, -1, -1, -1, -1, -1, -1, -1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1};
+		//const int dx[26] = { -1, 0, 1, -1, 0, 1, -1, 0, 1, -1, 0, 1, -1, 1, -1, 0, 1, -1, 0, 1, -1, 0, 1, -1, 0, 1};
+		//const int dy[26] = { -1, -1, -1, 0, 0, 0, 1, 1, 1, -1, -1, -1, 0, 0, 1, 1, 1, -1, -1, -1, 0, 0, 0, 1, 1, 1};
+		//const int dz[26] = { -1, -1, -1, -1, -1, -1, -1, -1, -1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1};
+
+		const int dx[10] = { 0, -1, 0, 1, -1, 1, -1, 0, 1, 0 };
+		const int dy[10] = { 0, -1, -1, -1, 0, 0, 1, 1, 1, 0 };
+		const int dz[10] = { -1, 0, 0, 0, 0, 0, 0, 0, 0, 1};
+
+
 		//const float cost[8] = { 1.0f, 1.41f, 1.0f, 1.41f, 1.0f, 1.41f, 1.0f, 1.41f };
 		float One = 1;
 		float Two = 1.41f;
 		float Three = 1.44f;
-		const float cost[26] = { Three, Two, Three, Two, One, Two, Three, Two, Three, Two, One, Two, One, One, Two, One, Two, Three, Two, Three, Two, One, Two, Three, Two, Three};
+		const float cost[10] = { One, Two, One, Two, One, One, Two, One, Two, One};
 
 
-		for( int i=0; i<26; ++i ) {
+		for( int i=0; i<10; ++i ) {
 			int nx = x + dx[i];
 			int ny = y + dy[i];
 			int nz = z + dz[i];
 
 			int pass = Passable( nx, ny, nz );
 			if ( pass > 0 ) {
-				if ( pass == 1)
+                    //std::cout << dz[i];
+				if ( pass == 1 && dz[i] == 0)
 				{
 					// Normal floor
 					StateCost nodeCost = { XYZToNode( nx, ny, nz ), cost[i] };
 					neighbors->push_back( nodeCost );
 				}
+				else if( pass == 2 && dz[i] == -1 && dx[i] == 0 && dy[i] == 0 ||  pass == 2 && dz[i] == 1 && dx[i] == 0 && dy[i] == 0)
+                {
+                    StateCost nodeCost = { XYZToNode( nx, ny, nz ), cost[i] };
+					neighbors->push_back( nodeCost );
+                }
 				else
 				{
 					// Normal floor
@@ -3749,15 +3761,15 @@ int main()
             grid[x][y][z].Type = 1;
     }
 
-    grid[16][16][0].Type = 2;
-    grid[16][16][1].Type = 3;
+    grid[16][16][0].Type = 0;
+    grid[16][16][1].Type = 2;
 
-    grid[16][16][0].Type = 1;
-    grid[16][16][1].Type = 1;
-    grid[16][16][2].Type = 1;
+    //grid[16][16][0].Type = 1;
+    //grid[16][16][1].Type = 1;
+    //grid[16][16][2].Type = 1;
 
-    grid[16][8][1].Type = 2;
-    grid[16][8][2].Type = 3;
+    grid[16][8][1].Type = 0;
+    grid[16][8][2].Type = 2;
 
     grid[0][0][0].Type = 0;
     grid[worldSizeX-1][worldSizeY-1][worldSizeZ-1].Type = 0;
