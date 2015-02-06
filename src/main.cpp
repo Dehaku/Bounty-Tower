@@ -3580,14 +3580,42 @@ public:
         {
             Vec3 pathPos;
             NodeToXYZ( microPath[k], &pathPos.x, &pathPos.y, &pathPos.z );
+            sf::Color pathColor(0,0,0);
+            if(pathPos.z == 0)
+                pathColor.r = 255;
+            if(pathPos.z == 1)
+                pathColor.g = 255;
+            if(pathPos.z == 2)
+                pathColor.b = 255;
+
+            if(k != 0)
+                effects.createLine((oldPos.x+1)*20,(oldPos.y+1)*20,(pathPos.x+1)*20,(pathPos.y+1)*20,5,pathColor);
 
             oldPos = pathPos;
         }
 	}
 
-	void MakePath(Vec3 Ori, Vec3 Tar)
+	int MakePath(Vec3 Ori, Vec3 Tar)
 	{
+        int result = 0;
+		if ( Passable( Tar.x, Tar.y, Tar.z ) == 1 )
+		{
+			#ifdef USE_PATHER
+				float totalCost;
 
+				result = pather->Solve( XYZToNode( Ori.x, Ori.y, Ori.z ), XYZToNode( Tar.x, Tar.y, Tar.z ), &microPath, &totalCost );
+
+                /*
+				if ( result == MicroPather::SOLVED ) {
+					playerX = nx;
+					playerY = ny;
+				}
+				*/
+				printf( "Pather returned %d\n", result );
+
+			#endif
+		}
+		return result;
 	}
 
 
@@ -3610,6 +3638,46 @@ public:
 	}
 
     virtual void AdjacentCost( void* node, micropather::MPVector< StateCost > *neighbors )
+	{
+		int x, y, z;
+		NodeToXYZ( node, &x, &y, &z );
+		//const int dx[8] = { 1, 1, 0, -1, -1, -1, 0, 1 };
+		//const int dy[8] = { 0, 1, 1, 1, 0, -1, -1, -1 };
+		const int dx[26] = { -1, 0, 1, -1, 0, 1, -1, 0, 1, -1, 0, 1, -1, 1, -1, 0, 1, -1, 0, 1, -1, 0, 1, -1, 0, 1};
+		const int dy[26] = { -1, -1, -1, 0, 0, 0, 1, 1, 1, -1, -1, -1, 0, 0, 1, 1, 1, -1, -1, -1, 0, 0, 0, 1, 1, 1};
+		const int dz[26] = { -1, -1, -1, -1, -1, -1, -1, -1, -1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1};
+		//const float cost[8] = { 1.0f, 1.41f, 1.0f, 1.41f, 1.0f, 1.41f, 1.0f, 1.41f };
+		float One = 1;
+		float Two = 1.41f;
+		float Three = 1.44f;
+		const float cost[26] = { Three, Two, Three, Two, One, Two, Three, Two, Three, Two, One, Two, One, One, Two, One, Two, Three, Two, Three, Two, One, Two, Three, Two, Three};
+
+
+		for( int i=0; i<26; ++i ) {
+			int nx = x + dx[i];
+			int ny = y + dy[i];
+			int nz = z + dz[i];
+
+			int pass = Passable( nx, ny, nz );
+			if ( pass > 0 ) {
+				if ( pass == 1)
+				{
+					// Normal floor
+					StateCost nodeCost = { XYZToNode( nx, ny, nz ), cost[i] };
+					neighbors->push_back( nodeCost );
+				}
+				else
+				{
+					// Normal floor
+					StateCost nodeCost = { XYZToNode( nx, ny, nz ), FLT_MAX };
+					neighbors->push_back( nodeCost );
+				}
+			}
+		}
+	}
+
+
+    virtual void AdjacentCostPureFlight( void* node, micropather::MPVector< StateCost > *neighbors )
 	{
 		int x, y, z;
 		NodeToXYZ( node, &x, &y, &z );
@@ -3677,12 +3745,16 @@ int main()
     {
         grid[x][y][z].setPos(x,y,z);
         grid[x][y][z].Type = 0;
-        if(randz(0,20) == 20)
+        if(randz(0,10) == 10)
             grid[x][y][z].Type = 1;
     }
 
     grid[16][16][0].Type = 2;
     grid[16][16][1].Type = 3;
+
+    grid[16][16][0].Type = 1;
+    grid[16][16][1].Type = 1;
+    grid[16][16][2].Type = 1;
 
     grid[16][8][1].Type = 2;
     grid[16][8][2].Type = 3;
@@ -3961,6 +4033,8 @@ int main()
             Vec3 startPos(0,0,0);
             Vec3 endPos(worldSizeX-1, worldSizeY-1, worldSizeZ-1);
             world.MakePath(startPos,endPos);
+
+            world.DrawPath();
 
 
         }
