@@ -3875,8 +3875,8 @@ int main()
     conFact = &uniFact[0];
 
     // Setting the initial game phase.
-    //gCtrl.phase = "MainMenu";
-    gCtrl.phase = "MicroPatherTest";
+    gCtrl.phase = "MainMenu";
+    //gCtrl.phase = "MicroPatherTest";
 
     // For A*
     astar::init();
@@ -3958,7 +3958,7 @@ int main()
                 gvars::inFocus = true;
             }
         }
-        // window.setView(gvars::view1); TODO: Don't forget me!
+        window.setView(gvars::view1);
         gvars::buttonClicked = false;
         gvars::buttonClickedTime--; // Misleading Variable name, Sorry!
         if (gvars::buttonClickedTime < 0)
@@ -5739,6 +5739,8 @@ int main()
                                 "Press r to turn on the "
                                 "debugger, If it slows down the "
                                 "game, Minimize the console.");
+            textList.createText(395,755,10,sf::Color::White,"Pathfinding: MicroPather by Lee Thomason");
+            /* textList.createText(gvars::mousePos.x,gvars::mousePos.y-10,10,sf::Color::White,"X: "+std::to_string(gvars::mousePos.x)+" Y: "+std::to_string(gvars::mousePos.y)); */
 
             if (squareButtonClicked(var.id))
             {
