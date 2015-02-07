@@ -5725,6 +5725,10 @@ int main()
                 "Take this 'game' with a grain of salt, It's not done yet");
             textList.createText(450, 45, 11, gvars::cycleGreen,
                                 "Design Your Squad");
+
+            textList.createText(450, 60, 11, sf::Color::Red,
+                                "Press 'm' to view MicroPather basic test");
+
             // TODO: Simply add cText.CreateText for the Button Text, Or at least make it an option, Since sButtonText is designed for text 'on' the button.
             SquareButton var;
             var.color = gvars::cycleRed;
@@ -5741,6 +5745,13 @@ int main()
                                 "game, Minimize the console.");
             textList.createText(395,755,10,sf::Color::White,"Pathfinding: MicroPather by Lee Thomason");
             /* textList.createText(gvars::mousePos.x,gvars::mousePos.y-10,10,sf::Color::White,"X: "+std::to_string(gvars::mousePos.x)+" Y: "+std::to_string(gvars::mousePos.y)); */
+
+            if(inputState.key[Key::M])
+            {
+                gCtrl.phase = "MicroPatherTest";
+                gvars::currentx = 14;
+                gvars::currenty = 14;
+            }
 
             if (squareButtonClicked(var.id))
             {
