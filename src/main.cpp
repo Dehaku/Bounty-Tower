@@ -14,6 +14,15 @@
 #include "util.h"
 #include "globalvars.h"
 
+#define USE_PATHER
+
+#ifdef USE_PATHER
+
+#include "micropather.h"
+using namespace micropather;
+#endif
+
+
 using std::abs;
 
 template <typename T> T &listAt(std::list<T> &list, size_t index)
@@ -3483,9 +3492,341 @@ void removeNPCs()
     }
 }
 
+
+const int worldSizeX = 32;
+const int worldSizeY = 32;
+const int worldSizeZ = 3;
+
+class cTile
+{
+public:
+    Vec3 Position;
+    int Type;
+    bool Teleporter;
+    Vec3 TelePos;
+    void setPos(int x, int y, int z)
+    {
+        Position = Vec3(x,y,z);
+    }
+    Vec3 getPos()
+    {
+        return Position;
+    }
+    cTile()
+    {
+        Type = 0;
+        Teleporter = false;
+        TelePos = Vec3(-1,-1,-1);
+    }
+};
+
+cTile grid[worldSizeX][worldSizeY][worldSizeZ];
+
+
+class worldclass
+#ifdef USE_PATHER
+    : public Graph
+#endif
+{
+private:
+    worldclass( const worldclass& );
+	void operator=( const worldclass& );
+
+public:
+
+    void NodeToXYZ( void* node, int* x, int* y, int* z )
+	{
+	    cTile* Nodeling = static_cast<cTile*>(node);
+
+	    *x = Nodeling->Position.x;
+	    *y = Nodeling->Position.y;
+	    *z = Nodeling->Position.z;
+	}
+
+	void* XYZToNode( int x, int y, int z )
+	{
+		return (void*) &(grid[x][y][z]);
+	}
+
+    int Passable( int nx, int ny, int nz )
+	{
+		if (    nx >= 0 && nx < worldSizeX
+			 && ny >= 0 && ny < worldSizeY
+			 && nz >= 0 && nz < worldSizeZ
+			 )
+		{
+		    if(grid[nx][ny][nz].Type == 0)
+                return 1;
+            if(grid[nx][ny][nz].Type == 2)
+                return 2;
+            if(grid[nx][ny][nz].Type == 3)
+                return 3;
+            if(grid[nx][ny][nz].Type == 10)
+                return 1;
+		}
+		return 0;
+	}
+
+    #ifdef USE_PATHER
+
+    MPVector<void*> microPath;
+    MicroPather* pather;
+
+    worldclass() : pather( 0 )
+	{
+		pather = new MicroPather( this, 20 );	// Use a very small memory block to stress the pather
+	}
+
+	void DrawPath()
+	{
+	    unsigned int k;
+        unsigned int pathSize = microPath.size();
+        Vec3 oldPos;
+        for( k = 0; k < pathSize; ++k )
+        {
+            Vec3 pathPos;
+            NodeToXYZ( microPath[k], &pathPos.x, &pathPos.y, &pathPos.z );
+            sf::Color pathColor(0,0,0);
+            if(pathPos.z == 0)
+                pathColor.r = 255;
+            if(pathPos.z == 1)
+                pathColor.g = 255;
+            if(pathPos.z == 2)
+                pathColor.b = 255;
+
+            if(k != 0)
+                effects.createLine((oldPos.x+1)*20-10,(oldPos.y+1)*20-10,(pathPos.x+1)*20-10,(pathPos.y+1)*20-10,5,pathColor);
+
+            oldPos = pathPos;
+        }
+	}
+
+	int MakePath(Vec3 Ori, Vec3 Tar)
+	{
+        int result = 0;
+		if ( Passable( Tar.x, Tar.y, Tar.z ) == 1 )
+		{
+			#ifdef USE_PATHER
+				float totalCost;
+
+				result = pather->Solve( XYZToNode( Ori.x, Ori.y, Ori.z ), XYZToNode( Tar.x, Tar.y, Tar.z ), &microPath, &totalCost );
+
+                /*
+				if ( result == MicroPather::SOLVED ) {
+					playerX = nx;
+					playerY = ny;
+				}
+				*/
+				//printf( "Pather returned %d\n", result );
+
+			#endif
+		}
+		return result;
+	}
+
+
+    virtual ~worldclass() {
+		delete pather;
+	}
+
+    virtual float LeastCostEstimate( void* nodeStart, void* nodeEnd )
+	{
+		int xStart, yStart, zStart, xEnd, yEnd, zEnd;
+		NodeToXYZ( nodeStart, &xStart, &yStart, &zStart );
+		NodeToXYZ( nodeEnd, &xEnd, &yEnd, &zEnd );
+
+        double d = sqrt( pow(xEnd-xStart,2)+pow(yEnd-yStart,2)+pow(zEnd-zStart,2) );
+		/* Compute the minimum path cost using distance measurement. It is possible
+		   to compute the exact minimum path using the fact that you can move only
+		   on a straight line or on a diagonal, and this will yield a better result.
+		*/
+		return d;
+	}
+
+    virtual void AdjacentCost( void* node, micropather::MPVector< StateCost > *neighbors )
+	{
+		int x, y, z;
+		NodeToXYZ( node, &x, &y, &z );
+		//const int dx[8] = { 1, 1, 0, -1, -1, -1, 0, 1 };
+		//const int dy[8] = { 0, 1, 1, 1, 0, -1, -1, -1 };
+		//const int dx[26] = { -1, 0, 1, -1, 0, 1, -1, 0, 1, -1, 0, 1, -1, 1, -1, 0, 1, -1, 0, 1, -1, 0, 1, -1, 0, 1};
+		//const int dy[26] = { -1, -1, -1, 0, 0, 0, 1, 1, 1, -1, -1, -1, 0, 0, 1, 1, 1, -1, -1, -1, 0, 0, 0, 1, 1, 1};
+		//const int dz[26] = { -1, -1, -1, -1, -1, -1, -1, -1, -1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1};
+
+		const int dx[10] = { 0, -1, 0, 1, -1, 1, -1, 0, 1, 0 };
+		const int dy[10] = { 0, -1, -1, -1, 0, 0, 1, 1, 1, 0 };
+		const int dz[10] = { -1, 0, 0, 0, 0, 0, 0, 0, 0, 1};
+
+
+		//const float cost[8] = { 1.0f, 1.41f, 1.0f, 1.41f, 1.0f, 1.41f, 1.0f, 1.41f };
+		float One = 1;
+		float Two = 1.41f;
+		float Three = 1.44f;
+		const float cost[10] = { One, Two, One, Two, One, One, Two, One, Two, One};
+
+        cTile* Nodeling = static_cast<cTile*>(node);
+
+        if( Nodeling->Teleporter)
+        {
+            Vec3 N(Nodeling->TelePos);
+            StateCost nodeCost = { XYZToNode( N.x, N.y, N.z ), 3 };
+            neighbors->push_back( nodeCost );
+        }
+
+
+		for( int i=0; i<10; ++i )
+        {
+
+            int nx = x + dx[i];
+			int ny = y + dy[i];
+			int nz = z + dz[i];
+
+            //void* targetTile = XYZToNode(nx,ny,nz);
+
+
+
+
+
+
+
+
+			int pass = Passable( nx, ny, nz );
+			if ( pass > 0 ) {
+                    //std::cout << dz[i];
+				if ( pass == 1 && dz[i] == 0)
+				{
+					// Normal floor
+					StateCost nodeCost = { XYZToNode( nx, ny, nz ), cost[i] };
+					neighbors->push_back( nodeCost );
+				}
+				else if ( pass == 3 && dz[i] == -1 && dx[i] == 0 && dy[i] == 0 )
+                {
+                    StateCost nodeCost = { XYZToNode( nx, ny, nz ), cost[i] };
+					neighbors->push_back( nodeCost );
+                }
+                else if ( pass == 2 && dz[i] == 1 && dx[i] == 0 && dy[i] == 0 )
+                {
+                    StateCost nodeCost = { XYZToNode( nx, ny, nz ), cost[i] };
+					neighbors->push_back( nodeCost );
+                }
+				else
+				{
+					// Normal floor
+					StateCost nodeCost = { XYZToNode( nx, ny, nz ), FLT_MAX };
+					neighbors->push_back( nodeCost );
+				}
+			}
+		}
+	}
+
+
+    virtual void AdjacentCostPureFlight( void* node, micropather::MPVector< StateCost > *neighbors )
+	{
+		int x, y, z;
+		NodeToXYZ( node, &x, &y, &z );
+		//const int dx[8] = { 1, 1, 0, -1, -1, -1, 0, 1 };
+		//const int dy[8] = { 0, 1, 1, 1, 0, -1, -1, -1 };
+		const int dx[26] = { -1, 0, 1, -1, 0, 1, -1, 0, 1, -1, 0, 1, -1, 1, -1, 0, 1, -1, 0, 1, -1, 0, 1, -1, 0, 1};
+		const int dy[26] = { -1, -1, -1, 0, 0, 0, 1, 1, 1, -1, -1, -1, 0, 0, 1, 1, 1, -1, -1, -1, 0, 0, 0, 1, 1, 1};
+		const int dz[26] = { -1, -1, -1, -1, -1, -1, -1, -1, -1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1};
+		//const float cost[8] = { 1.0f, 1.41f, 1.0f, 1.41f, 1.0f, 1.41f, 1.0f, 1.41f };
+		float One = 1;
+		float Two = 1.41f;
+		float Three = 1.44f;
+		const float cost[26] = { Three, Two, Three, Two, One, Two, Three, Two, Three, Two, One, Two, One, One, Two, One, Two, Three, Two, Three, Two, One, Two, Three, Two, Three};
+
+
+		for( int i=0; i<26; ++i ) {
+			int nx = x + dx[i];
+			int ny = y + dy[i];
+			int nz = z + dz[i];
+
+			int pass = Passable( nx, ny, nz );
+			if ( pass > 0 ) {
+				if ( pass == 1)
+				{
+					// Normal floor
+					StateCost nodeCost = { XYZToNode( nx, ny, nz ), cost[i] };
+					neighbors->push_back( nodeCost );
+				}
+				else
+				{
+					// Normal floor
+					StateCost nodeCost = { XYZToNode( nx, ny, nz ), FLT_MAX };
+					neighbors->push_back( nodeCost );
+				}
+			}
+		}
+	}
+
+    virtual void PrintStateInfo( void* node )
+	{
+		int x, y, z;
+		NodeToXYZ( node, &x, &y, &z );
+		printf( "(%d,%d,%d)", x, y, &z );
+	}
+
+    #endif
+
+
+};
+worldclass world;
+
+
+
+
+
 int main()
 {
     srand(clock());
+    /* Perhaps have both Upstairs and Downstairs as the same thing? would this work? How to deal with the 'recieving' position.
+            I.E. What if there's a staircase that leads up, but on the upper level, there's a wall where the stairs lead.*/
+    /* 0 = open, 1 = wall, 2 = upstairs, 3 = downstairs */
+    for(int x = 0; x != worldSizeX; x++)
+        for(int y = 0; y != worldSizeY; y++)
+            for(int z = 0; z != worldSizeZ; z++)
+    {
+        grid[x][y][z].setPos(x,y,z);
+        grid[x][y][z].Type = 0;
+        if(randz(0,10) == 10)
+            grid[x][y][z].Type = 1;
+    }
+
+    grid[16][16][0].Type = 0;
+    grid[16][16][1].Type = 2;
+
+    grid[5][1][0].Type = 10;
+    grid[5][1][0].Teleporter = true;
+    grid[5][1][0].TelePos = Vec3(20,30,2);
+    grid[20][30][2].Type = 10;
+    grid[20][30][2].Teleporter = true;
+    grid[20][30][2].TelePos = Vec3(5,1,0);
+
+
+    grid[16][8][1].Type = 0;
+    grid[16][8][2].Type = 2;
+
+    grid[0][0][0].Type = 0;
+    grid[worldSizeX-1][worldSizeY-1][worldSizeZ-1].Type = 0;
+
+
+    Vec3 Start, End;
+    Start.x = 3;
+    Start.y = 3;
+    Start.z = 0;
+    End.x = 16;
+    End.y = 16;
+    End.z = 3;
+    std::cout << "X: " << pow(End.x-Start.x,2) << " Y: " << pow(End.y-Start.y,2) << " Z: " << pow(End.z-Start.z,2) << std::endl;
+
+    double d = sqrt( pow(End.x-Start.x,2)+pow(End.y-Start.y,2)+pow(End.z-Start.z,2) );
+    std::cout << "Distance: " << d << std::endl;
+
+
+
+
+
+
     window.create(sf::VideoMode(RESOLUTION.x, RESOLUTION.y, 32),
                   randomWindowName());
 
@@ -3535,6 +3876,7 @@ int main()
 
     // Setting the initial game phase.
     gCtrl.phase = "MainMenu";
+    //gCtrl.phase = "MicroPatherTest";
 
     // For A*
     astar::init();
@@ -3686,6 +4028,69 @@ int main()
                 fSleep(0.2);
             }
         }
+
+        if (gCtrl.phase == "MicroPatherTest")
+        {
+            if (inputState.key[Key::Left])
+            {
+                gvars::currentx--;
+                plyAct = true;
+            }
+            if (inputState.key[Key::Right])
+            {
+                gvars::currentx++;
+                plyAct = true;
+            }
+            if (inputState.key[Key::Up])
+            {
+                gvars::currenty--;
+                plyAct = true;
+            }
+            if (inputState.key[Key::Down])
+            {
+                gvars::currenty++;
+                plyAct = true;
+            }
+
+            for (int x = 0; x != worldSizeX; x++)
+                for (int y = 0; y != worldSizeY; y++)
+                    for (int z = 0; z != worldSizeZ; z++)
+            {
+                sf::Color wallColor(0,0,0);
+                if (z == 0)
+                    wallColor.r = 150;
+                else if (z == 1)
+                    wallColor.g = 150;
+                else //if (z == 2)
+                    wallColor.b = 150;
+                if(grid[x][y][z].Type == 10)
+                    wallColor = sf::Color(255,0,255);
+
+                if(grid[x][y][z].Type == 1 || grid[x][y][z].Type == 10)
+                    effects.createSquare(x*20,y*20,(x+1)*20,(y+1)*20,wallColor);
+            }
+            /* Adding a second loop to make sure the yellow squares are on top of the display, Temporary only. */
+            for (int x = 0; x != worldSizeX; x++)
+                for (int y = 0; y != worldSizeY; y++)
+                    for (int z = 0; z != worldSizeZ; z++)
+            {
+                if(grid[x][y][z].Type == 2)
+                    effects.createSquare((x*20)+2,(y*20)+2,((x+1)*20)-2,((y+1)*20)-2,sf::Color::Yellow,4,sf::Color::White);
+
+            }
+
+            Vec3 startPos(0,0,0);
+            Vec3 endPos(worldSizeX-1, worldSizeY-1, worldSizeZ-1);
+            world.MakePath(startPos,endPos);
+
+            world.DrawPath();
+
+            textList.createText(700,100,10,sf::Color::White,"Total Tile Movement: ","",world.microPath.size());
+
+
+        }
+
+
         if (gCtrl.phase == "Local")
         { //=======================================================*Local*============================================================================
             if (gvars::debug)
@@ -3744,7 +4149,7 @@ int main()
                 menuPopUp();
             }
 
-            if (inputState.key[Key::Left] == true)
+            if (inputState.key[Key::Left])
             {
                 gvars::currentx--;
                 plyAct = true;
@@ -5334,6 +5739,8 @@ int main()
                                 "Press r to turn on the "
                                 "debugger, If it slows down the "
                                 "game, Minimize the console.");
+            textList.createText(395,755,10,sf::Color::White,"Pathfinding: MicroPather by Lee Thomason");
+            /* textList.createText(gvars::mousePos.x,gvars::mousePos.y-10,10,sf::Color::White,"X: "+std::to_string(gvars::mousePos.x)+" Y: "+std::to_string(gvars::mousePos.y)); */
 
             if (squareButtonClicked(var.id))
             {
@@ -5557,7 +5964,7 @@ int main()
             }
             gCtrl.time(0);
             if (gCtrl.phase != "MainMenu" && gvars::following == false &&
-                gCtrl.phase != "MakeSquad")
+                gCtrl.phase != "MakeSquad" && gCtrl.phase != "MicroPatherTest")
             {
                 gvars::view1.setCenter(gvars::currentx * GRID_SIZE,
                                        gvars::currenty * GRID_SIZE);
