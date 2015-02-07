@@ -3571,6 +3571,7 @@ public:
 
     MPVector<void*> microPath;
     MicroPather* pather;
+    std::vector<cTile*> storedPath;
 
     worldclass() : pather( 0 )
 	{
@@ -3601,6 +3602,40 @@ public:
         }
 	}
 
+	void drawStoredPath()
+	{
+	    Vec3 oldPos;
+	    bool firstRun = true;
+
+	    for(auto &i : storedPath)
+        {
+            Vec3 pathPos;
+            pathPos = Vec3(i->Position.x, i->Position.y, i->Position.z);
+            sf::Color pathColor(0,0,0);
+            if(pathPos.z == 0)
+                pathColor.r = 255;
+            if(pathPos.z == 1)
+                pathColor.g = 255;
+            if(pathPos.z == 2)
+                pathColor.b = 255;
+
+
+            if(!firstRun)
+                effects.createLine((oldPos.x+1)*20-10,(oldPos.y+1)*20-10,(pathPos.x+1)*20-10,(pathPos.y+1)*20-10,5,pathColor);
+
+            oldPos = pathPos;
+            firstRun = false;
+
+        }
+        storedPath.clear();
+	}
+
+    void storePath( void* node)
+    {
+        cTile* Nodeling = static_cast<cTile*>(node);
+        storedPath.push_back(Nodeling);
+    }
+
 	int MakePath(Vec3 Ori, Vec3 Tar)
 	{
         int result = 0;
@@ -3611,12 +3646,15 @@ public:
 
 				result = pather->Solve( XYZToNode( Ori.x, Ori.y, Ori.z ), XYZToNode( Tar.x, Tar.y, Tar.z ), &microPath, &totalCost );
 
-                /*
-				if ( result == MicroPather::SOLVED ) {
-					playerX = nx;
-					playerY = ny;
+				if ( result == MicroPather::SOLVED )
+                {
+                    unsigned int pathSize = microPath.size();
+					for(int i = 0; i != pathSize; i++)
+					{
+					    storePath(microPath[i]);
+					}
 				}
-				*/
+
 				//printf( "Pather returned %d\n", result );
 
 			#endif
@@ -4083,7 +4121,8 @@ int main()
             Vec3 endPos(worldSizeX-1, worldSizeY-1, worldSizeZ-1);
             world.MakePath(startPos,endPos);
 
-            world.DrawPath();
+            //world.DrawPath();
+            world.drawStoredPath();
 
             textList.createText(700,100,10,sf::Color::White,"Total Tile Movement: ","",world.microPath.size());
 
