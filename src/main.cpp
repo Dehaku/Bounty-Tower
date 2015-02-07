@@ -3502,6 +3502,8 @@ class cTile
 public:
     Vec3 Position;
     int Type;
+    bool Teleporter;
+    Vec3 TelePos;
     void setPos(int x, int y, int z)
     {
         Position = Vec3(x,y,z);
@@ -3513,6 +3515,8 @@ public:
     cTile()
     {
         Type = 0;
+        Teleporter = false;
+        TelePos = Vec3(-1,-1,-1);
     }
 };
 
@@ -3557,6 +3561,8 @@ public:
                 return 2;
             if(grid[nx][ny][nz].Type == 3)
                 return 3;
+            if(grid[nx][ny][nz].Type == 10)
+                return 1;
 		}
 		return 0;
 	}
@@ -3611,7 +3617,7 @@ public:
 					playerY = ny;
 				}
 				*/
-				printf( "Pather returned %d\n", result );
+				//printf( "Pather returned %d\n", result );
 
 			#endif
 		}
@@ -3658,11 +3664,31 @@ public:
 		float Three = 1.44f;
 		const float cost[10] = { One, Two, One, Two, One, One, Two, One, Two, One};
 
+        cTile* Nodeling = static_cast<cTile*>(node);
 
-		for( int i=0; i<10; ++i ) {
-			int nx = x + dx[i];
+        if( Nodeling->Teleporter)
+        {
+            Vec3 N(Nodeling->TelePos);
+            StateCost nodeCost = { XYZToNode( N.x, N.y, N.z ), 3 };
+            neighbors->push_back( nodeCost );
+        }
+
+
+		for( int i=0; i<10; ++i )
+        {
+
+            int nx = x + dx[i];
 			int ny = y + dy[i];
 			int nz = z + dz[i];
+
+            //void* targetTile = XYZToNode(nx,ny,nz);
+
+
+
+
+
+
+
 
 			int pass = Passable( nx, ny, nz );
 			if ( pass > 0 ) {
@@ -3673,7 +3699,12 @@ public:
 					StateCost nodeCost = { XYZToNode( nx, ny, nz ), cost[i] };
 					neighbors->push_back( nodeCost );
 				}
-				else if( pass == 2 && dz[i] == -1 && dx[i] == 0 && dy[i] == 0 ||  pass == 2 && dz[i] == 1 && dx[i] == 0 && dy[i] == 0)
+				else if ( pass == 3 && dz[i] == -1 && dx[i] == 0 && dy[i] == 0 )
+                {
+                    StateCost nodeCost = { XYZToNode( nx, ny, nz ), cost[i] };
+					neighbors->push_back( nodeCost );
+                }
+                else if ( pass == 2 && dz[i] == 1 && dx[i] == 0 && dy[i] == 0 )
                 {
                     StateCost nodeCost = { XYZToNode( nx, ny, nz ), cost[i] };
 					neighbors->push_back( nodeCost );
@@ -3764,9 +3795,13 @@ int main()
     grid[16][16][0].Type = 0;
     grid[16][16][1].Type = 2;
 
-    //grid[16][16][0].Type = 1;
-    //grid[16][16][1].Type = 1;
-    //grid[16][16][2].Type = 1;
+    grid[5][1][0].Type = 10;
+    grid[5][1][0].Teleporter = true;
+    grid[5][1][0].TelePos = Vec3(20,30,2);
+    grid[20][30][2].Type = 10;
+    grid[20][30][2].Teleporter = true;
+    grid[20][30][2].TelePos = Vec3(5,1,0);
+
 
     grid[16][8][1].Type = 0;
     grid[16][8][2].Type = 2;
@@ -4026,10 +4061,12 @@ int main()
                     wallColor.r = 150;
                 else if (z == 1)
                     wallColor.g = 150;
-                else
+                else //if (z == 2)
                     wallColor.b = 150;
+                if(grid[x][y][z].Type == 10)
+                    wallColor = sf::Color(255,0,255);
 
-                if(grid[x][y][z].Type == 1)
+                if(grid[x][y][z].Type == 1 || grid[x][y][z].Type == 10)
                     effects.createSquare(x*20,y*20,(x+1)*20,(y+1)*20,wallColor);
             }
             /* Adding a second loop to make sure the yellow squares are on top of the display, Temporary only. */
@@ -4047,6 +4084,8 @@ int main()
             world.MakePath(startPos,endPos);
 
             world.DrawPath();
+
+            textList.createText(700,100,10,sf::Color::White,"Total Tile Movement: ","",world.microPath.size());
 
 
         }
