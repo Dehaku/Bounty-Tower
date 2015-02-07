@@ -3500,23 +3500,23 @@ const int worldSizeZ = 3;
 class cTile
 {
 public:
-    Vec3 Position;
-    int Type;
-    bool Teleporter;
-    Vec3 TelePos;
+    Vec3 position;
+    int type;
+    bool teleporter;
+    Vec3 telePos;
     void setPos(int x, int y, int z)
     {
-        Position = Vec3(x,y,z);
+        position = Vec3(x,y,z);
     }
     Vec3 getPos()
     {
-        return Position;
+        return position;
     }
     cTile()
     {
-        Type = 0;
-        Teleporter = false;
-        TelePos = Vec3(-1,-1,-1);
+        type = 0;
+        teleporter = false;
+        telePos = Vec3(-1,-1,-1);
     }
 };
 
@@ -3538,9 +3538,9 @@ public:
 	{
 	    cTile* Nodeling = static_cast<cTile*>(node);
 
-	    *x = Nodeling->Position.x;
-	    *y = Nodeling->Position.y;
-	    *z = Nodeling->Position.z;
+	    *x = Nodeling->position.x;
+	    *y = Nodeling->position.y;
+	    *z = Nodeling->position.z;
 	}
 
 	void* XYZToNode( int x, int y, int z )
@@ -3555,13 +3555,13 @@ public:
 			 && nz >= 0 && nz < worldSizeZ
 			 )
 		{
-		    if(grid[nx][ny][nz].Type == 0)
+		    if(grid[nx][ny][nz].type == 0)
                 return 1;
-            if(grid[nx][ny][nz].Type == 2)
+            if(grid[nx][ny][nz].type == 2)
                 return 2;
-            if(grid[nx][ny][nz].Type == 3)
+            if(grid[nx][ny][nz].type == 3)
                 return 3;
-            if(grid[nx][ny][nz].Type == 10)
+            if(grid[nx][ny][nz].type == 10)
                 return 1;
 		}
 		return 0;
@@ -3578,7 +3578,7 @@ public:
 		pather = new MicroPather( this, 20 );	// Use a very small memory block to stress the pather
 	}
 
-	void DrawPath()
+	void drawPath()
 	{
 	    unsigned int k;
         unsigned int pathSize = microPath.size();
@@ -3610,7 +3610,7 @@ public:
 	    for(auto &i : storedPath)
         {
             Vec3 pathPos;
-            pathPos = Vec3(i->Position.x, i->Position.y, i->Position.z);
+            pathPos = Vec3(i->getPos());
             sf::Color pathColor(0,0,0);
             if(pathPos.z == 0)
                 pathColor.r = 255;
@@ -3636,7 +3636,7 @@ public:
         storedPath.push_back(Nodeling);
     }
 
-	int MakePath(Vec3 Ori, Vec3 Tar)
+	int makePath(Vec3 Ori, Vec3 Tar)
 	{
         int result = 0;
 		if ( Passable( Tar.x, Tar.y, Tar.z ) == 1 )
@@ -3704,9 +3704,9 @@ public:
 
         cTile* Nodeling = static_cast<cTile*>(node);
 
-        if( Nodeling->Teleporter)
+        if( Nodeling->teleporter)
         {
-            Vec3 N(Nodeling->TelePos);
+            Vec3 N(Nodeling->telePos);
             StateCost nodeCost = { XYZToNode( N.x, N.y, N.z ), 3 };
             neighbors->push_back( nodeCost );
         }
@@ -3811,7 +3811,35 @@ public:
 worldclass world;
 
 
+void buildMicroPatherTest()
+{
+    for(int x = 0; x != worldSizeX; x++)
+        for(int y = 0; y != worldSizeY; y++)
+            for(int z = 0; z != worldSizeZ; z++)
+    {
+        grid[x][y][z].setPos(x,y,z);
+        grid[x][y][z].type = 0;
+        if(randz(0,10) == 10)
+            grid[x][y][z].type = 1;
+    }
 
+    grid[16][16][0].type = 0;
+    grid[16][16][1].type = 2;
+
+    grid[5][1][0].type = 10;
+    grid[5][1][0].teleporter = true;
+    grid[5][1][0].telePos = Vec3(20,30,2);
+    grid[20][30][2].type = 10;
+    grid[20][30][2].teleporter = true;
+    grid[20][30][2].telePos = Vec3(5,1,0);
+
+
+    grid[16][8][1].type = 0;
+    grid[16][8][2].type = 2;
+
+    grid[0][0][0].type = 0;
+    grid[worldSizeX-1][worldSizeY-1][worldSizeZ-1].type = 0;
+}
 
 
 int main()
@@ -3820,49 +3848,8 @@ int main()
     /* Perhaps have both Upstairs and Downstairs as the same thing? would this work? How to deal with the 'recieving' position.
             I.E. What if there's a staircase that leads up, but on the upper level, there's a wall where the stairs lead.*/
     /* 0 = open, 1 = wall, 2 = upstairs, 3 = downstairs */
-    for(int x = 0; x != worldSizeX; x++)
-        for(int y = 0; y != worldSizeY; y++)
-            for(int z = 0; z != worldSizeZ; z++)
-    {
-        grid[x][y][z].setPos(x,y,z);
-        grid[x][y][z].Type = 0;
-        if(randz(0,10) == 10)
-            grid[x][y][z].Type = 1;
-    }
 
-    grid[16][16][0].Type = 0;
-    grid[16][16][1].Type = 2;
-
-    grid[5][1][0].Type = 10;
-    grid[5][1][0].Teleporter = true;
-    grid[5][1][0].TelePos = Vec3(20,30,2);
-    grid[20][30][2].Type = 10;
-    grid[20][30][2].Teleporter = true;
-    grid[20][30][2].TelePos = Vec3(5,1,0);
-
-
-    grid[16][8][1].Type = 0;
-    grid[16][8][2].Type = 2;
-
-    grid[0][0][0].Type = 0;
-    grid[worldSizeX-1][worldSizeY-1][worldSizeZ-1].Type = 0;
-
-
-    Vec3 Start, End;
-    Start.x = 3;
-    Start.y = 3;
-    Start.z = 0;
-    End.x = 16;
-    End.y = 16;
-    End.z = 3;
-    std::cout << "X: " << pow(End.x-Start.x,2) << " Y: " << pow(End.y-Start.y,2) << " Z: " << pow(End.z-Start.z,2) << std::endl;
-
-    double d = sqrt( pow(End.x-Start.x,2)+pow(End.y-Start.y,2)+pow(End.z-Start.z,2) );
-    std::cout << "Distance: " << d << std::endl;
-
-
-
-
+    buildMicroPatherTest();
 
 
     window.create(sf::VideoMode(RESOLUTION.x, RESOLUTION.y, 32),
@@ -4101,10 +4088,10 @@ int main()
                     wallColor.g = 150;
                 else //if (z == 2)
                     wallColor.b = 150;
-                if(grid[x][y][z].Type == 10)
+                if(grid[x][y][z].type == 10)
                     wallColor = sf::Color(255,0,255);
 
-                if(grid[x][y][z].Type == 1 || grid[x][y][z].Type == 10)
+                if(grid[x][y][z].type == 1 || grid[x][y][z].type == 10)
                     effects.createSquare(x*20,y*20,(x+1)*20,(y+1)*20,wallColor);
             }
             /* Adding a second loop to make sure the yellow squares are on top of the display, Temporary only. */
@@ -4112,14 +4099,14 @@ int main()
                 for (int y = 0; y != worldSizeY; y++)
                     for (int z = 0; z != worldSizeZ; z++)
             {
-                if(grid[x][y][z].Type == 2)
+                if(grid[x][y][z].type == 2)
                     effects.createSquare((x*20)+2,(y*20)+2,((x+1)*20)-2,((y+1)*20)-2,sf::Color::Yellow,4,sf::Color::White);
 
             }
 
             Vec3 startPos(0,0,0);
             Vec3 endPos(worldSizeX-1, worldSizeY-1, worldSizeZ-1);
-            world.MakePath(startPos,endPos);
+            world.makePath(startPos,endPos);
 
             //world.DrawPath();
             world.drawStoredPath();
