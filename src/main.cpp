@@ -3567,6 +3567,30 @@ public:
 		return 0;
 	}
 
+	void toggleTeleporter()
+	{
+	    if(grid[5][1][0].type == 10)
+        {
+            grid[5][1][0].type = 0;
+            grid[5][1][0].teleporter = false;
+            grid[5][1][0].telePos = Vec3(-1,-1,-1);
+
+            grid[20][30][2].type = 0;
+            grid[20][30][2].teleporter = false;
+            grid[20][30][2].telePos = Vec3(-1,-1,-1);
+
+        }
+        else
+        {
+            grid[5][1][0].type = 10;
+            grid[5][1][0].teleporter = true;
+            grid[5][1][0].telePos = Vec3(20,30,2);
+            grid[20][30][2].type = 10;
+            grid[20][30][2].teleporter = true;
+            grid[20][30][2].telePos = Vec3(5,1,0);
+        }
+	}
+
     #ifdef USE_PATHER
 
     MPVector<void*> microPath;
@@ -3823,6 +3847,7 @@ void buildMicroPatherTest()
             grid[x][y][z].type = 1;
     }
 
+
     grid[16][16][0].type = 0;
     grid[16][16][1].type = 2;
 
@@ -3832,6 +3857,7 @@ void buildMicroPatherTest()
     grid[20][30][2].type = 10;
     grid[20][30][2].teleporter = true;
     grid[20][30][2].telePos = Vec3(5,1,0);
+
 
 
     grid[16][8][1].type = 0;
@@ -4112,6 +4138,19 @@ int main()
             world.drawStoredPath();
 
             textList.createText(700,100,10,sf::Color::White,"Total Tile Movement: ","",world.microPath.size());
+            textList.createText(700,120,10,sf::Color::White,"Toggle Teleporters: [Space]");
+            textList.createText(700,140,10,sf::Color::White,"Randomize Tiles: [Tab]");
+
+            if(inputState.key[Key::Space].time == 1)
+            {
+                world.toggleTeleporter();
+                world.pather->Reset();
+            }
+            if(inputState.key[Key::Tab].time == 1)
+            {
+                buildMicroPatherTest();
+                world.pather->Reset();
+            }
 
 
         }
