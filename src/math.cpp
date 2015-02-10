@@ -83,15 +83,17 @@ float math::angleBetweenVectors(sf::Vector2f a, sf::Vector2f b)
     return 57.3065f * atan2(b.y - a.y, b.x - a.x);
 }
 
-float math::constrainAngle(float x){
-    x = fmod(x + 180,360);
+float math::constrainAngle(float x)
+{
+    x = fmod(x + 180, 360);
     if (x < 0)
         x += 360;
     return x - 180;
 }
 
-float math::angleDiff(float a,float b){
-    float dif = fmod(b - a + 180,360);
+float math::angleDiff(float a, float b)
+{
+    float dif = fmod(b - a + 180, 360);
     if (dif < 0)
         dif += 360;
     return dif - 180;

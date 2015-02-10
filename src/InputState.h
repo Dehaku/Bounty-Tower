@@ -9,10 +9,12 @@
 
 using Key = sf::Keyboard::Key;
 
-struct KeyState {
+struct KeyState
+{
     bool down = false;
     int time = 0;
-    operator bool() const {
+    operator bool() const
+    {
         return down;
     }
 };

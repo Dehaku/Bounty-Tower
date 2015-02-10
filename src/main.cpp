@@ -22,7 +22,6 @@
 using namespace micropather;
 #endif
 
-
 using std::abs;
 
 template <typename T> T &listAt(std::list<T> &list, size_t index)
@@ -384,8 +383,10 @@ bool gridTrace(sf::Vector2f Ori, sf::Vector2f Tar)
 
         } // Stops the trace if it hits a wall.
         //std::cout << "Stuffs " << std::endl;
-        sf::Vector2f pos(abs_to_index(x / GRID_SIZE), abs_to_index(y / GRID_SIZE));
-        sf::Vector2f tar(abs_to_index(Tar.x / GRID_SIZE), abs_to_index(Tar.y / GRID_SIZE));
+        sf::Vector2f pos(abs_to_index(x / GRID_SIZE),
+                         abs_to_index(y / GRID_SIZE));
+        sf::Vector2f tar(abs_to_index(Tar.x / GRID_SIZE),
+                         abs_to_index(Tar.y / GRID_SIZE));
         if (pos == tar)
         {
             return true;
@@ -398,7 +399,6 @@ bool gridTrace(sf::Vector2f Ori, sf::Vector2f Tar)
     }
     return false; // Returns false if the target was never found.
 }
-
 
 bool gridposTrace(int xa, int ya, int xb, int yb, int id, sf::Vector2f target)
 { // Looking in a straight line for a specific spot, Walls block vision.
@@ -639,7 +639,7 @@ std::set<int> npcList(int exceptions = -1)
 
 void runCritterBody(Npc &npc)
 {
-     /*  BodyPart Loop
+    /*  BodyPart Loop
         First, Run through the bodyparts finding the 'global' tags, like
             Nutrient Extraction and such.
         Second, Run through each individual part running through all
@@ -965,7 +965,6 @@ void runCritterBody(Npc &npc)
             searchPos = endPos;
         }
     }
-
 }
 
 void critterBrain(Npc &npc, std::vector<Npc> &container)
@@ -977,23 +976,20 @@ void critterBrain(Npc &npc, std::vector<Npc> &container)
     npc.bloodwork("Nutrients", -1);
     npc.bloodwork("Hydration", -1);
 
-
     /* *BodyPart Loop* */
     /* Critter Vision   */
     const sf::Vector2f npcPos(npc.xpos, npc.ypos);
     sf::Vector2f targetPos(gvars::mousePos);
     const float npcAngle = math::constrainAngle(npc.angle);
-    const float targetAngle = math::constrainAngle(math::angleBetweenVectors(npcPos, targetPos) - 90);
+    const float targetAngle =
+        math::constrainAngle(math::angleBetweenVectors(npcPos, targetPos) - 90);
 
-    if(math::angleDiff(npcAngle,targetAngle) > npc.turnSpeed)
+    if (math::angleDiff(npcAngle, targetAngle) > npc.turnSpeed)
         npc.angle++;
-    else if (math::angleDiff(npcAngle,targetAngle) < -npc.turnSpeed)
+    else if (math::angleDiff(npcAngle, targetAngle) < -npc.turnSpeed)
         npc.angle--;
     else
         npc.angle = targetAngle;
-
-
-
 
     const int endAngle = -(npc.angle - (npc.viewangle / 2));
     const int startAngle = -(npc.angle - (-npc.viewangle / 2));
@@ -1009,8 +1005,7 @@ void critterBrain(Npc &npc, std::vector<Npc> &container)
         float xPos = npc.xpos + sinf(rot * PI / 180) * npc.viewrange;
         float yPos = npc.ypos + cosf(rot * PI / 180) * npc.viewrange;
 
-        gridTrace(npcPos,sf::Vector2f(xPos,yPos));
-
+        gridTrace(npcPos, sf::Vector2f(xPos, yPos));
 
         if (rot == startAngle)
         {
@@ -1028,18 +1023,18 @@ void critterBrain(Npc &npc, std::vector<Npc> &container)
             shape.setPoint(pointCounter - 1,
                            sf::Vector2f(xPos - npc.xpos, yPos - npc.ypos));
             bool failedAlign = true;
-            if(npc.angle == targetAngle)
+            if (npc.angle == targetAngle)
             {
-                if(gridTrace(npcPos,targetPos))
+                if (gridTrace(npcPos, targetPos))
                 {
                     effects.createLine(npc.xpos, npc.ypos, xPos, yPos, 1,
-                                    sf::Color::Cyan);
+                                       sf::Color::Cyan);
                     failedAlign = false;
                 }
             }
-            if(failedAlign)
+            if (failedAlign)
                 effects.createLine(npc.xpos, npc.ypos, xPos, yPos, 1,
-                                    sf::Color::Red);
+                                   sf::Color::Red);
         }
         if ((rot % 10) == 0 && rot != 0)
         {
@@ -1234,7 +1229,7 @@ void critterBrain(std::vector<Npc> &npcs)
 {
     for (auto &npc : npcs)
     {
-        critterBrain(npc,npcs);
+        critterBrain(npc, npcs);
     }
 }
 
@@ -3324,7 +3319,7 @@ void drawNPCs()
                               npc.img.getTextureRect().height / 2);
             if (npc.race == "Human")
             {
-                npc.img.setScale(0.5,0.5);
+                npc.img.setScale(0.5, 0.5);
                 npc.img.setRotation(npc.angle);
             }
 
@@ -3492,7 +3487,6 @@ void removeNPCs()
     }
 }
 
-
 const int worldSizeX = 32;
 const int worldSizeY = 32;
 const int worldSizeZ = 3;
@@ -3506,7 +3500,7 @@ public:
     Vec3 telePos;
     void setPos(int x, int y, int z)
     {
-        position = Vec3(x,y,z);
+        position = Vec3(x, y, z);
     }
     Vec3 getPos()
     {
@@ -3516,12 +3510,11 @@ public:
     {
         type = 0;
         teleporter = false;
-        telePos = Vec3(-1,-1,-1);
+        telePos = Vec3(-1, -1, -1);
     }
 };
 
 cTile grid[worldSizeX][worldSizeY][worldSizeZ];
-
 
 class worldclass
 #ifdef USE_PATHER
@@ -3529,344 +3522,343 @@ class worldclass
 #endif
 {
 private:
-    worldclass( const worldclass& );
-	void operator=( const worldclass& );
+    worldclass(const worldclass &);
+    void operator=(const worldclass &);
 
 public:
+    void NodeToXYZ(void *node, int *x, int *y, int *z)
+    {
+        cTile *Nodeling = static_cast<cTile *>(node);
 
-    void NodeToXYZ( void* node, int* x, int* y, int* z )
-	{
-	    cTile* Nodeling = static_cast<cTile*>(node);
+        *x = Nodeling->position.x;
+        *y = Nodeling->position.y;
+        *z = Nodeling->position.z;
+    }
 
-	    *x = Nodeling->position.x;
-	    *y = Nodeling->position.y;
-	    *z = Nodeling->position.z;
-	}
+    void *XYZToNode(int x, int y, int z)
+    {
+        return (void *)&(grid[x][y][z]);
+    }
 
-	void* XYZToNode( int x, int y, int z )
-	{
-		return (void*) &(grid[x][y][z]);
-	}
-
-    int Passable( int nx, int ny, int nz )
-	{
-		if (    nx >= 0 && nx < worldSizeX
-			 && ny >= 0 && ny < worldSizeY
-			 && nz >= 0 && nz < worldSizeZ
-			 )
-		{
-		    if(grid[nx][ny][nz].type == 0)
+    int Passable(int nx, int ny, int nz)
+    {
+        if (nx >= 0 && nx < worldSizeX && ny >= 0 && ny < worldSizeY &&
+            nz >= 0 && nz < worldSizeZ)
+        {
+            if (grid[nx][ny][nz].type == 0)
                 return 1;
-            if(grid[nx][ny][nz].type == 2)
+            if (grid[nx][ny][nz].type == 2)
                 return 2;
-            if(grid[nx][ny][nz].type == 3)
+            if (grid[nx][ny][nz].type == 3)
                 return 3;
-            if(grid[nx][ny][nz].type == 10)
+            if (grid[nx][ny][nz].type == 10)
                 return 1;
-		}
-		return 0;
-	}
+        }
+        return 0;
+    }
 
-	void toggleTeleporter()
-	{
-	    if(grid[5][1][0].type == 10)
+    void toggleTeleporter()
+    {
+        if (grid[5][1][0].type == 10)
         {
             grid[5][1][0].type = 0;
             grid[5][1][0].teleporter = false;
-            grid[5][1][0].telePos = Vec3(-1,-1,-1);
+            grid[5][1][0].telePos = Vec3(-1, -1, -1);
 
             grid[20][30][2].type = 0;
             grid[20][30][2].teleporter = false;
-            grid[20][30][2].telePos = Vec3(-1,-1,-1);
-
+            grid[20][30][2].telePos = Vec3(-1, -1, -1);
         }
         else
         {
             grid[5][1][0].type = 10;
             grid[5][1][0].teleporter = true;
-            grid[5][1][0].telePos = Vec3(20,30,2);
+            grid[5][1][0].telePos = Vec3(20, 30, 2);
             grid[20][30][2].type = 10;
             grid[20][30][2].teleporter = true;
-            grid[20][30][2].telePos = Vec3(5,1,0);
+            grid[20][30][2].telePos = Vec3(5, 1, 0);
         }
-	}
+    }
 
-    #ifdef USE_PATHER
+#ifdef USE_PATHER
 
-    MPVector<void*> microPath;
-    MicroPather* pather;
-    std::vector<cTile*> storedPath;
+    MPVector<void *> microPath;
+    MicroPather *pather;
+    std::vector<cTile *> storedPath;
 
-    worldclass() : pather( 0 )
-	{
-		pather = new MicroPather( this, 20 );	// Use a very small memory block to stress the pather
-	}
+    worldclass() : pather(0)
+    {
+        pather = new MicroPather(
+            this, 20); // Use a very small memory block to stress the pather
+    }
 
-	void drawPath()
-	{
-	    unsigned int k;
+    void drawPath()
+    {
+        unsigned int k;
         unsigned int pathSize = microPath.size();
         Vec3 oldPos;
-        for( k = 0; k < pathSize; ++k )
+        for (k = 0; k < pathSize; ++k)
         {
             Vec3 pathPos;
-            NodeToXYZ( microPath[k], &pathPos.x, &pathPos.y, &pathPos.z );
-            sf::Color pathColor(0,0,0);
-            if(pathPos.z == 0)
+            NodeToXYZ(microPath[k], &pathPos.x, &pathPos.y, &pathPos.z);
+            sf::Color pathColor(0, 0, 0);
+            if (pathPos.z == 0)
                 pathColor.r = 255;
-            if(pathPos.z == 1)
+            if (pathPos.z == 1)
                 pathColor.g = 255;
-            if(pathPos.z == 2)
+            if (pathPos.z == 2)
                 pathColor.b = 255;
 
-            if(k != 0)
-                effects.createLine((oldPos.x+1)*20-10,(oldPos.y+1)*20-10,(pathPos.x+1)*20-10,(pathPos.y+1)*20-10,5,pathColor);
+            if (k != 0)
+                effects.createLine((oldPos.x + 1) * 20 - 10,
+                                   (oldPos.y + 1) * 20 - 10,
+                                   (pathPos.x + 1) * 20 - 10,
+                                   (pathPos.y + 1) * 20 - 10, 5, pathColor);
 
             oldPos = pathPos;
         }
-	}
+    }
 
-	void drawStoredPath()
-	{
-	    Vec3 oldPos;
-	    bool firstRun = true;
+    void drawStoredPath()
+    {
+        Vec3 oldPos;
+        bool firstRun = true;
 
-	    for(auto &i : storedPath)
+        for (auto &i : storedPath)
         {
             Vec3 pathPos;
             pathPos = Vec3(i->getPos());
-            sf::Color pathColor(0,0,0);
-            if(pathPos.z == 0)
+            sf::Color pathColor(0, 0, 0);
+            if (pathPos.z == 0)
                 pathColor.r = 255;
-            if(pathPos.z == 1)
+            if (pathPos.z == 1)
                 pathColor.g = 255;
-            if(pathPos.z == 2)
+            if (pathPos.z == 2)
                 pathColor.b = 255;
 
-
-            if(!firstRun)
-                effects.createLine((oldPos.x+1)*20-10,(oldPos.y+1)*20-10,(pathPos.x+1)*20-10,(pathPos.y+1)*20-10,5,pathColor);
+            if (!firstRun)
+                effects.createLine((oldPos.x + 1) * 20 - 10,
+                                   (oldPos.y + 1) * 20 - 10,
+                                   (pathPos.x + 1) * 20 - 10,
+                                   (pathPos.y + 1) * 20 - 10, 5, pathColor);
 
             oldPos = pathPos;
             firstRun = false;
-
         }
         storedPath.clear();
-	}
+    }
 
-    void storePath( void* node)
+    void storePath(void *node)
     {
-        cTile* Nodeling = static_cast<cTile*>(node);
+        cTile *Nodeling = static_cast<cTile *>(node);
         storedPath.push_back(Nodeling);
     }
 
-	int makePath(Vec3 Ori, Vec3 Tar)
-	{
+    int makePath(Vec3 Ori, Vec3 Tar)
+    {
         int result = 0;
-		if ( Passable( Tar.x, Tar.y, Tar.z ) == 1 )
-		{
-			#ifdef USE_PATHER
-				float totalCost;
+        if (Passable(Tar.x, Tar.y, Tar.z) == 1)
+        {
+#ifdef USE_PATHER
+            float totalCost;
 
-				result = pather->Solve( XYZToNode( Ori.x, Ori.y, Ori.z ), XYZToNode( Tar.x, Tar.y, Tar.z ), &microPath, &totalCost );
+            result = pather->Solve(XYZToNode(Ori.x, Ori.y, Ori.z),
+                                   XYZToNode(Tar.x, Tar.y, Tar.z), &microPath,
+                                   &totalCost);
 
-				if ( result == MicroPather::SOLVED )
+            if (result == MicroPather::SOLVED)
+            {
+                unsigned int pathSize = microPath.size();
+                for (int i = 0; i != pathSize; i++)
                 {
-                    unsigned int pathSize = microPath.size();
-					for(int i = 0; i != pathSize; i++)
-					{
-					    storePath(microPath[i]);
-					}
-				}
+                    storePath(microPath[i]);
+                }
+            }
 
-				//printf( "Pather returned %d\n", result );
+//printf( "Pather returned %d\n", result );
 
-			#endif
-		}
-		return result;
-	}
+#endif
+        }
+        return result;
+    }
 
+    virtual ~worldclass()
+    {
+        delete pather;
+    }
 
-    virtual ~worldclass() {
-		delete pather;
-	}
+    virtual float LeastCostEstimate(void *nodeStart, void *nodeEnd)
+    {
+        int xStart, yStart, zStart, xEnd, yEnd, zEnd;
+        NodeToXYZ(nodeStart, &xStart, &yStart, &zStart);
+        NodeToXYZ(nodeEnd, &xEnd, &yEnd, &zEnd);
 
-    virtual float LeastCostEstimate( void* nodeStart, void* nodeEnd )
-	{
-		int xStart, yStart, zStart, xEnd, yEnd, zEnd;
-		NodeToXYZ( nodeStart, &xStart, &yStart, &zStart );
-		NodeToXYZ( nodeEnd, &xEnd, &yEnd, &zEnd );
-
-        double d = sqrt( pow(xEnd-xStart,2)+pow(yEnd-yStart,2)+pow(zEnd-zStart,2) );
-		/* Compute the minimum path cost using distance measurement. It is possible
+        double d = sqrt(pow(xEnd - xStart, 2) + pow(yEnd - yStart, 2) +
+                        pow(zEnd - zStart, 2));
+        /* Compute the minimum path cost using distance measurement. It is possible
 		   to compute the exact minimum path using the fact that you can move only
 		   on a straight line or on a diagonal, and this will yield a better result.
 		*/
-		return d;
-	}
+        return d;
+    }
 
-    virtual void AdjacentCost( void* node, micropather::MPVector< StateCost > *neighbors )
-	{
-		int x, y, z;
-		NodeToXYZ( node, &x, &y, &z );
-		//const int dx[8] = { 1, 1, 0, -1, -1, -1, 0, 1 };
-		//const int dy[8] = { 0, 1, 1, 1, 0, -1, -1, -1 };
-		//const int dx[26] = { -1, 0, 1, -1, 0, 1, -1, 0, 1, -1, 0, 1, -1, 1, -1, 0, 1, -1, 0, 1, -1, 0, 1, -1, 0, 1};
-		//const int dy[26] = { -1, -1, -1, 0, 0, 0, 1, 1, 1, -1, -1, -1, 0, 0, 1, 1, 1, -1, -1, -1, 0, 0, 0, 1, 1, 1};
-		//const int dz[26] = { -1, -1, -1, -1, -1, -1, -1, -1, -1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1};
+    virtual void AdjacentCost(void *node,
+                              micropather::MPVector<StateCost> *neighbors)
+    {
+        int x, y, z;
+        NodeToXYZ(node, &x, &y, &z);
+        //const int dx[8] = { 1, 1, 0, -1, -1, -1, 0, 1 };
+        //const int dy[8] = { 0, 1, 1, 1, 0, -1, -1, -1 };
+        //const int dx[26] = { -1, 0, 1, -1, 0, 1, -1, 0, 1, -1, 0, 1, -1, 1, -1, 0, 1, -1, 0, 1, -1, 0, 1, -1, 0, 1};
+        //const int dy[26] = { -1, -1, -1, 0, 0, 0, 1, 1, 1, -1, -1, -1, 0, 0, 1, 1, 1, -1, -1, -1, 0, 0, 0, 1, 1, 1};
+        //const int dz[26] = { -1, -1, -1, -1, -1, -1, -1, -1, -1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1};
 
-		const int dx[10] = { 0, -1, 0, 1, -1, 1, -1, 0, 1, 0 };
-		const int dy[10] = { 0, -1, -1, -1, 0, 0, 1, 1, 1, 0 };
-		const int dz[10] = { -1, 0, 0, 0, 0, 0, 0, 0, 0, 1};
+        const int dx[10] = {0, -1, 0, 1, -1, 1, -1, 0, 1, 0};
+        const int dy[10] = {0, -1, -1, -1, 0, 0, 1, 1, 1, 0};
+        const int dz[10] = {-1, 0, 0, 0, 0, 0, 0, 0, 0, 1};
 
+        //const float cost[8] = { 1.0f, 1.41f, 1.0f, 1.41f, 1.0f, 1.41f, 1.0f, 1.41f };
+        float One = 1;
+        float Two = 1.41f;
+        float Three = 1.44f;
+        const float cost[10] = {One, Two, One, Two, One,
+                                One, Two, One, Two, One};
 
-		//const float cost[8] = { 1.0f, 1.41f, 1.0f, 1.41f, 1.0f, 1.41f, 1.0f, 1.41f };
-		float One = 1;
-		float Two = 1.41f;
-		float Three = 1.44f;
-		const float cost[10] = { One, Two, One, Two, One, One, Two, One, Two, One};
+        cTile *Nodeling = static_cast<cTile *>(node);
 
-        cTile* Nodeling = static_cast<cTile*>(node);
-
-        if( Nodeling->teleporter)
+        if (Nodeling->teleporter)
         {
             Vec3 N(Nodeling->telePos);
-            StateCost nodeCost = { XYZToNode( N.x, N.y, N.z ), 3 };
-            neighbors->push_back( nodeCost );
+            StateCost nodeCost = {XYZToNode(N.x, N.y, N.z), 3};
+            neighbors->push_back(nodeCost);
         }
 
-
-		for( int i=0; i<10; ++i )
+        for (int i = 0; i < 10; ++i)
         {
 
             int nx = x + dx[i];
-			int ny = y + dy[i];
-			int nz = z + dz[i];
+            int ny = y + dy[i];
+            int nz = z + dz[i];
 
             //void* targetTile = XYZToNode(nx,ny,nz);
 
-
-
-
-
-
-
-
-			int pass = Passable( nx, ny, nz );
-			if ( pass > 0 ) {
-                    //std::cout << dz[i];
-				if ( pass == 1 && dz[i] == 0)
-				{
-					// Normal floor
-					StateCost nodeCost = { XYZToNode( nx, ny, nz ), cost[i] };
-					neighbors->push_back( nodeCost );
-				}
-				else if ( pass == 3 && dz[i] == -1 && dx[i] == 0 && dy[i] == 0 )
+            int pass = Passable(nx, ny, nz);
+            if (pass > 0)
+            {
+                //std::cout << dz[i];
+                if (pass == 1 && dz[i] == 0)
                 {
-                    StateCost nodeCost = { XYZToNode( nx, ny, nz ), cost[i] };
-					neighbors->push_back( nodeCost );
+                    // Normal floor
+                    StateCost nodeCost = {XYZToNode(nx, ny, nz), cost[i]};
+                    neighbors->push_back(nodeCost);
                 }
-                else if ( pass == 2 && dz[i] == 1 && dx[i] == 0 && dy[i] == 0 )
+                else if (pass == 3 && dz[i] == -1 && dx[i] == 0 && dy[i] == 0)
                 {
-                    StateCost nodeCost = { XYZToNode( nx, ny, nz ), cost[i] };
-					neighbors->push_back( nodeCost );
+                    StateCost nodeCost = {XYZToNode(nx, ny, nz), cost[i]};
+                    neighbors->push_back(nodeCost);
                 }
-				else
-				{
-					// Normal floor
-					StateCost nodeCost = { XYZToNode( nx, ny, nz ), FLT_MAX };
-					neighbors->push_back( nodeCost );
-				}
-			}
-		}
-	}
+                else if (pass == 2 && dz[i] == 1 && dx[i] == 0 && dy[i] == 0)
+                {
+                    StateCost nodeCost = {XYZToNode(nx, ny, nz), cost[i]};
+                    neighbors->push_back(nodeCost);
+                }
+                else
+                {
+                    // Normal floor
+                    StateCost nodeCost = {XYZToNode(nx, ny, nz), FLT_MAX};
+                    neighbors->push_back(nodeCost);
+                }
+            }
+        }
+    }
 
+    virtual void
+    AdjacentCostPureFlight(void *node,
+                           micropather::MPVector<StateCost> *neighbors)
+    {
+        int x, y, z;
+        NodeToXYZ(node, &x, &y, &z);
+        //const int dx[8] = { 1, 1, 0, -1, -1, -1, 0, 1 };
+        //const int dy[8] = { 0, 1, 1, 1, 0, -1, -1, -1 };
+        const int dx[26] = {-1, 0,  1, -1, 0,  1, -1, 0,  1, -1, 0,  1, -1,
+                            1,  -1, 0, 1,  -1, 0, 1,  -1, 0, 1,  -1, 0, 1};
+        const int dy[26] = {-1, -1, -1, 0, 0,  0,  1,  1, 1, -1, -1, -1, 0,
+                            0,  1,  1,  1, -1, -1, -1, 0, 0, 0,  1,  1,  1};
+        const int dz[26] = {-1, -1, -1, -1, -1, -1, -1, -1, -1, 0, 0, 0, 0,
+                            0,  0,  0,  0,  1,  1,  1,  1,  1,  1, 1, 1, 1};
+        //const float cost[8] = { 1.0f, 1.41f, 1.0f, 1.41f, 1.0f, 1.41f, 1.0f, 1.41f };
+        float One = 1;
+        float Two = 1.41f;
+        float Three = 1.44f;
+        const float cost[26] = {Three, Two,   Three, Two,   One,  Two,   Three,
+                                Two,   Three, Two,   One,   Two,  One,   One,
+                                Two,   One,   Two,   Three, Two,  Three, Two,
+                                One,   Two,   Three, Two,   Three};
 
-    virtual void AdjacentCostPureFlight( void* node, micropather::MPVector< StateCost > *neighbors )
-	{
-		int x, y, z;
-		NodeToXYZ( node, &x, &y, &z );
-		//const int dx[8] = { 1, 1, 0, -1, -1, -1, 0, 1 };
-		//const int dy[8] = { 0, 1, 1, 1, 0, -1, -1, -1 };
-		const int dx[26] = { -1, 0, 1, -1, 0, 1, -1, 0, 1, -1, 0, 1, -1, 1, -1, 0, 1, -1, 0, 1, -1, 0, 1, -1, 0, 1};
-		const int dy[26] = { -1, -1, -1, 0, 0, 0, 1, 1, 1, -1, -1, -1, 0, 0, 1, 1, 1, -1, -1, -1, 0, 0, 0, 1, 1, 1};
-		const int dz[26] = { -1, -1, -1, -1, -1, -1, -1, -1, -1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1};
-		//const float cost[8] = { 1.0f, 1.41f, 1.0f, 1.41f, 1.0f, 1.41f, 1.0f, 1.41f };
-		float One = 1;
-		float Two = 1.41f;
-		float Three = 1.44f;
-		const float cost[26] = { Three, Two, Three, Two, One, Two, Three, Two, Three, Two, One, Two, One, One, Two, One, Two, Three, Two, Three, Two, One, Two, Three, Two, Three};
+        for (int i = 0; i < 26; ++i)
+        {
+            int nx = x + dx[i];
+            int ny = y + dy[i];
+            int nz = z + dz[i];
 
+            int pass = Passable(nx, ny, nz);
+            if (pass > 0)
+            {
+                if (pass == 1)
+                {
+                    // Normal floor
+                    StateCost nodeCost = {XYZToNode(nx, ny, nz), cost[i]};
+                    neighbors->push_back(nodeCost);
+                }
+                else
+                {
+                    // Normal floor
+                    StateCost nodeCost = {XYZToNode(nx, ny, nz), FLT_MAX};
+                    neighbors->push_back(nodeCost);
+                }
+            }
+        }
+    }
 
-		for( int i=0; i<26; ++i ) {
-			int nx = x + dx[i];
-			int ny = y + dy[i];
-			int nz = z + dz[i];
+    virtual void PrintStateInfo(void *node)
+    {
+        int x, y, z;
+        NodeToXYZ(node, &x, &y, &z);
+        printf("(%d,%d,%d)", x, y, &z);
+    }
 
-			int pass = Passable( nx, ny, nz );
-			if ( pass > 0 ) {
-				if ( pass == 1)
-				{
-					// Normal floor
-					StateCost nodeCost = { XYZToNode( nx, ny, nz ), cost[i] };
-					neighbors->push_back( nodeCost );
-				}
-				else
-				{
-					// Normal floor
-					StateCost nodeCost = { XYZToNode( nx, ny, nz ), FLT_MAX };
-					neighbors->push_back( nodeCost );
-				}
-			}
-		}
-	}
-
-    virtual void PrintStateInfo( void* node )
-	{
-		int x, y, z;
-		NodeToXYZ( node, &x, &y, &z );
-		printf( "(%d,%d,%d)", x, y, &z );
-	}
-
-    #endif
-
-
+#endif
 };
 worldclass world;
 
-
 void buildMicroPatherTest()
 {
-    for(int x = 0; x != worldSizeX; x++)
-        for(int y = 0; y != worldSizeY; y++)
-            for(int z = 0; z != worldSizeZ; z++)
-    {
-        grid[x][y][z].setPos(x,y,z);
-        grid[x][y][z].type = 0;
-        if(randz(0,10) == 10)
-            grid[x][y][z].type = 1;
-    }
-
+    for (int x = 0; x != worldSizeX; x++)
+        for (int y = 0; y != worldSizeY; y++)
+            for (int z = 0; z != worldSizeZ; z++)
+            {
+                grid[x][y][z].setPos(x, y, z);
+                grid[x][y][z].type = 0;
+                if (randz(0, 10) == 10)
+                    grid[x][y][z].type = 1;
+            }
 
     grid[16][16][0].type = 0;
     grid[16][16][1].type = 2;
 
     grid[5][1][0].type = 10;
     grid[5][1][0].teleporter = true;
-    grid[5][1][0].telePos = Vec3(20,30,2);
+    grid[5][1][0].telePos = Vec3(20, 30, 2);
     grid[20][30][2].type = 10;
     grid[20][30][2].teleporter = true;
-    grid[20][30][2].telePos = Vec3(5,1,0);
-
-
+    grid[20][30][2].telePos = Vec3(5, 1, 0);
 
     grid[16][8][1].type = 0;
     grid[16][8][2].type = 2;
 
     grid[0][0][0].type = 0;
-    grid[worldSizeX-1][worldSizeY-1][worldSizeZ-1].type = 0;
+    grid[worldSizeX - 1][worldSizeY - 1][worldSizeZ - 1].type = 0;
 }
-
 
 int main()
 {
@@ -3876,7 +3868,6 @@ int main()
     /* 0 = open, 1 = wall, 2 = upstairs, 3 = downstairs */
 
     buildMicroPatherTest();
-
 
     window.create(sf::VideoMode(RESOLUTION.x, RESOLUTION.y, 32),
                   randomWindowName());
@@ -4106,55 +4097,59 @@ int main()
             for (int x = 0; x != worldSizeX; x++)
                 for (int y = 0; y != worldSizeY; y++)
                     for (int z = 0; z != worldSizeZ; z++)
-            {
-                sf::Color wallColor(0,0,0);
-                if (z == 0)
-                    wallColor.r = 150;
-                else if (z == 1)
-                    wallColor.g = 150;
-                else //if (z == 2)
-                    wallColor.b = 150;
-                if(grid[x][y][z].type == 10)
-                    wallColor = sf::Color(255,0,255);
+                    {
+                        sf::Color wallColor(0, 0, 0);
+                        if (z == 0)
+                            wallColor.r = 150;
+                        else if (z == 1)
+                            wallColor.g = 150;
+                        else //if (z == 2)
+                            wallColor.b = 150;
+                        if (grid[x][y][z].type == 10)
+                            wallColor = sf::Color(255, 0, 255);
 
-                if(grid[x][y][z].type == 1 || grid[x][y][z].type == 10)
-                    effects.createSquare(x*20,y*20,(x+1)*20,(y+1)*20,wallColor);
-            }
+                        if (grid[x][y][z].type == 1 || grid[x][y][z].type == 10)
+                            effects.createSquare(x * 20, y * 20, (x + 1) * 20,
+                                                 (y + 1) * 20, wallColor);
+                    }
             /* Adding a second loop to make sure the yellow squares are on top of the display, Temporary only. */
             for (int x = 0; x != worldSizeX; x++)
                 for (int y = 0; y != worldSizeY; y++)
                     for (int z = 0; z != worldSizeZ; z++)
-            {
-                if(grid[x][y][z].type == 2)
-                    effects.createSquare((x*20)+2,(y*20)+2,((x+1)*20)-2,((y+1)*20)-2,sf::Color::Yellow,4,sf::Color::White);
+                    {
+                        if (grid[x][y][z].type == 2)
+                            effects.createSquare(
+                                (x * 20) + 2, (y * 20) + 2, ((x + 1) * 20) - 2,
+                                ((y + 1) * 20) - 2, sf::Color::Yellow, 4,
+                                sf::Color::White);
+                    }
 
-            }
-
-            Vec3 startPos(0,0,0);
-            Vec3 endPos(worldSizeX-1, worldSizeY-1, worldSizeZ-1);
-            world.makePath(startPos,endPos);
+            Vec3 startPos(0, 0, 0);
+            Vec3 endPos(worldSizeX - 1, worldSizeY - 1, worldSizeZ - 1);
+            world.makePath(startPos, endPos);
 
             //world.DrawPath();
             world.drawStoredPath();
 
-            textList.createText(700,100,10,sf::Color::White,"Total Tile Movement: ","",world.microPath.size());
-            textList.createText(700,120,10,sf::Color::White,"Toggle Teleporters: [Space]");
-            textList.createText(700,140,10,sf::Color::White,"Randomize Tiles: [Tab]");
+            textList.createText(700, 100, 10, sf::Color::White,
+                                "Total Tile Movement: ", "",
+                                world.microPath.size());
+            textList.createText(700, 120, 10, sf::Color::White,
+                                "Toggle Teleporters: [Space]");
+            textList.createText(700, 140, 10, sf::Color::White,
+                                "Randomize Tiles: [Tab]");
 
-            if(inputState.key[Key::Space].time == 1)
+            if (inputState.key[Key::Space].time == 1)
             {
                 world.toggleTeleporter();
                 world.pather->Reset();
             }
-            if(inputState.key[Key::Tab].time == 1)
+            if (inputState.key[Key::Tab].time == 1)
             {
                 buildMicroPatherTest();
                 world.pather->Reset();
             }
-
-
         }
-
 
         if (gCtrl.phase == "Local")
         { //=======================================================*Local*============================================================================
@@ -4182,7 +4177,8 @@ int main()
             if (inputState.rmbTime == 1 && inputState.key[Key::LShift])
                 rmbMenuTile(gvars::mousePos);
 
-            if (inputState.key[Key::LShift] && inputState.key[Key::Tab]) // Debug NPC Spawn Menu
+            if (inputState.key[Key::LShift] &&
+                inputState.key[Key::Tab]) // Debug NPC Spawn Menu
             {
 
                 gCtrl.menuType = "DebugCritterSpawn";
@@ -4208,7 +4204,8 @@ int main()
             }
             //                       if(Key.lshift && Key.z){GC.ZombieSwarmLocal();}
 
-            if (inputState.key[Key::LShift] && inputState.key[Key::Z]) // Debug Stuffs Menu
+            if (inputState.key[Key::LShift] &&
+                inputState.key[Key::Z]) // Debug Stuffs Menu
             {
                 gCtrl.menuType = "DebugFunctions";
                 menuPopUp();
@@ -4240,7 +4237,8 @@ int main()
 
             rightMouseButtonContextMenu();
 
-            if (inputState.key[Key::LShift] == true && inputState.key[Key::Left])
+            if (inputState.key[Key::LShift] == true &&
+                inputState.key[Key::Left])
             {
                 gvars::currentx--;
                 gvars::currentx--;
@@ -4248,7 +4246,8 @@ int main()
                 gvars::currentx--;
                 plyAct = true;
             } //Sprite.Move(-100 * ElapsedTime, 0);
-            if (inputState.key[Key::LShift] == true && inputState.key[Key::Right])
+            if (inputState.key[Key::LShift] == true &&
+                inputState.key[Key::Right])
             {
                 gvars::currentx++;
                 gvars::currentx++;
@@ -4264,7 +4263,8 @@ int main()
                 gvars::currenty--;
                 plyAct = true;
             } //Sprite.Move(0, -100 * ElapsedTime);
-            if (inputState.key[Key::LShift] == true && inputState.key[Key::Down])
+            if (inputState.key[Key::LShift] == true &&
+                inputState.key[Key::Down])
             {
                 gvars::currenty++;
                 gvars::currenty++;
@@ -4272,29 +4272,31 @@ int main()
                 gvars::currenty++;
                 plyAct = true;
             } //Sprite.Move(0,  100 * ElapsedTime);
-            if (inputState.key[Key::Comma] == true && inputState.key[Key::LShift] == true &&
+            if (inputState.key[Key::Comma] == true &&
+                inputState.key[Key::LShift] == true &&
                 gvars::currentz <= GRID_Z - 1)
             {
                 gvars::currentz++;
                 plyAct = true;
                 fSleep(0.1f);
             } //Sprite.Move(0, -100 * ElapsedTime);
-            if (inputState.key[Key::Period] == true && inputState.key[Key::LShift] == true &&
-                gvars::currentz >= 1)
+            if (inputState.key[Key::Period] == true &&
+                inputState.key[Key::LShift] == true && gvars::currentz >= 1)
             {
                 gvars::currentz--;
                 plyAct = true;
                 fSleep(0.1f);
             } //Sprite.Move(0,  100 * ElapsedTime);
-            if (inputState.key[Key::Comma] == true && inputState.key[Key::RShift] == true &&
+            if (inputState.key[Key::Comma] == true &&
+                inputState.key[Key::RShift] == true &&
                 gvars::currentz <= GRID_Z - 1)
             {
                 gvars::currentz++;
                 plyAct = true;
                 fSleep(0.1f);
             } //Sprite.Move(0, -100 * ElapsedTime);
-            if (inputState.key[Key::Period] == true && inputState.key[Key::RShift] == true &&
-                gvars::currentz >= 1)
+            if (inputState.key[Key::Period] == true &&
+                inputState.key[Key::RShift] == true && gvars::currentz >= 1)
             {
                 gvars::currentz--;
                 plyAct = true;
@@ -4862,7 +4864,8 @@ int main()
                 gvars::currenty++;
                 plyAct = true;
             }
-            if (inputState.key[Key::LShift] == true && inputState.key[Key::Left])
+            if (inputState.key[Key::LShift] == true &&
+                inputState.key[Key::Left])
             {
                 gvars::currentx--;
                 gvars::currentx--;
@@ -4870,7 +4873,8 @@ int main()
                 gvars::currentx--;
                 plyAct = true;
             } //Sprite.Move(-100 * ElapsedTime, 0);
-            if (inputState.key[Key::LShift] == true && inputState.key[Key::Right])
+            if (inputState.key[Key::LShift] == true &&
+                inputState.key[Key::Right])
             {
                 gvars::currentx++;
                 gvars::currentx++;
@@ -4886,7 +4890,8 @@ int main()
                 gvars::currenty--;
                 plyAct = true;
             } //Sprite.Move(0, -100 * ElapsedTime);
-            if (inputState.key[Key::LShift] == true && inputState.key[Key::Down])
+            if (inputState.key[Key::LShift] == true &&
+                inputState.key[Key::Down])
             {
                 gvars::currenty++;
                 gvars::currenty++;
@@ -4978,7 +4983,8 @@ int main()
                 gvars::currenty++;
                 plyAct = true;
             }
-            if (inputState.key[Key::LShift] == true && inputState.key[Key::Left])
+            if (inputState.key[Key::LShift] == true &&
+                inputState.key[Key::Left])
             {
                 gvars::currentx--;
                 gvars::currentx--;
@@ -4986,7 +4992,8 @@ int main()
                 gvars::currentx--;
                 plyAct = true;
             } //Sprite.Move(-100 * ElapsedTime, 0);
-            if (inputState.key[Key::LShift] == true && inputState.key[Key::Right])
+            if (inputState.key[Key::LShift] == true &&
+                inputState.key[Key::Right])
             {
                 gvars::currentx++;
                 gvars::currentx++;
@@ -5002,7 +5009,8 @@ int main()
                 gvars::currenty--;
                 plyAct = true;
             } //Sprite.Move(0, -100 * ElapsedTime);
-            if (inputState.key[Key::LShift] == true && inputState.key[Key::Down])
+            if (inputState.key[Key::LShift] == true &&
+                inputState.key[Key::Down])
             {
                 gvars::currenty++;
                 gvars::currenty++;
@@ -5808,10 +5816,11 @@ int main()
                                 "Press r to turn on the "
                                 "debugger, If it slows down the "
                                 "game, Minimize the console.");
-            textList.createText(395,755,10,sf::Color::White,"Pathfinding: MicroPather by Lee Thomason");
+            textList.createText(395, 755, 10, sf::Color::White,
+                                "Pathfinding: MicroPather by Lee Thomason");
             /* textList.createText(gvars::mousePos.x,gvars::mousePos.y-10,10,sf::Color::White,"X: "+std::to_string(gvars::mousePos.x)+" Y: "+std::to_string(gvars::mousePos.y)); */
 
-            if(inputState.key[Key::M])
+            if (inputState.key[Key::M])
             {
                 gCtrl.phase = "MicroPatherTest";
                 gvars::currentx = 14;

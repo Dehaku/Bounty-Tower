@@ -17,7 +17,7 @@ int clamp(int value, int minValue, int maxValue);
 float angleBetweenVectors(sf::Vector2f a, sf::Vector2f b);
 sf::Vector2f circleRandz(int xpos, int ypos, int radius);
 float constrainAngle(float x);
-float angleDiff(float a,float b);
+float angleDiff(float a, float b);
 using Vec2f = sf::Vector2f;
 }
 

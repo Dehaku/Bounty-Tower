@@ -9,9 +9,11 @@ InputState inputState;
 
 void InputState::update()
 {
-    for (auto & pair : key) {
-        auto & keystate = pair.second;
-        if (keystate.down) {
+    for (auto &pair : key)
+    {
+        auto &keystate = pair.second;
+        if (keystate.down)
+        {
             keystate.time++;
         }
     }
@@ -48,10 +50,14 @@ InputState::InputState()
     rmbTime = 0;
 }
 
-void InputState::updateFromEvent(const sf::Event &event) {
-    if (event.type == sf::Event::KeyPressed) {
+void InputState::updateFromEvent(const sf::Event &event)
+{
+    if (event.type == sf::Event::KeyPressed)
+    {
         key[event.key.code].down = true;
-    } else if (event.type == sf::Event::KeyReleased) {
+    }
+    else if (event.type == sf::Event::KeyReleased)
+    {
         key[event.key.code].down = false;
         key[event.key.code].time = 0;
     }

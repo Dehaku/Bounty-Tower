@@ -25,5 +25,4 @@ struct Vec3
     }
 };
 
-
 #endif // __DEFS_H_INCLUDED__
