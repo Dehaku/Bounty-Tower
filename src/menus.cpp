@@ -658,14 +658,16 @@ void menuPopUp()
                 if (squareButtonClicked(butt) ||
                     inputState.key[Key::Num1].time == 1)
                 {
+                    /*
                     generateChunk("Building", 500,
                                   sf::Vector2i(abs(gCtrl.menuPos.x / 20),
                                                abs(gCtrl.menuPos.y / 20)));
+                    */
                     gvars::currentregionx = abs(gCtrl.menuPos.x / 20);
                     gvars::currentregiony = abs(gCtrl.menuPos.y / 20);
                     gCtrl.phase = "Local";
 
-                    //GC.BuildLocal("City", WorldMap[abs_to_index(GC.MenuPos.x/20)][abs_to_index(GC.MenuPos.y/20)].Infected);
+
                     buildLocalfromWorld(sf::Vector2i(
                         abs(gCtrl.menuPos.x / 20), abs(gCtrl.menuPos.y / 20)));
                     buildStartingCritters(worldMap[abs_to_index(

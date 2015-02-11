@@ -374,7 +374,7 @@ bool gridTrace(sf::Vector2f Ori, sf::Vector2f Tar)
                 .transparent == false)
         {
 
-            if (inputState.key[Key::Period])
+            if (inputState.key[Key::Quote])
             {
                 effects.createLine(x, y, Ori.x, Ori.y, 1, sf::Color::Cyan);
             }
@@ -392,7 +392,7 @@ bool gridTrace(sf::Vector2f Ori, sf::Vector2f Tar)
             return true;
         } // Returns true and stops searching.
 
-        if (inputState.key[Key::Period])
+        if (inputState.key[Key::Quote])
         {
             effects.createLine(x, y, Ori.x, Ori.y, 1, sf::Color::Blue);
         }

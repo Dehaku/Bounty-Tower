@@ -1026,123 +1026,25 @@ void tilesGoRight()
     }*/
 }
 
+
 void buildLocalfromWorld(sf::Vector2i worldPos)
 {
-    debug("Starting BLfW");
-    generateChunk(worldMap[worldPos.x - 1][worldPos.y - 1].type,
+    int worldX[9] = {-1,0,1,-1,0,1,-1,0,1};
+    int worldY[9] = {-1,-1,-1,0,0,0,1,1,1};
+    int gridX[9]  = {0,32,64,0,32,64,0,32,64};
+    int gridY[9]  = {0,0,0,32,32,32,64,64,64};
+
+    for (int i = 0; i != 9; i++)
+    {
+        generateChunk(worldMap[worldPos.x + worldX[i]][worldPos.y + worldY[i]].type,
                   gvars::currentplanet,
-                  sf::Vector2i(worldPos.x - 1, worldPos.y - 1));
-    for (int x = 0; x != CHUNK_SIZE; x++)
-    {
-        for (int y = 0; y != CHUNK_SIZE; y++)
-        {
-            tiles[x][y][30] = vChunk[x][y][30];
-        }
+                  sf::Vector2i(worldPos.x + worldX[i], worldPos.y + worldY[i]));
+        for (int x = 0 + gridX[i]; x != CHUNK_SIZE + gridX[i]; x++)
+            for (int y = 0 + gridY[i]; y != CHUNK_SIZE + gridY[i]; y++)
+                for (int z = 0; z != CHUNK_SIZE; z++)
+                    tiles[x][y][z] = vChunk[x - gridX[i]][y - gridY[i]][z];
     }
-    debug("Starting 2");
-    generateChunk(worldMap[worldPos.x - 1][worldPos.y].type,
-                  gvars::currentplanet,
-                  sf::Vector2i(worldPos.x - 1, worldPos.y));
-    for (int x = 0; x != CHUNK_SIZE; x++)
-    {
-
-        for (int y = 0 + 32; y != CHUNK_SIZE + 32; y++)
-        {
-            //std::cout << "X:" << x << "Y:" << y << ":" << vChunk[x][y][30].ID;
-
-            //if(y == ChunkSize+32-1) std::cout << std::endl << "=============================" << std::endl;
-            tiles[x][y][30] = vChunk[x][y - 32][30];
-        }
-    }
-    debug("Starting 3");
-    generateChunk(worldMap[worldPos.x - 1][worldPos.y + 1].type,
-                  gvars::currentplanet,
-                  sf::Vector2i(worldPos.x - 1, worldPos.y + 1));
-    for (int x = 0; x != CHUNK_SIZE; x++)
-    {
-        for (int y = 0 + 32 + 32; y != CHUNK_SIZE + 32 + 32; y++)
-        {
-            tiles[x][y][30] = vChunk[x][y - 32 - 32][30];
-        }
-    }
-
-    generateChunk(worldMap[worldPos.x + 1][worldPos.y - 1].type,
-                  gvars::currentplanet,
-                  sf::Vector2i(worldPos.x + 1, worldPos.y - 1));
-    for (int x = 0 + 32 + 32; x != CHUNK_SIZE + 32 + 32; x++)
-    {
-        for (int y = 0; y != CHUNK_SIZE; y++)
-        {
-            tiles[x][y][30] = vChunk[x - 32 - 32][y][30];
-        }
-    }
-    debug("Starting 2");
-    generateChunk(worldMap[worldPos.x + 1][worldPos.y].type,
-                  gvars::currentplanet,
-                  sf::Vector2i(worldPos.x + 1, worldPos.y));
-    for (int x = 0 + 32 + 32; x != CHUNK_SIZE + 32 + 32; x++)
-    {
-
-        for (int y = 0 + 32; y != CHUNK_SIZE + 32; y++)
-        {
-            //std::cout << "X:" << x << "Y:" << y << ":" << vChunk[x][y][30].ID;
-
-            //if(y == ChunkSize+32-1) std::cout << std::endl << "=============================" << std::endl;
-            tiles[x][y][30] = vChunk[x - 32 - 32][y - 32][30];
-        }
-    }
-    debug("Starting 3");
-    generateChunk(worldMap[worldPos.x + 1][worldPos.y + 1].type,
-                  gvars::currentplanet,
-                  sf::Vector2i(worldPos.x + 1, worldPos.y + 1));
-    for (int x = 0 + 32 + 32; x != CHUNK_SIZE + 32 + 32; x++)
-    {
-        for (int y = 0 + 32 + 32; y != CHUNK_SIZE + 32 + 32; y++)
-        {
-            tiles[x][y][30] = vChunk[x - 32 - 32][y - 32 - 32][30];
-        }
-    }
-
-    generateChunk(worldMap[worldPos.x][worldPos.y + 1].type,
-                  gvars::currentplanet,
-                  sf::Vector2i(worldPos.x, worldPos.y + 1));
-    for (int x = 0 + 32; x != CHUNK_SIZE + 32; x++)
-    {
-        for (int y = 0 + 32 + 32; y != CHUNK_SIZE + 32 + 32; y++)
-        {
-            //std::cout << "X:" << x << "Y:" << y << ":" << vChunk[x][y][30].ID;
-
-            //if(y == ChunkSize+32-1) std::cout << std::endl << "=============================" << std::endl;
-            tiles[x][y][30] = vChunk[x - 32][y - 32 - 32][30];
-        }
-    }
-
-    generateChunk(worldMap[worldPos.x][worldPos.y - 1].type,
-                  gvars::currentplanet,
-                  sf::Vector2i(worldPos.x, worldPos.y - 1));
-    for (int x = 0 + 32; x != CHUNK_SIZE + 32; x++)
-    {
-        for (int y = 0; y != CHUNK_SIZE; y++)
-        {
-            //std::cout << "X:" << x << "Y:" << y << ":" << vChunk[x][y][30].ID;
-            //if(y == ChunkSize+32-1) std::cout << std::endl << "=============================" << std::endl;
-            tiles[x][y][30] = vChunk[x - 32][y][30];
-        }
-    }
-
-    generateChunk(worldMap[worldPos.x][worldPos.y].type, gvars::currentplanet,
-                  sf::Vector2i(worldPos.x, worldPos.y));
-    for (int x = 0 + 32; x != CHUNK_SIZE + 32; x++)
-    {
-        for (int y = 0 + 32; y != CHUNK_SIZE + 32; y++)
-        {
-            //std::cout << "X:" << x << "Y:" << y << ":" << vChunk[x][y][30].ID;
-            //if(y == ChunkSize+32-1) std::cout << std::endl << "=============================" << std::endl;
-            tiles[x][y][30] = vChunk[x - 32][y - 32][30];
-        }
-    }
-
-    debug("Done");
+    debug("bLfW Done");
 }
 
 void Tile::dirt()
