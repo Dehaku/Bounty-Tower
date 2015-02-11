@@ -1975,13 +1975,6 @@ void updateNpc(Npc &npc, int integerIterator)
             {
                 npc.xpos -= shake;
             }
-            if (gvars::groundmap[gvars::currentz][abs_to_index(
-                    npc.xpos / GRID_SIZE)][abs_to_index(npc.ypos /
-                                                        GRID_SIZE)] == 10)
-            {
-                npc.xpos = tempXpos;
-                npc.ypos = tempYpos;
-            }
         }
 
         if (npc.action == "Act")
@@ -2041,16 +2034,7 @@ void updateNpc(Npc &npc, int integerIterator)
                 npc.target = "Wander";
                 //std::cout << id << " is fine." << std::endl;
             }
-            if (npc.target == "Wander" && npc.hasTarget == true)
-            { // TODO: Make sure this isn't needed anymore, Then delete it.
-                if (gvars::groundmap[gvars::currentz][abs_to_index(
-                        npc.targetPos.x /
-                        GRID_SIZE)][abs_to_index(npc.targetPos.y /
-                                                 GRID_SIZE)] == 10)
-                {
-                    npc.hasTarget = false;
-                }
-            }
+
             if (npc.target == "Food")
             { // Compress this later by simply directly linking the target towards the search, Probably need a bool for Item or NPC to simplfy it.
                 Item *item = findClosestItemPtr(npc.xpos, npc.ypos, "Food");
@@ -4274,7 +4258,7 @@ int main()
             } //Sprite.Move(0,  100 * ElapsedTime);
             if (inputState.key[Key::Comma] == true &&
                 inputState.key[Key::LShift] == true &&
-                gvars::currentz <= GRID_Z - 1)
+                gvars::currentz <= GRIDS - 1)
             {
                 gvars::currentz++;
                 plyAct = true;
@@ -4289,7 +4273,7 @@ int main()
             } //Sprite.Move(0,  100 * ElapsedTime);
             if (inputState.key[Key::Comma] == true &&
                 inputState.key[Key::RShift] == true &&
-                gvars::currentz <= GRID_Z - 1)
+                gvars::currentz <= GRIDS - 1)
             {
                 gvars::currentz++;
                 plyAct = true;
@@ -4329,7 +4313,7 @@ int main()
             {
                 int Variable =
                     tiles[abs_to_index(gvars::mousePos.x / 20)][abs_to_index(
-                        gvars::mousePos.y / 20)][30].id;
+                        gvars::mousePos.y / 20)][gvars::currentz].id;
                 textList.createText(gvars::mousePos.x, gvars::mousePos.y, 11,
                                     sf::Color::Red, "", "", Variable);
             }

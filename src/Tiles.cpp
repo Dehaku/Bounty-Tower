@@ -676,8 +676,8 @@ void drawNewTiles()
             if (aabb(i * 20, t * 20, gvars::topLeft.x - 20, gvars::topRight.x,
                      gvars::topLeft.y - 20, gvars::bottomRight.y))
             {
-                tiles[i][t][30].img.setPosition(i * 20, t * 20);
-                window.draw(tiles[i][t][30].img);
+                tiles[i][t][gvars::currentz].img.setPosition(i * 20, t * 20);
+                window.draw(tiles[i][t][gvars::currentz].img);
             }
         }
     }
