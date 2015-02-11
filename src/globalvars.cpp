@@ -57,4 +57,6 @@ sf::Color cycleGreen(255, 255, 255);
 sf::Color cycleBlue(255, 255, 255);
 bool cycleGrowth = false;
 
+float constantRotation = 0;
+
 } // namespace gvars

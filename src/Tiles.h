@@ -57,6 +57,7 @@ public:
     void lava();
     void sky();
     void cake();
+    void teleportPad(Vec3 teleportPosition);
     Tile();
 };
 

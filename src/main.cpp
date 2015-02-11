@@ -4233,6 +4233,10 @@ int main()
                 gvars::cycleGrowth = true;
         }
 
+        gvars::constantRotation++;
+        if(gvars::constantRotation > 359)
+            gvars::constantRotation = 0;
+
         removeNPCs();
         sf::Event event;
         while (window.pollEvent(event))

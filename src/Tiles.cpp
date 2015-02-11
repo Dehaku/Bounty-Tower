@@ -179,6 +179,8 @@ void generateChunk(std::string type, int planet, sf::Vector2i cords,
         vChunk[15][20][30].door();
         vChunk[15][12][30].stairsDown();
         vChunk[15][12][29].stairsUp();
+        vChunk[11][15][30].teleportPad(Vec3(21,15,30));
+        vChunk[21][15][30].teleportPad(Vec3(11,15,30));
     }
 
     else if (type == "SouthernHouse")
@@ -696,6 +698,18 @@ void drawNewTiles()
             {
                 tiles[i][t][gvars::currentz].img.setPosition(i * 20, t * 20);
                 window.draw(tiles[i][t][gvars::currentz].img);
+                if(tiles[i][t][gvars::currentz].teleporter)
+                {
+                    sf::Sprite spinner;
+                    spinner.setTexture(texturemanager.getTexture("Sphere.png"));
+                    spinner.setRotation(gvars::constantRotation);
+                    spinner.setPosition(i*20+10,t*20+10);
+                    spinner.setOrigin(10.5f,10.5f);
+                    sf::Color spin = spinner.getColor();
+                    spin.a = 127;
+                    spinner.setColor(spin);
+                    window.draw(spinner);
+                }
             }
         }
     }
@@ -1044,7 +1058,6 @@ void tilesGoRight()
     }*/
 }
 
-
 void buildLocalfromWorld(sf::Vector2i worldPos)
 {
     int worldX[9] = {-1,0,1,-1,0,1,-1,0,1};
@@ -1212,6 +1225,15 @@ void Tile::cake()
     img.setTexture(texturemanager.getTexture("Door.png"));
     health = 15;
     deathID = 7;
+}
+
+void Tile::teleportPad(Vec3 teleportPosition)
+{ // 2000
+    id = 2000;
+    worldColor = sf::Color(255, 0, 255);
+    img.setTexture(texturemanager.getTexture("TeleporterPad.png"));
+    teleporter = true;
+    telePos = teleportPosition;
 }
 
 Tile::Tile() : id{}

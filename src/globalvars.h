@@ -50,6 +50,7 @@ extern sf::Color cycleRed;
 extern sf::Color cycleGreen;
 extern sf::Color cycleBlue;
 extern bool cycleGrowth;
+extern float constantRotation;
 }
 
 #endif // GLOBALS_H_INCLUDED
