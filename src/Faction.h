@@ -40,6 +40,7 @@ public:
     float turnSpeed;
     sf::Vector2f speed;
     sf::Vector2f shootPos;
+    sf::Vector2f desiredViewAngle;
     bool prone;
     bool needsPath;
     bool toDelete;

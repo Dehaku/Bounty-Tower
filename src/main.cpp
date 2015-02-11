@@ -1612,11 +1612,27 @@ void critterBrain(Npc &npc, std::vector<Npc> &container)
     /* *BodyPart Loop* */
     /* Critter Vision   */
     const sf::Vector2f npcPos(npc.xpos, npc.ypos);
-    sf::Vector2f targetPos(gvars::mousePos);
+    //sf::Vector2f targetPos(gvars::mousePos);
+    /* Running through the critters pointers to see which one is valid, Then setting it to aim at it. */
+    sf::Vector2f * targetPos = &npc.desiredViewAngle;
+    if (npc.targetInfo.item != nullptr)
+        *targetPos = sf::Vector2f(npc.targetInfo.item->xpos,npc.targetInfo.item->ypos);
+    else if (npc.targetInfo.npc != nullptr)
+        *targetPos = sf::Vector2f(npc.targetInfo.npc->xpos,npc.targetInfo.npc->ypos);
+    else if (npc.targetInfo.tile != nullptr)
+    {
+        Vec3 tilePos(npc.targetInfo.tile->getPos());
+        *targetPos = sf::Vector2f(tilePos.x,tilePos.y);
+    }
+    else if (randz(1,100) == 100)
+        /* No target? Occasionally choose a nearby direction to look at. */
+        *targetPos = sf::Vector2f(npc.xpos+randz(-15,15),npc.ypos+randz(-15,15));
+
+    /*  Do the angle math to figure out which direction we need to turn */
     const float npcAngle = math::constrainAngle(npc.angle);
     const float targetAngle =
-        math::constrainAngle(math::angleBetweenVectors(npcPos, targetPos) - 90);
-
+        math::constrainAngle(math::angleBetweenVectors(npcPos, *targetPos) - 90);
+    /*  Turn towards it's target!    */
     if (math::angleDiff(npcAngle, targetAngle) > npc.turnSpeed)
         npc.angle += npc.turnSpeed;
     else if (math::angleDiff(npcAngle, targetAngle) < -npc.turnSpeed)
@@ -1658,7 +1674,7 @@ void critterBrain(Npc &npc, std::vector<Npc> &container)
             bool failedAlign = true;
             if (npc.angle == targetAngle)
             {
-                if (gridTrace(npcPos, targetPos))
+                if (gridTrace(npcPos, *targetPos))
                 {
                     effects.createLine(npc.xpos, npc.ypos, xPos, yPos, 1,
                                        sf::Color::Cyan);
