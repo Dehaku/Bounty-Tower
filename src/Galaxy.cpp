@@ -157,7 +157,7 @@ void GalaxyController::buildLocal(std::string type, int zedAmount)
                 for (int count = 0; count <= 2; count++)
                 {
                     sf::Vector2f vPos = math::circleRandz(1000, 1000, 180);
-                    spawnCritter("Human", vPos.x, vPos.y);
+                    spawnCritter("Human", vPos.x, vPos.y, 30*20);
                 }
 
                 spawnItem("Sword", 1039, 1020);
@@ -181,7 +181,7 @@ void GalaxyController::buildLocal(std::string type, int zedAmount)
 
                 spawnItem("Broken Vending Machine", 1150, 1050);
 
-                spawnCritter("Mini Turret", 1000, 1000);
+                spawnCritter("Mini Turret", 1000, 1000, 30*20);
             }
             catch (std::exception &e)
             {
@@ -270,7 +270,7 @@ void GalaxyController::buildLocal(std::string type, int zedAmount)
                 {
                     con("Starting Zed");
                     sf::Vector2f vPos = math::circleRandz(1000, 1000, 580);
-                    spawnCritter("Zombie", vPos.x, vPos.y);
+                    spawnCritter("Zombie", vPos.x, vPos.y, 30*20);
                     con("Ending Zed");
                 }
 
@@ -285,7 +285,7 @@ void GalaxyController::buildLocal(std::string type, int zedAmount)
 
                 spawnItem("Broken Vending Machine", 1150, 1050);
 
-                spawnCritter("Mini Turret", 1000, 1000);
+                spawnCritter("Mini Turret", 1000, 1000, 30*20);
             }
             catch (std::exception &e)
             {
@@ -381,7 +381,7 @@ void GalaxyController::buildLocalTest()
             for (int count = 0; count <= 2; count++)
             {
                 sf::Vector2f vPos = math::circleRandz(1000, 1000, 180);
-                spawnCritter("Human", vPos.x, vPos.y);
+                spawnCritter("Human", vPos.x, vPos.y, 30*20);
             }
 
             spawnItem("Sword", 1039, 1020);
@@ -396,7 +396,7 @@ void GalaxyController::buildLocalTest()
 
             spawnItem("Broken Vending Machine", 1150, 1050);
 
-            spawnCritter("Mini Turret", 1000, 1000);
+            spawnCritter("Mini Turret", 1000, 1000, 30*20);
         }
         catch (std::exception &e)
         {
@@ -415,7 +415,7 @@ void GalaxyController::zombieSwarmLocal(int num)
         for (int count = 0; count <= num; count++)
         {
             sf::Vector2f pos = math::circleRandz(1000, 1000, 500);
-            spawnCritter("Zombie", pos.x, pos.y);
+            spawnCritter("Zombie", pos.x, pos.y, 30*20);
         }
     }
 }

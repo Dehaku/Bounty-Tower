@@ -481,7 +481,7 @@ void Item::printConsoleInfo()
 }
 
 Item::Item()
-    : cbaseid{}, range{}, xpos{}, ypos{}, zpos{}, rxpos{}, rypos{}, gxpos{},
+    : cbaseid{}, range{}, xpos{}, ypos{}, zpos{30*20}, rxpos{}, rypos{}, gxpos{},
       gypos{}, imgstrx{}, imgstry{}, imgendx{}, imgendy{}, isWeapon{},
       tillrot{}, prodrate{}, prodratetimer{}, timerdecon{}, liquidContainMax{},
       objectContainMax{}, containAmount{}

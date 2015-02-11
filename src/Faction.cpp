@@ -376,6 +376,8 @@ Npc::Npc()
     consumeVeggy = false;
     consumeWater = false;
 
+    zpos = 30*20;
+
     maxhealth = skills.endurance * 0.8;
     regentimerint = 100;
     regentimer = regentimerint;
@@ -1926,7 +1928,7 @@ Npc *getGlobalCritter(std::string strtype)
     return nullptr;
 }
 
-void spawnCritter(std::string object, int xpos, int ypos)
+void spawnCritter(std::string object, int xpos, int ypos, int zpos)
 {
     if (gvars::debug)
     {
@@ -1938,6 +1940,7 @@ void spawnCritter(std::string object, int xpos, int ypos)
     var.id = gvars::globalid++;
     var.xpos = xpos;
     var.ypos = ypos;
+    var.zpos = zpos;
     var.reCreateSkills();
 
     npcmanager.addedCritters.push_back(var);
@@ -2002,7 +2005,7 @@ void buildStartingCritters(int zedAmount)
             {
                 con("Starting Zed");
                 sf::Vector2f vPos = math::circleRandz(1000, 1000, 580);
-                spawnCritter("Zombie", vPos.x, vPos.y);
+                spawnCritter("Zombie", vPos.x, vPos.y, 30*20);
                 con("Ending Zed");
             }
         }

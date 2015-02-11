@@ -697,7 +697,7 @@ void menuPopUp()
 
                     spawnItem("Broken Vending Machine", 1030, 1030);
 
-                    spawnCritter("Mini Turret", 1000, 1070);
+                    spawnCritter("Mini Turret", 1000, 1070, 30*20);
 
                     gCtrl.menuPos = sf::Vector2f(-10000, -10000);
                     gCtrl.menuType = "NULL";
@@ -1115,7 +1115,7 @@ void menuPopUp()
                              5, sf::Color::Red);
             if (buttonClicked(butt))
             {
-                spawnCritter(elem.name, gCtrl.menuPos.x, gCtrl.menuPos.y);
+                spawnCritter(elem.name, gCtrl.menuPos.x, gCtrl.menuPos.y, gvars::currentz*20);
                 fSleep(0.2);
                 break;
             }

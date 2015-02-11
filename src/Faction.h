@@ -388,7 +388,7 @@ float factionPower(std::string factionName);
 int factionPopulation();
 void initializeFactions(int generateMax = 10);
 Npc *getGlobalCritter(std::string strtype);
-void spawnCritter(std::string object, int xpos, int ypos);
+void spawnCritter(std::string object, int xpos, int ypos, int zpos);
 
 extern Faction g_pf;
 

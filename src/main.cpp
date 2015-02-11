@@ -969,6 +969,8 @@ void runCritterBody(Npc &npc)
 
 void critterBrain(Npc &npc, std::vector<Npc> &container)
 {
+    int critterZ = npc.zpos/20;
+    textList.createText(npc.xpos,npc.ypos,10,sf::Color::White,"ZPos:","",npc.zpos," /","",critterZ);
     runCritterBody(npc);
     debug("Debug: Ending Part Loop");
 
@@ -3272,7 +3274,8 @@ void drawNPCs()
     {
         if (npc.hasSpawned == true)
         {
-            if(aabb(npc.xpos,npc.ypos,gvars::topLeft.x,gvars::topRight.x,gvars::topLeft.y,gvars::bottomRight.y))
+            int CritterZ = npc.zpos/20;
+            if(aabb(npc.xpos,npc.ypos,gvars::topLeft.x,gvars::topRight.x,gvars::topLeft.y,gvars::bottomRight.y) && CritterZ == gvars::currentz)
             {
 
                 if (npc.name == "Azabul")
@@ -3330,7 +3333,8 @@ void drawItems()
 
     for (auto &worlditem : worlditems)
     {
-        if(aabb(worlditem.xpos,worlditem.ypos,gvars::topLeft.x,gvars::topRight.x,gvars::topLeft.y,gvars::bottomRight.y))
+        int itemZ = worlditem.zpos/20;
+        if(aabb(worlditem.xpos,worlditem.ypos,gvars::topLeft.x,gvars::topRight.x,gvars::topLeft.y,gvars::bottomRight.y) && itemZ == gvars::currentz)
         {
             worlditem.img.setColor(sf::Color(255, 255, 255, 255));
             worlditem.img.setScale(gvars::scalex, gvars::scaley);
