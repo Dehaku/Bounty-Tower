@@ -111,9 +111,6 @@ void zGenerateChunk(std::string type, int planet, sf::Vector2i cords,
 void generateChunk(std::string type, int planet, sf::Vector2i cords,
                    sf::Vector2i /*Pos*/)
 {
-    //std::string Deb = "Creating Chunk: ";
-    //Deb.append(type);
-    //debug(Deb);
 
     if (type == "Building")
     {
@@ -124,7 +121,7 @@ void generateChunk(std::string type, int planet, sf::Vector2i cords,
                 for (int x = 0; x != CHUNK_SIZE; x++)
                 {
                     if (x < 30)
-                        vChunk[i][t][x].stone();
+                        vChunk[i][t][x].stoneWall();
                     if (x == 30)
                         vChunk[i][t][x].dirt();
                     if (x > 30)
@@ -144,6 +141,23 @@ void generateChunk(std::string type, int planet, sf::Vector2i cords,
                             }
                         }
                     }
+
+                    if (i >= 10 && i < 21 && x == 29)
+                    {
+                        if (t >= 10 && t < 21)
+                        {
+                            vChunk[i][t][x].wall();
+                        }
+
+                        if (i >= 11 && i < 20)
+                        {
+                            if (t >= 11 && t < 20)
+                            {
+                                vChunk[i][t][x].stone();
+                            }
+                        }
+                    }
+
                 }
             }
         }
@@ -163,6 +177,8 @@ void generateChunk(std::string type, int planet, sf::Vector2i cords,
             }
         }*/
         vChunk[15][20][30].door();
+        vChunk[15][12][30].stairsDown();
+        vChunk[15][12][29].stairsUp();
     }
 
     else if (type == "SouthernHouse")
@@ -264,7 +280,7 @@ void generateChunk(std::string type, int planet, sf::Vector2i cords,
                 for (int x = 0; x != CHUNK_SIZE; x++)
                 {
                     if (x < 30)
-                        vChunk[i][t][x].stone();
+                        vChunk[i][t][x].stoneWall();
                     if (x > 30)
                         vChunk[i][t][x].sky();
                 }
@@ -331,8 +347,10 @@ void generateChunk(std::string type, int planet, sf::Vector2i cords,
             {
                 for (int x = 0; x != CHUNK_SIZE; x++)
                 {
-                    if (x < 30)
-                        vChunk[i][t][x].stone();
+                    if (x < 25)
+                        vChunk[i][t][x].stoneWall();
+                    else if (x < 30)
+                        vChunk[i][t][x].stoneWall(); // Replace with DirtWall when it exists.
                     if (x == 30)
                         vChunk[i][t][x].grass();
                     if (x > 30)
@@ -1121,6 +1139,25 @@ void Tile::woodFloor()
     id = 1030;
     worldColor = sf::Color(150, 150, 0);
     img.setTexture(texturemanager.getTexture("WoodFloor.png"));
+    transparent = true;
+}
+
+void Tile::stairsUp()
+{ // 1031
+    id = 1031;
+    worldColor = sf::Color(150, 150, 0);
+    img.setTexture(texturemanager.getTexture("Stairs.png"));
+    transparent = true;
+    goesUp = true;
+}
+
+void Tile::stairsDown()
+{ // 1032
+    id = 1032;
+    worldColor = sf::Color(150, 150, 0);
+    img.setTexture(texturemanager.getTexture("Stairs.png"));
+    transparent = true;
+    goesDown = true;
 }
 
 void Tile::road(bool center)
@@ -1174,6 +1211,8 @@ Tile::Tile() : id{}
     transparent = true;
     deathID = id;
     walkable = true;
+    goesUp = false;
+    goesDown = false;
 }
 
 XTile::XTile() : id{}, img{nullptr}

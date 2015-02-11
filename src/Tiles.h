@@ -29,6 +29,8 @@ public:
     bool transparent;
     float health;
     bool walkable;
+    bool goesUp;
+    bool goesDown;
     sf::Sprite img;
     sf::Color worldColor;
 
@@ -39,6 +41,8 @@ public:
     void stoneWall();
     void wall();
     void woodFloor();
+    void stairsUp();
+    void stairsDown();
     void road(bool center = false);
     void door();
     void lava();
