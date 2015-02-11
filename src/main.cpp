@@ -1618,9 +1618,9 @@ void critterBrain(Npc &npc, std::vector<Npc> &container)
         math::constrainAngle(math::angleBetweenVectors(npcPos, targetPos) - 90);
 
     if (math::angleDiff(npcAngle, targetAngle) > npc.turnSpeed)
-        npc.angle++;
+        npc.angle += npc.turnSpeed;
     else if (math::angleDiff(npcAngle, targetAngle) < -npc.turnSpeed)
-        npc.angle--;
+        npc.angle -= npc.turnSpeed;
     else
         npc.angle = targetAngle;
 

@@ -1386,6 +1386,7 @@ void NpcManager::initializeCritters()
             critter.thirsttimerint = stringFindNumber(line, "[ThirstTimerInt:");
 
             critter.moverateint = stringFindNumber(line, "[MoveSpeed:");
+            critter.turnSpeed = stringFindNumber(line, "[TurnSpeed:");
             critter.movetimerrate = stringFindNumber(line, "[MoveRate:");
             critter.viewangle = stringFindNumber(line, "[ViewAngle:");
             critter.viewrange = stringFindNumber(line, "[ViewRange:");
