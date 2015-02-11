@@ -31,6 +31,637 @@ template <typename T> T &listAt(std::list<T> &list, size_t index)
     return *it;
 }
 
+
+const int worldSizeX = 32;
+const int worldSizeY = 32;
+const int worldSizeZ = 3;
+
+class cTile
+{
+public:
+    Vec3 position;
+    int type;
+    bool teleporter;
+    Vec3 telePos;
+    void setPos(int x, int y, int z)
+    {
+        position = Vec3(x, y, z);
+    }
+    Vec3 getPos()
+    {
+        return position;
+    }
+    cTile()
+    {
+        type = 0;
+        teleporter = false;
+        telePos = Vec3(-1, -1, -1);
+    }
+};
+
+cTile grid[worldSizeX][worldSizeY][worldSizeZ];
+
+class worldclass
+#ifdef USE_PATHER
+    : public Graph
+#endif
+{
+private:
+    worldclass(const worldclass &);
+    void operator=(const worldclass &);
+
+public:
+    void NodeToXYZ(void *node, int *x, int *y, int *z)
+    {
+        cTile *Nodeling = static_cast<cTile *>(node);
+
+        *x = Nodeling->position.x;
+        *y = Nodeling->position.y;
+        *z = Nodeling->position.z;
+    }
+
+    void *XYZToNode(int x, int y, int z)
+    {
+        return (void *)&(grid[x][y][z]);
+    }
+
+    int Passable(int nx, int ny, int nz)
+    {
+        if (nx >= 0 && nx < worldSizeX && ny >= 0 && ny < worldSizeY &&
+            nz >= 0 && nz < worldSizeZ)
+        {
+            if (grid[nx][ny][nz].type == 0)
+                return 1;
+            if (grid[nx][ny][nz].type == 2)
+                return 2;
+            if (grid[nx][ny][nz].type == 3)
+                return 3;
+            if (grid[nx][ny][nz].type == 10)
+                return 1;
+        }
+        return 0;
+    }
+
+    void toggleTeleporter()
+    {
+        if (grid[5][1][0].type == 10)
+        {
+            grid[5][1][0].type = 0;
+            grid[5][1][0].teleporter = false;
+            grid[5][1][0].telePos = Vec3(-1, -1, -1);
+
+            grid[20][30][2].type = 0;
+            grid[20][30][2].teleporter = false;
+            grid[20][30][2].telePos = Vec3(-1, -1, -1);
+        }
+        else
+        {
+            grid[5][1][0].type = 10;
+            grid[5][1][0].teleporter = true;
+            grid[5][1][0].telePos = Vec3(20, 30, 2);
+            grid[20][30][2].type = 10;
+            grid[20][30][2].teleporter = true;
+            grid[20][30][2].telePos = Vec3(5, 1, 0);
+        }
+    }
+
+#ifdef USE_PATHER
+
+    MPVector<void *> microPath;
+    MicroPather *pather;
+    std::vector<cTile *> storedPath;
+
+    worldclass() : pather(0)
+    {
+        pather = new MicroPather(
+            this, 20); // Use a very small memory block to stress the pather
+    }
+
+    void drawPath()
+    {
+        unsigned int k;
+        unsigned int pathSize = microPath.size();
+        Vec3 oldPos;
+        for (k = 0; k < pathSize; ++k)
+        {
+            Vec3 pathPos;
+            NodeToXYZ(microPath[k], &pathPos.x, &pathPos.y, &pathPos.z);
+            sf::Color pathColor(0, 0, 0);
+            if (pathPos.z == 0)
+                pathColor.r = 255;
+            if (pathPos.z == 1)
+                pathColor.g = 255;
+            if (pathPos.z == 2)
+                pathColor.b = 255;
+
+            if (k != 0)
+                effects.createLine((oldPos.x + 1) * 20 - 10,
+                                   (oldPos.y + 1) * 20 - 10,
+                                   (pathPos.x + 1) * 20 - 10,
+                                   (pathPos.y + 1) * 20 - 10, 5, pathColor);
+
+            oldPos = pathPos;
+        }
+    }
+
+    void drawStoredPath()
+    {
+        Vec3 oldPos;
+        bool firstRun = true;
+
+        for (auto &i : storedPath)
+        {
+            Vec3 pathPos;
+            pathPos = Vec3(i->getPos());
+            sf::Color pathColor(0, 0, 0);
+            if (pathPos.z == 0)
+                pathColor.r = 255;
+            if (pathPos.z == 1)
+                pathColor.g = 255;
+            if (pathPos.z == 2)
+                pathColor.b = 255;
+
+            if (!firstRun)
+                effects.createLine((oldPos.x + 1) * 20 - 10,
+                                   (oldPos.y + 1) * 20 - 10,
+                                   (pathPos.x + 1) * 20 - 10,
+                                   (pathPos.y + 1) * 20 - 10, 5, pathColor);
+
+            oldPos = pathPos;
+            firstRun = false;
+        }
+        storedPath.clear();
+    }
+
+    void storePath(void *node)
+    {
+        cTile *Nodeling = static_cast<cTile *>(node);
+        storedPath.push_back(Nodeling);
+    }
+
+    int makePath(Vec3 Ori, Vec3 Tar)
+    {
+        int result = 0;
+        if (Passable(Tar.x, Tar.y, Tar.z) == 1)
+        {
+#ifdef USE_PATHER
+            float totalCost;
+
+            result = pather->Solve(XYZToNode(Ori.x, Ori.y, Ori.z),
+                                   XYZToNode(Tar.x, Tar.y, Tar.z), &microPath,
+                                   &totalCost);
+
+            if (result == MicroPather::SOLVED)
+            {
+                unsigned int pathSize = microPath.size();
+                for (int i = 0; i != pathSize; i++)
+                {
+                    storePath(microPath[i]);
+                }
+            }
+
+//printf( "Pather returned %d\n", result );
+
+#endif
+        }
+        return result;
+    }
+
+    virtual ~worldclass()
+    {
+        delete pather;
+    }
+
+    virtual float LeastCostEstimate(void *nodeStart, void *nodeEnd)
+    {
+        int xStart, yStart, zStart, xEnd, yEnd, zEnd;
+        NodeToXYZ(nodeStart, &xStart, &yStart, &zStart);
+        NodeToXYZ(nodeEnd, &xEnd, &yEnd, &zEnd);
+
+        double d = sqrt(pow(xEnd - xStart, 2) + pow(yEnd - yStart, 2) +
+                        pow(zEnd - zStart, 2));
+        /* Compute the minimum path cost using distance measurement. It is possible
+		   to compute the exact minimum path using the fact that you can move only
+		   on a straight line or on a diagonal, and this will yield a better result.
+		*/
+        return d;
+    }
+
+    virtual void AdjacentCost(void *node,
+                              micropather::MPVector<StateCost> *neighbors)
+    {
+        int x, y, z;
+        NodeToXYZ(node, &x, &y, &z);
+        //const int dx[8] = { 1, 1, 0, -1, -1, -1, 0, 1 };
+        //const int dy[8] = { 0, 1, 1, 1, 0, -1, -1, -1 };
+        //const int dx[26] = { -1, 0, 1, -1, 0, 1, -1, 0, 1, -1, 0, 1, -1, 1, -1, 0, 1, -1, 0, 1, -1, 0, 1, -1, 0, 1};
+        //const int dy[26] = { -1, -1, -1, 0, 0, 0, 1, 1, 1, -1, -1, -1, 0, 0, 1, 1, 1, -1, -1, -1, 0, 0, 0, 1, 1, 1};
+        //const int dz[26] = { -1, -1, -1, -1, -1, -1, -1, -1, -1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1};
+
+        const int dx[10] = {0, -1, 0, 1, -1, 1, -1, 0, 1, 0};
+        const int dy[10] = {0, -1, -1, -1, 0, 0, 1, 1, 1, 0};
+        const int dz[10] = {-1, 0, 0, 0, 0, 0, 0, 0, 0, 1};
+
+        //const float cost[8] = { 1.0f, 1.41f, 1.0f, 1.41f, 1.0f, 1.41f, 1.0f, 1.41f };
+        float One = 1;
+        float Two = 1.41f;
+        float Three = 1.44f;
+        const float cost[10] = {One, Two, One, Two, One,
+                                One, Two, One, Two, One};
+
+        cTile *Nodeling = static_cast<cTile *>(node);
+
+        if (Nodeling->teleporter)
+        {
+            Vec3 N(Nodeling->telePos);
+            StateCost nodeCost = {XYZToNode(N.x, N.y, N.z), 3};
+            neighbors->push_back(nodeCost);
+        }
+
+        for (int i = 0; i < 10; ++i)
+        {
+
+            int nx = x + dx[i];
+            int ny = y + dy[i];
+            int nz = z + dz[i];
+
+            //void* targetTile = XYZToNode(nx,ny,nz);
+
+            int pass = Passable(nx, ny, nz);
+            if (pass > 0)
+            {
+                //std::cout << dz[i];
+                if (pass == 1 && dz[i] == 0)
+                {
+                    // Normal floor
+                    StateCost nodeCost = {XYZToNode(nx, ny, nz), cost[i]};
+                    neighbors->push_back(nodeCost);
+                }
+                else if (pass == 3 && dz[i] == -1 && dx[i] == 0 && dy[i] == 0)
+                {
+                    StateCost nodeCost = {XYZToNode(nx, ny, nz), cost[i]};
+                    neighbors->push_back(nodeCost);
+                }
+                else if (pass == 2 && dz[i] == 1 && dx[i] == 0 && dy[i] == 0)
+                {
+                    StateCost nodeCost = {XYZToNode(nx, ny, nz), cost[i]};
+                    neighbors->push_back(nodeCost);
+                }
+                else
+                {
+                    // Normal floor
+                    StateCost nodeCost = {XYZToNode(nx, ny, nz), FLT_MAX};
+                    neighbors->push_back(nodeCost);
+                }
+            }
+        }
+    }
+
+    virtual void
+    AdjacentCostPureFlight(void *node,
+                           micropather::MPVector<StateCost> *neighbors)
+    {
+        int x, y, z;
+        NodeToXYZ(node, &x, &y, &z);
+        //const int dx[8] = { 1, 1, 0, -1, -1, -1, 0, 1 };
+        //const int dy[8] = { 0, 1, 1, 1, 0, -1, -1, -1 };
+        const int dx[26] = {-1, 0,  1, -1, 0,  1, -1, 0,  1, -1, 0,  1, -1,
+                            1,  -1, 0, 1,  -1, 0, 1,  -1, 0, 1,  -1, 0, 1};
+        const int dy[26] = {-1, -1, -1, 0, 0,  0,  1,  1, 1, -1, -1, -1, 0,
+                            0,  1,  1,  1, -1, -1, -1, 0, 0, 0,  1,  1,  1};
+        const int dz[26] = {-1, -1, -1, -1, -1, -1, -1, -1, -1, 0, 0, 0, 0,
+                            0,  0,  0,  0,  1,  1,  1,  1,  1,  1, 1, 1, 1};
+        //const float cost[8] = { 1.0f, 1.41f, 1.0f, 1.41f, 1.0f, 1.41f, 1.0f, 1.41f };
+        float One = 1;
+        float Two = 1.41f;
+        float Three = 1.44f;
+        const float cost[26] = {Three, Two,   Three, Two,   One,  Two,   Three,
+                                Two,   Three, Two,   One,   Two,  One,   One,
+                                Two,   One,   Two,   Three, Two,  Three, Two,
+                                One,   Two,   Three, Two,   Three};
+
+        for (int i = 0; i < 26; ++i)
+        {
+            int nx = x + dx[i];
+            int ny = y + dy[i];
+            int nz = z + dz[i];
+
+            int pass = Passable(nx, ny, nz);
+            if (pass > 0)
+            {
+                if (pass == 1)
+                {
+                    // Normal floor
+                    StateCost nodeCost = {XYZToNode(nx, ny, nz), cost[i]};
+                    neighbors->push_back(nodeCost);
+                }
+                else
+                {
+                    // Normal floor
+                    StateCost nodeCost = {XYZToNode(nx, ny, nz), FLT_MAX};
+                    neighbors->push_back(nodeCost);
+                }
+            }
+        }
+    }
+
+    virtual void PrintStateInfo(void *node)
+    {
+        int x, y, z;
+        NodeToXYZ(node, &x, &y, &z);
+        printf("(%d,%d,%d)", x, y, &z);
+    }
+
+#endif
+};
+worldclass world;
+
+class PathingController
+#ifdef USE_PATHER
+    : public Graph
+#endif
+{
+private:
+    PathingController(const PathingController &);
+    void operator=(const PathingController &);
+
+public:
+    void NodeToXYZ(void *node, int *x, int *y, int *z)
+    {
+        Tile *Nodeling = static_cast<Tile *>(node);
+
+        *x = Nodeling->pos.x;
+        *y = Nodeling->pos.y;
+        *z = Nodeling->pos.z;
+    }
+
+    void *XYZToNode(int x, int y, int z)
+    {
+        return (void *)&(tiles[x][y][z]);
+    }
+
+    int Passable(int nx, int ny, int nz)
+    {
+        if (nx >= 0 && nx < GRIDS && ny >= 0 && ny < GRIDS &&
+            nz >= 0 && nz < GRIDS)
+        {
+            if (tiles[nx][ny][nz].walkable)
+                return 1;
+            if (tiles[nx][ny][nz].goesDown)
+                return 2;
+            if (tiles[nx][ny][nz].goesUp)
+                return 3;
+        }
+        return 0;
+    }
+
+#ifdef USE_PATHER
+
+    MPVector<void *> microPath;
+    MicroPather *pather;
+    std::vector<Tile *> storedPath;
+
+    PathingController() : pather(0)
+    {
+        pather = new MicroPather(
+            this, 20); // Use a very small memory block to stress the pather
+    }
+
+    void drawPath()
+    {
+        unsigned int k;
+        unsigned int pathSize = microPath.size();
+        Vec3 oldPos;
+        for (k = 0; k < pathSize; ++k)
+        {
+            Vec3 pathPos;
+            NodeToXYZ(microPath[k], &pathPos.x, &pathPos.y, &pathPos.z);
+            sf::Color pathColor(0, 0, 0);
+            if (pathPos.z == 0)
+                pathColor.r = 255;
+            if (pathPos.z == 1)
+                pathColor.g = 255;
+            if (pathPos.z == 2)
+                pathColor.b = 255;
+
+            if (k != 0)
+                effects.createLine((oldPos.x + 1) * 20 - 10,
+                                   (oldPos.y + 1) * 20 - 10,
+                                   (pathPos.x + 1) * 20 - 10,
+                                   (pathPos.y + 1) * 20 - 10, 5, pathColor);
+
+            oldPos = pathPos;
+        }
+    }
+
+    void drawStoredPath()
+    {
+        Vec3 oldPos;
+        bool firstRun = true;
+
+        for (auto &i : storedPath)
+        {
+            Vec3 pathPos;
+            pathPos = Vec3(i->getPos());
+            sf::Color pathColor(0, 0, 0);
+            if (pathPos.z == 0)
+                pathColor.r = 255;
+            if (pathPos.z == 1)
+                pathColor.g = 255;
+            if (pathPos.z == 2)
+                pathColor.b = 255;
+
+            if (!firstRun)
+                effects.createLine((oldPos.x + 1) * 20 - 10,
+                                   (oldPos.y + 1) * 20 - 10,
+                                   (pathPos.x + 1) * 20 - 10,
+                                   (pathPos.y + 1) * 20 - 10, 5, pathColor);
+
+            oldPos = pathPos;
+            firstRun = false;
+        }
+        storedPath.clear();
+    }
+
+    void storePath(void *node)
+    {
+        Tile *Nodeling = static_cast<Tile *>(node);
+        storedPath.push_back(Nodeling);
+    }
+
+    int makePath(Vec3 Ori, Vec3 Tar)
+    {
+        int result = 0;
+        if (Passable(Tar.x, Tar.y, Tar.z) == 1)
+        {
+#ifdef USE_PATHER
+            float totalCost;
+
+            result = pather->Solve(XYZToNode(Ori.x, Ori.y, Ori.z),
+                                   XYZToNode(Tar.x, Tar.y, Tar.z), &microPath,
+                                   &totalCost);
+
+            if (result == MicroPather::SOLVED)
+            {
+                unsigned int pathSize = microPath.size();
+                for (int i = 0; i != pathSize; i++)
+                {
+                    storePath(microPath[i]);
+                }
+            }
+
+
+#endif
+        }
+        return result;
+    }
+
+    virtual ~PathingController()
+    {
+        delete pather;
+    }
+
+    virtual float LeastCostEstimate(void *nodeStart, void *nodeEnd)
+    {
+        int xStart, yStart, zStart, xEnd, yEnd, zEnd;
+        NodeToXYZ(nodeStart, &xStart, &yStart, &zStart);
+        NodeToXYZ(nodeEnd, &xEnd, &yEnd, &zEnd);
+
+        double d = sqrt(pow(xEnd - xStart, 2) + pow(yEnd - yStart, 2) +
+                        pow(zEnd - zStart, 2));
+        /* Compute the minimum path cost using distance measurement. It is possible
+		   to compute the exact minimum path using the fact that you can move only
+		   on a straight line or on a diagonal, and this will yield a better result.
+		*/
+        return d;
+    }
+
+    virtual void AdjacentCost(void *node,
+                              micropather::MPVector<StateCost> *neighbors)
+    {
+        int x, y, z;
+        NodeToXYZ(node, &x, &y, &z);
+        //const int dx[8] = { 1, 1, 0, -1, -1, -1, 0, 1 };
+        //const int dy[8] = { 0, 1, 1, 1, 0, -1, -1, -1 };
+        //const int dx[26] = { -1, 0, 1, -1, 0, 1, -1, 0, 1, -1, 0, 1, -1, 1, -1, 0, 1, -1, 0, 1, -1, 0, 1, -1, 0, 1};
+        //const int dy[26] = { -1, -1, -1, 0, 0, 0, 1, 1, 1, -1, -1, -1, 0, 0, 1, 1, 1, -1, -1, -1, 0, 0, 0, 1, 1, 1};
+        //const int dz[26] = { -1, -1, -1, -1, -1, -1, -1, -1, -1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1};
+
+        const int dx[10] = {0, -1, 0, 1, -1, 1, -1, 0, 1, 0};
+        const int dy[10] = {0, -1, -1, -1, 0, 0, 1, 1, 1, 0};
+        const int dz[10] = {-1, 0, 0, 0, 0, 0, 0, 0, 0, 1};
+
+        //const float cost[8] = { 1.0f, 1.41f, 1.0f, 1.41f, 1.0f, 1.41f, 1.0f, 1.41f };
+        float One = 1;
+        float Two = 1.41f;
+        float Three = 1.44f;
+        const float cost[10] = {One, Two, One, Two, One,
+                                One, Two, One, Two, One};
+
+        Tile *Nodeling = static_cast<Tile *>(node);
+
+        if (Nodeling->teleporter)
+        {
+            Vec3 N(Nodeling->telePos);
+            StateCost nodeCost = {XYZToNode(N.x, N.y, N.z), 3};
+            neighbors->push_back(nodeCost);
+        }
+
+        for (int i = 0; i < 10; ++i)
+        {
+            int nx = x + dx[i];
+            int ny = y + dy[i];
+            int nz = z + dz[i];
+
+            int pass = Passable(nx, ny, nz);
+            if (pass > 0)
+            {
+                if (pass == 1 && dz[i] == 0)
+                {
+                    StateCost nodeCost = {XYZToNode(nx, ny, nz), cost[i]};
+                    neighbors->push_back(nodeCost);
+                }
+                else if (pass == 3 && dz[i] == -1 && dx[i] == 0 && dy[i] == 0)
+                {
+                    StateCost nodeCost = {XYZToNode(nx, ny, nz), cost[i]};
+                    neighbors->push_back(nodeCost);
+                }
+                else if (pass == 2 && dz[i] == 1 && dx[i] == 0 && dy[i] == 0)
+                {
+                    StateCost nodeCost = {XYZToNode(nx, ny, nz), cost[i]};
+                    neighbors->push_back(nodeCost);
+                }
+                else
+                {
+                    StateCost nodeCost = {XYZToNode(nx, ny, nz), FLT_MAX};
+                    neighbors->push_back(nodeCost);
+                }
+            }
+        }
+    }
+
+    virtual void
+    AdjacentCostPureFlight(void *node,
+                           micropather::MPVector<StateCost> *neighbors)
+    {
+        int x, y, z;
+        NodeToXYZ(node, &x, &y, &z);
+        //const int dx[8] = { 1, 1, 0, -1, -1, -1, 0, 1 };
+        //const int dy[8] = { 0, 1, 1, 1, 0, -1, -1, -1 };
+        const int dx[26] = {-1, 0,  1, -1, 0,  1, -1, 0,  1, -1, 0,  1, -1,
+                            1,  -1, 0, 1,  -1, 0, 1,  -1, 0, 1,  -1, 0, 1};
+        const int dy[26] = {-1, -1, -1, 0, 0,  0,  1,  1, 1, -1, -1, -1, 0,
+                            0,  1,  1,  1, -1, -1, -1, 0, 0, 0,  1,  1,  1};
+        const int dz[26] = {-1, -1, -1, -1, -1, -1, -1, -1, -1, 0, 0, 0, 0,
+                            0,  0,  0,  0,  1,  1,  1,  1,  1,  1, 1, 1, 1};
+        //const float cost[8] = { 1.0f, 1.41f, 1.0f, 1.41f, 1.0f, 1.41f, 1.0f, 1.41f };
+        float One = 1;
+        float Two = 1.41f;
+        float Three = 1.44f;
+        const float cost[26] = {Three, Two,   Three, Two,   One,  Two,   Three,
+                                Two,   Three, Two,   One,   Two,  One,   One,
+                                Two,   One,   Two,   Three, Two,  Three, Two,
+                                One,   Two,   Three, Two,   Three};
+
+        for (int i = 0; i < 26; ++i)
+        {
+            int nx = x + dx[i];
+            int ny = y + dy[i];
+            int nz = z + dz[i];
+
+            int pass = Passable(nx, ny, nz);
+            if (pass > 0)
+            {
+                if (pass == 1)
+                {
+                    // Normal floor
+                    StateCost nodeCost = {XYZToNode(nx, ny, nz), cost[i]};
+                    neighbors->push_back(nodeCost);
+                }
+                else
+                {
+                    // Normal floor
+                    StateCost nodeCost = {XYZToNode(nx, ny, nz), FLT_MAX};
+                    neighbors->push_back(nodeCost);
+                }
+            }
+        }
+    }
+
+    virtual void PrintStateInfo(void *node)
+    {
+        int x, y, z;
+        NodeToXYZ(node, &x, &y, &z);
+        printf("(%d,%d,%d)", x, y, &z);
+    }
+
+#endif
+};
+PathingController pathCon;
+
+
+
+
 //-- Prototypes
 //
 
@@ -3484,349 +4115,6 @@ void removeNPCs()
     }
 }
 
-const int worldSizeX = 32;
-const int worldSizeY = 32;
-const int worldSizeZ = 3;
-
-class cTile
-{
-public:
-    Vec3 position;
-    int type;
-    bool teleporter;
-    Vec3 telePos;
-    void setPos(int x, int y, int z)
-    {
-        position = Vec3(x, y, z);
-    }
-    Vec3 getPos()
-    {
-        return position;
-    }
-    cTile()
-    {
-        type = 0;
-        teleporter = false;
-        telePos = Vec3(-1, -1, -1);
-    }
-};
-
-cTile grid[worldSizeX][worldSizeY][worldSizeZ];
-
-class worldclass
-#ifdef USE_PATHER
-    : public Graph
-#endif
-{
-private:
-    worldclass(const worldclass &);
-    void operator=(const worldclass &);
-
-public:
-    void NodeToXYZ(void *node, int *x, int *y, int *z)
-    {
-        cTile *Nodeling = static_cast<cTile *>(node);
-
-        *x = Nodeling->position.x;
-        *y = Nodeling->position.y;
-        *z = Nodeling->position.z;
-    }
-
-    void *XYZToNode(int x, int y, int z)
-    {
-        return (void *)&(grid[x][y][z]);
-    }
-
-    int Passable(int nx, int ny, int nz)
-    {
-        if (nx >= 0 && nx < worldSizeX && ny >= 0 && ny < worldSizeY &&
-            nz >= 0 && nz < worldSizeZ)
-        {
-            if (grid[nx][ny][nz].type == 0)
-                return 1;
-            if (grid[nx][ny][nz].type == 2)
-                return 2;
-            if (grid[nx][ny][nz].type == 3)
-                return 3;
-            if (grid[nx][ny][nz].type == 10)
-                return 1;
-        }
-        return 0;
-    }
-
-    void toggleTeleporter()
-    {
-        if (grid[5][1][0].type == 10)
-        {
-            grid[5][1][0].type = 0;
-            grid[5][1][0].teleporter = false;
-            grid[5][1][0].telePos = Vec3(-1, -1, -1);
-
-            grid[20][30][2].type = 0;
-            grid[20][30][2].teleporter = false;
-            grid[20][30][2].telePos = Vec3(-1, -1, -1);
-        }
-        else
-        {
-            grid[5][1][0].type = 10;
-            grid[5][1][0].teleporter = true;
-            grid[5][1][0].telePos = Vec3(20, 30, 2);
-            grid[20][30][2].type = 10;
-            grid[20][30][2].teleporter = true;
-            grid[20][30][2].telePos = Vec3(5, 1, 0);
-        }
-    }
-
-#ifdef USE_PATHER
-
-    MPVector<void *> microPath;
-    MicroPather *pather;
-    std::vector<cTile *> storedPath;
-
-    worldclass() : pather(0)
-    {
-        pather = new MicroPather(
-            this, 20); // Use a very small memory block to stress the pather
-    }
-
-    void drawPath()
-    {
-        unsigned int k;
-        unsigned int pathSize = microPath.size();
-        Vec3 oldPos;
-        for (k = 0; k < pathSize; ++k)
-        {
-            Vec3 pathPos;
-            NodeToXYZ(microPath[k], &pathPos.x, &pathPos.y, &pathPos.z);
-            sf::Color pathColor(0, 0, 0);
-            if (pathPos.z == 0)
-                pathColor.r = 255;
-            if (pathPos.z == 1)
-                pathColor.g = 255;
-            if (pathPos.z == 2)
-                pathColor.b = 255;
-
-            if (k != 0)
-                effects.createLine((oldPos.x + 1) * 20 - 10,
-                                   (oldPos.y + 1) * 20 - 10,
-                                   (pathPos.x + 1) * 20 - 10,
-                                   (pathPos.y + 1) * 20 - 10, 5, pathColor);
-
-            oldPos = pathPos;
-        }
-    }
-
-    void drawStoredPath()
-    {
-        Vec3 oldPos;
-        bool firstRun = true;
-
-        for (auto &i : storedPath)
-        {
-            Vec3 pathPos;
-            pathPos = Vec3(i->getPos());
-            sf::Color pathColor(0, 0, 0);
-            if (pathPos.z == 0)
-                pathColor.r = 255;
-            if (pathPos.z == 1)
-                pathColor.g = 255;
-            if (pathPos.z == 2)
-                pathColor.b = 255;
-
-            if (!firstRun)
-                effects.createLine((oldPos.x + 1) * 20 - 10,
-                                   (oldPos.y + 1) * 20 - 10,
-                                   (pathPos.x + 1) * 20 - 10,
-                                   (pathPos.y + 1) * 20 - 10, 5, pathColor);
-
-            oldPos = pathPos;
-            firstRun = false;
-        }
-        storedPath.clear();
-    }
-
-    void storePath(void *node)
-    {
-        cTile *Nodeling = static_cast<cTile *>(node);
-        storedPath.push_back(Nodeling);
-    }
-
-    int makePath(Vec3 Ori, Vec3 Tar)
-    {
-        int result = 0;
-        if (Passable(Tar.x, Tar.y, Tar.z) == 1)
-        {
-#ifdef USE_PATHER
-            float totalCost;
-
-            result = pather->Solve(XYZToNode(Ori.x, Ori.y, Ori.z),
-                                   XYZToNode(Tar.x, Tar.y, Tar.z), &microPath,
-                                   &totalCost);
-
-            if (result == MicroPather::SOLVED)
-            {
-                unsigned int pathSize = microPath.size();
-                for (int i = 0; i != pathSize; i++)
-                {
-                    storePath(microPath[i]);
-                }
-            }
-
-//printf( "Pather returned %d\n", result );
-
-#endif
-        }
-        return result;
-    }
-
-    virtual ~worldclass()
-    {
-        delete pather;
-    }
-
-    virtual float LeastCostEstimate(void *nodeStart, void *nodeEnd)
-    {
-        int xStart, yStart, zStart, xEnd, yEnd, zEnd;
-        NodeToXYZ(nodeStart, &xStart, &yStart, &zStart);
-        NodeToXYZ(nodeEnd, &xEnd, &yEnd, &zEnd);
-
-        double d = sqrt(pow(xEnd - xStart, 2) + pow(yEnd - yStart, 2) +
-                        pow(zEnd - zStart, 2));
-        /* Compute the minimum path cost using distance measurement. It is possible
-		   to compute the exact minimum path using the fact that you can move only
-		   on a straight line or on a diagonal, and this will yield a better result.
-		*/
-        return d;
-    }
-
-    virtual void AdjacentCost(void *node,
-                              micropather::MPVector<StateCost> *neighbors)
-    {
-        int x, y, z;
-        NodeToXYZ(node, &x, &y, &z);
-        //const int dx[8] = { 1, 1, 0, -1, -1, -1, 0, 1 };
-        //const int dy[8] = { 0, 1, 1, 1, 0, -1, -1, -1 };
-        //const int dx[26] = { -1, 0, 1, -1, 0, 1, -1, 0, 1, -1, 0, 1, -1, 1, -1, 0, 1, -1, 0, 1, -1, 0, 1, -1, 0, 1};
-        //const int dy[26] = { -1, -1, -1, 0, 0, 0, 1, 1, 1, -1, -1, -1, 0, 0, 1, 1, 1, -1, -1, -1, 0, 0, 0, 1, 1, 1};
-        //const int dz[26] = { -1, -1, -1, -1, -1, -1, -1, -1, -1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1};
-
-        const int dx[10] = {0, -1, 0, 1, -1, 1, -1, 0, 1, 0};
-        const int dy[10] = {0, -1, -1, -1, 0, 0, 1, 1, 1, 0};
-        const int dz[10] = {-1, 0, 0, 0, 0, 0, 0, 0, 0, 1};
-
-        //const float cost[8] = { 1.0f, 1.41f, 1.0f, 1.41f, 1.0f, 1.41f, 1.0f, 1.41f };
-        float One = 1;
-        float Two = 1.41f;
-        float Three = 1.44f;
-        const float cost[10] = {One, Two, One, Two, One,
-                                One, Two, One, Two, One};
-
-        cTile *Nodeling = static_cast<cTile *>(node);
-
-        if (Nodeling->teleporter)
-        {
-            Vec3 N(Nodeling->telePos);
-            StateCost nodeCost = {XYZToNode(N.x, N.y, N.z), 3};
-            neighbors->push_back(nodeCost);
-        }
-
-        for (int i = 0; i < 10; ++i)
-        {
-
-            int nx = x + dx[i];
-            int ny = y + dy[i];
-            int nz = z + dz[i];
-
-            //void* targetTile = XYZToNode(nx,ny,nz);
-
-            int pass = Passable(nx, ny, nz);
-            if (pass > 0)
-            {
-                //std::cout << dz[i];
-                if (pass == 1 && dz[i] == 0)
-                {
-                    // Normal floor
-                    StateCost nodeCost = {XYZToNode(nx, ny, nz), cost[i]};
-                    neighbors->push_back(nodeCost);
-                }
-                else if (pass == 3 && dz[i] == -1 && dx[i] == 0 && dy[i] == 0)
-                {
-                    StateCost nodeCost = {XYZToNode(nx, ny, nz), cost[i]};
-                    neighbors->push_back(nodeCost);
-                }
-                else if (pass == 2 && dz[i] == 1 && dx[i] == 0 && dy[i] == 0)
-                {
-                    StateCost nodeCost = {XYZToNode(nx, ny, nz), cost[i]};
-                    neighbors->push_back(nodeCost);
-                }
-                else
-                {
-                    // Normal floor
-                    StateCost nodeCost = {XYZToNode(nx, ny, nz), FLT_MAX};
-                    neighbors->push_back(nodeCost);
-                }
-            }
-        }
-    }
-
-    virtual void
-    AdjacentCostPureFlight(void *node,
-                           micropather::MPVector<StateCost> *neighbors)
-    {
-        int x, y, z;
-        NodeToXYZ(node, &x, &y, &z);
-        //const int dx[8] = { 1, 1, 0, -1, -1, -1, 0, 1 };
-        //const int dy[8] = { 0, 1, 1, 1, 0, -1, -1, -1 };
-        const int dx[26] = {-1, 0,  1, -1, 0,  1, -1, 0,  1, -1, 0,  1, -1,
-                            1,  -1, 0, 1,  -1, 0, 1,  -1, 0, 1,  -1, 0, 1};
-        const int dy[26] = {-1, -1, -1, 0, 0,  0,  1,  1, 1, -1, -1, -1, 0,
-                            0,  1,  1,  1, -1, -1, -1, 0, 0, 0,  1,  1,  1};
-        const int dz[26] = {-1, -1, -1, -1, -1, -1, -1, -1, -1, 0, 0, 0, 0,
-                            0,  0,  0,  0,  1,  1,  1,  1,  1,  1, 1, 1, 1};
-        //const float cost[8] = { 1.0f, 1.41f, 1.0f, 1.41f, 1.0f, 1.41f, 1.0f, 1.41f };
-        float One = 1;
-        float Two = 1.41f;
-        float Three = 1.44f;
-        const float cost[26] = {Three, Two,   Three, Two,   One,  Two,   Three,
-                                Two,   Three, Two,   One,   Two,  One,   One,
-                                Two,   One,   Two,   Three, Two,  Three, Two,
-                                One,   Two,   Three, Two,   Three};
-
-        for (int i = 0; i < 26; ++i)
-        {
-            int nx = x + dx[i];
-            int ny = y + dy[i];
-            int nz = z + dz[i];
-
-            int pass = Passable(nx, ny, nz);
-            if (pass > 0)
-            {
-                if (pass == 1)
-                {
-                    // Normal floor
-                    StateCost nodeCost = {XYZToNode(nx, ny, nz), cost[i]};
-                    neighbors->push_back(nodeCost);
-                }
-                else
-                {
-                    // Normal floor
-                    StateCost nodeCost = {XYZToNode(nx, ny, nz), FLT_MAX};
-                    neighbors->push_back(nodeCost);
-                }
-            }
-        }
-    }
-
-    virtual void PrintStateInfo(void *node)
-    {
-        int x, y, z;
-        NodeToXYZ(node, &x, &y, &z);
-        printf("(%d,%d,%d)", x, y, &z);
-    }
-
-#endif
-};
-worldclass world;
 
 void buildMicroPatherTest()
 {

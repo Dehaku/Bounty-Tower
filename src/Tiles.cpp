@@ -1065,6 +1065,16 @@ void buildLocalfromWorld(sf::Vector2i worldPos)
     debug("bLfW Done");
 }
 
+void Tile::setPos(int x, int y, int z)
+{
+    pos = Vec3(x, y, z);
+}
+
+Vec3 Tile::getPos()
+{
+    return pos;
+}
+
 void Tile::dirt()
 { // 1003
     id = 1003;
@@ -1213,6 +1223,8 @@ Tile::Tile() : id{}
     walkable = true;
     goesUp = false;
     goesDown = false;
+    teleporter = false;
+    telePos = Vec3(-1,-1,-1);
 }
 
 XTile::XTile() : id{}, img{nullptr}

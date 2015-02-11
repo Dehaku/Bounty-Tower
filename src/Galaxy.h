@@ -9,6 +9,7 @@
 
 #include <SFML/Graphics.hpp>
 
+
 class GalaxyController
 {
 public:

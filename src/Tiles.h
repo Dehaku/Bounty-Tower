@@ -3,6 +3,9 @@
 
 #include <SFML/Graphics.hpp>
 
+
+#include "defs.h"
+
 const int GRIDS = 96;
 
 const int CHUNK_SIZE = 32;
@@ -31,8 +34,14 @@ public:
     bool walkable;
     bool goesUp;
     bool goesDown;
+    Vec3 pos;
+    bool teleporter;
+    Vec3 telePos;
     sf::Sprite img;
     sf::Color worldColor;
+
+    void setPos(int x, int y, int z);
+    Vec3 getPos();
 
     void dirt();
     void rendGrass();
