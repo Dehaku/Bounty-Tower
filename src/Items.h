@@ -108,7 +108,7 @@ public:
     bool boolname(char *cakezebra);
     void printInfo();
     void drawImg();
-    void spawn(int gposx, int gposy, int rposx, int rposy, int posx, int posy);
+    void spawn(int gposx, int gposy, int rposx, int rposy, int posx, int posy, int posz);
     void printConsoleInfo();
     Item();
 };

@@ -457,7 +457,7 @@ void Item::drawImg()
 }
 
 void Item::spawn(int /*gposx*/, int /*gposy*/, int /*rposx*/, int /*rposy*/,
-                 int posx, int posy)
+                 int posx, int posy, int posz)
 {
     gxpos = 100;
     gypos = 100;
@@ -465,6 +465,7 @@ void Item::spawn(int /*gposx*/, int /*gposy*/, int /*rposx*/, int /*rposy*/,
     rypos = 100;
     xpos = posx;
     ypos = posy;
+    zpos = posz;
 }
 
 void Item::printConsoleInfo()

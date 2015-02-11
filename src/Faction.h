@@ -176,6 +176,7 @@ public:
     int planet;
     float ypos;
     float xpos;
+    float zpos;
     int rypos;
     int rxpos;
     float maxhealth;
@@ -273,7 +274,7 @@ public:
     void fillhunger(float amount);
     void fillthirst(int amount);
     std::string getname();
-    void spawn(int gposx, int gposy, int rposx, int rposy, int posx, int posy);
+    void spawn(int gposx, int gposy, int rposx, int rposy, int posx, int posy, int posz);
     bool boolblood(std::string ailment);
     bool hasTag(std::string tag);
     void tag(std::string tag, int amount);

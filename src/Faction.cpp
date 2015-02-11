@@ -909,7 +909,7 @@ std::string Npc::getname()
 }
 
 void Npc::spawn(int /*gposx*/, int /*gposy*/, int /*rposx*/, int /*rposy*/,
-                int posx, int posy)
+                int posx, int posy, int posz)
 {
     gxpos = 100;
     gypos = 100;
@@ -917,6 +917,7 @@ void Npc::spawn(int /*gposx*/, int /*gposy*/, int /*rposx*/, int /*rposy*/,
     rypos = 100;
     xpos = posx;
     ypos = posy;
+    ypos = 30*20; //posz;
     hasSpawned = true;
 }
 
