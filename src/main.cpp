@@ -3272,7 +3272,10 @@ void drawNPCs()
     {
         if (npc.hasSpawned == true)
         {
-            if (npc.name == "Azabul")
+            if(aabb(npc.xpos,npc.ypos,gvars::topLeft.x,gvars::topRight.x,gvars::topLeft.y,gvars::bottomRight.y))
+            {
+
+                if (npc.name == "Azabul")
             {
                 sf::Vector2f ta1 = npc.tentArm1;
                 sf::Vector2f ta2 = npc.tentArm2;
@@ -3310,6 +3313,12 @@ void drawNPCs()
             npc.drawImg();
             effects.createCircle(npc.xpos, npc.ypos, npc.size,
                                  sf::Color(50, 50, 50, 50));
+
+
+            }
+
+
+
         }
     }
     debug("Done drawing NPCs");
@@ -3321,12 +3330,12 @@ void drawItems()
 
     for (auto &worlditem : worlditems)
     {
-        //if(zit->xpos/GridSize > globals::currentx-27 && zit->xpos/GridSize < globals::currentx+26 && zit->ypos/GridSize > globals::currenty-20 && zit->ypos/GridSize < globals::currenty+20)
-        //{
-        worlditem.img.setColor(sf::Color(255, 255, 255, 255));
-        worlditem.img.setScale(gvars::scalex, gvars::scaley);
-        worlditem.drawImg();
-        //}
+        if(aabb(worlditem.xpos,worlditem.ypos,gvars::topLeft.x,gvars::topRight.x,gvars::topLeft.y,gvars::bottomRight.y))
+        {
+            worlditem.img.setColor(sf::Color(255, 255, 255, 255));
+            worlditem.img.setScale(gvars::scalex, gvars::scaley);
+            worlditem.drawImg();
+        }
     }
     debug("Done Drawing Items");
 }
