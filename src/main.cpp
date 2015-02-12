@@ -985,6 +985,75 @@ std::vector<int> nngTrace(int xa, int ya, int xb, int yb, int id,
     return vectorID;
 }
 
+
+struct entityvectorpointercontainer
+{
+    std::set<Item*> items;
+    std::set<Npc*> npcs;
+    std::set<Tile*> tiles;
+};
+
+
+entityvectorpointercontainer entityTrace(Vec3 Ori, Vec3 Tar) /* TODO: Improve this to use Z axis as well, or find new formula that can. */
+{ // Looking in a straight line for a specific spot, Walls block vision.
+
+    entityvectorpointercontainer EVPC;
+
+    float dx = Tar.x - Ori.x, dy = Tar.y - Ori.y, steps;
+    float xIncrement, yIncrement, x = Ori.x, y = Ori.y;
+    if (abs_to_index(dx) > abs_to_index(dy))
+        steps = abs_to_index(dx);
+    else
+        steps = abs_to_index(dy);
+    xIncrement = dx / (float)steps;
+    yIncrement = dy / (float)steps;
+
+    for (int k = 0; k < steps; k++)
+    {
+        x += xIncrement;
+        y += yIncrement;
+        if (tiles[abs_to_index(x / GRID_SIZE)][abs_to_index(y / GRID_SIZE)][abs_to_index(Ori.z)]
+                .transparent == false)
+        {
+
+            if (inputState.key[Key::Quote])
+            {
+                effects.createLine(x, y, Ori.x, Ori.y, 1, sf::Color::Cyan);
+            }
+            break;
+
+        } // Stops the trace if it hits a wall.
+
+        for (auto &items : worlditems)
+        {
+            if (items.xpos == x && items.ypos == y && items.zpos == Ori.z)
+                EVPC.items.insert(&items);
+        }
+        for (auto &npcs : npclist)
+        {
+            //if(npcs.xpos == x && npcs.ypos == y && npcs.zpos == Ori.z)
+            if (math::closeish(npcs.xpos,npcs.ypos,x,y) <= npcs.size && npcs.zpos == Ori.z)
+                EVPC.npcs.insert(&npcs);
+        }
+        EVPC.tiles.insert(&tiles[abs_to_index(x / GRID_SIZE)][abs_to_index(y / GRID_SIZE)][abs_to_index(Ori.z)]);
+
+
+
+        if (inputState.key[Key::Quote])
+        {
+            effects.createLine(x, y, Ori.x, Ori.y, 1, sf::Color::Blue);
+        }
+        sf::Vector2f pos(abs_to_index(x / GRID_SIZE),
+                         abs_to_index(y / GRID_SIZE));
+        sf::Vector2f tar(abs_to_index(Tar.x / GRID_SIZE),
+                         abs_to_index(Tar.y / GRID_SIZE));
+    }
+    return EVPC;
+}
+
+
+
+
 bool gridTrace(sf::Vector2f Ori, sf::Vector2f Tar)
 { // Looking in a straight line for a specific spot, Walls block vision.
 
@@ -1030,6 +1099,8 @@ bool gridTrace(sf::Vector2f Ori, sf::Vector2f Tar)
     }
     return false; // Returns false if the target was never found.
 }
+
+
 
 bool gridposTrace(int xa, int ya, int xb, int yb, int id, sf::Vector2f target)
 { // Looking in a straight line for a specific spot, Walls block vision.
