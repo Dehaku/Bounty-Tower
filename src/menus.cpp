@@ -670,6 +670,7 @@ void menuPopUp()
 
                     buildLocalfromWorld(sf::Vector2i(
                         abs(gCtrl.menuPos.x / 20), abs(gCtrl.menuPos.y / 20)));
+                    initializeTilePositions();
                     buildStartingCritters(worldMap[abs_to_index(
                         gCtrl.menuPos.x / 20)][abs_to_index(gCtrl.menuPos.y /
                                                             20)].infected);

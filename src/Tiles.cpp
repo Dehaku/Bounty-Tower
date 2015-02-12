@@ -675,6 +675,14 @@ void initializeTiles()
     }
 }
 
+void initializeTilePositions()
+{
+    for (int x = 0; x != GRIDS; x++)
+        for (int y = 0; y != GRIDS; y++)
+            for (int z = 0; z != CHUNK_SIZE; z++)
+                tiles[x][y][z].setPos(x,y,z);
+}
+
 void drawTile(int xpos, int ypos, sf::Texture &image)
 {
     con("1stBacon");

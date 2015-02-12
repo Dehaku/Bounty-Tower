@@ -130,6 +130,7 @@ void loadMap(int planet, int xcord, int ycord, int xpos, int ypos);
 void initalizeWorldTiles();
 void drawWorldTiles();
 void initializeTiles();
+void initializeTilePositions();
 void drawTile(int xpos, int ypos, sf::Texture &image);
 void drawNewTiles();
 void tilesRandom();

@@ -1012,7 +1012,7 @@ entityvectorpointercontainer entityTrace(Vec3 Ori, Vec3 Tar) /* TODO: Improve th
     {
         x += xIncrement;
         y += yIncrement;
-        if (tiles[abs_to_index(x / GRID_SIZE)][abs_to_index(y / GRID_SIZE)][abs_to_index(Ori.z)]
+        if (tiles[abs_to_index(x / GRID_SIZE)][abs_to_index(y / GRID_SIZE)][abs_to_index(Ori.z/20)]
                 .transparent == false)
         {
 
@@ -1035,7 +1035,7 @@ entityvectorpointercontainer entityTrace(Vec3 Ori, Vec3 Tar) /* TODO: Improve th
             if (math::closeish(npcs.xpos,npcs.ypos,x,y) <= npcs.size && npcs.zpos == Ori.z)
                 EVPC.npcs.insert(&npcs);
         }
-        EVPC.tiles.insert(&tiles[abs_to_index(x / GRID_SIZE)][abs_to_index(y / GRID_SIZE)][abs_to_index(Ori.z)]);
+        EVPC.tiles.insert(&tiles[abs_to_index(x / GRID_SIZE)][abs_to_index(y / GRID_SIZE)][abs_to_index(Ori.z/20)]);
 
 
 
@@ -1725,7 +1725,22 @@ void critterBrain(Npc &npc, std::vector<Npc> &container)
         float xPos = npc.xpos + sinf(rot * PI / 180) * npc.viewrange;
         float yPos = npc.ypos + cosf(rot * PI / 180) * npc.viewrange;
 
-        gridTrace(npcPos, sf::Vector2f(xPos, yPos));
+        entityvectorpointercontainer EVPC;
+
+        EVPC = entityTrace(Vec3(npcPos.x,npcPos.y,npc.zpos), Vec3(xPos, yPos, npc.zpos));
+
+        //std::cout << npc.name << "'s EVPC: " << EVPC.items.size() << "/" << EVPC.npcs.size() << "/" << EVPC.tiles.size() << std::endl;
+
+        for (auto &i : EVPC.items)
+        {
+            effects.createCircle(i->xpos,i->ypos,5,sf::Color::Black);
+        }
+        for (auto &i : EVPC.tiles)
+        {
+            Vec3 Pos = i->getPos();
+            effects.createCircle(Pos.x*20,Pos.y*20,5,sf::Color::Black);
+        }
+
 
         if (rot == startAngle)
         {
@@ -4232,6 +4247,7 @@ void buildMicroPatherTest()
     grid[worldSizeX - 1][worldSizeY - 1][worldSizeZ - 1].type = 0;
 }
 
+
 int main()
 {
     srand(clock());
@@ -4240,6 +4256,8 @@ int main()
     /* 0 = open, 1 = wall, 2 = upstairs, 3 = downstairs */
 
     buildMicroPatherTest();
+
+    initializeTilePositions();
 
     window.create(sf::VideoMode(RESOLUTION.x, RESOLUTION.y, 32),
                   randomWindowName());
@@ -4706,8 +4724,11 @@ int main()
                 int Variable =
                     tiles[abs_to_index(gvars::mousePos.x / 20)][abs_to_index(
                         gvars::mousePos.y / 20)][gvars::currentz].id;
+                Vec3 Pos = tiles[abs_to_index(gvars::mousePos.x / 20)][abs_to_index(
+                        gvars::mousePos.y / 20)][gvars::currentz].getPos();
+
                 textList.createText(gvars::mousePos.x, gvars::mousePos.y, 11,
-                                    sf::Color::Red, "", "", Variable);
+                                    sf::Color::Red, "ID: ", "", Variable, ", Pos (" + std::to_string(Pos.x) + "/" + std::to_string(Pos.y) + "/" + std::to_string(Pos.z) + ")");
             }
 
             bool transitioning = false;
@@ -5167,6 +5188,7 @@ int main()
                 }
                 unpointItems(worlditems);
                 removeItems(worlditems);
+                initializeTilePositions();
             }
 
             if (gvars::myTarget != -1 && inputState.rmb &&
