@@ -480,7 +480,7 @@ public:
             oldPos = pathPos;
             firstRun = false;
         }
-        storedPath.clear();
+
     }
 
     void storePath(void *node)
@@ -1727,7 +1727,7 @@ void critterBrain(Npc &npc, std::vector<Npc> &container)
 
         entityvectorpointercontainer EVPC;
 
-        EVPC = entityTrace(Vec3(npcPos.x,npcPos.y,npc.zpos), Vec3(xPos, yPos, npc.zpos));
+        //EVPC = entityTrace(Vec3(npcPos.x,npcPos.y,npc.zpos), Vec3(xPos, yPos, npc.zpos));
 
         //std::cout << npc.name << "'s EVPC: " << EVPC.items.size() << "/" << EVPC.npcs.size() << "/" << EVPC.tiles.size() << std::endl;
 
@@ -1923,8 +1923,8 @@ ReDesire:
             {
                 sf::Vector2f ItemPos((*npc.targetInfo.item).xpos,
                                      (*npc.targetInfo.item).ypos);
-                npc.dirMove(sf::Vector2f((*npc.targetInfo.item).xpos,
-                                         (*npc.targetInfo.item).ypos));
+            /*    npc.dirMove(sf::Vector2f((*npc.targetInfo.item).xpos,
+                                         (*npc.targetInfo.item).ypos)); */
 
                 if (math::closeish(npc.xpos, npc.ypos, ItemPos.x, ItemPos.y) <=
                     npc.size * 2)
@@ -1956,6 +1956,27 @@ ReDesire:
                         npc.body.bodyParts);
 
     /* End of Critter Prioritization */
+
+    if(npc.targetInfo.item != nullptr)
+    {
+            std::cout << "Not null, ";
+            Vec3 startPos(npc.xpos/20,npc.ypos/20,npc.zpos/20);
+            Vec3 endPos(npc.targetInfo.item->xpos/20, npc.targetInfo.item->ypos/20, npc.targetInfo.item->zpos/20);
+            int result = pathCon.makePath(startPos, endPos);
+            std::cout << "result: " << result << " path size: " << pathCon.storedPath.size() << std::endl;
+
+            //world.DrawPath();
+            pathCon.drawStoredPath();
+    }
+    if(!pathCon.storedPath.empty())
+    {
+        Vec3 Pos(pathCon.storedPath[1]->getPos());
+
+
+        npc.dirMove(sf::Vector2f(Pos.x*20,Pos.y*20));
+        pathCon.storedPath.clear();
+    }
+
 
     removeItems(npc.inventory);
 }
