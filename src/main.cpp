@@ -1976,6 +1976,11 @@ ReDesire:
         npc.dirMove(sf::Vector2f(Pos.x*20,Pos.y*20));
         pathCon.storedPath.clear();
     }
+    else if(npc.targetInfo.item != nullptr && pathCon.storedPath.size() == 1 || npc.targetInfo.item != nullptr && pathCon.storedPath.size() == 2)
+    {
+        npc.dirMove(sf::Vector2f((*npc.targetInfo.item).xpos,
+                                         (*npc.targetInfo.item).ypos));
+    }
 
 
     removeItems(npc.inventory);

@@ -179,8 +179,8 @@ void generateChunk(std::string type, int planet, sf::Vector2i cords,
         vChunk[15][20][30].door();
         vChunk[15][12][30].stairsDown();
         vChunk[15][12][29].stairsUp();
-        vChunk[11][15][30].teleportPad(Vec3(21,15,30));
-        vChunk[21][15][30].teleportPad(Vec3(11,15,30));
+        //vChunk[11][15][30].teleportPad(Vec3(21,15,30));
+        //vChunk[21][15][30].teleportPad(Vec3(11,15,30));
     }
 
     else if (type == "SouthernHouse")

@@ -671,6 +671,10 @@ void menuPopUp()
                     buildLocalfromWorld(sf::Vector2i(
                         abs(gCtrl.menuPos.x / 20), abs(gCtrl.menuPos.y / 20)));
                     initializeTilePositions();
+
+                    tiles[32+11][32+15][30].teleportPad(Vec3(21,15,30));
+                    tiles[32+21][32+15][30].teleportPad(Vec3(11,15,30));
+
                     buildStartingCritters(worldMap[abs_to_index(
                         gCtrl.menuPos.x / 20)][abs_to_index(gCtrl.menuPos.y /
                                                             20)].infected);
