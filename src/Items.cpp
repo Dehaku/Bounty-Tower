@@ -218,7 +218,7 @@ std::string loadItems(sf::Vector2i worldPos, std::string direction, int planet)
     return line;
 }
 
-void spawnItem(std::string object, int xpos, int ypos)
+void spawnItem(std::string object, int xpos, int ypos, int zpos)
 {
     if (gvars::debug)
     {
@@ -240,6 +240,7 @@ void spawnItem(std::string object, int xpos, int ypos)
     var.id = gvars::globalid++;
     var.xpos = xpos;
     var.ypos = ypos;
+    var.zpos = zpos;
     itemmanager.addedItems.push_back(var);
     if (gvars::debug)
     {

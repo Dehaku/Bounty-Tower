@@ -1090,7 +1090,7 @@ void menuPopUp()
                              5, sf::Color::Red);
             if (buttonClicked(butt))
             {
-                spawnItem(elem.name, gCtrl.menuPos.x, gCtrl.menuPos.y);
+                spawnItem(elem.name, gCtrl.menuPos.x, gCtrl.menuPos.y, gvars::currentz*20 );
                 fSleep(0.2);
             }
             iY++;

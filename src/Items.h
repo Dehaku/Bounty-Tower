@@ -133,7 +133,7 @@ void zSaveItem(int planet, sf::Vector2i region, Item &object);
 void saveItem(int planet, sf::Vector2i region, Item &critter);
 std::string loadItems(sf::Vector2i worldPos, std::string direction,
                       int planet = 500);
-void spawnItem(std::string object, int xpos, int ypos);
+void spawnItem(std::string object, int xpos, int ypos, int zpos = 30*20);
 void refreshImages();
 Item *getItemPtrFromVector(std::list<Item> &vector, std::string name);
 Item *getItemPtrfromVector2(std::list<Item> &vector, std::string name);

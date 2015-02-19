@@ -1171,6 +1171,7 @@ void Tile::woodFloor()
     worldColor = sf::Color(150, 150, 0);
     img.setTexture(texturemanager.getTexture("WoodFloor.png"));
     transparent = true;
+    walkable = true;
 }
 
 void Tile::stairsUp()
@@ -1179,7 +1180,9 @@ void Tile::stairsUp()
     worldColor = sf::Color(150, 150, 0);
     img.setTexture(texturemanager.getTexture("Stairs.png"));
     transparent = true;
+    walkable = true;
     goesUp = true;
+    goesDown = true;
 }
 
 void Tile::stairsDown()
@@ -1188,7 +1191,9 @@ void Tile::stairsDown()
     worldColor = sf::Color(150, 150, 0);
     img.setTexture(texturemanager.getTexture("Stairs.png"));
     transparent = true;
+    walkable = true;
     goesDown = true;
+    goesUp = true;
 }
 
 void Tile::road(bool center)

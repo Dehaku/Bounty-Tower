@@ -408,9 +408,9 @@ public:
             if (tiles[nx][ny][nz].walkable)
                 return 1;
             if (tiles[nx][ny][nz].goesDown)
-                return 2;
+                return 2; // return 2;
             if (tiles[nx][ny][nz].goesUp)
-                return 3;
+                return 3; // return 3;
         }
         return 0;
     }
@@ -470,6 +470,30 @@ public:
                 pathColor.g = 255;
             if (pathPos.z == 2)
                 pathColor.b = 255;
+
+            if (!firstRun)
+                effects.createLine((oldPos.x + 1) * 20 - 10,
+                                   (oldPos.y + 1) * 20 - 10,
+                                   (pathPos.x + 1) * 20 - 10,
+                                   (pathPos.y + 1) * 20 - 10, 5, pathColor);
+
+            oldPos = pathPos;
+            firstRun = false;
+        }
+
+    }
+
+    void drawStoredPathRainbow()
+    {
+        Vec3 oldPos;
+        bool firstRun = true;
+
+        for (auto &i : storedPath)
+        {
+            Vec3 pathPos;
+            pathPos = Vec3(i->getPos());
+            sf::Color pathColor(randz(2,253), randz(2,253), randz(2,253));
+
 
             if (!firstRun)
                 effects.createLine((oldPos.x + 1) * 20 - 10,
@@ -1957,12 +1981,19 @@ ReDesire:
 
     /* End of Critter Prioritization */
 
+    Vec3 startPos(npc.xpos/20,npc.ypos/20,npc.zpos/20);
+    //Vec3 endPos(46, 46, 29);
+    Vec3 endPos(gvars::mousePos.x/20, gvars::mousePos.y/20, gvars::currentz);
+
+    int result = pathCon.makePath(startPos, endPos);
+    pathCon.drawStoredPath();
+
     if(npc.targetInfo.item != nullptr)
     {
             std::cout << "Not null, ";
             Vec3 startPos(npc.xpos/20,npc.ypos/20,npc.zpos/20);
             Vec3 endPos(npc.targetInfo.item->xpos/20, npc.targetInfo.item->ypos/20, npc.targetInfo.item->zpos/20);
-            int result = pathCon.makePath(startPos, endPos);
+            //int result = pathCon.makePath(startPos, endPos);
             std::cout << "result: " << result << " path size: " << pathCon.storedPath.size() << std::endl;
 
             //world.DrawPath();
@@ -1988,6 +2019,24 @@ ReDesire:
 
 void critterBrain(std::vector<Npc> &npcs)
 {
+
+    //Vec3 startPos(35,35,30);
+    //Vec3 endPos(46, 46, 30);
+
+    Vec3 startPos(48,44,29);
+    Vec3 endPos(44, 44, 29);
+
+    if(inputState.key[Key::K].time > 1)
+        endPos = Vec3(50,50,30);
+    if(inputState.key[Key::L].time > 1)
+        endPos = Vec3(50,50,29);
+    //Vec3 endPos(gvars::mousePos.x/20, gvars::mousePos.y/20, gvars::currentz);
+
+    int result = pathCon.makePath(startPos, endPos);
+    pathCon.drawStoredPathRainbow();
+    pathCon.storedPath.clear();
+
+
     for (auto &npc : npcs)
     {
         critterBrain(npc, npcs);
