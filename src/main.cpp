@@ -405,12 +405,13 @@ public:
         if (nx >= 0 && nx < GRIDS && ny >= 0 && ny < GRIDS &&
             nz >= 0 && nz < GRIDS)
         {
+
+            if (tiles[nx][ny][nz].goesDown)
+                return 3; // return 2;
+            if (tiles[nx][ny][nz].goesUp)
+                return 2; // return 3;
             if (tiles[nx][ny][nz].walkable)
                 return 1;
-            if (tiles[nx][ny][nz].goesDown)
-                return 2; // return 2;
-            if (tiles[nx][ny][nz].goesUp)
-                return 3; // return 3;
         }
         return 0;
     }

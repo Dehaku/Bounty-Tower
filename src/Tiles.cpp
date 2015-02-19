@@ -1182,7 +1182,7 @@ void Tile::stairsUp()
     transparent = true;
     walkable = true;
     goesUp = true;
-    goesDown = true;
+    //goesDown = true;
 }
 
 void Tile::stairsDown()
@@ -1193,7 +1193,7 @@ void Tile::stairsDown()
     transparent = true;
     walkable = true;
     goesDown = true;
-    goesUp = true;
+    //goesUp = true;
 }
 
 void Tile::road(bool center)
