@@ -2001,19 +2001,19 @@ ReDesire:
 
     /* End of Critter Prioritization */
 
-    Vec3 startPos(npc.xpos/20,npc.ypos/20,npc.zpos/20);
+    //Vec3 startPos(npc.xpos/20,npc.ypos/20,npc.zpos/20);
     //Vec3 endPos(46, 46, 29);
-    Vec3 endPos(gvars::mousePos.x/20, gvars::mousePos.y/20, gvars::currentz);
+    //Vec3 endPos(gvars::mousePos.x/20, gvars::mousePos.y/20, gvars::currentz);
 
-    int result = pathCon.makePath(startPos, endPos);
-    pathCon.drawStoredPath();
+    //int result = pathCon.makePath(startPos, endPos);
+    //pathCon.drawStoredPath();
 
     if(npc.targetInfo.item != nullptr)
     {
             std::cout << "Not null, ";
             Vec3 startPos(npc.xpos/20,npc.ypos/20,npc.zpos/20);
             Vec3 endPos(npc.targetInfo.item->xpos/20, npc.targetInfo.item->ypos/20, npc.targetInfo.item->zpos/20);
-            //int result = pathCon.makePath(startPos, endPos);
+            int result = pathCon.makePath(startPos, endPos);
             std::cout << "result: " << result << " path size: " << pathCon.storedPath.size() << std::endl;
 
             //world.DrawPath();
@@ -2024,7 +2024,12 @@ ReDesire:
         Vec3 Pos(pathCon.storedPath[1]->getPos());
 
 
-        npc.dirMove(sf::Vector2f(Pos.x*20,Pos.y*20));
+        npc.dirMove(sf::Vector2f(Pos.x*20+10,Pos.y*20+10));
+
+        if(Pos.z != npc.zpos)
+            npc.zpos = Pos.z*20;
+
+
         pathCon.storedPath.clear();
     }
     else if(npc.targetInfo.item != nullptr && pathCon.storedPath.size() == 1 || npc.targetInfo.item != nullptr && pathCon.storedPath.size() == 2)
@@ -2039,7 +2044,7 @@ ReDesire:
 
 void critterBrain(std::vector<Npc> &npcs)
 {
-
+    /*
     //Vec3 startPos(35,35,30);
     //Vec3 endPos(46, 46, 30);
 
@@ -2058,6 +2063,7 @@ void critterBrain(std::vector<Npc> &npcs)
     pathCon.storedRPath.clear();
     std::cout << result << ", Is the test. \n";
 
+    */
 
     for (auto &npc : npcs)
     {
