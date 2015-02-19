@@ -406,6 +406,8 @@ public:
             nz >= 0 && nz < GRIDS)
         {
 
+            if (tiles[nx][ny][nz].goesDown && tiles[nx][ny][nz].goesUp)
+                return 4;
             if (tiles[nx][ny][nz].goesDown)
                 return 3; // return 2;
             if (tiles[nx][ny][nz].goesUp)
@@ -421,6 +423,7 @@ public:
     MPVector<void *> microPath;
     MicroPather *pather;
     std::vector<Tile *> storedPath;
+    std::vector<Tile *> storedRPath;
 
     PathingController() : pather(0)
     {
@@ -489,7 +492,7 @@ public:
         Vec3 oldPos;
         bool firstRun = true;
 
-        for (auto &i : storedPath)
+        for (auto &i : storedRPath)
         {
             Vec3 pathPos;
             pathPos = Vec3(i->getPos());
@@ -513,6 +516,11 @@ public:
         Tile *Nodeling = static_cast<Tile *>(node);
         storedPath.push_back(Nodeling);
     }
+    void storeRPath(void *node)
+    {
+        Tile *Nodeling = static_cast<Tile *>(node);
+        storedRPath.push_back(Nodeling);
+    }
 
     int makePath(Vec3 Ori, Vec3 Tar)
     {
@@ -534,6 +542,12 @@ public:
                     storePath(microPath[i]);
                 }
             }
+            unsigned int pathSize = microPath.size();
+            for (int i = 0; i != pathSize; i++)
+            {
+                storeRPath(microPath[i]);
+            }
+
 
 
 #endif
@@ -601,7 +615,12 @@ public:
             int pass = Passable(nx, ny, nz);
             if (pass > 0)
             {
-                if (pass == 1 && dz[i] == 0)
+                if (pass == 4)
+                {
+                    StateCost nodeCost = {XYZToNode(nx, ny, nz), cost[i]};
+                    neighbors->push_back(nodeCost);
+                }
+                else if ( (pass == 1 || pass == 2 || pass == 3) && dz[i] == 0)
                 {
                     StateCost nodeCost = {XYZToNode(nx, ny, nz), cost[i]};
                     neighbors->push_back(nodeCost);
@@ -2036,6 +2055,8 @@ void critterBrain(std::vector<Npc> &npcs)
     int result = pathCon.makePath(startPos, endPos);
     pathCon.drawStoredPathRainbow();
     pathCon.storedPath.clear();
+    pathCon.storedRPath.clear();
+    std::cout << result << ", Is the test. \n";
 
 
     for (auto &npc : npcs)
