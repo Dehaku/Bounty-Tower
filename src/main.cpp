@@ -1873,11 +1873,18 @@ void critterBrain(Npc &npc, std::vector<Npc> &container)
     { //Work
         newDesire.type = "Work";
         newDesire.potency = 0;
+        std::cout << "= \n";
+        for(auto fac : uniFact)
+        {
+            std::cout << fac.name << ", JL: " << fac.jobList.size() << std::endl;
+        }
+        std::cout << "= \n";
+
         if(npc.factionPtr != nullptr)
-            std::cout << "jobList: " << npc.factionPtr->jobList.size() << std::endl;
+            std::cout << "jobList: " << npc.factionPtr->jobList.size() << ", Player Controlled:" << npc.factionPtr->playerControlled << std::endl;
         if(npc.factionPtr != nullptr && npc.factionPtr->jobList.size() != 0)
         {
-            newDesire.potency = npc.factionPtr->jobList.size()*100;
+            newDesire.potency = 50+npc.factionPtr->jobList.size()*100;
             std::cout << "Woop? \n";
         }
 
@@ -1915,6 +1922,7 @@ ReDesire:
             highestDesire = &i;
             firstIter = false;
         }
+        std::cout << i.type << ", " << i.potency << ", vs " << (*highestDesire).type << ", " << (*highestDesire).potency << std::endl;
         if (i.potency > (*highestDesire).potency)
             highestDesire = &i;
     }
@@ -6739,11 +6747,13 @@ int main()
                                     "Thirst:", "",
                                     npclist.at(gvars::myTarget).thirst, "", "",
                                     -6698, "", "", -6698, 1, 0);
+
                 std::string textOut;
                 if(myTargetPtr->factionPtr != nullptr)
                     textOut = "Name:" + myTargetPtr->name + ", Faction: " + myTargetPtr->factionPtr->name;
                 else
                     textOut = "Name:" + myTargetPtr->name + ", Faction: None";
+
                 textList.createText(nxpos, nypos + 30, 11, sf::Color::White, textOut);
 
                 textList.createText(nxpos, nypos + 30, 11, sf::Color::White,
