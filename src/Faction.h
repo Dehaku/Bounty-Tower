@@ -34,7 +34,9 @@ public:
     std::list<Item> equipped;
     std::string bloodcontent;
     std::string tags;
+    Faction * factionPtr;
     std::string Faction;
+
     bool attacking;
     bool firstStrike;
     bool imgRotates;

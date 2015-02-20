@@ -1722,6 +1722,7 @@ void critterBrain(Npc &npc, std::vector<Npc> &container)
     /* Critter Vision   */
     const sf::Vector2f npcPos(npc.xpos, npc.ypos);
     //sf::Vector2f targetPos(gvars::mousePos);
+
     /* Running through the critters pointers to see which one is valid, Then setting it to aim at it. */
     sf::Vector2f * targetPos = &npc.desiredViewAngle;
     if (npc.targetInfo.item != nullptr)
@@ -1838,6 +1839,7 @@ void critterBrain(Npc &npc, std::vector<Npc> &container)
     }
 
     /* Critter Prioritization */
+
     // Method Two, Struct Desires
     struct Desire
     {
@@ -1871,6 +1873,14 @@ void critterBrain(Npc &npc, std::vector<Npc> &container)
     { //Work
         newDesire.type = "Work";
         newDesire.potency = 0;
+        if(npc.factionPtr != nullptr)
+            std::cout << "jobList: " << npc.factionPtr->jobList.size() << std::endl;
+        if(npc.factionPtr != nullptr && npc.factionPtr->jobList.size() != 0)
+        {
+            newDesire.potency = npc.factionPtr->jobList.size()*100;
+            std::cout << "Woop? \n";
+        }
+
     }
     desires.push_back(newDesire);
 
@@ -6705,7 +6715,7 @@ int main()
             else
                 gvars::heldClickPos = sf::Vector2f(-1, -1);
 
-            if (gvars::myTarget != -1)
+            if (gvars::myTarget != -1 && myTargetPtr != nullptr)
             {
                 gvars::myTargetid = npclist.at(gvars::myTarget).id;
 
@@ -6721,6 +6731,7 @@ int main()
                                     "", npclist.at(gvars::myTarget).health, "",
                                     "(", npclist.at(gvars::myTarget).maxhealth,
                                     ")", "", -6698, 1, 0);
+
                 textList.createText(nxpos, nypos + 10, 11, BROWN, "Hunger:", "",
                                     npclist.at(gvars::myTarget).hunger, "", "",
                                     -6698, "", "", -6698, 1, 0);
@@ -6728,9 +6739,15 @@ int main()
                                     "Thirst:", "",
                                     npclist.at(gvars::myTarget).thirst, "", "",
                                     -6698, "", "", -6698, 1, 0);
+                std::string textOut;
+                if(myTargetPtr->factionPtr != nullptr)
+                    textOut = "Name:" + myTargetPtr->name + ", Faction: " + myTargetPtr->factionPtr->name;
+                else
+                    textOut = "Name:" + myTargetPtr->name + ", Faction: None";
+                textList.createText(nxpos, nypos + 30, 11, sf::Color::White, textOut);
+
                 textList.createText(nxpos, nypos + 30, 11, sf::Color::White,
-                                    "Name:", npclist.at(gvars::myTarget).name,
-                                    -6698, "", "", -6698, "", "", -6698, 1, 0);
+                                    "Name:", npclist.at(gvars::myTarget).name);
                 textList.createText(nxpos, nypos + 40, 11, sf::Color::White,
                                     "Id:", "", npclist.at(gvars::myTarget).id,
                                     "", "", -6698, "", "", -6698, 1, 0);
@@ -6826,7 +6843,7 @@ int main()
                         }
                     }
                     textList.createText(
-                        nxpos + 65, yv, 11, sf::Color(255, 150, 150),
+                        nxpos + 85, yv, 11, sf::Color(255, 150, 150),
                         "Blood: " + npclist.at(gvars::myTarget).bloodcontent);
 
                     Button var;
@@ -6840,15 +6857,7 @@ int main()
                         std::cout << "Twas' Truuuuuuue \n";
                     } // TODO: Get this before the MyTarget -1 check up there.
                 }
-                //Effectz.CreateLine(Nxpos,Nypos,MousePos.x,MousePos.y,2,Green,0,White);
-                /*
-                effects.createLine(npclist.at(gvars::myTarget).xpos,
-                                   npclist.at(gvars::myTarget).ypos,
-                                   npclist.at(gvars::myTarget).targetPos.x,
-                                   npclist.at(gvars::myTarget).targetPos.y, 1,
-                                   sf::Color::Yellow);
 
-                                   */
             }
 
             //else{MyTargetid = -1;}

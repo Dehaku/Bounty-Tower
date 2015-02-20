@@ -316,6 +316,8 @@ Npc::Npc()
 {
     hasJob = false;
 
+    factionPtr = nullptr;
+
     toDelete = false;
     viewangle = 180;
     viewrange = 200;
@@ -2000,6 +2002,7 @@ void buildStartingCritters(int zedAmount)
                 squady.squad.at(count).xpos = vPos.x;
                 squady.squad.at(count).ypos = vPos.y;
                 squady.squad[count].Faction = g_pf.name;
+                squady.squad[count].factionPtr = &g_pf;
 
                 npcmanager.addedCritters.push_back(squady.squad.at(count));
             }
@@ -2195,9 +2198,8 @@ void boom(int xpos, int ypos, int damage, int size)
     }
 }
 
-void
-squadHud() // This prints that "pretty" little Squad Unit display in the top left.
-{
+void squadHud()
+{ // This prints that "pretty" little Squad Unit display in the top left.
     try
     {
         for (size_t i = 0; i != npclist.size(); i++)

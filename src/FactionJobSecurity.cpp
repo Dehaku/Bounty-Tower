@@ -79,7 +79,6 @@ void rmbMenuTile(sf::Vector2f pos)
             Job job;
             //job.pItem = &pItem;
             //globals::groundmap[abs_to_index(Pos.x/20)][abs_to_index(Pos.y/20)]
-            con("Dafuqe \n");
             if (tiles[abs_to_index(pos.x / 20)][abs_to_index(pos.y / 20)][30]
                     .id != 1010)
             {
@@ -87,17 +86,14 @@ void rmbMenuTile(sf::Vector2f pos)
                 job.type = "Build";
                 job.workPos.x = (abs(pos.x / 20) * 20) + 10;
                 job.workPos.y = (abs(pos.y / 20) * 20) + 10;
-                con("Dafuqe2 \n");
             }
             else
             {
-                con("Dafuqe3 \n");
                 return;
             }
 
-            con("Dafuqe4 \n");
             uniFact[i].jobList.push_back(job);
-            con("Dafuqe5 \n");
+            std::cout << "Inserted job into " << uniFact[i].name << std::endl;
         }
     }
 }
