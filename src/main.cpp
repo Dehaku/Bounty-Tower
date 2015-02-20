@@ -1825,13 +1825,17 @@ void critterBrain(Npc &npc, std::vector<Npc> &container)
         }
     }
 
-    sf::Color filling(sf::Color::Yellow);
-    filling.a = (50);
-    shape.setFillColor(filling);
-    shape.setOutlineColor(sf::Color::Yellow);
-    shape.setOutlineThickness(1);
-    shape.setPosition(npcPos);
-    effects.polygons.push_back(shape);
+
+    if(myTargetPtr != nullptr && myTargetPtr->id == npc.id)
+    {
+        sf::Color filling(sf::Color::Yellow);
+        filling.a = (50);
+        shape.setFillColor(filling);
+        shape.setOutlineColor(sf::Color::Yellow);
+        shape.setOutlineThickness(1);
+        shape.setPosition(npcPos);
+        effects.polygons.push_back(shape);
+    }
 
     /* Critter Prioritization */
     // Method Two, Struct Desires
@@ -1875,14 +1879,14 @@ void critterBrain(Npc &npc, std::vector<Npc> &container)
     float nutrients = npc.maxhunger - npc.bloodwork("Nutrients", 0);
     float hydration = npc.maxthirst - npc.bloodwork("Hydration", 0);
 
-    for (auto &sus : desires)
+    for (auto &des : desires)
     {
-        if (sus.type == "Sustainence")
-            sus.potency += hydration + nutrients;
-        if (sus.type == "SelfDefense")
+        if (npc.name != "Mini Turret" && des.type == "Sustainence")
+            des.potency += hydration + nutrients;
+        if (des.type == "SelfDefense")
         {
             // This line makes the game freeze
-            sus.potency = 10000;
+            des.potency = 10000;
         }
     }
 
