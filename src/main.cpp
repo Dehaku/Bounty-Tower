@@ -467,13 +467,7 @@ public:
         {
             Vec3 pathPos;
             pathPos = Vec3(i->getPos());
-            sf::Color pathColor(0, 0, 0);
-            if (pathPos.z == 0)
-                pathColor.r = 255;
-            if (pathPos.z == 1)
-                pathColor.g = 255;
-            if (pathPos.z == 2)
-                pathColor.b = 255;
+            sf::Color pathColor(255, 255, 255, 100);
 
             if (!firstRun)
                 effects.createLine((oldPos.x + 1) * 20 - 10,
@@ -1996,8 +1990,7 @@ ReDesire:
 
     textList.createText(npc.xpos - 30, npc.ypos - 15, 10, sf::Color::Red,
                         (*highestDesire).type, ":", (*highestDesire).potency);
-    textList.createText(npc.xpos - 70, npc.ypos - 35, 10, sf::Color::Cyan,
-                        npc.body.bodyParts);
+
 
     /* End of Critter Prioritization */
 
@@ -2010,11 +2003,11 @@ ReDesire:
 
     if(npc.targetInfo.item != nullptr)
     {
-            std::cout << "Not null, ";
+            //std::cout << "Not null, ";
             Vec3 startPos(npc.xpos/20,npc.ypos/20,npc.zpos/20);
             Vec3 endPos(npc.targetInfo.item->xpos/20, npc.targetInfo.item->ypos/20, npc.targetInfo.item->zpos/20);
             int result = pathCon.makePath(startPos, endPos);
-            std::cout << "result: " << result << " path size: " << pathCon.storedPath.size() << std::endl;
+            //std::cout << "result: " << result << " path size: " << pathCon.storedPath.size() << std::endl;
 
             //world.DrawPath();
             pathCon.drawStoredPath();
