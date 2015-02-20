@@ -1982,9 +1982,6 @@ ReDesire:
 
         if (npc.targetInfo.item != nullptr && inInv == false)
         {
-            effects.createLine(npc.xpos, npc.ypos, (*npc.targetInfo.item).xpos,
-                               (*npc.targetInfo.item).ypos, 2,
-                               sf::Color::White);
         }
     }
 
@@ -6844,11 +6841,14 @@ int main()
                     } // TODO: Get this before the MyTarget -1 check up there.
                 }
                 //Effectz.CreateLine(Nxpos,Nypos,MousePos.x,MousePos.y,2,Green,0,White);
+                /*
                 effects.createLine(npclist.at(gvars::myTarget).xpos,
                                    npclist.at(gvars::myTarget).ypos,
                                    npclist.at(gvars::myTarget).targetPos.x,
                                    npclist.at(gvars::myTarget).targetPos.y, 1,
                                    sf::Color::Yellow);
+
+                                   */
             }
 
             //else{MyTargetid = -1;}
