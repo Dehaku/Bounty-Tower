@@ -20,6 +20,8 @@ Faction g_pf;
 NpcManager npcmanager;
 extern sf::RenderWindow window;
 
+Npc * myTargetPtr = nullptr;
+
 void Npc::BodyDefinition::bodyPartFind(std::string part, int amount)
 {
 

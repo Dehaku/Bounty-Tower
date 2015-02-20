@@ -22,6 +22,8 @@ std::set<int> npcTrace(int xa, int ya, int xb, int yb, int id,
                        std::set<int> exceptions);
 extern std::vector<Npc> npclist;
 
+
+
 class Npc
 {
 public:
@@ -297,6 +299,9 @@ public:
     void printBloodContent();
     bool operator<(Npc const &other) const;
 };
+
+
+extern Npc * myTargetPtr;
 
 void setTestage();
 

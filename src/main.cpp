@@ -4827,6 +4827,12 @@ int main()
                                     sf::Color::Red, "ID: ", "", Variable, ", Pos (" + std::to_string(Pos.x) + "/" + std::to_string(Pos.y) + "/" + std::to_string(Pos.z) + ")");
             }
 
+            if(myTargetPtr != nullptr)
+            {
+                effects.createCircle(myTargetPtr->xpos,myTargetPtr->ypos,30,sf::Color(255,255,255,100));
+            }
+
+
             bool transitioning = false;
             if (gvars::currenty > 64)
             {
@@ -6556,6 +6562,7 @@ int main()
                     std::cout << "Pre Mouse Based Functions\n";
                 if (inputState.lmb == true)
                 {
+                    myTargetPtr = nullptr;
                     int tfunz = -1;
                     for (auto &elem : npclist)
                     {
@@ -6568,6 +6575,7 @@ int main()
                             if (dist <= GRID_SIZE)
                             {
                                 gvars::myTarget = tfunz;
+                                myTargetPtr = &elem;
                                 foundOne = true;
                                 std::cout << elem.id << std::endl;
                             }
