@@ -2031,7 +2031,7 @@ ReDesire:
                 std::cout << npc.name << "'s been employed to Build! \n";
 
                 //npc.dirMove(sf::Vector2f(npc.jobPtr->workPos.x,npc.jobPtr->workPos.y));
-                endPos = Vec3(npc.jobPtr->workPos.x/20,npc.jobPtr->workPos.y/20, npc.zpos/20);
+                endPos = Vec3(npc.jobPtr->workPos.x/20,npc.jobPtr->workPos.y/20, npc.jobPtr->workPos.z/20);
                 std::cout << "endPos: " << endPos.x << "/" << endPos.y << "/" << endPos.z << std::endl;
                 hasPath = true;
             }
@@ -2784,7 +2784,7 @@ int main()
                                     "Build");
             }
             if (inputState.rmbTime == 1 && inputState.key[Key::LShift])
-                rmbMenuTile(gvars::mousePos);
+                rmbMenuTile(    Vec3(gvars::mousePos.x,gvars::mousePos.y,gvars::currentz)   );
 
             if (inputState.key[Key::LShift] &&
                 inputState.key[Key::Tab]) // Debug NPC Spawn Menu

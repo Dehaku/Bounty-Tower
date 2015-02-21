@@ -6,7 +6,7 @@
 
 void rmbMenuItem(Item &pItem);
 void digWall(sf::Vector2f pos);
-void rmbMenuTile(sf::Vector2f pos);
+void rmbMenuTile(Vec3 pos);
 void drawJobList(int x, int y);
 void removeJobs(std::list<Job> &jobList);
 

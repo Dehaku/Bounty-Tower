@@ -2,6 +2,7 @@
 #define __JOBMANAGER_H_INCLUDED__
 
 #include "Items.h"
+#include "defs.h"
 
 class Npc;
 class Tile;
@@ -38,8 +39,8 @@ public:
     Item *pItem;
     Npc *pWorker;
     //Tile * pTile;
-    sf::Vector2i workPos;
-    sf::Vector2i workplacePos;
+    Vec3 workPos;
+    Vec3 workplacePos;
 
     bool toDelete;
     std::string getItemName();

@@ -77,7 +77,7 @@ void digWall(sf::Vector2f pos)
     }
 }
 
-void rmbMenuTile(sf::Vector2f pos)
+void rmbMenuTile(Vec3 pos)
 {
     for (auto &i : uniFact)
     {
@@ -86,13 +86,14 @@ void rmbMenuTile(sf::Vector2f pos)
             Job job;
             //job.pItem = &pItem;
             //globals::groundmap[abs_to_index(Pos.x/20)][abs_to_index(Pos.y/20)]
-            if (tiles[abs_to_index(pos.x / 20)][abs_to_index(pos.y / 20)][30]
+            if (tiles[abs_to_index(pos.x / 20)][abs_to_index(pos.y / 20)][abs_to_index(pos.z / 20)]
                     .id != 1010)
             {
                 job.name = "BuildWoodWall";
                 job.type = "Build";
                 job.workPos.x = (abs(pos.x / 20) * 20) + 10;
                 job.workPos.y = (abs(pos.y / 20) * 20) + 10;
+                job.workPos.z = (abs(pos.z / 20) * 20) + 10;
             }
             else
             {

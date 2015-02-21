@@ -311,7 +311,7 @@ void menuPopUp()
                 if (squareButtonClicked(butt) ||
                     inputState.key[Key::Num1].time == 1)
                 {
-                    rmbMenuTile(gCtrl.menuPos);
+                    rmbMenuTile(    Vec3(gCtrl.menuPos.x,gCtrl.menuPos.y,gvars::currentz)   );
                 }
             }
 
