@@ -398,7 +398,6 @@ void initializeFactions(int generateMax = 10);
 Npc *getGlobalCritter(std::string strtype);
 void spawnCritter(std::string object, int xpos, int ypos, int zpos);
 
-extern Faction g_pf;
 
 void buildStartingCritters(int zedAmount = 0);
 std::string loadCritters(sf::Vector2i worldPos, std::string direction,

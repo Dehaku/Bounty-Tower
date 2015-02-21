@@ -4423,6 +4423,8 @@ int main()
     npcmanager.initializeCritters();
 
     // Building the players faction, This is temporary.
+    Faction g_pf;
+
     g_pf.name = "The Alphas";
     g_pf.playerControlled = true;
     g_pf.initialized = true;

@@ -24,7 +24,6 @@ std::vector<Npc> npclist;
 MakeSquad squady;
 std::vector<Npc> worldCritters;
 std::list<Faction> uniFact;
-Faction g_pf;
 NpcManager npcmanager;
 extern sf::RenderWindow window;
 
