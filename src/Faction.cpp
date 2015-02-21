@@ -11,11 +11,19 @@
 #include <cstring>
 #include <iostream>
 
+
+template <typename T> T &listAt(std::list<T> &list, size_t index)
+{
+    auto it = list.begin();
+    std::advance(it, index);
+    return *it;
+}
+
 Faction *conFact;
 std::vector<Npc> npclist;
 MakeSquad squady;
 std::vector<Npc> worldCritters;
-std::vector<Faction> uniFact;
+std::list<Faction> uniFact;
 Faction g_pf;
 NpcManager npcmanager;
 extern sf::RenderWindow window;
@@ -1812,11 +1820,11 @@ Faction::Faction()
 
 int factionMembers(std::string factionName)
 {
-    for (size_t i = 0; i != uniFact.size(); i++)
+    for (auto &i : uniFact)
     {
-        if (uniFact[i].name == factionName)
+        if (i.name == factionName)
         {
-            return uniFact[i].members;
+            return i.members;
         }
     }
     return 0;
@@ -1824,11 +1832,11 @@ int factionMembers(std::string factionName)
 
 float factionAggression(std::string factionName)
 {
-    for (size_t i = 0; i != uniFact.size(); i++)
+    for (auto &i : uniFact)
     {
-        if (uniFact[i].name == factionName)
+        if (i.name == factionName)
         {
-            return uniFact[i].aggressiveness;
+            return i.aggressiveness;
         }
     }
     return 0;
@@ -1836,11 +1844,11 @@ float factionAggression(std::string factionName)
 
 int factionTerritories(std::string factionName)
 {
-    for (size_t i = 0; i != uniFact.size(); i++)
+    for (auto &i : uniFact)
     {
-        if (uniFact[i].name == factionName)
+        if (i.name == factionName)
         {
-            return uniFact[i].territories.size();
+            return i.territories.size();
         }
     }
     return 0;
@@ -1848,25 +1856,25 @@ int factionTerritories(std::string factionName)
 
 float factionPower(std::string factionName)
 {
-    for (size_t i = 0; i != uniFact.size(); i++)
+    for (auto &i : uniFact)
     {
-        if (uniFact[i].name == factionName)
+        if (i.name == factionName)
         {
             float tenantTech = 0;
 
-            tenantTech += uniFact[i].techMedical;
-            tenantTech += uniFact[i].techWeaponryBlunt;
-            tenantTech += uniFact[i].techWeaponryEnergy;
-            tenantTech += uniFact[i].techWeaponryExplosive;
-            tenantTech += uniFact[i].techWeaponryMass;
-            tenantTech += uniFact[i].techWeaponrySharp;
+            tenantTech += i.techMedical;
+            tenantTech += i.techWeaponryBlunt;
+            tenantTech += i.techWeaponryEnergy;
+            tenantTech += i.techWeaponryExplosive;
+            tenantTech += i.techWeaponryMass;
+            tenantTech += i.techWeaponrySharp;
 
             float tenantTechnique =
                 tenantTech +
-                (tenantTech * (percentIs(uniFact[i].creativity, 35) * 0.01));
+                (tenantTech * (percentIs(i.creativity, 35) * 0.01));
 
             float tenantPower =
-                tenantTechnique * (percentIs(uniFact[i].members, 60) * 0.01);
+                tenantTechnique * (percentIs(i.members, 60) * 0.01);
 
             tenantPower = tenantPower * 8;
 
@@ -1879,9 +1887,9 @@ float factionPower(std::string factionName)
 int factionPopulation()
 {
     int pop = 0;
-    for (size_t i = 0; i != uniFact.size(); i++)
+    for (auto &i : uniFact)
     {
-        pop += uniFact[i].members;
+        pop += i.members;
     }
     return pop;
 }
@@ -2001,8 +2009,9 @@ void buildStartingCritters(int zedAmount)
                 //SpawnCritter("Human",vPos.x,vPos.y);
                 squady.squad.at(count).xpos = vPos.x;
                 squady.squad.at(count).ypos = vPos.y;
-                squady.squad[count].Faction = g_pf.name;
-                squady.squad[count].factionPtr = &g_pf;
+
+                squady.squad[count].Faction = listAt(uniFact,0).name;
+                squady.squad[count].factionPtr = &listAt(uniFact,0);
 
                 npcmanager.addedCritters.push_back(squady.squad.at(count));
             }

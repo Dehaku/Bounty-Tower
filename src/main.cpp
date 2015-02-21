@@ -762,6 +762,9 @@ void unpointItems(std::list<Item> &items)
     {
         if ((*i).toDelete)
         {
+            /*
+
+
             std::cout << "JobList size: " << uniFact[0].jobList.size()
                       << std::endl;
 
@@ -804,6 +807,7 @@ void unpointItems(std::list<Item> &items)
                     }
                 }
             }
+            */
         }
     }
 }
@@ -1876,16 +1880,20 @@ void critterBrain(Npc &npc, std::vector<Npc> &container)
         std::cout << "= \n";
         for(auto fac : uniFact)
         {
-            std::cout << fac.name << ", JL: " << fac.jobList.size() << std::endl;
+            std::cout << fac.name << ", JL: " << fac.jobList.size() << ", PC: " << fac.playerControlled << std::endl;
         }
         std::cout << "= \n";
-
         if(npc.factionPtr != nullptr)
-            std::cout << "jobList: " << npc.factionPtr->jobList.size() << ", Player Controlled:" << npc.factionPtr->playerControlled << std::endl;
+        {
+            std::cout << npc.factionPtr->name << ", jobList: " << npc.factionPtr->jobList.size() << ", Player Controlled:" << npc.factionPtr->playerControlled << std::endl;
+            if(inputState.key[Key::G].time == 1)
+                npc.factionPtr->name = "Sons of Chicken";
+        }
+
         if(npc.factionPtr != nullptr && npc.factionPtr->jobList.size() != 0)
         {
             newDesire.potency = 50+npc.factionPtr->jobList.size()*100;
-            std::cout << "Woop? \n";
+            std::cout << "Woop?" << newDesire.potency << std::endl;
         }
 
     }
@@ -2978,44 +2986,44 @@ void updateNpc(Npc &npc, int integerIterator)
 
             try
             { // Jobs Section
-                if (uniFact[0].jobList.size() != 0 && npc.target == "Wander" &&
+                if (listAt(uniFact,0).jobList.size() != 0 && npc.target == "Wander" &&
                     npc.Faction == "The Alphas")
                 {
                     debug("Preforming Job Routine; ");
-                    for (size_t i = 0; i != uniFact[0].jobList.size(); i++)
+                    for (size_t i = 0; i != listAt(uniFact,0).jobList.size(); i++)
                     {
                         debug("Starting Job " + std::to_string(i));
                         //if(!Deleting) Deleter++;
                         //Con(AddString(npc.name,JobList[i].Type));
-                        if (uniFact[0].jobList[i].pItem == nullptr &&
-                            uniFact[0].jobList[i].type ==
+                        if (listAt(uniFact,0).jobList[i].pItem == nullptr &&
+                            listAt(uniFact,0).jobList[i].type ==
                                 "PickUp") // Deleting objectless pickup jobs.
                         {                 // Deleting objectless pickup jobs.
-                            uniFact[0].jobList[i].toDelete = true;
+                            listAt(uniFact,0).jobList[i].toDelete = true;
                             break;
                         }
 
-                        if ((uniFact[0].jobList[i].pWorker == nullptr &&
+                        if ((listAt(uniFact,0).jobList[i].pWorker == nullptr &&
                              npc.hasJob == false &&
-                             uniFact[0].jobList[i].toDelete == false) ||
-                            (uniFact[0].jobList[i].pWorker != nullptr &&
-                             uniFact[0].jobList[i].pWorker->id == npc.id &&
-                             uniFact[0].jobList[i].toDelete == false))
+                             listAt(uniFact,0).jobList[i].toDelete == false) ||
+                            (listAt(uniFact,0).jobList[i].pWorker != nullptr &&
+                             listAt(uniFact,0).jobList[i].pWorker->id == npc.id &&
+                             listAt(uniFact,0).jobList[i].toDelete == false))
                         {
                             debug("Comparitive Success");
-                            if (uniFact[0].jobList[i].pWorker == nullptr)
+                            if (listAt(uniFact,0).jobList[i].pWorker == nullptr)
                             {
                                 std::cout << npc.name
                                           << " has job: " << npc.hasJob
                                           << ", and yet :";
-                                uniFact[0].jobList[i].pWorker = &npclist.at(
+                                listAt(uniFact,0).jobList[i].pWorker = &npclist.at(
                                     integerIterator); // Not sure if this is technically better or worse than repointing every frame.
-                                uniFact[0].jobList[i].pWorker->hasJob = true;
+                                listAt(uniFact,0).jobList[i].pWorker->hasJob = true;
                                 std::cout << npc.hasJob << " does now? \n";
                                 //fSleep(2);
                             }
 
-                            if (uniFact[0].jobList[i].type == "Build")
+                            if (listAt(uniFact,0).jobList[i].type == "Build")
                             {
                                 debug("Starting Build");
 
@@ -3028,8 +3036,8 @@ void updateNpc(Npc &npc, int integerIterator)
                                 if (invWood != nullptr)
                                 {
                                     con("Success! I have Wood!");
-                                    int x = uniFact[0].jobList[i].workPos.x;
-                                    int y = uniFact[0].jobList[i].workPos.y;
+                                    int x = listAt(uniFact,0).jobList[i].workPos.x;
+                                    int y = listAt(uniFact,0).jobList[i].workPos.y;
 
                                     npc.targetPos.x = x;
                                     npc.targetPos.y = y;
@@ -3043,25 +3051,25 @@ void updateNpc(Npc &npc, int integerIterator)
                                         npc.targetPos.x = npc.xpos;
                                         npc.targetPos.y = npc.ypos;
 
-                                        uniFact[0]
+                                        listAt(uniFact,0)
                                             .jobList[i]
                                             .completionProgress +=
                                             npc.skills.intelligence / 2;
 
-                                        //std::cout << "JobTimer: " << UniFact[0].JobList[i].CompletionProgress << std::endl;
-                                        //Effectz.CreateCircle(UniFact[0].JobList[i].WorkPos.x,UniFact[0].JobList[i].WorkPos.y, (UniFact[0].JobList[i].CompletionProgress - UniFact[0].JobList[i].CompletionTimer)/10  ,sf::Color(150,150,150,150));
+                                        //std::cout << "JobTimer: " << listAt(uniFact,0).JobList[i].CompletionProgress << std::endl;
+                                        //Effectz.CreateCircle(listAt(uniFact,0).JobList[i].WorkPos.x,listAt(uniFact,0).JobList[i].WorkPos.y, (listAt(uniFact,0).JobList[i].CompletionProgress - listAt(uniFact,0).JobList[i].CompletionTimer)/10  ,sf::Color(150,150,150,150));
 
-                                        //std::cout << 361*(PercentIs(UniFact[0].JobList[i].CompletionTimer, UniFact[0].JobList[i].CompletionProgress)/100) << std::endl;
+                                        //std::cout << 361*(PercentIs(listAt(uniFact,0).JobList[i].CompletionTimer, listAt(uniFact,0).JobList[i].CompletionProgress)/100) << std::endl;
                                         //fSleep(4);
                                         for (
                                             float rot = 1;
                                             rot <
                                                 361 *
                                                     (percentIs(
-                                                         uniFact[0]
+                                                         listAt(uniFact,0)
                                                              .jobList[i]
                                                              .completionTimer,
-                                                         uniFact[0]
+                                                         listAt(uniFact,0)
                                                              .jobList[i]
                                                              .completionProgress) /
                                                      100);
@@ -3079,10 +3087,10 @@ void updateNpc(Npc &npc, int integerIterator)
                                                 sf::Color(150, 150, 150, 150));
                                         }
 
-                                        if (uniFact[0]
+                                        if (listAt(uniFact,0)
                                                 .jobList[i]
                                                 .completionProgress >=
-                                            uniFact[0]
+                                            listAt(uniFact,0)
                                                 .jobList[i]
                                                 .completionTimer)
 
@@ -3093,9 +3101,9 @@ void updateNpc(Npc &npc, int integerIterator)
                                             //Tiles[abs_to_index(x/20)][abs_to_index(y/20)][30].ID = 1010;
                                             //Tiles[abs_to_index(x/20)][abs_to_index(y/20)][30].Img.setTexture( *imagemanager.GetImage("Wall.png"));
                                             invWood->toDelete = true;
-                                            uniFact[0].jobList[i].toDelete =
+                                            listAt(uniFact,0).jobList[i].toDelete =
                                                 true;
-                                            uniFact[0]
+                                            listAt(uniFact,0)
                                                 .jobList[i]
                                                 .pWorker->hasJob = false;
                                             //Crashed instantly;
@@ -3133,37 +3141,37 @@ void updateNpc(Npc &npc, int integerIterator)
                                 debug("Ended Build");
                             }
 
-                            else if (uniFact[0].jobList[i].pItem != nullptr)
+                            else if (listAt(uniFact,0).jobList[i].pItem != nullptr)
                             {
                                 debug("Starting pItem != NULL");
 
                                 npc.targetPos.x =
-                                    uniFact[0].jobList[i].pItem->xpos;
+                                    listAt(uniFact,0).jobList[i].pItem->xpos;
                                 npc.targetPos.y =
-                                    uniFact[0].jobList[i].pItem->ypos;
+                                    listAt(uniFact,0).jobList[i].pItem->ypos;
                                 npc.hasTarget = true;
-                                npc.target = uniFact[0].jobList[i].pItem->name;
+                                npc.target = listAt(uniFact,0).jobList[i].pItem->name;
                                 debug("Post HasTarget");
 
-                                if (uniFact[0].jobList[i].type == "PickUp" &&
+                                if (listAt(uniFact,0).jobList[i].type == "PickUp" &&
                                     math::closeish(
                                         npc.xpos, npc.ypos,
-                                        uniFact[0].jobList[i].pItem->xpos,
-                                        uniFact[0].jobList[i].pItem->ypos) <=
+                                        listAt(uniFact,0).jobList[i].pItem->xpos,
+                                        listAt(uniFact,0).jobList[i].pItem->ypos) <=
                                         npc.size)
                                 {
                                     //Con("I'm there! \n");
                                     //Deleting = true;
                                     npc.inventory.push_back(
-                                        *uniFact[0].jobList[i].pItem);
+                                        *listAt(uniFact,0).jobList[i].pItem);
                                     debug("Post Inventory Pushback");
 
-                                    uniFact[0].jobList[i].pItem->toDelete =
+                                    listAt(uniFact,0).jobList[i].pItem->toDelete =
                                         true;
                                     /*
                             for(std::list<item>::iterator v = worlditems.begin(); v != worlditems.end(); v++ )
                             {
-                                if((*v).id == UniFact[0].JobList[i].pItem->id)
+                                if((*v).id == listAt(uniFact,0).JobList[i].pItem->id)
                                 {
                                     v->ToDelete = true;
                                     std::cout << "Confirmed. \n";
@@ -3172,42 +3180,42 @@ void updateNpc(Npc &npc, int integerIterator)
                             }
                             */
 
-                                    uniFact[0].jobList[i].pItem = nullptr;
-                                    uniFact[0].jobList[i].toDelete = true;
-                                    uniFact[0].jobList[i].pWorker->hasJob =
+                                    listAt(uniFact,0).jobList[i].pItem = nullptr;
+                                    listAt(uniFact,0).jobList[i].toDelete = true;
+                                    listAt(uniFact,0).jobList[i].pWorker->hasJob =
                                         false;
                                     unpointItems(worlditems);
                                     debug("Post Unpoint");
                                 }
 
-                                if (uniFact[0].jobList[i].type == "Chop" &&
+                                if (listAt(uniFact,0).jobList[i].type == "Chop" &&
                                     math::closeish(
                                         npc.xpos, npc.ypos,
-                                        uniFact[0].jobList[i].pItem->xpos,
-                                        uniFact[0].jobList[i].pItem->ypos) <=
+                                        listAt(uniFact,0).jobList[i].pItem->xpos,
+                                        listAt(uniFact,0).jobList[i].pItem->ypos) <=
                                         npc.size)
                                 {
                                     debug("Post Chopcheck");
                                     //Con("I'm there! \n");
                                     //Deleting = true;
-                                    //npc.inventory.push_back(*UniFact[0].JobList[i].pItem);
+                                    //npc.inventory.push_back(*listAt(uniFact,0).JobList[i].pItem);
                                     //FUCKNUTS start here, Just made the plank, Make the tree give the planks, MmkAY?!
                                     Item woodStuffs = *getGlobalItem("Wood");
 
                                     debug("Post WoodStuffs");
 
                                     woodStuffs.xpos =
-                                        uniFact[0].jobList[i].pItem->xpos;
+                                        listAt(uniFact,0).jobList[i].pItem->xpos;
                                     woodStuffs.ypos =
-                                        uniFact[0].jobList[i].pItem->ypos;
+                                        listAt(uniFact,0).jobList[i].pItem->ypos;
                                     worlditems.push_back(woodStuffs);
                                     debug("Post WoodSpawn");
 
-                                    uniFact[0].jobList[i].pItem->toDelete =
+                                    listAt(uniFact,0).jobList[i].pItem->toDelete =
                                         true;
-                                    uniFact[0].jobList[i].pItem = nullptr;
-                                    uniFact[0].jobList[i].toDelete = true;
-                                    uniFact[0].jobList[i].pWorker->hasJob =
+                                    listAt(uniFact,0).jobList[i].pItem = nullptr;
+                                    listAt(uniFact,0).jobList[i].toDelete = true;
+                                    listAt(uniFact,0).jobList[i].pWorker->hasJob =
                                         false;
                                     debug("Post ToDelete");
                                     unpointItems(worlditems);
@@ -3218,13 +3226,13 @@ void updateNpc(Npc &npc, int integerIterator)
                                 debug("Ending pItem != NULL");
                             }
 
-                            if (uniFact[0].jobList[i].type == "Dig")
+                            if (listAt(uniFact,0).jobList[i].type == "Dig")
                             {
 
                                 pathFindWorkPos.x =
-                                    uniFact[0].jobList[i].workPos.x;
+                                    listAt(uniFact,0).jobList[i].workPos.x;
                                 pathFindWorkPos.y =
-                                    uniFact[0].jobList[i].workPos.y;
+                                    listAt(uniFact,0).jobList[i].workPos.y;
 
                                 npc.targetPos.x = pathFindWorkPos.x;
                                 npc.targetPos.y = pathFindWorkPos.y;
@@ -3239,17 +3247,17 @@ void updateNpc(Npc &npc, int integerIterator)
                                     npc.targetPos.x = npc.xpos;
                                     npc.targetPos.y = npc.ypos;
 
-                                    uniFact[0].jobList[i].completionProgress +=
+                                    listAt(uniFact,0).jobList[i].completionProgress +=
                                         npc.skills.strength / 2;
 
                                     for (float rot = 1;
                                          rot <
                                              361 *
                                                  (percentIs(
-                                                      uniFact[0]
+                                                      listAt(uniFact,0)
                                                           .jobList[i]
                                                           .completionTimer,
-                                                      uniFact[0]
+                                                      listAt(uniFact,0)
                                                           .jobList[i]
                                                           .completionProgress) /
                                                   100);
@@ -3267,10 +3275,10 @@ void updateNpc(Npc &npc, int integerIterator)
                                             sf::Color(150, 150, 150, 150));
                                     }
 
-                                    if (uniFact[0]
+                                    if (listAt(uniFact,0)
                                             .jobList[i]
                                             .completionProgress >=
-                                        uniFact[0].jobList[i].completionTimer)
+                                        listAt(uniFact,0).jobList[i].completionTimer)
 
                                     {
                                         tiles[abs_to_index(pathFindWorkPos.x /
@@ -3294,8 +3302,8 @@ void updateNpc(Npc &npc, int integerIterator)
                                             worlditems.push_back(stoneStuffs);
                                         }
 
-                                        uniFact[0].jobList[i].toDelete = true;
-                                        uniFact[0].jobList[i].pWorker->hasJob =
+                                        listAt(uniFact,0).jobList[i].toDelete = true;
+                                        listAt(uniFact,0).jobList[i].pWorker->hasJob =
                                             false;
                                         debug("Dig Wall Completed");
                                     }
@@ -3306,7 +3314,7 @@ void updateNpc(Npc &npc, int integerIterator)
                         debug("End Job " + std::to_string(i));
                     }
 
-                    removeJobs(uniFact[0].jobList);
+                    removeJobs(listAt(uniFact,0).jobList);
 
                     debug("Finished Job Activity. \n ");
                 }
@@ -4419,7 +4427,9 @@ int main()
     g_pf.playerControlled = true;
     g_pf.initialized = true;
     uniFact.push_back(g_pf);
-    conFact = &uniFact[0];
+    conFact = &listAt(uniFact,0);
+
+    std::cout << conFact->name << ", success? \n";
 
     // Setting the initial game phase.
     gCtrl.phase = "MainMenu";
@@ -4867,8 +4877,8 @@ int main()
                 for (auto &worlditem : worlditems)
                     (worlditem).ypos += -640;
 
-                for (size_t i = 0; i != uniFact[0].jobList.size(); i++)
-                    uniFact[0].jobList[i].workPos.y += -640;
+                for (size_t i = 0; i != listAt(uniFact,0).jobList.size(); i++)
+                    listAt(uniFact,0).jobList[i].workPos.y += -640;
 
                 transitioning = true;
                 std::string line;
@@ -4911,8 +4921,8 @@ int main()
                 for (auto &worlditem : worlditems)
                     (worlditem).ypos += 640;
 
-                for (size_t i = 0; i != uniFact[0].jobList.size(); i++)
-                    uniFact[0].jobList[i].workPos.y += 640;
+                for (size_t i = 0; i != listAt(uniFact,0).jobList.size(); i++)
+                    listAt(uniFact,0).jobList[i].workPos.y += 640;
 
                 transitioning = true;
                 std::string line;
@@ -4955,8 +4965,8 @@ int main()
                 for (auto &worlditem : worlditems)
                     (worlditem).xpos += -640;
 
-                for (size_t i = 0; i != uniFact[0].jobList.size(); i++)
-                    uniFact[0].jobList[i].workPos.x += -640;
+                for (size_t i = 0; i != listAt(uniFact,0).jobList.size(); i++)
+                    listAt(uniFact,0).jobList[i].workPos.x += -640;
 
                 transitioning = true;
                 std::string line;
@@ -5002,8 +5012,8 @@ int main()
                 for (auto &worlditem : worlditems)
                     (worlditem).xpos += 640;
 
-                for (size_t i = 0; i != uniFact[0].jobList.size(); i++)
-                    uniFact[0].jobList[i].workPos.x += 640;
+                for (size_t i = 0; i != listAt(uniFact,0).jobList.size(); i++)
+                    listAt(uniFact,0).jobList[i].workPos.x += 640;
 
                 con("Done GoRight with NPC's and Items");
                 transitioning = true;

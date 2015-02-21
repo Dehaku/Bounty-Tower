@@ -34,7 +34,7 @@ public:
     std::list<Item> equipped;
     std::string bloodcontent;
     std::string tags;
-    Faction * factionPtr;
+    Faction *factionPtr;
     std::string Faction;
 
     bool attacking;
@@ -387,7 +387,7 @@ public:
     Faction();
 };
 
-extern std::vector<Faction> uniFact;
+extern std::list<Faction> uniFact;
 
 int factionMembers(std::string factionName);
 float factionAggression(std::string factionName);

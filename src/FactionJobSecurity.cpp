@@ -19,9 +19,9 @@ void rmbMenuItem(Item &pItem)
     job.pItem = &pItem;
     JobList.push_back(job);
     */
-    for (size_t i = 0; i != uniFact.size(); i++)
+    for (auto &i : uniFact)
     {
-        if (uniFact[i].playerControlled)
+        if (i.playerControlled)
         {
             Job job;
             job.pItem = &pItem;
@@ -36,16 +36,16 @@ void rmbMenuItem(Item &pItem)
                 job.type = "PickUp";
             }
 
-            uniFact[i].jobList.push_back(job);
+            i.jobList.push_back(job);
         }
     }
 }
 
 void digWall(sf::Vector2f pos)
 {
-    for (size_t i = 0; i != uniFact.size(); i++)
+    for (auto &i : uniFact)
     {
-        if (uniFact[i].playerControlled)
+        if (i.playerControlled)
         {
             Job job;
             std::cout << "Tile clicked: "
@@ -65,16 +65,16 @@ void digWall(sf::Vector2f pos)
                 return;
             }
 
-            uniFact[i].jobList.push_back(job);
+            i.jobList.push_back(job);
         }
     }
 }
 
 void rmbMenuTile(sf::Vector2f pos)
 {
-    for (size_t i = 0; i != uniFact.size(); i++)
+    for (auto &i : uniFact)
     {
-        if (uniFact[i].playerControlled)
+        if (i.playerControlled)
         {
             Job job;
             //job.pItem = &pItem;
@@ -92,8 +92,8 @@ void rmbMenuTile(sf::Vector2f pos)
                 return;
             }
 
-            uniFact[i].jobList.push_back(job);
-            std::cout << "Inserted job into " << uniFact[i].name << std::endl;
+            i.jobList.push_back(job);
+            std::cout << "Inserted job into " << i.name << std::endl;
         }
     }
 }
@@ -101,17 +101,17 @@ void rmbMenuTile(sf::Vector2f pos)
 void drawJobList(int x, int y)
 {
     int YVariance = 1;
-    for (size_t i = 0; i != uniFact.size(); i++)
+    for (auto &i : uniFact)
     {
-        if (uniFact[i].playerControlled)
+        if (i.playerControlled)
         {
-            for (size_t t = 0; t != uniFact[i].jobList.size(); t++)
+            for (auto &t : i.jobList)
             {
 
                 //cText.CreateText(DrawXPos,DrawYPos+(YVariance*10),11,sf::Color::Yellow,AddString(UniFact[i].JobList[t].Type," "),UniFact[i].JobList[t].Name);
 
-                if (uniFact[i].jobList[t].pItem != nullptr &&
-                    uniFact[i].jobList[t].pWorker != nullptr)
+                if (t.pItem != nullptr &&
+                    t.pWorker != nullptr)
                 {
                     debug("First condition");
                     debug("CritterName");
@@ -119,38 +119,34 @@ void drawJobList(int x, int y)
 
                     textList.createText(
                         x, y + (YVariance * 10), 11, sf::Color::Yellow,
-                        uniFact[i].jobList[t].pWorker->name +
-                            uniFact[i].jobList[t].name + " ",
-                        uniFact[i]
-                            .jobList[t]
-                            .pItem->name); // ,JobList.at(i).pItem.name
+                        t.pWorker->name +
+                            t.name + " ",
+                        t.pItem->name); // ,JobList.at(i).pItem.name
                 }
-                else if (uniFact[i].jobList[t].pItem != nullptr)
+                else if (t.pItem != nullptr)
                 {
                     debug("Second condition");
                     textList.createText(
                         x, y + (YVariance * 10), 11, sf::Color::Yellow,
-                        uniFact[i].jobList[t].name + " ",
-                        uniFact[i]
-                            .jobList[t]
-                            .pItem->name); // ,JobList.at(i).pItem.name
+                        t.name + " ",
+                        t.pItem->name); // ,JobList.at(i).pItem.name
                 }
-                else if (uniFact[i].jobList[t].pWorker != nullptr)
+                else if (t.pWorker != nullptr)
                 {
                     debug("Third condition");
                     textList.createText(x, y + (YVariance * 10), 11,
                                         sf::Color::Yellow,
-                                        uniFact[i].jobList[t].pWorker->name +
-                                            uniFact[i].jobList[t].type + " ",
-                                        uniFact[i].jobList[t].name);
+                                        t.pWorker->name +
+                                            t.type + " ",
+                                        t.name);
                 }
                 else
                 {
                     debug("Fourth condition");
                     textList.createText(x, y + (YVariance * 10), 11,
                                         sf::Color::Yellow,
-                                        uniFact[i].jobList[t].type + " ",
-                                        uniFact[i].jobList[t].name);
+                                        t.type + " ",
+                                        t.name);
                 }
 
                 YVariance++;
