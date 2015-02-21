@@ -1933,6 +1933,11 @@ ReDesire:
     }
 
     // Acting on Highest Desire
+
+    Vec3 startPos(npc.xpos/20,npc.ypos/20,npc.zpos/20);
+    Vec3 endPos;
+    bool hasPath = false;
+
     if ((*highestDesire).type == "Apathy")
     {
         effects.createCircle(npc.xpos, npc.ypos, 11, sf::Color::Red);
@@ -2024,6 +2029,11 @@ ReDesire:
             if(npc.jobPtr != nullptr && npc.jobPtr->type == "Build")
             {
                 std::cout << npc.name << "'s been employed to Build! \n";
+
+                //npc.dirMove(sf::Vector2f(npc.jobPtr->workPos.x,npc.jobPtr->workPos.y));
+                endPos = Vec3(npc.jobPtr->workPos.x/20,npc.jobPtr->workPos.y/20, npc.zpos/20);
+                std::cout << "endPos: " << endPos.x << "/" << endPos.y << "/" << endPos.z << std::endl;
+                hasPath = true;
             }
         }
 
@@ -2048,17 +2058,24 @@ ReDesire:
     //int result = pathCon.makePath(startPos, endPos);
     //pathCon.drawStoredPath();
 
+
+
     if(npc.targetInfo.item != nullptr)
     {
-            //std::cout << "Not null, ";
-            Vec3 startPos(npc.xpos/20,npc.ypos/20,npc.zpos/20);
-            Vec3 endPos(npc.targetInfo.item->xpos/20, npc.targetInfo.item->ypos/20, npc.targetInfo.item->zpos/20);
-            int result = pathCon.makePath(startPos, endPos);
-            //std::cout << "result: " << result << " path size: " << pathCon.storedPath.size() << std::endl;
-
-            //world.DrawPath();
-            pathCon.drawStoredPath();
+        endPos = Vec3(npc.targetInfo.item->xpos/20, npc.targetInfo.item->ypos/20, npc.targetInfo.item->zpos/20);
+        hasPath = true;
     }
+
+
+
+    if(hasPath)
+    {
+        std::cout << "Has Path! \n";
+        int result = pathCon.makePath(startPos, endPos);
+        pathCon.drawStoredPath();
+    }
+
+
     if(!pathCon.storedPath.empty())
     {
         Vec3 Pos(pathCon.storedPath[1]->getPos());
@@ -2068,7 +2085,6 @@ ReDesire:
 
         if(Pos.z != npc.zpos)
             npc.zpos = Pos.z*20;
-
 
         pathCon.storedPath.clear();
     }
