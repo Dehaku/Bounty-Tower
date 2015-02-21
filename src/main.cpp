@@ -1719,8 +1719,12 @@ void critterBrain(Npc &npc, std::vector<Npc> &container)
     debug("Debug: Ending Part Loop");
 
     /*Simulating Hunger/Thirst, Needs to be nerfed/formulated to conditions, I.E. Attributes/Parts/Weather*/
-    npc.bloodwork("Nutrients", -1);
-    npc.bloodwork("Hydration", -1);
+    if( (gvars::framesPassed % 10) == 0)
+    {/* Every ten frames, consume nutrients  */
+        npc.bloodwork("Nutrients", -1);
+        npc.bloodwork("Hydration", -1);
+    }
+
 
     /* *BodyPart Loop* */
     /* Critter Vision   */
@@ -1877,23 +1881,10 @@ void critterBrain(Npc &npc, std::vector<Npc> &container)
     { //Work
         newDesire.type = "Work";
         newDesire.potency = 0;
-        std::cout << "= \n";
-        for(auto fac : uniFact)
-        {
-            std::cout << fac.name << ", JL: " << fac.jobList.size() << ", PC: " << fac.playerControlled << std::endl;
-        }
-        std::cout << "= \n";
-        if(npc.factionPtr != nullptr)
-        {
-            std::cout << npc.factionPtr->name << ", jobList: " << npc.factionPtr->jobList.size() << ", Player Controlled:" << npc.factionPtr->playerControlled << std::endl;
-            if(inputState.key[Key::G].time == 1)
-                npc.factionPtr->name = "Sons of Chicken";
-        }
 
         if(npc.factionPtr != nullptr && npc.factionPtr->jobList.size() != 0)
         {
-            newDesire.potency = 50+npc.factionPtr->jobList.size()*100;
-            std::cout << "Woop?" << newDesire.potency << std::endl;
+            newDesire.potency = 50+500;
         }
 
     }
@@ -1930,7 +1921,6 @@ ReDesire:
             highestDesire = &i;
             firstIter = false;
         }
-        std::cout << i.type << ", " << i.potency << ", vs " << (*highestDesire).type << ", " << (*highestDesire).potency << std::endl;
         if (i.potency > (*highestDesire).potency)
             highestDesire = &i;
     }
@@ -2084,6 +2074,9 @@ void critterBrain(std::vector<Npc> &npcs)
     std::cout << result << ", Is the test. \n";
 
     */
+
+
+    std::cout << "gvars::framesPassed: " << gvars::framesPassed << std::endl;
 
     for (auto &npc : npcs)
     {
@@ -4392,6 +4385,7 @@ int main()
 
     bool plyAct = false;
     window.setFramerateLimit(30); // 0 is unlimited
+
     sf::View planetary(CENTER, HALF_SIZE);
 
     window.setVerticalSyncEnabled(true);
@@ -4431,8 +4425,6 @@ int main()
     uniFact.push_back(g_pf);
     conFact = &listAt(uniFact,0);
 
-    std::cout << conFact->name << ", success? \n";
-
     // Setting the initial game phase.
     gCtrl.phase = "MainMenu";
     //gCtrl.phase = "MicroPatherTest";
@@ -4442,6 +4434,18 @@ int main()
 
     while (window.isOpen())
     {
+        gvars::framesPassed++;
+        if(gvars::framesPassed >= 4000000)
+        {
+            std::cout << "Congratulations, The game has ran for four million frames! Frame counter reset. \n";
+            std::cout << "Theoretically, The game is running at 30 fps, ";
+            std::cout << "Using super computer math, That means the game has ran for at 'least' " << 4000000/30 << " Seconds! Holy shit! \n";
+            std::cout << "Do not fear, the game will begin running again after 100 seconds, You can wait, trust me. \n";
+            fSleep(100);
+            gvars::framesPassed = 0;
+        }
+
+
         if (gvars::cycleGrowth)
         {
             gvars::cycleRed.g++;

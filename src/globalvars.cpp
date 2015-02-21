@@ -15,6 +15,7 @@ float cz(float number)
 
 namespace gvars
 {
+unsigned int framesPassed = 0;
 bool debug = false;
 bool inFocus = true;
 bool drawStuffsDone = true;
