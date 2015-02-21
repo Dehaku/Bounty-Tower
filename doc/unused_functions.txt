@@ -9,3 +9,1956 @@ int Closeish(int orix, int oriy, int tarx, int tary)
     int Powa = sqrt(pow((tarx - orix), 2) + pow((tary - oriy), 2));
     return Powa;
 }
+
+
+
+void updateNpc(Npc &npc, int integerIterator)
+{
+    // BodyPart Loop
+    // First, Run through the bodyparts finding the 'global' tags, like Nutrient Extraction and such.
+    // Second, Run through each individual part running through all the local tags.
+
+    short int parts = 0;
+    size_t searchPos = 0;
+    size_t endPos = 0;
+
+    debug("Debug: Beginning Part Loop for" + npc.name);
+
+    //  Global Part Tag Variables
+
+    float partsWalkSpeed = 0;
+    float globalNutritionPercentage = 100;
+    bool consumeFlesh = false;
+    bool consumeVeggy = false;
+    bool consumeWater = false;
+
+    //  *   Global Part Tag Variables   *
+
+    while (searchPos != npc.body.bodyParts.npos) // Global Part Tags
+    {
+        searchPos = npc.body.bodyParts.find("{", searchPos);
+
+        if (searchPos != npc.body.bodyParts.npos)
+        {
+            endPos = npc.body.bodyParts.find("}", searchPos);
+
+            std::string workingLine;
+
+            workingLine.append(npc.body.bodyParts, searchPos,
+                               endPos - searchPos);
+            float partNumber = 0;
+
+            partNumber = stringFindNumber(workingLine, "[Walk:");
+            if (partNumber != 0)
+            {
+
+                if (partsWalkSpeed != 0)
+                {
+                    partsWalkSpeed = partNumber;
+                }
+                else
+                {
+                    partsWalkSpeed += (partNumber * 0.5);
+                }
+            }
+
+            partNumber = stringFindNumber(workingLine, "[NutritionExtraction:");
+            if (partNumber != 0)
+            {
+                globalNutritionPercentage += partNumber;
+            }
+
+            partNumber = stringFindNumber(workingLine, "[DigestsBlood:");
+            if (partNumber != 0)
+            {
+            }
+            partNumber = stringFindNumber(workingLine, "[DigestsFlesh:");
+            if (partNumber != 0)
+            {
+                consumeFlesh = true;
+            }
+            partNumber = stringFindNumber(workingLine, "[DigestsVeggy:");
+            if (partNumber != 0)
+            {
+                consumeVeggy = true;
+            }
+            partNumber = stringFindNumber(workingLine, "[DigestsWater:");
+            if (partNumber != 0)
+            {
+                consumeWater = true;
+            }
+
+            searchPos = endPos;
+        }
+    }
+
+    searchPos = 0;
+
+    //for(int i = 0; i != npc.inventory.size(); i++)
+    for (auto i = npc.inventory.begin(); i != npc.inventory.begin(); i++)
+    {
+        if ((*i).insidePart != "")
+        {
+            (*i).hasInternalUse--;
+        }
+    }
+
+    while (searchPos != npc.body.bodyParts.npos) // Individual Part Tags
+    {
+
+        searchPos = npc.body.bodyParts.find("{", searchPos);
+
+        if (searchPos != npc.body.bodyParts.npos)
+        {
+            endPos = npc.body.bodyParts.find("}", searchPos);
+            parts++;
+
+            std::string workingLine;
+
+            workingLine.append(npc.body.bodyParts, searchPos,
+                               endPos - searchPos);
+
+            float partNumber = 0;
+            std::string partString = "";
+            Item *partItem;
+
+            std::string currentPart = stringFindString(workingLine, "[Name:");
+
+            partNumber = stringFindNumber(workingLine, "[DigestsBlood:");
+            partItem = getItemPtrFromVector(npc.inventory, "Blood");
+            if (partNumber != 0 && partItem != nullptr)
+            {
+
+                float workAmount = partItem->amount;
+                float diff = workAmount - (partNumber / 1000);
+
+                if (diff > 0)
+                {
+                    partItem->amount = diff;
+                    float Nutr = (workAmount - diff) *
+                                 100; // TODO: Figure this out better.
+                    npc.bloodwork(
+                        "Nutrients",
+                        Nutr * percentageBuff(globalNutritionPercentage));
+                }
+                else
+                {
+                    //*GetItemPtrfromVector(npc.inventory,"Blood").amount = 0;
+                    getItemPtrFromVector(npc.inventory, "Blood")->toDelete =
+                        true;
+                    float nutr =
+                        workAmount * 100; // TODO: Figure this out better.
+                    npc.bloodwork(
+                        "Nutrients",
+                        nutr * percentageBuff(globalNutritionPercentage));
+                }
+            }
+
+            partNumber = stringFindNumber(workingLine, "[DigestsFlesh:");
+            partItem =
+                getItemPtrfromVectorVarSearch(npc.inventory, "MassFlesh");
+            //if(PartItem != NULL) PartItem->HasInternalUse++; // This is designed to keep items from being ejected until they are completely useless to a critter, I.E. Items with multiple Food Mass's.
+            if (partNumber != 0 && partItem != nullptr &&
+                partItem->massFlesh >
+                    0) // TODO: Make sure the item is in THIS PART before digesting it!
+            {
+                //std::cout << "HasInternalUse: " << PartItem->HasInternalUse << std::endl;
+                float workAmount = partItem->massFlesh;
+                float diff = workAmount - (partNumber / 1000);
+
+                if (diff > 0)
+                {
+                    partItem->massFlesh = diff;
+                    partItem->hasInternalUse = 0;
+                    float Nutr = (workAmount - diff) *
+                                 100; // TODO: Figure this out better.
+                    npc.bloodwork(
+                        "Nutrients",
+                        Nutr * percentageBuff(globalNutritionPercentage));
+                }
+                if (partItem->massFlesh <= 0)
+                {
+                    //*GetItemPtrfromVector(npc.inventory,"Blood").amount = 0;
+                    partItem->toDelete = true;
+                    //Add Food to everyone, Make sure they go hungry to eat it, Figure out a way to Eject the empty item, Or do water! Everyone starts with water.
+                    //npc.bloodwork("Nutrients",Nutr*PercentageBuff(GlobalNutritionPercentage));
+                }
+            }
+
+            partNumber = stringFindNumber(workingLine, "[DigestsVeggy:");
+            partItem =
+                getItemPtrfromVectorVarSearch(npc.inventory, "MassVeggy");
+            //if(PartItem != NULL) PartItem->HasInternalUse++; // This is designed to keep items from being ejected until they are completely useless to a critter, I.E. Items with multiple Food Mass's.
+            if (partNumber != 0 && partItem != nullptr &&
+                partItem->massVeggy >
+                    0) // TODO: Make sure the item is in THIS PART before digesting it!
+            {
+                //std::cout << "HasInternalUse: " << PartItem->HasInternalUse << std::endl;
+                float workAmount = partItem->massVeggy;
+                float diff = workAmount - (partNumber / 1000);
+
+                if (diff > 0)
+                {
+                    partItem->massVeggy = diff;
+                    partItem->hasInternalUse = 0;
+                    float Nutr = (workAmount - diff) *
+                                 100; // TODO: Figure this out better.
+                    npc.bloodwork(
+                        "Nutrients",
+                        Nutr * percentageBuff(globalNutritionPercentage));
+                }
+                if (partItem->massVeggy <= 0)
+                {
+                    partItem->toDelete = true;
+                    //npc.bloodwork("Nutrients",Nutr*PercentageBuff(GlobalNutritionPercentage));
+                }
+            }
+
+            partNumber = stringFindNumber(workingLine, "[DigestsWater:");
+            partItem =
+                getItemPtrfromVectorVarSearch(npc.inventory, "MassWater");
+            //if(PartItem != NULL) PartItem->HasInternalUse++; // This is designed to keep items from being ejected until they are completely useless to a critter, I.E. Items with multiple Food Mass's.
+            if (partNumber != 0 && partItem != nullptr &&
+                partItem->massWater >
+                    0) // TODO: Make sure the item is in THIS PART before digesting it!
+            {
+                //std::cout << "HasInternalUse: " << PartItem->HasInternalUse << std::endl;
+                float workAmount = partItem->massWater;
+                float diff = workAmount - (partNumber / 1000);
+
+                if (diff > 0)
+                {
+                    partItem->massWater = diff;
+                    partItem->hasInternalUse = 0;
+                    float Nutr = (workAmount - diff) *
+                                 100; // TODO: Figure this out better.
+                    npc.bloodwork(
+                        "Hydration",
+                        Nutr * percentageBuff(globalNutritionPercentage));
+                }
+                if (partItem->massWater <= 0)
+                {
+                    partItem->toDelete = true;
+                    //npc.bloodwork("Nutrients",Nutr*PercentageBuff(GlobalNutritionPercentage));
+                }
+            }
+
+            partString = stringFindString(workingLine, "[PoisonFilter:");
+            if (partString != "")
+            {
+
+                std::vector<std::string> strVec =
+                    stringFindElements(partString, ":");
+                if (gvars::debug)
+                    std::cout << "StrVec[0]: " << strVec[0] << std::endl;
+                float Leftover =
+                    npc.bloodwork(strVec[0], -atof(strVec[1].c_str()));
+                if (gvars::debug)
+                    std::cout << "Bloodwork leftover is: " << Leftover
+                              << std::endl;
+                //NPC Critter;
+
+                for (size_t i = 0; i != strVec.size(); i++)
+                {
+                    if (gvars::debug)
+                        std::cout << strVec[i] << std::endl;
+                }
+            }
+
+            partNumber = stringFindNumber(workingLine, "[Orafice:");
+            if (partNumber > 0)
+            {
+                //std::vector<item> * Inv = &npc.inventory;
+
+                //for(int i = 0; i != npc.inventory.size(); i++)
+                for (auto i = npc.inventory.begin(); i != npc.inventory.begin();
+                     i++)
+                {
+                    bool foundIt = false;
+                    if ((*i).insidePart == "" && (*i).massFlesh > 0 &&
+                        consumeFlesh) // Awww yeeessss, We gonna eat some flesh with our Orafice!
+                    {
+                        (*i).insidePart = currentPart;
+                        foundIt = true;
+                    }
+
+                    if ((*i).insidePart == "" && (*i).massVeggy > 0 &&
+                        consumeVeggy) // Awww yeeessss, We gonna eat something with our Orafice!
+                    {
+                        (*i).insidePart = currentPart;
+                        foundIt = true;
+                    }
+
+                    if ((*i).insidePart == "" && (*i).massWater > 0 &&
+                        consumeWater) // Awww yeeessss, We gonna eat something with our Orafice!
+                    {
+                        (*i).insidePart = currentPart;
+                        foundIt = true;
+                    }
+
+                    if (foundIt)
+                    {
+                        std::string chtStr;
+                        chtStr.append("* ");
+                        chtStr.append(npc.name);
+                        chtStr.append("(" + std::to_string(npc.id) + ")");
+                        chtStr.append(" has inserted ");
+                        chtStr.append((*i).name);
+                        chtStr.append(" into their ");
+                        chtStr.append(currentPart);
+                        chtStr.append("'s Orafice(");
+                        chtStr.append(std::to_string(partNumber));
+                        chtStr.append(").");
+
+                        chatBox.addChat(chtStr, sf::Color(150, 150, 0));
+                    }
+                }
+            }
+
+            partNumber = stringFindNumber(
+                workingLine, "[BloodPumpRate:"); // TODO: Do this right.
+            if (partNumber != 0)
+            {
+                float blood = stringFindNumber(npc.bloodcontent, "[Nutrients:");
+                if (blood > partNumber)
+                {
+                    if ((npc.maxhunger - npc.hunger) > partNumber)
+                    {
+                        npc.hunger += partNumber;
+                        npc.bloodwork("Nutrients", -partNumber);
+                    }
+                }
+                blood = stringFindNumber(npc.bloodcontent, "[Hydration:");
+                if (blood > partNumber)
+                {
+                    if ((npc.maxthirst - npc.thirst) > partNumber)
+                    {
+                        npc.thirst += partNumber;
+                        npc.bloodwork("Hydration", -partNumber);
+                    }
+                }
+            }
+
+            searchPos = endPos;
+        }
+    }
+
+    // TODO: Can't really use this until the critter brain rewrite.
+    /*
+    for(int i = 0; i != npc.inventory.size(); i++)
+    {
+        //std::cout << "Freakkin: " << npc.inventory[i].HasInternalUse << std::endl;
+        if(npc.inventory[i].HasInternalUse <= -100)
+        {
+            //TODO: Ejection code, Just duplicate the item onto the ground with the same coords, eh? Also add a chatbox text that a critter did this.
+
+            item ExpelItem = npc.inventory[i];
+            ExpelItem.xpos = npc.xpos;
+            ExpelItem.ypos = npc.ypos;
+            ExpelItem.InsidePart = "";
+            ExpelItem.HasInternalUse = 0;
+            worlditems.push_back(ExpelItem);
+            npc.inventory[i].ToDelete = true;
+
+            std::string ChtStr;
+            ChtStr.append("* ");
+            ChtStr.append(npc.name);
+            ChtStr.append(AddString("(",std::to_string(npc.id),")"));
+            ChtStr.append(" has ejected ");
+            ChtStr.append(npc.inventory[i].name);
+            ChtStr.append(" from their ");
+            ChtStr.append(npc.inventory[i].InsidePart);
+            ChtStr.append(".");
+
+            chatBox.AddChat(ChtStr,sf::Color(150,150,0));
+        }
+    }
+    */
+
+    debug("Debug: Ending Part Loop");
+    // *BodyPart Loop*
+
+    sf::Vector2f pathFindWorkPos(0, 0);
+
+    float tempXpos = npc.xpos;
+    float tempYpos = npc.ypos;
+    npc.movetimer -= npc.movetimerrate;
+    npc.attacktimer--;
+    if (npc.attacktimer < 0)
+    {
+        npc.attacktimer = 0;
+    }
+
+    if (npc.name == "Zombie")
+    {
+    }
+
+    if (npc.name == "Azabul")
+    {
+
+        npc.tentArm1.x = math::clamp(npc.tentArm1.x + randz(-3, 3), -20, 20);
+        npc.tentArm1.y = math::clamp(npc.tentArm1.y + randz(-3, 3), -20, 20);
+        npc.tentArm2.x = math::clamp(npc.tentArm2.x + randz(-3, 3), -20, 20);
+        npc.tentArm2.y = math::clamp(npc.tentArm2.y + randz(-3, 3), -20, 20);
+        npc.tentEnd1.x = math::clamp(npc.tentEnd1.x + randz(-3, 3), -20, 20);
+        npc.tentEnd1.y = math::clamp(npc.tentEnd1.y + randz(-3, 3), -20, 20);
+        npc.tentEnd2.x = math::clamp(npc.tentEnd2.x + randz(-3, 3), -20, 20);
+        npc.tentEnd2.y = math::clamp(npc.tentEnd2.y + randz(-3, 3), -20, 20);
+    }
+
+    if (npc.id == gvars::myTargetid && inputState.key[Key::Space])
+    {
+        npc.attacking = true;
+    }
+    npc.hungertimer--;
+    if (npc.hungertimer <= 0)
+    {
+        npc.hungertimer = npc.hungertimerint;
+        npc.hunger -= npc.hungerrate;
+        if (npc.hunger < 0)
+        {
+            npc.hunger = 0;
+        }
+    }
+    npc.thirsttimer--;
+    if (npc.thirsttimer <= 0)
+    {
+        npc.thirsttimer = npc.thirsttimerint;
+        npc.thirst -= npc.thirstrate;
+        if (npc.thirst < 0)
+        {
+            npc.thirst = 0;
+        }
+    }
+    npc.regentimer--;
+    if (npc.regentimer <= 0 && npc.health < npc.maxhealth && npc.health > 0)
+    {
+        npc.regentimer = npc.regentimerint;
+        npc.health += npc.regenrate;
+    }
+    if (npc.health <= 0)
+    {
+        if (npc.canmove == true)
+        {
+            std::string chtStr;
+            chtStr.append("* ");
+            chtStr.append(npc.name);
+            chtStr.append("(" + std::to_string(npc.id) + ")");
+            chtStr.append(" has died! ");
+
+            chatBox.addChat(chtStr, sf::Color(200, 0, 0));
+        }
+        npc.canmove = false;
+    }
+    if (npc.health > 0)
+    {
+        npc.canmove = true;
+    }
+    if (npc.health > 0 && npc.boolblood("[Zombification:") &&
+        npc.name != "Zombie")
+    {
+        npc.bloodwork("Zombification", -0.01);
+        npc.modhealth(-0.01);
+        npc.fillhunger(-0.01);
+    }
+    if (npc.health <= 0 && npc.boolblood("[Zombification:") &&
+        npc.name != "Zombie")
+    {
+        npc.bloodwork("Zombification", -9999999);
+        npc.tag("[ZombieHater:", -9999999);
+        npc.tag("[EatsFlesh:", 1);
+        std::string oldName = npc.name;
+        npc.name = "Zombie";
+        npc.cbaseid = 666333;
+        std::string imagery = "Zombie.tga";
+        for (auto const &image : texturemanager.textures)
+        {
+            if (image.name == imagery)
+            {
+                npc.img.setTexture(image.texture);
+                npc.img.setOrigin(npc.img.getTextureRect().height / 2,
+                                  npc.img.getTextureRect().width / 2);
+            }
+        }
+        npc.isNPC = true;
+        npc.needsFood = true;
+        npc.allowedFood = false;
+        npc.needsWater = false;
+        npc.allowedDrink = false;
+        npc.canmove = true;
+        npc.alive = true;
+        npc.maxhealth = 200;
+        npc.health = npc.maxhealth;
+        npc.breathtimerint = 0;
+        npc.hungertimerint = 0;
+        npc.thirsttimerint = 0;
+        npc.thirst = 0; //randz(10,600);
+        npc.breathtimer = 2;
+        npc.hungertimer = 0;
+        npc.thirsttimer = 0;
+        npc.maxhunger = 1000000;
+        npc.maxthirst = 1000000;
+        npc.target = "Flesh";
+        npc.action = "Act";
+        //npc.moverateint = 1;
+        //npc.moverate = 1;
+        npc.movetimerrate = 400;
+
+        std::string chtStr;
+        chtStr.append("* ");
+        chtStr.append(oldName);
+        chtStr.append("(" + std::to_string(npc.id) + ")");
+        chtStr.append(" has been zombified by Zombification! ");
+
+        chatBox.addChat(chtStr, sf::Color(200, 0, 0));
+    };
+    if (inputState.key[Key::RShift] && npc.id == gvars::myTargetid)
+    {
+        std::cout << npc.target << "At: " << npc.targetPos.x << ":"
+                  << npc.targetPos.y << std::endl;
+        std::cout << "HasTarget: " << npc.hasTarget
+                  << " AtTarget: " << npc.atTarget << std::endl;
+    }
+
+    if (npc.attacking)
+    {
+        if (npc.attacktimer <= 0)
+        {
+            if (gvars::debug)
+            {
+                std::cout << "Pre Mel Ran \n";
+            }
+            bool bMel = npc.hasItemType(1);
+            Item mel;
+            if (bMel)
+            {
+                mel = *npc.getItemType(1);
+            }
+            Item ran;
+            bool bRan = npc.hasItemType(2);
+            if (bRan == true)
+            {
+                ran = *npc.getItemType(2);
+                debug("Fish n Chips");
+            }
+            try
+            {
+                bool attacked = false;
+                if (gvars::debug)
+                {
+                    std::cout << "Pre Mel \n";
+                }
+                if (bMel == true)
+                {
+                    if (mel.type == 1 &&
+                        math::closeish(npc.xpos, npc.ypos, npc.shootPos.x,
+                                       npc.shootPos.y) < mel.range)
+                    {
+                        attacked = true;
+                        std::set<int> tarz;
+                        tarz = npc.melee(1, 1, GRID_SIZE);
+                        for (const auto &elem : tarz)
+                        {
+                            npclist.at(elem)
+                                .modhealth(-(randz(mel.mindam, mel.maxdam) +
+                                             npc.skills.strength));
+                            if (npc.hasTag("[CanLearn:"))
+                            {
+                                npc.skills.Train("strength");
+                            }
+                        }
+                        if (npc.attacking == false)
+                        {
+                            npc.attacktimer =
+                                (npc.attacktimerint -
+                                 (math::clamp(npc.skills.agility / 10, 10,
+                                              100)));
+                        } // Melee has a different method for saying it's done.
+                        if (gvars::debug)
+                        {
+                            std::cout << "Post Mel \n";
+                        }
+                    }
+                }
+                if (gvars::debug)
+                {
+                    std::cout << "Pre Ran \n";
+                }
+                if (bRan == true && attacked == false)
+                {
+                    if (ran.type == 2)
+                    {
+                        bool friendly = false;
+                        std::set<int> ids =
+                            npcTrace(npc.xpos, npc.ypos, npc.targetPos.x,
+                                     npc.targetPos.y, npc.id);
+                        if (!ids.empty())
+                        {
+                            try
+                            {
+                                for (const auto &id : ids)
+                                {
+                                    if (npclist.at(id).cbaseid == npc.cbaseid)
+                                    {
+                                        friendly = true;
+                                    }
+                                }
+                            }
+                            catch (std::exception &e)
+                            {
+                            }
+                        }
+                        if (friendly == false &&
+                            gridposTrace(npc.xpos, npc.ypos, npc.shootPos.x,
+                                         npc.shootPos.y, npc.id,
+                                         npc.targetPos) == true &&
+                            math::closeish(npc.xpos, npc.ypos, npc.shootPos.x,
+                                           npc.shootPos.y) <= npc.viewrange)
+                        {
+                            int Tempx = randz(
+                                0, math::clamp(
+                                       100 - npc.skills.dexterity, 0,
+                                       100)); // This is to mess up the aiming.
+                            int Tempy =
+                                randz(0, math::clamp(100 - npc.skills.dexterity,
+                                                     0, 100));
+                            if (npc.hasTag("[CanLearn:"))
+                            {
+                                npc.skills.Train("dexterity");
+                            }
+                            if (randz(0, 1) == 1)
+                            {
+                                Tempx = -Tempx;
+                            }
+                            if (randz(0, 1) == 1)
+                            {
+                                Tempy = -Tempy;
+                            }
+                            sf::Vector2f sp(gvars::mousePos.x,
+                                            gvars::mousePos.y);
+                            sf::Vector2f targ(npc.shootPos.x + Tempx,
+                                              npc.shootPos.y + Tempy);
+                            effects.createLine(npc.xpos, npc.ypos, targ.x,
+                                               targ.y, 2, sf::Color::White);
+                            std::set<int> ids = npcTrace(
+                                npc.xpos, npc.ypos, targ.x, targ.y, npc.id);
+                            if (!ids.empty())
+                            {
+                                for (size_t Ta = 0; Ta != ids.size(); Ta++)
+                                {
+                                    try
+                                    {
+                                        for (const auto &id : ids)
+                                        {
+                                            npclist.at(id).modhealth(
+                                                -(randz(ran.mindam,
+                                                        ran.maxdam) +
+                                                  npc.skills.perception));
+                                            if (npc.hasTag("[CanLearn:"))
+                                            {
+                                                npc.skills.Train("perception");
+                                            }
+                                            effects.createCircle(
+                                                npclist.at(id).xpos,
+                                                npclist.at(id).ypos, 5,
+                                                sf::Color::Red);
+                                        }
+                                    }
+                                    catch (std::exception &e)
+                                    {
+                                    }
+                                    textList.createText(npc.xpos, npc.ypos, 11,
+                                                        sf::Color::Red,
+                                                        "Bang!");
+                                }
+                            }
+                            npc.attacking = false;
+                            npc.attacktimer =
+                                (npc.attacktimerint -
+                                 (math::clamp(npc.skills.agility / 10, 10,
+                                              100)));
+                        }
+                        else
+                        {
+                            npc.attacking = false;
+                        }
+                        if (gvars::debug)
+                        {
+                            std::cout << "Post Ran \n";
+                        }
+                    }
+                }
+                else
+                {
+                    npc.attacking = false;
+                }
+            }
+            catch (std::exception &e)
+            {
+                std::cout << "Itemerror\n";
+            }
+        }
+        else
+        {
+            npc.attacking = false;
+        }
+    } //End of Attacking
+    if (npc.canmove == true && npc.attacking == false)
+    {
+        //std::cout << id << " is acting." << std::endl;
+        // First, Check values, to see if hungry/thirsty/hurt then check if being attacked
+        // Add an IsSafe before these checks
+        if (npc.isHungry() == false && npc.isThirsty() == false)
+        {
+            //npc.moverate = npc.moverateint;
+            npc.moverate = partsWalkSpeed;
+        }
+        //else if(npc.IsThirsty() == false && npc.IsHungry() == true){npc.moverate = npc.moverateint/2;if(npc.moverate <= 0){npc.moverate=1;}}
+        //else if(npc.IsHungry() == false  && npc.IsThirsty() == true){npc.moverate = npc.moverateint/2;if(npc.moverate <= 0){npc.moverate=1;}}
+        //else if(npc.IsHungry() == true  && npc.IsThirsty() == true){npc.moverate = npc.moverateint/4;if(npc.moverate <= 0){npc.moverate=1;}}
+
+        if (npc.name == "Zombie")
+        {
+            if (npc.name == "Zombie" && npc.hunger > 0)
+            {
+                npc.moverate = npc.moverateint * 2;
+            }
+            if (npc.name == "Zombie" && npc.hunger >= 0)
+            {
+                npc.target = "Flesh";
+            }
+
+            if (npc.name == "Zombie" && inputState.key[Key::LControl] == true)
+            {
+                npc.moverate = npc.moverateint * 4;
+            }
+            if (npc.name == "Zombie" && inputState.key[Key::LAlt] == true)
+            {
+                npc.moverate = 4;
+            }
+            float shake = 0.2;
+            int bumz = randz(1, 10);
+            if (bumz == 1)
+            {
+                npc.ypos += shake;
+            }
+            if (bumz == 2)
+            {
+                npc.xpos += shake;
+            }
+            if (bumz == 3)
+            {
+                npc.ypos -= shake;
+            }
+            if (bumz == 4)
+            {
+                npc.xpos -= shake;
+            }
+        }
+
+        if (npc.action == "Act")
+        { // Start of "Act" action.
+            if (npc.isHurt() == true)
+            {
+                //target = "Meds"; //std::cout << id << " is hurt." << std::endl;
+            }
+            else if (npc.isHungry() == true && npc.allowedFood == true)
+            {
+                npc.target =
+                    "Food"; //std::cout << id << " is hungry." << std::endl;
+                if (npc.isThirsty())
+                {
+                    bool IsFood = false;
+                    for (auto &worlditem : worlditems)
+                    {
+                        if (worlditem.type == 4)
+                        {
+                            IsFood = true;
+                        }
+                    }
+                    if (IsFood == false)
+                    {
+                        npc.target = "Water";
+                    }
+                }
+            }
+            else if (npc.target == "Food" && npc.hunger < npc.maxhunger)
+            {
+            }
+            else if (npc.target == "Flesh" && npc.name == "Zombie")
+            {
+            }
+            else if (npc.isThirsty() == true)
+            {
+                npc.target = "Water";
+                //std::cout << id << " is thirsty." << std::endl;
+                bool IsWater = false;
+                for (auto &worlditem : worlditems)
+                {
+                    if (worlditem.massWater > 0)
+                    {
+                        IsWater = true;
+                    }
+                }
+                if (IsWater == false)
+                {
+                    npc.target = "Wander";
+                }
+            }
+            else if (npc.target == "Water" && npc.thirst < npc.maxthirst)
+            {
+            }
+            else
+            {
+                npc.target = "Wander";
+                //std::cout << id << " is fine." << std::endl;
+            }
+
+            if (npc.target == "Food")
+            { // Compress this later by simply directly linking the target towards the search, Probably need a bool for Item or NPC to simplfy it.
+                Item *item = findClosestItemPtr(npc.xpos, npc.ypos, "Food");
+                if (item != nullptr)
+                {
+                    if (item->massFlesh > 0)
+                    {
+                        npc.targetPos = sf::Vector2f(item->xpos, item->ypos);
+                        npc.targetId = item->id;
+                        //npc.TargetVectorId = Item.at(3);
+                        npc.target = "Food";
+                        npc.hasTarget = true;
+                    }
+                }
+                else
+                {
+                    npc.target = "Wander";
+                }
+            }
+            if (npc.target == "Water")
+            {
+                auto item = findClosestItem(npc.xpos, npc.ypos, "Water");
+                if (item.found)
+                {
+                    npc.targetPos = sf::Vector2f(item.xpos, item.ypos);
+                    npc.targetId = item.id;
+                    npc.targetVectorId = item.vectorPosition;
+                    npc.target = "Water";
+                    npc.hasTarget = true;
+                }
+                else
+                {
+                    npc.target = "Wander";
+                }
+            }
+
+            if (npc.name == "Azabul")
+                npc.target = "Flesh";
+            if (npc.target == "Flesh")
+            {
+                int closx = -100000;
+                int closy = -100000;
+                int closID = 0;
+                bool first = true;
+                for (auto &elem : npclist)
+                {
+                    //if(first == true){ if(zitz->cbaseid != npc.cbaseid && zitz->health > 0){
+                    if (first == true)
+                    {
+                        if (elem.cbaseid == 110110 && elem.health > 0)
+                        {
+                            closx = elem.xpos;
+                            closy = elem.ypos;
+                            first = false;
+                        }
+                    }
+                    // else { if(zitz->cbaseid != npc.cbaseid && zitz->health > 0) {
+                    else
+                    {
+                        if (elem.cbaseid == 110110 && elem.health > 0)
+                        {
+                            int one = math::closeish(npc.xpos, npc.ypos,
+                                                     elem.xpos, elem.ypos);
+                            int two = math::closeish(npc.xpos, npc.ypos, closx,
+                                                     closy);
+                            if (one < two)
+                            {
+                                closx = elem.xpos;
+                                closy = elem.ypos;
+                                closID = elem.id;
+                            }
+                        }
+                    }
+                }
+                if (closx == -100000)
+                {
+                    npc.target = "Wander";
+                }
+                if (first == false)
+                {
+                    npc.targetPos = sf::Vector2f(closx, closy);
+                    npc.targetId = closID;
+                    npc.target = "Flesh";
+                    npc.hasTarget = true;
+                }
+                else
+                {
+                    npc.target = "Wander";
+                }
+            }
+
+            try
+            { // Jobs Section
+                if (listAt(uniFact,0).jobList.size() != 0 && npc.target == "Wander" &&
+                    npc.Faction == "The Alphas")
+                {
+                    debug("Preforming Job Routine; ");
+                    for (auto &i : listAt(uniFact,0).jobList)
+                    {
+                        //debug("Starting Job " + std::to_string(i));
+                        //if(!Deleting) Deleter++;
+                        //Con(AddString(npc.name,JobList[i].Type));
+                        if (i.pItem == nullptr &&
+                            i.type ==
+                                "PickUp") // Deleting objectless pickup jobs.
+                        {                 // Deleting objectless pickup jobs.
+                            i.toDelete = true;
+                            break;
+                        }
+
+                        if ((i.pWorker == nullptr &&
+                             npc.hasJob == false &&
+                             i.toDelete == false) ||
+                            (i.pWorker != nullptr &&
+                             i.pWorker->id == npc.id &&
+                             i.toDelete == false))
+                        {
+                            debug("Comparitive Success");
+                            if (i.pWorker == nullptr)
+                            {
+                                std::cout << npc.name
+                                          << " has job: " << npc.hasJob
+                                          << ", and yet :";
+                                i.pWorker = &npclist.at(
+                                    integerIterator); // Not sure if this is technically better or worse than repointing every frame.
+                                i.pWorker->hasJob = true;
+                                std::cout << npc.hasJob << " does now? \n";
+                                //fSleep(2);
+                            }
+
+                            if (i.type == "Build")
+                            {
+                                debug("Starting Build");
+
+                                //if(GetItemPtrfromVector(worlditems, "Wood") != NULL) item WorkLoad = *GetItemPtrfromVector(worlditems, "Wood");
+                                Item *invWood =
+                                    getItemPtrFromVector(npc.inventory, "Wood");
+                                Item *wldWood =
+                                    getItemPtrFromVector(worlditems, "Wood");
+
+                                if (invWood != nullptr)
+                                {
+                                    con("Success! I have Wood!");
+                                    int x = i.workPos.x;
+                                    int y = i.workPos.y;
+
+                                    npc.targetPos.x = x;
+                                    npc.targetPos.y = y;
+                                    npc.hasTarget = true;
+                                    npc.target = "BuildWoodWall";
+
+                                    if (math::closeish(npc.xpos, npc.ypos, x,
+                                                       y) <= npc.size * 3)
+                                    {
+
+                                        npc.targetPos.x = npc.xpos;
+                                        npc.targetPos.y = npc.ypos;
+
+                                        i
+                                            .completionProgress +=
+                                            npc.skills.intelligence / 2;
+
+                                        //std::cout << "JobTimer: " << i.CompletionProgress << std::endl;
+                                        //Effectz.CreateCircle(i.WorkPos.x,i.WorkPos.y, (i.CompletionProgress - i.CompletionTimer)/10  ,sf::Color(150,150,150,150));
+
+                                        //std::cout << 361*(PercentIs(i.CompletionTimer, i.CompletionProgress)/100) << std::endl;
+                                        //fSleep(4);
+                                        for (
+                                            float rot = 1;
+                                            rot <
+                                                361 *
+                                                    (percentIs(
+                                                         i
+                                                             .completionTimer,
+                                                         i
+                                                             .completionProgress) /
+                                                     100);
+                                            rot++)
+                                        {
+                                            //std::cout << "Rot: " << Rot << std::endl;
+
+                                            float xPos =
+                                                x + sin(rot * PI / 180) * 10;
+                                            float yPos =
+                                                y + cos(rot * PI / 180) * 10;
+
+                                            effects.createLine(
+                                                x, y, xPos, yPos, 1,
+                                                sf::Color(150, 150, 150, 150));
+                                        }
+
+                                        if (i
+                                                .completionProgress >=
+                                            i
+                                                .completionTimer)
+
+                                        {
+                                            tiles[abs_to_index(x / 20)]
+                                                 [abs_to_index(y / 20)][30]
+                                                     .wall();
+                                            //Tiles[abs_to_index(x/20)][abs_to_index(y/20)][30].ID = 1010;
+                                            //Tiles[abs_to_index(x/20)][abs_to_index(y/20)][30].Img.setTexture( *imagemanager.GetImage("Wall.png"));
+                                            invWood->toDelete = true;
+                                            i.toDelete =
+                                                true;
+                                            i
+                                                .pWorker->hasJob = false;
+                                            //Crashed instantly;
+                                        }
+                                    }
+                                }
+
+                                else if (wldWood != nullptr)
+                                {
+
+                                    con("Partial Success! World has Wood!");
+                                    //item WorkLoad = *GetItemPtrfromVector(worlditems, "Wood");
+
+                                    npc.targetPos.x = wldWood->xpos;
+                                    npc.targetPos.y = wldWood->ypos;
+                                    npc.hasTarget = true;
+                                    npc.target = wldWood->name;
+
+                                    //Con(WorkLoad.id);
+
+                                    debug("Post wood targeting, Pre "
+                                          "Close-Ish function");
+
+                                    if (math::closeish(
+                                            npc.xpos, npc.ypos, wldWood->xpos,
+                                            wldWood->ypos) <= npc.size)
+                                    {
+                                        //Con("I'm there! \n");
+                                        //Deleting = true;
+                                        debug("It's close!");
+                                        npc.inventory.push_back(*wldWood);
+                                        wldWood->toDelete = true;
+                                    }
+                                }
+                                debug("Ended Build");
+                            }
+
+                            else if (i.pItem != nullptr)
+                            {
+                                debug("Starting pItem != NULL");
+
+                                npc.targetPos.x =
+                                    i.pItem->xpos;
+                                npc.targetPos.y =
+                                    i.pItem->ypos;
+                                npc.hasTarget = true;
+                                npc.target = i.pItem->name;
+                                debug("Post HasTarget");
+
+                                if (i.type == "PickUp" &&
+                                    math::closeish(
+                                        npc.xpos, npc.ypos,
+                                        i.pItem->xpos,
+                                        i.pItem->ypos) <=
+                                        npc.size)
+                                {
+                                    //Con("I'm there! \n");
+                                    //Deleting = true;
+                                    npc.inventory.push_back(
+                                        *i.pItem);
+                                    debug("Post Inventory Pushback");
+
+                                    i.pItem->toDelete =
+                                        true;
+                                    /*
+                            for(std::list<item>::iterator v = worlditems.begin(); v != worlditems.end(); v++ )
+                            {
+                                if((*v).id == i.pItem->id)
+                                {
+                                    v->ToDelete = true;
+                                    std::cout << "Confirmed. \n";
+                                    fSleep(1);
+                                }
+                            }
+                            */
+
+                                    i.pItem = nullptr;
+                                    i.toDelete = true;
+                                    i.pWorker->hasJob =
+                                        false;
+                                    unpointItems(worlditems);
+                                    debug("Post Unpoint");
+                                }
+
+                                if (i.type == "Chop" &&
+                                    math::closeish(
+                                        npc.xpos, npc.ypos,
+                                        i.pItem->xpos,
+                                        i.pItem->ypos) <=
+                                        npc.size)
+                                {
+                                    debug("Post Chopcheck");
+                                    //Con("I'm there! \n");
+                                    //Deleting = true;
+                                    //npc.inventory.push_back(*i.pItem);
+                                    //FUCKNUTS start here, Just made the plank, Make the tree give the planks, MmkAY?!
+                                    Item woodStuffs = *getGlobalItem("Wood");
+
+                                    debug("Post WoodStuffs");
+
+                                    woodStuffs.xpos =
+                                        i.pItem->xpos;
+                                    woodStuffs.ypos =
+                                        i.pItem->ypos;
+                                    worlditems.push_back(woodStuffs);
+                                    debug("Post WoodSpawn");
+
+                                    i.pItem->toDelete =
+                                        true;
+                                    i.pItem = nullptr;
+                                    i.toDelete = true;
+                                    i.pWorker->hasJob =
+                                        false;
+                                    debug("Post ToDelete");
+                                    unpointItems(worlditems);
+
+                                    //items are not getting deleted, ugh.
+                                }
+
+                                debug("Ending pItem != NULL");
+                            }
+
+                            if (i.type == "Dig")
+                            {
+
+                                pathFindWorkPos.x =
+                                    i.workPos.x;
+                                pathFindWorkPos.y =
+                                    i.workPos.y;
+
+                                npc.targetPos.x = pathFindWorkPos.x;
+                                npc.targetPos.y = pathFindWorkPos.y;
+                                npc.hasTarget = true;
+                                npc.target = "DigNaturalWall";
+
+                                if (math::closeish(
+                                        npc.xpos, npc.ypos, pathFindWorkPos.x,
+                                        pathFindWorkPos.y) <= npc.size * 3)
+                                {
+
+                                    npc.targetPos.x = npc.xpos;
+                                    npc.targetPos.y = npc.ypos;
+
+                                    i.completionProgress +=
+                                        npc.skills.strength / 2;
+
+                                    for (float rot = 1;
+                                         rot <
+                                             361 *
+                                                 (percentIs(
+                                                      i
+                                                          .completionTimer,
+                                                      i
+                                                          .completionProgress) /
+                                                  100);
+                                         rot++)
+                                    { // Pretty circle progressing graphic.
+
+                                        float xPos = pathFindWorkPos.x +
+                                                     sin(rot * PI / 180) * 10;
+                                        float yPos = pathFindWorkPos.y +
+                                                     cos(rot * PI / 180) * 10;
+
+                                        effects.createLine(
+                                            pathFindWorkPos.x,
+                                            pathFindWorkPos.y, xPos, yPos, 1,
+                                            sf::Color(150, 150, 150, 150));
+                                    }
+
+                                    if (i
+                                            .completionProgress >=
+                                        i.completionTimer)
+
+                                    {
+                                        tiles[abs_to_index(pathFindWorkPos.x /
+                                                           20)]
+                                             [abs_to_index(pathFindWorkPos.y /
+                                                           20)][30].stone();
+                                        debug("Spawning Rocks");
+                                        int tar =
+                                            randz(3, 8); // Throw away random
+                                        for (int z = 0; z != tar; z++)
+                                        {
+                                            Item stoneStuffs =
+                                                *getGlobalItem("Rock");
+
+                                            stoneStuffs.xpos =
+                                                pathFindWorkPos.x +
+                                                (4 - randz(1, 8));
+                                            stoneStuffs.ypos =
+                                                pathFindWorkPos.y +
+                                                (4 - randz(1, 8));
+                                            worlditems.push_back(stoneStuffs);
+                                        }
+
+                                        i.toDelete = true;
+                                        i.pWorker->hasJob =
+                                            false;
+                                        debug("Dig Wall Completed");
+                                    }
+                                }
+                            }
+                        }
+
+                        //debug("End Job " + std::to_string(i));
+                    }
+
+                    removeJobs(listAt(uniFact,0).jobList);
+
+                    debug("Finished Job Activity. \n ");
+                }
+
+                if (npc.target == "Wander" && npc.hasTarget == false)
+                { // Find somewhere random to walk towards, so long as there isn't anything on that spot.
+                    bool findEmpty = false;
+                    while (findEmpty == false)
+                    {
+                        npc.targetPos =
+                            sf::Vector2f(randz(700, 1300), randz(700, 1300));
+                        npc.hasTarget = true;
+                        if (gvars::groundmap[gvars::currentz][abs_to_index(
+                                npc.targetPos.x /
+                                GRID_SIZE)][abs_to_index(npc.targetPos.y /
+                                                         GRID_SIZE)] != 10)
+                        {
+                            findEmpty = true;
+                        }
+                    }
+                }
+            }
+            catch (std::exception &e)
+            {
+                std::cout << "Something went wrong in NPC Job Routine \n";
+            }
+
+            if (npc.name == "Shinobi" && npc.hasWeapon() == false)
+            {
+                auto item = findClosestItem(npc.xpos, npc.ypos, "Sword");
+                if (item.found)
+                {
+                    npc.targetPos = sf::Vector2f(item.xpos, item.ypos);
+                    npc.targetId = item.id;
+                    npc.targetVectorId = item.vectorPosition;
+                    npc.target = "Sword";
+                    npc.hasTarget = true;
+                }
+                else
+                {
+                    npc.target = "Wander";
+                }
+            }
+            if (npc.hasWeapon())
+            { // Attack nearby Hostiles.
+                int closx = -100000;
+                int closy = -100000;
+                bool foundOne = false;
+                if (npc.hasTag("[ZombieHater:"))
+                {
+                    bool first = true;
+                    for (auto &elem : npclist)
+                    {
+                        if (first == true)
+                        {
+                            if (elem.cbaseid == 666333 && elem.health > 0)
+                            {
+                                closx = elem.xpos;
+                                closy = elem.ypos;
+                                first = false;
+                                foundOne = true;
+                            }
+                        }
+                        else
+                        {
+                            if (elem.cbaseid == 666333 && elem.health > 0)
+                            {
+                                int one = math::closeish(npc.xpos, npc.ypos,
+                                                         elem.xpos, elem.ypos);
+                                int two = math::closeish(npc.xpos, npc.ypos,
+                                                         closx, closy);
+                                if (one < two)
+                                {
+                                    closx = elem.xpos;
+                                    closy = elem.ypos;
+                                }
+                            }
+                        }
+                    }
+                    if (first == false)
+                    {
+                        npc.shootPos = sf::Vector2f(closx, closy);
+                        if (math::closeish(npc.xpos, npc.ypos, npc.shootPos.x,
+                                           npc.shootPos.y) <= npc.viewrange)
+                        {
+                            npc.attacking = true;
+                        }
+                    }
+                }
+                if (npc.isHungry() == false && npc.isThirsty() == false &&
+                    foundOne == true)
+                {
+                    npc.targetPos = sf::Vector2f(closx, closy);
+                }
+            }
+
+            if (npc.closeToTarget(npc.reach, npc.targetPos) == true &&
+                npc.target == "Flesh")
+            {
+                if (npc.attacktimer == 0)
+                {
+
+                    std::string atkType;
+                    npc.attacktimer =
+                        (npc.attacktimerint -
+                         (math::clamp(npc.skills.agility / 10, 10, 100))) *
+                        4;
+                    int numba = -1;
+                    int numbaz = -1;
+                    int num;
+                    bool foundit = false;
+                    for (auto &elem : npclist)
+                    {
+                        if (foundit == false)
+                        {
+                            numba++;
+                            if (math::closeishS(elem.xpos, npc.xpos) <=
+                                    npc.reach &&
+                                math::closeishS(elem.ypos, npc.ypos) <=
+                                    npc.reach &&
+                                elem.target != "Flesh")
+                            {
+                                numbaz++;
+                                num = elem.id;
+                                foundit = true;
+                            }
+                        }
+                    }
+                    if (foundit == true && npclist.at(numba).id == num)
+                    {
+                        npc.atTarget = false;
+                        npc.hasTarget =
+                            false; // TODO: Fix Zombie Attacking, Give it some Delay, and some damage based on Strength and filled belly.
+                        int zDamage = randz(0, npclist.at(numba).health);
+                        if (npc.name != "Azabul")
+                            npc.fillhunger(zDamage);
+                        if (npc.name != "Azabul")
+                            npclist.at(numba)
+                                .bloodwork("Zombification", 100000);
+                        if (npc.name == "Azabul")
+                        {
+                            npc.tentArm1.x = npclist.at(numba).xpos;
+                            npc.tentArm1.y = npclist.at(numba).ypos;
+                            npc.tentArm2.x = npclist.at(numba).xpos;
+                            npc.tentArm2.y = npclist.at(numba).ypos;
+                            //BLARGGITY
+                            Item blood;
+                            blood.amount = zDamage;
+                            blood.name = "Blood";
+                            blood.insidePart = "LowerTorso";
+                            npc.inventory.push_back(blood);
+                            atkType = " has drunk from ";
+                        }
+                        npclist.at(numba).modhealth(-zDamage);
+
+                        std::string atkStr;
+                        atkStr.append("* ");
+                        atkStr.append(npc.name);
+                        atkStr.append("(" + std::to_string(npc.id) + ")");
+                        if (atkType != "")
+                            atkStr.append(" has biten ");
+                        else
+                            atkStr.append(atkType);
+                        atkStr.append(npclist.at(numba).name);
+                        atkStr.append(
+                            "(" + std::to_string(npclist.at(numba).id) + ")");
+                        atkStr.append(", dealing ");
+                        atkStr.append(std::to_string(zDamage));
+                        atkStr.append(" damage.");
+
+                        chatBox.addChat(atkStr, sf::Color::Red);
+                    }
+                }
+            }
+            if (npc.name == "Mini Turret")
+            {
+                if (npc.hasWeapon() == false)
+                {
+                    npc.addItem("5mmCannon", 1);
+                    npc.skills.dexterity = 90;
+                    npc.skills.agility = 10;
+                }
+                if (npc.hasTag("[ZombieHater:") == false)
+                {
+                    npc.tag("[ZombieHater:", 1);
+                    std::cout << "Giving MiniTurret [ZombieHater: \n";
+                }
+            }
+        } // Ending of "Act" action
+        if (gvars::debug)
+            std::cout << "Post Act Section \n";
+
+        { // Vision check and Activation of Path Finding.
+            if (gvars::debug)
+                std::cout << "Pre 'set' vision. \n";
+
+            bool foundGoal = false;
+            if (math::closeish(npc.targetPos.x, npc.targetPos.y, npc.xpos,
+                               npc.ypos) <= npc.viewrange &&
+                npc.cbaseid != -1337)
+            {
+
+                float ang = math::angleBetweenVectors(
+                    math::Vec2f(npc.targetPos.x, npc.targetPos.y),
+                    math::Vec2f(npc.xpos, npc.ypos));
+                float myAngle = npc.angle;
+                float difference = abs(ang - myAngle);
+                if (difference > 180.0f)
+                {
+                    difference = 360.0f - difference;
+                }
+                if (difference >= -90.0f && difference <= 90.0f)
+                {
+                    if (gridposTrace(npc.xpos, npc.ypos, npc.targetPos.x,
+                                     npc.targetPos.y, npc.id,
+                                     npc.targetPos) == true)
+                    {
+                        foundGoal = true;
+                        effects.createLine(npc.xpos, npc.ypos, npc.targetPos.x,
+                                           npc.targetPos.y, 1,
+                                           sf::Color::White);
+                        npc.needsPath = false;
+                    }
+                }
+            }
+            gvars::sunmap[gvars::currentz][abs_to_index(
+                npc.xpos / GRID_SIZE)][abs_to_index(npc.ypos / GRID_SIZE)] =
+                255;
+            for (int i = 0; i <= GRID_Y - 1; i++)
+            { // Vision Stuffs;
+                for (int t = 0; t <= GRID_X - 1; t++)
+                {
+                    int z = gvars::currentz;
+                    if (gvars::sunmap[z][i][t] != -1)
+                    {
+                        if (math::closeish((i * GRID_SIZE) + 10,
+                                           (t * GRID_SIZE) + 10, npc.xpos,
+                                           npc.ypos) <= npc.viewrange &&
+                            npc.cbaseid != -1337)
+                        {
+
+                            float ang = math::angleBetweenVectors(
+                                math::Vec2f((i * GRID_SIZE) + 10,
+                                            (t * GRID_SIZE) + 10),
+                                math::Vec2f(npc.xpos, npc.ypos));
+                            float myAngle = npc.angle;
+                            float difference = abs(ang - myAngle);
+                            if (difference > 180.0f)
+                            {
+                                difference = 360.0f - difference;
+                            }
+                            if (difference >= -90.0f && difference <= 90.0f)
+                            {
+                                /*if(gridposTrace(npc.xpos,npc.ypos,(i*GridSize)+10,(t*GridSize)+10,npc.id,Math::Vec((i*GridSize)+10,(t*GridSize)+10)) == true)
+                                    {
+                                         globals::sunmap[z][i][t] = 255;
+                                         //Effectz.CreateCircle((i*20)+10,(t*20)+10,2,White);
+                                    }*/
+                            }
+                        }
+                    }
+                }
+            }
+            if (foundGoal == false && npc.cbaseid != -1337)
+            {
+                if (gvars::debug)
+                    std::cout << "FoundGoal == false";
+                npc.needsPath = true;
+
+                int previous = -1;
+
+                if (pathFindWorkPos.x != 0)
+                {
+                    previous = astar::walkability[abs_to_index(
+                        pathFindWorkPos.x /
+                        20)][abs_to_index(pathFindWorkPos.y / 20)];
+                    astar::walkability[abs_to_index(pathFindWorkPos.x / 20)]
+                                      [abs_to_index(pathFindWorkPos.y / 20)] =
+                                          astar::WALKABLE;
+                }
+
+                npc.pathFinding.myFindPath(
+                    npc.xpos, npc.ypos, npc.targetPos.x,
+                    npc.targetPos
+                        .y); // TODO: This causes a crash for some reason.
+
+                if (pathFindWorkPos.x != 0)
+                {
+                    astar::walkability[abs_to_index(
+                        pathFindWorkPos.x /
+                        20)][abs_to_index(pathFindWorkPos.y / 20)] = previous;
+                }
+            }
+            if (true == false)
+            {
+                /*try{
+
+    sList = NpcList(npc.id);
+    std::set<int>::iterator iList;
+
+    for(iList = sList.begin(); iList != sList.end(); iList++){
+        float NpcPosX = npclist.at(*iList).xpos;
+        float NpcPosY = npclist.at(*iList).ypos;
+        if( Math::Closeish(npc.TargetPos.x,npc.TargetPos.y,npc.xpos,npc.ypos) <= npc.viewrange ){
+            float Ang = Math::AngleBetweenVectors(Math::Vec(npc.TargetPos.x,npc.TargetPos.y),Math::Vec(npc.xpos,npc.ypos));
+            if(Ang >= npc.angle-90 && Ang <= npc.angle+90){
+
+                std::cout << npc.name << npc.id << " is facing " << npclist.at(*iList).name <<npclist.at(*iList).id << std::endl;
+                Effectz.CreateLine(npc.xpos,npc.ypos,npc.TargetPos.x,npc.TargetPos.y,1,White);
+                if(gridposTrace(npc.xpos,npc.ypos,npc.TargetPos.x,npc.TargetPos.y,npc.id,npc.TargetPos) == true){ FoundGoal = true; }
+            }
+
+        }
+    }
+
+
+}catch (std::exception& e){}*/
+            }
+            if (gvars::debug)
+                std::cout << "Post 'set' vision. \n";
+        }
+
+        if (npc.action ==
+            "Orders") // Vision correction currently disabled to preserve laaaaaag.
+        {             // Start of "Orders action.
+            /*for (int i = 0; i <= gridy-1; i++)
+            {
+                for( int t = 0; t <= gridx-1; t++)
+                {
+                    int z = globals::currentz;
+                    if(globals::sunmap[z][i][t] != -1)
+                    {
+                        if( Math::Closeish((i*GridSize)+10,(t*GridSize)+10,npc.xpos,npc.ypos) <= npc.viewrange && npc.cbaseid != -1337)
+                        {
+                            float Ang = Math::AngleBetweenVectors(Math::Vec((i*GridSize)+10,(t*GridSize)+10),Math::Vec(npc.xpos,npc.ypos));
+                            float MyAngle = npc.angle;
+                            float difference = abs(Ang - MyAngle);
+                            if (difference > 180.0f)
+                            {
+                                difference = 360.0f - difference;
+                            }
+                            if(difference >= -90.0f && difference <= 90.0f)
+                            {
+                                if(gridposTrace(npc.xpos,npc.ypos,(i*GridSize)+10,(t*GridSize)+10,npc.id,Math::Vec((i*GridSize)+10,(t*GridSize)+10)) == true)
+                                {
+                                    globals::sunmap[z][i][t] = 255;
+                                    //Effectz.CreateCircle((i*20)+10,(t*20)+10,2,White);
+                                }
+                            }
+                        }
+                    }
+                }
+            }*/
+            if (npc.target == "Goto")
+            {
+            }
+            //if(npc.NeedsPath == false){if(npc.target != "None"){ npc.DirMove(npc.TargetPos);}}
+            if (npc.atTarget == true && npc.target == "Goto")
+            {
+                npc.atTarget = false;
+                npc.hasTarget = false;
+                npc.target = "None";
+            }
+        } // Ending of "Orders" action
+        if (npc.action == "Pickup")
+        {
+            //if(npc.NeedsPath == false){if(npc.target != "None"){ npc.DirMove(npc.TargetPos);}}
+        }
+        if ((npc.target != "None" && npc.atTarget) ||
+            (npc.target != "None" &&
+             math::closeish(npc.xpos, npc.ypos, npc.targetPos.x,
+                            npc.targetPos.y) <= npc.size))
+        {
+            if (getItemVectorId(npc.targetId) != -1)
+            {
+                auto itemItr = worlditems.begin();
+                std::advance(itemItr, getItemVectorId(npc.targetId));
+
+                //if(Math::Closeish(npc.xpos,npc.ypos,worlditems.at(GetItemVectorId(npc.TargetId)).xpos,worlditems.at(GetItemVectorId(npc.TargetId)).ypos) <= npc.reach && worlditems.at(GetItemVectorId(npc.TargetId)).Pickupable == true)
+                if (math::closeish(npc.xpos, npc.ypos, (*itemItr).xpos,
+                                   (*itemItr).ypos) <= npc.reach &&
+                    (*itemItr).pickupable == true)
+                {
+                    try
+                    {
+                        npc.inventory.push_back((*itemItr));
+                        removeItem(npc.targetId);
+                    }
+                    catch (std::exception &e)
+                    {
+                        textList.createText(npc.xpos, npc.ypos, 11,
+                                            sf::Color::Red,
+                                            "Somethings wrong!");
+                    };
+                }
+            }
+            if (npc.target == "Wander")
+            {
+                npc.atTarget = false;
+                npc.hasTarget = false;
+            }
+            if (true == false)
+            {
+                if (npc.target == "Sword")
+                {
+                    if (getItemVectorId(npc.targetId) != -1)
+                    {
+                        if (math::closeish(
+                                npc.xpos, npc.ypos,
+                                (listAt(worlditems,
+                                        getItemVectorId(npc.targetId))).xpos,
+                                (listAt(worlditems,
+                                        getItemVectorId(npc.targetId))).ypos) <=
+                            npc.reach * 2)
+                        {
+                            try
+                            {
+                                npc.inventory.push_back(
+                                    (listAt(worlditems,
+                                            getItemVectorId(npc.targetId))));
+                                removeItem(npc.targetId);
+                            }
+                            catch (std::exception &e)
+                            {
+                            };
+                        }
+                    }
+                }
+                else if (npc.target == "Food")
+                {
+                    if (getItemVectorId(npc.targetId) != -1)
+                    {
+                        if (math::closeish(
+                                npc.xpos, npc.ypos,
+                                (listAt(worlditems,
+                                        getItemVectorId(npc.targetId))).xpos,
+                                (listAt(worlditems,
+                                        getItemVectorId(npc.targetId))).ypos) <=
+                            npc.size * 2)
+                        {
+                            try
+                            {
+                                //npc.inventory.push_back(worlditems.at(GetItemVectorId(npc.TargetId)));
+                                npc.fillhunger(
+                                    (listAt(worlditems,
+                                            getItemVectorId(npc.targetId)))
+                                        .hungervalue);
+                                removeItem(npc.targetId);
+                                npc.atTarget = false;
+                                npc.hasTarget = false;
+                                npc.targetId = -1;
+                                npc.targetVectorId = -1;
+                                textList.createText(npc.xpos, npc.ypos, 11,
+                                                    sf::Color::Blue,
+                                                    "*Crunch!*");
+                            }
+                            catch (std::exception &e)
+                            {
+                                textList.createText(npc.xpos, npc.ypos, 11,
+                                                    sf::Color::Red,
+                                                    "What the FUCK?!");
+                            };
+                        }
+                    }
+                }
+                else if (npc.target == "Water")
+                {
+                    if (getItemVectorId(npc.targetId) != -1)
+                    {
+                        if (math::closeish(
+                                npc.xpos, npc.ypos,
+                                (listAt(worlditems,
+                                        getItemVectorId(npc.targetId))).xpos,
+                                (listAt(worlditems,
+                                        getItemVectorId(npc.targetId))).ypos) <=
+                            npc.size * 2)
+                        {
+                            try
+                            {
+                                //npc.inventory.push_back(worlditems.at(GetItemVectorId(npc.TargetId)));
+                                npc.fillthirst(
+                                    (listAt(worlditems,
+                                            getItemVectorId(npc.targetId)))
+                                        .thirstvalue);
+                                npc.atTarget = false;
+                                npc.hasTarget = false;
+                                npc.targetId = -1;
+                                npc.targetVectorId = -1;
+                                textList.createText(npc.xpos, npc.ypos, 11,
+                                                    sf::Color::Blue, "*Gulp!*");
+                            }
+                            catch (std::exception &e)
+                            {
+                                textList.createText(npc.xpos, npc.ypos, 11,
+                                                    sf::Color::Red,
+                                                    "What the FUCK?!");
+                            };
+                        }
+                    }
+                }
+            }
+        }
+        if (gvars::debug)
+            std::cout << "Post Item Pickups. \n";
+
+        if (npc.movetimer <= 0)
+        {
+            npc.movetimer =
+                (npc.movetimerint +
+                 npc.movetimer); // TODO: Figure out why I added 0 to this, Year later: It was because movetimer may be less than 0, I wanted the next to turn happen as soon as possible due to it.
+            if (npc.target != "None" && npc.needsPath == false &&
+                math::Vec2f(npc.xpos, npc.ypos) != npc.targetPos)
+            { // Walk Move
+                if (npc.attacking && npc.hasWeapon("Gun") &&
+                    math::closeish(npc.xpos, npc.ypos, npc.targetPos.x,
+                                   npc.targetPos.y) < npc.viewrange)
+                {
+                }
+                else if (npc.attacking && npc.hasWeapon("Sword") &&
+                         math::closeish(npc.xpos, npc.ypos, npc.targetPos.x,
+                                        npc.targetPos.y) < 10)
+                {
+                }
+                else
+                {
+                    /*if(gridposTrace(npc.xpos,npc.ypos,npc.TargetPos.x,npc.TargetPos.y,npc.id,npc.TargetPos) != false)
+                    {
+                        //npc.DirMove(npc.TargetPos);
+                    }*/
+                    npc.dirMove(npc.targetPos);
+                }
+            }
+            if (npc.needsPath == true &&
+                math::Vec2f(npc.xpos, npc.ypos) != npc.targetPos)
+            { // Acting on Path Finding.
+                if (randz(0, 20) < 3)
+                {
+                    int previous = -1;
+                    if (pathFindWorkPos.x != 0)
+                    {
+                        previous = astar::walkability[abs_to_index(
+                            pathFindWorkPos.x /
+                            20)][abs_to_index(pathFindWorkPos.y / 20)];
+                        astar::walkability[abs_to_index(
+                            pathFindWorkPos.x /
+                            20)][abs_to_index(pathFindWorkPos.y / 20)] =
+                            astar::WALKABLE;
+                    }
+
+                    npc.pathFinding.myFindPath(
+                        npc.xpos, npc.ypos, npc.targetPos.x, npc.targetPos.y);
+
+                    if (pathFindWorkPos.x != 0)
+                    {
+                        astar::walkability[abs_to_index(
+                            pathFindWorkPos.x /
+                            20)][abs_to_index(pathFindWorkPos.y / 20)] =
+                            previous;
+                    }
+                }
+                for (int i = 0; i != GRIDS; i++)
+                {
+                    for (int t = 0; t != GRIDS; t++)
+                    {
+                        // Add an Item Check here later to see if it blocks movement
+                        if (tiles[i][t][30].walkable == false)
+                        {
+                            astar::walkability[i][t] = astar::UNWALKABLE;
+                        }
+                        else
+                        {
+                            astar::walkability[i][t] = astar::WALKABLE;
+                        }
+                        if (astar::walkability[i][t] > 1)
+                            astar::walkability[i][t] = 0;
+                    }
+                }
+
+                int previous = -1;
+
+                if (pathFindWorkPos.x != 0)
+                {
+                    previous = astar::walkability[abs_to_index(
+                        pathFindWorkPos.x /
+                        20)][abs_to_index(pathFindWorkPos.y / 20)];
+                    astar::walkability[abs_to_index(pathFindWorkPos.x / 20)]
+                                      [abs_to_index(pathFindWorkPos.y / 20)] =
+                                          astar::WALKABLE;
+                }
+
+                npc.pathFinding.myReadPath(1, npc.xpos, npc.ypos, npc.moverate);
+                npc.dirMove(math::Vec2f(npc.pathFinding.myxPath,
+                                        npc.pathFinding.myyPath));
+
+                if (pathFindWorkPos.x != 0)
+                {
+                    astar::walkability[abs_to_index(
+                        pathFindWorkPos.x /
+                        20)][abs_to_index(pathFindWorkPos.y / 20)] = previous;
+                }
+
+                /*if (npc.xpos > npc.pathFinding.MyxPath) {npc.xpos = npc.xpos - npc.moverate;}
+if (npc.xpos < npc.pathFinding.MyxPath) {npc.xpos = npc.xpos + npc.moverate;}
+if (npc.ypos > npc.pathFinding.MyyPath) {npc.ypos = npc.ypos - npc.moverate;}
+if (npc.ypos < npc.pathFinding.MyyPath) {npc.ypos = npc.ypos + npc.moverate;}*/
+
+                //npc.pathFinding.MyFindPath(npc.xpos,npc.ypos,npc.TargetPos.x,npc.TargetPos.y);
+
+                if (npc.id == gvars::myTargetid)
+                {
+                    for (int stuff = npc.pathFinding.mypathLocation;
+                         stuff != npc.pathFinding.mypathLength; ++stuff)
+                    {
+                        if (stuff != 1)
+                        {
+                            effects.createLine(
+                                npc.pathFinding.myReadPathX(1, stuff - 1),
+                                npc.pathFinding.myReadPathY(1, stuff - 1),
+                                npc.pathFinding.myReadPathX(1, stuff),
+                                npc.pathFinding.myReadPathY(1, stuff), 2,
+                                sf::Color::Blue);
+                        }
+                        //std::cout << npc.pathFinding.MyReadPathX(1,Stuff) << ":" << npc.pathFinding.MyReadPathY(1,Stuff) << std::endl;
+                    }
+                }
+
+                if (npc.pathFinding.mypathLocation ==
+                    npc.pathFinding.mypathLength)
+                {
+                    if (abs(npc.xpos - npc.pathFinding.myxPath) < npc.moverate)
+                        npc.xpos = npc.pathFinding.myxPath;
+                    if (abs(npc.ypos - npc.pathFinding.myyPath) < npc.moverate)
+                        npc.ypos = npc.pathFinding.myyPath;
+                    npc.action = "Act";
+                    npc.needsPath = false;
+                }
+
+                //npc.TargetPos.x = xPath[1];
+                //npc.TargetPos.y = yPath[1];
+            }
+        }
+        for (auto &elem : npc.inventory)
+        {
+            if (elem.type == 4 &&
+                npc.hunger + elem.hungervalue <= npc.maxhunger && true == false)
+            {
+                //if(Item->hungervalue > 0){ npc.fillhunger(1); Item->hungervalue--;}
+                npc.fillhunger(elem.hungervalue);
+                npc.fillthirst(elem.thirstvalue);
+                elem.toDelete = true;
+
+                std::string chtStr;
+                chtStr.append("* ");
+                chtStr.append(npc.name);
+                chtStr.append("(" + std::to_string(npc.id) + ")");
+                chtStr.append(" has consumed ");
+                chtStr.append(elem.name);
+                chtStr.append(".");
+
+                chatBox.addChat(chtStr, sf::Color(150, 150, 0));
+            }
+            if (elem.type == 5 &&
+                npc.thirst + elem.thirstvalue <= npc.maxthirst && true == false)
+            {
+                //if(Item->hungervalue > 0){ npc.fillhunger(1); Item->hungervalue--;}
+                npc.fillhunger(elem.hungervalue);
+                npc.fillthirst(elem.thirstvalue);
+                elem.toDelete = true;
+
+                std::string chtStr;
+                chtStr.append("* ");
+                chtStr.append(npc.name);
+                chtStr.append("(" + std::to_string(npc.id) + ")");
+                chtStr.append(" has consumed ");
+                chtStr.append(elem.name);
+                chtStr.append(".");
+
+                chatBox.addChat(chtStr, sf::Color(150, 150, 0));
+            }
+        }
+        if (gvars::debug)
+            std::cout << "Post Item Usages. \n";
+
+        unpointItems(npc.inventory);
+
+        bool done = false;
+
+        while (done == false)
+        {
+            bool yet = false;
+            for (auto it = npc.inventory.begin(); it != npc.inventory.end();
+                 ++it)
+            {
+                if (it->toDelete)
+                {
+                    std::cout << it->name << " to be deleted. \n";
+                    npc.inventory.erase(it);
+                    yet = true;
+                    break;
+                }
+            }
+            if (yet == false)
+            {
+                done = true;
+            }
+        }
+        if (gvars::debug)
+            std::cout << "Post Inventory Cleanup. \n";
+
+    } // End of CanMove
+    //npc.angle = Math::AngleBetweenVectors(Math::Vec(TempXpos,TempYpos),Math::Vec(npc.xpos,npc.ypos))-180;
+    npc.angle = math::angleBetweenVectors(npc.targetPos,
+                                          math::Vec2f(npc.xpos, npc.ypos));
+    npc.momMove();
+    //float f=Math::AngleBetweenVectors(sf::Vector2f(npc.xpos,npc.ypos), npc.TargetPos);npc.img.setRotation(f);
+    if (gvars::debug)
+        std::cout << npc.name << npc.id << " is done. \n";
+}
+
+void updateNpcs()
+{
+    if (gvars::debug)
+    {
+        std::cout << "Pre NPC\n";
+    }
+    int integerIterator = 0;
+    for (auto &npc : npclist)
+    {
+        updateNpc(npc, integerIterator);
+        integerIterator++;
+    }
+    if (gvars::debug)
+        std::cout << "Post NPC\n";
+}
+
