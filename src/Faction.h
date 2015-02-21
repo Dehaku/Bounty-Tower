@@ -50,6 +50,7 @@ public:
     bool toDelete;
 
     bool hasJob;
+    Job *jobPtr;
 
     sf::Vector2f momentum;
 

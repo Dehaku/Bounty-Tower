@@ -1885,6 +1885,8 @@ void critterBrain(Npc &npc, std::vector<Npc> &container)
         if(npc.factionPtr != nullptr && npc.factionPtr->jobList.size() != 0)
         {
             newDesire.potency = 50+500;
+            if(npc.jobPtr != nullptr)
+                newDesire.potency += 500;
         }
 
     }
@@ -2001,6 +2003,31 @@ ReDesire:
         }
     }
 
+    if ((*highestDesire).type == "Work")
+    {
+        if(npc.jobPtr == nullptr)
+        {
+            for(auto &jobs : npc.factionPtr->jobList)
+            {
+                if(jobs.pWorker != nullptr)
+                {
+                    continue;
+                }
+                std::cout << npc.name << ", workin " << jobs.name << "/" << jobs.type << std::endl;
+                jobs.pWorker = &npc;
+                npc.jobPtr = &jobs;
+                break;
+            }
+        }
+        else
+        {
+            //if()
+        }
+
+
+
+    }
+
     // Incase the highest desire isn't completable, Go through again for the next highest desire.
     if (inComplete)
         goto ReDesire;
@@ -2074,9 +2101,6 @@ void critterBrain(std::vector<Npc> &npcs)
     std::cout << result << ", Is the test. \n";
 
     */
-
-
-    std::cout << "gvars::framesPassed: " << gvars::framesPassed << std::endl;
 
     for (auto &npc : npcs)
     {

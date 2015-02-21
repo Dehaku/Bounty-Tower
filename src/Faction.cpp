@@ -322,6 +322,7 @@ Npc::Npc()
       maxrangeddamage{}, dirgrid{}, valuegrid{}, followgrid{}
 {
     hasJob = false;
+    jobPtr = nullptr;
 
     factionPtr = nullptr;
 
