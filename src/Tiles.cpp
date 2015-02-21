@@ -633,13 +633,13 @@ void drawWorldTiles()
                 }
                 if (worldMap[i][t].owner != "")
                 {
-                    for (size_t z = 0; z != uniFact.size(); z++)
+                    for (auto &z : uniFact)
                     {
-                        if (worldMap[i][t].owner == uniFact[z].name)
+                        if (worldMap[i][t].owner == z.name)
                         {
-                            sf::Color prim = uniFact[z].primaryColor;
+                            sf::Color prim = z.primaryColor;
                             prim.a = prim.a / 1.3;
-                            sf::Color seco = uniFact[z].secondaryColor;
+                            sf::Color seco = z.secondaryColor;
                             seco.a = seco.a / 1.3;
                             effects.createSquare(
                                 (i * 20) + 1, (t * 20) + 1, ((i * 20) + 20) - 1,

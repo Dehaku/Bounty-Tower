@@ -490,9 +490,9 @@ void menuPopUp()
                      gCtrl.menuPtrCon.pItem->pickupable))
                 {
 
-                    for (size_t i = 0; i != uniFact.size(); i++)
+                    for (auto &i : uniFact)
                     {
-                        if (uniFact[i].playerControlled)
+                        if (i.playerControlled)
                         {
                             Job job;
                             job.pItem = gCtrl.menuPtrCon.pItem;
@@ -500,7 +500,7 @@ void menuPopUp()
                             job.name = "PickUpItem";
                             job.type = "PickUp";
 
-                            uniFact[i].jobList.push_back(job);
+                            i.jobList.push_back(job);
                         }
                     }
                 }
@@ -534,9 +534,9 @@ void menuPopUp()
                      !gCtrl.menuPtrCon.pItem->pickupable))
                 {
 
-                    for (size_t i = 0; i != uniFact.size(); i++)
+                    for (auto &i : uniFact)
                     {
-                        if (uniFact[i].playerControlled)
+                        if (i.playerControlled)
                         {
                             Job job;
                             job.pItem = gCtrl.menuPtrCon.pItem;
@@ -544,7 +544,7 @@ void menuPopUp()
                             job.name = "ChopDownTree";
                             job.type = "Chop";
 
-                            uniFact[i].jobList.push_back(job);
+                            i.jobList.push_back(job);
                         }
                     }
                 }
