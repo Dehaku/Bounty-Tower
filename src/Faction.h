@@ -384,7 +384,7 @@ public:
     std::vector<std::string> knownMagic;
     std::vector<Item> items;
 
-    std::vector<Job> jobList;
+    std::list<Job> jobList;
     Faction();
 };
 

@@ -9,6 +9,13 @@
 
 using std::abs;
 
+template <typename T> T &listAt(std::list<T> &list, size_t index)
+{
+    auto it = list.begin();
+    std::advance(it, index);
+    return *it;
+}
+
 void rmbMenuItem(Item &pItem)
 {
     /*
@@ -157,21 +164,24 @@ void drawJobList(int x, int y)
     }
 }
 
-void removeJobs(std::vector<Job> &jobList)
+void removeJobs(std::list<Job> &jobList)
 {
     //debug("Removing Jobs")
     bool done = false;
     while (done == false)
     {
         bool yet = false;
+        std::list<Job>::iterator Iter = jobList.begin();
         for (size_t i = 0; i != jobList.size(); i++)
         {
-            if (jobList.at(i).toDelete == true)
+
+            if (listAt(jobList,i).toDelete == true)
             {
-                jobList.erase(jobList.begin() + i);
+                jobList.erase(Iter);
                 yet = true;
                 break;
             }
+            Iter++;
         }
         if (yet == false)
         {

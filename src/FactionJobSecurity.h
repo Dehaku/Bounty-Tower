@@ -8,6 +8,6 @@ void rmbMenuItem(Item &pItem);
 void digWall(sf::Vector2f pos);
 void rmbMenuTile(sf::Vector2f pos);
 void drawJobList(int x, int y);
-void removeJobs(std::vector<Job> &jobList);
+void removeJobs(std::list<Job> &jobList);
 
 #endif // FACTIONJOBSECURITY_H_INCLUDED
