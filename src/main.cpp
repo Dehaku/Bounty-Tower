@@ -1809,14 +1809,14 @@ void critterBrain(Npc &npc, std::vector<Npc> &container)
             {
                 if (gridTrace(npcPos, *targetPos))
                 {
-                    effects.createLine(npc.xpos, npc.ypos, xPos, yPos, 1,
-                                       sf::Color::Cyan);
+                    /*effects.createLine(npc.xpos, npc.ypos, xPos, yPos, 1,
+                                       sf::Color::Cyan);  */
                     failedAlign = false;
                 }
             }
-            if (failedAlign)
+          /*  if (failedAlign)
                 effects.createLine(npc.xpos, npc.ypos, xPos, yPos, 1,
-                                   sf::Color::Red);
+                                   sf::Color::Red);  */
         }
         if ((rot % 10) == 0 && rot != 0)
         {
@@ -2636,13 +2636,6 @@ int main()
         gvars::bottomRight =
             sf::Vector2f(gvars::view1.getCenter().x + HALF_SIZE.x,
                          gvars::view1.getCenter().y + HALF_SIZE.y);
-
-        textList.createText(cz(gvars::topRight.x - cz(50)),
-                            cz(gvars::topRight.y + cz(50)), cz(11),
-                            sf::Color::White, "x", "", gvars::cameraZoom);
-        textList.createText((gvars::topRight.x - 50), (gvars::topRight.y + 50),
-                            (11) / gvars::cameraZoom, sf::Color::White, "x", "",
-                            gvars::cameraZoom);
 
         if (inputState.key[Key::K].time == 1)
         { // Generates a random name from GenerateName(); and puts it into the console.
