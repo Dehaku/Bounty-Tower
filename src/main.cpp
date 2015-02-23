@@ -2046,19 +2046,38 @@ ReDesire:
                     {
                         if(item.name == desiredItem)
                         {
-                            if(npc.targetInfo.item == nullptr)
+                            if(npc.targetInfo.item == nullptr && item.user == nullptr)
+                            {
                                 npc.targetInfo.item = &item;
+                                item.user = &npc;
+                            }
+
                             else
                             {
                                 sf::Vector2f myItemPos(npc.targetInfo.item->xpos,npc.targetInfo.item->ypos);
-                                if(math::closeish(npc.xpos,npc.ypos,item.xpos,item.ypos) <= math::closeish(npc.xpos,npc.ypos,myItemPos.x,myItemPos.y))
+                                if(math::closeish(npc.xpos,npc.ypos,item.xpos,item.ypos) <= math::closeish(npc.xpos,npc.ypos,myItemPos.x,myItemPos.y)
+                                   && item.user == nullptr)
+                                {
+                                    npc.targetInfo.item->user = nullptr;
                                     npc.targetInfo.item = &item;
+                                    item.user = &npc;
+                                }
+
                             }
-
-
-
                         }
                     }
+                    Item * item = npc.targetInfo.item;
+                    if(item != nullptr)
+                    {
+                        if(math::closeish(npc.xpos,npc.ypos,item->xpos,item->ypos) <= npc.size*2)
+                        {
+                            item->user = nullptr;
+                            npc.inventory.push_back(*item);
+                            item->toDelete = true;
+                            npc.targetInfo.item = nullptr;
+                        }
+                    }
+
                 }
 
 
