@@ -101,7 +101,6 @@ void rmbMenuTile(Vec3 pos)
             }
 
             i.jobList.push_back(job);
-            std::cout << "Inserted job into " << i.name << std::endl;
         }
     }
 }

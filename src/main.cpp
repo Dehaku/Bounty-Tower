@@ -2028,12 +2028,11 @@ ReDesire:
         {
             if(npc.jobPtr != nullptr && npc.jobPtr->type == "Build")
             {
-                std::cout << npc.name << "'s been employed to Build! \n";
 
                 //npc.dirMove(sf::Vector2f(npc.jobPtr->workPos.x,npc.jobPtr->workPos.y));
                 endPos = Vec3(npc.jobPtr->workPos.x/20,npc.jobPtr->workPos.y/20, npc.jobPtr->workPos.z/20);
-                std::cout << "endPos: " << endPos.x << "/" << endPos.y << "/" << endPos.z << std::endl;
                 hasPath = true;
+
             }
         }
 
@@ -2488,12 +2487,14 @@ int main()
     gvars::view1.zoom(2);
     if (true == false)
     {   // TODO: Fix this icon crap.
-        /*sf::Image icon;
-    icon.LoadFromFile("gfx/icon.tga");
-    App.SetIcon(32,32,icon.GetPixelsPtr());
-    if (!Images.LoadFromFile("gfx/Images.tga"))return EXIT_FAILURE;
-    sf::Image Aim;
-    if (!Aim.LoadFromFile("gfx/Aim.tga"))return EXIT_FAILURE;*/
+        /*
+        sf::Image icon;
+        icon.LoadFromFile("gfx/icon.tga");
+        App.SetIcon(32,32,icon.GetPixelsPtr());
+        if (!Images.LoadFromFile("gfx/Images.tga"))return EXIT_FAILURE;
+        sf::Image Aim;
+        if (!Aim.LoadFromFile("gfx/Aim.tga"))return EXIT_FAILURE;
+        */
     }
 
     texturemanager.init();
