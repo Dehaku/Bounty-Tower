@@ -2035,10 +2035,17 @@ ReDesire:
         {
             if(npc.jobPtr != nullptr && npc.jobPtr->type == "Build")
             {
-
-                //npc.dirMove(sf::Vector2f(npc.jobPtr->workPos.x,npc.jobPtr->workPos.y));
-                endPos = Vec3(npc.jobPtr->workPos.x/20,npc.jobPtr->workPos.y/20, npc.jobPtr->workPos.z/20);
-                hasPath = true;
+                Vec3 wPos(npc.jobPtr->workPos);
+                Vec3 myPos(npc.xpos,npc.ypos,npc.zpos);
+                if(math::closeish(myPos.x,myPos.y,wPos.x,wPos.y) <= npc.size*2)
+                {
+                    endPos = Vec3(myPos);
+                }
+                else
+                {
+                    endPos = Vec3(npc.jobPtr->workPos.x/20,npc.jobPtr->workPos.y/20, npc.jobPtr->workPos.z/20);
+                    hasPath = true;
+                }
             }
         }
 
