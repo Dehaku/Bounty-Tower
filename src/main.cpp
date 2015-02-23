@@ -2079,6 +2079,14 @@ ReDesire:
                     }
 
                 }
+                if(material == nullptr && npc.targetInfo.item == nullptr)
+                {
+                    inComplete = true;
+                    npc.jobPtr->errorReason = "No " + desiredItem + " located. \n";
+                    (*highestDesire).potency = 0;
+                }
+                else
+                    npc.jobPtr->errorReason = "";
 
 
                 if(math::closeish(myPos.x,myPos.y,wPos.x,wPos.y) <= npc.size*2)
