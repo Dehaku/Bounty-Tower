@@ -35,7 +35,7 @@ public:
     std::string bloodcontent;
     std::string tags;
     Faction *factionPtr;
-    std::string Faction;
+    std::string faction;
 
     bool attacking;
     bool firstStrike;

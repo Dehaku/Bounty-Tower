@@ -3881,7 +3881,7 @@ int main()
 
                     squ.name = name;
                     squ.gender = gender;
-                    squ.Faction = g_pf.name;
+                    squ.faction = g_pf.name;
                     squady.squad.push_back(squ);
                     squady.makeSquadPoints -= 100;
                 }

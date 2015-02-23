@@ -2010,7 +2010,7 @@ void buildStartingCritters(int zedAmount)
                 squady.squad.at(count).xpos = vPos.x;
                 squady.squad.at(count).ypos = vPos.y;
 
-                squady.squad[count].Faction = listAt(uniFact,0).name;
+                squady.squad[count].faction = listAt(uniFact,0).name;
                 squady.squad[count].factionPtr = &listAt(uniFact,0);
 
                 npcmanager.addedCritters.push_back(squady.squad.at(count));
