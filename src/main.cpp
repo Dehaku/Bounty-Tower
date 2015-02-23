@@ -1893,7 +1893,7 @@ void critterBrain(Npc &npc, std::vector<Npc> &container)
                 }
             }
             if(npc.jobPtr != nullptr)
-                newDesire.potency += 500;
+                newDesire.potency += 750;
         }
 
     }

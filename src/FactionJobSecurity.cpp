@@ -156,6 +156,10 @@ void drawJobList(int x, int y)
                                         t.name);
                 }
 
+                sf::Vector2f pos(t.workPos.x,t.workPos.y);
+                effects.createSquare(pos.x-5,pos.y-5,pos.x+5,pos.y+5,sf::Color::Transparent,1,sf::Color::Cyan);
+                textList.createText(pos.x-(t.name.size()*3),pos.y+10,10,sf::Color::Cyan,t.name);
+
                 YVariance++;
             }
         }
