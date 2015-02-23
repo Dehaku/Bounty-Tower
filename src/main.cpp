@@ -1884,7 +1884,14 @@ void critterBrain(Npc &npc, std::vector<Npc> &container)
 
         if(npc.factionPtr != nullptr && npc.factionPtr->jobList.size() != 0)
         {
-            newDesire.potency = 50+500;
+            for (auto &jobs : npc.factionPtr->jobList)
+            {
+                if(jobs.pWorker == nullptr)
+                {
+                    newDesire.potency = 50+500;
+                    break;
+                }
+            }
             if(npc.jobPtr != nullptr)
                 newDesire.potency += 500;
         }
@@ -2032,7 +2039,6 @@ ReDesire:
                 //npc.dirMove(sf::Vector2f(npc.jobPtr->workPos.x,npc.jobPtr->workPos.y));
                 endPos = Vec3(npc.jobPtr->workPos.x/20,npc.jobPtr->workPos.y/20, npc.jobPtr->workPos.z/20);
                 hasPath = true;
-
             }
         }
 
@@ -2069,7 +2075,6 @@ ReDesire:
 
     if(hasPath)
     {
-        std::cout << "Has Path! \n";
         int result = pathCon.makePath(startPos, endPos);
         pathCon.drawStoredPath();
     }
