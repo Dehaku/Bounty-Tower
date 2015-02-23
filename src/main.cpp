@@ -1716,7 +1716,7 @@ void critterBrain(Npc &npc, std::vector<Npc> &container)
     int critterZ = npc.zpos/20;
     textList.createText(npc.xpos,npc.ypos,10,sf::Color::White,"ZPos:","",npc.zpos," /","",critterZ);
     runCritterBody(npc);
-    debug("Debug: Ending Part Loop");
+    debug("Ending Part Loop");
 
     /*Simulating Hunger/Thirst, Needs to be nerfed/formulated to conditions, I.E. Attributes/Parts/Weather*/
     if( (gvars::framesPassed % 10) == 0)
@@ -1856,6 +1856,7 @@ void critterBrain(Npc &npc, std::vector<Npc> &container)
     };
     std::vector<Desire> desires;
 
+    debug("Declaring and added Desires");
     // Declaring and adding Desires
     Desire newDesire;
     { //Sustainence
@@ -1922,7 +1923,7 @@ void critterBrain(Npc &npc, std::vector<Npc> &container)
 
 ReDesire:
     inComplete = false;
-
+    debug("Finding highest desire");
     for (auto &i : desires)
     {
         if (firstIter)
@@ -1944,7 +1945,7 @@ ReDesire:
     Vec3 startPos(npc.xpos/20,npc.ypos/20,npc.zpos/20);
     Vec3 endPos;
     bool hasPath = false;
-
+    debug("Acting on highest Desire:" + (*highestDesire).type);
     if ((*highestDesire).type == "Apathy")
     {
         effects.createCircle(npc.xpos, npc.ypos, 11, sf::Color::Red);
@@ -2025,6 +2026,10 @@ ReDesire:
                 {
                     continue;
                 }
+                else if(jobs.toDelete)
+                {
+                    continue;
+                }
                 std::cout << npc.name << ", workin " << jobs.name << "/" << jobs.type << std::endl;
                 jobs.pWorker = &npc;
                 npc.jobPtr = &jobs;
@@ -2033,13 +2038,18 @@ ReDesire:
         }
         else
         {
+            debug("I have a job");
             if(npc.jobPtr != nullptr && npc.jobPtr->type == "Build")
             {
+                debug("I have build job.");
                 Vec3 wPos(npc.jobPtr->workPos);
                 Vec3 myPos(npc.xpos,npc.ypos,npc.zpos);
                 Npc critter;
                 std::string desiredItem = "Wood";
+                debug("Checking for material");
                 Item * material = npc.hasItem(desiredItem);
+
+                debug("Material checked");
                 if(material == nullptr)
                 {
                     for (auto &item : worlditems)
@@ -2079,8 +2089,10 @@ ReDesire:
                     }
 
                 }
+                debug("Checking if any desiredItem exists");
                 if(material == nullptr && npc.targetInfo.item == nullptr)
                 {
+                    debug("It doesn't");
                     inComplete = true;
                     npc.jobPtr->errorReason = "No " + desiredItem + " located. \n";
                     (*highestDesire).potency = 0;
@@ -2089,9 +2101,32 @@ ReDesire:
                     npc.jobPtr->errorReason = "";
 
 
-                if(math::closeish(myPos.x,myPos.y,wPos.x,wPos.y) <= npc.size*2)
+                if(math::closeish(myPos.x,myPos.y,wPos.x,wPos.y) <= npc.size*3 && material != nullptr)
                 {
+                    debug("Close to workPos and has material.");
                     endPos = Vec3(myPos);
+
+                    npc.jobPtr->completionProgress += npc.skills.intelligence / 2;
+
+                    for (float rot = 1; rot < 361 * (percentIs( npc.jobPtr->completionTimer,npc.jobPtr->completionProgress) / 100); rot++)
+                    {
+
+                        float xPos = wPos.x + sin(rot * PI / 180) * 10;
+                        float yPos = wPos.y + cos(rot * PI / 180) * 10;
+
+                        effects.createLine( wPos.x, wPos.y, xPos, yPos, 1, sf::Color(150, 150, 150, 150));
+                    }
+
+                    if (npc.jobPtr->completionProgress >= npc.jobPtr->completionTimer)
+                    {
+                        tiles[abs_to_index(wPos.x / 20)][abs_to_index(wPos.y / 20)][30].wall();
+                        material->toDelete = true;
+                        npc.jobPtr->toDelete = true;
+                        npc.jobPtr->pWorker->hasJob = false;
+                        npc.jobPtr = nullptr;
+
+                    }
+
                 }
                 else
                 {
@@ -2099,12 +2134,15 @@ ReDesire:
                     hasPath = true;
                 }
             }
+            debug("Wasn't build though.");
         }
+
 
 
 
     }
 
+    debug("Checking inComplete:" + std::to_string(inComplete));
     // Incase the highest desire isn't completable, Go through again for the next highest desire.
     if (inComplete)
         goto ReDesire;
@@ -2134,6 +2172,7 @@ ReDesire:
 
     if(hasPath)
     {
+        debug("hasPath");
         int result = pathCon.makePath(startPos, endPos);
         pathCon.drawStoredPath();
     }
@@ -2157,7 +2196,8 @@ ReDesire:
                                          (*npc.targetInfo.item).ypos));
     }
 
-
+    if(npc.factionPtr != nullptr)
+        removeJobs(npc.factionPtr->jobList);
     removeItems(npc.inventory);
 }
 

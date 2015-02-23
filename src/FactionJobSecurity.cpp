@@ -170,7 +170,7 @@ void drawJobList(int x, int y)
     }
 }
 
-void removeJobs(std::list<Job> &jobList)
+void removeJobsOld(std::list<Job> &jobList)
 {
     //debug("Removing Jobs")
     bool done = false;
@@ -195,3 +195,28 @@ void removeJobs(std::list<Job> &jobList)
         }
     }
 }
+
+void removeJobs(std::list<Job> &jobList)
+{
+    bool done = false;
+    while (done == false)
+    {
+        bool yet = false;
+        std::list<Job>::iterator Iter = jobList.begin();
+        for (auto &i : jobList)
+        {
+            if (i.toDelete == true)
+            {
+                jobList.erase(Iter);
+                yet = true;
+                break;
+            }
+            Iter++;
+        }
+        if (yet == false)
+        {
+            done = true;
+        }
+    }
+}
+
