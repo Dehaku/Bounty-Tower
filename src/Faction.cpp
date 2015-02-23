@@ -564,6 +564,16 @@ bool Npc::hasWeapon(std::string weapon)
     return false;
 }
 
+Item *Npc::hasItem(std::string name)
+{
+    for (auto &item : inventory)
+    {
+        if(item.name == name)
+            return &item;
+    }
+    return nullptr;
+}
+
 Item *Npc::getItemType(int type)
 {
     //for(int i = 0; i < inventory.size(); i++)

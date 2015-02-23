@@ -2037,6 +2037,10 @@ ReDesire:
             {
                 Vec3 wPos(npc.jobPtr->workPos);
                 Vec3 myPos(npc.xpos,npc.ypos,npc.zpos);
+                Npc critter;
+
+
+
                 if(math::closeish(myPos.x,myPos.y,wPos.x,wPos.y) <= npc.size*2)
                 {
                     endPos = Vec3(myPos);

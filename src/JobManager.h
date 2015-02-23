@@ -36,6 +36,7 @@ public:
     float completionTimer;
     float completionProgress;
     std::string type;
+    std::string errorReason;
     Item *pItem;
     Npc *pWorker;
     //Tile * pTile;

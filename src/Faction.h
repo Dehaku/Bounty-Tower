@@ -257,6 +257,7 @@ public:
     void reCreateSkills();
     void blankSkills();
     bool hasWeapon(std::string weapon = "");
+    Item *hasItem(std::string name);
     Item *getItemType(int type);
     bool hasItemType(int type);
     void drawImg();
