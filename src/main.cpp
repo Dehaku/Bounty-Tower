@@ -2038,7 +2038,28 @@ ReDesire:
                 Vec3 wPos(npc.jobPtr->workPos);
                 Vec3 myPos(npc.xpos,npc.ypos,npc.zpos);
                 Npc critter;
+                std::string desiredItem = "Wood";
+                Item * material = npc.hasItem(desiredItem);
+                if(material == nullptr)
+                {
+                    for (auto &item : worlditems)
+                    {
+                        if(item.name == desiredItem)
+                        {
+                            if(npc.targetInfo.item == nullptr)
+                                npc.targetInfo.item = &item;
+                            else
+                            {
+                                sf::Vector2f myItemPos(npc.targetInfo.item->xpos,npc.targetInfo.item->ypos);
+                                if(math::closeish(npc.xpos,npc.ypos,item.xpos,item.ypos) <= math::closeish(npc.xpos,npc.ypos,myItemPos.x,myItemPos.y))
+                                    npc.targetInfo.item = &item;
+                            }
 
+
+
+                        }
+                    }
+                }
 
 
                 if(math::closeish(myPos.x,myPos.y,wPos.x,wPos.y) <= npc.size*2)
