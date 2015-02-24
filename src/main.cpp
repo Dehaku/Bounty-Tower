@@ -2039,11 +2039,11 @@ ReDesire:
         else
         {
             debug("I have a job");
+            Vec3 wPos(npc.jobPtr->workPos);
+                Vec3 myPos(npc.xpos,npc.ypos,npc.zpos);
             if(npc.jobPtr != nullptr && npc.jobPtr->type == "Build")
             {
                 debug("I have build job.");
-                Vec3 wPos(npc.jobPtr->workPos);
-                Vec3 myPos(npc.xpos,npc.ypos,npc.zpos);
                 std::string desiredItem = "Wood";
                 debug("Checking for material");
                 Item * material = npc.hasItem(desiredItem);
@@ -2160,7 +2160,7 @@ ReDesire:
 
                         itemPtr->toDelete = true;
                         for(int Woody = 0; Woody != 5; Woody++)
-                            spawnItem("Wood",itemPtr->xpos+randz(-3,3),itemPtr->ypos+randz(-3,3));
+                            spawnItem("Wood",itemPtr->xpos+randz(-3,3),itemPtr->ypos+randz(-3,3),itemPtr->zpos);
                         npc.jobPtr->toDelete = true;
                         npc.jobPtr = nullptr;
                     }
@@ -2186,6 +2186,41 @@ ReDesire:
             {
                 endPos = Vec3(npc.jobPtr->workPos.x/20,npc.jobPtr->workPos.y/20,npc.jobPtr->workPos.z/20);
                 hasPath = true;
+
+                if(math::closeish(myPos.x,myPos.y,wPos.x,wPos.y) <= npc.size*3)
+                {
+                    debug("Close to workPos");
+                    endPos = Vec3(myPos);
+                    hasPath = false;
+
+                    npc.jobPtr->completionProgress += npc.skills.intelligence / 2;
+                    debug("post job completetion progress");
+
+                    for (float rot = 1; rot < 361 * (percentIs( npc.jobPtr->completionTimer,npc.jobPtr->completionProgress) / 100); rot++)
+                    {
+
+                        float xPos = wPos.x + sin(rot * PI / 180) * 10;
+                        float yPos = wPos.y + cos(rot * PI / 180) * 10;
+
+                        effects.createLine( wPos.x, wPos.y, xPos, yPos, 1, sf::Color(150, 150, 150, 150));
+                    }
+                    debug("post line drawing");
+
+                    if (npc.jobPtr->completionProgress >= npc.jobPtr->completionTimer)
+                    {
+                        debug("Job complete!");
+
+                        tiles[abs_to_index(wPos.x / 20)][abs_to_index(wPos.y / 20)][abs_to_index(wPos.z / 20)].stone();
+                        for(int Stoney = 0; Stoney != 5; Stoney++)
+                            spawnItem("Rock",wPos.x+randz(-3,3),wPos.y+randz(-3,3),wPos.z);
+
+                        npc.jobPtr->toDelete = true;
+                        npc.jobPtr = nullptr;
+
+
+                    }
+
+                }
             }
         }
     }
