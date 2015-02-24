@@ -682,6 +682,12 @@ void menuPopUp()
 
                     spawnItem("Gun", 1010, 1020);
 
+                    spawnItem("Wood", (32+12)*20+3,(32+12)*20+3);
+                    spawnItem("Wood", (32+12)*20-3,(32+12)*20+3);
+                    spawnItem("Wood", (32+12)*20+3,(32+12)*20-3);
+                    spawnItem("Wood", (32+12)*20-3,(32+12)*20-3);
+                    spawnItem("Wood", (32+12)*20,(32+12)*20);
+
                     con("Hunting for Trees 4");
                     for (int i = 0; i != 8; i++)
                     {
