@@ -1947,8 +1947,8 @@ ReDesire:
     bool hasPath = false;
     debug("Acting on highest Desire:" + (*highestDesire).type);
     if ((*highestDesire).type == "Apathy")
-    {
-        effects.createCircle(npc.xpos, npc.ypos, 11, sf::Color::Red);
+    {// TODO: Add blublublub
+
     }
     if ((*highestDesire).type == "SelfDefense")
     {
@@ -2000,7 +2000,7 @@ ReDesire:
                                          (*npc.targetInfo.item).ypos)); */
 
                 if (math::closeish(npc.xpos, npc.ypos, ItemPos.x, ItemPos.y) <=
-                    npc.size * 2)
+                    npc.size * 3)
                 {
                     Item *tar = npc.targetInfo.item;
                     npc.targetInfo.item = nullptr;
@@ -2118,7 +2118,7 @@ ReDesire:
 
                     if (npc.jobPtr->completionProgress >= npc.jobPtr->completionTimer)
                     {
-                        tiles[abs_to_index(wPos.x / 20)][abs_to_index(wPos.y / 20)][30].wall();
+                        tiles[abs_to_index(wPos.x / 20)][abs_to_index(wPos.y / 20)][abs_to_index(wPos.z / 20)].wall();
                         material->toDelete = true;
                         npc.jobPtr->toDelete = true;
                         npc.jobPtr->pWorker->hasJob = false;/* Oops... this amuses me. */
@@ -2133,7 +2133,6 @@ ReDesire:
                     hasPath = true;
                 }
             }
-            debug("Wasn't build though.");
             else if(npc.jobPtr != nullptr && npc.jobPtr->type == "Chop" && npc.jobPtr->pItem != nullptr)
             {
                 Item * itemPtr = npc.jobPtr->pItem;
@@ -2166,7 +2165,6 @@ ReDesire:
                 }
 
             }
-            debug("Wasn't chop.");
             else if(npc.jobPtr != nullptr && npc.jobPtr->type == "PickUp" && npc.jobPtr->pItem != nullptr)
             {
                 Item * itemPtr = npc.jobPtr->pItem;
@@ -2182,13 +2180,12 @@ ReDesire:
                     npc.jobPtr = nullptr;
                 }
             }
-            debug("Wasn't PickUp.");
-
+            else if(npc.jobPtr != nullptr && npc.jobPtr->type == "Dig")
+            {
+                endPos = npc.jobPtr->workPos;
+                hasPath = true;
+            }
         }
-
-
-
-
     }
 
     debug("Checking inComplete:" + std::to_string(inComplete));
@@ -2201,14 +2198,6 @@ ReDesire:
 
 
     /* End of Critter Prioritization */
-
-    //Vec3 startPos(npc.xpos/20,npc.ypos/20,npc.zpos/20);
-    //Vec3 endPos(46, 46, 29);
-    //Vec3 endPos(gvars::mousePos.x/20, gvars::mousePos.y/20, gvars::currentz);
-
-    //int result = pathCon.makePath(startPos, endPos);
-    //pathCon.drawStoredPath();
-
 
 
     if(npc.targetInfo.item != nullptr)

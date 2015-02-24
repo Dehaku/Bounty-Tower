@@ -144,7 +144,7 @@ void generateChunk(std::string type, int planet, sf::Vector2i cords,
 
                     if (i >= 10 && i < 21 && x == 29)
                     {
-                        if (t >= 10 && t < 21)
+                        if (t >= 10 && t < 20)
                         {
                             vChunk[i][t][x].wall();
                         }
