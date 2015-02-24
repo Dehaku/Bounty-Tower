@@ -2,6 +2,7 @@
 #define __MATH_H_INCLUDED__
 
 #include <SFML/System.hpp>
+#include "defs.h"
 
 const double PI = 3.141;
 const double G = 6.67;
@@ -10,6 +11,7 @@ namespace math
 {
 int closeish(int orix, int oriy, int tarx, int tary);
 int closeisha(int orix, int oriy, int tarx, int tary);
+double distance(Vec3 Ori, Vec3 Tar);
 int distanceTrace(int xa, int ya, int xb, int yb);
 int closeishxx(int orix, int oriy, int tarx, int tary);
 int closeishS(int orix, int tarx);

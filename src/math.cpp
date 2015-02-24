@@ -7,6 +7,11 @@ int math::closeish(int orix, int oriy, int tarx, int tary)
     return sqrt(pow((tarx - orix), 2) + pow((tary - oriy), 2));
 }
 
+double math::distance(Vec3 Ori, Vec3 Tar)
+{
+    return sqrt(pow(Tar.x - Ori.x, 2) + pow(Tar.y - Ori.y, 2) + pow(Tar.z - Ori.z, 2));;
+}
+
 int math::closeisha(int orix, int oriy, int tarx, int tary)
 {
     int xnum = orix - tarx;

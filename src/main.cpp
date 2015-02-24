@@ -2217,10 +2217,7 @@ ReDesire:
 
                         npc.jobPtr->toDelete = true;
                         npc.jobPtr = nullptr;
-
-
                     }
-
                 }
             }
         }
