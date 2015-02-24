@@ -48,27 +48,24 @@ void rmbMenuItem(Item &pItem)
     }
 }
 
-void digWall(sf::Vector2f pos)
+void digWall(Vec3 pos)
 {
     for (auto &i : uniFact)
     {
         if (i.playerControlled)
         {
             Job job;
-            std::cout << "Tile clicked: "
-                      << tiles[abs_to_index(pos.x / 20)][abs_to_index(
-                             pos.y / 20)][6].id << std::endl;
-            if (tiles[abs_to_index(pos.x / 20)][abs_to_index(pos.y / 20)][30]
+            if (tiles[abs_to_index(pos.x / 20)][abs_to_index(pos.y / 20)][abs_to_index(pos.z / 20)]
                     .id == 1008)
             {
                 job.name = "DigNaturalWall";
                 job.type = "Dig";
                 job.workPos.x = (abs(pos.x / 20) * 20) + 10;
                 job.workPos.y = (abs(pos.y / 20) * 20) + 10;
+                job.workPos.z = (abs(pos.z / 20) * 20) + 10;
             }
             else
             {
-
                 return;
             }
 

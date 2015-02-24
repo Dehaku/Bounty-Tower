@@ -331,7 +331,7 @@ void menuPopUp()
                 if (squareButtonClicked(Butt) ||
                     inputState.key[Key::Num1].time == 1)
                 {
-                    digWall(gCtrl.menuPos);
+                    digWall(Vec3(gCtrl.menuPos.x,gCtrl.menuPos.y,gvars::currentz*20));
                 }
             }
 

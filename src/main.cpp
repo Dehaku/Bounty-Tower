@@ -2184,7 +2184,7 @@ ReDesire:
             }
             else if(npc.jobPtr != nullptr && npc.jobPtr->type == "Dig")
             {
-                endPos = npc.jobPtr->workPos;
+                endPos = Vec3(npc.jobPtr->workPos.x/20,npc.jobPtr->workPos.y/20,npc.jobPtr->workPos.z/20);
                 hasPath = true;
             }
         }
@@ -2216,7 +2216,10 @@ ReDesire:
     if(hasPath)
     {
         debug("hasPath");
+        bool prevWalkable = tiles[endPos.x][endPos.y][endPos.z].walkable;
+        tiles[endPos.x][endPos.y][endPos.z].walkable = true;
         int result = pathCon.makePath(startPos, endPos);
+        tiles[endPos.x][endPos.y][endPos.z].walkable = prevWalkable;
         pathCon.drawStoredPath();
     }
 
