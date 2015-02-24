@@ -2122,7 +2122,7 @@ ReDesire:
                         tiles[abs_to_index(wPos.x / 20)][abs_to_index(wPos.y / 20)][30].wall();
                         material->toDelete = true;
                         npc.jobPtr->toDelete = true;
-                        npc.jobPtr->pWorker->hasJob = false;
+                        npc.jobPtr->pWorker->hasJob = false;/* Oops... this amuses me. */
                         npc.jobPtr = nullptr;
 
                     }
@@ -2187,6 +2187,16 @@ ReDesire:
 
         if(Pos.z != npc.zpos)
             npc.zpos = Pos.z*20;
+
+        if(pathCon.storedPath.size() >= 2)
+        {
+            if(pathCon.storedPath[0]->teleporter && pathCon.storedPath[1]->teleporter)
+            {
+                npc.xpos = pathCon.storedPath[0]->telePos.x*20;
+                npc.ypos = pathCon.storedPath[0]->telePos.y*20;
+                npc.zpos = pathCon.storedPath[0]->telePos.z*20;
+            }
+        }
 
         pathCon.storedPath.clear();
     }
