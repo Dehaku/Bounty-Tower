@@ -2061,7 +2061,7 @@ ReDesire:
                                 item.user = &npc;
                             }
 
-                            else
+                            else if(npc.targetInfo.item != nullptr)
                             {
                                 sf::Vector2f myItemPos(npc.targetInfo.item->xpos,npc.targetInfo.item->ypos);
                                 if(math::closeish(npc.xpos,npc.ypos,item.xpos,item.ypos) <= math::closeish(npc.xpos,npc.ypos,myItemPos.x,myItemPos.y)
