@@ -2188,7 +2188,8 @@ ReDesire:
                 endPos = Vec3(npc.jobPtr->workPos.x/20,npc.jobPtr->workPos.y/20,npc.jobPtr->workPos.z/20);
                 hasPath = true;
 
-                if(math::closeish(myPos.x,myPos.y,wPos.x,wPos.y) <= npc.size*3)
+                //if(math::closeish(myPos.x,myPos.y,wPos.x,wPos.y) <= npc.size*3)
+                if(math::distance(myPos,wPos) <= npc.size*3 && myPos.z/20 == wPos.z/20)
                 {
                     debug("Close to workPos");
                     endPos = Vec3(myPos.x/20,myPos.y/20,myPos.z/20);
