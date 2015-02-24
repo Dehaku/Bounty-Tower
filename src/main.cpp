@@ -2167,6 +2167,21 @@ ReDesire:
                 }
 
             }
+            if(npc.jobPtr->type == "PickUp" && npc.jobPtr->pItem != nullptr)
+            {
+                Item * itemPtr = npc.jobPtr->pItem;
+                endPos = Vec3(abs_to_index(itemPtr->xpos/20),abs_to_index(itemPtr->ypos/20),abs_to_index(itemPtr->zpos/20));
+                hasPath = true;
+
+                if(math::closeish(npc.xpos,npc.ypos,endPos.x*20,endPos.y*20) <= npc.size*3)
+                {
+                    itemPtr->user = nullptr;
+                    npc.inventory.push_back(*itemPtr);
+                    itemPtr->toDelete = true;
+                    npc.jobPtr->toDelete = true;
+                    npc.jobPtr = nullptr;
+                }
+            }
 
         }
 

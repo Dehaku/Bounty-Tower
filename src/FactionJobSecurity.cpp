@@ -161,6 +161,13 @@ void drawJobList(int x, int y)
                 effects.createSquare(pos.x-5,pos.y-5,pos.x+5,pos.y+5,sf::Color::Transparent,1,sf::Color::Cyan);
                 textList.createText(pos.x-(t.name.size()*3),pos.y+10,10,sf::Color::Cyan,t.name);
                 textList.createText(pos.x-(t.errorReason.size()*3),pos.y+20,10,sf::Color::Red,t.errorReason);
+                if(t.pItem != nullptr)
+                {
+                    pos = sf::Vector2f(t.pItem->xpos,t.pItem->ypos);
+                    effects.createSquare(pos.x-5,pos.y-5,pos.x+5,pos.y+5,sf::Color::Transparent,1,sf::Color::Cyan);
+                    textList.createText(pos.x-(t.name.size()*3),pos.y+10,10,sf::Color::Cyan,t.name);
+                    textList.createText(pos.x-(t.errorReason.size()*3),pos.y+20,10,sf::Color::Red,t.errorReason);
+                }
 
                 YVariance++;
             }
