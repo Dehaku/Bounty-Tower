@@ -2040,7 +2040,7 @@ ReDesire:
         {
             debug("I have a job");
             Vec3 wPos(npc.jobPtr->workPos);
-                Vec3 myPos(npc.xpos,npc.ypos,npc.zpos);
+            Vec3 myPos(npc.xpos,npc.ypos,npc.zpos);
             if(npc.jobPtr != nullptr && npc.jobPtr->type == "Build")
             {
                 debug("I have build job.");
@@ -2110,7 +2110,8 @@ ReDesire:
                 if(math::closeish(myPos.x,myPos.y,wPos.x,wPos.y) <= npc.size*3 && material != nullptr)
                 {
                     debug("Close to workPos and has material.");
-                    endPos = Vec3(myPos);
+                    endPos = Vec3(myPos.x/20,myPos.y/20,myPos.z/20);
+                    hasPath = false;
 
                     npc.jobPtr->completionProgress += npc.skills.intelligence / 2;
 
@@ -2190,7 +2191,7 @@ ReDesire:
                 if(math::closeish(myPos.x,myPos.y,wPos.x,wPos.y) <= npc.size*3)
                 {
                     debug("Close to workPos");
-                    endPos = Vec3(myPos);
+                    endPos = Vec3(myPos.x/20,myPos.y/20,myPos.z/20);
                     hasPath = false;
 
                     npc.jobPtr->completionProgress += npc.skills.intelligence / 2;
@@ -2238,26 +2239,17 @@ ReDesire:
 
     /* End of Critter Prioritization */
 
-    /*
-    if(npc.targetInfo.item != nullptr)
-    {
-        endPos = Vec3(npc.targetInfo.item->xpos/20, npc.targetInfo.item->ypos/20, npc.targetInfo.item->zpos/20);
-        hasPath = true;
-    }
-    */
-
-
-
     if(hasPath)
     {
         debug("hasPath");
+        std::cout << endPos.x << "/" << endPos.y << "/" << endPos.z << std::endl;
         bool prevWalkable = tiles[endPos.x][endPos.y][endPos.z].walkable;
         tiles[endPos.x][endPos.y][endPos.z].walkable = true;
         int result = pathCon.makePath(startPos, endPos);
         tiles[endPos.x][endPos.y][endPos.z].walkable = prevWalkable;
         pathCon.drawStoredPath();
     }
-
+    debug("post hasPath");
 
     if(!pathCon.storedPath.empty())
     {
@@ -2283,13 +2275,16 @@ ReDesire:
     }
     else if(npc.targetInfo.item != nullptr && pathCon.storedPath.size() == 1 || npc.targetInfo.item != nullptr && pathCon.storedPath.size() == 2)
     {
+        debug("dir Moving");
         npc.dirMove(sf::Vector2f((*npc.targetInfo.item).xpos,
                                          (*npc.targetInfo.item).ypos));
     }
 
+    debug("Removing stuffs");
     if(npc.factionPtr != nullptr)
         removeJobs(npc.factionPtr->jobList);
     removeItems(npc.inventory);
+    debug("endCritterbrain2");
 }
 
 void critterBrain(std::vector<Npc> &npcs)
