@@ -2134,7 +2134,7 @@ ReDesire:
                 }
             }
             debug("Wasn't build though.");
-            if(npc.jobPtr != nullptr && npc.jobPtr->type == "Chop" && npc.jobPtr->pItem != nullptr)
+            else if(npc.jobPtr != nullptr && npc.jobPtr->type == "Chop" && npc.jobPtr->pItem != nullptr)
             {
                 Item * itemPtr = npc.jobPtr->pItem;
                 endPos = Vec3(abs_to_index(itemPtr->xpos/20),abs_to_index(itemPtr->ypos/20),abs_to_index(itemPtr->zpos/20));
@@ -2167,7 +2167,7 @@ ReDesire:
 
             }
             debug("Wasn't chop.");
-            if(npc.jobPtr != nullptr && npc.jobPtr->type == "PickUp" && npc.jobPtr->pItem != nullptr)
+            else if(npc.jobPtr != nullptr && npc.jobPtr->type == "PickUp" && npc.jobPtr->pItem != nullptr)
             {
                 Item * itemPtr = npc.jobPtr->pItem;
                 endPos = Vec3(abs_to_index(itemPtr->xpos/20),abs_to_index(itemPtr->ypos/20),abs_to_index(itemPtr->zpos/20));
