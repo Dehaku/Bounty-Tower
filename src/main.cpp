@@ -1994,13 +1994,13 @@ ReDesire:
             }
             if (npc.targetInfo.item != nullptr)
             {
-                sf::Vector2f ItemPos((*npc.targetInfo.item).xpos,
-                                     (*npc.targetInfo.item).ypos);
+                Vec3 ItemPos((*npc.targetInfo.item).xpos,(*npc.targetInfo.item).ypos,(*npc.targetInfo.item).zpos);
+                Vec3 myPos(npc.xpos,npc.ypos,npc.zpos);
                 endPos = Vec3(npc.targetInfo.item->xpos/20, npc.targetInfo.item->ypos/20, npc.targetInfo.item->zpos/20);
                 hasPath = true;
 
-                if (math::closeish(npc.xpos, npc.ypos, ItemPos.x, ItemPos.y) <=
-                    npc.size * 3)
+                //if (math::closeish(npc.xpos, npc.ypos, ItemPos.x, ItemPos.y) <= npc.size * 3)
+                if(math::distance(myPos,ItemPos) <= npc.size*3 && myPos.z/20 == ItemPos.z/20)
                 {
                     Item *tar = npc.targetInfo.item;
                     npc.targetInfo.item = nullptr;
@@ -2174,7 +2174,8 @@ ReDesire:
                 endPos = Vec3(abs_to_index(itemPtr->xpos/20),abs_to_index(itemPtr->ypos/20),abs_to_index(itemPtr->zpos/20));
                 hasPath = true;
 
-                if(math::closeish(npc.xpos,npc.ypos,endPos.x*20,endPos.y*20) <= npc.size*3)
+                //if(math::closeish(npc.xpos,npc.ypos,endPos.x*20,endPos.y*20) <= npc.size*3)
+                if(math::distance(myPos,wPos) <= npc.size*3 && myPos.z/20 == wPos.z/20)
                 {
                     itemPtr->user = nullptr;
                     npc.inventory.push_back(*itemPtr);
