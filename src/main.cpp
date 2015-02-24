@@ -1996,8 +1996,8 @@ ReDesire:
             {
                 sf::Vector2f ItemPos((*npc.targetInfo.item).xpos,
                                      (*npc.targetInfo.item).ypos);
-            /*    npc.dirMove(sf::Vector2f((*npc.targetInfo.item).xpos,
-                                         (*npc.targetInfo.item).ypos)); */
+                endPos = Vec3(npc.targetInfo.item->xpos/20, npc.targetInfo.item->ypos/20, npc.targetInfo.item->zpos/20);
+                hasPath = true;
 
                 if (math::closeish(npc.xpos, npc.ypos, ItemPos.x, ItemPos.y) <=
                     npc.size * 3)
@@ -2078,6 +2078,8 @@ ReDesire:
                     Item * item = npc.targetInfo.item;
                     if(item != nullptr)
                     {
+                        endPos = Vec3(npc.targetInfo.item->xpos/20, npc.targetInfo.item->ypos/20, npc.targetInfo.item->zpos/20);
+                        hasPath = true;
                         if(math::closeish(npc.xpos,npc.ypos,item->xpos,item->ypos) <= npc.size*2)
                         {
                             item->user = nullptr;
@@ -2099,6 +2101,11 @@ ReDesire:
                 else
                     npc.jobPtr->errorReason = "";
 
+                if(material != nullptr)
+                {
+                    endPos = Vec3(npc.jobPtr->workPos.x/20,npc.jobPtr->workPos.y/20, npc.jobPtr->workPos.z/20);
+                    hasPath = true;
+                }
 
                 if(math::closeish(myPos.x,myPos.y,wPos.x,wPos.y) <= npc.size*3 && material != nullptr)
                 {
@@ -2126,11 +2133,6 @@ ReDesire:
 
                     }
 
-                }
-                else
-                {
-                    endPos = Vec3(npc.jobPtr->workPos.x/20,npc.jobPtr->workPos.y/20, npc.jobPtr->workPos.z/20);
-                    hasPath = true;
                 }
             }
             else if(npc.jobPtr != nullptr && npc.jobPtr->type == "Chop" && npc.jobPtr->pItem != nullptr)
@@ -2190,8 +2192,10 @@ ReDesire:
 
     debug("Checking inComplete:" + std::to_string(inComplete));
     // Incase the highest desire isn't completable, Go through again for the next highest desire.
+
     if (inComplete)
         goto ReDesire;
+
 
     textList.createText(npc.xpos - 30, npc.ypos - 15, 10, sf::Color::Red,
                         (*highestDesire).type, ":", (*highestDesire).potency);
@@ -2199,12 +2203,13 @@ ReDesire:
 
     /* End of Critter Prioritization */
 
-
+    /*
     if(npc.targetInfo.item != nullptr)
     {
         endPos = Vec3(npc.targetInfo.item->xpos/20, npc.targetInfo.item->ypos/20, npc.targetInfo.item->zpos/20);
         hasPath = true;
     }
+    */
 
 
 
