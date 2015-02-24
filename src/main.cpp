@@ -2107,7 +2107,7 @@ ReDesire:
                     hasPath = true;
                 }
 
-                if(math::closeish(myPos.x,myPos.y,wPos.x,wPos.y) <= npc.size*3 && material != nullptr)
+                if(math::distance(myPos,wPos) <= npc.size*3 && myPos.z/20 == wPos.z/20 && material != nullptr)
                 {
                     debug("Close to workPos and has material.");
                     endPos = Vec3(myPos.x/20,myPos.y/20,myPos.z/20);
