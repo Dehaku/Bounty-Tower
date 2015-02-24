@@ -2135,6 +2135,39 @@ ReDesire:
                 }
             }
             debug("Wasn't build though.");
+            if(npc.jobPtr->type == "Chop" && npc.jobPtr->pItem != nullptr)
+            {
+                Item * itemPtr = npc.jobPtr->pItem;
+                endPos = Vec3(abs_to_index(itemPtr->xpos/20),abs_to_index(itemPtr->ypos/20),abs_to_index(itemPtr->zpos/20));
+                hasPath = true;
+
+                if(math::closeish(npc.xpos,npc.ypos,endPos.x*20,endPos.y*20) <= npc.size*3)
+                {
+
+                    npc.jobPtr->completionProgress += npc.skills.intelligence / 2;
+
+                    for (float rot = 1; rot < 361 * (percentIs( npc.jobPtr->completionTimer,npc.jobPtr->completionProgress) / 100); rot++)
+                    {
+
+                        float xPos = itemPtr->xpos + sin(rot * PI / 180) * 10;
+                        float yPos = itemPtr->ypos + cos(rot * PI / 180) * 10;
+
+                        effects.createLine( itemPtr->xpos, itemPtr->ypos, xPos, yPos, 1, sf::Color(150, 150, 150, 150));
+                    }
+
+                    if (npc.jobPtr->completionProgress >= npc.jobPtr->completionTimer)
+                    {
+
+                        itemPtr->toDelete = true;
+                        for(int Woody = 0; Woody != 5; Woody++)
+                            spawnItem("Wood",itemPtr->xpos+randz(-3,3),itemPtr->ypos+randz(-3,3));
+                        npc.jobPtr->toDelete = true;
+                        npc.jobPtr = nullptr;
+                    }
+                }
+
+            }
+
         }
 
 
