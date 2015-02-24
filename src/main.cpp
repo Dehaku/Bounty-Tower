@@ -2044,7 +2044,6 @@ ReDesire:
                 debug("I have build job.");
                 Vec3 wPos(npc.jobPtr->workPos);
                 Vec3 myPos(npc.xpos,npc.ypos,npc.zpos);
-                Npc critter;
                 std::string desiredItem = "Wood";
                 debug("Checking for material");
                 Item * material = npc.hasItem(desiredItem);
@@ -2167,6 +2166,7 @@ ReDesire:
                 }
 
             }
+            debug("Wasn't chop.");
             if(npc.jobPtr->type == "PickUp" && npc.jobPtr->pItem != nullptr)
             {
                 Item * itemPtr = npc.jobPtr->pItem;
@@ -2182,6 +2182,7 @@ ReDesire:
                     npc.jobPtr = nullptr;
                 }
             }
+            debug("Wasn't PickUp.");
 
         }
 
