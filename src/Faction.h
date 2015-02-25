@@ -32,6 +32,9 @@ public:
     sf::Sprite img;
     std::list<Item> inventory;
     std::list<Item> equipped;
+
+    std::vector<Tile *> storedPath;
+
     std::string bloodcontent;
     std::string tags;
     Faction *factionPtr;

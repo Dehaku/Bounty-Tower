@@ -701,6 +701,27 @@ public:
 PathingController pathCon;
 
 
+void drawStoredPath(std::vector<Tile *> storedPath)
+    {
+        Vec3 oldPos;
+        bool firstRun = true;
+
+        for (auto &i : storedPath)
+        {
+            Vec3 pathPos;
+            pathPos = Vec3(i->getPos());
+            sf::Color pathColor(255, 255, 255, 100);
+
+            if (!firstRun)
+                effects.createLine((oldPos.x + 1) * 20 - 10,
+                                   (oldPos.y + 1) * 20 - 10,
+                                   (pathPos.x + 1) * 20 - 10,
+                                   (pathPos.y + 1) * 20 - 10, 5, pathColor);
+
+            oldPos = pathPos;
+            firstRun = false;
+        }
+    }
 
 
 //-- Prototypes
@@ -2240,23 +2261,31 @@ ReDesire:
 
 
     /* End of Critter Prioritization */
-
-    if(hasPath)
+    bool npcWalkable = tiles[abs_to_index(npc.xpos/20)][abs_to_index(npc.ypos/20)][abs_to_index(npc.zpos/20)].walkable;
+    if(hasPath && (gvars::framesPassed % 5) == 0 && npcWalkable)
     {
         debug("hasPath");
         bool prevWalkable = tiles[endPos.x][endPos.y][endPos.z].walkable;
         tiles[endPos.x][endPos.y][endPos.z].walkable = true;
         int result = pathCon.makePath(startPos, endPos);
         tiles[endPos.x][endPos.y][endPos.z].walkable = prevWalkable;
-        pathCon.drawStoredPath();
+        npc.storedPath.clear();
+        for(auto &i : pathCon.storedPath)
+            npc.storedPath.push_back(i);
+        pathCon.storedPath.clear();
+        //npc.storedPath = pathCon.storedPath;
     }
+    if(hasPath == false)
+        npc.storedPath.clear();
     debug("post hasPath");
 
-    if(!pathCon.storedPath.empty())
+    if(!npc.storedPath.empty())
     {
-        Vec3 Pos(pathCon.storedPath[1]->getPos());
+        //npc.drawStoredPath();
+        drawStoredPath(npc.storedPath);
+        Vec3 Pos(npc.storedPath[1]->getPos());
 
-        double pathTime = (((pathCon.storedPath.size()*20)*1.2)/npc.moverate)/30;
+        double pathTime = (((npc.storedPath.size()*20)*1.2)/npc.moverate)/30;
 
         std::ostringstream out;
         out << std::setprecision(2) << pathTime;
@@ -2264,7 +2293,7 @@ ReDesire:
         std::string pathy = "PathTime: ";
         pathy.append(out.str()  );
 
-        Vec3 endPathPos(pathCon.storedPath[pathCon.storedPath.size()-1]->getPos());
+        Vec3 endPathPos(npc.storedPath[npc.storedPath.size()-1]->getPos());
         textList.createText((endPathPos.x)*20-20,(endPathPos.y)*20-20,10,sf::Color(255,255,255), pathy );
 
         npc.dirMove(sf::Vector2f(Pos.x*20+10,Pos.y*20+10));
@@ -2272,17 +2301,23 @@ ReDesire:
         if(Pos.z != npc.zpos)
             npc.zpos = Pos.z*20;
 
-        if(pathCon.storedPath.size() >= 2)
+        if(npc.storedPath.size() >= 2)
         {
-            if(pathCon.storedPath[0]->teleporter && pathCon.storedPath[1]->teleporter)
+            if(npc.storedPath[0]->teleporter && npc.storedPath[1]->teleporter)
             {
-                npc.xpos = pathCon.storedPath[0]->telePos.x*20;
-                npc.ypos = pathCon.storedPath[0]->telePos.y*20;
-                npc.zpos = pathCon.storedPath[0]->telePos.z*20;
+                npc.xpos = npc.storedPath[0]->telePos.x*20;
+                npc.ypos = npc.storedPath[0]->telePos.y*20;
+                npc.zpos = npc.storedPath[0]->telePos.z*20;
             }
         }
+        Vec3 myPos(npc.xpos,npc.ypos,npc.zpos);
+        Vec3 posExtended(Pos.x*20+10,Pos.y*20+10,Pos.z*20+10);
 
-        pathCon.storedPath.clear();
+        if(math::distance(myPos,posExtended) <= npc.size)
+            npc.storedPath.erase(npc.storedPath.begin() );
+
+
+        //npc.storedPath.clear();
     }
     else if(npc.targetInfo.item != nullptr && pathCon.storedPath.size() == 1 || npc.targetInfo.item != nullptr && pathCon.storedPath.size() == 2)
     {
