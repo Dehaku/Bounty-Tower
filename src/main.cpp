@@ -1,4 +1,7 @@
 #include <cstring>
+#include <sstream>
+#include <iostream>
+#include <iomanip>
 #ifndef GALAXY_LINUX
 #include <windows.h>
 #endif
@@ -2253,6 +2256,16 @@ ReDesire:
     {
         Vec3 Pos(pathCon.storedPath[1]->getPos());
 
+        double pathTime = (((pathCon.storedPath.size()*20)*1.2)/npc.moverate)/30;
+
+        std::ostringstream out;
+        out << std::setprecision(2) << pathTime;
+
+        std::string pathy = "PathTime: ";
+        pathy.append(out.str()  );
+
+        Vec3 endPathPos(pathCon.storedPath[pathCon.storedPath.size()-1]->getPos());
+        textList.createText((endPathPos.x)*20-20,(endPathPos.y)*20-20,10,sf::Color(255,255,255), pathy );
 
         npc.dirMove(sf::Vector2f(Pos.x*20+10,Pos.y*20+10));
 
