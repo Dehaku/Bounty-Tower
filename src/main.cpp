@@ -2241,7 +2241,6 @@ ReDesire:
     if(hasPath)
     {
         debug("hasPath");
-        std::cout << endPos.x << "/" << endPos.y << "/" << endPos.z << std::endl;
         bool prevWalkable = tiles[endPos.x][endPos.y][endPos.z].walkable;
         tiles[endPos.x][endPos.y][endPos.z].walkable = true;
         int result = pathCon.makePath(startPos, endPos);
@@ -2956,6 +2955,33 @@ int main()
                     sf::Color(randz(0, 255), randz(0, 255), randz(0, 255)));
 
             squadHud();
+
+            if(inputState.key[Key::V])
+            {
+                for (int x = 0; x != GRIDS; x++)
+                    for (int y = 0; y != GRIDS; y++)
+                {
+                    //textList.createText(x*TILE_PIXELS,y*TILE_PIXELS,10,sf::Color::Red,std::to_string(tiles[x][y][gvars::currentz].walkable));
+                    if(tiles[x][y][gvars::currentz].walkable)
+                        effects.createSquare(x*TILE_PIXELS,y*TILE_PIXELS,x*TILE_PIXELS+TILE_PIXELS,y*TILE_PIXELS+TILE_PIXELS,sf::Color(255,255,0,100));
+                    else
+                        effects.createSquare(x*TILE_PIXELS,y*TILE_PIXELS,x*TILE_PIXELS+TILE_PIXELS,y*TILE_PIXELS+TILE_PIXELS,sf::Color(255,0,0,100));
+                }
+            }
+
+            if(inputState.key[Key::Space].time == 5)
+            {
+                for (int x = 0; x != GRIDS; x++)
+                    for (int y = 0; y != GRIDS; y++)
+                        for (int z = 0; z != CHUNK_SIZE; z++)
+                {
+                    if(tiles[x][y][z].id == 1008 || tiles[x][y][z].id == 1010)
+                        tiles[x][y][z].walkable = false;
+                    else
+                        tiles[x][y][z].walkable = true;
+                }
+            }
+
 
             if (inputState.key[Key::LShift].time > 0)
             {

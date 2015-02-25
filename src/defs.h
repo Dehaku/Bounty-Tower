@@ -10,6 +10,7 @@ const int GRID_X = 100;
 const int GRID_Y = 100;
 const int GRID_Z = 10;
 const int GRID_SIZE = 20;
+const int TILE_PIXELS = 20;
 const sf::Color BROWN(100, 100, 0, 255);
 
 struct Vec3
