@@ -1101,6 +1101,8 @@ void Tile::dirt()
     id = 1003;
     worldColor = sf::Color(100, 100, 0);
     img.setTexture(texturemanager.getTexture("Dirt.png"));
+    transparent = true;
+    walkable = true;
 }
 
 void Tile::rendGrass()
@@ -1133,7 +1135,8 @@ void Tile::grass()
     id = 1001;
     worldColor = sf::Color(0, 150, 0);
     img.setTexture(texturemanager.getTexture("Grass.png"));
-    //RendGrass();
+    transparent = true;
+    walkable = true;
 }
 
 void Tile::stone()
@@ -1204,6 +1207,8 @@ void Tile::road(bool center)
         img.setTexture(texturemanager.getTexture("MiddleRoad.png"));
     if (!center)
         img.setTexture(texturemanager.getTexture("Black.png"));
+    transparent = true;
+    walkable = true;
 }
 
 void Tile::door()
@@ -1222,6 +1227,8 @@ void Tile::lava()
     id = 1337;
     worldColor = sf::Color(255, 100, 0);
     img.setTexture(texturemanager.getTexture("Lava.png"));
+    transparent = true;
+    walkable = true;
 }
 
 void Tile::sky()
@@ -1229,6 +1236,8 @@ void Tile::sky()
     id = 1700;
     worldColor = sf::Color(150, 150, 150);
     img.setTexture(texturemanager.getTexture("Sky.png"));
+    transparent = true;
+    walkable = false;
 }
 
 void Tile::cake()
@@ -1238,6 +1247,8 @@ void Tile::cake()
     img.setTexture(texturemanager.getTexture("Door.png"));
     health = 15;
     deathID = 7;
+    transparent = true;
+    walkable = true;
 }
 
 void Tile::teleportPad(Vec3 teleportPosition)
@@ -1247,6 +1258,8 @@ void Tile::teleportPad(Vec3 teleportPosition)
     img.setTexture(texturemanager.getTexture("TeleporterPad.png"));
     teleporter = true;
     telePos = teleportPosition;
+    transparent = true;
+    walkable = true;
 }
 
 Tile::Tile() : id{}
