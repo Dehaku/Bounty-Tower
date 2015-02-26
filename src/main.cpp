@@ -2273,7 +2273,6 @@ ReDesire:
         for(auto &i : pathCon.storedPath)
             npc.storedPath.push_back(i);
         pathCon.storedPath.clear();
-        //npc.storedPath = pathCon.storedPath;
     }
     if(hasPath == false)
         npc.storedPath.clear();
@@ -2281,7 +2280,6 @@ ReDesire:
 
     if(!npc.storedPath.empty())
     {
-        //npc.drawStoredPath();
         drawStoredPath(npc.storedPath);
         Vec3 Pos(npc.storedPath[1]->getPos());
 
@@ -2315,9 +2313,6 @@ ReDesire:
 
         if(math::distance(myPos,posExtended) <= npc.size)
             npc.storedPath.erase(npc.storedPath.begin() );
-
-
-        //npc.storedPath.clear();
     }
     else if(npc.targetInfo.item != nullptr && pathCon.storedPath.size() == 1 || npc.targetInfo.item != nullptr && pathCon.storedPath.size() == 2)
     {
