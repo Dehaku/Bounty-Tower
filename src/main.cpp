@@ -16,6 +16,7 @@
 #include "math.h"
 #include "util.h"
 #include "globalvars.h"
+#include "Networking.h"
 
 #define USE_PATHER
 
@@ -2705,6 +2706,8 @@ int main()
     /* 0 = open, 1 = wall, 2 = upstairs, 3 = downstairs */
 
     buildMicroPatherTest();
+
+    std::cout << "displayPort(): " << displayPort() << std::endl;
 
     initializeTilePositions();
 
