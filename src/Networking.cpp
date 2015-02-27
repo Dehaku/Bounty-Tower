@@ -20,33 +20,20 @@ int displayPort()
     return network::mainPort;
 }
 
-class Identity
+
+Identity::Identity()
 {
-    public: // You could say this is redundent, But I don't care for Enums, And this prevents idiotic programming errors.
-    std::string WrongVersion;
-    std::string Connection;
-    std::string ConnectionSuccessful;
-    std::string TextMessage;
-    std::string DrawStuffs;
-    std::string Grid;
-    std::string Peers;
-    std::string ClientMouse;
-
-    Identity()
-    {
-        WrongVersion = "Wrong Version";
-        Connection = "Connection";
-        ConnectionSuccessful = "Connection Successful";
-        TextMessage = "Text Message";
-        DrawStuffs = "Draw Stuffs";
-        Grid = "Grid";
-        Peers = "Peers";
-        ClientMouse = "Client Mouse Position";
-    }
-
-
-};
+    WrongVersion = "Wrong Version";
+    Connection = "Connection";
+    ConnectionSuccessful = "Connection Successful";
+    TextMessage = "Text Message";
+    DrawStuffs = "Draw Stuffs";
+    Grid = "Grid";
+    Peers = "Peers";
+    ClientMouse = "Client Mouse Position";
+}
 Identity Ident;
+
 
 sf::TcpListener Servlistener;
 sf::TcpSocket Servsocket;
@@ -58,37 +45,11 @@ std::list<sf::TcpSocket*> clients;
 sf::SocketSelector selector;
 bool TcpFirstRun = true;
 
-class BoolPacket
+BoolPacket::BoolPacket()
 {
-    public:
-    sf::Packet Packet;
-    bool ToDelete;
-    BoolPacket()
-    {
-        ToDelete = false;
-    }
-};
-
+    ToDelete = false;
+}
 std::vector<BoolPacket> PacketContainer;
-
-
-
-
-class MyTestClass
-{
-    public:
-    int Monkey;
-    int Add(int ValOne, int ValTwo)
-    {
-        int ReturnVal = ValOne+ValTwo;
-        return ReturnVal;
-    }
-    MyTestClass()
-    {
-        Monkey = 69;
-    }
-};
-
 
 
 /////////////////////////////////////////////////// /////////
@@ -97,104 +58,30 @@ class MyTestClass
 ///
 ////////////////////////////////////////////////////////////
 
-
-class Player
+ServerController::ServerController()
 {
-    public:
-    std::string Name;
-    sf::Vector2f Pos;
-    int Jumped;
-    int JumpLimit;
-    float JumpValue;
-
-    Player()
-    {
-
-    }
-};
-
-
-
-class ServerController
-{
-    public:
-    bool Waiting;
-    int ConID;
-    std::vector<std::string> ChatHistory;
-
-
-    ServerController()
-    {
-        Waiting = false;
-        ConID = 100;
-    }
-};
+    Waiting = false;
+    ConID = 100;
+}
 ServerController ServCon;
 
-
-
-class ClientController
+ClientController::ClientController()
 {
-    public:
-    std::string Mode;
-    bool Waiting;
-    bool Connected;
-    bool Chatting;
-    sf::IpAddress Server;
-    std::string Name;
-    int ID;
-    std::string ChatString;
-    std::vector<std::string> ChatHistory;
-    std::vector<sf::Packet> Packets;
-
-    ClientController()
-    {
-        Mode = "Local";
-        Waiting = false;
-        Connected = false;
-        Chatting = false;
-        Name = "";
-        ID = -1;
-    }
-};
+    Mode = "Local";
+    Waiting = false;
+    Connected = false;
+    Chatting = false;
+    Name = "";
+    ID = -1;
+}
 ClientController CliCon;
 
-
-
-
-class Peer
+Peer::Peer()
 {
-    public:
-    std::string Name;
-    int ID;
-    sf::IpAddress IP;
-    sf::Vector2f Pos;
-    sf::Vector2f MousePos;
-    sf::Vector2f Mom;
-    sf::Sprite Img;
-    unsigned short Port;
-    Peer()
-    {
-        Name = "";
-        ID = ServCon.ConID++;
-        //Pos = sf::Vector2f(Random(50,700),50);
-        //Img.setTexture( *imagemanager.GetImage("BoxMan.bmp"));
-    }
-};
-
-class Peers
-{
-    public:
-    std::vector<Peer> Connected;
-};
+    Name = "";
+    ID = ServCon.ConID++;
+}
 Peers peers;
-
-class NestClass
-{
-    public:
-    std::vector<BoolPacket>::iterator NestIter;
-};
-
 
 void DealPackets()
 {
@@ -363,6 +250,183 @@ void DealPackets()
     }
     */
 
+
+}
+
+
+void runTcpServer(unsigned short port)
+{
+    // Create a server socket to accept new connections
+    //Code ripped to Main.cpp, Code 555000999
+    // Wait for a connection
+    if(TcpFirstRun)
+    {
+        TcpFirstRun = false;
+
+
+    /*
+    sf::TcpSocket* client = new sf::TcpSocket;
+    if (Servlistener.accept(*client) != sf::Socket::Done)
+    {
+        std::cout << "Infinite? \n";
+        return;
+    }
+
+
+    //std::cout << "Client connected: " << client.getRemoteAddress() << std::endl;
+    selector.add(*client);
+    clients.push_back(client);
+    */
+
+    }
+
+
+    while(selector.wait())
+    {
+        std::cout << "Wait Successful! \n";
+        if(selector.isReady(Servlistener))
+        {
+            std::cout << "Listener is ready!=======================================================(NoticeMe)======================================== \n";
+            sf::TcpSocket* client = new sf::TcpSocket;
+            if (Servlistener.accept(*client) == sf::Socket::Done)
+            {
+                selector.add(*client);
+                clients.push_back(client);
+            }
+            else
+            {
+                std::cout << "Deleting a Client! Is this normal? \n";
+                delete client;
+            }
+            std::cout << "Listener is done, Moving on. \n";
+        }
+        else
+        {
+            for (std::list<sf::TcpSocket*>::iterator it = clients.begin(); it != clients.end(); ++it)
+            {
+                //std::cout << "Running through clients \n";
+                sf::TcpSocket& client = **it;
+                if(selector.isReady(client))
+                {
+                    if(gvars::debug) std::cout << "Client is ready! \n";
+                    sf::Packet GotPacket;
+                    if(client.receive(GotPacket) != sf::Socket::Done)
+                    {
+                        std::cout << "Not Ready";
+                        return;
+                    }
+
+
+                    BoolPacket BP;
+                    BP.Packet = GotPacket;
+                    int Delay = 0;
+                    while(network::packetDeletion == true)
+                    {
+                        std::cout << " " << Delay++;
+                    }
+
+                    PacketContainer.push_back(BP);
+                    //std::cout << "Packet Size: " << sizeof(GotPacket);
+                    //std::cout << ", PC: " << PacketContainer.size();
+
+
+                    if(gvars::debug) std::cout << "Client is done. \n";
+                }
+                else
+                {
+                    std::cout << "IsReady(Client) is false \n";
+                }
+            }
+        }
+    }
+    if(gvars::debug) std::cout << "Do we make it here? \n";
+    //DealPackets();
+    if(gvars::debug) std::cout << "And if so, How about here? \n";
+    //Global.ServWait = false;
+
+}
+
+
+
+void runTcpClient(unsigned short port)
+{
+    // Create a socket for communicating with the server
+    // Connect to the server
+    //Code ripped to Main.cpp, Code 555000998
+
+    if(gvars::debug) std::cout << "Waiting on Message! \n";
+
+    sf::Packet GotPacket;
+    if (Clisocket.receive(GotPacket) != sf::Socket::Done)
+        return;
+
+    std::string GotIdent;
+    GotPacket >> GotIdent;
+    if(gvars::debug) std::cout << "GotIdent: " << GotIdent << std::endl;
+    if(GotIdent != "")
+    {
+        CliCon.Waiting = false;
+        if(gvars::debug) std::cout << "Message received from server " << ", Type:" << GotIdent << std::endl;
+        if(GotIdent == Ident.WrongVersion)
+        {
+            std::string ver;
+            GotPacket >> ver;
+
+            std::cout << "You have the wrong version. \n";
+            std::cout << "Servers Version: " << ver << ", Your Version: " << gvars::version << std::endl;
+            std::cout << "You should acquire the same version as the server. \n";
+            CliCon.Connected = false;
+        }
+        if(GotIdent == Ident.ConnectionSuccessful)
+        {
+            std::cout << "Your now connected to " << CliCon.Server << std::endl;
+            CliCon.Connected = true;
+        }
+        if(GotIdent == Ident.TextMessage)
+        {
+            std::string Text;
+            GotPacket >> Text;
+            CliCon.ChatHistory.push_back(Text);
+            std::cout << Text;
+        }
+        if(GotIdent == Ident.DrawStuffs)
+        {
+            //NeedsToDraw = true;
+        }
+        if(GotIdent == Ident.ClientMouse)
+        {
+            std::string Name;
+            GotPacket >> Name;
+            bool Exists = false;
+            for(int i = 0; i != peers.Connected.size(); i++)
+            {
+                if(Name == peers.Connected[i].Name) Exists = true;
+            }
+            if(!Exists)
+            {
+                Peer peer;
+                peer.Name = Name;
+                peer.MousePos = sf::Vector2f(5,5);
+                peers.Connected.push_back(peer);
+            }
+            //std::cout << "Dealing with ClientMouse from," << Name << ", Pack: " << i << std::endl;
+            for(int i = 0; i != peers.Connected.size(); i++)
+            {
+                if(Name == peers.Connected[i].Name)
+                {
+                    sf::Uint32 x;
+                    sf::Uint32 y;
+                    GotPacket >> x >> y;
+                    peers.Connected[i].MousePos.x = x;
+                    peers.Connected[i].MousePos.y = y;
+
+                }
+            }
+        }
+
+    }
+
+    //Global.CliWait = false;
 
 }
 
