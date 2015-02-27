@@ -12,6 +12,7 @@ void debug(std::string info);
 
 namespace gvars
 {
+extern std::string version;
 extern unsigned int framesPassed;
 extern bool debug;
 extern bool inFocus;

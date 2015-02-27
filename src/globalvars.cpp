@@ -15,6 +15,7 @@ float cz(float number)
 
 namespace gvars
 {
+std::string version = "0.0.1.0";
 unsigned int framesPassed = 0;
 bool debug = false;
 bool inFocus = true;
