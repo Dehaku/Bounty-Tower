@@ -2246,8 +2246,27 @@ ReDesire:
                     }
                 }
             }
+
+            else if(npc.jobPtr != nullptr && npc.jobPtr->type == "Move")
+            {
+                endPos = Vec3(wPos.x/20,wPos.y/20,wPos.z/20);
+                hasPath = true;
+                if(math::distance(myPos,wPos) <= npc.size*2 && myPos.z/20 == wPos.z/20)
+                {
+                    hasPath = false;
+
+                    npc.xpos = wPos.x;
+                    npc.ypos = wPos.y;
+                    npc.zpos = wPos.z;
+
+                    npc.jobPtr->toDelete = true;
+                    npc.jobPtr = nullptr;
+                }
+            }
+
         }
     }
+
 
     debug("Checking inComplete:" + std::to_string(inComplete));
     // Incase the highest desire isn't completable, Go through again for the next highest desire.

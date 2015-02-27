@@ -18,6 +18,13 @@ MenuPointerContainer menuPtrCon;
 
 using std::abs;
 
+template <typename T> T &listAt(std::list<T> &list, size_t index)
+{
+    auto it = list.begin();
+    std::advance(it, index);
+    return *it;
+}
+
 void Button::draw()
 {
     if (beenPressed == true)
@@ -407,6 +414,49 @@ void menuPopUp()
                     return;
                 }
             }
+            if (i == 2 && myTargetPtr != nullptr)
+            {
+
+                //Effectz.CreateLine(GC.MenuPos.x,(GC.MenuPos.y+(iY*13))+8,GC.MenuPos.x+90,(GC.MenuPos.y+(iY*13))+8,3,Black,1,Yellow);
+                effects.createLine(
+                    gCtrl.menuPos.x, (gCtrl.menuPos.y + (iY * 13)) + 13,
+                    gCtrl.menuPos.x + 90, (gCtrl.menuPos.y + (iY * 13)) + 13, 1,
+                    sf::Color::Cyan);
+                textList.createText(gCtrl.menuPos.x + 2,
+                                    gCtrl.menuPos.y + (iY * 13), 12,
+                                    sf::Color::White, "Critter - Move");
+                int butt = createSquareButton(
+                    math::Vec2f(gCtrl.menuPos.x + brd,
+                                (gCtrl.menuPos.y + (iY * 13)) + mbd),
+                    bs, bsy, butCol, "Makes currently selected fella move to the menu position.");
+                if (squareButtonClicked(butt) ||
+                    inputState.key[Key::Num3].time == 1)
+                {
+
+                    Job job;
+                    job.name = "MovetoSelectedLocation";
+                    job.type = "Move";
+                    job.workPos.x = gCtrl.menuPos.x;
+                    job.workPos.y = gCtrl.menuPos.y;
+                    job.workPos.z = gvars::currentz*GRID_SIZE;
+
+                    if(myTargetPtr->jobPtr != nullptr)
+                    {
+                        myTargetPtr->jobPtr->pWorker = nullptr;
+                        myTargetPtr->jobPtr = nullptr;
+                    }
+
+                    job.pWorker = myTargetPtr;
+                    int jobListSize = myTargetPtr->factionPtr->jobList.size();
+
+                    myTargetPtr->factionPtr->jobList.push_back(job);
+                    myTargetPtr->jobPtr = &listAt(myTargetPtr->factionPtr->jobList,jobListSize);
+
+                    return;
+                }
+            }
+
+
 
             if (i == -5)
             {
