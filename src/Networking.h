@@ -17,86 +17,86 @@ int displayPort();
 class Identity
 {
     public: // You could say this is redundent, But I don't care for Enums, And this prevents idiotic programming errors.
-    std::string WrongVersion;
-    std::string Connection;
-    std::string ConnectionSuccessful;
-    std::string TextMessage;
-    std::string DrawStuffs;
-    std::string Grid;
-    std::string Peers;
-    std::string ClientMouse;
+    std::string wrongVersion;
+    std::string connection;
+    std::string connectionSuccessful;
+    std::string textMessage;
+    std::string drawStuffs;
+    std::string grid;
+    std::string peers;
+    std::string clientMouse;
 
     Identity();
 };
-extern Identity Ident;
+extern Identity ident;
 
 
 
 class BoolPacket
 {
     public:
-    sf::Packet Packet;
-    bool ToDelete;
+    sf::Packet packet;
+    bool toDelete;
     BoolPacket();
 };
 
-extern std::vector<BoolPacket> PacketContainer;
+extern std::vector<BoolPacket> packetContainer;
 
 class ServerController
 {
     public:
-    bool Waiting;
-    int ConID;
-    std::vector<std::string> ChatHistory;
+    bool waiting;
+    int conID;
+    std::vector<std::string> chatHistory;
 
 
     ServerController();
 };
-extern ServerController ServCon;
+extern ServerController servCon;
 
 class ClientController
 {
     public:
-    std::string Mode;
-    bool Waiting;
-    bool Connected;
-    bool Chatting;
-    sf::IpAddress Server;
-    std::string Name;
+    std::string mode;
+    bool waiting;
+    bool connected;
+    bool chatting;
+    sf::IpAddress server;
+    std::string name;
     int ID;
-    std::string ChatString;
-    std::vector<std::string> ChatHistory;
-    std::vector<sf::Packet> Packets;
+    std::string chatString;
+    std::vector<std::string> chatHistory;
+    std::vector<sf::Packet> packets;
 
     ClientController();
 };
-extern ClientController CliCon;
+extern ClientController cliCon;
 
 class Peer
 {
     public:
-    std::string Name;
+    std::string name;
     int ID;
     sf::IpAddress IP;
-    sf::Vector2f Pos;
-    sf::Vector2f MousePos;
-    sf::Vector2f Mom;
-    sf::Sprite Img;
-    unsigned short Port;
+    sf::Vector2f pos;
+    sf::Vector2f mousePos;
+    sf::Vector2f mom;
+    sf::Sprite img;
+    unsigned short port;
     Peer();
 };
 
 class Peers
 {
     public:
-    std::vector<Peer> Connected;
+    std::vector<Peer> connected;
 };
 extern Peers peers;
 
 class NestClass
 {
     public:
-    std::vector<BoolPacket>::iterator NestIter;
+    std::vector<BoolPacket>::iterator nestIter;
 };
 
 void DealPackets();

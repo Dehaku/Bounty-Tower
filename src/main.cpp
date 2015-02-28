@@ -2707,7 +2707,10 @@ int main()
 
     buildMicroPatherTest();
 
-    std::cout << "displayPort(): " << displayPort() << std::endl;
+
+    runTcpServer(network::mainPort);
+
+
 
     initializeTilePositions();
 

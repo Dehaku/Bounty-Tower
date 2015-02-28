@@ -23,16 +23,16 @@ int displayPort()
 
 Identity::Identity()
 {
-    WrongVersion = "Wrong Version";
-    Connection = "Connection";
-    ConnectionSuccessful = "Connection Successful";
-    TextMessage = "Text Message";
-    DrawStuffs = "Draw Stuffs";
-    Grid = "Grid";
-    Peers = "Peers";
-    ClientMouse = "Client Mouse Position";
+    wrongVersion = "Wrong Version";
+    connection = "Connection";
+    connectionSuccessful = "Connection Successful";
+    textMessage = "Text Message";
+    drawStuffs = "Draw Stuffs";
+    grid = "Grid";
+    peers = "Peers";
+    clientMouse = "Client Mouse Position";
 }
-Identity Ident;
+Identity ident;
 
 
 sf::TcpListener Servlistener;
@@ -47,9 +47,9 @@ bool TcpFirstRun = true;
 
 BoolPacket::BoolPacket()
 {
-    ToDelete = false;
+    toDelete = false;
 }
-std::vector<BoolPacket> PacketContainer;
+std::vector<BoolPacket> packetContainer;
 
 
 /////////////////////////////////////////////////// /////////
@@ -60,68 +60,68 @@ std::vector<BoolPacket> PacketContainer;
 
 ServerController::ServerController()
 {
-    Waiting = false;
-    ConID = 100;
+    waiting = false;
+    conID = 100;
 }
-ServerController ServCon;
+ServerController servCon;
 
 ClientController::ClientController()
 {
-    Mode = "Local";
-    Waiting = false;
-    Connected = false;
-    Chatting = false;
-    Name = "";
+    mode = "Local";
+    waiting = false;
+    connected = false;
+    chatting = false;
+    name = "";
     ID = -1;
 }
-ClientController CliCon;
+ClientController cliCon;
 
 Peer::Peer()
 {
-    Name = "";
-    ID = ServCon.ConID++;
+    name = "";
+    ID = servCon.conID++;
 }
 Peers peers;
 
 void DealPackets()
 {
-    if(gvars::debug) std::cout << "DealPacket Begins" << PacketContainer.size() << std::endl;
-    int PackLimit = PacketContainer.size();
+    if(gvars::debug) std::cout << "DealPacket Begins" << packetContainer.size() << std::endl;
+    int PackLimit = packetContainer.size();
     for(int i = 0; i != PackLimit; i++)
     {
-                    //PacketContainer[i].Packet
+                    //packetContainer[i].Packet
                     std::string GotIdent;
-                    PacketContainer[i].Packet >> GotIdent;
+                    packetContainer[i].packet >> GotIdent;
                     if(gvars::debug) std::cout << "GotIdent: \n" << GotIdent << std::endl;
                     if(GotIdent != "")
                     {
-                        CliCon.Waiting = false;
+                        cliCon.waiting = false;
                         if(gvars::debug) std::cout << "Message received from server " << ", Type:" << GotIdent << std::endl;
-                        if(GotIdent == Ident.WrongVersion)
+                        if(GotIdent == ident.wrongVersion)
                         {
                             std::string ver;
-                            PacketContainer[i].Packet >> ver;
+                            packetContainer[i].packet >> ver;
 
                             std::cout << "You have the wrong version. \n";
                             std::cout << "Servers Version: " << ver << ", Your Version: " << gvars::version << std::endl;
                             std::cout << "You should acquire the same version as the server. \n";
-                            CliCon.Connected = false;
+                            cliCon.connected = false;
                         }
 
-                        if(GotIdent == Ident.ConnectionSuccessful)
+                        if(GotIdent == ident.connectionSuccessful)
                         {
-                            std::cout << "Your now connected to " << CliCon.Server << std::endl;
-                            CliCon.Connected = true;
+                            std::cout << "Your now connected to " << cliCon.server << std::endl;
+                            cliCon.connected = true;
                         }
-                        if(GotIdent == Ident.TextMessage)
+                        if(GotIdent == ident.textMessage)
                         {
                             if(gvars::debug) std::cout << "Dealing with Text Message, Pack: " << i << std::endl;
                             std::string Text;
-                            PacketContainer[i].Packet >> Text;
-                            CliCon.ChatHistory.push_back(Text);
+                            packetContainer[i].packet >> Text;
+                            cliCon.chatHistory.push_back(Text);
                             std::cout << Text;
                             sf::Packet SendPacket;
-                            SendPacket << Ident.TextMessage << Text;
+                            SendPacket << ident.textMessage << Text;
 
                             for (std::list<sf::TcpSocket*>::iterator zit = clients.begin(); zit != clients.end(); ++zit)
                             {
@@ -133,33 +133,33 @@ void DealPackets()
                             if(gvars::debug) std::cout << "Done with Text Message Packet:" << i << std::endl;
 
                         }
-                        if(GotIdent == Ident.DrawStuffs)
+                        if(GotIdent == ident.drawStuffs)
                         {
                             //NeedsToDraw = true;
                         }
-                        if(GotIdent == Ident.Connection)
+                        if(GotIdent == ident.connection)
                         {
                             Peer peer;
-                            PacketContainer[i].Packet >> peer.Name;
-                            peers.Connected.push_back(peer);
+                            packetContainer[i].packet >> peer.name;
+                            peers.connected.push_back(peer);
                         }
-                        if(GotIdent == Ident.ClientMouse)
+                        if(GotIdent == ident.clientMouse)
                         {
 
                             std::string Name;
-                            PacketContainer[i].Packet >> Name;
+                            packetContainer[i].packet >> Name;
                             if(gvars::debug) std::cout << "Dealing with ClientMouse from," << Name << ", Pack: " << i << std::endl;
-                            for(int i = 0; i != peers.Connected.size(); i++)
+                            for(int i = 0; i != peers.connected.size(); i++)
                             {
-                                if(Name == peers.Connected[i].Name)
+                                if(Name == peers.connected[i].name)
                                 {
-                                    //PacketContainer[i].Packet >> peers.Connected[i].MousePos.x >> peers.Connected[i].MousePos.y;
+                                    //packetContainer[i].Packet >> peers.Connected[i].MousePos.x >> peers.Connected[i].MousePos.y;
 
                                     sf::Uint32 x;
                                     sf::Uint32 y;
-                                    PacketContainer[i].Packet >> x >> y;
-                                    peers.Connected[i].MousePos.x = x;
-                                    peers.Connected[i].MousePos.y = y;
+                                    packetContainer[i].packet >> x >> y;
+                                    peers.connected[i].mousePos.x = x;
+                                    peers.connected[i].mousePos.y = y;
 
 
                                 }
@@ -168,11 +168,11 @@ void DealPackets()
                         }
 
                     }
-                    PacketContainer[i].ToDelete = true;
+                    packetContainer[i].toDelete = true;
 
     }
     bool DoneDeleting = false;
-    std::vector<BoolPacket>::iterator EndLimit = PacketContainer.end();
+    std::vector<BoolPacket>::iterator EndLimit = packetContainer.end();
 
 
 
@@ -182,29 +182,29 @@ void DealPackets()
 
 
     int DeleteAmount = 0;
-    for(std::vector<BoolPacket>::iterator i = PacketContainer.begin(); i != EndLimit; i++)
+    for(std::vector<BoolPacket>::iterator i = packetContainer.begin(); i != EndLimit; i++)
     {
         bool CatchAll = false;
-        if(i->ToDelete == true)
+        if(i->toDelete == true)
         {
             DeleteAmount++;
 
             NestClass NC;
-            NC.NestIter = i;
+            NC.nestIter = i;
 
             Nested.push_back(NC);
             //CatchAll = true;
             //EndLimit--;
         }
     }
-    //PacketContainer.erase(PacketContainer.begin(),PacketContainer.begin()+DeleteAmount);
+    //packetContainer.erase(packetContainer.begin(),packetContainer.begin()+DeleteAmount);
 
     if(gvars::debug) std::cout << "Nested: " << Nested.size() << std::endl;
     network::packetDeletion = true;
     for(int i = Nested.size()-1; i != -1; i--)
     {
         if(gvars::debug) std::cout << "Removed: " << i << std::endl;
-        PacketContainer.erase( Nested[i].NestIter );
+        packetContainer.erase( Nested[i].nestIter );
 
     }
     Nested.clear();
@@ -215,7 +215,7 @@ void DealPackets()
     /*
     for(std::vector<std::vector<BoolPacket>::iterator>::iterator i = Nested.end(); i != Nested.begin(); i--)
     {
-        PacketContainer.erase(i);
+        packetContainer.erase(i);
     }
     */
 
@@ -227,14 +227,14 @@ void DealPackets()
         std::vector<BoolPacket>::iterator i;
         DoneDeleting = true;
         // try{
-        for(i = PacketContainer.begin(); i != EndLimit; i++)
+        for(i = packetContainer.begin(); i != EndLimit; i++)
         {
             bool CatchAll = false;
 
             if(i->ToDelete == true)
             {
                 DoneDeleting = false;
-                PacketContainer.erase(i);
+                packetContainer.erase(i);
                 Nested.push_back(i);
                 CatchAll = true;
                 EndLimit--;
@@ -318,16 +318,16 @@ void runTcpServer(unsigned short port)
 
 
                     BoolPacket BP;
-                    BP.Packet = GotPacket;
+                    BP.packet = GotPacket;
                     int Delay = 0;
                     while(network::packetDeletion == true)
                     {
                         std::cout << " " << Delay++;
                     }
 
-                    PacketContainer.push_back(BP);
+                    packetContainer.push_back(BP);
                     //std::cout << "Packet Size: " << sizeof(GotPacket);
-                    //std::cout << ", PC: " << PacketContainer.size();
+                    //std::cout << ", PC: " << packetContainer.size();
 
 
                     if(gvars::debug) std::cout << "Client is done. \n";
@@ -339,7 +339,8 @@ void runTcpServer(unsigned short port)
             }
         }
     }
-    if(gvars::debug) std::cout << "Do we make it here? \n";
+    //if(gvars::debug)
+        std::cout << "Do we make it here? \n";
     //DealPackets();
     if(gvars::debug) std::cout << "And if so, How about here? \n";
     //Global.ServWait = false;
@@ -365,9 +366,9 @@ void runTcpClient(unsigned short port)
     if(gvars::debug) std::cout << "GotIdent: " << GotIdent << std::endl;
     if(GotIdent != "")
     {
-        CliCon.Waiting = false;
+        cliCon.waiting = false;
         if(gvars::debug) std::cout << "Message received from server " << ", Type:" << GotIdent << std::endl;
-        if(GotIdent == Ident.WrongVersion)
+        if(GotIdent == ident.wrongVersion)
         {
             std::string ver;
             GotPacket >> ver;
@@ -375,50 +376,51 @@ void runTcpClient(unsigned short port)
             std::cout << "You have the wrong version. \n";
             std::cout << "Servers Version: " << ver << ", Your Version: " << gvars::version << std::endl;
             std::cout << "You should acquire the same version as the server. \n";
-            CliCon.Connected = false;
+            cliCon.connected = false;
         }
-        if(GotIdent == Ident.ConnectionSuccessful)
+        if(GotIdent == ident.connectionSuccessful)
         {
-            std::cout << "Your now connected to " << CliCon.Server << std::endl;
-            CliCon.Connected = true;
+            std::cout << "Your now connected to " << cliCon.server << std::endl;
+            cliCon.connected = true;
         }
-        if(GotIdent == Ident.TextMessage)
+        if(GotIdent == ident.textMessage)
         {
             std::string Text;
             GotPacket >> Text;
-            CliCon.ChatHistory.push_back(Text);
+            cliCon.chatHistory.push_back(Text);
             std::cout << Text;
         }
-        if(GotIdent == Ident.DrawStuffs)
+        if(GotIdent == ident.drawStuffs)
         {
             //NeedsToDraw = true;
         }
-        if(GotIdent == Ident.ClientMouse)
+        if(GotIdent == ident.clientMouse)
         {
             std::string Name;
             GotPacket >> Name;
             bool Exists = false;
-            for(int i = 0; i != peers.Connected.size(); i++)
+            for(int i = 0; i != peers.connected.size(); i++)
             {
-                if(Name == peers.Connected[i].Name) Exists = true;
+                if(Name == peers.connected[i].name)
+                    Exists = true;
             }
             if(!Exists)
             {
                 Peer peer;
-                peer.Name = Name;
-                peer.MousePos = sf::Vector2f(5,5);
-                peers.Connected.push_back(peer);
+                peer.name = Name;
+                peer.mousePos = sf::Vector2f(5,5);
+                peers.connected.push_back(peer);
             }
             //std::cout << "Dealing with ClientMouse from," << Name << ", Pack: " << i << std::endl;
-            for(int i = 0; i != peers.Connected.size(); i++)
+            for(int i = 0; i != peers.connected.size(); i++)
             {
-                if(Name == peers.Connected[i].Name)
+                if(Name == peers.connected[i].name)
                 {
                     sf::Uint32 x;
                     sf::Uint32 y;
                     GotPacket >> x >> y;
-                    peers.Connected[i].MousePos.x = x;
-                    peers.Connected[i].MousePos.y = y;
+                    peers.connected[i].mousePos.x = x;
+                    peers.connected[i].mousePos.y = y;
 
                 }
             }
