@@ -2,6 +2,7 @@
 #include <sstream>
 #include <iostream>
 #include <iomanip>
+#include <thread>
 #ifndef GALAXY_LINUX
 #include <windows.h>
 #endif
@@ -2708,7 +2709,16 @@ int main()
     buildMicroPatherTest();
 
 
-    runTcpServer(network::mainPort);
+    if (Servlistener.listen(network::mainPort) != sf::Socket::Done)
+    {
+        std::cout << "ServListen Error? \n";
+    }
+    std::cout << "Server is listening to port " << network::mainPort << ", waiting for connections... " << std::endl;
+    selector.add(Servlistener);
+
+    sf::Thread TcpServerThread(&runTcpServer, network::mainPort);
+    sf::Thread TcpClientThread(&runTcpClient, network::mainPort+23);
+    //runTcpServer(network::mainPort);
 
 
 
@@ -2775,6 +2785,45 @@ int main()
 
     while (window.isOpen())
     {
+        if(network::servWait == false)
+        {
+            std::cout << "Launching Server \n";
+            TcpServerThread.launch();
+            network::servWait = true;
+        }
+        if(network::cliWait == false)
+        {
+            std::cout << "Launching Client \n";
+            TcpClientThread.launch();
+            network::cliWait = true;
+        }
+        DealPackets();
+
+        if(inputState.key[Key::P].time == 1)
+        {
+            std::string cliName = "Dudelington";
+            std::string cliServer = "127.0.0.1";
+            if (Clisocket.connect(cliServer, network::mainPort) == sf::Socket::Done)
+            {
+                std::cout << "Connected to server " << cliServer << std::endl;
+            }
+
+            sf::Packet packet;
+
+            packet << ident.connection << cliName;
+            Clisocket.send(packet);
+            packet.clear();
+            packet << ident.clientMouse << cliName << gvars::mousePos.x << gvars::mousePos.y;
+            Clisocket.send(packet);
+        }
+        if(inputState.key[Key::O].time == 1)
+        {
+            sf::Packet packet;
+            packet << ident.textMessage << randomWindowName();
+            Clisocket.send(packet);
+        }
+
+
         gvars::framesPassed++;
         if(gvars::framesPassed >= 4000000)
         {

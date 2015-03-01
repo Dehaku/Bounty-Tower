@@ -3,7 +3,7 @@
 #include <iostream>
 #include <iomanip>
 #include <stdio.h>
-#include <list>
+
 #include <string>
 
 
@@ -13,6 +13,8 @@ namespace network
 {
     int mainPort = 23636;
     bool packetDeletion = false;
+    bool servWait = false;
+    bool cliWait = false;
 }
 
 int displayPort()
@@ -35,15 +37,14 @@ Identity::Identity()
 Identity ident;
 
 
+sf::IpAddress server("127.0.0.1");
+bool TcpFirstRun = true;
 sf::TcpListener Servlistener;
 sf::TcpSocket Servsocket;
 sf::TcpSocket Clisocket;
-sf::IpAddress server("127.0.0.1");
-
 std::list<sf::TcpSocket*> clients;
-
 sf::SocketSelector selector;
-bool TcpFirstRun = true;
+
 
 BoolPacket::BoolPacket()
 {
@@ -119,7 +120,7 @@ void DealPackets()
                             std::string Text;
                             packetContainer[i].packet >> Text;
                             cliCon.chatHistory.push_back(Text);
-                            std::cout << Text;
+                            std::cout << "* " << Text;
                             sf::Packet SendPacket;
                             SendPacket << ident.textMessage << Text;
 

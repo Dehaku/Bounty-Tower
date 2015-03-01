@@ -4,15 +4,27 @@
 #include <SFML/Network.hpp>
 #include <SFML/Graphics.hpp>
 
+#include <list>
+
 namespace network
 {
     extern int mainPort;
     extern bool packetDeletion;
+    extern bool servWait;
+    extern bool cliWait;
 }
 
 int displayPort();
 
+extern sf::TcpListener Servlistener;
+extern sf::TcpSocket Servsocket;
+extern sf::TcpSocket Clisocket;
+extern sf::IpAddress server;
 
+extern std::list<sf::TcpSocket*> clients;
+
+extern sf::SocketSelector selector;
+extern bool TcpFirstRun;
 
 class Identity
 {
