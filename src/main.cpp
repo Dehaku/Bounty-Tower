@@ -780,6 +780,7 @@ std::string randomWindowName()
 
 sf::RenderWindow window;
 
+
 void unpointItems(std::list<Item> &items)
 {
 
@@ -2548,9 +2549,10 @@ void displayChat(sf::Vector2f position)
     {
         textList.createText(
             position.x,
-            (position.y - ((chatBox.chatStorage.size()) * 10)) + (i * 10), 11,
+            ((position.y - ((chatBox.chatStorage.size()) * 10))-10) + (i * 10), 10,
             chatBox.chatStorage[i].color, chatBox.chatStorage[i].line);
     }
+    textList.createText(gvars::bottomLeft.x+10,gvars::bottomLeft.y-15,10,sf::Color::White,"Chat: " + cliCon.chatString);
 }
 
 void drawStuffs()
@@ -2718,9 +2720,6 @@ int main()
 
     sf::Thread TcpServerThread(&runTcpServer, network::mainPort);
     sf::Thread TcpClientThread(&runTcpClient, network::mainPort+23);
-    //runTcpServer(network::mainPort);
-
-
 
     initializeTilePositions();
 
@@ -2815,6 +2814,9 @@ int main()
             packet.clear();
             packet << ident.clientMouse << cliName << gvars::mousePos.x << gvars::mousePos.y;
             Clisocket.send(packet);
+            packet.clear();
+            packet << ident.textMessage << cliName + randomWindowName();
+            Clisocket.send(packet);
         }
         if(inputState.key[Key::O].time == 1)
         {
@@ -2822,6 +2824,9 @@ int main()
             packet << ident.textMessage << randomWindowName();
             Clisocket.send(packet);
         }
+
+        textList.createText(15,15,10,sf::Color::White,"Server Port: " + std::to_string(network::mainPort));
+        textList.createText(15,30,10,sf::Color::White,"Client Port: " + std::to_string(network::mainPort+23));
 
 
         gvars::framesPassed++;
@@ -2914,6 +2919,72 @@ int main()
             {
                 gvars::inFocus = true;
             }
+            if (event.type == sf::Event::TextEntered)
+            {
+                if (event.text.unicode < 128)
+                {
+                    if(event.text.unicode != 8 && event.text.unicode != 13) // 8 = backspace 13 = enter, Thanks to http://www.fileformat.info
+                    {
+                        std::string TempStr;
+                        TempStr = event.text.unicode;
+                        cliCon.chatString.append( TempStr );
+                    }
+                    if(event.text.unicode == 8 && cliCon.chatString.size() != 0)
+                    {
+                        cliCon.chatString.erase(cliCon.chatString.end()-1);
+                    }
+                    if(event.text.unicode == 13 && network::client == true)
+                    {
+                        sf::UdpSocket socket;
+                        sf::Packet ToSend;
+                        std::string SendText;
+                        SendText.append(cliCon.name);
+                        SendText.append(": ");
+                        SendText.append(cliCon.chatString);
+
+                        ToSend << ident.textMessage << SendText;
+                        if(ToSend.getDataSize() != 0)
+                        {
+
+                            sf::Packet sendpacket;
+
+                            sendpacket << ident.textMessage << SendText;
+
+                            // Send an answer to the server
+                            if(Clisocket.send(sendpacket) != sf::Socket::Done)
+                            {
+                                std::cout << "!= Socket Done (In client sending chat), Apparently! Tell the Devs! \n";
+                            }
+
+
+                            cliCon.chatString.clear();
+                        }
+                    }
+
+                    if(event.text.unicode == 13 && network::server == true)
+                    {
+                        sf::Packet ToSend;
+                        std::string SendText;
+                        SendText.append("*Server*");
+                        SendText.append(": ");
+                        SendText.append(cliCon.chatString);
+
+                        ToSend << ident.textMessage << SendText;
+                        if(ToSend.getDataSize() != 0)
+                        {
+
+                            for (std::list<sf::TcpSocket*>::iterator it = clients.begin(); it != clients.end(); ++it)
+                            {
+                                if(gvars::debug) std::cout << "Running through clients \n";
+                                sf::TcpSocket& client = **it;
+                                client.send(ToSend);
+                            }
+                            cliCon.chatString.clear();
+                        }
+                    }
+                }
+            }
+
         }
         window.setView(gvars::view1);
         gvars::buttonClicked = false;
@@ -2942,6 +3013,8 @@ int main()
         gvars::bottomRight =
             sf::Vector2f(gvars::view1.getCenter().x + HALF_SIZE.x,
                          gvars::view1.getCenter().y + HALF_SIZE.y);
+
+
 
         if (inputState.key[Key::K].time == 1)
         { // Generates a random name from GenerateName(); and puts it into the console.

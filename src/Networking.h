@@ -12,6 +12,8 @@ namespace network
     extern bool packetDeletion;
     extern bool servWait;
     extern bool cliWait;
+    extern bool server;
+    extern bool client;
 }
 
 int displayPort();

@@ -15,6 +15,8 @@ namespace network
     bool packetDeletion = false;
     bool servWait = false;
     bool cliWait = false;
+    bool server = false;
+    bool client = false;
 }
 
 int displayPort()
