@@ -6,6 +6,7 @@
 
 #include <list>
 #include "util.h"
+#include "Text.h"
 
 namespace network
 {
@@ -16,6 +17,7 @@ namespace network
     extern bool server;
     extern bool client;
     extern bool chatting;
+    extern std::string name;
 }
 
 int displayPort();

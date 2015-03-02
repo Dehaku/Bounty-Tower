@@ -18,6 +18,7 @@ namespace network
     bool server = false;
     bool client = false;
     bool chatting = false;
+    std::string name;
 }
 
 int displayPort()
@@ -450,21 +451,48 @@ bool chatCommand(std::string input)
         std::string injection;
         injection.append(input,tStart,tEnd-tStart);
         elements.push_back(injection);
-        std::cout << tStart << "/" << tEnd << "/" << input.npos << "/" << input.size() << std::endl;
-        fSleep(0.1);
         tStart = tEnd+1;
         if(tEnd == input.npos)
             finished = true;
     }
-
     std::cout << "input: " << input << std::endl;
     for(auto &i : elements)
     {
         std::cout << "elements: " << i << std::endl;
     }
+    if(elements[0] == "/connect")
+    {
+        std::cout << "Connect chat command detected. \n";
+        return true;
+    }
+    else if(elements[0] == "/setname")
+    {
+        chatBox.addChat("Server: " + network::name + " has changed their name to " + elements[1], sf::Color(255,255,255));
+        network::name = elements[1];
+        if(elements[1] == "Lithi" || elements[1] == "Biocava" || elements[1] == "Sneaky" || elements[1] == "SneakySnake")
+            chatBox.addChat("Server: Ooo, Ooo, I like you!", sf::Color(255,150,150));
+        if(elements[1] == "Argwm" || elements[1] == "Dehaku")
+            chatBox.addChat("Server: Hey, that's my masters name!", sf::Color(255,150,150));
+        return true;
+    }
+    else if(elements[0] == "/repeat")
+    {
+        std::string repeatingLine;
+        for(int i = 0; i != elements.size(); i++)
+        {
+            if(i != 0 && i != 1)
+            {
+                repeatingLine.append(elements[i] + " ");
+            }
+        }
+        for(int i = 0; i != std::stoi(elements[1]); i++)
+        {
+            chatBox.addChat("Server: Repeating; " + repeatingLine, sf::Color(255,255,255));
+        }
 
+    }
 
-
+    chatBox.addChat("Unrecognized command: " + input, sf::Color(100,100,100));
     return false;
 }
 

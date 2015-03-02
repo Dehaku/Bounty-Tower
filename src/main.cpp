@@ -2988,7 +2988,13 @@ int main()
                     if(event.text.unicode == 13)
                     {
                         network::chatting = false;
-                        chatBox.addChat(cliCon.chatString,sf::Color::White);
+                        std::string firstLetter;
+                        firstLetter.append(cliCon.chatString,0,1);
+                        std::cout << "(" << firstLetter << ")\n";
+                        if(firstLetter == "/")
+                            chatCommand(cliCon.chatString);
+                        else
+                            chatBox.addChat(cliCon.chatString,sf::Color::White);
                         cliCon.chatString.clear();
                     }
 
@@ -4828,7 +4834,7 @@ int main()
                                 "Pathfinding: MicroPather by Lee Thomason");
             /* textList.createText(gvars::mousePos.x,gvars::mousePos.y-10,10,sf::Color::White,"X: "+std::to_string(gvars::mousePos.x)+" Y: "+std::to_string(gvars::mousePos.y)); */
 
-            if (inputState.key[Key::M])
+            if (inputState.key[Key::M] && !network::chatting)
             {
                 gCtrl.phase = "MicroPatherTest";
                 gvars::currentx = 14;
@@ -4931,16 +4937,7 @@ int main()
                     squady.squad.push_back(var);
                 }
             }
-
-            if (inputState.key[Key::B])
-            {
-                for (int i = 0; i <= 32; i++)
-                {
-                    std::cout << i << std::endl;
-                }
-            }
-
-            if (inputState.key[Key::Comma])
+            if (inputState.key[Key::Comma] && !network::chatting)
             {
                 if (gvars::debug)
                     std::cout << "Comma was pressed \n";
@@ -4951,12 +4948,12 @@ int main()
                 if (gvars::debug)
                     std::cout << "Done Building Local Test\n";
             }
-            if (inputState.key[Key::Period])
+            if (inputState.key[Key::Period] && !network::chatting)
             {
                 gCtrl.phase = "World";
                 gCtrl.buildWorldTest();
             }
-            if (inputState.key[Key::RControl])
+            if (inputState.key[Key::RControl] && !network::chatting)
             {
                 gCtrl.phase = "Test";
             }
