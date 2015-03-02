@@ -124,6 +124,8 @@ void runTcpServer(unsigned short port);
 
 void runTcpClient(unsigned short port);
 
+void tcpSendtoAll(sf::Packet pack);
+
 bool chatCommand(std::string input);
 
 #endif // NETWORKING_H_INCLUDED

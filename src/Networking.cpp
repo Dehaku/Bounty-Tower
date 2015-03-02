@@ -93,6 +93,8 @@ void DealPackets()
 {
     if(gvars::debug) std::cout << "DealPacket Begins" << packetContainer.size() << std::endl;
     int PackLimit = packetContainer.size();
+    if(packetContainer.size() != 0)
+        std::cout << "We got a packet! \n";
     for(int i = 0; i != PackLimit; i++)
     {
                     //packetContainer[i].Packet
@@ -332,9 +334,6 @@ void runTcpServer(unsigned short port)
                     }
 
                     packetContainer.push_back(BP);
-                    //std::cout << "Packet Size: " << sizeof(GotPacket);
-                    //std::cout << ", PC: " << packetContainer.size();
-
 
                     if(gvars::debug) std::cout << "Client is done. \n";
                 }
@@ -359,21 +358,28 @@ void runTcpClient(unsigned short port)
 {
     // Create a socket for communicating with the server
     // Connect to the server
-    //Code ripped to Main.cpp, Code 555000998
 
-    if(gvars::debug) std::cout << "Waiting on Message! \n";
+    if(gvars::debug)
+        std::cout << "Waiting on Message! \n";
 
     sf::Packet GotPacket;
     if (Clisocket.receive(GotPacket) != sf::Socket::Done)
+    {
+        network::cliWait = false;
         return;
+    }
+
 
     std::string GotIdent;
     GotPacket >> GotIdent;
-    if(gvars::debug) std::cout << "GotIdent: " << GotIdent << std::endl;
+    if(gvars::debug)
+        std::cout << "GotIdent: " << GotIdent << std::endl;
     if(GotIdent != "")
     {
+        network::cliWait = false;
         cliCon.waiting = false;
-        if(gvars::debug) std::cout << "Message received from server " << ", Type:" << GotIdent << std::endl;
+        //if(gvars::debug)
+            std::cout << "Message received from server " << ", Type:" << GotIdent << std::endl;
         if(GotIdent == ident.wrongVersion)
         {
             std::string ver;
@@ -436,6 +442,17 @@ void runTcpClient(unsigned short port)
 
     //Global.CliWait = false;
 
+}
+
+void tcpSendtoAll(sf::Packet pack)
+{
+    for (std::list<sf::TcpSocket*>::iterator it = clients.begin(); it != clients.end(); ++it)
+    {
+        sf::TcpSocket& client = **it;
+        client.send(pack);
+        std::cout << "Sending it all! Woo! \n";
+    }
+    std::cout << "Sent it all, Whew... \n";
 }
 
 bool chatCommand(std::string input)
@@ -551,6 +568,7 @@ bool chatCommand(std::string input)
     chatBox.addChat("Unrecognized command: " + input, errorColor);
     return false;
 }
+
 
 
 

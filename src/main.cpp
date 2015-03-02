@@ -2789,12 +2789,20 @@ int main()
         }
         if(network::cliWait == false)
         {
-            std::cout << "Launching Client \n";
+            if(gvars::debug)
+                std::cout << "Launching Client \n";
             TcpClientThread.launch();
             network::cliWait = true;
         }
         DealPackets();
 
+        if(inputState.key[Key::P].time == 1 && !network::chatting)
+        {
+            std::cout << "Sending to " << clients.size() << " clients. \n";
+            sf::Packet pack;
+            pack << ident.textMessage << randomWindowName();
+            tcpSendtoAll(pack);
+        }
         if(inputState.key[Key::O].time == 1 && !network::chatting)
         {
             sf::Packet packet;
