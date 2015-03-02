@@ -2983,6 +2983,12 @@ int main()
                         std::cout << "(" << firstLetter << ")\n";
                         if(firstLetter == "/")
                             chatCommand(cliCon.chatString);
+                        else if(firstLetter != "/" && network::connectedServer != "")
+                        {
+                            sf::Packet pack;
+                            pack << ident.textMessage << network::name + ": " + cliCon.chatString;
+                            Clisocket.send(pack);
+                        }
                         else
                             chatBox.addChat(cliCon.chatString,sf::Color::White);
                         cliCon.chatString.clear();
@@ -4949,22 +4955,22 @@ int main()
             }
         } //=============================================================================*End of Main Menu*========================================================================
 
-        if (inputState.key[Key::Numpad7])
+        if (inputState.key[Key::Numpad7] && !network::chatting)
         {
             gvars::scalex += 0.1;
             fSleep(0.1);
         }
-        if (inputState.key[Key::Numpad8])
+        if (inputState.key[Key::Numpad8] && !network::chatting)
         {
             gvars::scaley += 0.1;
             fSleep(0.1);
         }
-        if (inputState.key[Key::Numpad4])
+        if (inputState.key[Key::Numpad4] && !network::chatting)
         {
             gvars::scalex -= 0.1;
             fSleep(0.1);
         }
-        if (inputState.key[Key::Numpad5])
+        if (inputState.key[Key::Numpad5] && !network::chatting)
         {
             gvars::scaley -= 0.1;
             fSleep(0.1);
@@ -5004,12 +5010,12 @@ int main()
             }
         }
 
-        if (inputState.key[Key::Numpad0])
+        if (inputState.key[Key::Numpad0] && !network::chatting)
         {
             window.setView(gvars::view1);
             plyAct = true;
         }
-        if (inputState.key[Key::Numpad2])
+        if (inputState.key[Key::Numpad2] && !network::chatting)
         {
             window.setView(planetary);
             plyAct = true;

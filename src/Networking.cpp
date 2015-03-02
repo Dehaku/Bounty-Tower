@@ -400,6 +400,7 @@ void runTcpClient(unsigned short port)
             std::string Text;
             GotPacket >> Text;
             cliCon.chatHistory.push_back(Text);
+            chatBox.addChat(Text,sf::Color::White);
             std::cout << Text;
         }
         if(GotIdent == ident.drawStuffs)
