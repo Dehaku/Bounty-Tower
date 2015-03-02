@@ -7,6 +7,17 @@ TextList textList;
 
 extern sf::RenderWindow window;
 
+std::string randomWindowName()
+{
+    std::vector<std::string> const names{
+        "Zombificational Settlementation Experimentation", "Galaxy",
+        "Ye Old Settlement, Ye New Galaxy",
+        "The first Galaxy had Joey, Just saying",
+        "First comes the universe, then comes Galaxy"};
+
+    return names[randz(0, names.size() - 1)];
+}
+
 void TextList::setup()
 {
     sString.setColor(color);

@@ -441,6 +441,9 @@ bool chatCommand(std::string input)
 {
     std::vector<std::string> elements;
     bool finished = false;
+    sf::Color errorColor(100,100,100);
+    sf::Color warmColor(255,150,150);
+    sf::Color goodColor = sf::Color::White;
     size_t tStart = 0;
     size_t tEnd = 0;
 
@@ -463,16 +466,49 @@ bool chatCommand(std::string input)
     if(elements[0] == "/connect")
     {
         std::cout << "Connect chat command detected. \n";
+        if(network::name == "")
+        {
+            chatBox.addChat("Server: Error, please give yourself a name with /setname before attempting to connect.", errorColor);
+        }
+        try
+        {
+            int test = std::stoi(elements[2]);
+        }
+        catch (std::exception &e)
+        {
+            chatBox.addChat("Command: /connect [IP Address] [Port]", errorColor);
+            return false;
+        }
+
+        if (Clisocket.connect(elements[1], std::stoi(elements[2])) == sf::Socket::Done)
+        {
+            std::cout << "Connected to server " << elements[1] << std::endl;
+        }
+
+            sf::Packet packet;
+
+            packet << ident.connection << network::name;
+            Clisocket.send(packet);
+            packet.clear();
+            packet << ident.clientMouse << network::name << gvars::mousePos.x << gvars::mousePos.y;
+            Clisocket.send(packet);
+            packet.clear();
+            packet << ident.textMessage << network::name + randomWindowName();
+            Clisocket.send(packet);
+
+            chatBox.addChat("Server: Connected to " + elements[1] + "(" + elements[2] + ")", goodColor);
+
+
         return true;
     }
     else if(elements[0] == "/setname")
     {
-        chatBox.addChat("Server: " + network::name + " has changed their name to " + elements[1], sf::Color(255,255,255));
+        chatBox.addChat("Server: " + network::name + " has changed their name to " + elements[1], goodColor);
         network::name = elements[1];
         if(elements[1] == "Lithi" || elements[1] == "Biocava" || elements[1] == "Sneaky" || elements[1] == "SneakySnake")
-            chatBox.addChat("Server: Ooo, Ooo, I like you!", sf::Color(255,150,150));
+            chatBox.addChat("Server: Ooo, Ooo, I like you!", warmColor);
         if(elements[1] == "Argwm" || elements[1] == "Dehaku")
-            chatBox.addChat("Server: Hey, that's my masters name!", sf::Color(255,150,150));
+            chatBox.addChat("Server: Hey, that's my masters name!", warmColor);
         return true;
     }
     else if(elements[0] == "/repeat")
@@ -483,7 +519,8 @@ bool chatCommand(std::string input)
         }
         catch (std::exception &e)
         {
-            chatBox.addChat("Invalid argument: " + elements[1] + " in command " + input, sf::Color(100,100,100));
+            chatBox.addChat("Invalid argument: " + elements[1] + " in command " + input, errorColor);
+            chatBox.addChat("Command: /repeat [numberoftimes] [series of words or numbers]", errorColor);
             return false;
         }
         std::string repeatingLine;
@@ -496,11 +533,12 @@ bool chatCommand(std::string input)
         }
         for(int i = 0; i != std::stoi(elements[1]); i++)
         {
-            chatBox.addChat("Server: Repeating; " + repeatingLine, sf::Color(255,255,255));
+            chatBox.addChat("Server: Repeating; " + repeatingLine, goodColor);
         }
+        return true;
     }
 
-    chatBox.addChat("Unrecognized command: " + input, sf::Color(100,100,100));
+    chatBox.addChat("Unrecognized command: " + input, errorColor);
     return false;
 }
 

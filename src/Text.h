@@ -2,6 +2,7 @@
 #define __TEXT_H_INCLUDED__
 
 #include <SFML/Graphics.hpp>
+#include "util.h"
 
 class TextList
 {
@@ -51,5 +52,7 @@ public:
     void displayChat(sf::Vector2f position);
 };
 extern ChatBox chatBox;
+
+std::string randomWindowName();
 
 #endif // TEXT_H_INCLUDED
