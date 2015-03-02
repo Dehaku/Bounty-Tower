@@ -2552,7 +2552,8 @@ void displayChat(sf::Vector2f position)
             ((position.y - ((chatBox.chatStorage.size()) * 10))-10) + (i * 10), 10,
             chatBox.chatStorage[i].color, chatBox.chatStorage[i].line);
     }
-    textList.createText(gvars::bottomLeft.x+10,gvars::bottomLeft.y-15,10,sf::Color::White,"Chat: " + cliCon.chatString);
+    if(network::chatting)
+        textList.createText(gvars::bottomLeft.x+10,gvars::bottomLeft.y-15,10,sf::Color::White,"Chat: " + cliCon.chatString);
 }
 
 void drawStuffs()
@@ -2921,7 +2922,7 @@ int main()
             }
             if (event.type == sf::Event::TextEntered)
             {
-                if (event.text.unicode < 128)
+                if (event.text.unicode < 128 && network::chatting == true)
                 {
                     if(event.text.unicode != 8 && event.text.unicode != 13) // 8 = backspace 13 = enter, Thanks to http://www.fileformat.info
                     {
@@ -2935,6 +2936,7 @@ int main()
                     }
                     if(event.text.unicode == 13 && network::client == true)
                     {
+                        network::chatting = false;
                         sf::UdpSocket socket;
                         sf::Packet ToSend;
                         std::string SendText;
@@ -2963,6 +2965,7 @@ int main()
 
                     if(event.text.unicode == 13 && network::server == true)
                     {
+                        network::chatting = false;
                         sf::Packet ToSend;
                         std::string SendText;
                         SendText.append("*Server*");
@@ -2982,6 +2985,17 @@ int main()
                             cliCon.chatString.clear();
                         }
                     }
+                    if(event.text.unicode == 13)
+                    {
+                        network::chatting = false;
+                        chatBox.addChat(cliCon.chatString,sf::Color::White);
+                        cliCon.chatString.clear();
+                    }
+
+                }
+                else if(event.text.unicode == 13 && network::chatting == false)
+                {
+                    network::chatting = true;
                 }
             }
 
@@ -3016,19 +3030,19 @@ int main()
 
 
 
-        if (inputState.key[Key::K].time == 1)
+        if (inputState.key[Key::K].time == 1 && !network::chatting)
         { // Generates a random name from GenerateName(); and puts it into the console.
             std::cout << generateName() << std::endl;
         }
 
-        if (inputState.key[Key::G].time == 1)
+        if (inputState.key[Key::G].time == 1 && !network::chatting)
         { // Fling all critters south.
             for (auto &i : npclist)
             {
                 i.momentum = sf::Vector2f(0, 100);
             }
         }
-        if (inputState.key[Key::H].time == 1)
+        if (inputState.key[Key::H].time == 1 && !network::chatting)
         { // Fling all critters north.
             for (auto &i : npclist)
             {
@@ -3038,7 +3052,7 @@ int main()
 
         // Game Mode Loops ================================================================================
 
-        if (inputState.key[Key::R])
+        if (inputState.key[Key::R] && !network::chatting)
         { // Debug (de)activation
             if (!gvars::debug)
             {
@@ -3139,14 +3153,14 @@ int main()
                                     (gvars::currenty + 1) * GRID_SIZE, 11,
                                     sf::Color::Red, "Debug On");
 
-            if (inputState.key[Key::V].time == 1)
+            if (inputState.key[Key::V].time == 1 && !network::chatting)
                 chatBox.addChat(
                     randomWindowName(),
                     sf::Color(randz(0, 255), randz(0, 255), randz(0, 255)));
 
             squadHud();
 
-            if(inputState.key[Key::V])
+            if(inputState.key[Key::V] && !network::chatting)
             {
                 for (int x = 0; x != GRIDS; x++)
                     for (int y = 0; y != GRIDS; y++)
@@ -3157,30 +3171,6 @@ int main()
                     else
                         effects.createSquare(x*TILE_PIXELS,y*TILE_PIXELS,x*TILE_PIXELS+TILE_PIXELS,y*TILE_PIXELS+TILE_PIXELS,sf::Color(255,0,0,100));
                 }
-            }
-
-            if(inputState.key[Key::Space].time == 5)
-            {
-                for (int x = 0; x != GRIDS; x++)
-                    for (int y = 0; y != GRIDS; y++)
-                        for (int z = 0; z != CHUNK_SIZE; z++)
-                {
-                    if(tiles[x][y][z].id == 1008 || tiles[x][y][z].id == 1010)
-                        tiles[x][y][z].walkable = false;
-                    else
-                        tiles[x][y][z].walkable = true;
-                }
-            }
-
-
-            if (inputState.key[Key::LShift].time > 0)
-            {
-                int x = gvars::bottomLeft.x;
-                int y = gvars::bottomLeft.y;
-                effects.createSquare(x + 20, y - 20, x + 40, y - 40,
-                                     sf::Color(0, 100, 255));
-                textList.createText(x + 20, y - 30, 11, sf::Color::White,
-                                    "Build");
             }
             if (inputState.rmbTime == 1 && inputState.key[Key::LShift])
                 rmbMenuTile(    Vec3(gvars::mousePos.x,gvars::mousePos.y,gvars::currentz)   );
@@ -3314,7 +3304,7 @@ int main()
             {
                 gvars::following = false;
             }
-            else if (inputState.key[Key::C])
+            else if (inputState.key[Key::C] && !network::chatting)
             {
                 gvars::following = true;
             }
@@ -5027,12 +5017,12 @@ int main()
             }
         }
 
-        if (inputState.key[Key::Numpad0] == true)
+        if (inputState.key[Key::Numpad0])
         {
             window.setView(gvars::view1);
             plyAct = true;
         }
-        if (inputState.key[Key::Numpad2] == true)
+        if (inputState.key[Key::Numpad2])
         {
             window.setView(planetary);
             plyAct = true;

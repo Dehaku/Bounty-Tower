@@ -17,6 +17,7 @@ namespace network
     bool cliWait = false;
     bool server = false;
     bool client = false;
+    bool chatting = false;
 }
 
 int displayPort()

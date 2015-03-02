@@ -14,6 +14,7 @@ namespace network
     extern bool cliWait;
     extern bool server;
     extern bool client;
+    extern bool chatting;
 }
 
 int displayPort();
