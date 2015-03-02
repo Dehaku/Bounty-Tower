@@ -18,7 +18,8 @@ namespace network
     bool server = false;
     bool client = false;
     bool chatting = false;
-    std::string name;
+    std::string name = "";
+    std::string connectedServer = "";
 }
 
 int displayPort()
@@ -339,7 +340,7 @@ void runTcpServer(unsigned short port)
                 }
                 else
                 {
-                    std::cout << "IsReady(Client) is false \n";
+                    if(gvars::debug) std::cout << "IsReady(Client) is false \n";
                 }
             }
         }
@@ -466,9 +467,15 @@ bool chatCommand(std::string input)
     if(elements[0] == "/connect")
     {
         std::cout << "Connect chat command detected. \n";
+        if(network::connectedServer != "")
+        {
+            chatBox.addChat("Server: Error, You're already connected to " + network::connectedServer, errorColor);
+            return false;
+        }
         if(network::name == "")
         {
             chatBox.addChat("Server: Error, please give yourself a name with /setname before attempting to connect.", errorColor);
+            return false;
         }
         try
         {
@@ -483,8 +490,7 @@ bool chatCommand(std::string input)
         if (Clisocket.connect(elements[1], std::stoi(elements[2])) == sf::Socket::Done)
         {
             std::cout << "Connected to server " << elements[1] << std::endl;
-        }
-
+            network::connectedServer = elements[1];
             sf::Packet packet;
 
             packet << ident.connection << network::name;
@@ -498,8 +504,12 @@ bool chatCommand(std::string input)
 
             chatBox.addChat("Server: Connected to " + elements[1] + "(" + elements[2] + ")", goodColor);
 
+            return true;
+        }
+        chatBox.addChat("Server: Something went wrong...", goodColor);
+        return false;
 
-        return true;
+
     }
     else if(elements[0] == "/setname")
     {

@@ -2798,12 +2798,15 @@ int main()
         if(inputState.key[Key::O].time == 1 && !network::chatting)
         {
             sf::Packet packet;
-            packet << ident.textMessage << randomWindowName();
+            packet << ident.textMessage << network::name + randomWindowName();
             Clisocket.send(packet);
         }
 
         textList.createText(15,15,10,sf::Color::White,"Server Port: " + std::to_string(network::mainPort));
         textList.createText(15,30,10,sf::Color::White,"Client Port: " + std::to_string(network::mainPort+23));
+
+        for(int i = 0; i != peers.connected.size(); i++)
+            textList.createText(gvars::topRight.x-150,gvars::topRight.y+(i*10)+10,10,sf::Color::Yellow,"Peer: " + peers.connected[i].name);
 
 
         gvars::framesPassed++;

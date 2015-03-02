@@ -18,6 +18,7 @@ namespace network
     extern bool client;
     extern bool chatting;
     extern std::string name;
+    extern std::string connectedServer;
 }
 
 int displayPort();
