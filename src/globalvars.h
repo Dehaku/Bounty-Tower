@@ -55,6 +55,7 @@ extern sf::Color cycleGreen;
 extern sf::Color cycleBlue;
 extern bool cycleGrowth;
 extern float constantRotation;
+extern bool secondSwitch;
 }
 
 #endif // GLOBALS_H_INCLUDED

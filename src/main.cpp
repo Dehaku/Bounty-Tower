@@ -2542,7 +2542,13 @@ void displayChat(sf::Vector2f position)
             chatBox.chatStorage[i].color, chatBox.chatStorage[i].line);
     }
     if(network::chatting)
-        textList.createText(gvars::bottomLeft.x+10,gvars::bottomLeft.y-15,10,sf::Color::White,"Chat: " + cliCon.chatString);
+    {
+        if(gvars::secondSwitch)
+            textList.createText(gvars::bottomLeft.x+10,gvars::bottomLeft.y-15,10,sf::Color::White,"Chat: " + cliCon.chatString);
+        else
+            textList.createText(gvars::bottomLeft.x+10,gvars::bottomLeft.y-15,10,sf::Color::White,"Chat: " + cliCon.chatString + "|");
+    }
+
 }
 
 void drawStuffs()
@@ -2789,27 +2795,7 @@ int main()
         }
         DealPackets();
 
-        if(inputState.key[Key::P].time == 1)
-        {
-            std::string cliName = "Dudelington";
-            std::string cliServer = "127.0.0.1";
-            if (Clisocket.connect(cliServer, network::mainPort) == sf::Socket::Done)
-            {
-                std::cout << "Connected to server " << cliServer << std::endl;
-            }
-
-            sf::Packet packet;
-
-            packet << ident.connection << cliName;
-            Clisocket.send(packet);
-            packet.clear();
-            packet << ident.clientMouse << cliName << gvars::mousePos.x << gvars::mousePos.y;
-            Clisocket.send(packet);
-            packet.clear();
-            packet << ident.textMessage << cliName + randomWindowName();
-            Clisocket.send(packet);
-        }
-        if(inputState.key[Key::O].time == 1)
+        if(inputState.key[Key::O].time == 1 && !network::chatting)
         {
             sf::Packet packet;
             packet << ident.textMessage << randomWindowName();
@@ -2831,7 +2817,10 @@ int main()
             gvars::framesPassed = 0;
         }
 
-
+        if((gvars::framesPassed % 30) == 0)
+        {
+            toggle(gvars::secondSwitch);
+        }
         if (gvars::cycleGrowth)
         {
             gvars::cycleRed.g++;

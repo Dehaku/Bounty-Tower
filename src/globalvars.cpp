@@ -61,4 +61,6 @@ bool cycleGrowth = false;
 
 float constantRotation = 0;
 
+bool secondSwitch = false;
+
 } // namespace gvars
