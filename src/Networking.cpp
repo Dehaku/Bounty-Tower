@@ -477,6 +477,15 @@ bool chatCommand(std::string input)
     }
     else if(elements[0] == "/repeat")
     {
+        try
+        {
+            int test = std::stoi(elements[1]);
+        }
+        catch (std::exception &e)
+        {
+            chatBox.addChat("Invalid argument: " + elements[1] + " in command " + input, sf::Color(100,100,100));
+            return false;
+        }
         std::string repeatingLine;
         for(int i = 0; i != elements.size(); i++)
         {
@@ -489,7 +498,6 @@ bool chatCommand(std::string input)
         {
             chatBox.addChat("Server: Repeating; " + repeatingLine, sf::Color(255,255,255));
         }
-
     }
 
     chatBox.addChat("Unrecognized command: " + input, sf::Color(100,100,100));
