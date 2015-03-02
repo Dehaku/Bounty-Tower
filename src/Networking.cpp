@@ -436,4 +436,54 @@ void runTcpClient(unsigned short port)
 
 }
 
+bool chatCommand(std::string input)
+{
+    std::vector<std::string> elements;
+    bool finished = false;
+    size_t tStart = 0;
+    size_t tEnd = 0;
+
+    while(finished == false)
+    {
+
+        tEnd = input.find(" ",tStart);
+        std::string injection;
+        injection.append(input,tStart,tEnd-tStart);
+        elements.push_back(injection);
+        std::cout << tStart << "/" << tEnd << "/" << input.npos << "/" << input.size() << std::endl;
+        fSleep(0.1);
+        tStart = tEnd+1;
+        if(tEnd == input.npos)
+            finished = true;
+    }
+
+    std::cout << "input: " << input << std::endl;
+    for(auto &i : elements)
+    {
+        std::cout << "elements: " << i << std::endl;
+    }
+
+
+
+    return false;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

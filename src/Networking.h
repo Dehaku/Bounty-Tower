@@ -5,6 +5,7 @@
 #include <SFML/Graphics.hpp>
 
 #include <list>
+#include "util.h"
 
 namespace network
 {
@@ -119,5 +120,7 @@ void DealPackets();
 void runTcpServer(unsigned short port);
 
 void runTcpClient(unsigned short port);
+
+bool chatCommand(std::string input);
 
 #endif // NETWORKING_H_INCLUDED
