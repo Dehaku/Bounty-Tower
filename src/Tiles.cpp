@@ -1309,8 +1309,22 @@ void networkGridUpdate(sf::Packet pack)
             tiles[x][y][z].stone();
         else if(id == 1008)
             tiles[x][y][z].stoneWall();
+        else if(id == 1010)
+            tiles[x][y][z].wall();
+        else if(id == 1030)
+            tiles[x][y][z].woodFloor();
+        else if(id == 1031)
+            tiles[x][y][z].stairsUp();
+        else if(id == 1032)
+            tiles[x][y][z].stairsDown();
+        else if(id == 1050)
+            tiles[x][y][z].road();
+        else if(id == 1100)
+            tiles[x][y][z].door();
         else if(id == 1337)
             tiles[x][y][z].lava();
+        else if(id == 1700)
+            tiles[x][y][z].sky();
     }
 }
 

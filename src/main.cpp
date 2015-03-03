@@ -2796,6 +2796,9 @@ int main()
         }
         DealPackets();
 
+        if(!clients.empty())
+            servCon.updateClients();
+
         if(inputState.key[Key::P].time == 1 && !network::chatting)
         {
             std::cout << "Sending to " << clients.size() << " clients. \n";

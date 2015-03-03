@@ -69,6 +69,7 @@ class ServerController
     bool waiting;
     int conID;
     std::vector<std::string> chatHistory;
+    void updateClients();
 
 
     ServerController();

@@ -575,7 +575,21 @@ bool chatCommand(std::string input)
 }
 
 
-
+void ServerController::updateClients()
+{
+    if((gvars::framesPassed % 30) == 0)
+    { /* Tile Updates */
+        sf::Packet pack;
+        pack << ident.gridUpdate;
+        for(int x = 0; x != GRIDS; x++)
+            for(int y = 0; y != GRIDS; y++)
+                for(int z = 0; z != CHUNK_SIZE; z++)
+        {
+            pack << tiles[x][y][z].id;
+        }
+        tcpSendtoAll(pack);
+    }
+}
 
 
 
