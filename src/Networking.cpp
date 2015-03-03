@@ -96,8 +96,6 @@ void DealPackets()
 {
     if(gvars::debug) std::cout << "DealPacket Begins" << packetContainer.size() << std::endl;
     int PackLimit = packetContainer.size();
-    if(packetContainer.size() != 0)
-        std::cout << "We got a packet! \n";
     for(int i = 0; i != PackLimit; i++)
     {
                     //packetContainer[i].Packet
@@ -316,10 +314,11 @@ void runTcpServer(unsigned short port)
 
     while(selector.wait())
     {
-        std::cout << "Wait Successful! \n";
+        if(gvars::debug)
+            std::cout << "Wait Successful! \n";
         if(selector.isReady(Servlistener))
         {
-            std::cout << "Listener is ready!=======================================================(NoticeMe)======================================== \n";
+            std::cout << "Listener is ready! \n";
             sf::TcpSocket* client = new sf::TcpSocket;
             if (Servlistener.accept(*client) == sf::Socket::Done)
             {
@@ -369,7 +368,7 @@ void runTcpServer(unsigned short port)
             }
         }
     }
-    //if(gvars::debug)
+    if(gvars::debug)
         std::cout << "Do we make it here? \n";
     //DealPackets();
     if(gvars::debug) std::cout << "And if so, How about here? \n";
@@ -403,7 +402,7 @@ void runTcpClient(unsigned short port)
     {
         network::cliWait = false;
         cliCon.waiting = false;
-        //if(gvars::debug)
+        if(gvars::debug)
             std::cout << "Message received from server " << ", Type:" << GotIdent << std::endl;
         if(GotIdent == ident.wrongVersion)
         {
@@ -471,10 +470,22 @@ void runTcpClient(unsigned short port)
         {
             sf::Packet toSend;
             toSend << ident.pong << network::name;
-            double peerTime;
+            sf::Uint32 peerTime;
             GotPacket >> peerTime;
             toSend << peerTime;
             Clisocket.send(toSend);
+        }
+        if(GotIdent == ident.peers)
+        {
+            peers.connected.clear();
+            while(!GotPacket.endOfPacket())
+            {
+                Peer peer;
+                sf::Uint32 peerPing;
+                GotPacket >> peer.name >> peerPing;
+                peer.ping = peerPing;
+                peers.connected.push_back(peer);
+            }
         }
     }
 
@@ -616,7 +627,8 @@ void ServerController::updateClients()
             for(int y = 0; y != GRIDS; y++)
                 for(int z = 0; z != CHUNK_SIZE; z++)
         {
-            pack << tiles[x][y][z].id;
+            sf::Uint32 tileID = tiles[x][y][z].id;
+            pack << tileID;
         }
         tcpSendtoAll(pack);
     }
@@ -625,7 +637,17 @@ void ServerController::updateClients()
         sf::Packet pack;
         sf::Clock myClock;
         sf::Time theTime = myClock.getElapsedTime();
-        pack << ident.ping << theTime.asMicroseconds();
+        sf::Uint32 sendTime = theTime.asMicroseconds();
+        pack << ident.ping << sendTime;
+        tcpSendtoAll(pack);
+        pack.clear();
+
+        pack << ident.peers;
+        for(auto &i : peers.connected)
+        {
+            sf::Uint32 peerPing = i.ping;
+            pack << i.name << peerPing;
+        }
         tcpSendtoAll(pack);
     }
 

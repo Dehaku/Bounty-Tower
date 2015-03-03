@@ -1299,7 +1299,7 @@ void networkGridUpdate(sf::Packet pack)
         for(int y = 0; y != GRIDS; y++)
             for(int z = 0; z != CHUNK_SIZE; z++)
     {
-        int id;
+        sf::Uint32 id;
         pack >> id;
         if(id == 1003)
             tiles[x][y][z].dirt();
