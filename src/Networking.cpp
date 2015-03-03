@@ -608,7 +608,7 @@ bool chatCommand(std::string input)
 
 void ServerController::updateClients()
 {
-    if((gvars::framesPassed % 30) == 0)
+    if((gvars::framesPassed % 30) == 0 && gvars::sendGrid)
     { /* Tile Updates */
         sf::Packet pack;
         pack << ident.gridUpdate;

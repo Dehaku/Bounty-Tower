@@ -2807,6 +2807,12 @@ int main()
             tcpSendtoAll(pack);
         }
 
+        if(inputState.key[Key::Q].time == 10 && !network::chatting)
+        {
+            toggle(gvars::sendGrid);
+            std::cout << "sendGrid: " << gvars::sendGrid << std::endl;
+        }
+
         textList.createText(15,15,10,sf::Color::White,"Server Port: " + std::to_string(network::mainPort));
         textList.createText(15,30,10,sf::Color::White,"Client Port: " + std::to_string(network::mainPort+23));
 

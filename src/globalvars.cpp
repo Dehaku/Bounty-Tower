@@ -63,4 +63,6 @@ float constantRotation = 0;
 
 bool secondSwitch = false;
 
+bool sendGrid = false;
+
 } // namespace gvars
