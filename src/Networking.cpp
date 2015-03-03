@@ -39,6 +39,7 @@ Identity::Identity()
     peers = "Peers";
     clientMouse = "Client Mouse Position";
     gridUpdate = "Grid Update";
+    tilesUpdate = "Tiles Update";
     ping = "Ping";
     pong = "Pong";
 }
@@ -186,7 +187,7 @@ void DealPackets()
                                     sf::Clock myClock;
                                     sf::Time recvTime;
                                     sf::Time myTime = myClock.getElapsedTime();
-                                    int recvValue;
+                                    sf::Uint32 recvValue;
                                     packetContainer[i].packet >> recvValue;
                                     recvTime = sf::microseconds(recvValue);
                                     int thePing = myTime.asMicroseconds() - recvTime.asMicroseconds();
@@ -196,7 +197,28 @@ void DealPackets()
                             }
 
                         }
+                        if(GotIdent == ident.tilesUpdate)
+                        {
+                            int regionX, regionY, tileX, tileY, tileZ, tileID;
+                            sf::Packet pack;
+                            pack = packetContainer[i].packet;
+                            while(!pack.endOfPacket())
+                            {
+                                pack >> regionX >> regionY;
+                                pack >> tileX >> tileY >> tileZ;
+                                pack >> tileID;
+                                int regionXDiff = regionX - gvars::currentregionx;
+                                int regionYDiff = regionY - gvars::currentregiony;
+                                if(abs_to_index(regionXDiff) <= 1 && abs_to_index(regionYDiff) <= 1)
+                                {
+                                    //tiles[(tileX+(regionXDiff*CHUNK_SIZE))][(tileY+(regionYDiff*CHUNK_SIZE))][tileZ].setTilebyID(tileID);
+                                    tiles[(tileX)][(tileY)][tileZ].setTilebyID(tileID);
+                                }
+                                std::cout << "tilesUpdate: " << regionXDiff << "/" << regionYDiff << "/"  << tileX << "/"  << tileY << "/"  << tileZ << "/"  << tileID << std::endl;
 
+
+                            }
+                        }
 
                     }
                     packetContainer[i].toDelete = true;

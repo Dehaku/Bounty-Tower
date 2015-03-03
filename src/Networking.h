@@ -46,6 +46,7 @@ class Identity
     std::string peers;
     std::string clientMouse;
     std::string gridUpdate;
+    std::string tilesUpdate;
     std::string ping;
     std::string pong;
 

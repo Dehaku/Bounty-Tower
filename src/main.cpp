@@ -2148,6 +2148,16 @@ ReDesire:
                         npc.jobPtr->pWorker->hasJob = false;/* Oops... this amuses me. */
                         npc.jobPtr = nullptr;
 
+                        if(network::connectedServer != "")
+                        {
+                            sf::Packet pack;
+                            pack << ident.tilesUpdate;
+                            pack << gvars::currentregionx << gvars::currentregiony;
+                            pack << abs_to_index(wPos.x / 20) << abs_to_index(wPos.y / 20) << abs_to_index(wPos.z / 20);
+                            pack << tiles[abs_to_index(wPos.x / 20)][abs_to_index(wPos.y / 20)][abs_to_index(wPos.z / 20)].id;
+                            Clisocket.send(pack);
+                        }
+
                     }
 
                 }

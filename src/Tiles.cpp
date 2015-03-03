@@ -1262,6 +1262,36 @@ void Tile::teleportPad(Vec3 teleportPosition)
     walkable = true;
 }
 
+void Tile::setTilebyID(int ID)
+{
+    if(ID == 1003)
+        dirt();
+    else if(ID == 1001)
+        grass();
+    else if(ID == 1007)
+        stone();
+    else if(ID == 1008)
+        stoneWall();
+    else if(ID == 1010)
+        wall();
+    else if(ID == 1030)
+        woodFloor();
+    else if(ID == 1031)
+        stairsUp();
+    else if(ID == 1032)
+        stairsDown();
+    else if(ID == 1050)
+        road();
+    else if(ID == 1100)
+        door();
+    else if(ID == 1337)
+        lava();
+    else if(ID == 1700)
+        sky();
+    else
+        std::cout << "ERROR: ID not found for setTilebyID, ID: " << ID << std::endl;
+}
+
 Tile::Tile() : id{}
 {
     worldColor = sf::Color(0, 0, 0, 255);
