@@ -39,6 +39,8 @@ Identity::Identity()
     peers = "Peers";
     clientMouse = "Client Mouse Position";
     gridUpdate = "Grid Update";
+    ping = "Ping";
+    pong = "Pong";
 }
 Identity ident;
 
@@ -175,6 +177,28 @@ void DealPackets()
                             }
 
                         }
+                        if(GotIdent == ident.pong)
+                        {
+                            std::string peerName;
+                            packetContainer[i].packet >> peerName;
+                            for(auto &peer : peers.connected)
+                            {
+                                if(peer.name == peerName);
+                                {
+                                    sf::Clock myClock;
+                                    sf::Time recvTime;
+                                    sf::Time myTime = myClock.getElapsedTime();
+                                    int recvValue;
+                                    packetContainer[i].packet >> recvValue;
+                                    recvTime = sf::microseconds(recvValue);
+                                    int thePing = myTime.asMicroseconds() - recvTime.asMicroseconds();
+                                    peer.ping = thePing;
+                                }
+
+                            }
+
+                        }
+
 
                     }
                     packetContainer[i].toDelete = true;
@@ -443,6 +467,15 @@ void runTcpClient(unsigned short port)
         {
             networkGridUpdate(GotPacket);
         }
+        if(GotIdent == ident.ping)
+        {
+            sf::Packet toSend;
+            toSend << ident.pong << network::name;
+            double peerTime;
+            GotPacket >> peerTime;
+            toSend << peerTime;
+            Clisocket.send(toSend);
+        }
     }
 
     //Global.CliWait = false;
@@ -455,9 +488,7 @@ void tcpSendtoAll(sf::Packet pack)
     {
         sf::TcpSocket& client = **it;
         client.send(pack);
-        std::cout << "Sending it all! Woo! \n";
     }
-    std::cout << "Sent it all, Whew... \n";
 }
 
 bool chatCommand(std::string input)
@@ -589,6 +620,15 @@ void ServerController::updateClients()
         }
         tcpSendtoAll(pack);
     }
+    if((gvars::framesPassed % 30) == 0)
+    {
+        sf::Packet pack;
+        sf::Clock myClock;
+        sf::Time theTime = myClock.getElapsedTime();
+        pack << ident.ping << theTime.asMicroseconds();
+        tcpSendtoAll(pack);
+    }
+
 }
 
 

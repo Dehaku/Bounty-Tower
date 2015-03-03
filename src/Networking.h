@@ -46,6 +46,8 @@ class Identity
     std::string peers;
     std::string clientMouse;
     std::string gridUpdate;
+    std::string ping;
+    std::string pong;
 
     Identity();
 };
@@ -105,6 +107,7 @@ class Peer
     sf::Vector2f mom;
     sf::Sprite img;
     unsigned short port;
+    int ping;
     Peer();
 };
 
