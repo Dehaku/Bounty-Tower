@@ -38,6 +38,7 @@ Identity::Identity()
     grid = "Grid";
     peers = "Peers";
     clientMouse = "Client Mouse Position";
+    gridUpdate = "Grid Update";
 }
 Identity ident;
 
@@ -438,7 +439,10 @@ void runTcpClient(unsigned short port)
                 }
             }
         }
-
+        if(GotIdent == ident.gridUpdate)
+        {
+            networkGridUpdate(GotPacket);
+        }
     }
 
     //Global.CliWait = false;

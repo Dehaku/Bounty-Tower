@@ -1292,3 +1292,25 @@ WorldTile::WorldTile() : id{}
     infected = 0;
     tiles = 32;
 }
+
+void networkGridUpdate(sf::Packet pack)
+{
+    for(int x = 0; x != GRIDS; x++)
+        for(int y = 0; y != GRIDS; y++)
+            for(int z = 0; z != CHUNK_SIZE; z++)
+    {
+        int id;
+        pack >> id;
+        if(id == 1003)
+            tiles[x][y][z].dirt();
+        else if(id == 1001)
+            tiles[x][y][z].grass();
+        else if(id == 1007)
+            tiles[x][y][z].stone();
+        else if(id == 1008)
+            tiles[x][y][z].stoneWall();
+        else if(id == 1337)
+            tiles[x][y][z].lava();
+    }
+}
+

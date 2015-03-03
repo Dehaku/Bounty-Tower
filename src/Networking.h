@@ -7,6 +7,7 @@
 #include <list>
 #include "util.h"
 #include "Text.h"
+#include "Tiles.h"
 
 namespace network
 {
@@ -44,6 +45,7 @@ class Identity
     std::string grid;
     std::string peers;
     std::string clientMouse;
+    std::string gridUpdate;
 
     Identity();
 };

@@ -2,6 +2,7 @@
 #define __TILES_H_INCLUDED__
 
 #include <SFML/Graphics.hpp>
+#include <SFML/Network.hpp>
 
 
 #include "defs.h"
@@ -139,5 +140,7 @@ void tilesGoDown();
 void tilesGoLeft();
 void tilesGoRight();
 void buildLocalfromWorld(sf::Vector2i worldPos);
+
+void networkGridUpdate(sf::Packet pack);
 
 #endif // TILES_H_INCLUDED

@@ -2803,12 +2803,6 @@ int main()
             pack << ident.textMessage << randomWindowName();
             tcpSendtoAll(pack);
         }
-        if(inputState.key[Key::O].time == 1 && !network::chatting)
-        {
-            sf::Packet packet;
-            packet << ident.textMessage << network::name + randomWindowName();
-            Clisocket.send(packet);
-        }
 
         textList.createText(15,15,10,sf::Color::White,"Server Port: " + std::to_string(network::mainPort));
         textList.createText(15,30,10,sf::Color::White,"Client Port: " + std::to_string(network::mainPort+23));
@@ -3159,6 +3153,44 @@ int main()
                 chatBox.addChat(
                     randomWindowName(),
                     sf::Color(randz(0, 255), randz(0, 255), randz(0, 255)));
+            if (inputState.key[Key::X].time == 10 && !network::chatting)
+            {
+                for(int x = 0; x != GRIDS; x++)
+                    for(int y = 0; y != GRIDS; y++)
+                        for(int z = 0; z != CHUNK_SIZE; z++)
+                {
+                    int ranNum = randz(0,6);
+                    if(ranNum == 6)
+                        tiles[x][y][z].stoneWall();
+                    else if(ranNum == 5)
+                        tiles[x][y][z].stone();
+                    else if(ranNum == 4)
+                        tiles[x][y][z].grass();
+                    else
+                        tiles[x][y][z].dirt();
+                    if(randz(0,100) == 100 && y != 0 && y != GRIDS-1)
+                    {
+                        tiles[x][y][z].lava();
+                        tiles[x][y-1][z].lava();
+                        tiles[x][y+1][z].lava();
+                    }
+                }
+            }
+            if (inputState.key[Key::Z].time == 10 && !network::chatting && clients.size() != 0)
+            {
+                sf::Packet pack;
+                std::cout << "Packet size: " << sizeof(pack);
+                pack << ident.gridUpdate;
+                for(int x = 0; x != GRIDS; x++)
+                    for(int y = 0; y != GRIDS; y++)
+                        for(int z = 0; z != CHUNK_SIZE; z++)
+                {
+                    pack << tiles[x][y][z].id;
+                }
+                std::cout << ", " << sizeof(pack) << std::endl;
+                tcpSendtoAll(pack);
+            }
+
 
             squadHud();
 
