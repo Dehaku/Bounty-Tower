@@ -1,5 +1,5 @@
 [name:Food][hungervalue:50][thirstvalue:0][image:Food.tga][type:4][baseid:5009][MassVeggy:25][MassFlesh:25][Pickupable:true]
-[name:Bacon][hungervalue:200][thirstvalue:0][image:Bacon.tga][type:4][baseid:5010][Pickupable:true]
+[name:Bacon][hungervalue:200][thirstvalue:0][image:Bacon.tga][type:4][baseid:5010][MassFlesh:25][Pickupable:true]
 [name:Water][hungervalue:0][thirstvalue:50][image:Water.tga][type:5][baseid:5011][Pickupable:true][MassWater:50]
 [name:Broken Vending Machine][image:PopMachine.tga][Pickupable:false][type:12][baseid:7371717][produces:true][prodrate:200][produce:Water]
 [name:Fruit Tree][Pickupable:false][image:FruitTree.tga][type:12][baseid:7771777][produces:true][prodrate:600][produce:Food]
