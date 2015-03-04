@@ -209,10 +209,11 @@ void DealPackets()
                                 pack >> tileID;
                                 int regionXDiff = regionX - gvars::currentregionx;
                                 int regionYDiff = regionY - gvars::currentregiony;
+
+                                tiles[(tileX)][(tileY)][tileZ].setTilebyID(tileID);
                                 if(abs_to_index(regionXDiff) <= 1 && abs_to_index(regionYDiff) <= 1)
                                 {
                                     //tiles[(tileX+(regionXDiff*CHUNK_SIZE))][(tileY+(regionYDiff*CHUNK_SIZE))][tileZ].setTilebyID(tileID);
-                                    tiles[(tileX)][(tileY)][tileZ].setTilebyID(tileID);
                                 }
                                 std::cout << "tilesUpdate: " << regionXDiff << "/" << regionYDiff << "/"  << tileX << "/"  << tileY << "/"  << tileZ << "/"  << tileID << std::endl;
 

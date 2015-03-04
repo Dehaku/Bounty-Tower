@@ -926,8 +926,14 @@ void updateItem()
                     boom(item.xpos, item.ypos, randz(item.mindam, item.maxdam),
                          item.range);
 
+                    sf::Packet pack;
+                    pack << ident.tilesUpdate;
+
                     for (int itLength = 0; itLength != 5; itLength++)
                     {
+
+
+
                         for (int rot = 1; rot != 361; rot++)
                         {
                             //int Rot = GX;
@@ -935,13 +941,17 @@ void updateItem()
                                         cosf(rot * PI / 180) * itLength);
                             int YPos = ((abs(item.ypos / 20)) +
                                         sinf(rot * PI / 180) * itLength);
-                            //XPos *= 20;
-                            //YPos *= 20;
-
-                            //Effectz.CreateCircle(MousePos.x,MousePos.y,5,Red);
-                            //Effectz.CreateCircle(XPos,YPos,5,White);
                             tiles[XPos][YPos][30].stone();
+
+                            pack << gvars::currentregionx << gvars::currentregiony;
+                            pack << XPos << YPos << 30;
+                            pack << tiles[XPos][YPos][30].id;
+
                         }
+                    }
+                    if(network::connectedServer != "")
+                    {
+                        Clisocket.send(pack);
                     }
 
                     con("Boom!");
