@@ -18,6 +18,8 @@ namespace network
     bool server = false;
     bool client = false;
     bool chatting = false;
+    bool needTime = false;
+    bool givingTime = false;
     std::string name = "";
     std::string connectedServer = "";
 }
@@ -42,6 +44,7 @@ Identity::Identity()
     tilesUpdate = "Tiles Update";
     ping = "Ping";
     pong = "Pong";
+    updateRoster = "Update Roster";
 }
 Identity ident;
 
@@ -510,6 +513,56 @@ void runTcpClient(unsigned short port)
                 peers.connected.push_back(peer);
             }
         }
+        if(GotIdent == ident.updateRoster)
+        {
+            network::needTime = true;
+            std::cout << "Need time \n";
+            while(!GotPacket.endOfPacket())
+            {
+
+                std::cout << "Starting packet \n";
+                std::string npcName, npcBloodContent;
+                int npcID, npcXpos, npcYpos, npcZpos;
+                GotPacket >> npcName >> npcID >> npcXpos >> npcYpos >> npcZpos >> npcBloodContent;
+                bool npcFound = false;
+                for(auto &npc : npclist)
+                {
+                    if(npc.name == npcName && npc.id == npcID)
+                    {
+                        std::cout << "found name and ID \n";
+                        npcFound = true;
+                        npc.xpos = npcXpos;
+                        npc.ypos = npcYpos;
+                        npc.zpos = npcZpos;
+                        npc.bloodcontent = npcBloodContent;
+                    }
+                }
+                if(npcFound == false)
+                {
+                    std::cout << "did not find name and ID \n";
+                    Npc npc;
+                    npc = *getGlobalCritter("Human");
+                    std::cout << "Applying image\n";
+                    npc.img.setTexture(texturemanager.getTexture("Human.png"));
+                    npc.xpos = npcXpos;
+                    npc.ypos = npcYpos;
+                    npc.zpos = npcZpos;
+                    npc.id = npcID;
+                    npc.reCreateSkills();
+                    npc.hasSpawned = true;
+                    npc.bloodcontent = npcBloodContent;
+                    std::cout << "pushing back " + npcName << std::endl;
+                    while(!network::givingTime){}
+                    npclist.push_back(npc);
+
+
+                }
+                std::cout << "Ending packet \n";
+            }
+            std::cout << "Done with time \n";
+            network::needTime = false;
+            std::cout << "Escaped \n";
+        }
     }
 
     //Global.CliWait = false;
@@ -672,6 +725,18 @@ void ServerController::updateClients()
             pack << i.name << peerPing;
         }
         tcpSendtoAll(pack);
+    }
+    if((gvars::framesPassed % 30) == 0)
+    {
+
+
+        sf::Packet pack;
+        pack << ident.updateRoster;
+        for(auto &npc : npclist)
+        {
+            pack << npc.name << npc.id << npc.xpos << npc.ypos << npc.zpos << npc.bloodcontent;
+        }
+        //tcpSendtoAll(pack);
     }
 
 }

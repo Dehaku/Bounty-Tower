@@ -8,6 +8,8 @@
 #include "util.h"
 #include "Text.h"
 #include "Tiles.h"
+#include "Faction.h"
+#include "Textures.h"
 
 namespace network
 {
@@ -18,6 +20,8 @@ namespace network
     extern bool server;
     extern bool client;
     extern bool chatting;
+    extern bool needTime;
+    extern bool givingTime;
     extern std::string name;
     extern std::string connectedServer;
 }
@@ -49,6 +53,7 @@ class Identity
     std::string tilesUpdate;
     std::string ping;
     std::string pong;
+    std::string updateRoster;
 
     Identity();
 };

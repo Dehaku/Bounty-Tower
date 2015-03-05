@@ -1062,7 +1062,7 @@ struct entityvectorpointercontainer
 };
 
 
-entityvectorpointercontainer entityTrace(Vec3 Ori, Vec3 Tar) /* TODO: Improve this to use Z axis as well, or find new formula that can. */
+entityvectorpointercontainer entityTrace(Vec3 Ori, Vec3 Tar) /* TODO: Improve this to use Z axis as well, or find new formula that can. THERE ARE NONE, GRAAAAH*/
 { // Looking in a straight line for a specific spot, Walls block vision.
 
     entityvectorpointercontainer EVPC;
@@ -2815,6 +2815,13 @@ int main()
             network::cliWait = true;
         }
         DealPackets();
+
+        while(network::needTime)
+        {
+            std::cout << "Giving time \n";
+            network::givingTime = true;
+        }
+        network::givingTime = false;
 
         if(!clients.empty())
             servCon.updateClients();
