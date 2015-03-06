@@ -1739,6 +1739,17 @@ void runCritterBody(Npc &npc)
 
 void critterBrain(Npc &npc, std::vector<Npc> &container)
 {
+    int alph = 255;
+    npc.img.setColor(sf::Color(255, 255, 255, alph));
+    npc.img.setScale(gvars::scalex, gvars::scaley);
+    npc.img.setOrigin(npc.img.getTextureRect().width / 2,
+    npc.img.getTextureRect().height / 2);
+    if (npc.race == "Human")
+    {
+        npc.img.setScale(0.5, 0.5);
+        npc.img.setRotation(npc.angle);
+    }
+
     int critterZ = npc.zpos/20;
     textList.createText(npc.xpos,npc.ypos,10,sf::Color::White,"ZPos:","",npc.zpos," /","",critterZ);
     runCritterBody(npc);
@@ -2381,11 +2392,13 @@ void critterBrain(std::vector<Npc> &npcs)
     std::cout << result << ", Is the test. \n";
 
     */
-
+    while(gvars::workingNpcList){}
+    gvars::workingNpcList = true;
     for (auto &npc : npcs)
     {
         critterBrain(npc, npcs);
     }
+    gvars::workingNpcList = false;
 }
 
 void drawTiles()
@@ -2496,16 +2509,7 @@ void drawNPCs()
                 effects.drawEffects();
             }
 
-            int alph = 255;
-            npc.img.setColor(sf::Color(255, 255, 255, alph));
-            npc.img.setScale(gvars::scalex, gvars::scaley);
-            npc.img.setOrigin(npc.img.getTextureRect().width / 2,
-                              npc.img.getTextureRect().height / 2);
-            if (npc.race == "Human")
-            {
-                npc.img.setScale(0.5, 0.5);
-                npc.img.setRotation(npc.angle);
-            }
+
 
             npc.drawImg();
             effects.createCircle(npc.xpos, npc.ypos, npc.size,
@@ -2720,6 +2724,7 @@ void buildMicroPatherTest()
 int main()
 {
     srand(clock());
+    //srand(80085);
     /* Perhaps have both Upstairs and Downstairs as the same thing? would this work? How to deal with the 'recieving' position.
             I.E. What if there's a staircase that leads up, but on the upper level, there's a wall where the stairs lead.*/
     /* 0 = open, 1 = wall, 2 = upstairs, 3 = downstairs */

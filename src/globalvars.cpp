@@ -65,4 +65,6 @@ bool secondSwitch = false;
 
 bool sendGrid = false;
 
+bool workingNpcList = false;
+
 } // namespace gvars

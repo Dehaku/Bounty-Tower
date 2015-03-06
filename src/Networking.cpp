@@ -537,7 +537,7 @@ void runTcpClient(unsigned short port)
                         npc.bloodcontent = npcBloodContent;
                     }
                 }
-                if(npcFound == false)
+                if(npcFound == false && true == false)
                 {
                     std::cout << "did not find name and ID \n";
                     Npc npc;
@@ -728,17 +728,14 @@ void ServerController::updateClients()
     }
     if((gvars::framesPassed % 30) == 0)
     {
-
-
         sf::Packet pack;
         pack << ident.updateRoster;
         for(auto &npc : npclist)
         {
             pack << npc.name << npc.id << npc.xpos << npc.ypos << npc.zpos << npc.bloodcontent;
         }
-        //tcpSendtoAll(pack);
+        tcpSendtoAll(pack);
     }
-
 }
 
 

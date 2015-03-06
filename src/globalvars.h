@@ -57,6 +57,7 @@ extern bool cycleGrowth;
 extern float constantRotation;
 extern bool secondSwitch;
 extern bool sendGrid;
+extern bool workingNpcList;
 }
 
 #endif // GLOBALS_H_INCLUDED
