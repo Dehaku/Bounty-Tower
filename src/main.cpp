@@ -1289,6 +1289,7 @@ int getNpcVectorId(int id)
 
 bool removeNPC(char * /*NPCname*/, int /*Id*/)
 {
+    sf::Lock lock(mutex::npcList);
     int tempInt = 0;
     std::vector<Npc>::iterator location;
     for (auto it = npclist.begin(); it != npclist.end(); ++it)
@@ -2392,13 +2393,15 @@ void critterBrain(std::vector<Npc> &npcs)
     std::cout << result << ", Is the test. \n";
 
     */
-    while(gvars::workingNpcList){}
-    gvars::workingNpcList = true;
+
+    sf::Lock lock(mutex::npcList);
+    //while(gvars::workingNpcList){}
+    //gvars::workingNpcList = true;
     for (auto &npc : npcs)
     {
         critterBrain(npc, npcs);
     }
-    gvars::workingNpcList = false;
+    //gvars::workingNpcList = false;
 }
 
 void drawTiles()
@@ -2669,6 +2672,9 @@ Npc *getCritter(int id)
 
 void removeNPCs()
 {
+    sf::Lock lock(mutex::npcList);
+    //while(gvars::workingNpcList){}
+    //gvars::workingNpcList = true;
     bool done = false;
     while (done == false)
     {
@@ -2688,6 +2694,7 @@ void removeNPCs()
             done = true;
         }
     }
+    //gvars::workingNpcList = false;
 }
 
 
@@ -2821,12 +2828,15 @@ int main()
         }
         DealPackets();
 
+
+        /*
         while(network::needTime)
         {
             std::cout << "Giving time \n";
             network::givingTime = true;
         }
         network::givingTime = false;
+        */
 
         if(!clients.empty())
             servCon.updateClients();
@@ -3075,6 +3085,7 @@ int main()
 
         if (inputState.key[Key::G].time == 1 && !network::chatting)
         { // Fling all critters south.
+            sf::Lock lock(mutex::npcList);
             for (auto &i : npclist)
             {
                 i.momentum = sf::Vector2f(0, 100);
@@ -3082,6 +3093,7 @@ int main()
         }
         if (inputState.key[Key::H].time == 1 && !network::chatting)
         { // Fling all critters north.
+            sf::Lock lock(mutex::npcList);
             for (auto &i : npclist)
             {
                 i.momentum = sf::Vector2f(0, -100);
@@ -3422,11 +3434,14 @@ int main()
             {
                 tilesGoUp();
                 gvars::currenty = 33;
-
-                for (size_t i = 0; i != npclist.size(); i++)
                 {
-                    npclist.at(i).ypos += -640;
-                    npclist.at(i).targetPos.y += -640;
+                    sf::Lock lock(mutex::npcList);
+
+                    for (size_t i = 0; i != npclist.size(); i++)
+                    {
+                        npclist.at(i).ypos += -640;
+                        npclist.at(i).targetPos.y += -640;
+                    }
                 }
 
                 for (auto &worlditem : worlditems)
@@ -3466,10 +3481,14 @@ int main()
             {
                 tilesGoDown();
                 gvars::currenty = 63;
-                for (size_t i = 0; i != npclist.size(); i++)
                 {
-                    npclist.at(i).ypos += 640;
-                    npclist.at(i).targetPos.y += 640;
+                    sf::Lock lock(mutex::npcList);
+
+                    for (size_t i = 0; i != npclist.size(); i++)
+                    {
+                        npclist.at(i).ypos += 640;
+                        npclist.at(i).targetPos.y += 640;
+                    }
                 }
 
                 //for(int i = 0; i != worlditems.size(); i++) worlditems.at(i).ypos += 640;
@@ -3510,12 +3529,17 @@ int main()
             {
                 tilesGoLeft();
                 gvars::currentx = 33;
+                {
+
+                    sf::Lock lock(mutex::npcList);
+
                 for (size_t i = 0; i != npclist.size(); i++)
                 {
                     npclist.at(i).xpos += -640;
                     npclist.at(i).targetPos.x += -640;
                 }
 
+                }
                 //for(int i = 0; i != worlditems.size(); i++) worlditems.at(i).xpos += -640;
                 for (auto &worlditem : worlditems)
                     (worlditem).xpos += -640;
@@ -3557,12 +3581,16 @@ int main()
                 con("Ending GoRight");
                 gvars::currentx = 63;
                 con("Starting GoRight with NPC's and Items");
+                {
+                    sf::Lock lock(mutex::npcList);
+
                 for (size_t i = 0; i != npclist.size(); i++)
                 {
                     npclist.at(i).xpos += 640;
                     npclist.at(i).targetPos.x += 640;
                 }
 
+                }
                 //for(int i = 0; i != worlditems.size(); i++) worlditems.at(i).xpos += 640;
                 for (auto &worlditem : worlditems)
                     (worlditem).xpos += 640;
@@ -3601,6 +3629,11 @@ int main()
 
             if (transitioning == true)
             {
+
+                {
+
+
+                sf::Lock lock(mutex::npcList);
                 for (size_t i = 0; i != npclist.size(); i++)
                 {
 
@@ -3726,6 +3759,8 @@ int main()
 
                         npclist.at(i).toDelete = true;
                     }
+                }
+
                 }
 
                 removeNPCs();
@@ -3881,6 +3916,7 @@ int main()
                 tiles[abs_to_index(gvars::mousePos.x / GRID_SIZE)][abs_to_index(
                     gvars::mousePos.y / GRID_SIZE)][30].id != 1010)
             { // Giving Orders
+                sf::Lock lock(mutex::npcList);
                 npclist.at(gvars::myTarget).targetPos = gvars::mousePos;
                 npclist.at(gvars::myTarget).action = "Orders";
                 if (math::closeish(npclist.at(gvars::myTarget).xpos,

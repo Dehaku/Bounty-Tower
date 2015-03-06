@@ -517,6 +517,9 @@ void runTcpClient(unsigned short port)
         {
             network::needTime = true;
             std::cout << "Need time \n";
+            //while(gvars::workingNpcList){}
+            //gvars::workingNpcList = true;
+            sf::Lock lock(mutex::npcList);
             while(!GotPacket.endOfPacket())
             {
 
@@ -537,7 +540,7 @@ void runTcpClient(unsigned short port)
                         npc.bloodcontent = npcBloodContent;
                     }
                 }
-                if(npcFound == false && true == false)
+                if(npcFound == false)
                 {
                     std::cout << "did not find name and ID \n";
                     Npc npc;
@@ -552,15 +555,16 @@ void runTcpClient(unsigned short port)
                     npc.hasSpawned = true;
                     npc.bloodcontent = npcBloodContent;
                     std::cout << "pushing back " + npcName << std::endl;
-                    while(!network::givingTime){}
+                    //while(!network::givingTime){}
                     npclist.push_back(npc);
 
 
                 }
                 std::cout << "Ending packet \n";
             }
+            //gvars::workingNpcList = false;
             std::cout << "Done with time \n";
-            network::needTime = false;
+            //network::needTime = false;
             std::cout << "Escaped \n";
         }
     }

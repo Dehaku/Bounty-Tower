@@ -13,6 +13,11 @@ float cz(float number)
     return number / gvars::cameraZoom;
 }
 
+namespace mutex
+{
+    sf::Mutex npcList;
+}
+
 namespace gvars
 {
 std::string version = "0.0.1.0";

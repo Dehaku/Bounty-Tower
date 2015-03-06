@@ -9,6 +9,10 @@ float cz(float number);
 void debug(std::string info);
 
 
+namespace mutex
+{
+    extern sf::Mutex npcList;
+}
 
 namespace gvars
 {

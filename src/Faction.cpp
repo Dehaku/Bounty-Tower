@@ -27,6 +27,8 @@ std::list<Faction> uniFact;
 NpcManager npcmanager;
 extern sf::RenderWindow window;
 
+
+
 Npc * myTargetPtr = nullptr;
 
 void Npc::BodyDefinition::bodyPartFind(std::string part, int amount)
@@ -1337,6 +1339,7 @@ void timeTest()
 
 void NpcManager::addCritters()
 {
+    sf::Lock lock(mutex::npcList);
     for (auto const &c : addedCritters)
     {
         npclist.push_back(c);
@@ -2196,6 +2199,7 @@ std::string loadCritters(sf::Vector2i worldPos, std::string direction,
 
             if (critter.name != "Debuggery")
             {
+                sf::Lock lock(mutex::npcList);
                 npclist.push_back(critter);
             }
         }
@@ -2208,6 +2212,7 @@ void boom(int xpos, int ypos, int damage, int size)
     effects.createCircle(xpos, ypos, size, sf::Color(255, 0, 0, 150), 0,
                          sf::Color(0, 0, 0));
     std::vector<Npc>::iterator me;
+    sf::Lock lock(mutex::npcList);
     for (me = npclist.begin(); me != npclist.end(); ++me)
     {
         if (math::closeish(xpos, ypos, me->xpos, me->ypos) < size)
