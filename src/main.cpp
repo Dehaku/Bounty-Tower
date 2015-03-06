@@ -2727,6 +2727,156 @@ void buildMicroPatherTest()
     grid[worldSizeX - 1][worldSizeY - 1][worldSizeZ - 1].type = 0;
 }
 
+void drawSelectedCritterHUD()
+{
+    if (gvars::myTarget != -1 && myTargetPtr != nullptr)
+            {
+                gvars::myTargetid = npclist.at(gvars::myTarget).id;
+
+                int nxpos = gvars::topLeft.x;
+                int nypos = gvars::topLeft.y + (RESOLUTION.y / 2);
+
+                //int Nxpos = npclist.at(MyTarget).xpos;
+                //int Nypos = npclist.at(MyTarget).ypos;
+
+                effects.createSquare(nxpos, nypos, nxpos + 65, nypos + 70,
+                                     sf::Color(0, 0, 0, 100));
+                textList.createText(nxpos, nypos, 11, sf::Color::Red, "Health:",
+                                    "", npclist.at(gvars::myTarget).health, "",
+                                    "(", npclist.at(gvars::myTarget).maxhealth,
+                                    ")", "", -6698, 1, 0);
+
+                textList.createText(nxpos, nypos + 10, 11, BROWN, "Hunger:", "",
+                                    npclist.at(gvars::myTarget).hunger, "", "",
+                                    -6698, "", "", -6698, 1, 0);
+                textList.createText(nxpos, nypos + 20, 11, sf::Color::Cyan,
+                                    "Thirst:", "",
+                                    npclist.at(gvars::myTarget).thirst, "", "",
+                                    -6698, "", "", -6698, 1, 0);
+
+                std::string textOut;
+                if(myTargetPtr->factionPtr != nullptr)
+                    textOut = "Name:" + myTargetPtr->name + ", Faction: " + myTargetPtr->factionPtr->name;
+                else
+                    textOut = "Name:" + myTargetPtr->name + ", Faction: None";
+
+                textList.createText(nxpos, nypos + 30, 11, sf::Color::White, textOut);
+
+                textList.createText(nxpos, nypos + 30, 11, sf::Color::White,
+                                    "Name:", npclist.at(gvars::myTarget).name);
+                textList.createText(nxpos, nypos + 40, 11, sf::Color::White,
+                                    "Id:", "", npclist.at(gvars::myTarget).id,
+                                    "", "", -6698, "", "", -6698, 1, 0);
+                if (npclist.at(gvars::myTarget).needsPath == false)
+                {
+                    textList.createText(nxpos, nypos + 50, 11, sf::Color::Red,
+                                        "Action:",
+                                        npclist.at(gvars::myTarget).action);
+                }
+                else
+                {
+                    textList.createText(nxpos, nypos + 50, 11, sf::Color::Blue,
+                                        "Action:",
+                                        npclist.at(gvars::myTarget).action);
+                }
+                textList.createText(
+                    nxpos, nypos + 60, 11, sf::Color::Red, "Target:",
+                    npclist.at(gvars::myTarget).target,
+                    npclist.at(gvars::myTarget).targetPos.x, ":", "",
+                    npclist.at(gvars::myTarget).targetPos.y, " Angle:", "",
+                    npclist.at(gvars::myTarget).angle);
+
+                effects.createSquare(nxpos, nypos + 70, nxpos + 130,
+                                     nypos + 150, sf::Color(0, 0, 0, 200));
+                int y = 7;
+                int v = 1;
+                textList.createText(
+                    nxpos + v, nypos + (y++ * 10), 11, sf::Color::White,
+                    "Strength:", "",
+                    npclist.at(gvars::myTarget).skills.strength, " : ", "",
+                    npclist.at(gvars::myTarget).skills.strengthxp);
+                textList.createText(
+                    nxpos + v, nypos + (y++ * 10), 11, sf::Color::White,
+                    "Perception:", "",
+                    npclist.at(gvars::myTarget).skills.perception, " : ", "",
+                    npclist.at(gvars::myTarget).skills.perceptionxp);
+                textList.createText(
+                    nxpos + v, nypos + (y++ * 10), 11, sf::Color::White,
+                    "Intelligence:", "",
+                    npclist.at(gvars::myTarget).skills.intelligence, " : ", "",
+                    npclist.at(gvars::myTarget).skills.intelligencexp);
+                textList.createText(
+                    nxpos + v, nypos + (y++ * 10), 11, sf::Color::White,
+                    "Charisma:", "",
+                    npclist.at(gvars::myTarget).skills.charisma, " : ", "",
+                    npclist.at(gvars::myTarget).skills.charismaxp);
+                textList.createText(
+                    nxpos + v, nypos + (y++ * 10), 11, sf::Color::White,
+                    "Endurance:", "",
+                    npclist.at(gvars::myTarget).skills.endurance, " : ", "",
+                    npclist.at(gvars::myTarget).skills.endurancexp);
+                textList.createText(
+                    nxpos + v, nypos + (y++ * 10), 11, sf::Color::White,
+                    "Dexterity:", "",
+                    npclist.at(gvars::myTarget).skills.dexterity, " : ", "",
+                    npclist.at(gvars::myTarget).skills.dexterityxp);
+                textList.createText(
+                    nxpos + v, nypos + (y++ * 10), 11, sf::Color::White,
+                    "Agility:", "", npclist.at(gvars::myTarget).skills.agility,
+                    " : ", "", npclist.at(gvars::myTarget).skills.agilityxp);
+                textList.createText(nxpos + v, nypos + (y++ * 10), 11,
+                                    sf::Color::White, "Tags:",
+                                    npclist.at(gvars::myTarget).tags);
+
+                if (npclist.at(gvars::myTarget).inventory.size() != 0 ||
+                    npclist.at(gvars::myTarget).bloodcontent != "")
+                {
+                    effects.createSquare(nxpos, nypos, nxpos + 130, nypos + 70,
+                                         sf::Color(0, 0, 0, 100));
+                    int yv = nypos;
+                    for (auto const &item :
+                         npclist.at(gvars::myTarget).inventory)
+                    { // Listing all the current items from this critters inventory.
+                        if (item.insidePart.size() == 0)
+                        {
+                            textList.createText(nxpos + 65, yv, 11,
+                                                sf::Color::White, item.name,
+                                                ": ", item.amount);
+                            yv += 10;
+                        }
+                    }
+
+                    for (auto const &item :
+                         npclist.at(gvars::myTarget).inventory)
+                    { // Listing all items from 'inside' the critter.
+                        if (item.insidePart.size() != 0)
+                        {
+                            textList.createText(
+                                nxpos + 65, yv, 11, sf::Color(255, 200, 200),
+                                "Inside " + item.insidePart + " :",
+                                item.name + " :", item.amount);
+                            yv += 10;
+                        }
+                    }
+                    textList.createText(
+                        nxpos + 85, yv, 11, sf::Color(255, 150, 150),
+                        "Blood: " + npclist.at(gvars::myTarget).bloodcontent);
+
+                    Button var;
+                    var.color = sf::Color::Red;
+                    var.iSize = 5;
+                    var.vPos = sf::Vector2f(nxpos + 120, nypos + 50);
+                    var.sButtonText = "Howdy";
+                    vButtonList.push_back(var);
+                    if (buttonClicked(var.id))
+                    {
+                        std::cout << "Twas' Truuuuuuue \n";
+                    } // TODO: Get this before the MyTarget -1 check up there.
+                }
+
+            }
+}
+
 
 int main()
 {
@@ -5315,152 +5465,9 @@ int main()
             else
                 gvars::heldClickPos = sf::Vector2f(-1, -1);
 
-            if (gvars::myTarget != -1 && myTargetPtr != nullptr)
-            {
-                gvars::myTargetid = npclist.at(gvars::myTarget).id;
+            drawSelectedCritterHUD();
 
-                int nxpos = gvars::topLeft.x;
-                int nypos = gvars::topLeft.y + (RESOLUTION.y / 2);
 
-                //int Nxpos = npclist.at(MyTarget).xpos;
-                //int Nypos = npclist.at(MyTarget).ypos;
-
-                effects.createSquare(nxpos, nypos, nxpos + 65, nypos + 70,
-                                     sf::Color(0, 0, 0, 100));
-                textList.createText(nxpos, nypos, 11, sf::Color::Red, "Health:",
-                                    "", npclist.at(gvars::myTarget).health, "",
-                                    "(", npclist.at(gvars::myTarget).maxhealth,
-                                    ")", "", -6698, 1, 0);
-
-                textList.createText(nxpos, nypos + 10, 11, BROWN, "Hunger:", "",
-                                    npclist.at(gvars::myTarget).hunger, "", "",
-                                    -6698, "", "", -6698, 1, 0);
-                textList.createText(nxpos, nypos + 20, 11, sf::Color::Cyan,
-                                    "Thirst:", "",
-                                    npclist.at(gvars::myTarget).thirst, "", "",
-                                    -6698, "", "", -6698, 1, 0);
-
-                std::string textOut;
-                if(myTargetPtr->factionPtr != nullptr)
-                    textOut = "Name:" + myTargetPtr->name + ", Faction: " + myTargetPtr->factionPtr->name;
-                else
-                    textOut = "Name:" + myTargetPtr->name + ", Faction: None";
-
-                textList.createText(nxpos, nypos + 30, 11, sf::Color::White, textOut);
-
-                textList.createText(nxpos, nypos + 30, 11, sf::Color::White,
-                                    "Name:", npclist.at(gvars::myTarget).name);
-                textList.createText(nxpos, nypos + 40, 11, sf::Color::White,
-                                    "Id:", "", npclist.at(gvars::myTarget).id,
-                                    "", "", -6698, "", "", -6698, 1, 0);
-                if (npclist.at(gvars::myTarget).needsPath == false)
-                {
-                    textList.createText(nxpos, nypos + 50, 11, sf::Color::Red,
-                                        "Action:",
-                                        npclist.at(gvars::myTarget).action);
-                }
-                else
-                {
-                    textList.createText(nxpos, nypos + 50, 11, sf::Color::Blue,
-                                        "Action:",
-                                        npclist.at(gvars::myTarget).action);
-                }
-                textList.createText(
-                    nxpos, nypos + 60, 11, sf::Color::Red, "Target:",
-                    npclist.at(gvars::myTarget).target,
-                    npclist.at(gvars::myTarget).targetPos.x, ":", "",
-                    npclist.at(gvars::myTarget).targetPos.y, " Angle:", "",
-                    npclist.at(gvars::myTarget).angle);
-
-                effects.createSquare(nxpos, nypos + 70, nxpos + 130,
-                                     nypos + 150, sf::Color(0, 0, 0, 200));
-                int y = 7;
-                int v = 1;
-                textList.createText(
-                    nxpos + v, nypos + (y++ * 10), 11, sf::Color::White,
-                    "Strength:", "",
-                    npclist.at(gvars::myTarget).skills.strength, " : ", "",
-                    npclist.at(gvars::myTarget).skills.strengthxp);
-                textList.createText(
-                    nxpos + v, nypos + (y++ * 10), 11, sf::Color::White,
-                    "Perception:", "",
-                    npclist.at(gvars::myTarget).skills.perception, " : ", "",
-                    npclist.at(gvars::myTarget).skills.perceptionxp);
-                textList.createText(
-                    nxpos + v, nypos + (y++ * 10), 11, sf::Color::White,
-                    "Intelligence:", "",
-                    npclist.at(gvars::myTarget).skills.intelligence, " : ", "",
-                    npclist.at(gvars::myTarget).skills.intelligencexp);
-                textList.createText(
-                    nxpos + v, nypos + (y++ * 10), 11, sf::Color::White,
-                    "Charisma:", "",
-                    npclist.at(gvars::myTarget).skills.charisma, " : ", "",
-                    npclist.at(gvars::myTarget).skills.charismaxp);
-                textList.createText(
-                    nxpos + v, nypos + (y++ * 10), 11, sf::Color::White,
-                    "Endurance:", "",
-                    npclist.at(gvars::myTarget).skills.endurance, " : ", "",
-                    npclist.at(gvars::myTarget).skills.endurancexp);
-                textList.createText(
-                    nxpos + v, nypos + (y++ * 10), 11, sf::Color::White,
-                    "Dexterity:", "",
-                    npclist.at(gvars::myTarget).skills.dexterity, " : ", "",
-                    npclist.at(gvars::myTarget).skills.dexterityxp);
-                textList.createText(
-                    nxpos + v, nypos + (y++ * 10), 11, sf::Color::White,
-                    "Agility:", "", npclist.at(gvars::myTarget).skills.agility,
-                    " : ", "", npclist.at(gvars::myTarget).skills.agilityxp);
-                textList.createText(nxpos + v, nypos + (y++ * 10), 11,
-                                    sf::Color::White, "Tags:",
-                                    npclist.at(gvars::myTarget).tags);
-
-                if (npclist.at(gvars::myTarget).inventory.size() != 0 ||
-                    npclist.at(gvars::myTarget).bloodcontent != "")
-                {
-                    effects.createSquare(nxpos, nypos, nxpos + 130, nypos + 70,
-                                         sf::Color(0, 0, 0, 100));
-                    int yv = nypos;
-                    for (auto const &item :
-                         npclist.at(gvars::myTarget).inventory)
-                    { // Listing all the current items from this critters inventory.
-                        if (item.insidePart.size() == 0)
-                        {
-                            textList.createText(nxpos + 65, yv, 11,
-                                                sf::Color::White, item.name,
-                                                ": ", item.amount);
-                            yv += 10;
-                        }
-                    }
-
-                    for (auto const &item :
-                         npclist.at(gvars::myTarget).inventory)
-                    { // Listing all items from 'inside' the critter.
-                        if (item.insidePart.size() != 0)
-                        {
-                            textList.createText(
-                                nxpos + 65, yv, 11, sf::Color(255, 200, 200),
-                                "Inside " + item.insidePart + " :",
-                                item.name + " :", item.amount);
-                            yv += 10;
-                        }
-                    }
-                    textList.createText(
-                        nxpos + 85, yv, 11, sf::Color(255, 150, 150),
-                        "Blood: " + npclist.at(gvars::myTarget).bloodcontent);
-
-                    Button var;
-                    var.color = sf::Color::Red;
-                    var.iSize = 5;
-                    var.vPos = sf::Vector2f(nxpos + 120, nypos + 50);
-                    var.sButtonText = "Howdy";
-                    vButtonList.push_back(var);
-                    if (buttonClicked(var.id))
-                    {
-                        std::cout << "Twas' Truuuuuuue \n";
-                    } // TODO: Get this before the MyTarget -1 check up there.
-                }
-
-            }
 
             //else{MyTargetid = -1;}
             { // Mousing over items will say a wee bit about them.
