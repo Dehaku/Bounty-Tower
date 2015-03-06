@@ -350,7 +350,7 @@ Item *findClosestItemPtr(int orix, int oriy, std::string tarItem, int /*Gxpos*/,
     int closy = -1000000;
     bool first = true;
 
-    Item *returns;
+    Item *returns = nullptr;
 
     for (auto &worlditem : worlditems)
     {

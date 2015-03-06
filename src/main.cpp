@@ -1329,8 +1329,8 @@ ItemFindResult findClosestItem(int orix, int oriy, std::string tarItem,
     int closx =
         -1000000; // Make sure the default starting number is far beyond being the closest one.
     int closy = -1000000;
-    int closid;
-    int closVect;
+    int closid = 0;
+    int closVect = 0;
     int vectPos = 0;
     bool first = true;
     for (auto const &item : worlditems)
