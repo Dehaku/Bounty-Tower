@@ -2729,6 +2729,7 @@ void buildMicroPatherTest()
 
 void drawSelectedCritterHUD()
 {
+    sf::Lock lock(mutex::npcList);
     if (gvars::myTarget != -1 && myTargetPtr != nullptr)
             {
                 gvars::myTargetid = npclist.at(gvars::myTarget).id;
@@ -5372,18 +5373,7 @@ int main()
                     if (gvars::debug)
                         std::cout << "Found Nothing, Setting targets to -1 \n";
                 }
-                for (auto &elem : npclist)
-                {
-                    if (elem.attacking == true && elem.name == "Miniturret")
-                    {
-                        if (gvars::debug)
-                            std::cout
-                                << "Telling Turret to no longer attack \n";
-                        // TODO: Fix Latersf::Shape Line = sf::Shape::Line(zit->TargetPos.x+randz(-4,4),zit->TargetPos.y+randz(-4,4), zit->xpos, zit->ypos, 1, sf::Color(200,200,200,255));
-                        // TODO: Fix LaterApp.Draw(Line);
-                        elem.attacking = false;
-                    }
-                }
+
                 if (gvars::debug)
                     std::cout << "Post Mouse Based Functions \n";
 
@@ -5438,6 +5428,7 @@ int main()
                          [abs_to_index(gvars::mousePos.y / GRID_SIZE)][30].id !=
                         1010)
                 {
+                    sf::Lock lock(mutex::npcList);
                     for (size_t i = 0; i != gvars::selected.size(); i++)
                     {
                         for (size_t t = 0; t != npclist.size(); t++)

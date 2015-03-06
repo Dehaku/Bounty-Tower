@@ -979,7 +979,7 @@ void menuPopUp()
                 if (squareButtonClicked(butt) ||
                     inputState.key[Key::Num5].time == 1)
                 {
-
+                    sf::Lock lock(mutex::npcList);
                     for (auto &elem : npclist)
                     {
                         elem.printBloodContent();
@@ -1010,7 +1010,7 @@ void menuPopUp()
                 if (squareButtonClicked(butt) ||
                     inputState.key[Key::Num6].time == 1)
                 {
-
+                    sf::Lock lock(mutex::npcList);
                     for (auto &elem : npclist)
                     {
                         elem.bloodwork("Zombification", 100);
@@ -1042,6 +1042,7 @@ void menuPopUp()
                 if (squareButtonClicked(butt) ||
                     inputState.key[Key::Num7].time == 1)
                 {
+                    sf::Lock lock(mutex::npcList);
                     for (auto &elem : npclist)
                     {
                         elem.toDelete = true;
@@ -1067,6 +1068,7 @@ void menuPopUp()
                 if (squareButtonClicked(butt) ||
                     inputState.key[Key::Num8].time == 1)
                 {
+                    sf::Lock lock(mutex::npcList);
                     for (auto &elem : npclist)
                     {
                         elem.hunger = 50;
@@ -1251,6 +1253,7 @@ void menuPopUp()
                         {
                             if (item->pickupable == true)
                             {
+                                sf::Lock lock(mutex::npcList);
                                 npclist.at(getNpcVectorId(gvars::myTargetid))
                                     .action = "Pickup";
                                 npclist.at(getNpcVectorId(gvars::myTargetid))
