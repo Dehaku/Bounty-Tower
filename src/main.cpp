@@ -2878,6 +2878,59 @@ void drawSelectedCritterHUD()
             }
 }
 
+void selectedNPCprocess()
+{
+    if (inputState.lmbTime > 1)
+    {
+        if (gvars::heldClickPos == sf::Vector2f(-1, -1))
+            gvars::heldClickPos = gvars::mousePos;
+        effects.createSquare(gvars::heldClickPos.x,gvars::heldClickPos.y, gvars::mousePos.x,gvars::mousePos.y,sf::Color(0, 255, 255, 100));
+    }
+    else
+        gvars::heldClickPos = sf::Vector2f(-1, -1);
+
+
+    for (size_t i = 0; i != gvars::selected.size(); i++)
+    {
+        Npc var;
+        var = *getCritter(gvars::selected[i]);
+        sf::Vector2f Pos = sf::Vector2f(var.xpos, var.ypos);
+        effects.createCircle(Pos.x, Pos.y, 5,
+                                sf::Color(0, 255, 255, 100));
+    }
+    if (gvars::selected.size() > 0)
+    {
+        if (inputState.rmb &&
+            tiles[abs_to_index(gvars::mousePos.x / GRID_SIZE)]
+                    [abs_to_index(gvars::mousePos.y / GRID_SIZE)][30].id !=
+                1010)
+        {
+            sf::Lock lock(mutex::npcList);
+            for (size_t i = 0; i != gvars::selected.size(); i++)
+            {
+                for (size_t t = 0; t != npclist.size(); t++)
+                {
+                    if (npclist[t].id == gvars::selected[i])
+                    {
+                        npclist[t].targetPos =
+                            sf::Vector2f(gvars::mousePos);
+                        npclist[t].action = "Orders";
+                    }
+                }
+            }
+        }
+    }
+
+}
+
+void hoverItemIDdisplay()
+{
+    for (auto const &item : worlditems)
+    {
+        if (math::closeish(gvars::mousePos.x, gvars::mousePos.y,item.xpos, item.ypos) <= 10)
+            textList.createText(item.xpos, item.ypos, 11,sf::Color::White, item.name, " ID:",item.id);
+    }
+}
 
 int main()
 {
@@ -5413,82 +5466,20 @@ int main()
                 }
             }
 
-            for (size_t i = 0; i != gvars::selected.size(); i++)
-            {
-                Npc var;
-                var = *getCritter(gvars::selected[i]);
-                sf::Vector2f Pos = sf::Vector2f(var.xpos, var.ypos);
-                effects.createCircle(Pos.x, Pos.y, 5,
-                                     sf::Color(0, 255, 255, 100));
-            }
-            if (gvars::selected.size() > 0)
-            {
-                if (inputState.rmb &&
-                    tiles[abs_to_index(gvars::mousePos.x / GRID_SIZE)]
-                         [abs_to_index(gvars::mousePos.y / GRID_SIZE)][30].id !=
-                        1010)
-                {
-                    sf::Lock lock(mutex::npcList);
-                    for (size_t i = 0; i != gvars::selected.size(); i++)
-                    {
-                        for (size_t t = 0; t != npclist.size(); t++)
-                        {
-                            if (npclist[t].id == gvars::selected[i])
-                            {
-                                npclist[t].targetPos =
-                                    sf::Vector2f(gvars::mousePos);
-                                npclist[t].action = "Orders";
-                            }
-                        }
-                    }
-                }
-            }
+            selectedNPCprocess();
 
-            if (inputState.lmbTime > 1)
-            {
-                if (gvars::heldClickPos == sf::Vector2f(-1, -1))
-                    gvars::heldClickPos = gvars::mousePos;
-                effects.createSquare(gvars::heldClickPos.x,
-                                     gvars::heldClickPos.y, gvars::mousePos.x,
-                                     gvars::mousePos.y,
-                                     sf::Color(0, 255, 255, 100));
-            }
-            else
-                gvars::heldClickPos = sf::Vector2f(-1, -1);
-
-            drawSelectedCritterHUD();
-
-
-
-            //else{MyTargetid = -1;}
-            { // Mousing over items will say a wee bit about them.
-                for (auto const &item : worlditems)
-                {
-                    if (math::closeish(gvars::mousePos.x, gvars::mousePos.y,
-                                       item.xpos, item.ypos) <= 10)
-                    {
-                        textList.createText(item.xpos, item.ypos, 11,
-                                            sf::Color::White, item.name, " ID:",
-                                            item.id);
-                    }
-                }
-            }
-
-            if (gvars::debug)
-                std::cout << "Pre Draw Stuffs \n";
-
-            //DrawStuffs();
+            debug("Pre Draw Stuffs");
 
             if (gvars::drawStuffsDone == true)
             {
-                //App.setActive(false);
                 gvars::drawStuffsDone = false;
+
+                hoverItemIDdisplay();
+                drawSelectedCritterHUD();
                 drawStuffs();
-                //ThreadDrawStuffs.launch();
             }
 
-            if (gvars::debug)
-                std::cout << "Post Draw Stuffs \n";
+            debug("Post Draw Stuffs");
 
             window.display();
             window.clear();
