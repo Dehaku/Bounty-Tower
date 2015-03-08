@@ -51,9 +51,9 @@ Identity ident;
 
 sf::IpAddress server("127.0.0.1");
 bool TcpFirstRun = true;
-sf::TcpListener Servlistener;
-sf::TcpSocket Servsocket;
-sf::TcpSocket Clisocket;
+sf::TcpListener servListener;
+sf::TcpSocket servSocket;
+sf::TcpSocket cliSocket;
 std::list<sf::TcpSocket*> clients;
 sf::SocketSelector selector;
 
@@ -323,7 +323,7 @@ void runTcpServer(unsigned short port)
 
     /*
     sf::TcpSocket* client = new sf::TcpSocket;
-    if (Servlistener.accept(*client) != sf::Socket::Done)
+    if (servListener.accept(*client) != sf::Socket::Done)
     {
         std::cout << "Infinite? \n";
         return;
@@ -342,11 +342,11 @@ void runTcpServer(unsigned short port)
     {
         if(gvars::debug)
             std::cout << "Wait Successful! \n";
-        if(selector.isReady(Servlistener))
+        if(selector.isReady(servListener))
         {
             std::cout << "Listener is ready! \n";
             sf::TcpSocket* client = new sf::TcpSocket;
-            if (Servlistener.accept(*client) == sf::Socket::Done)
+            if (servListener.accept(*client) == sf::Socket::Done)
             {
                 selector.add(*client);
                 clients.push_back(client);
@@ -413,7 +413,7 @@ void runTcpClient(unsigned short port)
         std::cout << "Waiting on Message! \n";
 
     sf::Packet GotPacket;
-    if (Clisocket.receive(GotPacket) != sf::Socket::Done)
+    if (cliSocket.receive(GotPacket) != sf::Socket::Done)
     {
         network::cliWait = false;
         return;
@@ -499,7 +499,7 @@ void runTcpClient(unsigned short port)
             sf::Uint32 peerTime;
             GotPacket >> peerTime;
             toSend << peerTime;
-            Clisocket.send(toSend);
+            cliSocket.send(toSend);
         }
         if(GotIdent == ident.peers)
         {
@@ -631,20 +631,20 @@ bool chatCommand(std::string input)
             return false;
         }
 
-        if (Clisocket.connect(elements[1], std::stoi(elements[2])) == sf::Socket::Done)
+        if (cliSocket.connect(elements[1], std::stoi(elements[2])) == sf::Socket::Done)
         {
             std::cout << "Connected to server " << elements[1] << std::endl;
             network::connectedServer = elements[1];
             sf::Packet packet;
 
             packet << ident.connection << network::name;
-            Clisocket.send(packet);
+            cliSocket.send(packet);
             packet.clear();
             packet << ident.clientMouse << network::name << gvars::mousePos.x << gvars::mousePos.y;
-            Clisocket.send(packet);
+            cliSocket.send(packet);
             packet.clear();
             packet << ident.textMessage << network::name + randomWindowName();
-            Clisocket.send(packet);
+            cliSocket.send(packet);
 
             chatBox.addChat("Server: Connected to " + elements[1] + "(" + elements[2] + ")", goodColor);
 

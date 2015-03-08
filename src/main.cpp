@@ -951,7 +951,7 @@ void updateItem()
                     }
                     if(network::connectedServer != "")
                     {
-                        Clisocket.send(pack);
+                        cliSocket.send(pack);
                     }
 
                     con("Boom!");
@@ -2177,7 +2177,7 @@ ReDesire:
                             pack << gvars::currentregionx << gvars::currentregiony;
                             pack << abs_to_index(wPos.x / 20) << abs_to_index(wPos.y / 20) << abs_to_index(wPos.z / 20);
                             pack << tiles[abs_to_index(wPos.x / 20)][abs_to_index(wPos.y / 20)][abs_to_index(wPos.z / 20)].id;
-                            Clisocket.send(pack);
+                            cliSocket.send(pack);
                         }
 
                     }
@@ -2944,12 +2944,12 @@ int main()
 
     network::mainPort = randz(23636,65511);
 
-    if (Servlistener.listen(network::mainPort) != sf::Socket::Done)
+    if (servListener.listen(network::mainPort) != sf::Socket::Done)
     {
         std::cout << "ServListen Error? \n";
     }
     std::cout << "Server is listening to port " << network::mainPort << ", waiting for connections... " << std::endl;
-    selector.add(Servlistener);
+    selector.add(servListener);
 
     sf::Thread TcpServerThread(&runTcpServer, network::mainPort);
     sf::Thread TcpClientThread(&runTcpClient, network::mainPort+23);
@@ -3193,7 +3193,7 @@ int main()
                             sendpacket << ident.textMessage << SendText;
 
                             // Send an answer to the server
-                            if(Clisocket.send(sendpacket) != sf::Socket::Done)
+                            if(cliSocket.send(sendpacket) != sf::Socket::Done)
                             {
                                 std::cout << "!= Socket Done (In client sending chat), Apparently! Tell the Devs! \n";
                             }
@@ -3237,7 +3237,7 @@ int main()
                         {
                             sf::Packet pack;
                             pack << ident.textMessage << network::name + ": " + cliCon.chatString;
-                            Clisocket.send(pack);
+                            cliSocket.send(pack);
                         }
                         else
                             chatBox.addChat(cliCon.chatString,sf::Color::White);

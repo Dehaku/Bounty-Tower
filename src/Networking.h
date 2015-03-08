@@ -28,9 +28,9 @@ namespace network
 
 int displayPort();
 
-extern sf::TcpListener Servlistener;
-extern sf::TcpSocket Servsocket;
-extern sf::TcpSocket Clisocket;
+extern sf::TcpListener servListener;
+extern sf::TcpSocket servSocket;
+extern sf::TcpSocket cliSocket;
 extern sf::IpAddress server;
 
 extern std::list<sf::TcpSocket*> clients;
