@@ -20,7 +20,7 @@ template <typename T> T &listAt(std::list<T> &list, size_t index)
 }
 
 Faction *conFact;
-std::vector<Npc> npclist;
+std::list<Npc> npclist;
 MakeSquad squady;
 std::vector<Npc> worldCritters;
 std::list<Faction> uniFact;
@@ -1638,17 +1638,18 @@ std::set<int> npcTrace(int xa, int ya, int xb, int yb, int id,
 
         // Merely doing this so I can reuse the same code, but for items, Hehe.
         {
-            std::vector<Npc>::iterator me;
+            //std::vector<Npc>::iterator me;
 
-            for (me = npclist.begin(); me != npclist.end(); ++me)
+            //for (me = npclist.begin(); me != npclist.end(); ++me)
+            for (auto &me : npclist)
             {
-                if (math::closeish(x, y, me->xpos, me->ypos) <= me->size &&
-                    me->id != id)
+                if (math::closeish(x, y, me.xpos, me.ypos) <= me.size &&
+                    me.id != id)
                 {
 
                     try
                     {
-                        setID.insert(getNpcVectorId(me->id));
+                        setID.insert(getNpcVectorId(me.id));
                     }
                     catch (std::exception &e)
                     {
@@ -2215,11 +2216,12 @@ void boom(int xpos, int ypos, int damage, int size)
                          sf::Color(0, 0, 0));
     std::vector<Npc>::iterator me;
     sf::Lock lock(mutex::npcList);
-    for (me = npclist.begin(); me != npclist.end(); ++me)
+    //for (me = npclist.begin(); me != npclist.end(); ++me)
+    for (auto &me : npclist)
     {
-        if (math::closeish(xpos, ypos, me->xpos, me->ypos) < size)
+        if (math::closeish(xpos, ypos, me.xpos, me.ypos) < size)
         {
-            me->modhealth(-damage);
+            me.modhealth(-damage);
         }
     }
 }
@@ -2229,20 +2231,23 @@ void squadHud()
     try
     {
         sf::Lock lock(mutex::npcList);
-        for (size_t i = 0; i != npclist.size(); i++)
+        //for (size_t i = 0; i != npclist.size(); i++)
+        int iterNum = 0;
+        for (auto &i : npclist)
         {
-            if (npclist[i].name != "debug")
+            iterNum++;
+            if (i.name != "debug")
             {
 
                 effects.createSquare(
-                    gvars::topLeft.x + (20), gvars::topLeft.y + (20 * i),
+                    gvars::topLeft.x + (20), gvars::topLeft.y + (20 * iterNum),
                     gvars::topLeft.x + 20 + (20),
-                    gvars::topLeft.y + 20 + (20 * i), sf::Color::Black);
+                    gvars::topLeft.y + 20 + (20 * iterNum), sf::Color::Black);
 
                 std::string output =
-                    npclist[i].name + npclist[i].action + npclist[i].target;
+                    i.name + i.action + i.target;
                 textList.createText(gvars::topLeft.x + 20 + (20),
-                                    gvars::topLeft.y + (20 * i), 12,
+                                    gvars::topLeft.y + (20 * iterNum), 12,
                                     sf::Color::White, output);
             }
         }

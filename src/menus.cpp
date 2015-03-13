@@ -946,7 +946,7 @@ void menuPopUp()
                     inputState.key[Key::Num5].time == 1)
                 {
 
-                    std::vector<Npc>::iterator zit;
+                    std::list<Npc>::iterator zit;
                     sf::Lock lock(mutex::npcList);
                     for (zit = npclist.begin(); zit != npclist.end(); ++zit)
                     {
@@ -1255,13 +1255,15 @@ void menuPopUp()
                             if (item->pickupable == true)
                             {
                                 sf::Lock lock(mutex::npcList);
-                                npclist.at(getNpcVectorId(gvars::myTargetid))
+                                //for (auto &i : npclist)
+                                //listAt(npclist, gvars::myTargetid)
+                                listAt(npclist, gvars::myTargetid)
                                     .action = "Pickup";
-                                npclist.at(getNpcVectorId(gvars::myTargetid))
+                                listAt(npclist, gvars::myTargetid)
                                     .target = item->name;
-                                npclist.at(getNpcVectorId(gvars::myTargetid))
+                                listAt(npclist, gvars::myTargetid)
                                     .targetId = item->id;
-                                npclist.at(getNpcVectorId(gvars::myTargetid))
+                                listAt(npclist, gvars::myTargetid)
                                     .targetPos =
                                     sf::Vector2f(item->xpos, item->ypos);
                                 gCtrl.menuPos = sf::Vector2f(-10000, -10000);
@@ -1295,11 +1297,12 @@ void rightMouseButtonContextMenu()
 
         {
             sf::Lock lock(mutex::npcList);
-            for (size_t i = 0; i != npclist.size(); i++)
+            //for (size_t i = 0; i != npclist.size(); i++)
+            for (auto &i : npclist)
         {
             if (math::closeish(gvars::mousePos.x, gvars::mousePos.y,
-                               npclist[i].xpos,
-                               npclist[i].ypos) <= npclist[i].size)
+                               i.xpos,
+                               i.ypos) <= i.size)
             {
                 gCtrl.menuType = "CritterRMB";
                 menuPopUp();

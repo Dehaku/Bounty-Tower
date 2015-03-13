@@ -995,10 +995,11 @@ std::vector<int> nngTrace(int xa, int ya, int xb, int yb, int id,
         { // Merely doing this so I can reuse the same code, but for items, Hehe.
             std::vector<Npc>::iterator me;
             sf::Lock lock(mutex::npcList);
-            for (me = npclist.begin(); me != npclist.end(); ++me)
+            //for (me = npclist.begin(); me != npclist.end(); ++me)
+            for (auto &me : npclist)
             {
-                if (math::closeish(x, y, me->xpos, me->ypos) <= me->reach &&
-                    me->id != id)
+                if (math::closeish(x, y, me.xpos, me.ypos) <= me.reach &&
+                    me.id != id)
                 {
 
                     std::vector<int>::iterator vec;
@@ -1008,7 +1009,7 @@ std::vector<int> nngTrace(int xa, int ya, int xb, int yb, int id,
                         for (vec = vectorID.begin(); vec != vectorID.end();
                              ++vec)
                         {
-                            if (*vec == me->id)
+                            if (*vec == me.id)
                             {
                                 exists = true;
                             }
@@ -1016,7 +1017,7 @@ std::vector<int> nngTrace(int xa, int ya, int xb, int yb, int id,
                         if (exists == false)
                         {
                             vectorID.push_back(69);
-                            vectorID.push_back(getNpcVectorId(me->id));
+                            vectorID.push_back(getNpcVectorId(me.id));
                         }
                     }
                     catch (std::exception &e)
@@ -1235,10 +1236,11 @@ std::vector<int> npcTrace(int xa, int ya, int xb, int yb, int id,
         std::vector<Npc>::iterator me;
         int count = 0;
         sf::Lock lock(mutex::npcList);
-        for (me = npclist.begin(); me != npclist.end(); ++me)
+        //for (me = npclist.begin(); me != npclist.end(); ++me)
+        for (auto &me : npclist)
         {
-            if (math::closeish(x, y, me->xpos, me->ypos) <= me->reach &&
-                me->id != id)
+            if (math::closeish(x, y, me.xpos, me.ypos) <= me.reach &&
+                me.id != id)
             {
                 vectorID.push_back(count);
                 kill = true;
@@ -1294,7 +1296,7 @@ bool removeNPC(char * /*NPCname*/, int /*Id*/)
 {
     sf::Lock lock(mutex::npcList);
     int tempInt = 0;
-    std::vector<Npc>::iterator location;
+    std::list<Npc>::iterator location;
     for (auto it = npclist.begin(); it != npclist.end(); ++it)
     {
         if (it->health <= 0 || it->hasSpawned == false || it->alive == false)
@@ -1742,7 +1744,7 @@ void runCritterBody(Npc &npc)
     }
 }
 
-void critterBrain(Npc &npc, std::vector<Npc> &container)
+void critterBrain(Npc &npc, std::list<Npc> &container)
 {
     int alph = 255;
     npc.img.setColor(sf::Color(255, 255, 255, alph));
@@ -2375,7 +2377,7 @@ ReDesire:
     debug("endCritterbrain2");
 }
 
-void critterBrain(std::vector<Npc> &npcs)
+void critterBrain(std::list<Npc> &npcs)
 {
     /*
     //Vec3 startPos(35,35,30);
@@ -2408,6 +2410,7 @@ void critterBrain(std::vector<Npc> &npcs)
     //gvars::workingNpcList = false;
 }
 
+/*
 void drawTiles()
 {
     int z = gvars::currentz;
@@ -2418,13 +2421,13 @@ void drawTiles()
         for (int t = 0; t <= GRID_X - 1; t++)
         {
             if ((gvars::following == true &&
-                 i > (npclist.at(gvars::myTarget).xpos / GRID_SIZE) - 27 &&
-                 i < (npclist.at(gvars::myTarget).xpos / GRID_SIZE) + 26) ||
+                 i > listAt(listAt(npclist, gvars::myTarget).xpos / GRID_SIZE) - 27 &&
+                 i < (listAt(npclist, gvars::myTarget).xpos / GRID_SIZE) + 26) ||
                 (i > gvars::currentx - 27 && i < gvars::currentx + 26))
             {
                 if ((gvars::following == true &&
-                     t > (npclist.at(gvars::myTarget).ypos / GRID_SIZE) - 21 &&
-                     t < (npclist.at(gvars::myTarget).ypos / GRID_SIZE) + 20) ||
+                     t > (listAt(npclist, gvars::myTarget).ypos / GRID_SIZE) - 21 &&
+                     t < (listAt(npclist, gvars::myTarget).ypos / GRID_SIZE) + 20) ||
                     (t > gvars::currenty - 21 && t < gvars::currenty + 20))
                 {
                     sf::Sprite tile;
@@ -2482,6 +2485,7 @@ void drawTiles()
         }
     }
 }
+*/
 
 void drawNPCs()
 {
@@ -2739,7 +2743,7 @@ void drawSelectedCritterHUD()
     sf::Lock lock(mutex::npcList);
     if (gvars::myTarget != -1 && myTargetPtr != nullptr)
             {
-                gvars::myTargetid = npclist.at(gvars::myTarget).id;
+                gvars::myTargetid = listAt(npclist, gvars::myTarget).id;
 
                 int nxpos = gvars::topLeft.x;
                 int nypos = gvars::topLeft.y + (RESOLUTION.y / 2);
@@ -2750,16 +2754,16 @@ void drawSelectedCritterHUD()
                 effects.createSquare(nxpos, nypos, nxpos + 65, nypos + 70,
                                      sf::Color(0, 0, 0, 100));
                 textList.createText(nxpos, nypos, 11, sf::Color::Red, "Health:",
-                                    "", npclist.at(gvars::myTarget).health, "",
-                                    "(", npclist.at(gvars::myTarget).maxhealth,
+                                    "", listAt(npclist, gvars::myTarget).health, "",
+                                    "(", listAt(npclist, gvars::myTarget).maxhealth,
                                     ")", "", -6698, 1, 0);
 
                 textList.createText(nxpos, nypos + 10, 11, BROWN, "Hunger:", "",
-                                    npclist.at(gvars::myTarget).hunger, "", "",
+                                    listAt(npclist, gvars::myTarget).hunger, "", "",
                                     -6698, "", "", -6698, 1, 0);
                 textList.createText(nxpos, nypos + 20, 11, sf::Color::Cyan,
                                     "Thirst:", "",
-                                    npclist.at(gvars::myTarget).thirst, "", "",
+                                    listAt(npclist, gvars::myTarget).thirst, "", "",
                                     -6698, "", "", -6698, 1, 0);
 
                 std::string textOut;
@@ -2771,28 +2775,28 @@ void drawSelectedCritterHUD()
                 textList.createText(nxpos, nypos + 30, 11, sf::Color::White, textOut);
 
                 textList.createText(nxpos, nypos + 30, 11, sf::Color::White,
-                                    "Name:", npclist.at(gvars::myTarget).name);
+                                    "Name:", listAt(npclist, gvars::myTarget).name);
                 textList.createText(nxpos, nypos + 40, 11, sf::Color::White,
-                                    "Id:", "", npclist.at(gvars::myTarget).id,
+                                    "Id:", "", listAt(npclist, gvars::myTarget).id,
                                     "", "", -6698, "", "", -6698, 1, 0);
-                if (npclist.at(gvars::myTarget).needsPath == false)
+                if (listAt(npclist, gvars::myTarget).needsPath == false)
                 {
                     textList.createText(nxpos, nypos + 50, 11, sf::Color::Red,
                                         "Action:",
-                                        npclist.at(gvars::myTarget).action);
+                                        listAt(npclist, gvars::myTarget).action);
                 }
                 else
                 {
                     textList.createText(nxpos, nypos + 50, 11, sf::Color::Blue,
                                         "Action:",
-                                        npclist.at(gvars::myTarget).action);
+                                        listAt(npclist, gvars::myTarget).action);
                 }
                 textList.createText(
                     nxpos, nypos + 60, 11, sf::Color::Red, "Target:",
-                    npclist.at(gvars::myTarget).target,
-                    npclist.at(gvars::myTarget).targetPos.x, ":", "",
-                    npclist.at(gvars::myTarget).targetPos.y, " Angle:", "",
-                    npclist.at(gvars::myTarget).angle);
+                    listAt(npclist, gvars::myTarget).target,
+                    listAt(npclist, gvars::myTarget).targetPos.x, ":", "",
+                    listAt(npclist, gvars::myTarget).targetPos.y, " Angle:", "",
+                    listAt(npclist, gvars::myTarget).angle);
 
                 effects.createSquare(nxpos, nypos + 70, nxpos + 130,
                                      nypos + 150, sf::Color(0, 0, 0, 200));
@@ -2801,49 +2805,49 @@ void drawSelectedCritterHUD()
                 textList.createText(
                     nxpos + v, nypos + (y++ * 10), 11, sf::Color::White,
                     "Strength:", "",
-                    npclist.at(gvars::myTarget).skills.strength, " : ", "",
-                    npclist.at(gvars::myTarget).skills.strengthxp);
+                    listAt(npclist, gvars::myTarget).skills.strength, " : ", "",
+                    listAt(npclist, gvars::myTarget).skills.strengthxp);
                 textList.createText(
                     nxpos + v, nypos + (y++ * 10), 11, sf::Color::White,
                     "Perception:", "",
-                    npclist.at(gvars::myTarget).skills.perception, " : ", "",
-                    npclist.at(gvars::myTarget).skills.perceptionxp);
+                    listAt(npclist, gvars::myTarget).skills.perception, " : ", "",
+                    listAt(npclist, gvars::myTarget).skills.perceptionxp);
                 textList.createText(
                     nxpos + v, nypos + (y++ * 10), 11, sf::Color::White,
                     "Intelligence:", "",
-                    npclist.at(gvars::myTarget).skills.intelligence, " : ", "",
-                    npclist.at(gvars::myTarget).skills.intelligencexp);
+                    listAt(npclist, gvars::myTarget).skills.intelligence, " : ", "",
+                    listAt(npclist, gvars::myTarget).skills.intelligencexp);
                 textList.createText(
                     nxpos + v, nypos + (y++ * 10), 11, sf::Color::White,
                     "Charisma:", "",
-                    npclist.at(gvars::myTarget).skills.charisma, " : ", "",
-                    npclist.at(gvars::myTarget).skills.charismaxp);
+                    listAt(npclist, gvars::myTarget).skills.charisma, " : ", "",
+                    listAt(npclist, gvars::myTarget).skills.charismaxp);
                 textList.createText(
                     nxpos + v, nypos + (y++ * 10), 11, sf::Color::White,
                     "Endurance:", "",
-                    npclist.at(gvars::myTarget).skills.endurance, " : ", "",
-                    npclist.at(gvars::myTarget).skills.endurancexp);
+                    listAt(npclist, gvars::myTarget).skills.endurance, " : ", "",
+                    listAt(npclist, gvars::myTarget).skills.endurancexp);
                 textList.createText(
                     nxpos + v, nypos + (y++ * 10), 11, sf::Color::White,
                     "Dexterity:", "",
-                    npclist.at(gvars::myTarget).skills.dexterity, " : ", "",
-                    npclist.at(gvars::myTarget).skills.dexterityxp);
+                    listAt(npclist, gvars::myTarget).skills.dexterity, " : ", "",
+                    listAt(npclist, gvars::myTarget).skills.dexterityxp);
                 textList.createText(
                     nxpos + v, nypos + (y++ * 10), 11, sf::Color::White,
-                    "Agility:", "", npclist.at(gvars::myTarget).skills.agility,
-                    " : ", "", npclist.at(gvars::myTarget).skills.agilityxp);
+                    "Agility:", "", listAt(npclist, gvars::myTarget).skills.agility,
+                    " : ", "", listAt(npclist, gvars::myTarget).skills.agilityxp);
                 textList.createText(nxpos + v, nypos + (y++ * 10), 11,
                                     sf::Color::White, "Tags:",
-                                    npclist.at(gvars::myTarget).tags);
+                                    listAt(npclist, gvars::myTarget).tags);
 
-                if (npclist.at(gvars::myTarget).inventory.size() != 0 ||
-                    npclist.at(gvars::myTarget).bloodcontent != "")
+                if (listAt(npclist, gvars::myTarget).inventory.size() != 0 ||
+                    listAt(npclist, gvars::myTarget).bloodcontent != "")
                 {
                     effects.createSquare(nxpos, nypos, nxpos + 130, nypos + 70,
                                          sf::Color(0, 0, 0, 100));
                     int yv = nypos;
                     for (auto const &item :
-                         npclist.at(gvars::myTarget).inventory)
+                         listAt(npclist, gvars::myTarget).inventory)
                     { // Listing all the current items from this critters inventory.
                         if (item.insidePart.size() == 0)
                         {
@@ -2855,7 +2859,7 @@ void drawSelectedCritterHUD()
                     }
 
                     for (auto const &item :
-                         npclist.at(gvars::myTarget).inventory)
+                         listAt(npclist, gvars::myTarget).inventory)
                     { // Listing all items from 'inside' the critter.
                         if (item.insidePart.size() != 0)
                         {
@@ -2868,7 +2872,7 @@ void drawSelectedCritterHUD()
                     }
                     textList.createText(
                         nxpos + 85, yv, 11, sf::Color(255, 150, 150),
-                        "Blood: " + npclist.at(gvars::myTarget).bloodcontent);
+                        "Blood: " + listAt(npclist, gvars::myTarget).bloodcontent);
 
                     Button var;
                     var.color = sf::Color::Red;
@@ -2915,13 +2919,14 @@ void selectedNPCprocess()
             sf::Lock lock(mutex::npcList);
             for (size_t i = 0; i != gvars::selected.size(); i++)
             {
-                for (size_t t = 0; t != npclist.size(); t++)
+                //for (size_t t = 0; t != npclist.size(); t++)
+                for (auto &t : npclist)
                 {
-                    if (npclist[t].id == gvars::selected[i])
+                    if (t.id == gvars::selected[i])
                     {
-                        npclist[t].targetPos =
+                        t.targetPos =
                             sf::Vector2f(gvars::mousePos);
-                        npclist[t].action = "Orders";
+                        t.action = "Orders";
                     }
                 }
             }
@@ -3608,8 +3613,8 @@ int main()
             if (gvars::following)
             {
                 sf::Lock lock(mutex::npcList);
-                gvars::view1.setCenter(npclist.at(gvars::myTarget).xpos,
-                                       npclist.at(gvars::myTarget).ypos);
+                gvars::view1.setCenter(listAt(npclist, gvars::myTarget).xpos,
+                                       listAt(npclist, gvars::myTarget).ypos);
             }
 
             effects.createSquare(
@@ -3647,10 +3652,11 @@ int main()
                 {
                     sf::Lock lock(mutex::npcList);
 
-                    for (size_t i = 0; i != npclist.size(); i++)
+                    //for (size_t i = 0; i != npclist.size(); i++)
+                    for (auto &i : npclist)
                     {
-                        npclist.at(i).ypos += -640;
-                        npclist.at(i).targetPos.y += -640;
+                        i.ypos += -640;
+                        i.targetPos.y += -640;
                     }
                 }
 
@@ -3694,10 +3700,11 @@ int main()
                 {
                     sf::Lock lock(mutex::npcList);
 
-                    for (size_t i = 0; i != npclist.size(); i++)
+                    //for (size_t i = 0; i != npclist.size(); i++)
+                    for (auto &i : npclist)
                     {
-                        npclist.at(i).ypos += 640;
-                        npclist.at(i).targetPos.y += 640;
+                        i.ypos += 640;
+                        i.targetPos.y += 640;
                     }
                 }
 
@@ -3743,10 +3750,11 @@ int main()
 
                     sf::Lock lock(mutex::npcList);
 
-                for (size_t i = 0; i != npclist.size(); i++)
+                //for (size_t i = 0; i != npclist.size(); i++)
+                for (auto &i : npclist)
                 {
-                    npclist.at(i).xpos += -640;
-                    npclist.at(i).targetPos.x += -640;
+                    i.xpos += -640;
+                    i.targetPos.x += -640;
                 }
 
                 }
@@ -3794,10 +3802,11 @@ int main()
                 {
                     sf::Lock lock(mutex::npcList);
 
-                for (size_t i = 0; i != npclist.size(); i++)
+                //for (size_t i = 0; i != npclist.size(); i++)
+                for (auto &i : npclist)
                 {
-                    npclist.at(i).xpos += 640;
-                    npclist.at(i).targetPos.x += 640;
+                    i.xpos += 640;
+                    i.targetPos.x += 640;
                 }
 
                 }
@@ -3844,130 +3853,131 @@ int main()
 
 
                 sf::Lock lock(mutex::npcList);
-                for (size_t i = 0; i != npclist.size(); i++)
+                //for (size_t i = 0; i != npclist.size(); i++)
+                for (auto &i : npclist)
                 {
 
-                    if (npclist.at(i).xpos > 1920 && npclist.at(i).ypos < 640)
+                    if (i.xpos > 1920 && i.ypos < 640)
                     {
-                        npclist.at(i).xpos =
-                            npclist.at(i).xpos - 640 - 640 - 640;
+                        i.xpos =
+                            i.xpos - 640 - 640 - 640;
                         saveNPC(500, sf::Vector2i(gvars::currentregionx + 2,
                                                   gvars::currentregiony - 1),
-                                npclist.at(i));
-                        npclist.at(i).toDelete = true;
+                                i);
+                        i.toDelete = true;
                     }
-                    else if (npclist.at(i).xpos > 1920 &&
-                             npclist.at(i).ypos > 1280)
+                    else if (i.xpos > 1920 &&
+                             i.ypos > 1280)
                     {
-                        npclist.at(i).xpos =
-                            npclist.at(i).xpos - 640 - 640 - 640;
-                        npclist.at(i).ypos = npclist.at(i).ypos - 640 - 640;
+                        i.xpos =
+                            i.xpos - 640 - 640 - 640;
+                        i.ypos = i.ypos - 640 - 640;
                         saveNPC(500, sf::Vector2i(gvars::currentregionx + 2,
                                                   gvars::currentregiony + 1),
-                                npclist.at(i));
-                        npclist.at(i).toDelete = true;
+                                i);
+                        i.toDelete = true;
                     }
 
-                    else if (npclist.at(i).xpos < 0 &&
-                             npclist.at(i).ypos > 1280)
+                    else if (i.xpos < 0 &&
+                             i.ypos > 1280)
                     {
-                        npclist.at(i).xpos = npclist.at(i).xpos + 640;
-                        npclist.at(i).ypos = npclist.at(i).ypos - 640 - 640;
+                        i.xpos = i.xpos + 640;
+                        i.ypos = i.ypos - 640 - 640;
                         saveNPC(500, sf::Vector2i(gvars::currentregionx - 2,
                                                   gvars::currentregiony + 1),
-                                npclist.at(i));
-                        npclist.at(i).toDelete = true;
+                                i);
+                        i.toDelete = true;
                     }
-                    else if (npclist.at(i).xpos < 0 && npclist.at(i).ypos < 640)
+                    else if (i.xpos < 0 && i.ypos < 640)
                     {
-                        npclist.at(i).xpos = npclist.at(i).xpos + 640;
+                        i.xpos = i.xpos + 640;
                         saveNPC(500, sf::Vector2i(gvars::currentregionx - 2,
                                                   gvars::currentregiony - 1),
-                                npclist.at(i));
-                        npclist.at(i).toDelete = true;
+                                i);
+                        i.toDelete = true;
                     }
 
-                    else if (npclist.at(i).ypos < 0 &&
-                             npclist.at(i).xpos > 1280)
+                    else if (i.ypos < 0 &&
+                             i.xpos > 1280)
                     {
-                        npclist.at(i).xpos = npclist.at(i).xpos - 640 - 640;
-                        npclist.at(i).ypos = npclist.at(i).ypos + 640;
+                        i.xpos = i.xpos - 640 - 640;
+                        i.ypos = i.ypos + 640;
                         saveNPC(500, sf::Vector2i(gvars::currentregionx + 1,
                                                   gvars::currentregiony - 2),
-                                npclist.at(i));
-                        npclist.at(i).toDelete = true;
+                                i);
+                        i.toDelete = true;
                     }
-                    else if (npclist.at(i).ypos < 0 && npclist.at(i).xpos < 640)
+                    else if (i.ypos < 0 && i.xpos < 640)
                     {
-                        npclist.at(i).ypos = npclist.at(i).ypos + 640;
+                        i.ypos = i.ypos + 640;
                         saveNPC(500, sf::Vector2i(gvars::currentregionx - 1,
                                                   gvars::currentregiony - 2),
-                                npclist.at(i));
-                        npclist.at(i).toDelete = true;
+                                i);
+                        i.toDelete = true;
                     }
 
-                    else if (npclist.at(i).ypos > 1920 &&
-                             npclist.at(i).xpos > 1280)
+                    else if (i.ypos > 1920 &&
+                             i.xpos > 1280)
                     {
-                        npclist.at(i).xpos = npclist.at(i).xpos - 640 - 640;
-                        npclist.at(i).ypos =
-                            npclist.at(i).ypos - 640 - 640 - 640;
+                        i.xpos = i.xpos - 640 - 640;
+                        i.ypos =
+                            i.ypos - 640 - 640 - 640;
                         saveNPC(500, sf::Vector2i(gvars::currentregionx + 1,
                                                   gvars::currentregiony + 2),
-                                npclist.at(i));
-                        npclist.at(i).toDelete = true;
+                                i);
+                        i.toDelete = true;
                     }
-                    else if (npclist.at(i).ypos > 1920 &&
-                             npclist.at(i).xpos < 640)
+                    else if (i.ypos > 1920 &&
+                             i.xpos < 640)
                     {
-                        npclist.at(i).ypos =
-                            npclist.at(i).ypos - 640 - 640 - 640;
+                        i.ypos =
+                            i.ypos - 640 - 640 - 640;
                         saveNPC(500, sf::Vector2i(gvars::currentregionx - 1,
                                                   gvars::currentregiony + 2),
-                                npclist.at(i));
-                        npclist.at(i).toDelete = true;
+                                i);
+                        i.toDelete = true;
                     }
 
                     //HAGGINABAGGINA  Some reason, When a critter is saved, It'll have more than 640 for it's position, This is unacceptable.
 
-                    else if (npclist.at(i).xpos > 1920)
+                    else if (i.xpos > 1920)
                     {
-                        npclist.at(i).xpos =
-                            npclist.at(i).xpos - 640 - 640 - 640;
-                        npclist.at(i).ypos = npclist.at(i).ypos - 640;
+                        i.xpos =
+                            i.xpos - 640 - 640 - 640;
+                        i.ypos = i.ypos - 640;
                         saveNPC(500, sf::Vector2i(gvars::currentregionx + 2,
                                                   gvars::currentregiony),
-                                npclist.at(i));
-                        npclist.at(i).toDelete = true;
+                                i);
+                        i.toDelete = true;
                     }
-                    else if (npclist.at(i).ypos > 1920)
+                    else if (i.ypos > 1920)
                     {
-                        npclist.at(i).xpos = npclist.at(i).xpos - 640;
-                        npclist.at(i).ypos =
-                            npclist.at(i).ypos - 640 - 640 - 640;
+                        i.xpos = i.xpos - 640;
+                        i.ypos =
+                            i.ypos - 640 - 640 - 640;
                         saveNPC(500, sf::Vector2i(gvars::currentregionx,
                                                   gvars::currentregiony + 2),
-                                npclist.at(i));
-                        npclist.at(i).toDelete = true;
+                                i);
+                        i.toDelete = true;
                     }
-                    else if (npclist.at(i).xpos < 0)
+                    else if (i.xpos < 0)
                     {
-                        npclist.at(i).xpos = npclist.at(i).xpos + 640;
-                        npclist.at(i).ypos = npclist.at(i).ypos - 640;
+                        i.xpos = i.xpos + 640;
+                        i.ypos = i.ypos - 640;
                         saveNPC(500, sf::Vector2i(gvars::currentregionx - 2,
                                                   gvars::currentregiony),
-                                npclist.at(i));
-                        npclist.at(i).toDelete = true;
+                                i);
+                        i.toDelete = true;
                     }
-                    else if (npclist.at(i).ypos < 0)
+                    else if (i.ypos < 0)
                     {
-                        npclist.at(i).xpos = npclist.at(i).xpos - 640;
-                        npclist.at(i).ypos = npclist.at(i).ypos + 640;
+                        i.xpos = i.xpos - 640;
+                        i.ypos = i.ypos + 640;
                         saveNPC(500, sf::Vector2i(gvars::currentregionx,
                                                   gvars::currentregiony - 2),
-                                npclist.at(i));
+                                i);
 
-                        npclist.at(i).toDelete = true;
+                        i.toDelete = true;
                     }
                 }
 
@@ -4127,14 +4137,14 @@ int main()
                     gvars::mousePos.y / GRID_SIZE)][30].id != 1010)
             { // Giving Orders
                 sf::Lock lock(mutex::npcList);
-                npclist.at(gvars::myTarget).targetPos = gvars::mousePos;
-                npclist.at(gvars::myTarget).action = "Orders";
-                if (math::closeish(npclist.at(gvars::myTarget).xpos,
-                                   npclist.at(gvars::myTarget).ypos,
+                listAt(npclist, gvars::myTarget).targetPos = gvars::mousePos;
+                listAt(npclist, gvars::myTarget).action = "Orders";
+                if (math::closeish(listAt(npclist, gvars::myTarget).xpos,
+                                   listAt(npclist, gvars::myTarget).ypos,
                                    gvars::mousePos.x, gvars::mousePos.y) <= 10)
                 {
-                    npclist.at(gvars::myTarget).action = "Act";
-                    npclist.at(gvars::myTarget).needsPath = false;
+                    listAt(npclist, gvars::myTarget).action = "Act";
+                    listAt(npclist, gvars::myTarget).needsPath = false;
                 }
 
                 for (auto const &item : worlditems)
@@ -5452,15 +5462,16 @@ int main()
                 sf::Vector2f S = gvars::heldClickPos;
                 sf::Vector2f E = gvars::mousePos;
                 sf::Lock lock(mutex::npcList);
-                for (size_t i = 0; i != npclist.size(); i++)
+                //for (size_t i = 0; i != npclist.size(); i++)
+                for (auto &i : npclist)
                 {
                     //if(npclist[i].xpos >= S.x && npclist[i].xpos <= E.x)
-                    if (inbetween(S.x, E.x, npclist[i].xpos) == true)
+                    if (inbetween(S.x, E.x, i.xpos) == true)
                     {
-                        if (inbetween(S.y, E.y, npclist[i].ypos) == true)
+                        if (inbetween(S.y, E.y, i.ypos) == true)
                         {
-                            std::cout << npclist[i].name << std::endl;
-                            gvars::selected.push_back(npclist[i].id);
+                            std::cout << i.name << std::endl;
+                            gvars::selected.push_back(i.id);
                             foundAny = true;
                             //Selection.push_back( npclist[i] );
                             //Selection.insert( npclist[i] )

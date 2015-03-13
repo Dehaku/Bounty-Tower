@@ -20,7 +20,7 @@ extern Faction *conFact;
 class Npc;
 std::set<int> npcTrace(int xa, int ya, int xb, int yb, int id,
                        std::set<int> exceptions);
-extern std::vector<Npc> npclist;
+extern std::list<Npc> npclist;
 
 
 
