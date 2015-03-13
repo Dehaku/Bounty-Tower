@@ -31,6 +31,7 @@ void GalaxyController::addvPlanet()
 void GalaxyController::wave()
 {
     bool foundAny = false;
+    sf::Lock lock(mutex::npcList);
     for (auto &elem : npclist)
     {
         if (elem.hasTag("[EatsFlesh:") && elem.health > 0)

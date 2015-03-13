@@ -1624,6 +1624,8 @@ std::set<int> npcTrace(int xa, int ya, int xb, int yb, int id,
     yIncrement = dy / (float)steps;
     std::set<int> setID;
 
+    sf::Lock lock(mutex::npcList);
+
     for (int k = 0; k < steps; k++)
     {
 
@@ -2226,6 +2228,7 @@ void squadHud()
 { // This prints that "pretty" little Squad Unit display in the top left.
     try
     {
+        sf::Lock lock(mutex::npcList);
         for (size_t i = 0; i != npclist.size(); i++)
         {
             if (npclist[i].name != "debug")

@@ -947,6 +947,7 @@ void menuPopUp()
                 {
 
                     std::vector<Npc>::iterator zit;
+                    sf::Lock lock(mutex::npcList);
                     for (zit = npclist.begin(); zit != npclist.end(); ++zit)
                     {
                         if (zit->alive == true)
@@ -1292,7 +1293,9 @@ void rightMouseButtonContextMenu()
         1) // This is the RightMouseButton's context menu for Tiles/Critters/Items, This will probably be rather robust
     {
 
-        for (size_t i = 0; i != npclist.size(); i++)
+        {
+            sf::Lock lock(mutex::npcList);
+            for (size_t i = 0; i != npclist.size(); i++)
         {
             if (math::closeish(gvars::mousePos.x, gvars::mousePos.y,
                                npclist[i].xpos,
@@ -1303,6 +1306,8 @@ void rightMouseButtonContextMenu()
                 return;
             }
         }
+        }
+
 
         for (auto &worlditem : worlditems)
         {

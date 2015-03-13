@@ -532,7 +532,7 @@ void runTcpClient(unsigned short port)
                 {
                     if(npc.name == npcName && npc.id == npcID)
                     {
-                        std::cout << "found name and ID \n";
+                        std::cout << "found name and ID of " + npcName + " \n";
                         npcFound = true;
                         npc.xpos = npcXpos;
                         npc.ypos = npcYpos;
@@ -734,6 +734,7 @@ void ServerController::updateClients()
     {
         sf::Packet pack;
         pack << ident.updateRoster;
+        sf::Lock lock(mutex::npcList);
         for(auto &npc : npclist)
         {
             pack << npc.name << npc.id << npc.xpos << npc.ypos << npc.zpos << npc.bloodcontent;

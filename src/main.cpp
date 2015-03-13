@@ -994,7 +994,7 @@ std::vector<int> nngTrace(int xa, int ya, int xb, int yb, int id,
 
         { // Merely doing this so I can reuse the same code, but for items, Hehe.
             std::vector<Npc>::iterator me;
-
+            sf::Lock lock(mutex::npcList);
             for (me = npclist.begin(); me != npclist.end(); ++me)
             {
                 if (math::closeish(x, y, me->xpos, me->ypos) <= me->reach &&
@@ -1076,6 +1076,7 @@ entityvectorpointercontainer entityTrace(Vec3 Ori, Vec3 Tar) /* TODO: Improve th
     xIncrement = dx / (float)steps;
     yIncrement = dy / (float)steps;
 
+    sf::Lock lock(mutex::npcList);
     for (int k = 0; k < steps; k++)
     {
         x += xIncrement;
@@ -1233,6 +1234,7 @@ std::vector<int> npcTrace(int xa, int ya, int xb, int yb, int id,
         bool kill = false;
         std::vector<Npc>::iterator me;
         int count = 0;
+        sf::Lock lock(mutex::npcList);
         for (me = npclist.begin(); me != npclist.end(); ++me)
         {
             if (math::closeish(x, y, me->xpos, me->ypos) <= me->reach &&
@@ -1275,6 +1277,7 @@ int getItemVectorId(int id)
 
 int getNpcVectorId(int id)
 {
+    sf::Lock lock(mutex::npcList);
     int index = 0;
     for (auto const &npc : npclist)
     {
@@ -1378,6 +1381,7 @@ std::set<int> npcList(int exceptions = -1)
     }
     std::set<int> returns;
 
+    sf::Lock lock(mutex::npcList);
     for (auto const &npc : npclist)
     {
         if (gvars::debug)
@@ -2408,6 +2412,7 @@ void drawTiles()
 {
     int z = gvars::currentz;
     int its = GRID_SIZE;
+    sf::Lock lock(mutex::npcList);
     for (int i = 0; i <= GRID_Y - 1; i++)
     {
         for (int t = 0; t <= GRID_X - 1; t++)
@@ -2480,6 +2485,7 @@ void drawTiles()
 
 void drawNPCs()
 {
+    sf::Lock lock(mutex::npcList);
     for (auto &npc : npclist)
     {
         if (npc.hasSpawned == true)
@@ -2652,6 +2658,7 @@ Npc *getCritter(int id)
     {
         std::cout << "Getting critter(" << id << ") \n";
     }
+    sf::Lock lock(mutex::npcList);
     for (auto &elem : npclist)
     {
         if (elem.id == id)
@@ -3283,9 +3290,7 @@ int main()
 
 
         if (inputState.key[Key::K].time == 1 && !network::chatting)
-        { // Generates a random name from GenerateName(); and puts it into the console.
             std::cout << generateName() << std::endl;
-        }
 
         if (inputState.key[Key::G].time == 1 && !network::chatting)
         { // Fling all critters south.
@@ -3602,6 +3607,7 @@ int main()
             }
             if (gvars::following)
             {
+                sf::Lock lock(mutex::npcList);
                 gvars::view1.setCenter(npclist.at(gvars::myTarget).xpos,
                                        npclist.at(gvars::myTarget).ypos);
             }
@@ -5379,6 +5385,7 @@ int main()
                 {
                     myTargetPtr = nullptr;
                     int tfunz = -1;
+                    sf::Lock lock(mutex::npcList);
                     for (auto &elem : npclist)
                     {
                         tfunz++;
@@ -5444,6 +5451,7 @@ int main()
                 bool foundAny = false;
                 sf::Vector2f S = gvars::heldClickPos;
                 sf::Vector2f E = gvars::mousePos;
+                sf::Lock lock(mutex::npcList);
                 for (size_t i = 0; i != npclist.size(); i++)
                 {
                     //if(npclist[i].xpos >= S.x && npclist[i].xpos <= E.x)
