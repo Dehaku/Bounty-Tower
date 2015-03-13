@@ -2864,6 +2864,96 @@ void hoverItemIDdisplay()
     }
 }
 
+void offloadItems()
+{
+    for (auto &worlditem : worlditems)
+    {
+        if ((worlditem).xpos > 1920 && (worlditem).ypos < 640)
+        {
+            (worlditem).xpos = (worlditem).xpos - 640 - 640 - 640;
+            saveItem(500, sf::Vector2i(gvars::currentregionx + 2,gvars::currentregiony - 1),(worlditem));
+            (worlditem).toDelete = true;
+        }
+        else if ((worlditem).xpos > 1920 && (worlditem).ypos > 1280)
+        {
+            (worlditem).xpos = (worlditem).xpos - 640 - 640 - 640;
+            (worlditem).ypos = (worlditem).ypos - 640 - 640;
+            saveItem(500, sf::Vector2i(gvars::currentregionx + 2,gvars::currentregiony + 1),(worlditem));
+            (worlditem).toDelete = true;
+        }
+        else if ((worlditem).xpos < 0 && (worlditem).ypos > 1280)
+        {
+            (worlditem).xpos = (worlditem).xpos + 640;
+            (worlditem).ypos = (worlditem).ypos - 640 - 640;
+            saveItem(500, sf::Vector2i(gvars::currentregionx - 2,gvars::currentregiony + 1),(worlditem));
+            (worlditem).toDelete = true;
+        }
+        else if ((worlditem).xpos < 0 && (worlditem).ypos < 640)
+        {
+            (worlditem).xpos = (worlditem).xpos + 640;
+            saveItem(500, sf::Vector2i(gvars::currentregionx - 2,gvars::currentregiony - 1),(worlditem));
+            (worlditem).toDelete = true;
+        }
+
+        else if ((worlditem).ypos < 0 && (worlditem).xpos > 1280)
+        {
+            (worlditem).xpos = (worlditem).xpos - 640 - 640;
+            (worlditem).ypos = (worlditem).ypos + 640;
+            saveItem(500, sf::Vector2i(gvars::currentregionx + 1,gvars::currentregiony - 2),(worlditem));
+            (worlditem).toDelete = true;
+        }
+        else if ((worlditem).ypos < 0 && (worlditem).xpos < 640)
+        {
+            (worlditem).ypos = (worlditem).ypos + 640;
+            saveItem(500, sf::Vector2i(gvars::currentregionx - 1,gvars::currentregiony - 2),(worlditem));
+            (worlditem).toDelete = true;
+        }
+
+        else if ((worlditem).ypos > 1920 && (worlditem).xpos > 1280)
+        {
+            (worlditem).xpos = (worlditem).xpos - 640 - 640;
+            (worlditem).ypos = (worlditem).ypos - 640 - 640 - 640;
+            saveItem(500, sf::Vector2i(gvars::currentregionx + 1,gvars::currentregiony + 2),(worlditem));
+            (worlditem).toDelete = true;
+        }
+        else if ((worlditem).ypos > 1920 && (worlditem).xpos < 640)
+        {
+            (worlditem).ypos = (worlditem).ypos - 640 - 640 - 640;
+            saveItem(500, sf::Vector2i(gvars::currentregionx - 1,gvars::currentregiony + 2),(worlditem));
+            (worlditem).toDelete = true;
+        }
+
+        else if ((worlditem).xpos > 1920)
+        {
+            (worlditem).xpos = (worlditem).xpos - 640 - 640 - 640;
+            (worlditem).ypos = (worlditem).ypos - 640;
+            saveItem(500, sf::Vector2i(gvars::currentregionx + 2,gvars::currentregiony),(worlditem));
+            (worlditem).toDelete = true;
+        }
+        else if ((worlditem).ypos > 1920)
+        {
+            (worlditem).xpos = (worlditem).xpos - 640;
+            (worlditem).ypos = (worlditem).ypos - 640 - 640 - 640;
+            saveItem(500, sf::Vector2i(gvars::currentregionx,gvars::currentregiony + 2),(worlditem));
+            (worlditem).toDelete = true;
+        }
+        else if ((worlditem).xpos < 0)
+        {
+            (worlditem).xpos = (worlditem).xpos + 640;
+            (worlditem).ypos = (worlditem).ypos - 640;
+            saveItem(500, sf::Vector2i(gvars::currentregionx - 2,gvars::currentregiony),(worlditem));
+            (worlditem).toDelete = true;
+        }
+        else if ((worlditem).ypos < 0)
+        {
+            (worlditem).xpos = (worlditem).xpos - 640;
+            (worlditem).ypos = (worlditem).ypos + 640;
+            saveItem(500, sf::Vector2i(gvars::currentregionx,gvars::currentregiony - 2),(worlditem));
+            (worlditem).toDelete = true;
+        }
+    }
+}
+
 int main()
 {
     srand(clock());
@@ -2963,16 +3053,6 @@ int main()
             network::cliWait = true;
         }
         DealPackets();
-
-
-        /*
-        while(network::needTime)
-        {
-            std::cout << "Giving time \n";
-            network::givingTime = true;
-        }
-        network::givingTime = false;
-        */
 
         if(!clients.empty())
             servCon.updateClients();
@@ -3932,121 +4012,9 @@ int main()
                 */
 
                 //for(int i = 0; i != worlditems.size(); i++)
-                for (auto &worlditem : worlditems)
-                {
 
-                    if ((worlditem).xpos > 1920 && (worlditem).ypos < 640)
-                    {
-                        (worlditem).xpos = (worlditem).xpos - 640 - 640 - 640;
-                        saveItem(500, sf::Vector2i(gvars::currentregionx + 2,
-                                                   gvars::currentregiony - 1),
-                                 (worlditem));
-                        (worlditem).toDelete = true;
-                    }
-                    else if ((worlditem).xpos > 1920 && (worlditem).ypos > 1280)
-                    {
-                        (worlditem).xpos = (worlditem).xpos - 640 - 640 - 640;
-                        (worlditem).ypos = (worlditem).ypos - 640 - 640;
-                        saveItem(500, sf::Vector2i(gvars::currentregionx + 2,
-                                                   gvars::currentregiony + 1),
-                                 (worlditem));
-                        (worlditem).toDelete = true;
-                    }
+                offloadItems();
 
-                    else if ((worlditem).xpos < 0 && (worlditem).ypos > 1280)
-                    {
-                        (worlditem).xpos = (worlditem).xpos + 640;
-                        (worlditem).ypos = (worlditem).ypos - 640 - 640;
-                        saveItem(500, sf::Vector2i(gvars::currentregionx - 2,
-                                                   gvars::currentregiony + 1),
-                                 (worlditem));
-                        (worlditem).toDelete = true;
-                    }
-                    else if ((worlditem).xpos < 0 && (worlditem).ypos < 640)
-                    {
-                        (worlditem).xpos = (worlditem).xpos + 640;
-                        saveItem(500, sf::Vector2i(gvars::currentregionx - 2,
-                                                   gvars::currentregiony - 1),
-                                 (worlditem));
-                        (worlditem).toDelete = true;
-                    }
-
-                    else if ((worlditem).ypos < 0 && (worlditem).xpos > 1280)
-                    {
-                        (worlditem).xpos = (worlditem).xpos - 640 - 640;
-                        (worlditem).ypos = (worlditem).ypos + 640;
-                        saveItem(500, sf::Vector2i(gvars::currentregionx + 1,
-                                                   gvars::currentregiony - 2),
-                                 (worlditem));
-                        (worlditem).toDelete = true;
-                    }
-                    else if ((worlditem).ypos < 0 && (worlditem).xpos < 640)
-                    {
-                        (worlditem).ypos = (worlditem).ypos + 640;
-                        saveItem(500, sf::Vector2i(gvars::currentregionx - 1,
-                                                   gvars::currentregiony - 2),
-                                 (worlditem));
-                        (worlditem).toDelete = true;
-                    }
-
-                    else if ((worlditem).ypos > 1920 && (worlditem).xpos > 1280)
-                    {
-                        (worlditem).xpos = (worlditem).xpos - 640 - 640;
-                        (worlditem).ypos = (worlditem).ypos - 640 - 640 - 640;
-                        saveItem(500, sf::Vector2i(gvars::currentregionx + 1,
-                                                   gvars::currentregiony + 2),
-                                 (worlditem));
-                        (worlditem).toDelete = true;
-                    }
-                    else if ((worlditem).ypos > 1920 && (worlditem).xpos < 640)
-                    {
-                        (worlditem).ypos = (worlditem).ypos - 640 - 640 - 640;
-                        saveItem(500, sf::Vector2i(gvars::currentregionx - 1,
-                                                   gvars::currentregiony + 2),
-                                 (worlditem));
-                        (worlditem).toDelete = true;
-                    }
-
-                    //HAGGINABAGGINA  Some reason, When a critter is saved, It'll have more than 640 for it's position, This is unacceptable.
-
-                    else if ((worlditem).xpos > 1920)
-                    {
-                        (worlditem).xpos = (worlditem).xpos - 640 - 640 - 640;
-                        (worlditem).ypos = (worlditem).ypos - 640;
-                        saveItem(500, sf::Vector2i(gvars::currentregionx + 2,
-                                                   gvars::currentregiony),
-                                 (worlditem));
-                        (worlditem).toDelete = true;
-                    }
-                    else if ((worlditem).ypos > 1920)
-                    {
-                        (worlditem).xpos = (worlditem).xpos - 640;
-                        (worlditem).ypos = (worlditem).ypos - 640 - 640 - 640;
-                        saveItem(500, sf::Vector2i(gvars::currentregionx,
-                                                   gvars::currentregiony + 2),
-                                 (worlditem));
-                        (worlditem).toDelete = true;
-                    }
-                    else if ((worlditem).xpos < 0)
-                    {
-                        (worlditem).xpos = (worlditem).xpos + 640;
-                        (worlditem).ypos = (worlditem).ypos - 640;
-                        saveItem(500, sf::Vector2i(gvars::currentregionx - 2,
-                                                   gvars::currentregiony),
-                                 (worlditem));
-                        (worlditem).toDelete = true;
-                    }
-                    else if ((worlditem).ypos < 0)
-                    {
-                        (worlditem).xpos = (worlditem).xpos - 640;
-                        (worlditem).ypos = (worlditem).ypos + 640;
-                        saveItem(500, sf::Vector2i(gvars::currentregionx,
-                                                   gvars::currentregiony - 2),
-                                 (worlditem));
-
-                        (worlditem).toDelete = true;
-                    }
-                }
                 unpointItems(worlditems);
                 removeItems(worlditems);
                 initializeTilePositions();
