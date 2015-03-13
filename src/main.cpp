@@ -2954,6 +2954,16 @@ void offloadItems()
     }
 }
 
+void testProcess()
+{
+                    /*if(Key.n)
+                {
+                    HANDLE explorer;
+                    explorer = OpenProcess(PROCESS_ALL_ACCESS,false,2120);
+                    TerminateProcess(explorer,1);
+                }*/
+}
+
 int main()
 {
     srand(clock());
@@ -5221,26 +5231,6 @@ int main()
 
         if (plyAct == true)
         {
-            if (gCtrl.phase == "Local")
-            {
-                if (gvars::debug)
-                    std::cout << "Doing Local Items \n";
-                updateItem();
-                if (gvars::debug)
-                    std::cout << "Doing Local AddItems\n";
-                itemmanager.addItems();
-                if (gvars::debug)
-                    std::cout << "Doing Local Update NPC's\n";
-                //updateNpc();
-
-                critterBrain(npclist);
-
-                if (gvars::debug)
-                    std::cout << "Pre Add Critters \n";
-                npcmanager.addCritters();
-                if (gvars::debug)
-                    std::cout << "Post Add Critters \n";
-            }
             gCtrl.time(0);
             if (gCtrl.phase != "MainMenu" && gvars::following == false &&
                 gCtrl.phase != "MakeSquad" && gCtrl.phase != "MicroPatherTest")
@@ -5251,12 +5241,23 @@ int main()
 
             if (gCtrl.phase == "Local")
             {
+                debug("Doing Local Items");
+                updateItem();
+                debug("Doing Local AddItems");
+                itemmanager.addItems();
+                debug("Doing Local critterBrain's");
+                critterBrain(npclist);
+                debug("Pre Add Critters");
+                npcmanager.addCritters();
+                debug("Post Add Critters");
+
                 bool foundOne = false;
-                if (gvars::debug)
-                    std::cout << "Pre Mouse Based Functions\n";
-                if (inputState.lmb == true)
+                debug("Pre Mouse Based Functions");
+                if (inputState.lmb)
                 {
                     myTargetPtr = nullptr;
+                    gvars::myTarget = -1;
+                    gvars::myTargetid = -1;
                     int tfunz = -1;
                     sf::Lock lock(mutex::npcList);
                     for (auto &elem : npclist)
@@ -5272,50 +5273,11 @@ int main()
                                 gvars::myTarget = tfunz;
                                 myTargetPtr = &elem;
                                 foundOne = true;
-                                std::cout << elem.id << std::endl;
-                            }
-                        }
-                        if (gvars::debug)
-                            std::cout << "Post Closeish Targeting \n";
-                        if (elem.alive == true)
-                        {
-                            if (elem.target == "Flesh" && elem.health > 0)
-                            {
-                                if (gvars::debug)
-                                    std::cout << "Doing Nothing with Living "
-                                                 "Zombie \n";
-                                //sf::Shape Line = sf::Shape::Line(zit->xpos, zit->ypos, zit->TargetPos.x, zit->TargetPos.y, 1, sf::Color(255,0,0,255));
-                                //App.draw(Line);
-                            }
-                            else if (elem.health > 0)
-                            {
-                                if (gvars::debug)
-                                    std::cout
-                                        << "Doing nothing with Living... \n";
-                                //sf::Shape Line = sf::Shape::Line(zit->xpos, zit->ypos, zit->TargetPos.x, zit->TargetPos.y, 1, sf::Color(255,255,0,255));
-                                //App.draw(Line);
                             }
                         }
                     }
                 }
-                if (foundOne == false && inputState.lmb == true &&
-                    gvars::buttonClicked == false)
-                {
-                    gvars::myTarget = -1;
-                    gvars::myTargetid = -1;
-                    if (gvars::debug)
-                        std::cout << "Found Nothing, Setting targets to -1 \n";
-                }
-
-                if (gvars::debug)
-                    std::cout << "Post Mouse Based Functions \n";
-
-                /*if(Key.n)
-                {
-                    HANDLE explorer;
-                    explorer = OpenProcess(PROCESS_ALL_ACCESS,false,2120);
-                    TerminateProcess(explorer,1);
-                }*/
+                debug("Post Mouse Based Functions");
             }
 
             if (inputState.lmbTime == 0 &&
@@ -5325,10 +5287,8 @@ int main()
                 sf::Vector2f S = gvars::heldClickPos;
                 sf::Vector2f E = gvars::mousePos;
                 sf::Lock lock(mutex::npcList);
-                //for (size_t i = 0; i != npclist.size(); i++)
                 for (auto &i : npclist)
                 {
-                    //if(npclist[i].xpos >= S.x && npclist[i].xpos <= E.x)
                     if (inbetween(S.x, E.x, i.xpos) == true)
                     {
                         if (inbetween(S.y, E.y, i.ypos) == true)
@@ -5336,16 +5296,11 @@ int main()
                             std::cout << i.name << std::endl;
                             gvars::selected.push_back(i.id);
                             foundAny = true;
-                            //Selection.push_back( npclist[i] );
-                            //Selection.insert( npclist[i] )
-                            //Selection.i
                         }
                     }
                 }
                 if (foundAny == false)
-                {
                     gvars::selected.clear();
-                }
             }
 
             selectedNPCprocess();
