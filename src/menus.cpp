@@ -1257,14 +1257,12 @@ void menuPopUp()
                                 sf::Lock lock(mutex::npcList);
                                 //for (auto &i : npclist)
                                 //listAt(npclist, gvars::myTargetid)
-                                listAt(npclist, gvars::myTargetid)
-                                    .action = "Pickup";
-                                listAt(npclist, gvars::myTargetid)
-                                    .target = item->name;
-                                listAt(npclist, gvars::myTargetid)
-                                    .targetId = item->id;
-                                listAt(npclist, gvars::myTargetid)
-                                    .targetPos =
+
+                                //listAt(npclist, gvars::myTargetid)
+                                myTargetPtr->action = "Pickup";
+                                myTargetPtr->target = item->name;
+                                myTargetPtr->targetId = item->id;
+                                myTargetPtr->targetPos =
                                     sf::Vector2f(item->xpos, item->ypos);
                                 gCtrl.menuPos = sf::Vector2f(-10000, -10000);
                                 gCtrl.menuType = "NULL";

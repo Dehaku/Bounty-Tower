@@ -2410,83 +2410,6 @@ void critterBrain(std::list<Npc> &npcs)
     //gvars::workingNpcList = false;
 }
 
-/*
-void drawTiles()
-{
-    int z = gvars::currentz;
-    int its = GRID_SIZE;
-    sf::Lock lock(mutex::npcList);
-    for (int i = 0; i <= GRID_Y - 1; i++)
-    {
-        for (int t = 0; t <= GRID_X - 1; t++)
-        {
-            if ((gvars::following == true &&
-                 i > listAt(listAt(npclist, gvars::myTarget).xpos / GRID_SIZE) - 27 &&
-                 i < (listAt(npclist, gvars::myTarget).xpos / GRID_SIZE) + 26) ||
-                (i > gvars::currentx - 27 && i < gvars::currentx + 26))
-            {
-                if ((gvars::following == true &&
-                     t > (listAt(npclist, gvars::myTarget).ypos / GRID_SIZE) - 21 &&
-                     t < (listAt(npclist, gvars::myTarget).ypos / GRID_SIZE) + 20) ||
-                    (t > gvars::currenty - 21 && t < gvars::currenty + 20))
-                {
-                    sf::Sprite tile;
-                    if (gvars::groundmap[gvars::currentz][i][t] == 1)
-                    { // dirt
-                        tile.setTexture(texturemanager.getTexture("Dirt.bmp"));
-                        tile.setColor(
-                            sf::Color(255, 255, 255, gvars::sunmap[z][i][t]));
-                        tile.setPosition(i * its, t * its);
-                        window.draw(tile);
-                    }
-                    if (gvars::groundmap[gvars::currentz][i][t] == 3)
-                    { // grass
-                        tile.setTexture(texturemanager.getTexture("Grass.bmp"));
-                        tile.setColor(
-                            sf::Color(255, 255, 255, gvars::sunmap[z][i][t]));
-                        tile.setPosition(i * its, t * its);
-                        window.draw(tile);
-                    }
-                    if (gvars::groundmap[gvars::currentz][i][t] == 7)
-                    { // stone
-                        tile.setTexture(texturemanager.getTexture("Stone.bmp"));
-                        tile.setColor(
-                            sf::Color(255, 255, 255, gvars::sunmap[z][i][t]));
-                        tile.setPosition(i * its, t * its);
-                        window.draw(tile);
-                    }
-                    if (gvars::groundmap[gvars::currentz][i][t] == 20)
-                    { // water
-                        tile.setTexture(texturemanager.getTexture("Water.bmp"));
-                        tile.setColor(
-                            sf::Color(255, 255, 255, gvars::sunmap[z][i][t]));
-                        tile.setPosition(i * its, t * its);
-                        window.draw(tile);
-                    }
-                    if (gvars::groundmap[gvars::currentz][i][t] == 53)
-                    { // lava
-                        tile.setTexture(texturemanager.getTexture("Lava.bmp"));
-                        tile.setColor(
-                            sf::Color(255, 255, 255, gvars::sunmap[z][i][t]));
-                        tile.setPosition(i * its, t * its);
-                        window.draw(tile);
-                    }
-                    if (gvars::groundmap[gvars::currentz][i][t] == 52)
-                    { // deepwater
-                        tile.setTexture(
-                            texturemanager.getTexture("DeepWater.bmp"));
-                        tile.setColor(
-                            sf::Color(255, 255, 255, gvars::sunmap[z][i][t]));
-                        tile.setPosition(i * its, t * its);
-                        window.draw(tile);
-                    }
-                }
-            }
-        }
-    }
-}
-*/
-
 void drawNPCs()
 {
     sf::Lock lock(mutex::npcList);
@@ -2742,151 +2665,148 @@ void drawSelectedCritterHUD()
 {
     sf::Lock lock(mutex::npcList);
     if (gvars::myTarget != -1 && myTargetPtr != nullptr)
-            {
-                gvars::myTargetid = listAt(npclist, gvars::myTarget).id;
+    {
+        gvars::myTargetid = myTargetPtr->id;
+        int nxpos = gvars::topLeft.x;
+        int nypos = gvars::topLeft.y + (RESOLUTION.y / 2);
 
-                int nxpos = gvars::topLeft.x;
-                int nypos = gvars::topLeft.y + (RESOLUTION.y / 2);
 
-                //int Nxpos = npclist.at(MyTarget).xpos;
-                //int Nypos = npclist.at(MyTarget).ypos;
-
-                effects.createSquare(nxpos, nypos, nxpos + 65, nypos + 70,
+        effects.createSquare(nxpos, nypos, nxpos + 65, nypos + 70,
                                      sf::Color(0, 0, 0, 100));
-                textList.createText(nxpos, nypos, 11, sf::Color::Red, "Health:",
-                                    "", listAt(npclist, gvars::myTarget).health, "",
-                                    "(", listAt(npclist, gvars::myTarget).maxhealth,
+
+        textList.createText(nxpos, nypos, 11, sf::Color::Red, "Health:",
+                                    "", myTargetPtr->health, "",
+                                    "(", myTargetPtr->maxhealth,
                                     ")", "", -6698, 1, 0);
 
-                textList.createText(nxpos, nypos + 10, 11, BROWN, "Hunger:", "",
-                                    listAt(npclist, gvars::myTarget).hunger, "", "",
+        textList.createText(nxpos, nypos + 10, 11, BROWN, "Hunger:", "",
+                                    myTargetPtr->hunger, "", "",
                                     -6698, "", "", -6698, 1, 0);
-                textList.createText(nxpos, nypos + 20, 11, sf::Color::Cyan,
+        textList.createText(nxpos, nypos + 20, 11, sf::Color::Cyan,
                                     "Thirst:", "",
-                                    listAt(npclist, gvars::myTarget).thirst, "", "",
+                                    myTargetPtr->thirst, "", "",
                                     -6698, "", "", -6698, 1, 0);
 
-                std::string textOut;
-                if(myTargetPtr->factionPtr != nullptr)
+        std::string textOut;
+        if(myTargetPtr->factionPtr != nullptr)
                     textOut = "Name:" + myTargetPtr->name + ", Faction: " + myTargetPtr->factionPtr->name;
-                else
+        else
                     textOut = "Name:" + myTargetPtr->name + ", Faction: None";
 
-                textList.createText(nxpos, nypos + 30, 11, sf::Color::White, textOut);
+        textList.createText(nxpos, nypos + 30, 11, sf::Color::White, textOut);
 
-                textList.createText(nxpos, nypos + 30, 11, sf::Color::White,
-                                    "Name:", listAt(npclist, gvars::myTarget).name);
-                textList.createText(nxpos, nypos + 40, 11, sf::Color::White,
-                                    "Id:", "", listAt(npclist, gvars::myTarget).id,
+        textList.createText(nxpos, nypos + 30, 11, sf::Color::White,
+                                    "Name:", myTargetPtr->name);
+        textList.createText(nxpos, nypos + 40, 11, sf::Color::White,
+                                    "Id:", "", myTargetPtr->id,
                                     "", "", -6698, "", "", -6698, 1, 0);
-                if (listAt(npclist, gvars::myTarget).needsPath == false)
-                {
-                    textList.createText(nxpos, nypos + 50, 11, sf::Color::Red,
+        if (myTargetPtr->needsPath == false)
+        {
+            textList.createText(nxpos, nypos + 50, 11, sf::Color::Red,
                                         "Action:",
-                                        listAt(npclist, gvars::myTarget).action);
-                }
-                else
-                {
-                    textList.createText(nxpos, nypos + 50, 11, sf::Color::Blue,
+                                        myTargetPtr->action);
+        }
+        else
+        {
+            textList.createText(nxpos, nypos + 50, 11, sf::Color::Blue,
                                         "Action:",
-                                        listAt(npclist, gvars::myTarget).action);
-                }
-                textList.createText(
+                                        myTargetPtr->action);
+        }
+        textList.createText(
                     nxpos, nypos + 60, 11, sf::Color::Red, "Target:",
-                    listAt(npclist, gvars::myTarget).target,
-                    listAt(npclist, gvars::myTarget).targetPos.x, ":", "",
-                    listAt(npclist, gvars::myTarget).targetPos.y, " Angle:", "",
-                    listAt(npclist, gvars::myTarget).angle);
+                    myTargetPtr->target,
+                    myTargetPtr->targetPos.x, ":", "",
+                    myTargetPtr->targetPos.y, " Angle:", "",
+                    myTargetPtr->angle);
 
-                effects.createSquare(nxpos, nypos + 70, nxpos + 130,
+        effects.createSquare(nxpos, nypos + 70, nxpos + 130,
                                      nypos + 150, sf::Color(0, 0, 0, 200));
-                int y = 7;
-                int v = 1;
-                textList.createText(
+        int y = 7;
+        int v = 1;
+        textList.createText(
                     nxpos + v, nypos + (y++ * 10), 11, sf::Color::White,
                     "Strength:", "",
-                    listAt(npclist, gvars::myTarget).skills.strength, " : ", "",
-                    listAt(npclist, gvars::myTarget).skills.strengthxp);
-                textList.createText(
+                    myTargetPtr->skills.strength, " : ", "",
+                    myTargetPtr->skills.strengthxp);
+        textList.createText(
                     nxpos + v, nypos + (y++ * 10), 11, sf::Color::White,
                     "Perception:", "",
-                    listAt(npclist, gvars::myTarget).skills.perception, " : ", "",
-                    listAt(npclist, gvars::myTarget).skills.perceptionxp);
-                textList.createText(
+                    myTargetPtr->skills.perception, " : ", "",
+                    myTargetPtr->skills.perceptionxp);
+        textList.createText(
                     nxpos + v, nypos + (y++ * 10), 11, sf::Color::White,
                     "Intelligence:", "",
-                    listAt(npclist, gvars::myTarget).skills.intelligence, " : ", "",
-                    listAt(npclist, gvars::myTarget).skills.intelligencexp);
-                textList.createText(
+                    myTargetPtr->skills.intelligence, " : ", "",
+                    myTargetPtr->skills.intelligencexp);
+        textList.createText(
                     nxpos + v, nypos + (y++ * 10), 11, sf::Color::White,
                     "Charisma:", "",
-                    listAt(npclist, gvars::myTarget).skills.charisma, " : ", "",
-                    listAt(npclist, gvars::myTarget).skills.charismaxp);
-                textList.createText(
+                    myTargetPtr->skills.charisma, " : ", "",
+                    myTargetPtr->skills.charismaxp);
+        textList.createText(
                     nxpos + v, nypos + (y++ * 10), 11, sf::Color::White,
                     "Endurance:", "",
-                    listAt(npclist, gvars::myTarget).skills.endurance, " : ", "",
-                    listAt(npclist, gvars::myTarget).skills.endurancexp);
-                textList.createText(
+                    myTargetPtr->skills.endurance, " : ", "",
+                    myTargetPtr->skills.endurancexp);
+        textList.createText(
                     nxpos + v, nypos + (y++ * 10), 11, sf::Color::White,
                     "Dexterity:", "",
-                    listAt(npclist, gvars::myTarget).skills.dexterity, " : ", "",
-                    listAt(npclist, gvars::myTarget).skills.dexterityxp);
-                textList.createText(
+                    myTargetPtr->skills.dexterity, " : ", "",
+                    myTargetPtr->skills.dexterityxp);
+        textList.createText(
                     nxpos + v, nypos + (y++ * 10), 11, sf::Color::White,
-                    "Agility:", "", listAt(npclist, gvars::myTarget).skills.agility,
-                    " : ", "", listAt(npclist, gvars::myTarget).skills.agilityxp);
-                textList.createText(nxpos + v, nypos + (y++ * 10), 11,
+                    "Agility:", "", myTargetPtr->skills.agility,
+                    " : ", "", myTargetPtr->skills.agilityxp);
+        textList.createText(nxpos + v, nypos + (y++ * 10), 11,
                                     sf::Color::White, "Tags:",
-                                    listAt(npclist, gvars::myTarget).tags);
+                                    myTargetPtr->tags);
 
-                if (listAt(npclist, gvars::myTarget).inventory.size() != 0 ||
-                    listAt(npclist, gvars::myTarget).bloodcontent != "")
-                {
-                    effects.createSquare(nxpos, nypos, nxpos + 130, nypos + 70,
+        if (myTargetPtr->inventory.size() != 0 ||
+                    myTargetPtr->bloodcontent != "")
+        {
+            effects.createSquare(nxpos, nypos, nxpos + 130, nypos + 70,
                                          sf::Color(0, 0, 0, 100));
-                    int yv = nypos;
-                    for (auto const &item :
-                         listAt(npclist, gvars::myTarget).inventory)
-                    { // Listing all the current items from this critters inventory.
-                        if (item.insidePart.size() == 0)
-                        {
-                            textList.createText(nxpos + 65, yv, 11,
+            int yv = nypos;
+            for (auto const &item :
+                         myTargetPtr->inventory)
+            { // Listing all the current items from this critters inventory.
+                if (item.insidePart.size() == 0)
+                {
+                    textList.createText(nxpos + 65, yv, 11,
                                                 sf::Color::White, item.name,
                                                 ": ", item.amount);
-                            yv += 10;
-                        }
-                    }
+                    yv += 10;
+                }
+            }
 
-                    for (auto const &item :
-                         listAt(npclist, gvars::myTarget).inventory)
-                    { // Listing all items from 'inside' the critter.
-                        if (item.insidePart.size() != 0)
-                        {
-                            textList.createText(
+            for (auto const &item :
+                         myTargetPtr->inventory)
+            { // Listing all items from 'inside' the critter.
+                if (item.insidePart.size() != 0)
+                {
+                    textList.createText(
                                 nxpos + 65, yv, 11, sf::Color(255, 200, 200),
                                 "Inside " + item.insidePart + " :",
                                 item.name + " :", item.amount);
                             yv += 10;
-                        }
-                    }
-                    textList.createText(
-                        nxpos + 85, yv, 11, sf::Color(255, 150, 150),
-                        "Blood: " + listAt(npclist, gvars::myTarget).bloodcontent);
-
-                    Button var;
-                    var.color = sf::Color::Red;
-                    var.iSize = 5;
-                    var.vPos = sf::Vector2f(nxpos + 120, nypos + 50);
-                    var.sButtonText = "Howdy";
-                    vButtonList.push_back(var);
-                    if (buttonClicked(var.id))
-                    {
-                        std::cout << "Twas' Truuuuuuue \n";
-                    } // TODO: Get this before the MyTarget -1 check up there.
                 }
-
             }
+            textList.createText(
+                        nxpos + 85, yv, 11, sf::Color(255, 150, 150),
+                        "Blood: " + myTargetPtr->bloodcontent);
+
+            Button var;
+            var.color = sf::Color::Red;
+            var.iSize = 5;
+            var.vPos = sf::Vector2f(nxpos + 120, nypos + 50);
+            var.sButtonText = "Howdy";
+            vButtonList.push_back(var);
+            if (buttonClicked(var.id))
+            {
+                std::cout << "Twas' Truuuuuuue \n";
+            } // TODO: Get this before the MyTarget -1 check up there.
+        }
+    }
 }
 
 void selectedNPCprocess()
@@ -3613,8 +3533,8 @@ int main()
             if (gvars::following)
             {
                 sf::Lock lock(mutex::npcList);
-                gvars::view1.setCenter(listAt(npclist, gvars::myTarget).xpos,
-                                       listAt(npclist, gvars::myTarget).ypos);
+                gvars::view1.setCenter(myTargetPtr->xpos,
+                                       myTargetPtr->ypos);
             }
 
             effects.createSquare(
@@ -4131,31 +4051,6 @@ int main()
                 removeItems(worlditems);
                 initializeTilePositions();
             }
-
-            if (gvars::myTarget != -1 && inputState.rmb &&
-                tiles[abs_to_index(gvars::mousePos.x / GRID_SIZE)][abs_to_index(
-                    gvars::mousePos.y / GRID_SIZE)][30].id != 1010)
-            { // Giving Orders
-                sf::Lock lock(mutex::npcList);
-                listAt(npclist, gvars::myTarget).targetPos = gvars::mousePos;
-                listAt(npclist, gvars::myTarget).action = "Orders";
-                if (math::closeish(listAt(npclist, gvars::myTarget).xpos,
-                                   listAt(npclist, gvars::myTarget).ypos,
-                                   gvars::mousePos.x, gvars::mousePos.y) <= 10)
-                {
-                    listAt(npclist, gvars::myTarget).action = "Act";
-                    listAt(npclist, gvars::myTarget).needsPath = false;
-                }
-
-                for (auto const &item : worlditems)
-                {
-                    if (math::closeish(gvars::mousePos.x, gvars::mousePos.y,
-                                       item.xpos, item.ypos) <= 10)
-                    {
-                        gCtrl.menuType = "CritterContext";
-                    }
-                }
-            } //End of Giving Orders
 
             if (gCtrl.menuType != "NULL")
             {
