@@ -2954,6 +2954,148 @@ void offloadItems()
     }
 }
 
+void offloadNpcs()
+{
+    for (auto &i : npclist)
+                {
+
+                    if (i.xpos > 1920 && i.ypos < 640)
+                    {
+                        i.xpos =
+                            i.xpos - 640 - 640 - 640;
+                        saveNPC(500, sf::Vector2i(gvars::currentregionx + 2,
+                                                  gvars::currentregiony - 1),
+                                i);
+                        i.toDelete = true;
+                    }
+                    else if (i.xpos > 1920 &&
+                             i.ypos > 1280)
+                    {
+                        i.xpos =
+                            i.xpos - 640 - 640 - 640;
+                        i.ypos = i.ypos - 640 - 640;
+                        saveNPC(500, sf::Vector2i(gvars::currentregionx + 2,
+                                                  gvars::currentregiony + 1),
+                                i);
+                        i.toDelete = true;
+                    }
+
+                    else if (i.xpos < 0 &&
+                             i.ypos > 1280)
+                    {
+                        i.xpos = i.xpos + 640;
+                        i.ypos = i.ypos - 640 - 640;
+                        saveNPC(500, sf::Vector2i(gvars::currentregionx - 2,
+                                                  gvars::currentregiony + 1),
+                                i);
+                        i.toDelete = true;
+                    }
+                    else if (i.xpos < 0 && i.ypos < 640)
+                    {
+                        i.xpos = i.xpos + 640;
+                        saveNPC(500, sf::Vector2i(gvars::currentregionx - 2,
+                                                  gvars::currentregiony - 1),
+                                i);
+                        i.toDelete = true;
+                    }
+
+                    else if (i.ypos < 0 &&
+                             i.xpos > 1280)
+                    {
+                        i.xpos = i.xpos - 640 - 640;
+                        i.ypos = i.ypos + 640;
+                        saveNPC(500, sf::Vector2i(gvars::currentregionx + 1,
+                                                  gvars::currentregiony - 2),
+                                i);
+                        i.toDelete = true;
+                    }
+                    else if (i.ypos < 0 && i.xpos < 640)
+                    {
+                        i.ypos = i.ypos + 640;
+                        saveNPC(500, sf::Vector2i(gvars::currentregionx - 1,
+                                                  gvars::currentregiony - 2),
+                                i);
+                        i.toDelete = true;
+                    }
+
+                    else if (i.ypos > 1920 &&
+                             i.xpos > 1280)
+                    {
+                        i.xpos = i.xpos - 640 - 640;
+                        i.ypos =
+                            i.ypos - 640 - 640 - 640;
+                        saveNPC(500, sf::Vector2i(gvars::currentregionx + 1,
+                                                  gvars::currentregiony + 2),
+                                i);
+                        i.toDelete = true;
+                    }
+                    else if (i.ypos > 1920 &&
+                             i.xpos < 640)
+                    {
+                        i.ypos =
+                            i.ypos - 640 - 640 - 640;
+                        saveNPC(500, sf::Vector2i(gvars::currentregionx - 1,
+                                                  gvars::currentregiony + 2),
+                                i);
+                        i.toDelete = true;
+                    }
+
+                    //HAGGINABAGGINA  Some reason, When a critter is saved, It'll have more than 640 for it's position, This is unacceptable.
+
+                    else if (i.xpos > 1920)
+                    {
+                        i.xpos =
+                            i.xpos - 640 - 640 - 640;
+                        i.ypos = i.ypos - 640;
+                        saveNPC(500, sf::Vector2i(gvars::currentregionx + 2,
+                                                  gvars::currentregiony),
+                                i);
+                        i.toDelete = true;
+                    }
+                    else if (i.ypos > 1920)
+                    {
+                        i.xpos = i.xpos - 640;
+                        i.ypos =
+                            i.ypos - 640 - 640 - 640;
+                        saveNPC(500, sf::Vector2i(gvars::currentregionx,
+                                                  gvars::currentregiony + 2),
+                                i);
+                        i.toDelete = true;
+                    }
+                    else if (i.xpos < 0)
+                    {
+                        i.xpos = i.xpos + 640;
+                        i.ypos = i.ypos - 640;
+                        saveNPC(500, sf::Vector2i(gvars::currentregionx - 2,
+                                                  gvars::currentregiony),
+                                i);
+                        i.toDelete = true;
+                    }
+                    else if (i.ypos < 0)
+                    {
+                        i.xpos = i.xpos - 640;
+                        i.ypos = i.ypos + 640;
+                        saveNPC(500, sf::Vector2i(gvars::currentregionx,
+                                                  gvars::currentregiony - 2),
+                                i);
+
+                        i.toDelete = true;
+                    }
+                }
+}
+
+void addInitialFaction()
+{
+    Faction g_pf;
+
+    g_pf.name = "The Alphas";
+    g_pf.playerControlled = true;
+    g_pf.initialized = true;
+    uniFact.push_back(g_pf);
+    conFact = &listAt(uniFact,0);
+}
+
+
 void testProcess()
 {
                     /*if(Key.n)
@@ -3003,6 +3145,7 @@ int main()
 
     window.setVerticalSyncEnabled(true);
 
+
     // Various temporary variables used for testing.
     int testage = 0;
     int testage2 = 0;
@@ -3013,6 +3156,7 @@ int main()
     int yanchor = 0;                    // global
     float degrees = randz(.0f, 359.0f); // global
     int radius = 200;
+
 
     gvars::view1.zoom(2);
     if (true == false)
@@ -3032,13 +3176,7 @@ int main()
     npcmanager.initializeCritters();
 
     // Building the players faction, This is temporary.
-    Faction g_pf;
-
-    g_pf.name = "The Alphas";
-    g_pf.playerControlled = true;
-    g_pf.initialized = true;
-    uniFact.push_back(g_pf);
-    conFact = &listAt(uniFact,0);
+    addInitialFaction();
 
     // Setting the initial game phase.
     gCtrl.phase = "MainMenu";
@@ -3864,164 +4002,13 @@ int main()
 
                 sf::Lock lock(mutex::npcList);
                 //for (size_t i = 0; i != npclist.size(); i++)
-                for (auto &i : npclist)
-                {
+                offloadNpcs();
 
-                    if (i.xpos > 1920 && i.ypos < 640)
-                    {
-                        i.xpos =
-                            i.xpos - 640 - 640 - 640;
-                        saveNPC(500, sf::Vector2i(gvars::currentregionx + 2,
-                                                  gvars::currentregiony - 1),
-                                i);
-                        i.toDelete = true;
-                    }
-                    else if (i.xpos > 1920 &&
-                             i.ypos > 1280)
-                    {
-                        i.xpos =
-                            i.xpos - 640 - 640 - 640;
-                        i.ypos = i.ypos - 640 - 640;
-                        saveNPC(500, sf::Vector2i(gvars::currentregionx + 2,
-                                                  gvars::currentregiony + 1),
-                                i);
-                        i.toDelete = true;
-                    }
-
-                    else if (i.xpos < 0 &&
-                             i.ypos > 1280)
-                    {
-                        i.xpos = i.xpos + 640;
-                        i.ypos = i.ypos - 640 - 640;
-                        saveNPC(500, sf::Vector2i(gvars::currentregionx - 2,
-                                                  gvars::currentregiony + 1),
-                                i);
-                        i.toDelete = true;
-                    }
-                    else if (i.xpos < 0 && i.ypos < 640)
-                    {
-                        i.xpos = i.xpos + 640;
-                        saveNPC(500, sf::Vector2i(gvars::currentregionx - 2,
-                                                  gvars::currentregiony - 1),
-                                i);
-                        i.toDelete = true;
-                    }
-
-                    else if (i.ypos < 0 &&
-                             i.xpos > 1280)
-                    {
-                        i.xpos = i.xpos - 640 - 640;
-                        i.ypos = i.ypos + 640;
-                        saveNPC(500, sf::Vector2i(gvars::currentregionx + 1,
-                                                  gvars::currentregiony - 2),
-                                i);
-                        i.toDelete = true;
-                    }
-                    else if (i.ypos < 0 && i.xpos < 640)
-                    {
-                        i.ypos = i.ypos + 640;
-                        saveNPC(500, sf::Vector2i(gvars::currentregionx - 1,
-                                                  gvars::currentregiony - 2),
-                                i);
-                        i.toDelete = true;
-                    }
-
-                    else if (i.ypos > 1920 &&
-                             i.xpos > 1280)
-                    {
-                        i.xpos = i.xpos - 640 - 640;
-                        i.ypos =
-                            i.ypos - 640 - 640 - 640;
-                        saveNPC(500, sf::Vector2i(gvars::currentregionx + 1,
-                                                  gvars::currentregiony + 2),
-                                i);
-                        i.toDelete = true;
-                    }
-                    else if (i.ypos > 1920 &&
-                             i.xpos < 640)
-                    {
-                        i.ypos =
-                            i.ypos - 640 - 640 - 640;
-                        saveNPC(500, sf::Vector2i(gvars::currentregionx - 1,
-                                                  gvars::currentregiony + 2),
-                                i);
-                        i.toDelete = true;
-                    }
-
-                    //HAGGINABAGGINA  Some reason, When a critter is saved, It'll have more than 640 for it's position, This is unacceptable.
-
-                    else if (i.xpos > 1920)
-                    {
-                        i.xpos =
-                            i.xpos - 640 - 640 - 640;
-                        i.ypos = i.ypos - 640;
-                        saveNPC(500, sf::Vector2i(gvars::currentregionx + 2,
-                                                  gvars::currentregiony),
-                                i);
-                        i.toDelete = true;
-                    }
-                    else if (i.ypos > 1920)
-                    {
-                        i.xpos = i.xpos - 640;
-                        i.ypos =
-                            i.ypos - 640 - 640 - 640;
-                        saveNPC(500, sf::Vector2i(gvars::currentregionx,
-                                                  gvars::currentregiony + 2),
-                                i);
-                        i.toDelete = true;
-                    }
-                    else if (i.xpos < 0)
-                    {
-                        i.xpos = i.xpos + 640;
-                        i.ypos = i.ypos - 640;
-                        saveNPC(500, sf::Vector2i(gvars::currentregionx - 2,
-                                                  gvars::currentregiony),
-                                i);
-                        i.toDelete = true;
-                    }
-                    else if (i.ypos < 0)
-                    {
-                        i.xpos = i.xpos - 640;
-                        i.ypos = i.ypos + 640;
-                        saveNPC(500, sf::Vector2i(gvars::currentregionx,
-                                                  gvars::currentregiony - 2),
-                                i);
-
-                        i.toDelete = true;
-                    }
-                }
 
                 }
 
                 removeNPCs();
-                /*
-                for(int i = 0; i != worlditems.size(); i++)
-                {
-                   if(worlditems.at(i).xpos > 1920)
-                    {
-                        SaveItem(500,sf::Vector2i(globals::currentregionx+2,globals::currentregiony),worlditems.at(i));
-                        worlditems.at(i).ToDelete = true;
-                    }
-                    if(worlditems.at(i).ypos > 1920)
-                    {
-                        SaveItem(500,sf::Vector2i(globals::currentregionx,globals::currentregiony+2),worlditems.at(i));
-                        worlditems.at(i).ToDelete = true;
-                    }
-                    if(worlditems.at(i).xpos < 0)
-                    {
-                        SaveItem(500,sf::Vector2i(globals::currentregionx-2,globals::currentregiony),worlditems.at(i));
-                        worlditems.at(i).ToDelete = true;
-                    }
-                    if(worlditems.at(i).ypos < 0)
-                    {
-                        SaveItem(500,sf::Vector2i(globals::currentregionx,globals::currentregiony-2),worlditems.at(i));
 
-                        worlditems.at(i).ToDelete = true;
-                    }
-                }
-                */
-
-                //for(int i = 0; i != worlditems.size(); i++)
 
                 offloadItems();
 
@@ -4482,7 +4469,8 @@ int main()
 
                     squ.name = name;
                     squ.gender = gender;
-                    squ.faction = g_pf.name;
+                    squ.faction = conFact->name;
+
                     squady.squad.push_back(squ);
                     squady.makeSquadPoints -= 100;
                 }
