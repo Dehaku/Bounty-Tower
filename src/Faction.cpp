@@ -791,6 +791,14 @@ void Npc::dirMove(sf::Vector2f tar)
     }
 }
 
+void Npc::angMove(float ang)
+{
+    float moveX = cosf(ang) * moverate;
+    float moveY = sinf(ang) * moverate;
+    xpos += moveX;
+    ypos += moveY;
+}
+
 void Npc::momMove()
 {
     xpos += (momentum.x / size);

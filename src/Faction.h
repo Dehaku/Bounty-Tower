@@ -267,6 +267,7 @@ public:
     void move(sf::Vector2f tar);
     void dirMove(sf::Vector2f tar);
     void momMove();
+    void angMove(float ang);
     void moveNorth();
     void moveNorthEast();
     void moveEast();

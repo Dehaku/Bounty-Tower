@@ -20,6 +20,7 @@ float angleBetweenVectors(sf::Vector2f a, sf::Vector2f b);
 sf::Vector2f circleRandz(int xpos, int ypos, int radius);
 float constrainAngle(float x);
 float angleDiff(float a, float b);
+sf::Vector2f angleCalc(sf::Vector2f ori, float angle, float distance);
 using Vec2f = sf::Vector2f;
 }
 

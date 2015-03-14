@@ -2310,6 +2310,7 @@ ReDesire:
 
 
     /* End of Critter Prioritization */
+    npc.momMove();
     bool npcWalkable = tiles[abs_to_index(npc.xpos/20)][abs_to_index(npc.ypos/20)][abs_to_index(npc.zpos/20)].walkable;
     if(hasPath && (gvars::framesPassed % 5) == 0 && npcWalkable)
     {
@@ -2516,6 +2517,26 @@ void drawStuffs()
 
     //sf::Context context;
     //App.setActive(true);
+
+    textList.createText(15,15,10,sf::Color::White,"Server Port: " + std::to_string(network::mainPort));
+    textList.createText(15,30,10,sf::Color::White,"Client Port: " + std::to_string(network::mainPort+23));
+
+    //tiles[abs_to_index(x/20)][abs_to_index(y/20)][abs_to_index(z/20)];
+    int tileX = (abs_to_index(gvars::mousePos.x/20)*20)+10.5;
+    int tileY = (abs_to_index(gvars::mousePos.y/20)*20)+10.5;
+    sf::Vector2f tilePos(tileX,tileY);
+    double lilDist = math::closeish(gvars::mousePos.x,gvars::mousePos.y,tileX,tileY);
+    int lilAngle = math::angleBetweenVectors(gvars::mousePos,sf::Vector2f(tileX,tileY));
+    std::string strDisplay = "Tile Center Distance: " + std::to_string(lilDist) + ", angle: " + std::to_string(lilAngle);
+    if(gCtrl.phase == "Local")
+        textList.createText(gvars::mousePos.x,gvars::mousePos.y,10,sf::Color::White,strDisplay);
+    sf::Vector2f correction = math::angleCalc(gvars::mousePos,lilAngle,-lilDist*2);
+    effects.createCircle(correction.x,correction.y,5,sf::Color::Red);
+
+    for(int i = 0; i != peers.connected.size(); i++)
+        textList.createText(gvars::topRight.x-150,gvars::topRight.y+(i*10)+10,10,sf::Color::Yellow,
+                            std::to_string(peers.connected[i].ping) + "Peer: " + peers.connected[i].name);
+
     drawNewTiles();
 
     //DrawPlanets();
@@ -3219,12 +3240,7 @@ int main()
             std::cout << "sendGrid: " << gvars::sendGrid << std::endl;
         }
 
-        textList.createText(15,15,10,sf::Color::White,"Server Port: " + std::to_string(network::mainPort));
-        textList.createText(15,30,10,sf::Color::White,"Client Port: " + std::to_string(network::mainPort+23));
 
-        for(int i = 0; i != peers.connected.size(); i++)
-            textList.createText(gvars::topRight.x-150,gvars::topRight.y+(i*10)+10,10,sf::Color::Yellow,
-                                std::to_string(peers.connected[i].ping) + "Peer: " + peers.connected[i].name);
 
 
         gvars::framesPassed++;

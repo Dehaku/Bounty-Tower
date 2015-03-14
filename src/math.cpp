@@ -104,6 +104,17 @@ float math::angleDiff(float a, float b)
     return dif - 180;
 }
 
+sf::Vector2f math::angleCalc(sf::Vector2f ori, float angle, float distance)
+{
+    sf::Vector2f returns;
+    //xxx = xanchor + cosf(degrees * PI / 180) * radius;
+    returns.x = (cos(angle * PI / 180) * distance) + ori.x;
+    returns.y = (sin(angle * PI / 180) * distance) + ori.y;
+
+    return returns;
+
+}
+
 sf::Vector2f math::circleRandz(int xpos, int ypos, int radius)
 {
     float Xxx = 0;      // global
