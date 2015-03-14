@@ -865,13 +865,13 @@ void updateItem()
         {
             if (gvars::debug)
             {
-                std::cout << item.name << "'s turn! \n";
+                std::cout << item.name << "'s turn! ";
             }
             if (item.produces == true)
             {
                 if (gvars::debug)
                 {
-                    std::cout << item.name << " can produce. \n";
+                    std::cout << item.name << " can produce. ";
                 }
                 item.prodratetimer++;
                 if (item.prodratetimer >= item.prodrate)
@@ -897,13 +897,13 @@ void updateItem()
                     }
                     if (gvars::debug)
                     {
-                        std::cout << "Producing: " << s << " \n";
+                        std::cout << "Producing: " << s << " ";
                     }
                     spawnItem(s, x, y);
                     if (gvars::debug)
                     {
                         std::cout << item.name << " has produced: " << s
-                                  << " \n";
+                                  << " ";
                     }
                 }
             }
@@ -1759,8 +1759,9 @@ void critterBrain(Npc &npc, std::list<Npc> &container)
 
     int critterZ = npc.zpos/20;
     textList.createText(npc.xpos,npc.ypos,10,sf::Color::White,"ZPos:","",npc.zpos," /","",critterZ);
-    runCritterBody(npc);
+    //runCritterBody(npc);
     debug("Ending Part Loop");
+    debug("debug 1", false);
 
     /*Simulating Hunger/Thirst, Needs to be nerfed/formulated to conditions, I.E. Attributes/Parts/Weather*/
     if( (gvars::framesPassed % 10) == 0)
@@ -1789,7 +1790,7 @@ void critterBrain(Npc &npc, std::list<Npc> &container)
     else if (randz(1,100) == 100)
         /* No target? Occasionally choose a nearby direction to look at. */
         *targetPos = sf::Vector2f(npc.xpos+randz(-15,15),npc.ypos+randz(-15,15));
-
+    debug("debug 2", false);
     /*  Do the angle math to figure out which direction we need to turn */
     const float npcAngle = math::constrainAngle(npc.angle);
     const float targetAngle =
@@ -1804,7 +1805,7 @@ void critterBrain(Npc &npc, std::list<Npc> &container)
 
     const int endAngle = -(npc.angle - (npc.viewangle / 2));
     const int startAngle = -(npc.angle - (-npc.viewangle / 2));
-
+    debug("debug 3", false);
     /*Drawing Vision*/
     sf::ConvexShape shape;
     int pointCounter = 1;
@@ -1878,7 +1879,7 @@ void critterBrain(Npc &npc, std::list<Npc> &container)
         }
     }
 
-
+    debug("debug 4", false);
     if(myTargetPtr != nullptr && myTargetPtr->id == npc.id)
     {
         sf::Color filling(sf::Color::Yellow);
@@ -1889,7 +1890,7 @@ void critterBrain(Npc &npc, std::list<Npc> &container)
         shape.setPosition(npcPos);
         effects.polygons.push_back(shape);
     }
-
+    debug("debug 5", false);
     /* Critter Prioritization */
 
     // Method Two, Struct Desires
@@ -1943,7 +1944,7 @@ void critterBrain(Npc &npc, std::list<Npc> &container)
 
     }
     desires.push_back(newDesire);
-
+    debug("debug 6", false);
     /*Causation to Desires*/
     // Get Critters max nutrition, then reduce it by critters nutrients in blood
     float nutrients = npc.maxhunger - npc.bloodwork("Nutrients", 0);
@@ -1960,6 +1961,7 @@ void critterBrain(Npc &npc, std::list<Npc> &container)
         }
     }
 
+    debug("debug 7", false);
     // Finding the highest Desire
     bool inComplete;
     Desire *highestDesire = nullptr;
@@ -1984,6 +1986,7 @@ ReDesire:
         throw std::runtime_error("critterBrain: Something went wrong!");
     }
 
+    debug("debug 8", false);
     // Acting on Highest Desire
 
     Vec3 startPos(npc.xpos/20,npc.ypos/20,npc.zpos/20);
@@ -2311,7 +2314,12 @@ ReDesire:
 
     /* End of Critter Prioritization */
     npc.momMove();
+    debug(npc.name + ", mhmm.", false);
+    debug("debug 9", false);
+    debug("(" + std::to_string(npc.xpos) + "/" + std::to_string(npc.ypos) + "/" + std::to_string(npc.zpos) + ")");
     bool npcWalkable = tiles[abs_to_index(npc.xpos/20)][abs_to_index(npc.ypos/20)][abs_to_index(npc.zpos/20)].walkable;
+    debug("pro debug 1", false);
+
     if(hasPath && (gvars::framesPassed % 5) == 0 && npcWalkable)
     {
         debug("hasPath");
@@ -2401,14 +2409,34 @@ void critterBrain(std::list<Npc> &npcs)
 
     */
 
-    sf::Lock lock(mutex::npcList);
+
+    {
+        con("1critterBrain mutex locked");
+        sf::Lock lock(mutex::npcList);
+        con("2critterBrain mutex running");
+
     //while(gvars::workingNpcList){}
     //gvars::workingNpcList = true;
+    std::cout << npcs.size();
+    for (auto &npc : npcs)
+    {
+        std::cout << npc.name << ", ";
+    }
+    std::cout << "; \n";
     for (auto &npc : npcs)
     {
         critterBrain(npc, npcs);
     }
+    std::cout << npcs.size();
+    for (auto &npc : npcs)
+    {
+        std::cout << npc.name << ", ";
+    }
+    std::cout << "; \n";
     //gvars::workingNpcList = false;
+    }
+
+    con("3critterBrain mutex released");
 }
 
 void drawNPCs()

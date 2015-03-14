@@ -2,10 +2,15 @@
 
 #include <iostream>
 
-void debug(std::string info)
+void debug(std::string info, bool endline)
 {
     if (gvars::debug)
-        std::cout << info << std::endl;
+    {
+        std::cout << info;
+        if(endline)
+            std::cout << std::endl;
+    }
+
 }
 
 float cz(float number)

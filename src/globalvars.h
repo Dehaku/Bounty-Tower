@@ -6,7 +6,7 @@
 #include "defs.h"
 
 float cz(float number);
-void debug(std::string info);
+void debug(std::string info, bool endline = true);
 
 
 namespace mutex

@@ -7,7 +7,12 @@
 #include <string>
 
 
-
+template <typename T> T &listAt(std::list<T> &list, size_t index)
+{
+    auto it = list.begin();
+    std::advance(it, index);
+    return *it;
+}
 
 namespace network
 {
@@ -519,13 +524,17 @@ void runTcpClient(unsigned short port)
             std::cout << "Need time \n";
             //while(gvars::workingNpcList){}
             //gvars::workingNpcList = true;
+            con("1updateRoster mutex locked");
             sf::Lock lock(mutex::npcList);
+            con("2updateRoster mutex running");
+
             while(!GotPacket.endOfPacket())
             {
 
                 std::cout << "Starting packet \n";
                 std::string npcName, npcBloodContent;
-                int npcID, npcXpos, npcYpos, npcZpos;
+                //sf::Uint32 npcID = npc.id, npcXpos = npc.xpos, npcYpos = npc.ypos, npcZpos = npc.zpos;
+                sf::Uint32 npcID, npcXpos, npcYpos, npcZpos;
                 GotPacket >> npcName >> npcID >> npcXpos >> npcYpos >> npcZpos >> npcBloodContent;
                 bool npcFound = false;
                 for(auto &npc : npclist)
@@ -544,7 +553,8 @@ void runTcpClient(unsigned short port)
                 {
                     std::cout << "did not find name and ID \n";
                     Npc npc;
-                    npc = *getGlobalCritter("Human");
+                    //npc = *getGlobalCritter("Human");
+                    npc = listAt(npclist, 0);
                     std::cout << "Applying image\n";
                     npc.img.setTexture(texturemanager.getTexture("Human.png"));
                     npc.xpos = npcXpos;
@@ -567,6 +577,7 @@ void runTcpClient(unsigned short port)
             //network::needTime = false;
             std::cout << "Escaped \n";
         }
+        con("3updateRoster mutex released");
     }
 
     //Global.CliWait = false;
@@ -735,9 +746,11 @@ void ServerController::updateClients()
         sf::Packet pack;
         pack << ident.updateRoster;
         sf::Lock lock(mutex::npcList);
+
         for(auto &npc : npclist)
         {
-            pack << npc.name << npc.id << npc.xpos << npc.ypos << npc.zpos << npc.bloodcontent;
+            sf::Uint32 npcID = npc.id, npcXpos = npc.xpos, npcYpos = npc.ypos, npcZpos = npc.zpos;
+            pack << npc.name << npcID << npcXpos << npcYpos << npcZpos << npc.bloodcontent;
         }
         tcpSendtoAll(pack);
     }
