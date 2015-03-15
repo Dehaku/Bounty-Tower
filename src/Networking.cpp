@@ -553,14 +553,15 @@ void runTcpClient(unsigned short port)
                 {
                     std::cout << "did not find name and ID \n";
                     Npc npc;
-                    //npc = *getGlobalCritter("Human");
-                    npc = listAt(npclist, 0);
+                    npc = *getGlobalCritter("Human");
+                    //npc = listAt(npclist, 0);
                     std::cout << "Applying image\n";
                     npc.img.setTexture(texturemanager.getTexture("Human.png"));
                     npc.xpos = npcXpos;
                     npc.ypos = npcYpos;
                     npc.zpos = npcZpos;
                     npc.id = npcID;
+                    npc.name = npcName;
                     npc.reCreateSkills();
                     npc.hasSpawned = true;
                     npc.bloodcontent = npcBloodContent;
