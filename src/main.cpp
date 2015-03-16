@@ -1759,7 +1759,7 @@ void critterBrain(Npc &npc, std::list<Npc> &container)
 
     int critterZ = npc.zpos/20;
     textList.createText(npc.xpos,npc.ypos,10,sf::Color::White,"ZPos:","",npc.zpos," /","",critterZ);
-    //runCritterBody(npc);
+    runCritterBody(npc);
     debug("Ending Part Loop");
     debug("debug 1", false);
 
@@ -2540,6 +2540,18 @@ void displayChat(sf::Vector2f position)
 
 }
 
+sf::Vector2f gridEject(sf::Vector2f position)
+{
+    int tileX = (abs_to_index(position.x/GRID_SIZE)*GRID_SIZE)+10.5;
+    int tileY = (abs_to_index(position.y/GRID_SIZE)*GRID_SIZE)+10.5;
+    sf::Vector2f tilePos(tileX,tileY);
+    double lilDist = math::closeish(position.x,position.y,tileX,tileY);
+    int lilAngle = math::angleBetweenVectors(position,sf::Vector2f(tileX,tileY));
+    std::string strDisplay = "Tile Center Distance: " + std::to_string(lilDist) + ", angle: " + std::to_string(lilAngle);
+    sf::Vector2f correction = math::angleCalc(tilePos,lilAngle,-GRID_SIZE);
+    return correction;
+}
+
 void drawStuffs()
 {
 
@@ -2547,18 +2559,15 @@ void drawStuffs()
     //App.setActive(true);
 
     textList.createText(15,15,10,sf::Color::White,"Server Port: " + std::to_string(network::mainPort));
-    textList.createText(15,30,10,sf::Color::White,"Client Port: " + std::to_string(network::mainPort+23));
+    textList.createText(15,30,10,sf::Color::White,"Internal Port: " + std::to_string(network::mainPort+23));
 
     //tiles[abs_to_index(x/20)][abs_to_index(y/20)][abs_to_index(z/20)];
-    int tileX = (abs_to_index(gvars::mousePos.x/20)*20)+10.5;
-    int tileY = (abs_to_index(gvars::mousePos.y/20)*20)+10.5;
-    sf::Vector2f tilePos(tileX,tileY);
-    double lilDist = math::closeish(gvars::mousePos.x,gvars::mousePos.y,tileX,tileY);
-    int lilAngle = math::angleBetweenVectors(gvars::mousePos,sf::Vector2f(tileX,tileY));
-    std::string strDisplay = "Tile Center Distance: " + std::to_string(lilDist) + ", angle: " + std::to_string(lilAngle);
-    if(gCtrl.phase == "Local")
-        textList.createText(gvars::mousePos.x,gvars::mousePos.y,10,sf::Color::White,strDisplay);
-    sf::Vector2f correction = math::angleCalc(gvars::mousePos,lilAngle,-lilDist*2);
+
+
+
+
+
+    sf::Vector2f correction = gridEject(gvars::mousePos);
     effects.createCircle(correction.x,correction.y,5,sf::Color::Red);
 
     for(int i = 0; i != peers.connected.size(); i++)
@@ -2716,8 +2725,20 @@ void drawSelectedCritterHUD()
     if (gvars::myTarget != -1 && myTargetPtr != nullptr)
     {
         gvars::myTargetid = myTargetPtr->id;
-        int nxpos = gvars::topLeft.x;
+        int nxpos = gvars::topLeft.x+5;
         int nypos = gvars::topLeft.y + (RESOLUTION.y / 2);
+
+        textList.createText(nxpos+5,nypos-20-13,10,sf::Color::Cyan,"<Inventory>");
+        effects.createSquare(nxpos,nypos,nxpos+(20*myTargetPtr->inventory.size()),nypos-20,sf::Color(0,0,0),2,sf::Color::Cyan);
+        int itemCount = 0;
+        for(auto &i : myTargetPtr->inventory)
+        {
+            i.img.setPosition(nxpos+(20*itemCount),nypos);
+            effects.createCircle(nxpos+(20*itemCount),nypos,20,gvars::cycleGreen);
+            i.drawImg();
+            itemCount++;
+        }
+
 
 
         effects.createSquare(nxpos, nypos, nxpos + 65, nypos + 70,
