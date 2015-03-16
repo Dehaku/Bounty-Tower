@@ -2713,33 +2713,21 @@ void drawSelectedCritterHUD()
 
 void drawStuffs()
 {
-
-    //sf::Context context;
-    //App.setActive(true);
-
     textList.createText(15,15,10,sf::Color::White,"Server Port: " + std::to_string(network::mainPort));
     textList.createText(15,30,10,sf::Color::White,"Internal Port: " + std::to_string(network::mainPort+23));
-
-    //tiles[abs_to_index(x/20)][abs_to_index(y/20)][abs_to_index(z/20)];
-
-
-
-
 
     sf::Vector2f correction = gridEject(gvars::mousePos);
     effects.createCircle(correction.x,correction.y,5,sf::Color::Red);
 
     for(int i = 0; i != peers.connected.size(); i++)
-        textList.createText(gvars::topRight.x-150,gvars::topRight.y+(i*10)+10,10,sf::Color::Yellow,
-                            std::to_string(peers.connected[i].ping) + "Peer: " + peers.connected[i].name);
+    {
+        std::string Text = std::to_string(peers.connected[i].ping) + "Peer: " + peers.connected[i].name;
+        textList.createText(gvars::topRight.x-150,gvars::topRight.y+(i*10)+10,10,sf::Color::Yellow, Text);
+    }
+
 
     drawNewTiles();
-
-    //DrawPlanets();
     drawItems();
-
-
-
     {
         sf::Lock lock(mutex::npcList);
         drawSelectedCritterHUD();
