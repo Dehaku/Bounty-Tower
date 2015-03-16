@@ -31,7 +31,7 @@ bool debug = false;
 bool inFocus = true;
 bool drawStuffsDone = true;
 sf::View view1(CENTER, HALF_SIZE);
-int airPressure = 10;
+int airPressure = 2;
 sf::Vector2f mousePos;
 int mouseStagnation = 0;
 std::vector<int> selected;

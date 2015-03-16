@@ -479,7 +479,6 @@ void runTcpClient(unsigned short port)
                 peer.mousePos = sf::Vector2f(5,5);
                 peers.connected.push_back(peer);
             }
-            //std::cout << "Dealing with ClientMouse from," << Name << ", Pack: " << i << std::endl;
             for(int i = 0; i != peers.connected.size(); i++)
             {
                 if(Name == peers.connected[i].name)
@@ -521,19 +520,13 @@ void runTcpClient(unsigned short port)
         if(GotIdent == ident.updateRoster)
         {
             network::needTime = true;
-            std::cout << "Need time \n";
-            //while(gvars::workingNpcList){}
-            //gvars::workingNpcList = true;
-            con("1updateRoster mutex locked");
-            sf::Lock lock(mutex::npcList);
-            con("2updateRoster mutex running");
 
+            sf::Lock lock(mutex::npcList);
             while(!GotPacket.endOfPacket())
             {
 
-                std::cout << "Starting packet \n";
+
                 std::string npcName, npcBloodContent;
-                //sf::Uint32 npcID = npc.id, npcXpos = npc.xpos, npcYpos = npc.ypos, npcZpos = npc.zpos;
                 sf::Uint32 npcID, npcXpos, npcYpos, npcZpos;
                 GotPacket >> npcName >> npcID >> npcXpos >> npcYpos >> npcZpos >> npcBloodContent;
                 bool npcFound = false;
@@ -541,7 +534,6 @@ void runTcpClient(unsigned short port)
                 {
                     if(npc.name == npcName && npc.id == npcID)
                     {
-                        std::cout << "found name and ID of " + npcName + " \n";
                         npcFound = true;
                         npc.xpos = npcXpos;
                         npc.ypos = npcYpos;
@@ -551,12 +543,9 @@ void runTcpClient(unsigned short port)
                 }
                 if(npcFound == false)
                 {
-                    std::cout << "did not find name and ID \n";
                     Npc npc;
                     npc = *getGlobalCritter("Human");
-                    //npc = listAt(npclist, 0);
-                    std::cout << "Applying image\n";
-                    npc.img.setTexture(texturemanager.getTexture("Human.png"));
+                    //npc.img.setTexture(texturemanager.getTexture("Human.png"));
                     npc.xpos = npcXpos;
                     npc.ypos = npcYpos;
                     npc.zpos = npcZpos;
@@ -565,24 +554,11 @@ void runTcpClient(unsigned short port)
                     npc.reCreateSkills();
                     npc.hasSpawned = true;
                     npc.bloodcontent = npcBloodContent;
-                    std::cout << "pushing back " + npcName << std::endl;
-                    //while(!network::givingTime){}
                     npclist.push_back(npc);
-
-
                 }
-                std::cout << "Ending packet \n";
             }
-            //gvars::workingNpcList = false;
-            std::cout << "Done with time \n";
-            //network::needTime = false;
-            std::cout << "Escaped \n";
         }
-        con("3updateRoster mutex released");
     }
-
-    //Global.CliWait = false;
-
 }
 
 void tcpSendtoAll(sf::Packet pack)

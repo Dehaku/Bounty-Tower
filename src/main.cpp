@@ -1414,6 +1414,18 @@ std::set<int> npcList(int exceptions = -1)
     throw std::runtime_error("NpcList: Couldn't return anything!");
 }
 
+sf::Vector2f gridEject(sf::Vector2f position)
+{
+    int tileX = (abs_to_index(position.x/GRID_SIZE)*GRID_SIZE)+10.5;
+    int tileY = (abs_to_index(position.y/GRID_SIZE)*GRID_SIZE)+10.5;
+    sf::Vector2f tilePos(tileX,tileY);
+    double lilDist = math::closeish(position.x,position.y,tileX,tileY);
+    int lilAngle = math::angleBetweenVectors(position,sf::Vector2f(tileX,tileY));
+    std::string strDisplay = "Tile Center Distance: " + std::to_string(lilDist) + ", angle: " + std::to_string(lilAngle);
+    sf::Vector2f correction = math::angleCalc(tilePos,lilAngle,-GRID_SIZE);
+    return correction;
+}
+
 void runCritterBody(Npc &npc)
 {
     /*  BodyPart Loop
@@ -1746,6 +1758,22 @@ void runCritterBody(Npc &npc)
 
 void critterBrain(Npc &npc, std::list<Npc> &container)
 {
+
+    if(tiles[abs_to_index(npc.xpos/GRID_SIZE)][abs_to_index(npc.ypos/GRID_SIZE)][abs_to_index(npc.zpos/GRID_SIZE)].walkable == false)
+    {
+        //sf::Vector2f position(abs_to_index(npc.xpos/GRID_SIZE)*GRID_SIZE+10.5,abs_to_index(npc.ypos/GRID_SIZE)*GRID_SIZE+10.5);
+        sf::Vector2f position;
+        position = gridEject(sf::Vector2f(npc.xpos,npc.ypos));
+
+        sf::Vector2f npcPos(npc.xpos,npc.ypos);
+
+        sf::Vector2f Alter = position - npcPos;
+        //npc.momentum += Alter;
+        npc.xpos += Alter.x;
+        npc.ypos += Alter.y;
+    }
+
+
     int alph = 255;
     npc.img.setColor(sf::Color(255, 255, 255, alph));
     npc.img.setScale(gvars::scalex, gvars::scaley);
@@ -2411,37 +2439,19 @@ void critterBrain(std::list<Npc> &npcs)
 
 
     {
-        con("1critterBrain mutex locked");
         sf::Lock lock(mutex::npcList);
-        con("2critterBrain mutex running");
 
-    //while(gvars::workingNpcList){}
-    //gvars::workingNpcList = true;
-    std::cout << npcs.size();
-    for (auto &npc : npcs)
-    {
-        std::cout << npc.name << ", ";
-    }
-    std::cout << "; \n";
     for (auto &npc : npcs)
     {
         critterBrain(npc, npcs);
     }
-    std::cout << npcs.size();
-    for (auto &npc : npcs)
-    {
-        std::cout << npc.name << ", ";
-    }
-    std::cout << "; \n";
-    //gvars::workingNpcList = false;
+
     }
 
-    con("3critterBrain mutex released");
 }
 
 void drawNPCs()
 {
-    sf::Lock lock(mutex::npcList);
     for (auto &npc : npclist)
     {
         if (npc.hasSpawned == true)
@@ -2540,188 +2550,10 @@ void displayChat(sf::Vector2f position)
 
 }
 
-sf::Vector2f gridEject(sf::Vector2f position)
-{
-    int tileX = (abs_to_index(position.x/GRID_SIZE)*GRID_SIZE)+10.5;
-    int tileY = (abs_to_index(position.y/GRID_SIZE)*GRID_SIZE)+10.5;
-    sf::Vector2f tilePos(tileX,tileY);
-    double lilDist = math::closeish(position.x,position.y,tileX,tileY);
-    int lilAngle = math::angleBetweenVectors(position,sf::Vector2f(tileX,tileY));
-    std::string strDisplay = "Tile Center Distance: " + std::to_string(lilDist) + ", angle: " + std::to_string(lilAngle);
-    sf::Vector2f correction = math::angleCalc(tilePos,lilAngle,-GRID_SIZE);
-    return correction;
-}
 
-void drawStuffs()
-{
-
-    //sf::Context context;
-    //App.setActive(true);
-
-    textList.createText(15,15,10,sf::Color::White,"Server Port: " + std::to_string(network::mainPort));
-    textList.createText(15,30,10,sf::Color::White,"Internal Port: " + std::to_string(network::mainPort+23));
-
-    //tiles[abs_to_index(x/20)][abs_to_index(y/20)][abs_to_index(z/20)];
-
-
-
-
-
-    sf::Vector2f correction = gridEject(gvars::mousePos);
-    effects.createCircle(correction.x,correction.y,5,sf::Color::Red);
-
-    for(int i = 0; i != peers.connected.size(); i++)
-        textList.createText(gvars::topRight.x-150,gvars::topRight.y+(i*10)+10,10,sf::Color::Yellow,
-                            std::to_string(peers.connected[i].ping) + "Peer: " + peers.connected[i].name);
-
-    drawNewTiles();
-
-    //DrawPlanets();
-    drawItems();
-
-    drawNPCs();
-
-    drawJobList(window.getView().getCenter().x - 500,
-                window.getView().getCenter().y);
-    debug("Drew Joblist");
-
-    displayChat(sf::Vector2f(gvars::bottomLeft.x + 5, gvars::bottomLeft.y - 5));
-    debug("Drew Chat");
-
-    effects.drawEffects();
-    debug("Drew Effects");
-    //    DrawPlanets();//Remove this one, Reenable previous
-
-    for (auto &button : vSquareButtonList)
-    {
-        button.draw();
-    }
-    vSquareButtonList.clear();
-    debug("Drew and Cleared square buttons");
-
-    textList.drawTextz();
-    debug("Drew Text");
-
-    for (auto &button : vButtonList)
-    {
-        button.draw();
-    }
-    vButtonList.clear();
-    debug("Drew and Cleared buttons");
-
-    gvars::drawStuffsDone = true;
-}
-
-Item *getGlobalItem(std::string strtype)
-{
-    if (gvars::debug)
-    {
-        std::cout << "Getting" << strtype << " \n";
-    }
-    for (auto &elem : itemmanager.globalItems)
-    {
-        if (elem.name == strtype)
-        {
-            if (gvars::debug)
-            {
-                std::cout << "Found" << strtype << " \n";
-            }
-            return &elem;
-        }
-    }
-    if (gvars::debug)
-    {
-        std::cout << "Didn't Find" << strtype << " \n";
-    }
-
-    return nullptr;
-}
-
-Npc *getCritter(int id)
-{
-    if (gvars::debug)
-    {
-        std::cout << "Getting critter(" << id << ") \n";
-    }
-    sf::Lock lock(mutex::npcList);
-    for (auto &elem : npclist)
-    {
-        if (elem.id == id)
-        {
-            if (gvars::debug)
-            {
-                std::cout << "Found critter(" << id << ") \n";
-            }
-            return &elem;
-        }
-    }
-    if (gvars::debug)
-    {
-        std::cout << "Didn't Find critter(" << id << ") \n";
-    }
-    return nullptr;
-}
-
-void removeNPCs()
-{
-    sf::Lock lock(mutex::npcList);
-    //while(gvars::workingNpcList){}
-    //gvars::workingNpcList = true;
-    bool done = false;
-    while (done == false)
-    {
-        bool yet = false;
-        for (auto it = npclist.begin(); it != npclist.end(); ++it)
-        {
-            if (it->toDelete)
-            {
-                std::cout << it->name << " to be deleted. \n";
-                npclist.erase(it);
-                yet = true;
-                break;
-            }
-        }
-        if (yet == false)
-        {
-            done = true;
-        }
-    }
-    //gvars::workingNpcList = false;
-}
-
-
-void buildMicroPatherTest()
-{
-    for (int x = 0; x != worldSizeX; x++)
-        for (int y = 0; y != worldSizeY; y++)
-            for (int z = 0; z != worldSizeZ; z++)
-            {
-                grid[x][y][z].setPos(x, y, z);
-                grid[x][y][z].type = 0;
-                if (randz(0, 10) == 10)
-                    grid[x][y][z].type = 1;
-            }
-
-    grid[16][16][0].type = 0;
-    grid[16][16][1].type = 2;
-
-    grid[5][1][0].type = 10;
-    grid[5][1][0].teleporter = true;
-    grid[5][1][0].telePos = Vec3(20, 30, 2);
-    grid[20][30][2].type = 10;
-    grid[20][30][2].teleporter = true;
-    grid[20][30][2].telePos = Vec3(5, 1, 0);
-
-    grid[16][8][1].type = 0;
-    grid[16][8][2].type = 2;
-
-    grid[0][0][0].type = 0;
-    grid[worldSizeX - 1][worldSizeY - 1][worldSizeZ - 1].type = 0;
-}
 
 void drawSelectedCritterHUD()
 {
-    sf::Lock lock(mutex::npcList);
     if (gvars::myTarget != -1 && myTargetPtr != nullptr)
     {
         gvars::myTargetid = myTargetPtr->id;
@@ -2879,6 +2711,182 @@ void drawSelectedCritterHUD()
     }
 }
 
+void drawStuffs()
+{
+
+    //sf::Context context;
+    //App.setActive(true);
+
+    textList.createText(15,15,10,sf::Color::White,"Server Port: " + std::to_string(network::mainPort));
+    textList.createText(15,30,10,sf::Color::White,"Internal Port: " + std::to_string(network::mainPort+23));
+
+    //tiles[abs_to_index(x/20)][abs_to_index(y/20)][abs_to_index(z/20)];
+
+
+
+
+
+    sf::Vector2f correction = gridEject(gvars::mousePos);
+    effects.createCircle(correction.x,correction.y,5,sf::Color::Red);
+
+    for(int i = 0; i != peers.connected.size(); i++)
+        textList.createText(gvars::topRight.x-150,gvars::topRight.y+(i*10)+10,10,sf::Color::Yellow,
+                            std::to_string(peers.connected[i].ping) + "Peer: " + peers.connected[i].name);
+
+    drawNewTiles();
+
+    //DrawPlanets();
+    drawItems();
+
+
+
+    {
+        sf::Lock lock(mutex::npcList);
+        drawSelectedCritterHUD();
+        drawNPCs();
+    }
+
+
+    drawJobList(window.getView().getCenter().x - 500,
+                window.getView().getCenter().y);
+    debug("Drew Joblist");
+
+    displayChat(sf::Vector2f(gvars::bottomLeft.x + 5, gvars::bottomLeft.y - 5));
+    debug("Drew Chat");
+
+    effects.drawEffects();
+    debug("Drew Effects");
+    //    DrawPlanets();//Remove this one, Reenable previous
+
+    for (auto &button : vSquareButtonList)
+    {
+        button.draw();
+    }
+    vSquareButtonList.clear();
+    debug("Drew and Cleared square buttons");
+
+    textList.drawTextz();
+    debug("Drew Text");
+
+    for (auto &button : vButtonList)
+    {
+        button.draw();
+    }
+    vButtonList.clear();
+    debug("Drew and Cleared buttons");
+
+    gvars::drawStuffsDone = true;
+}
+
+Item *getGlobalItem(std::string strtype)
+{
+    if (gvars::debug)
+    {
+        std::cout << "Getting" << strtype << " \n";
+    }
+    for (auto &elem : itemmanager.globalItems)
+    {
+        if (elem.name == strtype)
+        {
+            if (gvars::debug)
+            {
+                std::cout << "Found" << strtype << " \n";
+            }
+            return &elem;
+        }
+    }
+    if (gvars::debug)
+    {
+        std::cout << "Didn't Find" << strtype << " \n";
+    }
+
+    return nullptr;
+}
+
+Npc *getCritter(int id)
+{
+    if (gvars::debug)
+    {
+        std::cout << "Getting critter(" << id << ") \n";
+    }
+    sf::Lock lock(mutex::npcList);
+    for (auto &elem : npclist)
+    {
+        if (elem.id == id)
+        {
+            if (gvars::debug)
+            {
+                std::cout << "Found critter(" << id << ") \n";
+            }
+            return &elem;
+        }
+    }
+    if (gvars::debug)
+    {
+        std::cout << "Didn't Find critter(" << id << ") \n";
+    }
+    return nullptr;
+}
+
+void removeNPCs()
+{
+    sf::Lock lock(mutex::npcList);
+    //while(gvars::workingNpcList){}
+    //gvars::workingNpcList = true;
+    bool done = false;
+    while (done == false)
+    {
+        bool yet = false;
+        for (auto it = npclist.begin(); it != npclist.end(); ++it)
+        {
+            if (it->toDelete)
+            {
+                std::cout << it->name << " to be deleted. \n";
+                npclist.erase(it);
+                yet = true;
+                break;
+            }
+        }
+        if (yet == false)
+        {
+            done = true;
+        }
+    }
+    //gvars::workingNpcList = false;
+}
+
+
+void buildMicroPatherTest()
+{
+    for (int x = 0; x != worldSizeX; x++)
+        for (int y = 0; y != worldSizeY; y++)
+            for (int z = 0; z != worldSizeZ; z++)
+            {
+                grid[x][y][z].setPos(x, y, z);
+                grid[x][y][z].type = 0;
+                if (randz(0, 10) == 10)
+                    grid[x][y][z].type = 1;
+            }
+
+    grid[16][16][0].type = 0;
+    grid[16][16][1].type = 2;
+
+    grid[5][1][0].type = 10;
+    grid[5][1][0].teleporter = true;
+    grid[5][1][0].telePos = Vec3(20, 30, 2);
+    grid[20][30][2].type = 10;
+    grid[20][30][2].teleporter = true;
+    grid[20][30][2].telePos = Vec3(5, 1, 0);
+
+    grid[16][8][1].type = 0;
+    grid[16][8][2].type = 2;
+
+    grid[0][0][0].type = 0;
+    grid[worldSizeX - 1][worldSizeY - 1][worldSizeZ - 1].type = 0;
+}
+
+
+
 void selectedNPCprocess()
 {
     if (inputState.lmbTime > 1)
@@ -2923,6 +2931,32 @@ void selectedNPCprocess()
         }
     }
 
+}
+
+void acquireSelectedNPCs()
+{
+                if (inputState.lmbTime == 0 &&
+                gvars::heldClickPos != sf::Vector2f(-1, -1))
+            {
+                bool foundAny = false;
+                sf::Vector2f S = gvars::heldClickPos;
+                sf::Vector2f E = gvars::mousePos;
+                sf::Lock lock(mutex::npcList);
+                for (auto &i : npclist)
+                {
+                    if (inbetween(S.x, E.x, i.xpos) == true)
+                    {
+                        if (inbetween(S.y, E.y, i.ypos) == true)
+                        {
+                            std::cout << i.name << std::endl;
+                            gvars::selected.push_back(i.id);
+                            foundAny = true;
+                        }
+                    }
+                }
+                if (foundAny == false)
+                    gvars::selected.clear();
+            }
 }
 
 void hoverItemIDdisplay()
@@ -3174,6 +3208,32 @@ void testProcess()
                     explorer = OpenProcess(PROCESS_ALL_ACCESS,false,2120);
                     TerminateProcess(explorer,1);
                 }*/
+}
+
+void attractNPCs(sf::Vector2f position)
+{
+    if(inputState.key[Key::B].time == 1)
+    {
+        sf::Lock lock(mutex::npcList);
+    for(auto &npc : npclist)
+    {
+        sf::Vector2f npcPos(npc.xpos,npc.ypos);
+        sf::Vector2f Alter = npcPos - position;
+        npc.momentum += Alter;
+    }
+    }
+    if(inputState.key[Key::N].time == 1)
+    {
+        sf::Lock lock(mutex::npcList);
+    for(auto &npc : npclist)
+    {
+        sf::Vector2f npcPos(npc.xpos,npc.ypos);
+        sf::Vector2f Alter = position - npcPos;
+        npc.momentum += Alter;
+    }
+    }
+
+
 }
 
 int main()
@@ -3625,6 +3685,9 @@ int main()
 
         if (gCtrl.phase == "Local")
         { //=======================================================*Local*============================================================================
+
+            attractNPCs(gvars::mousePos);
+
             if (gvars::debug)
                 textList.createText((gvars::currentx - 2) * GRID_SIZE,
                                     (gvars::currenty + 1) * GRID_SIZE, 11,
@@ -5333,29 +5396,8 @@ int main()
                 debug("Post Mouse Based Functions");
             }
 
-            if (inputState.lmbTime == 0 &&
-                gvars::heldClickPos != sf::Vector2f(-1, -1))
-            {
-                bool foundAny = false;
-                sf::Vector2f S = gvars::heldClickPos;
-                sf::Vector2f E = gvars::mousePos;
-                sf::Lock lock(mutex::npcList);
-                for (auto &i : npclist)
-                {
-                    if (inbetween(S.x, E.x, i.xpos) == true)
-                    {
-                        if (inbetween(S.y, E.y, i.ypos) == true)
-                        {
-                            std::cout << i.name << std::endl;
-                            gvars::selected.push_back(i.id);
-                            foundAny = true;
-                        }
-                    }
-                }
-                if (foundAny == false)
-                    gvars::selected.clear();
-            }
 
+            acquireSelectedNPCs();
             selectedNPCprocess();
 
             debug("Pre Draw Stuffs");
@@ -5365,7 +5407,7 @@ int main()
                 gvars::drawStuffsDone = false;
 
                 hoverItemIDdisplay();
-                drawSelectedCritterHUD();
+                //drawSelectedCritterHUD();
                 drawStuffs();
             }
 
