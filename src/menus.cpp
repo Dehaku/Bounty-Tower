@@ -814,7 +814,7 @@ void menuPopUp()
                 }
             }
             if (i == 1)
-            {
+            { // Missile Strike
                 effects.createLine(
                     gCtrl.menuPos.x, (gCtrl.menuPos.y + (iY * 13)) + 13,
                     gCtrl.menuPos.x + 90, (gCtrl.menuPos.y + (iY * 13)) + 13, 1,
@@ -855,7 +855,7 @@ void menuPopUp()
             }
 
             if (i == 2)
-            {
+            { // Shift wall/stone
 
                 //Effectz.CreateLine(GC.MenuPos.x,(GC.MenuPos.y+(iY*13))+8,GC.MenuPos.x+90,(GC.MenuPos.y+(iY*13))+8,3,Black,1,Yellow);
                 effects.createLine(
@@ -901,7 +901,7 @@ void menuPopUp()
             }
 
             if (i == 3)
-            {
+            { // Spawn zombie horde
 
                 //Effectz.CreateLine(GC.MenuPos.x,(GC.MenuPos.y+(iY*13))+8,GC.MenuPos.x+90,(GC.MenuPos.y+(iY*13))+8,3,Black,1,Yellow);
                 effects.createLine(
@@ -930,7 +930,7 @@ void menuPopUp()
             }
 
             if (i == 4)
-            {
+            { // Print NPC console info
                 effects.createLine(
                     gCtrl.menuPos.x, (gCtrl.menuPos.y + (iY * 13)) + 13,
                     gCtrl.menuPos.x + 90, (gCtrl.menuPos.y + (iY * 13)) + 13, 1,
@@ -965,7 +965,7 @@ void menuPopUp()
             }
 
             if (i == 5)
-            {
+            { // Print bloodcontents
                 effects.createLine(
                     gCtrl.menuPos.x, (gCtrl.menuPos.y + (iY * 13)) + 13,
                     gCtrl.menuPos.x + 90, (gCtrl.menuPos.y + (iY * 13)) + 13, 1,
@@ -995,7 +995,7 @@ void menuPopUp()
             }
 
             if (i == 6)
-            {
+            { // Give everyone zombification
                 effects.createLine(
                     gCtrl.menuPos.x, (gCtrl.menuPos.y + (iY * 13)) + 13,
                     gCtrl.menuPos.x + 90, (gCtrl.menuPos.y + (iY * 13)) + 13, 1,
@@ -1026,16 +1026,14 @@ void menuPopUp()
             }
 
             if (i == 7)
-            {
-
-                //Effectz.CreateLine(GC.MenuPos.x,(GC.MenuPos.y+(iY*13))+8,GC.MenuPos.x+90,(GC.MenuPos.y+(iY*13))+8,3,Black,1,Yellow);
+            { // Delete all critters and items
                 effects.createLine(
                     gCtrl.menuPos.x, (gCtrl.menuPos.y + (iY * 13)) + 13,
                     gCtrl.menuPos.x + 90, (gCtrl.menuPos.y + (iY * 13)) + 13, 1,
                     sf::Color::Cyan);
                 textList.createText(gCtrl.menuPos.x,
                                     gCtrl.menuPos.y + (iY * 13), 12,
-                                    sf::Color::White, "Delete all critters");
+                                    sf::Color::White, "Delete all critters and items");
                 int butt = createSquareButton(
                     math::Vec2f(gCtrl.menuPos.x + brd,
                                 (gCtrl.menuPos.y + (iY * 13)) + mbd),
@@ -1044,15 +1042,21 @@ void menuPopUp()
                     inputState.key[Key::Num7].time == 1)
                 {
                     sf::Lock lock(mutex::npcList);
+                    sf::Lock itemlock(mutex::itemList);
+                    for (auto &elem : worlditems)
+                    {
+                        elem.toDelete = true;
+                    }
                     for (auto &elem : npclist)
                     {
                         elem.toDelete = true;
                     }
+
                 }
             }
 
             if (i == 8)
-            {
+            { // Starve all critters
 
                 //Effectz.CreateLine(GC.MenuPos.x,(GC.MenuPos.y+(iY*13))+8,GC.MenuPos.x+90,(GC.MenuPos.y+(iY*13))+8,3,Black,1,Yellow);
                 effects.createLine(
@@ -1077,7 +1081,7 @@ void menuPopUp()
                 }
             }
             if (i == 9)
-            {
+            { // Arena
 
                 //Effectz.CreateLine(GC.MenuPos.x,(GC.MenuPos.y+(iY*13))+8,GC.MenuPos.x+90,(GC.MenuPos.y+(iY*13))+8,3,Black,1,Yellow);
                 effects.createLine(

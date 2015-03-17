@@ -875,7 +875,7 @@ void updateItem()
                     std::cout << item.name << " can produce. ";
                 }
                 item.prodratetimer++;
-                if (item.prodratetimer >= item.prodrate)
+                if (item.prodratetimer >= item.prodrate && network::connectedServer == "")
                 {
                     item.prodratetimer = 0;
                     std::string s;
@@ -886,12 +886,15 @@ void updateItem()
                     bool findEmpty = false;
                     int x;
                     int y;
+                    int z;
                     while (findEmpty == false)
                     {
                         x = randz(item.xpos - 10, item.xpos + 10);
                         y = randz(item.ypos - 10, item.ypos + 10);
+                        z = item.zpos;
                         if (tiles[abs_to_index(x / GRID_SIZE)][abs_to_index(
-                                y / GRID_SIZE)][30].walkable == true)
+                                y / GRID_SIZE)][abs_to_index(
+                                z / GRID_SIZE)].walkable == true)
                         {
                             findEmpty = true;
                         }

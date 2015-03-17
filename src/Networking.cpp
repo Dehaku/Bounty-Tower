@@ -565,8 +565,8 @@ void runTcpClient(unsigned short port)
             while(!GotPacket.endOfPacket())
             {
                 std::string itemName;
-                sf::Uint32 itemID, itemXpos, itemYpos, itemZpos;
-                GotPacket >> itemName >> itemID >> itemXpos >> itemYpos >> itemZpos;
+                sf::Uint32 itemID, itemXpos, itemYpos, itemZpos, itemProdrate;
+                GotPacket >> itemName >> itemID >> itemXpos >> itemYpos >> itemZpos >> itemProdrate;
                 bool itemFound = false;
                 for(auto &item : worlditems)
                 {
@@ -576,21 +576,19 @@ void runTcpClient(unsigned short port)
                         item.xpos = itemXpos;
                         item.ypos = itemYpos;
                         item.zpos = itemZpos;
+                        item.prodratetimer = itemProdrate;
                     }
                 }
                 if(itemFound == false)
                 {
                     Item item;
                     item = *getGlobalItem(itemName);
-                    //item.img.setTexture(texturemanager.getTexture("Human.png"));
                     item.xpos = itemXpos;
                     item.ypos = itemYpos;
                     item.zpos = itemZpos;
                     item.id = itemID;
                     item.name = itemName;
-                    //item.reCreateSkills();
-                    //item.hasSpawned = true;
-                    //item.bloodcontent = itemBloodContent;
+                    item.prodratetimer = itemProdrate;
                     worlditems.push_back(item);
                 }
             }
@@ -778,8 +776,8 @@ void ServerController::updateClients()
 
         for(auto &item : worlditems)
         {
-            sf::Uint32 itemID = item.id, itemXpos = item.xpos, itemYpos = item.ypos, itemZpos = item.zpos;
-            pack << item.name << itemID << itemXpos << itemYpos << itemZpos;
+            sf::Uint32 itemID = item.id, itemXpos = item.xpos, itemYpos = item.ypos, itemZpos = item.zpos, itemProdrate = item.prodratetimer;
+            pack << item.name << itemID << itemXpos << itemYpos << itemZpos << itemProdrate;
         }
         tcpSendtoAll(pack);
     }
