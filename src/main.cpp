@@ -1296,31 +1296,6 @@ int getNpcVectorId(int id)
     return -1;
 }
 
-bool removeNPC(char * /*NPCname*/, int /*Id*/)
-{
-    sf::Lock lock(mutex::npcList);
-    int tempInt = 0;
-    std::list<Npc>::iterator location;
-    for (auto it = npclist.begin(); it != npclist.end(); ++it)
-    {
-        if (it->health <= 0 || it->hasSpawned == false || it->alive == false)
-        {
-            location = it;
-            tempInt = 1;
-        }
-    }
-    if (tempInt == 1)
-    {
-        npclist.erase(location);
-        return true;
-    }
-    else if (tempInt == 0)
-    {
-        return false;
-    }
-    throw std::runtime_error("RemoveNPC: Couldn't return anything sensible.");
-}
-
 struct ItemFindResult
 {
     bool found;
