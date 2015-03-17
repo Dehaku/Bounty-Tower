@@ -1837,6 +1837,7 @@ Faction::Faction()
     initialized = false;
 
     members = 0;
+    credits = 0;
 
     primaryColor = sf::Color(randz(0, 255), randz(0, 255), randz(0, 255));
     secondaryColor = sf::Color(randz(0, 255), randz(0, 255), randz(0, 255));

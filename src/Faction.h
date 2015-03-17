@@ -384,6 +384,8 @@ public:
     float techMedical;
     float techRobotics;
 
+    float credits;
+
     std::vector<Territory> territories;
 
     std::vector<std::string> knownMagic;
