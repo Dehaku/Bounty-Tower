@@ -63,6 +63,7 @@ extern float constantRotation;
 extern bool secondSwitch;
 extern bool sendGrid;
 extern bool workingNpcList;
+extern bool transitionLock;
 }
 
 #endif // GLOBALS_H_INCLUDED

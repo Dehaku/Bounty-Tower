@@ -2731,7 +2731,12 @@ void drawStuffs()
 
 
     drawNewTiles();
-    drawItems();
+    {
+        sf::Lock lock(mutex::itemList);
+        drawItems();
+    }
+
+
     {
         sf::Lock lock(mutex::npcList);
         drawSelectedCritterHUD();
@@ -2748,6 +2753,19 @@ void drawStuffs()
 
     effects.drawEffects();
     debug("Drew Effects");
+
+    if(gvars::transitionLock && gCtrl.phase == "Local")
+    {
+        sf::Sprite spinner;
+        spinner.setTexture(texturemanager.getTexture("Lock.png"));
+        int Pos = (gvars::topLeft.x+gvars::topRight.x)/2;
+        spinner.setPosition(Pos,gvars::topRight.y+40);
+        spinner.setOrigin(10.5f,10.5f);
+        window.draw(spinner);
+        std::string outText = "Map transition locked, Press Space to toggle.";
+        textList.createText(Pos-(outText.size()*3),gvars::topRight.y+50,10,sf::Color::Cyan,outText);
+    }
+
     //    DrawPlanets();//Remove this one, Reenable previous
 
     for (auto &button : vSquareButtonList)
@@ -3911,9 +3929,13 @@ int main()
                 effects.createCircle(myTargetPtr->xpos,myTargetPtr->ypos,30,sf::Color(255,255,255,100));
             }
 
+            if(inputState.key[Key::Space].time == 1)
+            {
+                toggle(gvars::transitionLock);
+            }
 
             bool transitioning = false;
-            if (gvars::currenty > 64)
+            if (gvars::currenty > 64 && !gvars::transitionLock)
             {
                 tilesGoUp();
                 gvars::currenty = 33;
@@ -3961,7 +3983,7 @@ int main()
                                  "BottomRight", gvars::currentplanet);
                 remove(line.c_str());
             }
-            if (gvars::currenty < 32)
+            if (gvars::currenty < 32 && !gvars::transitionLock)
             {
                 tilesGoDown();
                 gvars::currenty = 63;
@@ -4010,7 +4032,7 @@ int main()
                                  "TopRight", gvars::currentplanet);
                 remove(line.c_str());
             }
-            if (gvars::currentx > 64)
+            if (gvars::currentx > 64 && !gvars::transitionLock)
             {
                 tilesGoLeft();
                 gvars::currentx = 33;
@@ -4060,7 +4082,7 @@ int main()
                                  "BottomRight", gvars::currentplanet);
                 remove(line.c_str());
             }
-            if (gvars::currentx < 32)
+            if (gvars::currentx < 32 && !gvars::transitionLock)
             {
                 con("Starting GoRight");
                 tilesGoRight();
@@ -4114,7 +4136,7 @@ int main()
                 remove(line.c_str());
             }
 
-            if (transitioning == true)
+            if (transitioning == true && !gvars::transitionLock)
             {
 
                 {

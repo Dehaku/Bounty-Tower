@@ -78,4 +78,6 @@ bool sendGrid = false;
 
 bool workingNpcList = false;
 
+bool transitionLock = true;
+
 } // namespace gvars
