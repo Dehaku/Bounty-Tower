@@ -12,6 +12,7 @@ void debug(std::string info, bool endline = true);
 namespace mutex
 {
     extern sf::Mutex npcList;
+    extern sf::Mutex itemList;
 }
 
 namespace gvars

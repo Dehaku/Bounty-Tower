@@ -50,6 +50,7 @@ Identity::Identity()
     ping = "Ping";
     pong = "Pong";
     updateRoster = "Update Roster";
+    updateItems = "Update Items";
 }
 Identity ident;
 
@@ -558,6 +559,44 @@ void runTcpClient(unsigned short port)
                 }
             }
         }
+        if(GotIdent == ident.updateItems)
+        {
+            sf::Lock lock(mutex::itemList);
+            while(!GotPacket.endOfPacket())
+            {
+                std::string itemName;
+                sf::Uint32 itemID, itemXpos, itemYpos, itemZpos;
+                GotPacket >> itemName >> itemID >> itemXpos >> itemYpos >> itemZpos;
+                bool itemFound = false;
+                for(auto &item : worlditems)
+                {
+                    if(item.name == itemName && item.id == itemID)
+                    {
+                        itemFound = true;
+                        item.xpos = itemXpos;
+                        item.ypos = itemYpos;
+                        item.zpos = itemZpos;
+                    }
+                }
+                if(itemFound == false)
+                {
+                    Item item;
+                    item = *getGlobalItem(itemName);
+                    //item.img.setTexture(texturemanager.getTexture("Human.png"));
+                    item.xpos = itemXpos;
+                    item.ypos = itemYpos;
+                    item.zpos = itemZpos;
+                    item.id = itemID;
+                    item.name = itemName;
+                    //item.reCreateSkills();
+                    //item.hasSpawned = true;
+                    //item.bloodcontent = itemBloodContent;
+                    worlditems.push_back(item);
+                }
+            }
+        }
+
+
     }
 }
 
@@ -728,6 +767,19 @@ void ServerController::updateClients()
         {
             sf::Uint32 npcID = npc.id, npcXpos = npc.xpos, npcYpos = npc.ypos, npcZpos = npc.zpos;
             pack << npc.name << npcID << npcXpos << npcYpos << npcZpos << npc.bloodcontent;
+        }
+        tcpSendtoAll(pack);
+    }
+    if((gvars::framesPassed % 30) == 0)
+    {
+        sf::Packet pack;
+        pack << ident.updateItems;
+        sf::Lock lock(mutex::itemList);
+
+        for(auto &item : worlditems)
+        {
+            sf::Uint32 itemID = item.id, itemXpos = item.xpos, itemYpos = item.ypos, itemZpos = item.zpos;
+            pack << item.name << itemID << itemXpos << itemYpos << itemZpos;
         }
         tcpSendtoAll(pack);
     }

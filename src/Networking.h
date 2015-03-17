@@ -54,6 +54,7 @@ class Identity
     std::string ping;
     std::string pong;
     std::string updateRoster;
+    std::string updateItems;
 
     Identity();
 };

@@ -21,6 +21,7 @@ float cz(float number)
 namespace mutex
 {
     sf::Mutex npcList;
+    sf::Mutex itemList;
 }
 
 namespace gvars

@@ -854,6 +854,7 @@ bool removeItem(int id)
 
 void updateItem()
 {
+    sf::Lock lock(mutex::itemList);
     if (gvars::debug)
     {
         std::cout << "Pre Item \n";
