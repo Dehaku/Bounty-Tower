@@ -179,6 +179,7 @@ void generateChunk(std::string type, int planet, sf::Vector2i cords,
         vChunk[15][20][30].door();
         vChunk[15][12][30].stairsDown();
         vChunk[15][12][29].stairsUp();
+        //vChunk[15][28][30].baseRune();
         //vChunk[11][15][30].teleportPad(Vec3(21,15,30));
         //vChunk[21][15][30].teleportPad(Vec3(11,15,30));
     }
@@ -1231,6 +1232,16 @@ void Tile::lava()
     walkable = true;
 }
 
+void Tile::baseRune()
+{ // 1400
+    id = 1400;
+    worldColor = sf::Color(150, 150, 150);
+    img.setTexture(texturemanager.getTexture("BaseRune.png"));
+    transparent = true;
+    walkable = false;
+}
+
+
 void Tile::sky()
 { // 1700
     id = 1700;
@@ -1353,6 +1364,8 @@ void networkGridUpdate(sf::Packet pack)
             tiles[x][y][z].door();
         else if(id == 1337)
             tiles[x][y][z].lava();
+        else if(id == 1400)
+            tiles[x][y][z].baseRune();
         else if(id == 1700)
             tiles[x][y][z].sky();
     }

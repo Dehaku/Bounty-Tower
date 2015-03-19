@@ -10,3 +10,4 @@
 [name:Missile][Pickupable:true][type:1][image:Sword.tga][baseid:5413812][mindam:50][maxdam:100][range:200][IsWeapon:true]
 [name:Wood][Pickupable:true][image:Plank.png][type:12][baseid:7871787][produces:false]
 [name:Rock][Pickupable:true][image:Rock.png][type:12][baseid:7971787][produces:false]
+[name:Rune][Pickupable:true][image:BaseRune.png][type:12][baseid:8001747][produces:false]

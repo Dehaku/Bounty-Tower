@@ -769,6 +769,82 @@ std::string getClipboardText()
 // Create the main rendering window
 sf::RenderWindow window;
 
+int orbRot = 0;
+int orbs = 1;
+int orbSpeed = 2;
+
+class Orb
+{
+public:
+    int orbRot;
+    int orbs;
+    int orbSpeed;
+    int orbDistance;
+    sf::Vector2f pos;
+    unsigned int lifeTime;
+    bool toDelete;
+    int type;
+
+
+
+    void updateOrb()
+    {
+        if(lifeTime <= 0)
+            toDelete = true;
+        lifeTime--;
+
+        orbRot += orbSpeed;
+    }
+
+    void drawOrb(int totalOrbs = 1)
+    {
+
+        int orbSpacing = 360/totalOrbs;
+        if(type == 0)
+        {
+            sf::Vector2f Pos = math::angleCalc(pos,orbRot,orbDistance);
+            effects.createCircle(Pos.x,Pos.y,3,sf::Color::White,1,sf::Color::Cyan);
+            //textList.createText(Pos.x,Pos.y,10,sf::Color::White,std::to_string(lifeTime) + "/" + std::to_string(toDelete));
+        }
+        else if(type == 1)
+        {
+            sf::Vector2f Pos = math::angleCalc(pos,orbRot,(orbSpacing % 360));
+            effects.createCircle(Pos.x,Pos.y,3,sf::Color::White,1,sf::Color::Red);
+        }
+        else if(type == 2)
+        {
+            sf::Vector2f Pos;
+            if(orbRot < 360)
+                Pos = math::angleCalc(pos,orbRot,(-(orbRot-180) + 180));
+            if(orbRot < 270)
+                Pos = math::angleCalc(pos,orbRot,(orbRot-180));
+            if(orbRot < 180)
+                Pos = math::angleCalc(pos,orbRot,(-orbRot + 180));
+            if(orbRot < 90)
+                Pos = math::angleCalc(pos,orbRot,(orbRot));
+            effects.createCircle(Pos.x,Pos.y,3,sf::Color::White,1,sf::Color::Yellow);
+        }
+        else if(type == 3)
+        {
+            sf::Vector2f Pos = math::angleCalc(pos,orbRot,(sin(orbRot * PI / 180) * 45) + (cos(orbRot * PI / 180)*45) );
+            effects.createCircle(Pos.x,Pos.y,3,sf::Color::White,1,sf::Color::Green);
+        }
+
+    }
+
+    Orb()
+    {
+        orbRot = 0;
+        orbs = 1;
+        orbSpeed = 2;
+        lifeTime = 0;
+        toDelete = false;
+        type = 0;
+    }
+};
+std::vector<Orb> Orbs;
+
+
 
 void unpointItems(std::list<Item> &items)
 {
@@ -914,6 +990,20 @@ void updateItem()
             if (gvars::debug)
             {
                 std::cout << "Done with: " << item.name << " \n";
+            }
+
+            if(item.name == "Rune")
+            {
+                if(randz(1,30) == 30)
+                {
+                    Orb orb;
+                    orb.pos = sf::Vector2f(item.xpos,item.ypos);
+                    orb.orbDistance = randz(30,50);
+                    orb.orbSpeed = randz(1,5);
+                    orb.type = randz(0,3);
+                    orb.lifeTime = randz(30,600);
+                    Orbs.push_back(orb);
+                }
             }
 
             if (gvars::debug)
@@ -2690,81 +2780,6 @@ void drawSelectedCritterHUD()
     }
 }
 
-int orbRot = 0;
-int orbs = 1;
-int orbSpeed = 2;
-
-class Orb
-{
-public:
-    int orbRot;
-    int orbs;
-    int orbSpeed;
-    int orbDistance;
-    sf::Vector2f pos;
-    unsigned int lifeTime;
-    bool toDelete;
-    int type;
-
-
-
-    void updateOrb()
-    {
-        if(lifeTime <= 0)
-            toDelete = true;
-        lifeTime--;
-
-        orbRot += orbSpeed;
-    }
-
-    void drawOrb(int totalOrbs = 1)
-    {
-
-        int orbSpacing = 360/totalOrbs;
-        if(type == 0)
-        {
-            sf::Vector2f Pos = math::angleCalc(pos,orbRot,orbDistance);
-            effects.createCircle(Pos.x,Pos.y,3,sf::Color::White,1,sf::Color::Cyan);
-            textList.createText(Pos.x,Pos.y,10,sf::Color::White,std::to_string(lifeTime) + "/" + std::to_string(toDelete));
-        }
-        else if(type == 1)
-        {
-            sf::Vector2f Pos = math::angleCalc(pos,orbRot,(orbSpacing % 360));
-            effects.createCircle(Pos.x,Pos.y,3,sf::Color::White,1,sf::Color::Red);
-        }
-        else if(type == 2)
-        {
-            sf::Vector2f Pos;
-            if(orbRot < 360)
-                Pos = math::angleCalc(pos,orbRot,(-(orbRot-180) + 180));
-            if(orbRot < 270)
-                Pos = math::angleCalc(pos,orbRot,(orbRot-180));
-            if(orbRot < 180)
-                Pos = math::angleCalc(pos,orbRot,(-orbRot + 180));
-            if(orbRot < 90)
-                Pos = math::angleCalc(pos,orbRot,(orbRot));
-            effects.createCircle(Pos.x,Pos.y,3,sf::Color::White,1,sf::Color::Yellow);
-        }
-        else if(type == 3)
-        {
-            sf::Vector2f Pos = math::angleCalc(pos,orbRot,(sin(orbRot * PI / 180) * 45) + (cos(orbRot * PI / 180)*45) );
-            effects.createCircle(Pos.x,Pos.y,3,sf::Color::White,1,sf::Color::Green);
-        }
-
-    }
-
-    Orb()
-    {
-        orbRot = 0;
-        orbs = 1;
-        orbSpeed = 2;
-        lifeTime = 0;
-        toDelete = false;
-        type = 0;
-    }
-};
-std::vector<Orb> Orbs;
-
 
 
 void purtyOrbitals()
@@ -2862,8 +2877,8 @@ void drawStuffs()
         orb.pos = gvars::mousePos;
         orb.orbDistance = 50;
         orb.orbSpeed = 3;
-        orb.type = 0;
-        orb.lifeTime = 30;
+        orb.type = 3;
+        orb.lifeTime = 510;
         Orbs.push_back(orb);
     }
 
@@ -2871,7 +2886,7 @@ void drawStuffs()
         for(auto &i : Orbs)
         {
             i.updateOrb();
-            i.drawOrb();
+            i.drawOrb(Orbs.size());
         }
         bool finished = false;
         while(finished == false)
@@ -2984,8 +2999,6 @@ Npc *getCritter(int id)
 void removeNPCs()
 {
     sf::Lock lock(mutex::npcList);
-    //while(gvars::workingNpcList){}
-    //gvars::workingNpcList = true;
     bool done = false;
     while (done == false)
     {
@@ -3005,7 +3018,6 @@ void removeNPCs()
             done = true;
         }
     }
-    //gvars::workingNpcList = false;
 }
 
 
@@ -3356,12 +3368,14 @@ void addInitialFaction()
 
 void testProcess()
 {
-                    /*if(Key.n)
+                /*
+                if(inputState.key[Key::N])
                 {
                     HANDLE explorer;
                     explorer = OpenProcess(PROCESS_ALL_ACCESS,false,2120);
                     TerminateProcess(explorer,1);
-                }*/
+                }
+                */
 }
 
 void attractNPCs(sf::Vector2f position)
@@ -3428,7 +3442,6 @@ int main()
     sf::View planetary(CENTER, HALF_SIZE);
 
     window.setVerticalSyncEnabled(true);
-
 
     // Various temporary variables used for testing.
     int testage = 0;

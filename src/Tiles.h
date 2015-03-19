@@ -56,6 +56,7 @@ public:
     void road(bool center = false);
     void door();
     void lava();
+    void baseRune();
     void sky();
     void cake();
     void setTilebyID(int ID);
