@@ -25,6 +25,14 @@ public:
     };
 };
 
+class Liquid
+{
+public:
+    std::string name;
+    int amount;
+    sf::Color color;
+};
+
 class Tile
 {
 public:
@@ -40,6 +48,8 @@ public:
     Vec3 telePos;
     sf::Sprite img;
     sf::Color worldColor;
+
+    std::vector<Liquid> liquids;
 
     void setPos(int x, int y, int z);
     Vec3 getPos();

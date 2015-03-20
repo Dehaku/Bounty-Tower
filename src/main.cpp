@@ -2856,11 +2856,42 @@ void drawStuffs()
     }
 
 
+    for(int x = 0; x != GRIDS; x++)
+        for(int y = 0; y != GRIDS; y++)
+    {
+        if(!tiles[x][y][30].liquids.empty())
+        {
+            int liqAmt = tiles[x][y][30].liquids[0].amount;
+            std::string liqName = tiles[x][y][30].liquids[0].name;
+            sf::Color liqClr = tiles[x][y][30].liquids[0].color;
+            liqClr.a = 100;
+            effects.createSquare(x*20,y*20,(x+1)*20,(y+1)*20,liqClr);
+            liqClr.a = 255;
+            textList.createText(x*20+10,y*20+10,10,liqClr,std::to_string(liqAmt));
+        }
+    }
+
+    if(inputState.key[Key::L].time == 1)
+        for(int x = 0; x != GRIDS; x++)
+            for(int y = 0; y != GRIDS; y++)
+    {
+        if(tiles[x][y][30].liquids.empty())
+        {
+            Liquid liq;
+            liq.amount = randz(1,10);
+            liq.name = "Water";
+            liq.color = sf::Color::Blue;
+            tiles[x][y][30].liquids.push_back(liq);
+        }
+    }
+
     {
         sf::Lock lock(mutex::npcList);
         drawSelectedCritterHUD();
         drawNPCs();
     }
+
+
 
 
     drawJobList(window.getView().getCenter().x - 500,
@@ -3411,6 +3442,8 @@ int main()
     /* Perhaps have both Upstairs and Downstairs as the same thing? would this work? How to deal with the 'recieving' position.
             I.E. What if there's a staircase that leads up, but on the upper level, there's a wall where the stairs lead.*/
     /* 0 = open, 1 = wall, 2 = upstairs, 3 = downstairs */
+
+    std::cout << "size: " << sizeof(Tile) << std::endl;
 
     buildMicroPatherTest();
 
