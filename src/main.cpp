@@ -769,6 +769,47 @@ std::string getClipboardText()
 // Create the main rendering window
 sf::RenderWindow window;
 
+
+
+class Blob
+{
+public:
+    int sizeX;
+    int sizeY;
+    int sizeZ;
+    std::vector<std::vector<std::vector<Tile>>> tiles;
+
+    void resizeGrid(int x, int y, int z)
+    {
+        tiles.resize(x);
+
+        for(int i = 0; i != x; i++)
+        {
+            tiles.at(i).resize(y);
+        }
+        for(int i = 0; i != x; i++)
+        {
+            for(int t = 0; t != y; t++)
+                tiles.at(i).at(t).resize(z);
+        }
+        sizeX = x;
+        sizeY = y;
+        sizeZ = z;
+    }
+
+    Blob()
+    {
+        sizeX = 0;
+        sizeY = 0;
+        sizeZ = 0;
+    }
+};
+
+
+
+
+
+
 int orbRot = 0;
 int orbs = 1;
 int orbSpeed = 2;
@@ -2834,6 +2875,61 @@ void purtyOrbitals()
     }
 }
 
+void processLiquid()
+{
+    for(int x = 0; x != GRIDS; x++)
+        for(int y = 0; y != GRIDS; y++)
+            for(int z = 0; z != CHUNK_SIZE; z++)
+    {
+        if(!tiles[x][y][z].liquids.empty())
+        {
+            for(int l = 0; l != tiles[x][y][z].liquids.size(); l++)
+            {
+                int liqAmt = tiles[x][y][z].liquids[l].amount;
+                std::string liqName = tiles[x][y][z].liquids[l].name;
+
+
+                Tile * NW = &tiles[x-1][y-1][z];
+                Tile * N  = &tiles[x-1][y][z];
+                Tile * NE = &tiles[x-1][y+1][z];
+                Tile * E  = &tiles[x][y+1][z];
+                Tile * SE = &tiles[x+1][y+1][z];
+                Tile * S  = &tiles[x+1][y][z];
+                Tile * SW = &tiles[x+1][y-1][z];
+                Tile * W  = &tiles[x][y-1][z];
+                Tile * C  = &tiles[x][y][z];
+                Tile * U  = &tiles[x][y][z+1];
+                Tile * D  = &tiles[x][y][z-1];
+
+
+
+                /*
+                float NWv = *NW;
+                float Nv = *N;
+                float NEv = *NE;
+                float Ev = *E;
+                float SEv = *SE;
+                float Sv = *S;
+                float SWv = *SW;
+                float Wv = *W;
+                float Cv = *C;
+                float TotalLiquid = NWv+Nv+NEv+Ev+SEv+Sv+SWv+Wv+Cv;
+
+                *NW = TotalLiquid/9;
+                *N = TotalLiquid/9;
+                *NE = TotalLiquid/9;
+                *E = TotalLiquid/9;
+                *SE = TotalLiquid/9;
+                *S = TotalLiquid/9;
+                *SW = TotalLiquid/9;
+                *W = TotalLiquid/9;
+                *C = TotalLiquid/9;
+                */
+            }
+        }
+    }
+}
+
 void drawStuffs()
 {
     textList.createText(15,15,10,sf::Color::White,"Server Port: " + std::to_string(network::mainPort));
@@ -2855,6 +2951,7 @@ void drawStuffs()
         drawItems();
     }
 
+    //processLiquid();
 
     for(int x = 0; x != GRIDS; x++)
         for(int y = 0; y != GRIDS; y++)
@@ -2865,9 +2962,13 @@ void drawStuffs()
             std::string liqName = tiles[x][y][30].liquids[0].name;
             sf::Color liqClr = tiles[x][y][30].liquids[0].color;
             liqClr.a = 100;
-            effects.createSquare(x*20,y*20,(x+1)*20,(y+1)*20,liqClr);
-            liqClr.a = 255;
-            textList.createText(x*20+10,y*20+10,10,liqClr,std::to_string(liqAmt));
+
+            if(math::closeish(x*20,y*20,gvars::mousePos.x,gvars::mousePos.y) <= 100)
+            {
+                effects.createSquare(x*20,y*20,(x+1)*20,(y+1)*20,liqClr);
+                liqClr.a = 255;
+                textList.createText(x*20+10,y*20+10,10,liqClr,std::to_string(liqAmt));
+            }
         }
     }
 
@@ -3438,13 +3539,6 @@ void attractNPCs(sf::Vector2f position)
 int main()
 {
     srand(clock());
-    //srand(80085);
-    /* Perhaps have both Upstairs and Downstairs as the same thing? would this work? How to deal with the 'recieving' position.
-            I.E. What if there's a staircase that leads up, but on the upper level, there's a wall where the stairs lead.*/
-    /* 0 = open, 1 = wall, 2 = upstairs, 3 = downstairs */
-
-    std::cout << "size: " << sizeof(Tile) << std::endl;
-
     buildMicroPatherTest();
 
     network::mainPort = randz(23636,65511);
@@ -3515,8 +3609,59 @@ int main()
     // For A*
     astar::init();
 
+
+
+    Blob blob;
+
+    blob.resizeGrid(7,3,5);
+
+    blob.tiles[1][1][0].dirt();
+    blob.tiles[2][0][2].stoneWall();
+
+    for(int z = 0; z != blob.sizeZ; z++)
+    {
+        std::cout << " v====v \n";
+        for(int x = 0; x != blob.sizeX; x++)
+        {
+            for(int y = 0; y != blob.sizeY; y++)
+            {
+                std::cout << blob.tiles[x][y][z].id << ",";
+            }
+            std::cout << std::endl;
+        }
+        std::cout << " ^====^ \n";
+    }
+    std::cout << " v====v \n";
+
+
+
+
+
+    //blob.tiles[0][0][0].push_back(tile);
+
+
+
+
+
     while (window.isOpen())
     {
+
+        if(inputState.key[Key::Z])
+        {
+            for(int x = 0; x != blob.sizeX; x++)
+            {
+                for(int y = 0; y != blob.sizeY; y++)
+                {
+                    if(blob.tiles[x][y][2].id == 0)
+                        effects.createCircle(x*20+20,y*20+20,5,sf::Color::Red);
+                    else
+                        effects.createCircle(x*20+20,y*20+20,5,sf::Color::Blue);
+                }
+            }
+        }
+        if(inputState.key[Key::X].time == 1)
+            blob.resizeGrid(7,7,7);
+
         if(network::servWait == false)
         {
             std::cout << "Launching Server \n";
