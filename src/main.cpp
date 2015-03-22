@@ -408,7 +408,7 @@ public:
     int Passable(int nx, int ny, int nz)
     {
         if (nx >= 0 && nx < GRIDS && ny >= 0 && ny < GRIDS &&
-            nz >= 0 && nz < GRIDS)
+            nz >= 0 && nz < CHUNK_SIZE)
         {
 
             if (tiles[nx][ny][nz].goesDown && tiles[nx][ny][nz].goesUp)
@@ -3536,7 +3536,7 @@ void attractNPCs(sf::Vector2f position)
 
 }
 
-/*
+
 void resizeGrid(int x, int y, int z)
 {
     tiles.resize(x);
@@ -3551,7 +3551,7 @@ void resizeGrid(int x, int y, int z)
             tiles.at(i).at(t).resize(z);
     }
 }
-*/
+
 
 int main()
 {
@@ -3571,7 +3571,7 @@ int main()
     sf::Thread TcpServerThread(&runTcpServer, network::mainPort);
     sf::Thread TcpClientThread(&runTcpClient, network::mainPort+23);
 
-    //resizeGrid(GRIDS,GRIDS,CHUNK_SIZE);
+    resizeGrid(GRIDS,GRIDS,CHUNK_SIZE);
 
     initializeTilePositions();
 
@@ -4205,7 +4205,7 @@ int main()
             } //Sprite.Move(0,  100 * ElapsedTime);
             if (inputState.key[Key::Comma] == true &&
                 inputState.key[Key::LShift] == true &&
-                gvars::currentz <= GRIDS - 1)
+                gvars::currentz <= CHUNK_SIZE - 1)
             {
                 gvars::currentz++;
                 plyAct = true;
@@ -4220,7 +4220,7 @@ int main()
             } //Sprite.Move(0,  100 * ElapsedTime);
             if (inputState.key[Key::Comma] == true &&
                 inputState.key[Key::RShift] == true &&
-                gvars::currentz <= GRIDS - 1)
+                gvars::currentz <= CHUNK_SIZE - 1)
             {
                 gvars::currentz++;
                 plyAct = true;

@@ -11,8 +11,8 @@
 #include <fstream>
 #include <iostream>
 
-Tile tiles[GRIDS][GRIDS][CHUNK_SIZE];
-//std::vector<std::vector<std::vector<Tile>>> tiles;
+//Tile tiles[GRIDS][GRIDS][CHUNK_SIZE];
+std::vector<std::vector<std::vector<Tile>>> tiles;
 WorldTile worldMap[100][100];
 Tile vChunk[CHUNK_SIZE][CHUNK_SIZE][CHUNK_SIZE]; // 10223616
 Tile tempTile[GRIDS][GRIDS][CHUNK_SIZE];
@@ -759,7 +759,7 @@ void tilesGoUp()
     {
         for (int t = 0; t != GRIDS; t++)
         {
-            for (int x = 0; x != GRIDS; x++)
+            for (int x = 0; x != CHUNK_SIZE; x++)
             {
                 tempTile[i][t][x] = tiles[i][t][x];
             }
@@ -828,7 +828,7 @@ void tilesGoDown()
     {
         for (int t = 0; t != GRIDS; t++)
         {
-            for (int x = 0; x != GRIDS; x++)
+            for (int x = 0; x != CHUNK_SIZE; x++)
             {
                 tempTile[i][t][x] = tiles[i][t][x];
             }
@@ -901,7 +901,7 @@ void tilesGoLeft()
     {
         for (int t = 0; t != GRIDS; t++)
         {
-            for (int x = 0; x != GRIDS; x++)
+            for (int x = 0; x != CHUNK_SIZE; x++)
             {
                 tempTile[i][t][x] = tiles[i][t][x];
             }
@@ -975,7 +975,7 @@ void tilesGoRight()
     {
         for (int t = 0; t != GRIDS; t++)
         {
-            for (int x = 0; x != GRIDS; x++)
+            for (int x = 0; x != CHUNK_SIZE; x++)
             {
                 tempTile[i][t][x] = tiles[i][t][x];
             }

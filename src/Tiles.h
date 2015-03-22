@@ -125,8 +125,8 @@ public:
     WorldTile();
 };
 
-extern Tile tiles[GRIDS][GRIDS][CHUNK_SIZE];
-//extern std::vector<std::vector<std::vector<Tile>>> tiles;
+//extern Tile tiles[GRIDS][GRIDS][CHUNK_SIZE];
+extern std::vector<std::vector<std::vector<Tile>>> tiles;
 
 extern WorldTile worldMap[100][100];
 

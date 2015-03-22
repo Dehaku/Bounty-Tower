@@ -741,15 +741,12 @@ void menuPopUp()
                     con("Hunting for Trees 4");
                     for (int i = 0; i != 8; i++)
                     {
-                        int Tx = randz(50, 1950);
-                        int Ty = randz(50, 1950);
+                        int Tx = randz(50, 1870);
+                        int Ty = randz(50, 1870);
                         con(Tx, false);
                         con(":", false);
                         con(Ty, false);
-                        if (tiles[abs_to_index(Tx / 20)][abs_to_index(
-                                Ty / 20)][30].id == 1001 ||
-                            tiles[abs_to_index(Tx / 20)][abs_to_index(
-                                Ty / 20)][30].id == 1003)
+                        if (tiles[abs_to_index(Tx / 20)][abs_to_index(Ty / 20)][30].id == 1001 || tiles[abs_to_index(Tx / 20)][abs_to_index( Ty / 20)][30].id == 1003)
                         {
                             con(", Is Plantable.");
                             spawnItem("Fruit Tree", Tx, Ty);
