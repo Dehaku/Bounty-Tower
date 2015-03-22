@@ -11,10 +11,11 @@
 #include <fstream>
 #include <iostream>
 
-Tile tiles[GRIDS][GRIDS][GRIDS];
+Tile tiles[GRIDS][GRIDS][CHUNK_SIZE];
+//std::vector<std::vector<std::vector<Tile>>> tiles;
 WorldTile worldMap[100][100];
 Tile vChunk[CHUNK_SIZE][CHUNK_SIZE][CHUNK_SIZE]; // 10223616
-Tile tempTile[GRIDS][GRIDS][GRIDS];
+Tile tempTile[GRIDS][GRIDS][CHUNK_SIZE];
 XTile xChunk[CHUNK_SIZE][CHUNK_SIZE][CHUNK_SIZE];
 
 extern sf::RenderWindow window;

@@ -3536,6 +3536,23 @@ void attractNPCs(sf::Vector2f position)
 
 }
 
+/*
+void resizeGrid(int x, int y, int z)
+{
+    tiles.resize(x);
+
+    for(int i = 0; i != x; i++)
+    {
+        tiles.at(i).resize(y);
+    }
+    for(int i = 0; i != x; i++)
+    {
+        for(int t = 0; t != y; t++)
+            tiles.at(i).at(t).resize(z);
+    }
+}
+*/
+
 int main()
 {
     srand(clock());
@@ -3547,11 +3564,14 @@ int main()
     {
         std::cout << "ServListen Error? \n";
     }
-    std::cout << "Server is listening to port " << network::mainPort << ", waiting for connections... " << std::endl;
+    else
+        std::cout << "Server is listening to port " << network::mainPort << ", waiting for connections... " << std::endl;
     selector.add(servListener);
 
     sf::Thread TcpServerThread(&runTcpServer, network::mainPort);
     sf::Thread TcpClientThread(&runTcpClient, network::mainPort+23);
+
+    //resizeGrid(GRIDS,GRIDS,CHUNK_SIZE);
 
     initializeTilePositions();
 
@@ -3634,15 +3654,6 @@ int main()
     std::cout << " v====v \n";
 
 
-
-
-
-    //blob.tiles[0][0][0].push_back(tile);
-
-
-
-
-
     while (window.isOpen())
     {
 
@@ -3664,14 +3675,13 @@ int main()
 
         if(network::servWait == false)
         {
-            std::cout << "Launching Server \n";
+            debug("Launching Server");
             TcpServerThread.launch();
             network::servWait = true;
         }
         if(network::cliWait == false)
         {
-            if(gvars::debug)
-                std::cout << "Launching Client \n";
+            debug("Launching Client");
             TcpClientThread.launch();
             network::cliWait = true;
         }

@@ -125,12 +125,13 @@ public:
     WorldTile();
 };
 
-extern Tile tiles[GRIDS][GRIDS][GRIDS];
+extern Tile tiles[GRIDS][GRIDS][CHUNK_SIZE];
+//extern std::vector<std::vector<std::vector<Tile>>> tiles;
 
 extern WorldTile worldMap[100][100];
 
 extern Tile vChunk[CHUNK_SIZE][CHUNK_SIZE][CHUNK_SIZE]; // 10223616
-extern Tile tempTile[GRIDS][GRIDS][GRIDS];
+extern Tile tempTile[GRIDS][GRIDS][CHUNK_SIZE];
 extern XTile xChunk[CHUNK_SIZE][CHUNK_SIZE][CHUNK_SIZE];
 
 void zGenerateChunk(std::string type, int planet, sf::Vector2i cords,
