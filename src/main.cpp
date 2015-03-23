@@ -3239,7 +3239,7 @@ void drawStuffs()
     }
 
     //processLiquid();
-
+    /*
     for(int x = 0; x != GRIDS; x++)
         for(int y = 0; y != GRIDS; y++)
     {
@@ -3258,7 +3258,9 @@ void drawStuffs()
             }
         }
     }
+    */
 
+    /*
     if(inputState.key[Key::L].time == 1)
         for(int x = 0; x != GRIDS; x++)
             for(int y = 0; y != GRIDS; y++)
@@ -3272,6 +3274,7 @@ void drawStuffs()
             tiles[x][y][30].liquids.push_back(liq);
         }
     }
+    */
 
     {
         sf::Lock lock(mutex::npcList);
@@ -3289,7 +3292,8 @@ void drawStuffs()
     displayChat(sf::Vector2f(gvars::bottomLeft.x + 5, gvars::bottomLeft.y - 5));
     debug("Drew Chat");
 
-    purtyOrbitals();
+    //purtyOrbitals();
+
     if(inputState.key[Key::F].time == 1)
     {
         Orb orb;
@@ -3819,8 +3823,6 @@ void attractNPCs(sf::Vector2f position)
         npc.momentum += Alter;
     }
     }
-
-
 }
 
 
@@ -3852,8 +3854,11 @@ int main()
     {
         std::cout << "ServListen Error? \n";
     }
+
+    /*
     else
         std::cout << "Server is listening to port " << network::mainPort << ", waiting for connections... " << std::endl;
+        */
     selector.add(servListener);
 
     sf::Thread TcpServerThread(&runTcpServer, network::mainPort);
@@ -3917,58 +3922,12 @@ int main()
     // For A*
     astar::init();
 
-
-
-    Blob blob;
-
-    blob.resizeGrid(7,3,5);
-
-    blob.tiles[1][1][0].dirt();
-    blob.tiles[2][0][2].stoneWall();
-
-    for(int z = 0; z != blob.sizeZ; z++)
-    {
-        std::cout << " v====v \n";
-        for(int x = 0; x != blob.sizeX; x++)
-        {
-            for(int y = 0; y != blob.sizeY; y++)
-            {
-                std::cout << blob.tiles[x][y][z].id << ",";
-            }
-            std::cout << std::endl;
-        }
-        std::cout << " ^====^ \n";
-    }
-    std::cout << " v====v \n";
-
-    UnyTiles.makeTest();
-
-
-
-
-
+    //UnyTiles.makeTest();
 
     while (window.isOpen())
     {
 
         UnyTiles.drawTiles();
-
-
-        if(inputState.key[Key::Z])
-        {
-            for(int x = 0; x != blob.sizeX; x++)
-            {
-                for(int y = 0; y != blob.sizeY; y++)
-                {
-                    if(blob.tiles[x][y][2].id == 0)
-                        effects.createCircle(x*20+20,y*20+20,5,sf::Color::Red);
-                    else
-                        effects.createCircle(x*20+20,y*20+20,5,sf::Color::Blue);
-                }
-            }
-        }
-        if(inputState.key[Key::X].time == 1)
-            blob.resizeGrid(7,7,7);
 
         if(network::servWait == false)
         {
