@@ -412,5 +412,6 @@ std::string loadCritters(sf::Vector2i worldPos, std::string direction,
                          int planet = 500);
 void boom(int xpos, int ypos, int damage, int size);
 void squadHud();
+void removeNPCs(std::list<Npc> &NPCLIST, sf::Mutex &npcmutex);
 
 #endif // FACTION_H_INCLUDED

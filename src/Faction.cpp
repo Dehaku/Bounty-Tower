@@ -1966,6 +1966,8 @@ Npc *getGlobalCritter(std::string strtype)
     return nullptr;
 }
 
+
+
 void spawnCritter(std::string object, int xpos, int ypos, int zpos)
 {
     if (gvars::debug)
@@ -2264,6 +2266,30 @@ void squadHud()
     catch (std::exception &e)
     {
         std::cout << "\n \n Something went wrong in SquadHud \n \n";
+    }
+}
+
+void removeNPCs(std::list<Npc> &NPCLIST, sf::Mutex &npcmutex)
+{
+    sf::Lock lock(npcmutex);
+    bool done = false;
+    while (done == false)
+    {
+        bool yet = false;
+        for (auto it = NPCLIST.begin(); it != NPCLIST.end(); ++it)
+        {
+            if (it->toDelete)
+            {
+                std::cout << it->name << " to be deleted. \n";
+                NPCLIST.erase(it);
+                yet = true;
+                break;
+            }
+        }
+        if (yet == false)
+        {
+            done = true;
+        }
     }
 }
 

@@ -2947,8 +2947,6 @@ void displayChat(sf::Vector2f position)
 
 }
 
-
-
 void drawSelectedCritterHUD()
 {
     if (gvars::myTarget != -1 && myTargetPtr != nullptr)
@@ -3107,8 +3105,6 @@ void drawSelectedCritterHUD()
         }
     }
 }
-
-
 
 void purtyOrbitals()
 {
@@ -3419,29 +3415,6 @@ Npc *getCritter(int id)
     return nullptr;
 }
 
-void removeNPCs()
-{
-    sf::Lock lock(mutex::npcList);
-    bool done = false;
-    while (done == false)
-    {
-        bool yet = false;
-        for (auto it = npclist.begin(); it != npclist.end(); ++it)
-        {
-            if (it->toDelete)
-            {
-                std::cout << it->name << " to be deleted. \n";
-                npclist.erase(it);
-                yet = true;
-                break;
-            }
-        }
-        if (yet == false)
-        {
-            done = true;
-        }
-    }
-}
 
 
 void buildMicroPatherTest()
@@ -3472,8 +3445,6 @@ void buildMicroPatherTest()
     grid[0][0][0].type = 0;
     grid[worldSizeX - 1][worldSizeY - 1][worldSizeZ - 1].type = 0;
 }
-
-
 
 void selectedNPCprocess()
 {
@@ -3786,8 +3757,6 @@ void addInitialFaction()
     conFact = &listAt(uniFact,0);
 }
 
-
-
 void testProcess()
 {
                 /*
@@ -3823,7 +3792,6 @@ void attractNPCs(sf::Vector2f position)
     }
     }
 }
-
 
 void resizeGrid(int x, int y, int z)
 {
@@ -4696,7 +4664,7 @@ void handlePhase()
 
                 }
 
-                removeNPCs();
+                removeNPCs(npclist, mutex::npcList);
 
 
                 offloadItems();
@@ -5689,7 +5657,7 @@ int main()
         debug("Post Draw Stuffs");
 
         debug("Starting Removing process, NPC/Unpoint/Items/GC.Menu");
-        removeNPCs();
+        removeNPCs(npclist, mutex::npcList);
         unpointItems(worlditems);
         removeItems(worlditems);
         cleanMenu();
