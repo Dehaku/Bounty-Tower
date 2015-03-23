@@ -3845,6 +3845,7 @@ int main()
     srand(clock());
     buildMicroPatherTest();
 
+
     network::mainPort = randz(23636,65511);
 
     if (servListener.listen(network::mainPort) != sf::Socket::Done)
