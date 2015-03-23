@@ -5653,8 +5653,8 @@ int main()
     itemmanager.initializeItems();
     npcmanager.initializeCritters();
 
-    galaxySetup();
     bountyTowerSetup();
+    galaxySetup();
 
     window.create(sf::VideoMode(RESOLUTION.x, RESOLUTION.y, 32), randomWindowName());
     window.setVerticalSyncEnabled(true);
@@ -5674,7 +5674,7 @@ int main()
         handleEvents();
 
         genericLoop();
-        //galaxyLoop();
+        galaxyLoop();
 
         handlePhase();
 
