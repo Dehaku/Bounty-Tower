@@ -1,16 +1,18 @@
 #include "globalvars.h"
 
 #include <iostream>
+#include "InputState.h"
+#include "Networking.h"
 
 void debug(std::string info, bool endline)
 {
+
     if (gvars::debug)
     {
         std::cout << info;
         if(endline)
             std::cout << std::endl;
     }
-
 }
 
 float cz(float number)
