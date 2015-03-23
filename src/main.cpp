@@ -975,7 +975,7 @@ public:
 
     void drawTiles()
     {
-        int TiSi = 40; // TileSize
+        int TiSi = GRID_SIZE; // TileSize
         int ReSi = 3*TiSi; // RegionSize, AKA Region Spacing
         for(auto &i : blobs)
         {
@@ -3841,10 +3841,64 @@ void resizeGrid(int x, int y, int z)
     }
 }
 
-
-int main()
+void cameraControls()
 {
-    srand(clock());
+    if (inputState.key[Key::Left])
+        gvars::currentx--;
+    if (inputState.key[Key::Right])
+        gvars::currentx++;
+    if (inputState.key[Key::Up])
+        gvars::currenty--;
+    if (inputState.key[Key::Down])
+        gvars::currenty++;
+    if (inputState.key[Key::LShift] && inputState.key[Key::Left])
+    {
+        gvars::currentx--;
+        gvars::currentx--;
+        gvars::currentx--;
+        gvars::currentx--;
+    }
+    if (inputState.key[Key::LShift] && inputState.key[Key::Right])
+    {
+        gvars::currentx++;
+        gvars::currentx++;
+        gvars::currentx++;
+        gvars::currentx++;
+    }
+    if (inputState.key[Key::LShift] && inputState.key[Key::Up])
+    {
+        gvars::currenty--;
+        gvars::currenty--;
+        gvars::currenty--;
+        gvars::currenty--;
+    }
+    if (inputState.key[Key::LShift] && inputState.key[Key::Down])
+    {
+        gvars::currenty++;
+        gvars::currenty++;
+        gvars::currenty++;
+        gvars::currenty++;
+    }
+}
+
+void bountyTowerLoop()
+{
+    cameraControls();
+    std::string stringy = std::to_string(gvars::mousePos.x) + "/" + std::to_string(gvars::mousePos.y);
+    textList.createText(gvars::mousePos.x,gvars::mousePos.y,15,sf::Color::Cyan,stringy);
+}
+
+void bountyTowerSetup()
+{
+    gvars::currentx = 4;
+    gvars::currenty = 2;
+    gCtrl.phase = "Lobby";
+    window.setFramerateLimit(30); // 0 is unlimited
+    UnyTiles.makeTest();
+}
+
+void galaxySetup()
+{
     buildMicroPatherTest();
 
 
@@ -3858,44 +3912,18 @@ int main()
     /*
     else
         std::cout << "Server is listening to port " << network::mainPort << ", waiting for connections... " << std::endl;
-        */
+    */
     selector.add(servListener);
 
-    sf::Thread TcpServerThread(&runTcpServer, network::mainPort);
-    sf::Thread TcpClientThread(&runTcpClient, network::mainPort+23);
 
     resizeGrid(GRIDS,GRIDS,CHUNK_SIZE);
 
     initializeTilePositions();
 
-    window.create(sf::VideoMode(RESOLUTION.x, RESOLUTION.y, 32),
-                  randomWindowName());
-
-    textList.loadFont();
-
-    bool paused = false;
-    //Debug = true;
-
-    bool plyAct = false;
     window.setFramerateLimit(30); // 0 is unlimited
 
-    sf::View planetary(CENTER, HALF_SIZE);
-
-    window.setVerticalSyncEnabled(true);
-
-    // Various temporary variables used for testing.
-    int testage = 0;
-    int testage2 = 0;
-    float xxx = 0;                      // global
-    float yyy = 0;                      // global
-    int speeds = 1;                     // global
-    int xanchor = 0;                    // global
-    int yanchor = 0;                    // global
-    float degrees = randz(.0f, 359.0f); // global
-    int radius = 200;
-
-
     gvars::view1.zoom(2);
+
     if (true == false)
     {   // TODO: Fix this icon crap.
         /*
@@ -3907,22 +3935,36 @@ int main()
         if (!Aim.LoadFromFile("gfx/Aim.tga"))return EXIT_FAILURE;
         */
     }
-
-    texturemanager.init();
-    itemmanager.initializeItems();
-    npcmanager.initializeCritters();
+    gCtrl.phase = "MainMenu";
 
     // Building the players faction, This is temporary.
     addInitialFaction();
 
-    // Setting the initial game phase.
-    gCtrl.phase = "MainMenu";
-    //gCtrl.phase = "MicroPatherTest";
+}
 
-    // For A*
-    astar::init();
+int main()
+{
+    srand(clock());
+    texturemanager.init();
+    itemmanager.initializeItems();
+    npcmanager.initializeCritters();
 
-    //UnyTiles.makeTest();
+    galaxySetup();
+    bountyTowerSetup();
+
+    sf::Thread TcpServerThread(&runTcpServer, network::mainPort);
+    sf::Thread TcpClientThread(&runTcpClient, network::mainPort+23);
+
+    window.create(sf::VideoMode(RESOLUTION.x, RESOLUTION.y, 32), randomWindowName());
+    window.setVerticalSyncEnabled(true);
+
+    textList.loadFont();
+
+    bool paused = false;
+    //Debug = true;
+    bool plyAct = false;
+
+
 
     while (window.isOpen())
     {
@@ -4294,6 +4336,11 @@ int main()
             }
         }
 
+        if(gCtrl.phase == "Lobby")
+        {
+            bountyTowerLoop();
+        }
+
         if (gCtrl.phase == "Local")
         { //=======================================================*Local*============================================================================
 
@@ -4349,6 +4396,11 @@ int main()
 
             squadHud();
 
+            if (gvars::initalZeds)
+                gCtrl.wave();
+
+            rightMouseButtonContextMenu();
+
             if(inputState.key[Key::V] && !network::chatting)
             {
                 for (int x = 0; x != GRIDS; x++)
@@ -4398,67 +4450,9 @@ int main()
                 menuPopUp();
             }
 
-            if (inputState.key[Key::Left])
-            {
-                gvars::currentx--;
-                plyAct = true;
-            }
-            if (inputState.key[Key::Right])
-            {
-                gvars::currentx++;
-                plyAct = true;
-            }
-            if (inputState.key[Key::Up])
-            {
-                gvars::currenty--;
-                plyAct = true;
-            }
-            if (inputState.key[Key::Down])
-            {
-                gvars::currenty++;
-                plyAct = true;
-            }
 
-            if (gvars::initalZeds)
-                gCtrl.wave();
+            cameraControls();
 
-            rightMouseButtonContextMenu();
-
-            if (inputState.key[Key::LShift] == true &&
-                inputState.key[Key::Left])
-            {
-                gvars::currentx--;
-                gvars::currentx--;
-                gvars::currentx--;
-                gvars::currentx--;
-                plyAct = true;
-            } //Sprite.Move(-100 * ElapsedTime, 0);
-            if (inputState.key[Key::LShift] == true &&
-                inputState.key[Key::Right])
-            {
-                gvars::currentx++;
-                gvars::currentx++;
-                gvars::currentx++;
-                gvars::currentx++;
-                plyAct = true;
-            } //Sprite.Move( 100 * ElapsedTime, 0);
-            if (inputState.key[Key::LShift] == true && inputState.key[Key::Up])
-            {
-                gvars::currenty--;
-                gvars::currenty--;
-                gvars::currenty--;
-                gvars::currenty--;
-                plyAct = true;
-            } //Sprite.Move(0, -100 * ElapsedTime);
-            if (inputState.key[Key::LShift] == true &&
-                inputState.key[Key::Down])
-            {
-                gvars::currenty++;
-                gvars::currenty++;
-                gvars::currenty++;
-                gvars::currenty++;
-                plyAct = true;
-            } //Sprite.Move(0,  100 * ElapsedTime);
             if (inputState.key[Key::Comma] == true &&
                 inputState.key[Key::LShift] == true &&
                 gvars::currentz <= CHUNK_SIZE - 1)
@@ -4769,283 +4763,7 @@ int main()
                 gCtrl.menuPos = math::Vec2f(-10000, -10000);
             }
         } //=============================================================================*End of Local*========================================================================
-        if (gCtrl.phase == "Solar")
-        { //=======================================================*Solar*============================================================================
-            if (inputState.key[Key::LShift])
-            {
-                /*std::vector<planet>::iterator Me;
-                for(Me = Planets.begin(); Me != Planets.end(); ++Me )
-                {
-                    std::cout<<"Position: X:"<<Me->Pos.x<<" Y:"<<Me->Pos.y<<std::endl;
-                    std::cout<<"Speed: X:"<<Me->speed.x<<" Y:"<<Me->speed.y<<std::endl;
-                }*/
-            }
 
-            // TODO: Fix Later if(Key.LMB && Key.lctrl){ GC.CreatePlanet(MousePos.x,MousePos.y,randz(10,200));sf::Sleep(0.1);}
-            // TODO: Fix Later            if(Key.RMB && Key.lctrl){ Planets.pop_back(); sf::Sleep(1); }
-            // TODO: Fix Laterif(Key.r && Key.lctrl){ Planets.clear(); sf::Sleep(1); }
-            // TODO: Fix Laterif(Key.q){aim--; std::cout << aim << std::endl; sf::Sleep(0.2);}
-            // TODO: Fix Laterif(Key.e){aim++; std::cout << aim << std::endl; sf::Sleep(0.2);}
-
-            if (inputState.key[Key::Left])
-            {
-                gvars::currentx--;
-                plyAct = true;
-            }
-            if (inputState.key[Key::Right])
-            {
-                gvars::currentx++;
-                plyAct = true;
-            }
-            if (inputState.key[Key::Up])
-            {
-                gvars::currenty--;
-                plyAct = true;
-            }
-            if (inputState.key[Key::Down])
-            {
-                gvars::currenty++;
-                plyAct = true;
-            }
-            if (inputState.key[Key::LShift] == true &&
-                inputState.key[Key::Left])
-            {
-                gvars::currentx--;
-                gvars::currentx--;
-                gvars::currentx--;
-                gvars::currentx--;
-                plyAct = true;
-            } //Sprite.Move(-100 * ElapsedTime, 0);
-            if (inputState.key[Key::LShift] == true &&
-                inputState.key[Key::Right])
-            {
-                gvars::currentx++;
-                gvars::currentx++;
-                gvars::currentx++;
-                gvars::currentx++;
-                plyAct = true;
-            } //Sprite.Move( 100 * ElapsedTime, 0);
-            if (inputState.key[Key::LShift] == true && inputState.key[Key::Up])
-            {
-                gvars::currenty--;
-                gvars::currenty--;
-                gvars::currenty--;
-                gvars::currenty--;
-                plyAct = true;
-            } //Sprite.Move(0, -100 * ElapsedTime);
-            if (inputState.key[Key::LShift] == true &&
-                inputState.key[Key::Down])
-            {
-                gvars::currenty++;
-                gvars::currenty++;
-                gvars::currenty++;
-                gvars::currenty++;
-                plyAct = true;
-            } //Sprite.Move(0,  100 * ElapsedTime);
-
-        } //=============================================================================*End of Solar*========================================================================
-        if (gCtrl.phase == "Test")
-        {
-            if (inputState.key[Key::Up])
-                testage++;
-            if (inputState.key[Key::Down])
-                testage--;
-            if (inputState.key[Key::Right])
-                testage2++;
-            if (inputState.key[Key::Left])
-                testage2--;
-            if (inputState.key[Key::Numpad2])
-                radius++;
-            if (inputState.key[Key::Numpad8])
-                radius--;
-
-            if (gvars::currenty >
-                64) // TODO: Make the auto removing tiles use the current windows border to get it's range, Allowing proper resizing and stuffs. Edit: Herp, That's not what this is.
-            {
-                tilesGoUp();
-                gvars::currenty = 33;
-            }
-            if (gvars::currenty < 32)
-            {
-                tilesGoDown();
-                gvars::currenty = 63;
-            }
-            if (gvars::currentx > 64)
-            {
-                tilesGoLeft();
-                gvars::currentx = 33;
-            }
-            if (gvars::currentx < 32)
-            {
-                tilesGoRight();
-                gvars::currentx = 63;
-            }
-
-            if (inputState.key[Key::G])
-                initalizeWorldTiles();
-            //DrawNewTiles();
-
-            drawWorldTiles();
-            if (inputState.key[Key::J])
-                tilesGoUp();
-            if (inputState.key[Key::K])
-                tilesRandom();
-
-            if (inputState.key[Key::M])
-            {
-                std::set<int> setage;
-                setage.insert(1);
-                setage.insert(1);
-                setage.insert(4);
-                setage.insert(2);
-                setage.insert(1);
-                setage.insert(3);
-                for (const auto &elem : setage)
-                {
-                    std::cout << elem << "\n";
-                }
-            }
-
-            if (inputState.key[Key::Left])
-            {
-                gvars::currentx--;
-                plyAct = true;
-            }
-            if (inputState.key[Key::Right])
-            {
-                gvars::currentx++;
-                plyAct = true;
-            }
-            if (inputState.key[Key::Up])
-            {
-                gvars::currenty--;
-                plyAct = true;
-            }
-            if (inputState.key[Key::Down])
-            {
-                gvars::currenty++;
-                plyAct = true;
-            }
-            if (inputState.key[Key::LShift] == true &&
-                inputState.key[Key::Left])
-            {
-                gvars::currentx--;
-                gvars::currentx--;
-                gvars::currentx--;
-                gvars::currentx--;
-                plyAct = true;
-            } //Sprite.Move(-100 * ElapsedTime, 0);
-            if (inputState.key[Key::LShift] == true &&
-                inputState.key[Key::Right])
-            {
-                gvars::currentx++;
-                gvars::currentx++;
-                gvars::currentx++;
-                gvars::currentx++;
-                plyAct = true;
-            } //Sprite.Move( 100 * ElapsedTime, 0);
-            if (inputState.key[Key::LShift] == true && inputState.key[Key::Up])
-            {
-                gvars::currenty--;
-                gvars::currenty--;
-                gvars::currenty--;
-                gvars::currenty--;
-                plyAct = true;
-            } //Sprite.Move(0, -100 * ElapsedTime);
-            if (inputState.key[Key::LShift] == true &&
-                inputState.key[Key::Down])
-            {
-                gvars::currenty++;
-                gvars::currenty++;
-                gvars::currenty++;
-                gvars::currenty++;
-                plyAct = true;
-            } //Sprite.Move(0,  100 * ElapsedTime);
-
-            //button var; var.Color = sf::Color::Red; var.iSize = 5; var.vPos = sf::Vector2f(200,200); var.sButtonText = "Howdy"; vButtonList.push_back(var);
-            // TODO: Fix Later    if(ButtonClicked(var.id)){ std::cout << "Starting the Building. \n"; GC.BuildTileTest(); std::cout << "Done Building. \n"; sf::Sleep(1); GC.bTest = true; }
-
-            degrees += speeds; // Should probably leave speed at 1, If not less.
-
-            xxx = xanchor + cosf(degrees * PI / 180) * radius;
-            yyy = yanchor + sinf(degrees * PI / 180) * radius;
-            effects.createCircle(xanchor, yanchor, 5, sf::Color::Blue);
-            effects.createCircle(xxx, yyy, 5, sf::Color::White);
-
-            int distence = math::closeish(xanchor, yanchor, xxx, yyy);
-            textList.createText(xanchor, yanchor, 11, sf::Color::White,
-                                "Distence:", "", distence);
-            textList.createText(xanchor, yanchor + 11, 11, sf::Color::White,
-                                "Radius:", "", radius);
-
-            //std::cout << testmonkey << std::endl;
-            if (gCtrl.bTest == true)
-            {
-                // TODO: Fix Later
-                /*for(T = Tiles.begin(); T != Tiles.end(); T++){
-
-        if( T->ID == 1 ){ // dirt
-        int iTS = 20;
-        sf::Sprite Tile(Images);
-        Tile.SetColor(sf::Color(255,255,255,255));
-        int imgposx = 2;int imgposy = 1;
-        Tile.SetSubRect(sf::IntRect(((imgposx-1)*20)+imgposx, ((imgposy-1)*20)+imgposy, (imgposx*20)+imgposx, (imgposy*20)+imgposy));
-        Tile.SetPosition(abs(T->LocPos.x)*iTS, abs(T->LocPos.y)*iTS);
-        Tile.SetColor(sf::Color(255,255,255,255));
-        App.Draw(Tile);}
-
-        if( T->ID == 3 ){ // dirt
-        int iTS = 20;
-        sf::Sprite Tile(Images);
-        Tile.SetColor(sf::Color(255,255,255,255));
-        int imgposx = 1;int imgposy = 1;
-        Tile.SetSubRect(sf::IntRect(((imgposx-1)*20)+imgposx, ((imgposy-1)*20)+imgposy, (imgposx*20)+imgposx, (imgposy*20)+imgposy));
-        Tile.SetPosition(abs(T->LocPos.x)*iTS, abs(T->LocPos.y)*iTS);
-        Tile.SetColor(sf::Color(255,255,255,255));
-        App.Draw(Tile);}
-
-        if( T->ID == 7 ){ // dirt
-        int iTS = 20;
-        sf::Sprite Tile(Images);
-        Tile.SetColor(sf::Color(255,255,255,255));
-        int imgposx = 7;int imgposy = 1;
-        Tile.SetSubRect(sf::IntRect(((imgposx-1)*20)+imgposx, ((imgposy-1)*20)+imgposy, (imgposx*20)+imgposx, (imgposy*20)+imgposy));
-        Tile.SetPosition(abs(T->LocPos.x)*iTS, abs(T->LocPos.y)*iTS);
-        Tile.SetColor(sf::Color(255,255,255,255));
-        App.Draw(Tile);}
-
-
-        }*/
-            }
-
-            if (inputState.key[Key::Space])
-            {
-                float xpos = xanchor;
-                float ypos = yanchor;
-                for (int val = 0; val <= radius; val++)
-                {
-                    float xx = 0;
-                    float yy = 0;
-                    float angle =
-                        180 -
-                        (180 / PI) *
-                            (atan2f(
-                                xanchor - xxx,
-                                yanchor -
-                                    yyy)); //To be honest, I spent alot of time with trial and error to get this part to work.
-                    xx = cosf((angle - 90) * PI / 180) * 1;
-                    yy = sinf((angle - 90) * PI / 180) * 1;
-                    xpos -= xx;
-                    ypos -= yy;
-                    effects.createLine(gvars::mousePos.x, gvars::mousePos.y,
-                                       xpos, ypos, 1, sf::Color::White);
-                }
-            }
-        }
-        if (gCtrl.phase == "Goo")
-        {
-            // Herp
-        }
         if (gCtrl.phase == "MakeSquad") // Needs a heavy menu overhaul.
         {
             gvars::view1.setCenter(RESOLUTION.x / 2, RESOLUTION.y / 2);
@@ -5582,14 +5300,7 @@ int main()
 
         if (gCtrl.phase == "World")
         {
-            if (inputState.key[Key::Left])
-                gvars::currentx--;
-            if (inputState.key[Key::Right])
-                gvars::currentx++;
-            if (inputState.key[Key::Up])
-                gvars::currenty--;
-            if (inputState.key[Key::Down])
-                gvars::currenty++;
+            cameraControls();
 
             gCtrl.worldLoop();
 
@@ -5949,11 +5660,7 @@ int main()
             window.setView(gvars::view1);
             plyAct = true;
         }
-        if (inputState.key[Key::Numpad2] && !network::chatting)
-        {
-            window.setView(planetary);
-            plyAct = true;
-        }
+
 
         if (paused == false)
         {
@@ -6063,6 +5770,5 @@ int main()
         }
 
     } // End of game loop
-    astar::end();
     return EXIT_SUCCESS;
 }
