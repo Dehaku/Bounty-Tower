@@ -1372,3 +1372,49 @@ void networkGridUpdate(sf::Packet pack)
     }
 }
 
+
+bool gridTrace(sf::Vector2f Ori, sf::Vector2f Tar)
+{ // Looking in a straight line for a specific spot, Walls block vision.
+
+    float dx = Tar.x - Ori.x, dy = Tar.y - Ori.y, steps;
+    float xIncrement, yIncrement, x = Ori.x, y = Ori.y;
+    if (abs_to_index(dx) > abs_to_index(dy))
+        steps = abs_to_index(dx);
+    else
+        steps = abs_to_index(dy);
+    xIncrement = dx / (float)steps;
+    yIncrement = dy / (float)steps;
+
+    for (int k = 0; k < steps; k++)
+    {
+        x += xIncrement;
+        y += yIncrement;
+        if (tiles[abs_to_index(x / GRID_SIZE)][abs_to_index(y / GRID_SIZE)][30]
+                .transparent == false)
+        {
+
+            if (inputState.key[Key::Quote])
+            {
+                effects.createLine(x, y, Ori.x, Ori.y, 1, sf::Color::Cyan);
+            }
+            //std::cout << "Shoulda Broke. " << std::endl;
+            break;
+
+        } // Stops the trace if it hits a wall.
+        //std::cout << "Stuffs " << std::endl;
+        sf::Vector2f pos(abs_to_index(x / GRID_SIZE),
+                         abs_to_index(y / GRID_SIZE));
+        sf::Vector2f tar(abs_to_index(Tar.x / GRID_SIZE),
+                         abs_to_index(Tar.y / GRID_SIZE));
+        if (pos == tar)
+        {
+            return true;
+        } // Returns true and stops searching.
+
+        if (inputState.key[Key::Quote])
+        {
+            effects.createLine(x, y, Ori.x, Ori.y, 1, sf::Color::Blue);
+        }
+    }
+    return false; // Returns false if the target was never found.
+}

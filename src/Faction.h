@@ -7,6 +7,8 @@
 #include "JobManager.h"
 #include "Text.h"
 #include "defs.h"
+#include "Tiles.h"
+#include "Networking.h"
 
 #include <list>
 #include <set>
@@ -413,5 +415,12 @@ std::string loadCritters(sf::Vector2i worldPos, std::string direction,
 void boom(int xpos, int ypos, int damage, int size);
 void squadHud();
 void removeNPCs(std::list<Npc> &NPCLIST, sf::Mutex &npcmutex);
+void addInitialFaction();
+void offloadNpcs();
+void attractNPCs(sf::Vector2f position);
+Npc *getCritter(int id);
+void selectedNPCprocess();
+void drawSelectedCritterHUD();
+void runCritterBody(Npc &npc);
 
 #endif // FACTION_H_INCLUDED
