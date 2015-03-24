@@ -156,4 +156,10 @@ void buildLocalfromWorld(sf::Vector2i worldPos);
 
 void networkGridUpdate(sf::Packet pack);
 
+void processLiquid();
+void resizeGrid(int x, int y, int z);
+sf::Vector2f gridEject(sf::Vector2f position);
+bool gridTrace(sf::Vector2f Ori, sf::Vector2f Tar);
+
+
 #endif // TILES_H_INCLUDED

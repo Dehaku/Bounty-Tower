@@ -1097,81 +1097,6 @@ public:
 UniverseTiles UnyTiles;
 
 
-int orbRot = 0;
-int orbs = 1;
-int orbSpeed = 2;
-
-class Orb
-{
-public:
-    int orbRot;
-    int orbs;
-    int orbSpeed;
-    int orbDistance;
-    sf::Vector2f pos;
-    unsigned int lifeTime;
-    bool toDelete;
-    int type;
-
-
-
-    void updateOrb()
-    {
-        if(lifeTime <= 0)
-            toDelete = true;
-        lifeTime--;
-
-        orbRot += orbSpeed;
-    }
-
-    void drawOrb(int totalOrbs = 1)
-    {
-
-        int orbSpacing = 360/totalOrbs;
-        if(type == 0)
-        {
-            sf::Vector2f Pos = math::angleCalc(pos,orbRot,orbDistance);
-            effects.createCircle(Pos.x,Pos.y,3,sf::Color::White,1,sf::Color::Cyan);
-            //textList.createText(Pos.x,Pos.y,10,sf::Color::White,std::to_string(lifeTime) + "/" + std::to_string(toDelete));
-        }
-        else if(type == 1)
-        {
-            sf::Vector2f Pos = math::angleCalc(pos,orbRot,(orbSpacing % 360));
-            effects.createCircle(Pos.x,Pos.y,3,sf::Color::White,1,sf::Color::Red);
-        }
-        else if(type == 2)
-        {
-            sf::Vector2f Pos;
-            if(orbRot < 360)
-                Pos = math::angleCalc(pos,orbRot,(-(orbRot-180) + 180));
-            if(orbRot < 270)
-                Pos = math::angleCalc(pos,orbRot,(orbRot-180));
-            if(orbRot < 180)
-                Pos = math::angleCalc(pos,orbRot,(-orbRot + 180));
-            if(orbRot < 90)
-                Pos = math::angleCalc(pos,orbRot,(orbRot));
-            effects.createCircle(Pos.x,Pos.y,3,sf::Color::White,1,sf::Color::Yellow);
-        }
-        else if(type == 3)
-        {
-            sf::Vector2f Pos = math::angleCalc(pos,orbRot,(sin(orbRot * PI / 180) * 45) + (cos(orbRot * PI / 180)*45) );
-            effects.createCircle(Pos.x,Pos.y,3,sf::Color::White,1,sf::Color::Green);
-        }
-
-    }
-
-    Orb()
-    {
-        orbRot = 0;
-        orbs = 1;
-        orbSpeed = 2;
-        lifeTime = 0;
-        toDelete = false;
-        type = 0;
-    }
-};
-std::vector<Orb> Orbs;
-
 
 
 void unpointItems(std::list<Item> &items)
@@ -1476,124 +1401,6 @@ std::vector<int> nngTrace(int xa, int ya, int xb, int yb, int id,
     return vectorID;
 }
 
-
-struct entityvectorpointercontainer
-{
-    std::set<Item*> items;
-    std::set<Npc*> npcs;
-    std::set<Tile*> tiles;
-};
-
-
-entityvectorpointercontainer entityTrace(Vec3 Ori, Vec3 Tar) /* TODO: Improve this to use Z axis as well, or find new formula that can. THERE ARE NONE, GRAAAAH*/
-{ // Looking in a straight line for a specific spot, Walls block vision.
-
-    entityvectorpointercontainer EVPC;
-
-    float dx = Tar.x - Ori.x, dy = Tar.y - Ori.y, steps;
-    float xIncrement, yIncrement, x = Ori.x, y = Ori.y;
-    if (abs_to_index(dx) > abs_to_index(dy))
-        steps = abs_to_index(dx);
-    else
-        steps = abs_to_index(dy);
-    xIncrement = dx / (float)steps;
-    yIncrement = dy / (float)steps;
-
-    sf::Lock lock(mutex::npcList);
-    for (int k = 0; k < steps; k++)
-    {
-        x += xIncrement;
-        y += yIncrement;
-        if (tiles[abs_to_index(x / GRID_SIZE)][abs_to_index(y / GRID_SIZE)][abs_to_index(Ori.z/20)]
-                .transparent == false)
-        {
-
-            if (inputState.key[Key::Quote])
-            {
-                effects.createLine(x, y, Ori.x, Ori.y, 1, sf::Color::Cyan);
-            }
-            break;
-
-        } // Stops the trace if it hits a wall.
-
-        for (auto &items : worlditems)
-        {
-            if (items.xpos == x && items.ypos == y && items.zpos == Ori.z)
-                EVPC.items.insert(&items);
-        }
-        for (auto &npcs : npclist)
-        {
-            //if(npcs.xpos == x && npcs.ypos == y && npcs.zpos == Ori.z)
-            if (math::closeish(npcs.xpos,npcs.ypos,x,y) <= npcs.size && npcs.zpos == Ori.z)
-                EVPC.npcs.insert(&npcs);
-        }
-        EVPC.tiles.insert(&tiles[abs_to_index(x / GRID_SIZE)][abs_to_index(y / GRID_SIZE)][abs_to_index(Ori.z/20)]);
-
-
-
-        if (inputState.key[Key::Quote])
-        {
-            effects.createLine(x, y, Ori.x, Ori.y, 1, sf::Color::Blue);
-        }
-        sf::Vector2f pos(abs_to_index(x / GRID_SIZE),
-                         abs_to_index(y / GRID_SIZE));
-        sf::Vector2f tar(abs_to_index(Tar.x / GRID_SIZE),
-                         abs_to_index(Tar.y / GRID_SIZE));
-    }
-    return EVPC;
-}
-
-
-
-
-bool gridTrace(sf::Vector2f Ori, sf::Vector2f Tar)
-{ // Looking in a straight line for a specific spot, Walls block vision.
-
-    float dx = Tar.x - Ori.x, dy = Tar.y - Ori.y, steps;
-    float xIncrement, yIncrement, x = Ori.x, y = Ori.y;
-    if (abs_to_index(dx) > abs_to_index(dy))
-        steps = abs_to_index(dx);
-    else
-        steps = abs_to_index(dy);
-    xIncrement = dx / (float)steps;
-    yIncrement = dy / (float)steps;
-
-    for (int k = 0; k < steps; k++)
-    {
-        x += xIncrement;
-        y += yIncrement;
-        if (tiles[abs_to_index(x / GRID_SIZE)][abs_to_index(y / GRID_SIZE)][30]
-                .transparent == false)
-        {
-
-            if (inputState.key[Key::Quote])
-            {
-                effects.createLine(x, y, Ori.x, Ori.y, 1, sf::Color::Cyan);
-            }
-            //std::cout << "Shoulda Broke. " << std::endl;
-            break;
-
-        } // Stops the trace if it hits a wall.
-        //std::cout << "Stuffs " << std::endl;
-        sf::Vector2f pos(abs_to_index(x / GRID_SIZE),
-                         abs_to_index(y / GRID_SIZE));
-        sf::Vector2f tar(abs_to_index(Tar.x / GRID_SIZE),
-                         abs_to_index(Tar.y / GRID_SIZE));
-        if (pos == tar)
-        {
-            return true;
-        } // Returns true and stops searching.
-
-        if (inputState.key[Key::Quote])
-        {
-            effects.createLine(x, y, Ori.x, Ori.y, 1, sf::Color::Blue);
-        }
-    }
-    return false; // Returns false if the target was never found.
-}
-
-
-
 bool gridposTrace(int xa, int ya, int xb, int yb, int id, sf::Vector2f target)
 { // Looking in a straight line for a specific spot, Walls block vision.
 
@@ -1811,346 +1618,69 @@ std::set<int> npcList(int exceptions = -1)
     throw std::runtime_error("NpcList: Couldn't return anything!");
 }
 
-sf::Vector2f gridEject(sf::Vector2f position)
+struct entityvectorpointercontainer
 {
-    int tileX = (abs_to_index(position.x/GRID_SIZE)*GRID_SIZE)+10.5;
-    int tileY = (abs_to_index(position.y/GRID_SIZE)*GRID_SIZE)+10.5;
-    sf::Vector2f tilePos(tileX,tileY);
-    double lilDist = math::closeish(position.x,position.y,tileX,tileY);
-    int lilAngle = math::angleBetweenVectors(position,sf::Vector2f(tileX,tileY));
-    std::string strDisplay = "Tile Center Distance: " + std::to_string(lilDist) + ", angle: " + std::to_string(lilAngle);
-    sf::Vector2f correction = math::angleCalc(tilePos,lilAngle,-GRID_SIZE);
-    return correction;
-}
+    std::set<Item*> items;
+    std::set<Npc*> npcs;
+    std::set<Tile*> tiles;
+};
 
-void runCritterBody(Npc &npc)
-{
-    /*  BodyPart Loop
-        First, Run through the bodyparts finding the 'global' tags, like
-            Nutrient Extraction and such.
-        Second, Run through each individual part running through all
-            the local tags.
-    */
+entityvectorpointercontainer entityTrace(Vec3 Ori, Vec3 Tar) /* TODO: Improve this to use Z axis as well, or find new formula that can. THERE ARE NONE, GRAAAAH*/
+{ // Looking in a straight line for a specific spot, Walls block vision.
 
-    short int parts = 0;
-    size_t searchPos = 0;
-    size_t endPos = 0;
+    entityvectorpointercontainer EVPC;
 
-    debug("Debug: Beginning Part Loop for" + npc.name);
+    float dx = Tar.x - Ori.x, dy = Tar.y - Ori.y, steps;
+    float xIncrement, yIncrement, x = Ori.x, y = Ori.y;
+    if (abs_to_index(dx) > abs_to_index(dy))
+        steps = abs_to_index(dx);
+    else
+        steps = abs_to_index(dy);
+    xIncrement = dx / (float)steps;
+    yIncrement = dy / (float)steps;
 
-    //  Global Part Tag Variables
-
-    float partsWalkSpeed = 0;
-    float globalNutritionPercentage = 100;
-
-    //  *   Global Part Tag Variables   *
-
-    while (searchPos != npc.body.bodyParts.npos) // Global Part Tags
+    sf::Lock lock(mutex::npcList);
+    for (int k = 0; k < steps; k++)
     {
-        searchPos = npc.body.bodyParts.find("{", searchPos);
-
-        if (searchPos != npc.body.bodyParts.npos)
+        x += xIncrement;
+        y += yIncrement;
+        if (tiles[abs_to_index(x / GRID_SIZE)][abs_to_index(y / GRID_SIZE)][abs_to_index(Ori.z/20)]
+                .transparent == false)
         {
-            endPos = npc.body.bodyParts.find("}", searchPos);
 
-            std::string workingLine;
-
-            workingLine.append(npc.body.bodyParts, searchPos,
-                               endPos - searchPos);
-            float partNumber = 0;
-
-            partNumber = stringFindNumber(workingLine, "[Walk:");
-            if (partNumber != 0)
+            if (inputState.key[Key::Quote])
             {
-
-                if (partsWalkSpeed != 0)
-                {
-                    partsWalkSpeed = partNumber;
-                }
-                else
-                {
-                    partsWalkSpeed += (partNumber * 0.5);
-                }
+                effects.createLine(x, y, Ori.x, Ori.y, 1, sf::Color::Cyan);
             }
+            break;
 
-            partNumber = stringFindNumber(workingLine, "[NutritionExtraction:");
-            if (partNumber != 0)
-            {
-                globalNutritionPercentage += partNumber;
-            }
+        } // Stops the trace if it hits a wall.
 
-            partNumber = stringFindNumber(workingLine, "[DigestsBlood:");
-            if (partNumber != 0)
-            {
-            }
-            partNumber = stringFindNumber(workingLine, "[DigestsFlesh:");
-            if (partNumber != 0)
-            {
-                npc.consumeFlesh = true;
-            }
-            partNumber = stringFindNumber(workingLine, "[DigestsVeggy:");
-            if (partNumber != 0)
-            {
-                npc.consumeVeggy = true;
-            }
-            partNumber = stringFindNumber(workingLine, "[DigestsWater:");
-            if (partNumber != 0)
-            {
-                npc.consumeWater = true;
-            }
-
-            searchPos = endPos;
-        }
-    }
-
-    searchPos = 0;
-
-    for (auto &elem : npc.inventory)
-    {
-        if ((elem).insidePart != "")
+        for (auto &items : worlditems)
         {
-            (elem).hasInternalUse--;
+            if (items.xpos == x && items.ypos == y && items.zpos == Ori.z)
+                EVPC.items.insert(&items);
         }
-    }
-
-    while (searchPos != npc.body.bodyParts.npos) // Individual Part Tags
-    {
-
-        searchPos = npc.body.bodyParts.find("{", searchPos);
-
-        if (searchPos != npc.body.bodyParts.npos)
+        for (auto &npcs : npclist)
         {
-            endPos = npc.body.bodyParts.find("}", searchPos);
-            parts++;
-
-            std::string workingLine;
-
-            workingLine.append(npc.body.bodyParts, searchPos,
-                               endPos - searchPos);
-
-            float partNumber = 0;
-            std::string partString = "";
-            Item *partItem;
-
-            std::string currentPart = stringFindString(workingLine, "[Name:");
-
-            partNumber = stringFindNumber(workingLine, "[DigestsBlood:");
-            partItem = getItemPtrFromVector(npc.inventory, "Blood");
-            if (partNumber != 0 && partItem != nullptr)
-            {
-
-                float workAmount = partItem->amount;
-                float diff = workAmount - (partNumber / 1000);
-
-                if (diff > 0)
-                {
-                    partItem->amount = diff;
-                    float Nutr = (workAmount - diff) *
-                                 100; // TODO: Figure this out better.
-                    npc.bloodwork(
-                        "Nutrients",
-                        Nutr * percentageBuff(globalNutritionPercentage));
-                }
-                else
-                {
-                    //*GetItemPtrfromVector(npc.inventory,"Blood").amount = 0;
-                    getItemPtrFromVector(npc.inventory, "Blood")->toDelete =
-                        true;
-                    float nutr =
-                        workAmount * 100; // TODO: Figure this out better.
-                    npc.bloodwork(
-                        "Nutrients",
-                        nutr * percentageBuff(globalNutritionPercentage));
-                }
-            }
-
-            partNumber = stringFindNumber(workingLine, "[DigestsFlesh:");
-            partItem =
-                getItemPtrfromVectorVarSearch(npc.inventory, "MassFlesh");
-            //if(PartItem != NULL) PartItem->HasInternalUse++; // This is designed to keep items from being ejected until they are completely useless to a critter, I.E. Items with multiple Food Mass's.
-            if (partNumber != 0 && partItem != nullptr &&
-                partItem->massFlesh >
-                    0) // TODO: Make sure the item is in THIS PART before digesting it!
-            {
-                //std::cout << "HasInternalUse: " << PartItem->HasInternalUse << std::endl;
-                float workAmount = partItem->massFlesh;
-                float diff = workAmount - (partNumber / 1000);
-
-                if (diff > 0)
-                {
-                    partItem->massFlesh = diff;
-                    partItem->hasInternalUse = 0;
-                    float Nutr = (workAmount - diff) *
-                                 100; // TODO: Figure this out better.
-                    npc.bloodwork(
-                        "Nutrients",
-                        Nutr * percentageBuff(globalNutritionPercentage));
-                }
-                if (partItem->massFlesh <= 0)
-                {
-                    //*GetItemPtrfromVector(npc.inventory,"Blood").amount = 0;
-                    partItem->toDelete = true;
-                    //Add Food to everyone, Make sure they go hungry to eat it, Figure out a way to Eject the empty item, Or do water! Everyone starts with water.
-                    //npc.bloodwork("Nutrients",Nutr*PercentageBuff(GlobalNutritionPercentage));
-                }
-            }
-
-            partNumber = stringFindNumber(workingLine, "[DigestsVeggy:");
-            partItem =
-                getItemPtrfromVectorVarSearch(npc.inventory, "MassVeggy");
-            //if(PartItem != NULL) PartItem->HasInternalUse++; // This is designed to keep items from being ejected until they are completely useless to a critter, I.E. Items with multiple Food Mass's.
-            if (partNumber != 0 && partItem != nullptr &&
-                partItem->massVeggy >
-                    0) // TODO: Make sure the item is in THIS PART before digesting it!
-            {
-                //std::cout << "HasInternalUse: " << PartItem->HasInternalUse << std::endl;
-                float workAmount = partItem->massVeggy;
-                float diff = workAmount - (partNumber / 1000);
-
-                if (diff > 0)
-                {
-                    partItem->massVeggy = diff;
-                    partItem->hasInternalUse = 0;
-                    float nutr = (workAmount - diff) *
-                                 100; // TODO: Figure this out better.
-                    npc.bloodwork(
-                        "Nutrients",
-                        nutr * percentageBuff(globalNutritionPercentage));
-                }
-                if (partItem->massVeggy <= 0)
-                {
-                    partItem->toDelete = true;
-                    //npc.bloodwork("Nutrients",Nutr*PercentageBuff(GlobalNutritionPercentage));
-                }
-            }
-
-            partNumber = stringFindNumber(workingLine, "[DigestsWater:");
-            partItem =
-                getItemPtrfromVectorVarSearch(npc.inventory, "MassWater");
-            //if(PartItem != NULL) PartItem->HasInternalUse++; // This is designed to keep items from being ejected until they are completely useless to a critter, I.E. Items with multiple Food Mass's.
-            if (partNumber != 0 && partItem != nullptr &&
-                partItem->massWater >
-                    0) // TODO: Make sure the item is in THIS PART before digesting it!
-            {
-                //std::cout << "HasInternalUse: " << PartItem->HasInternalUse << std::endl;
-                float workAmount = partItem->massWater;
-                float diff = workAmount - (partNumber / 1000);
-
-                if (diff > 0)
-                {
-                    partItem->massWater = diff;
-                    partItem->hasInternalUse = 0;
-                    float nutr = (workAmount - diff) *
-                                 100; // TODO: Figure this out better.
-                    npc.bloodwork(
-                        "Hydration",
-                        nutr * percentageBuff(globalNutritionPercentage));
-                }
-                if (partItem->massWater <= 0)
-                {
-                    partItem->toDelete = true;
-                    //npc.bloodwork("Nutrients",Nutr*PercentageBuff(GlobalNutritionPercentage));
-                }
-            }
-
-            partString = stringFindString(workingLine, "[PoisonFilter:");
-            if (partString != "")
-            {
-
-                std::vector<std::string> strVec =
-                    stringFindElements(partString, ":");
-                if (gvars::debug)
-                    std::cout << "StrVec[0]: " << strVec[0] << std::endl;
-                float leftover =
-                    npc.bloodwork(strVec[0], -atof(strVec[1].c_str()));
-                if (gvars::debug)
-                    std::cout << "Bloodwork leftover is: " << leftover
-                              << std::endl;
-                //NPC Critter;
-
-                for (size_t i = 0; i != strVec.size(); i++)
-                {
-                    if (gvars::debug)
-                        std::cout << strVec[i] << std::endl;
-                }
-            }
-
-            partNumber = stringFindNumber(workingLine, "[Orafice:");
-            if (partNumber > 0)
-            {
-                //std::vector<item> * Inv = &npc.inventory;
-
-                //for(int i = 0; i != npc.inventory.size(); i++)
-                for (auto i = npc.inventory.begin(); i != npc.inventory.end();
-                     i++)
-                {
-                    bool foundIt = false;
-                    if ((*i).insidePart == "" && (*i).massFlesh > 0 &&
-                        npc.consumeFlesh) // Awww yeeessss, We gonna eat some flesh with our Orafice!
-                    {
-                        (*i).insidePart = currentPart;
-                        foundIt = true;
-                    }
-
-                    if ((*i).insidePart == "" && (*i).massVeggy > 0 &&
-                        npc.consumeVeggy) // Awww yeeessss, We gonna eat something with our Orafice!
-                    {
-                        (*i).insidePart = currentPart;
-                        foundIt = true;
-                    }
-
-                    if ((*i).insidePart == "" && (*i).massWater > 0 &&
-                        npc.consumeWater) // Awww yeeessss, We gonna eat something with our Orafice!
-                    {
-                        (*i).insidePart = currentPart;
-                        foundIt = true;
-                    }
-
-                    if (foundIt)
-                    {
-                        std::string chtStr;
-                        chtStr.append("* ");
-                        chtStr.append(npc.name);
-                        chtStr.append("(" + std::to_string(npc.id) + ")");
-                        chtStr.append(" has inserted ");
-                        chtStr.append((*i).name);
-                        chtStr.append(" into their ");
-                        chtStr.append(currentPart);
-                        chtStr.append("'s Orafice(");
-                        chtStr.append(std::to_string(partNumber));
-                        chtStr.append(").");
-
-                        chatBox.addChat(chtStr, sf::Color(150, 150, 0));
-                    }
-                }
-            }
-
-            partNumber = stringFindNumber(
-                workingLine, "[BloodPumpRate:"); // TODO: Do this right.
-            if (partNumber != 0)
-            {
-                float blood = stringFindNumber(npc.bloodcontent, "[Nutrients:");
-                if (blood > partNumber)
-                {
-                    if ((npc.maxhunger - npc.hunger) > partNumber)
-                    {
-                        npc.hunger += partNumber;
-                        npc.bloodwork("Nutrients", -partNumber);
-                    }
-                }
-                blood = stringFindNumber(npc.bloodcontent, "[Hydration:");
-                if (blood > partNumber)
-                {
-                    if ((npc.maxthirst - npc.thirst) > partNumber)
-                    {
-                        npc.thirst += partNumber;
-                        npc.bloodwork("Hydration", -partNumber);
-                    }
-                }
-            }
-            searchPos = endPos;
+            //if(npcs.xpos == x && npcs.ypos == y && npcs.zpos == Ori.z)
+            if (math::closeish(npcs.xpos,npcs.ypos,x,y) <= npcs.size && npcs.zpos == Ori.z)
+                EVPC.npcs.insert(&npcs);
         }
+        EVPC.tiles.insert(&tiles[abs_to_index(x / GRID_SIZE)][abs_to_index(y / GRID_SIZE)][abs_to_index(Ori.z / GRID_SIZE)]);
+
+
+
+        if (inputState.key[Key::Quote])
+        {
+            effects.createLine(x, y, Ori.x, Ori.y, 1, sf::Color::Blue);
+        }
+        sf::Vector2f pos(abs_to_index(x / GRID_SIZE),
+                         abs_to_index(y / GRID_SIZE));
+        sf::Vector2f tar(abs_to_index(Tar.x / GRID_SIZE),
+                         abs_to_index(Tar.y / GRID_SIZE));
     }
+    return EVPC;
 }
 
 void critterBrain(Npc &npc, std::list<Npc> &container)
@@ -2886,12 +2416,7 @@ void drawNPCs()
             npc.drawImg();
             effects.createCircle(npc.xpos, npc.ypos, npc.size,
                                  sf::Color(50, 50, 50, 50));
-
-
             }
-
-
-
         }
     }
     debug("Done drawing NPCs");
@@ -2912,14 +2437,6 @@ void drawItems()
         }
     }
     debug("Done Drawing Items");
-}
-
-void lightTrail(int x, int y, int z)
-{
-    int curx = math::clamp(x, 0, GRID_X - 1);
-    int cury = math::clamp(y, 0, GRID_Y - 1);
-    int curz = math::clamp(z, 0, GRID_Z - 1);
-    gvars::sunmap[curz][curx][cury] = 255;
 }
 
 void displayChat(sf::Vector2f position)
@@ -2945,276 +2462,6 @@ void displayChat(sf::Vector2f position)
             textList.createText(gvars::bottomLeft.x+10,gvars::bottomLeft.y-15,10,sf::Color::White,"Chat: " + cliCon.chatString + "|");
     }
 
-}
-
-
-
-void drawSelectedCritterHUD()
-{
-    if (gvars::myTarget != -1 && myTargetPtr != nullptr)
-    {
-        gvars::myTargetid = myTargetPtr->id;
-        int nxpos = gvars::topLeft.x+5;
-        int nypos = gvars::topLeft.y + (RESOLUTION.y / 2);
-
-        textList.createText(nxpos+5,nypos-20-13,10,sf::Color::Cyan,"<Inventory>");
-        effects.createSquare(nxpos,nypos,nxpos+(20*myTargetPtr->inventory.size()),nypos-20,sf::Color(0,0,0),2,sf::Color::Cyan);
-        int itemCount = 0;
-        for(auto &i : myTargetPtr->inventory)
-        {
-            i.img.setPosition(nxpos+(20*itemCount),nypos);
-            effects.createCircle(nxpos+(20*itemCount),nypos,20,gvars::cycleGreen);
-            i.drawImg();
-            itemCount++;
-        }
-
-
-
-        effects.createSquare(nxpos, nypos, nxpos + 65, nypos + 70,
-                                     sf::Color(0, 0, 0, 100));
-
-        textList.createText(nxpos, nypos, 11, sf::Color::Red, "Health:",
-                                    "", myTargetPtr->health, "",
-                                    "(", myTargetPtr->maxhealth,
-                                    ")", "", -6698, 1, 0);
-
-        textList.createText(nxpos, nypos + 10, 11, BROWN, "Hunger:", "",
-                                    myTargetPtr->hunger, "", "",
-                                    -6698, "", "", -6698, 1, 0);
-        textList.createText(nxpos, nypos + 20, 11, sf::Color::Cyan,
-                                    "Thirst:", "",
-                                    myTargetPtr->thirst, "", "",
-                                    -6698, "", "", -6698, 1, 0);
-
-        std::string textOut;
-        if(myTargetPtr->factionPtr != nullptr)
-                    textOut = "Name:" + myTargetPtr->name + ", Faction: " + myTargetPtr->factionPtr->name;
-        else
-                    textOut = "Name:" + myTargetPtr->name + ", Faction: None";
-
-        textList.createText(nxpos, nypos + 30, 11, sf::Color::White, textOut);
-
-        textList.createText(nxpos, nypos + 30, 11, sf::Color::White,
-                                    "Name:", myTargetPtr->name);
-        textList.createText(nxpos, nypos + 40, 11, sf::Color::White,
-                                    "Id:", "", myTargetPtr->id,
-                                    "", "", -6698, "", "", -6698, 1, 0);
-        if (myTargetPtr->needsPath == false)
-        {
-            textList.createText(nxpos, nypos + 50, 11, sf::Color::Red,
-                                        "Action:",
-                                        myTargetPtr->action);
-        }
-        else
-        {
-            textList.createText(nxpos, nypos + 50, 11, sf::Color::Blue,
-                                        "Action:",
-                                        myTargetPtr->action);
-        }
-        textList.createText(
-                    nxpos, nypos + 60, 11, sf::Color::Red, "Target:",
-                    myTargetPtr->target,
-                    myTargetPtr->targetPos.x, ":", "",
-                    myTargetPtr->targetPos.y, " Angle:", "",
-                    myTargetPtr->angle);
-
-        effects.createSquare(nxpos, nypos + 70, nxpos + 130,
-                                     nypos + 150, sf::Color(0, 0, 0, 200));
-        int y = 7;
-        int v = 1;
-        textList.createText(
-                    nxpos + v, nypos + (y++ * 10), 11, sf::Color::White,
-                    "Strength:", "",
-                    myTargetPtr->skills.strength, " : ", "",
-                    myTargetPtr->skills.strengthxp);
-        textList.createText(
-                    nxpos + v, nypos + (y++ * 10), 11, sf::Color::White,
-                    "Perception:", "",
-                    myTargetPtr->skills.perception, " : ", "",
-                    myTargetPtr->skills.perceptionxp);
-        textList.createText(
-                    nxpos + v, nypos + (y++ * 10), 11, sf::Color::White,
-                    "Intelligence:", "",
-                    myTargetPtr->skills.intelligence, " : ", "",
-                    myTargetPtr->skills.intelligencexp);
-        textList.createText(
-                    nxpos + v, nypos + (y++ * 10), 11, sf::Color::White,
-                    "Charisma:", "",
-                    myTargetPtr->skills.charisma, " : ", "",
-                    myTargetPtr->skills.charismaxp);
-        textList.createText(
-                    nxpos + v, nypos + (y++ * 10), 11, sf::Color::White,
-                    "Endurance:", "",
-                    myTargetPtr->skills.endurance, " : ", "",
-                    myTargetPtr->skills.endurancexp);
-        textList.createText(
-                    nxpos + v, nypos + (y++ * 10), 11, sf::Color::White,
-                    "Dexterity:", "",
-                    myTargetPtr->skills.dexterity, " : ", "",
-                    myTargetPtr->skills.dexterityxp);
-        textList.createText(
-                    nxpos + v, nypos + (y++ * 10), 11, sf::Color::White,
-                    "Agility:", "", myTargetPtr->skills.agility,
-                    " : ", "", myTargetPtr->skills.agilityxp);
-        textList.createText(nxpos + v, nypos + (y++ * 10), 11,
-                                    sf::Color::White, "Tags:",
-                                    myTargetPtr->tags);
-
-        if (myTargetPtr->inventory.size() != 0 ||
-                    myTargetPtr->bloodcontent != "")
-        {
-            effects.createSquare(nxpos, nypos, nxpos + 130, nypos + 70,
-                                         sf::Color(0, 0, 0, 100));
-            int yv = nypos;
-            for (auto const &item :
-                         myTargetPtr->inventory)
-            { // Listing all the current items from this critters inventory.
-                if (item.insidePart.size() == 0)
-                {
-                    textList.createText(nxpos + 65, yv, 11,
-                                                sf::Color::White, item.name,
-                                                ": ", item.amount);
-                    yv += 10;
-                }
-            }
-
-            for (auto const &item :
-                         myTargetPtr->inventory)
-            { // Listing all items from 'inside' the critter.
-                if (item.insidePart.size() != 0)
-                {
-                    textList.createText(
-                                nxpos + 65, yv, 11, sf::Color(255, 200, 200),
-                                "Inside " + item.insidePart + " :",
-                                item.name + " :", item.amount);
-                            yv += 10;
-                }
-            }
-            textList.createText(
-                        nxpos + 85, yv, 11, sf::Color(255, 150, 150),
-                        "Blood: " + myTargetPtr->bloodcontent);
-
-            Button var;
-            var.color = sf::Color::Red;
-            var.iSize = 5;
-            var.vPos = sf::Vector2f(nxpos + 120, nypos + 50);
-            var.sButtonText = "Howdy";
-            vButtonList.push_back(var);
-            if (buttonClicked(var.id))
-            {
-                std::cout << "Twas' Truuuuuuue \n";
-            } // TODO: Get this before the MyTarget -1 check up there.
-        }
-    }
-}
-
-
-
-void purtyOrbitals()
-{
-    orbRot += orbSpeed;
-    if(orbRot >= 360)
-        orbRot = 0;
-    if(inputState.key[Key::I].time == 1)
-        orbSpeed++;
-    if(inputState.key[Key::K].time == 1)
-        orbSpeed--;
-    if(inputState.key[Key::L].time == 1)
-        orbs++;
-    if(inputState.key[Key::J].time == 1)
-        orbs--;
-    if(orbs < 1)
-        orbs = 1;
-
-    int orbSpacing = 360/orbs;
-    for(int i = 0; i != orbs; i++)
-    {
-        sf::Vector2f Pos = math::angleCalc(gvars::mousePos,orbRot+(orbSpacing*i),30);
-        effects.createCircle(Pos.x,Pos.y,3,sf::Color::White,1,sf::Color::Cyan);
-    }
-    for(int i = 0; i != orbs; i++)
-    {
-        sf::Vector2f Pos = math::angleCalc(gvars::mousePos,orbRot+(orbSpacing*i),(orbSpacing % 360));
-        effects.createCircle(Pos.x,Pos.y,3,sf::Color::White,1,sf::Color::Red);
-    }
-    for(int i = 0; i != orbs; i++)
-    {
-        sf::Vector2f Pos;
-        if(orbRot < 360)
-            Pos = math::angleCalc(gvars::mousePos,orbRot+(orbSpacing*i),(-(orbRot-180) + 180));
-        if(orbRot < 270)
-            Pos = math::angleCalc(gvars::mousePos,orbRot+(orbSpacing*i),(orbRot-180));
-        if(orbRot < 180)
-            Pos = math::angleCalc(gvars::mousePos,orbRot+(orbSpacing*i),(-orbRot + 180));
-        if(orbRot < 90)
-            Pos = math::angleCalc(gvars::mousePos,orbRot+(orbSpacing*i),(orbRot));
-        effects.createCircle(Pos.x,Pos.y,3,sf::Color::White,1,sf::Color::Yellow);
-    }
-    for(int i = 0; i != orbs; i++)
-    {
-        sf::Vector2f Pos = math::angleCalc(gvars::mousePos,orbRot+(orbSpacing*i),(cos(orbRot * PI / 180) * 45) + (cos(orbRot * PI / 180)*45) );
-        effects.createCircle(Pos.x,Pos.y,3,sf::Color::White,1,sf::Color::Green);
-    }
-    for(int i = 0; i != orbs; i++)
-    {
-        sf::Vector2f Pos = math::angleCalc(gvars::mousePos,orbRot+(orbSpacing*i),30+(cos(orbRot * PI / 180)*15) );
-        effects.createCircle(Pos.x,Pos.y,3,sf::Color::White,1,sf::Color::Blue);
-    }
-}
-
-void processLiquid()
-{
-    for(int x = 0; x != GRIDS; x++)
-        for(int y = 0; y != GRIDS; y++)
-            for(int z = 0; z != CHUNK_SIZE; z++)
-    {
-        if(!tiles[x][y][z].liquids.empty())
-        {
-            for(int l = 0; l != tiles[x][y][z].liquids.size(); l++)
-            {
-                int liqAmt = tiles[x][y][z].liquids[l].amount;
-                std::string liqName = tiles[x][y][z].liquids[l].name;
-
-
-                Tile * NW = &tiles[x-1][y-1][z];
-                Tile * N  = &tiles[x-1][y][z];
-                Tile * NE = &tiles[x-1][y+1][z];
-                Tile * E  = &tiles[x][y+1][z];
-                Tile * SE = &tiles[x+1][y+1][z];
-                Tile * S  = &tiles[x+1][y][z];
-                Tile * SW = &tiles[x+1][y-1][z];
-                Tile * W  = &tiles[x][y-1][z];
-                Tile * C  = &tiles[x][y][z];
-                Tile * U  = &tiles[x][y][z+1];
-                Tile * D  = &tiles[x][y][z-1];
-
-
-
-                /*
-                float NWv = *NW;
-                float Nv = *N;
-                float NEv = *NE;
-                float Ev = *E;
-                float SEv = *SE;
-                float Sv = *S;
-                float SWv = *SW;
-                float Wv = *W;
-                float Cv = *C;
-                float TotalLiquid = NWv+Nv+NEv+Ev+SEv+Sv+SWv+Wv+Cv;
-
-                *NW = TotalLiquid/9;
-                *N = TotalLiquid/9;
-                *NE = TotalLiquid/9;
-                *E = TotalLiquid/9;
-                *SE = TotalLiquid/9;
-                *S = TotalLiquid/9;
-                *SW = TotalLiquid/9;
-                *W = TotalLiquid/9;
-                *C = TotalLiquid/9;
-                */
-            }
-        }
-    }
 }
 
 void drawStuffs()
@@ -3394,56 +2641,6 @@ Item *getGlobalItem(std::string strtype)
     return nullptr;
 }
 
-Npc *getCritter(int id)
-{
-    if (gvars::debug)
-    {
-        std::cout << "Getting critter(" << id << ") \n";
-    }
-    sf::Lock lock(mutex::npcList);
-    for (auto &elem : npclist)
-    {
-        if (elem.id == id)
-        {
-            if (gvars::debug)
-            {
-                std::cout << "Found critter(" << id << ") \n";
-            }
-            return &elem;
-        }
-    }
-    if (gvars::debug)
-    {
-        std::cout << "Didn't Find critter(" << id << ") \n";
-    }
-    return nullptr;
-}
-
-void removeNPCs()
-{
-    sf::Lock lock(mutex::npcList);
-    bool done = false;
-    while (done == false)
-    {
-        bool yet = false;
-        for (auto it = npclist.begin(); it != npclist.end(); ++it)
-        {
-            if (it->toDelete)
-            {
-                std::cout << it->name << " to be deleted. \n";
-                npclist.erase(it);
-                yet = true;
-                break;
-            }
-        }
-        if (yet == false)
-        {
-            done = true;
-        }
-    }
-}
-
-
 void buildMicroPatherTest()
 {
     for (int x = 0; x != worldSizeX; x++)
@@ -3471,44 +2668,6 @@ void buildMicroPatherTest()
 
     grid[0][0][0].type = 0;
     grid[worldSizeX - 1][worldSizeY - 1][worldSizeZ - 1].type = 0;
-}
-
-
-
-void selectedNPCprocess()
-{
-    for (size_t i = 0; i != gvars::selected.size(); i++)
-    {
-        Npc var;
-        var = *getCritter(gvars::selected[i]);
-        sf::Vector2f Pos = sf::Vector2f(var.xpos, var.ypos);
-        effects.createCircle(Pos.x, Pos.y, 5,
-                                sf::Color(0, 255, 255, 100));
-    }
-    if (gvars::selected.size() > 0)
-    {
-        if (inputState.rmb &&
-            tiles[abs_to_index(gvars::mousePos.x / GRID_SIZE)]
-                    [abs_to_index(gvars::mousePos.y / GRID_SIZE)][30].id !=
-                1010)
-        {
-            sf::Lock lock(mutex::npcList);
-            for (size_t i = 0; i != gvars::selected.size(); i++)
-            {
-                //for (size_t t = 0; t != npclist.size(); t++)
-                for (auto &t : npclist)
-                {
-                    if (t.id == gvars::selected[i])
-                    {
-                        t.targetPos =
-                            sf::Vector2f(gvars::mousePos);
-                        t.action = "Orders";
-                    }
-                }
-            }
-        }
-    }
-
 }
 
 void acquireSelectedNPCs()
@@ -3546,248 +2705,6 @@ void acquireSelectedNPCs()
         gvars::heldClickPos = sf::Vector2f(-1, -1);
 }
 
-void hoverItemIDdisplay()
-{
-    for (auto const &item : worlditems)
-    {
-        if (math::closeish(gvars::mousePos.x, gvars::mousePos.y,item.xpos, item.ypos) <= 10)
-            textList.createText(item.xpos, item.ypos, 11,sf::Color::White, item.name, " ID:",item.id);
-    }
-}
-
-void offloadItems()
-{
-    for (auto &worlditem : worlditems)
-    {
-        if ((worlditem).xpos > 1920 && (worlditem).ypos < 640)
-        {
-            (worlditem).xpos = (worlditem).xpos - 640 - 640 - 640;
-            saveItem(500, sf::Vector2i(gvars::currentregionx + 2,gvars::currentregiony - 1),(worlditem));
-            (worlditem).toDelete = true;
-        }
-        else if ((worlditem).xpos > 1920 && (worlditem).ypos > 1280)
-        {
-            (worlditem).xpos = (worlditem).xpos - 640 - 640 - 640;
-            (worlditem).ypos = (worlditem).ypos - 640 - 640;
-            saveItem(500, sf::Vector2i(gvars::currentregionx + 2,gvars::currentregiony + 1),(worlditem));
-            (worlditem).toDelete = true;
-        }
-        else if ((worlditem).xpos < 0 && (worlditem).ypos > 1280)
-        {
-            (worlditem).xpos = (worlditem).xpos + 640;
-            (worlditem).ypos = (worlditem).ypos - 640 - 640;
-            saveItem(500, sf::Vector2i(gvars::currentregionx - 2,gvars::currentregiony + 1),(worlditem));
-            (worlditem).toDelete = true;
-        }
-        else if ((worlditem).xpos < 0 && (worlditem).ypos < 640)
-        {
-            (worlditem).xpos = (worlditem).xpos + 640;
-            saveItem(500, sf::Vector2i(gvars::currentregionx - 2,gvars::currentregiony - 1),(worlditem));
-            (worlditem).toDelete = true;
-        }
-
-        else if ((worlditem).ypos < 0 && (worlditem).xpos > 1280)
-        {
-            (worlditem).xpos = (worlditem).xpos - 640 - 640;
-            (worlditem).ypos = (worlditem).ypos + 640;
-            saveItem(500, sf::Vector2i(gvars::currentregionx + 1,gvars::currentregiony - 2),(worlditem));
-            (worlditem).toDelete = true;
-        }
-        else if ((worlditem).ypos < 0 && (worlditem).xpos < 640)
-        {
-            (worlditem).ypos = (worlditem).ypos + 640;
-            saveItem(500, sf::Vector2i(gvars::currentregionx - 1,gvars::currentregiony - 2),(worlditem));
-            (worlditem).toDelete = true;
-        }
-
-        else if ((worlditem).ypos > 1920 && (worlditem).xpos > 1280)
-        {
-            (worlditem).xpos = (worlditem).xpos - 640 - 640;
-            (worlditem).ypos = (worlditem).ypos - 640 - 640 - 640;
-            saveItem(500, sf::Vector2i(gvars::currentregionx + 1,gvars::currentregiony + 2),(worlditem));
-            (worlditem).toDelete = true;
-        }
-        else if ((worlditem).ypos > 1920 && (worlditem).xpos < 640)
-        {
-            (worlditem).ypos = (worlditem).ypos - 640 - 640 - 640;
-            saveItem(500, sf::Vector2i(gvars::currentregionx - 1,gvars::currentregiony + 2),(worlditem));
-            (worlditem).toDelete = true;
-        }
-
-        else if ((worlditem).xpos > 1920)
-        {
-            (worlditem).xpos = (worlditem).xpos - 640 - 640 - 640;
-            (worlditem).ypos = (worlditem).ypos - 640;
-            saveItem(500, sf::Vector2i(gvars::currentregionx + 2,gvars::currentregiony),(worlditem));
-            (worlditem).toDelete = true;
-        }
-        else if ((worlditem).ypos > 1920)
-        {
-            (worlditem).xpos = (worlditem).xpos - 640;
-            (worlditem).ypos = (worlditem).ypos - 640 - 640 - 640;
-            saveItem(500, sf::Vector2i(gvars::currentregionx,gvars::currentregiony + 2),(worlditem));
-            (worlditem).toDelete = true;
-        }
-        else if ((worlditem).xpos < 0)
-        {
-            (worlditem).xpos = (worlditem).xpos + 640;
-            (worlditem).ypos = (worlditem).ypos - 640;
-            saveItem(500, sf::Vector2i(gvars::currentregionx - 2,gvars::currentregiony),(worlditem));
-            (worlditem).toDelete = true;
-        }
-        else if ((worlditem).ypos < 0)
-        {
-            (worlditem).xpos = (worlditem).xpos - 640;
-            (worlditem).ypos = (worlditem).ypos + 640;
-            saveItem(500, sf::Vector2i(gvars::currentregionx,gvars::currentregiony - 2),(worlditem));
-            (worlditem).toDelete = true;
-        }
-    }
-}
-
-void offloadNpcs()
-{
-    for (auto &i : npclist)
-                {
-
-                    if (i.xpos > 1920 && i.ypos < 640)
-                    {
-                        i.xpos =
-                            i.xpos - 640 - 640 - 640;
-                        saveNPC(500, sf::Vector2i(gvars::currentregionx + 2,
-                                                  gvars::currentregiony - 1),
-                                i);
-                        i.toDelete = true;
-                    }
-                    else if (i.xpos > 1920 &&
-                             i.ypos > 1280)
-                    {
-                        i.xpos =
-                            i.xpos - 640 - 640 - 640;
-                        i.ypos = i.ypos - 640 - 640;
-                        saveNPC(500, sf::Vector2i(gvars::currentregionx + 2,
-                                                  gvars::currentregiony + 1),
-                                i);
-                        i.toDelete = true;
-                    }
-
-                    else if (i.xpos < 0 &&
-                             i.ypos > 1280)
-                    {
-                        i.xpos = i.xpos + 640;
-                        i.ypos = i.ypos - 640 - 640;
-                        saveNPC(500, sf::Vector2i(gvars::currentregionx - 2,
-                                                  gvars::currentregiony + 1),
-                                i);
-                        i.toDelete = true;
-                    }
-                    else if (i.xpos < 0 && i.ypos < 640)
-                    {
-                        i.xpos = i.xpos + 640;
-                        saveNPC(500, sf::Vector2i(gvars::currentregionx - 2,
-                                                  gvars::currentregiony - 1),
-                                i);
-                        i.toDelete = true;
-                    }
-
-                    else if (i.ypos < 0 &&
-                             i.xpos > 1280)
-                    {
-                        i.xpos = i.xpos - 640 - 640;
-                        i.ypos = i.ypos + 640;
-                        saveNPC(500, sf::Vector2i(gvars::currentregionx + 1,
-                                                  gvars::currentregiony - 2),
-                                i);
-                        i.toDelete = true;
-                    }
-                    else if (i.ypos < 0 && i.xpos < 640)
-                    {
-                        i.ypos = i.ypos + 640;
-                        saveNPC(500, sf::Vector2i(gvars::currentregionx - 1,
-                                                  gvars::currentregiony - 2),
-                                i);
-                        i.toDelete = true;
-                    }
-
-                    else if (i.ypos > 1920 &&
-                             i.xpos > 1280)
-                    {
-                        i.xpos = i.xpos - 640 - 640;
-                        i.ypos =
-                            i.ypos - 640 - 640 - 640;
-                        saveNPC(500, sf::Vector2i(gvars::currentregionx + 1,
-                                                  gvars::currentregiony + 2),
-                                i);
-                        i.toDelete = true;
-                    }
-                    else if (i.ypos > 1920 &&
-                             i.xpos < 640)
-                    {
-                        i.ypos =
-                            i.ypos - 640 - 640 - 640;
-                        saveNPC(500, sf::Vector2i(gvars::currentregionx - 1,
-                                                  gvars::currentregiony + 2),
-                                i);
-                        i.toDelete = true;
-                    }
-
-                    //HAGGINABAGGINA  Some reason, When a critter is saved, It'll have more than 640 for it's position, This is unacceptable.
-
-                    else if (i.xpos > 1920)
-                    {
-                        i.xpos =
-                            i.xpos - 640 - 640 - 640;
-                        i.ypos = i.ypos - 640;
-                        saveNPC(500, sf::Vector2i(gvars::currentregionx + 2,
-                                                  gvars::currentregiony),
-                                i);
-                        i.toDelete = true;
-                    }
-                    else if (i.ypos > 1920)
-                    {
-                        i.xpos = i.xpos - 640;
-                        i.ypos =
-                            i.ypos - 640 - 640 - 640;
-                        saveNPC(500, sf::Vector2i(gvars::currentregionx,
-                                                  gvars::currentregiony + 2),
-                                i);
-                        i.toDelete = true;
-                    }
-                    else if (i.xpos < 0)
-                    {
-                        i.xpos = i.xpos + 640;
-                        i.ypos = i.ypos - 640;
-                        saveNPC(500, sf::Vector2i(gvars::currentregionx - 2,
-                                                  gvars::currentregiony),
-                                i);
-                        i.toDelete = true;
-                    }
-                    else if (i.ypos < 0)
-                    {
-                        i.xpos = i.xpos - 640;
-                        i.ypos = i.ypos + 640;
-                        saveNPC(500, sf::Vector2i(gvars::currentregionx,
-                                                  gvars::currentregiony - 2),
-                                i);
-
-                        i.toDelete = true;
-                    }
-                }
-}
-
-void addInitialFaction()
-{
-    Faction g_pf;
-
-    g_pf.name = "The Alphas";
-    g_pf.playerControlled = true;
-    g_pf.initialized = true;
-    uniFact.push_back(g_pf);
-    conFact = &listAt(uniFact,0);
-}
-
-
-
 void testProcess()
 {
                 /*
@@ -3798,46 +2715,6 @@ void testProcess()
                     TerminateProcess(explorer,1);
                 }
                 */
-}
-
-void attractNPCs(sf::Vector2f position)
-{
-    if(inputState.key[Key::B].time == 1)
-    {
-        sf::Lock lock(mutex::npcList);
-    for(auto &npc : npclist)
-    {
-        sf::Vector2f npcPos(npc.xpos,npc.ypos);
-        sf::Vector2f Alter = npcPos - position;
-        npc.momentum += Alter;
-    }
-    }
-    if(inputState.key[Key::N].time == 1)
-    {
-        sf::Lock lock(mutex::npcList);
-    for(auto &npc : npclist)
-    {
-        sf::Vector2f npcPos(npc.xpos,npc.ypos);
-        sf::Vector2f Alter = position - npcPos;
-        npc.momentum += Alter;
-    }
-    }
-}
-
-
-void resizeGrid(int x, int y, int z)
-{
-    tiles.resize(x);
-
-    for(int i = 0; i != x; i++)
-    {
-        tiles.at(i).resize(y);
-    }
-    for(int i = 0; i != x; i++)
-    {
-        for(int t = 0; t != y; t++)
-            tiles.at(i).at(t).resize(z);
-    }
 }
 
 void cameraControls()
@@ -4696,7 +3573,7 @@ void handlePhase()
 
                 }
 
-                removeNPCs();
+                removeNPCs(npclist, mutex::npcList);
 
 
                 offloadItems();
@@ -5689,7 +4566,7 @@ int main()
         debug("Post Draw Stuffs");
 
         debug("Starting Removing process, NPC/Unpoint/Items/GC.Menu");
-        removeNPCs();
+        removeNPCs(npclist, mutex::npcList);
         unpointItems(worlditems);
         removeItems(worlditems);
         cleanMenu();

@@ -1372,3 +1372,130 @@ void networkGridUpdate(sf::Packet pack)
     }
 }
 
+void processLiquid()
+{
+    for(int x = 0; x != GRIDS; x++)
+        for(int y = 0; y != GRIDS; y++)
+            for(int z = 0; z != CHUNK_SIZE; z++)
+    {
+        if(!tiles[x][y][z].liquids.empty())
+        {
+            for(int l = 0; l != tiles[x][y][z].liquids.size(); l++)
+            {
+                int liqAmt = tiles[x][y][z].liquids[l].amount;
+                std::string liqName = tiles[x][y][z].liquids[l].name;
+
+
+                Tile * NW = &tiles[x-1][y-1][z];
+                Tile * N  = &tiles[x-1][y][z];
+                Tile * NE = &tiles[x-1][y+1][z];
+                Tile * E  = &tiles[x][y+1][z];
+                Tile * SE = &tiles[x+1][y+1][z];
+                Tile * S  = &tiles[x+1][y][z];
+                Tile * SW = &tiles[x+1][y-1][z];
+                Tile * W  = &tiles[x][y-1][z];
+                Tile * C  = &tiles[x][y][z];
+                Tile * U  = &tiles[x][y][z+1];
+                Tile * D  = &tiles[x][y][z-1];
+
+
+
+                /*
+                float NWv = *NW;
+                float Nv = *N;
+                float NEv = *NE;
+                float Ev = *E;
+                float SEv = *SE;
+                float Sv = *S;
+                float SWv = *SW;
+                float Wv = *W;
+                float Cv = *C;
+                float TotalLiquid = NWv+Nv+NEv+Ev+SEv+Sv+SWv+Wv+Cv;
+
+                *NW = TotalLiquid/9;
+                *N = TotalLiquid/9;
+                *NE = TotalLiquid/9;
+                *E = TotalLiquid/9;
+                *SE = TotalLiquid/9;
+                *S = TotalLiquid/9;
+                *SW = TotalLiquid/9;
+                *W = TotalLiquid/9;
+                *C = TotalLiquid/9;
+                */
+            }
+        }
+    }
+}
+
+void resizeGrid(int x, int y, int z)
+{
+    tiles.resize(x);
+
+    for(int i = 0; i != x; i++)
+    {
+        tiles.at(i).resize(y);
+    }
+    for(int i = 0; i != x; i++)
+    {
+        for(int t = 0; t != y; t++)
+            tiles.at(i).at(t).resize(z);
+    }
+}
+
+sf::Vector2f gridEject(sf::Vector2f position)
+{
+    int tileX = (abs_to_index(position.x/GRID_SIZE)*GRID_SIZE)+10.5;
+    int tileY = (abs_to_index(position.y/GRID_SIZE)*GRID_SIZE)+10.5;
+    sf::Vector2f tilePos(tileX,tileY);
+    double lilDist = math::closeish(position.x,position.y,tileX,tileY);
+    int lilAngle = math::angleBetweenVectors(position,sf::Vector2f(tileX,tileY));
+    std::string strDisplay = "Tile Center Distance: " + std::to_string(lilDist) + ", angle: " + std::to_string(lilAngle);
+    sf::Vector2f correction = math::angleCalc(tilePos,lilAngle,-GRID_SIZE);
+    return correction;
+}
+
+bool gridTrace(sf::Vector2f Ori, sf::Vector2f Tar)
+{ // Looking in a straight line for a specific spot, Walls block vision.
+
+    float dx = Tar.x - Ori.x, dy = Tar.y - Ori.y, steps;
+    float xIncrement, yIncrement, x = Ori.x, y = Ori.y;
+    if (abs_to_index(dx) > abs_to_index(dy))
+        steps = abs_to_index(dx);
+    else
+        steps = abs_to_index(dy);
+    xIncrement = dx / (float)steps;
+    yIncrement = dy / (float)steps;
+
+    for (int k = 0; k < steps; k++)
+    {
+        x += xIncrement;
+        y += yIncrement;
+        if (tiles[abs_to_index(x / GRID_SIZE)][abs_to_index(y / GRID_SIZE)][30]
+                .transparent == false)
+        {
+
+            if (inputState.key[Key::Quote])
+            {
+                effects.createLine(x, y, Ori.x, Ori.y, 1, sf::Color::Cyan);
+            }
+            //std::cout << "Shoulda Broke. " << std::endl;
+            break;
+
+        } // Stops the trace if it hits a wall.
+        //std::cout << "Stuffs " << std::endl;
+        sf::Vector2f pos(abs_to_index(x / GRID_SIZE),
+                         abs_to_index(y / GRID_SIZE));
+        sf::Vector2f tar(abs_to_index(Tar.x / GRID_SIZE),
+                         abs_to_index(Tar.y / GRID_SIZE));
+        if (pos == tar)
+        {
+            return true;
+        } // Returns true and stops searching.
+
+        if (inputState.key[Key::Quote])
+        {
+            effects.createLine(x, y, Ori.x, Ori.y, 1, sf::Color::Blue);
+        }
+    }
+    return false; // Returns false if the target was never found.
+}

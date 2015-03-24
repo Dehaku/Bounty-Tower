@@ -2,6 +2,9 @@
 #define __EFFECTS_H_INCLUDED__
 
 #include <SFML/Graphics.hpp>
+#include "math.h"
+#include "InputState.h"
+#include "globalvars.h"
 
 /* Need to Make
 Kamehame styled beam
@@ -90,5 +93,24 @@ public:
     void drawEffects();
 };
 extern Effects effects;
+
+class Orb
+{
+public:
+    int orbRot;
+    int orbs;
+    int orbSpeed;
+    int orbDistance;
+    sf::Vector2f pos;
+    unsigned int lifeTime;
+    bool toDelete;
+    int type;
+    void updateOrb();
+    void drawOrb(int totalOrbs);
+    Orb();
+};
+extern std::vector<Orb> Orbs;
+
+void purtyOrbitals();
 
 #endif // EFFECTS_H_INCLUDED
