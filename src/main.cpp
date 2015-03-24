@@ -18,6 +18,7 @@
 #include "util.h"
 #include "globalvars.h"
 #include "Networking.h"
+#include "Bullet.h"
 
 #define USE_PATHER
 
@@ -2957,6 +2958,12 @@ void genericLoop()
         gvars::view1.setCenter(gvars::currentx * GRID_SIZE,gvars::currenty * GRID_SIZE);
     }
 
+    for(auto &bullet : bullets)
+    {
+        bullet.moveBullet();
+    }
+    removeBullets();
+
 }
 
 void handleEvents()
@@ -3176,6 +3183,24 @@ void handlePhase()
 
         if (gCtrl.phase == "Local")
         { //=======================================================*Local*============================================================================
+
+            if(inputState.lmbTime > 2)
+            {
+                effects.createLine(gvars::heldClickPos.x,gvars::heldClickPos.y,gvars::mousePos.x,gvars::mousePos.y,3,sf::Color::Yellow);
+
+                std::string outputText = "Speed: " + std::to_string(math::closeish(gvars::heldClickPos.x,gvars::heldClickPos.y,gvars::mousePos.x,gvars::mousePos.y) / 10);
+                textList.createText(gvars::mousePos.x,gvars::mousePos.y,10,sf::Color::Yellow,outputText);
+            }
+            if(!inputState.lmb && gvars::heldClickPos != sf::Vector2f(-1,-1))
+            {
+                Bullet boolet;
+                boolet.pos = Vec3f(gvars::mousePos.x,gvars::mousePos.y,gvars::currentz*GRID_SIZE);
+                boolet.positions.push_back(boolet.pos);
+                boolet.angle = math::angleBetweenVectors(gvars::heldClickPos,gvars::mousePos);
+                boolet.speed = math::closeish(gvars::heldClickPos.x,gvars::heldClickPos.y,gvars::mousePos.x,gvars::mousePos.y) / 10;
+                boolet.lifetime = 600;
+                bullets.push_back(boolet);
+            }
 
             attractNPCs(gvars::mousePos);
 
