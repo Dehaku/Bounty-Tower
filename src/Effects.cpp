@@ -182,3 +182,124 @@ void Effects::drawEffects()
     }
     polygons.clear();
 }
+
+int orbRot = 0;
+int orbs = 1;
+int orbSpeed = 2;
+
+Orb::Orb()
+{
+    orbRot = 0;
+    orbs = 1;
+    orbSpeed = 2;
+    lifeTime = 0;
+    toDelete = false;
+    type = 0;
+}
+
+void Orb::updateOrb()
+    {
+        if(lifeTime <= 0)
+            toDelete = true;
+        lifeTime--;
+
+        orbRot += orbSpeed;
+    }
+
+void Orb::drawOrb(int totalOrbs = 1)
+    {
+
+        int orbSpacing = 360/totalOrbs;
+        if(type == 0)
+        {
+            sf::Vector2f Pos = math::angleCalc(pos,orbRot,orbDistance);
+            effects.createCircle(Pos.x,Pos.y,3,sf::Color::White,1,sf::Color::Cyan);
+            //textList.createText(Pos.x,Pos.y,10,sf::Color::White,std::to_string(lifeTime) + "/" + std::to_string(toDelete));
+        }
+        else if(type == 1)
+        {
+            sf::Vector2f Pos = math::angleCalc(pos,orbRot,(orbSpacing % 360));
+            effects.createCircle(Pos.x,Pos.y,3,sf::Color::White,1,sf::Color::Red);
+        }
+        else if(type == 2)
+        {
+            sf::Vector2f Pos;
+            if(orbRot < 360)
+                Pos = math::angleCalc(pos,orbRot,(-(orbRot-180) + 180));
+            if(orbRot < 270)
+                Pos = math::angleCalc(pos,orbRot,(orbRot-180));
+            if(orbRot < 180)
+                Pos = math::angleCalc(pos,orbRot,(-orbRot + 180));
+            if(orbRot < 90)
+                Pos = math::angleCalc(pos,orbRot,(orbRot));
+            effects.createCircle(Pos.x,Pos.y,3,sf::Color::White,1,sf::Color::Yellow);
+        }
+        else if(type == 3)
+        {
+            sf::Vector2f Pos = math::angleCalc(pos,orbRot,(sin(orbRot * PI / 180) * 45) + (cos(orbRot * PI / 180)*45) );
+            effects.createCircle(Pos.x,Pos.y,3,sf::Color::White,1,sf::Color::Green);
+        }
+
+    }
+
+
+
+
+std::vector<Orb> Orbs;
+
+
+
+void purtyOrbitals()
+{
+    orbRot += orbSpeed;
+    if(orbRot >= 360)
+        orbRot = 0;
+    if(inputState.key[Key::I].time == 1)
+        orbSpeed++;
+    if(inputState.key[Key::K].time == 1)
+        orbSpeed--;
+    if(inputState.key[Key::L].time == 1)
+        orbs++;
+    if(inputState.key[Key::J].time == 1)
+        orbs--;
+    if(orbs < 1)
+        orbs = 1;
+
+    int orbSpacing = 360/orbs;
+    for(int i = 0; i != orbs; i++)
+    {
+        sf::Vector2f Pos = math::angleCalc(gvars::mousePos,orbRot+(orbSpacing*i),30);
+        effects.createCircle(Pos.x,Pos.y,3,sf::Color::White,1,sf::Color::Cyan);
+    }
+    for(int i = 0; i != orbs; i++)
+    {
+        sf::Vector2f Pos = math::angleCalc(gvars::mousePos,orbRot+(orbSpacing*i),(orbSpacing % 360));
+        effects.createCircle(Pos.x,Pos.y,3,sf::Color::White,1,sf::Color::Red);
+    }
+    for(int i = 0; i != orbs; i++)
+    {
+        sf::Vector2f Pos;
+        if(orbRot < 360)
+            Pos = math::angleCalc(gvars::mousePos,orbRot+(orbSpacing*i),(-(orbRot-180) + 180));
+        if(orbRot < 270)
+            Pos = math::angleCalc(gvars::mousePos,orbRot+(orbSpacing*i),(orbRot-180));
+        if(orbRot < 180)
+            Pos = math::angleCalc(gvars::mousePos,orbRot+(orbSpacing*i),(-orbRot + 180));
+        if(orbRot < 90)
+            Pos = math::angleCalc(gvars::mousePos,orbRot+(orbSpacing*i),(orbRot));
+        effects.createCircle(Pos.x,Pos.y,3,sf::Color::White,1,sf::Color::Yellow);
+    }
+    for(int i = 0; i != orbs; i++)
+    {
+        sf::Vector2f Pos = math::angleCalc(gvars::mousePos,orbRot+(orbSpacing*i),(cos(orbRot * PI / 180) * 45) + (cos(orbRot * PI / 180)*45) );
+        effects.createCircle(Pos.x,Pos.y,3,sf::Color::White,1,sf::Color::Green);
+    }
+    for(int i = 0; i != orbs; i++)
+    {
+        sf::Vector2f Pos = math::angleCalc(gvars::mousePos,orbRot+(orbSpacing*i),30+(cos(orbRot * PI / 180)*15) );
+        effects.createCircle(Pos.x,Pos.y,3,sf::Color::White,1,sf::Color::Blue);
+    }
+}
+
+
+

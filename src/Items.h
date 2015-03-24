@@ -4,8 +4,10 @@
 #include <list>
 
 #include <SFML/Graphics.hpp>
+#include "Text.h"
 
 class Npc;
+
 class Item
 {
 public:
@@ -141,5 +143,6 @@ Item *getItemPtrfromVectorVarSearch(std::list<Item> &vector,
                                     std::string varSearch, float atLeast = 1);
 Item *findClosestItemPtr(int orix, int oriy, std::string tarItem, int Gxpos = 0,
                          int Gypos = 0, int Rxpos = 0, int Rypos = 0);
-
+void offloadItems();
+void hoverItemIDdisplay();
 #endif // ITEMS_H_INCLUDED

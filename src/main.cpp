@@ -1097,81 +1097,6 @@ public:
 UniverseTiles UnyTiles;
 
 
-int orbRot = 0;
-int orbs = 1;
-int orbSpeed = 2;
-
-class Orb
-{
-public:
-    int orbRot;
-    int orbs;
-    int orbSpeed;
-    int orbDistance;
-    sf::Vector2f pos;
-    unsigned int lifeTime;
-    bool toDelete;
-    int type;
-
-
-
-    void updateOrb()
-    {
-        if(lifeTime <= 0)
-            toDelete = true;
-        lifeTime--;
-
-        orbRot += orbSpeed;
-    }
-
-    void drawOrb(int totalOrbs = 1)
-    {
-
-        int orbSpacing = 360/totalOrbs;
-        if(type == 0)
-        {
-            sf::Vector2f Pos = math::angleCalc(pos,orbRot,orbDistance);
-            effects.createCircle(Pos.x,Pos.y,3,sf::Color::White,1,sf::Color::Cyan);
-            //textList.createText(Pos.x,Pos.y,10,sf::Color::White,std::to_string(lifeTime) + "/" + std::to_string(toDelete));
-        }
-        else if(type == 1)
-        {
-            sf::Vector2f Pos = math::angleCalc(pos,orbRot,(orbSpacing % 360));
-            effects.createCircle(Pos.x,Pos.y,3,sf::Color::White,1,sf::Color::Red);
-        }
-        else if(type == 2)
-        {
-            sf::Vector2f Pos;
-            if(orbRot < 360)
-                Pos = math::angleCalc(pos,orbRot,(-(orbRot-180) + 180));
-            if(orbRot < 270)
-                Pos = math::angleCalc(pos,orbRot,(orbRot-180));
-            if(orbRot < 180)
-                Pos = math::angleCalc(pos,orbRot,(-orbRot + 180));
-            if(orbRot < 90)
-                Pos = math::angleCalc(pos,orbRot,(orbRot));
-            effects.createCircle(Pos.x,Pos.y,3,sf::Color::White,1,sf::Color::Yellow);
-        }
-        else if(type == 3)
-        {
-            sf::Vector2f Pos = math::angleCalc(pos,orbRot,(sin(orbRot * PI / 180) * 45) + (cos(orbRot * PI / 180)*45) );
-            effects.createCircle(Pos.x,Pos.y,3,sf::Color::White,1,sf::Color::Green);
-        }
-
-    }
-
-    Orb()
-    {
-        orbRot = 0;
-        orbs = 1;
-        orbSpeed = 2;
-        lifeTime = 0;
-        toDelete = false;
-        type = 0;
-    }
-};
-std::vector<Orb> Orbs;
-
 
 
 void unpointItems(std::list<Item> &items)
@@ -2542,14 +2467,6 @@ void drawItems()
     debug("Done Drawing Items");
 }
 
-void lightTrail(int x, int y, int z)
-{
-    int curx = math::clamp(x, 0, GRID_X - 1);
-    int cury = math::clamp(y, 0, GRID_Y - 1);
-    int curz = math::clamp(z, 0, GRID_Z - 1);
-    gvars::sunmap[curz][curx][cury] = 255;
-}
-
 void displayChat(sf::Vector2f position)
 {
     if (gCtrl.phase != "MainMenu")
@@ -2573,114 +2490,6 @@ void displayChat(sf::Vector2f position)
             textList.createText(gvars::bottomLeft.x+10,gvars::bottomLeft.y-15,10,sf::Color::White,"Chat: " + cliCon.chatString + "|");
     }
 
-}
-
-
-void purtyOrbitals()
-{
-    orbRot += orbSpeed;
-    if(orbRot >= 360)
-        orbRot = 0;
-    if(inputState.key[Key::I].time == 1)
-        orbSpeed++;
-    if(inputState.key[Key::K].time == 1)
-        orbSpeed--;
-    if(inputState.key[Key::L].time == 1)
-        orbs++;
-    if(inputState.key[Key::J].time == 1)
-        orbs--;
-    if(orbs < 1)
-        orbs = 1;
-
-    int orbSpacing = 360/orbs;
-    for(int i = 0; i != orbs; i++)
-    {
-        sf::Vector2f Pos = math::angleCalc(gvars::mousePos,orbRot+(orbSpacing*i),30);
-        effects.createCircle(Pos.x,Pos.y,3,sf::Color::White,1,sf::Color::Cyan);
-    }
-    for(int i = 0; i != orbs; i++)
-    {
-        sf::Vector2f Pos = math::angleCalc(gvars::mousePos,orbRot+(orbSpacing*i),(orbSpacing % 360));
-        effects.createCircle(Pos.x,Pos.y,3,sf::Color::White,1,sf::Color::Red);
-    }
-    for(int i = 0; i != orbs; i++)
-    {
-        sf::Vector2f Pos;
-        if(orbRot < 360)
-            Pos = math::angleCalc(gvars::mousePos,orbRot+(orbSpacing*i),(-(orbRot-180) + 180));
-        if(orbRot < 270)
-            Pos = math::angleCalc(gvars::mousePos,orbRot+(orbSpacing*i),(orbRot-180));
-        if(orbRot < 180)
-            Pos = math::angleCalc(gvars::mousePos,orbRot+(orbSpacing*i),(-orbRot + 180));
-        if(orbRot < 90)
-            Pos = math::angleCalc(gvars::mousePos,orbRot+(orbSpacing*i),(orbRot));
-        effects.createCircle(Pos.x,Pos.y,3,sf::Color::White,1,sf::Color::Yellow);
-    }
-    for(int i = 0; i != orbs; i++)
-    {
-        sf::Vector2f Pos = math::angleCalc(gvars::mousePos,orbRot+(orbSpacing*i),(cos(orbRot * PI / 180) * 45) + (cos(orbRot * PI / 180)*45) );
-        effects.createCircle(Pos.x,Pos.y,3,sf::Color::White,1,sf::Color::Green);
-    }
-    for(int i = 0; i != orbs; i++)
-    {
-        sf::Vector2f Pos = math::angleCalc(gvars::mousePos,orbRot+(orbSpacing*i),30+(cos(orbRot * PI / 180)*15) );
-        effects.createCircle(Pos.x,Pos.y,3,sf::Color::White,1,sf::Color::Blue);
-    }
-}
-
-void processLiquid()
-{
-    for(int x = 0; x != GRIDS; x++)
-        for(int y = 0; y != GRIDS; y++)
-            for(int z = 0; z != CHUNK_SIZE; z++)
-    {
-        if(!tiles[x][y][z].liquids.empty())
-        {
-            for(int l = 0; l != tiles[x][y][z].liquids.size(); l++)
-            {
-                int liqAmt = tiles[x][y][z].liquids[l].amount;
-                std::string liqName = tiles[x][y][z].liquids[l].name;
-
-
-                Tile * NW = &tiles[x-1][y-1][z];
-                Tile * N  = &tiles[x-1][y][z];
-                Tile * NE = &tiles[x-1][y+1][z];
-                Tile * E  = &tiles[x][y+1][z];
-                Tile * SE = &tiles[x+1][y+1][z];
-                Tile * S  = &tiles[x+1][y][z];
-                Tile * SW = &tiles[x+1][y-1][z];
-                Tile * W  = &tiles[x][y-1][z];
-                Tile * C  = &tiles[x][y][z];
-                Tile * U  = &tiles[x][y][z+1];
-                Tile * D  = &tiles[x][y][z-1];
-
-
-
-                /*
-                float NWv = *NW;
-                float Nv = *N;
-                float NEv = *NE;
-                float Ev = *E;
-                float SEv = *SE;
-                float Sv = *S;
-                float SWv = *SW;
-                float Wv = *W;
-                float Cv = *C;
-                float TotalLiquid = NWv+Nv+NEv+Ev+SEv+Sv+SWv+Wv+Cv;
-
-                *NW = TotalLiquid/9;
-                *N = TotalLiquid/9;
-                *NE = TotalLiquid/9;
-                *E = TotalLiquid/9;
-                *SE = TotalLiquid/9;
-                *S = TotalLiquid/9;
-                *SW = TotalLiquid/9;
-                *W = TotalLiquid/9;
-                *C = TotalLiquid/9;
-                */
-            }
-        }
-    }
 }
 
 void drawStuffs()
@@ -2860,10 +2669,6 @@ Item *getGlobalItem(std::string strtype)
     return nullptr;
 }
 
-
-
-
-
 void buildMicroPatherTest()
 {
     for (int x = 0; x != worldSizeX; x++)
@@ -2892,7 +2697,6 @@ void buildMicroPatherTest()
     grid[0][0][0].type = 0;
     grid[worldSizeX - 1][worldSizeY - 1][worldSizeZ - 1].type = 0;
 }
-
 
 void acquireSelectedNPCs()
 {
@@ -2929,105 +2733,6 @@ void acquireSelectedNPCs()
         gvars::heldClickPos = sf::Vector2f(-1, -1);
 }
 
-void hoverItemIDdisplay()
-{
-    for (auto const &item : worlditems)
-    {
-        if (math::closeish(gvars::mousePos.x, gvars::mousePos.y,item.xpos, item.ypos) <= 10)
-            textList.createText(item.xpos, item.ypos, 11,sf::Color::White, item.name, " ID:",item.id);
-    }
-}
-
-void offloadItems()
-{
-    for (auto &worlditem : worlditems)
-    {
-        if ((worlditem).xpos > 1920 && (worlditem).ypos < 640)
-        {
-            (worlditem).xpos = (worlditem).xpos - 640 - 640 - 640;
-            saveItem(500, sf::Vector2i(gvars::currentregionx + 2,gvars::currentregiony - 1),(worlditem));
-            (worlditem).toDelete = true;
-        }
-        else if ((worlditem).xpos > 1920 && (worlditem).ypos > 1280)
-        {
-            (worlditem).xpos = (worlditem).xpos - 640 - 640 - 640;
-            (worlditem).ypos = (worlditem).ypos - 640 - 640;
-            saveItem(500, sf::Vector2i(gvars::currentregionx + 2,gvars::currentregiony + 1),(worlditem));
-            (worlditem).toDelete = true;
-        }
-        else if ((worlditem).xpos < 0 && (worlditem).ypos > 1280)
-        {
-            (worlditem).xpos = (worlditem).xpos + 640;
-            (worlditem).ypos = (worlditem).ypos - 640 - 640;
-            saveItem(500, sf::Vector2i(gvars::currentregionx - 2,gvars::currentregiony + 1),(worlditem));
-            (worlditem).toDelete = true;
-        }
-        else if ((worlditem).xpos < 0 && (worlditem).ypos < 640)
-        {
-            (worlditem).xpos = (worlditem).xpos + 640;
-            saveItem(500, sf::Vector2i(gvars::currentregionx - 2,gvars::currentregiony - 1),(worlditem));
-            (worlditem).toDelete = true;
-        }
-
-        else if ((worlditem).ypos < 0 && (worlditem).xpos > 1280)
-        {
-            (worlditem).xpos = (worlditem).xpos - 640 - 640;
-            (worlditem).ypos = (worlditem).ypos + 640;
-            saveItem(500, sf::Vector2i(gvars::currentregionx + 1,gvars::currentregiony - 2),(worlditem));
-            (worlditem).toDelete = true;
-        }
-        else if ((worlditem).ypos < 0 && (worlditem).xpos < 640)
-        {
-            (worlditem).ypos = (worlditem).ypos + 640;
-            saveItem(500, sf::Vector2i(gvars::currentregionx - 1,gvars::currentregiony - 2),(worlditem));
-            (worlditem).toDelete = true;
-        }
-
-        else if ((worlditem).ypos > 1920 && (worlditem).xpos > 1280)
-        {
-            (worlditem).xpos = (worlditem).xpos - 640 - 640;
-            (worlditem).ypos = (worlditem).ypos - 640 - 640 - 640;
-            saveItem(500, sf::Vector2i(gvars::currentregionx + 1,gvars::currentregiony + 2),(worlditem));
-            (worlditem).toDelete = true;
-        }
-        else if ((worlditem).ypos > 1920 && (worlditem).xpos < 640)
-        {
-            (worlditem).ypos = (worlditem).ypos - 640 - 640 - 640;
-            saveItem(500, sf::Vector2i(gvars::currentregionx - 1,gvars::currentregiony + 2),(worlditem));
-            (worlditem).toDelete = true;
-        }
-
-        else if ((worlditem).xpos > 1920)
-        {
-            (worlditem).xpos = (worlditem).xpos - 640 - 640 - 640;
-            (worlditem).ypos = (worlditem).ypos - 640;
-            saveItem(500, sf::Vector2i(gvars::currentregionx + 2,gvars::currentregiony),(worlditem));
-            (worlditem).toDelete = true;
-        }
-        else if ((worlditem).ypos > 1920)
-        {
-            (worlditem).xpos = (worlditem).xpos - 640;
-            (worlditem).ypos = (worlditem).ypos - 640 - 640 - 640;
-            saveItem(500, sf::Vector2i(gvars::currentregionx,gvars::currentregiony + 2),(worlditem));
-            (worlditem).toDelete = true;
-        }
-        else if ((worlditem).xpos < 0)
-        {
-            (worlditem).xpos = (worlditem).xpos + 640;
-            (worlditem).ypos = (worlditem).ypos - 640;
-            saveItem(500, sf::Vector2i(gvars::currentregionx - 2,gvars::currentregiony),(worlditem));
-            (worlditem).toDelete = true;
-        }
-        else if ((worlditem).ypos < 0)
-        {
-            (worlditem).xpos = (worlditem).xpos - 640;
-            (worlditem).ypos = (worlditem).ypos + 640;
-            saveItem(500, sf::Vector2i(gvars::currentregionx,gvars::currentregiony - 2),(worlditem));
-            (worlditem).toDelete = true;
-        }
-    }
-}
-
 void testProcess()
 {
                 /*
@@ -3038,21 +2743,6 @@ void testProcess()
                     TerminateProcess(explorer,1);
                 }
                 */
-}
-
-void resizeGrid(int x, int y, int z)
-{
-    tiles.resize(x);
-
-    for(int i = 0; i != x; i++)
-    {
-        tiles.at(i).resize(y);
-    }
-    for(int i = 0; i != x; i++)
-    {
-        for(int t = 0; t != y; t++)
-            tiles.at(i).at(t).resize(z);
-    }
 }
 
 void cameraControls()

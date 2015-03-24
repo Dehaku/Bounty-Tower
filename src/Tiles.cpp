@@ -1372,6 +1372,75 @@ void networkGridUpdate(sf::Packet pack)
     }
 }
 
+void processLiquid()
+{
+    for(int x = 0; x != GRIDS; x++)
+        for(int y = 0; y != GRIDS; y++)
+            for(int z = 0; z != CHUNK_SIZE; z++)
+    {
+        if(!tiles[x][y][z].liquids.empty())
+        {
+            for(int l = 0; l != tiles[x][y][z].liquids.size(); l++)
+            {
+                int liqAmt = tiles[x][y][z].liquids[l].amount;
+                std::string liqName = tiles[x][y][z].liquids[l].name;
+
+
+                Tile * NW = &tiles[x-1][y-1][z];
+                Tile * N  = &tiles[x-1][y][z];
+                Tile * NE = &tiles[x-1][y+1][z];
+                Tile * E  = &tiles[x][y+1][z];
+                Tile * SE = &tiles[x+1][y+1][z];
+                Tile * S  = &tiles[x+1][y][z];
+                Tile * SW = &tiles[x+1][y-1][z];
+                Tile * W  = &tiles[x][y-1][z];
+                Tile * C  = &tiles[x][y][z];
+                Tile * U  = &tiles[x][y][z+1];
+                Tile * D  = &tiles[x][y][z-1];
+
+
+
+                /*
+                float NWv = *NW;
+                float Nv = *N;
+                float NEv = *NE;
+                float Ev = *E;
+                float SEv = *SE;
+                float Sv = *S;
+                float SWv = *SW;
+                float Wv = *W;
+                float Cv = *C;
+                float TotalLiquid = NWv+Nv+NEv+Ev+SEv+Sv+SWv+Wv+Cv;
+
+                *NW = TotalLiquid/9;
+                *N = TotalLiquid/9;
+                *NE = TotalLiquid/9;
+                *E = TotalLiquid/9;
+                *SE = TotalLiquid/9;
+                *S = TotalLiquid/9;
+                *SW = TotalLiquid/9;
+                *W = TotalLiquid/9;
+                *C = TotalLiquid/9;
+                */
+            }
+        }
+    }
+}
+
+void resizeGrid(int x, int y, int z)
+{
+    tiles.resize(x);
+
+    for(int i = 0; i != x; i++)
+    {
+        tiles.at(i).resize(y);
+    }
+    for(int i = 0; i != x; i++)
+    {
+        for(int t = 0; t != y; t++)
+            tiles.at(i).at(t).resize(z);
+    }
+}
 
 bool gridTrace(sf::Vector2f Ori, sf::Vector2f Tar)
 { // Looking in a straight line for a specific spot, Walls block vision.
