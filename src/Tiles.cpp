@@ -1442,6 +1442,18 @@ void resizeGrid(int x, int y, int z)
     }
 }
 
+sf::Vector2f gridEject(sf::Vector2f position)
+{
+    int tileX = (abs_to_index(position.x/GRID_SIZE)*GRID_SIZE)+10.5;
+    int tileY = (abs_to_index(position.y/GRID_SIZE)*GRID_SIZE)+10.5;
+    sf::Vector2f tilePos(tileX,tileY);
+    double lilDist = math::closeish(position.x,position.y,tileX,tileY);
+    int lilAngle = math::angleBetweenVectors(position,sf::Vector2f(tileX,tileY));
+    std::string strDisplay = "Tile Center Distance: " + std::to_string(lilDist) + ", angle: " + std::to_string(lilAngle);
+    sf::Vector2f correction = math::angleCalc(tilePos,lilAngle,-GRID_SIZE);
+    return correction;
+}
+
 bool gridTrace(sf::Vector2f Ori, sf::Vector2f Tar)
 { // Looking in a straight line for a specific spot, Walls block vision.
 

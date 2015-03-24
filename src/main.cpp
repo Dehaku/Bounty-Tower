@@ -1401,13 +1401,6 @@ std::vector<int> nngTrace(int xa, int ya, int xb, int yb, int id,
     return vectorID;
 }
 
-
-
-
-
-
-
-
 bool gridposTrace(int xa, int ya, int xb, int yb, int id, sf::Vector2f target)
 { // Looking in a straight line for a specific spot, Walls block vision.
 
@@ -1625,28 +1618,12 @@ std::set<int> npcList(int exceptions = -1)
     throw std::runtime_error("NpcList: Couldn't return anything!");
 }
 
-
-
-sf::Vector2f gridEject(sf::Vector2f position)
-{
-    int tileX = (abs_to_index(position.x/GRID_SIZE)*GRID_SIZE)+10.5;
-    int tileY = (abs_to_index(position.y/GRID_SIZE)*GRID_SIZE)+10.5;
-    sf::Vector2f tilePos(tileX,tileY);
-    double lilDist = math::closeish(position.x,position.y,tileX,tileY);
-    int lilAngle = math::angleBetweenVectors(position,sf::Vector2f(tileX,tileY));
-    std::string strDisplay = "Tile Center Distance: " + std::to_string(lilDist) + ", angle: " + std::to_string(lilAngle);
-    sf::Vector2f correction = math::angleCalc(tilePos,lilAngle,-GRID_SIZE);
-    return correction;
-}
-
 struct entityvectorpointercontainer
 {
     std::set<Item*> items;
     std::set<Npc*> npcs;
     std::set<Tile*> tiles;
 };
-
-
 
 entityvectorpointercontainer entityTrace(Vec3 Ori, Vec3 Tar) /* TODO: Improve this to use Z axis as well, or find new formula that can. THERE ARE NONE, GRAAAAH*/
 { // Looking in a straight line for a specific spot, Walls block vision.
@@ -1705,9 +1682,6 @@ entityvectorpointercontainer entityTrace(Vec3 Ori, Vec3 Tar) /* TODO: Improve th
     }
     return EVPC;
 }
-
-
-
 
 void critterBrain(Npc &npc, std::list<Npc> &container)
 {
@@ -2366,8 +2340,6 @@ ReDesire:
     removeItems(npc.inventory);
     debug("endCritterbrain2");
 }
-
-
 
 void critterBrain(std::list<Npc> &npcs)
 {
