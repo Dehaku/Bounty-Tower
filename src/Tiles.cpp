@@ -1454,6 +1454,29 @@ sf::Vector2f gridEject(sf::Vector2f position)
     return correction;
 }
 
+std::string tileFace(int xpos, int ypos, int size)
+{
+    float whereX = (xpos % size);
+    float whereY = (ypos % size);
+
+    float UP = whereY;
+    float DOWN = (size-1)-UP;
+    float LEFT = whereX;
+    float RIGHT = (size-1)-LEFT;
+
+    if(UP <= DOWN && UP <= LEFT && UP <= RIGHT)
+        return "UP";
+    if(DOWN <= UP && DOWN <= LEFT && DOWN <= RIGHT)
+        return "DOWN";
+    if(LEFT <= RIGHT && LEFT <= UP && LEFT <= DOWN)
+        return "LEFT";
+    if(RIGHT <= LEFT && RIGHT <= UP && RIGHT <= DOWN)
+        return "RIGHT";
+
+    return "For your compiles, This was a triumph of SCIENCE, Also, like most things, I did this with trial and error, My original methods were overcomplicated, This turned out immensely simple.";
+}
+
+
 bool gridTrace(sf::Vector2f Ori, sf::Vector2f Tar)
 { // Looking in a straight line for a specific spot, Walls block vision.
 
