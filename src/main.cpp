@@ -3202,6 +3202,11 @@ void predictBullet(Bullet bullet)
     }
 }
 
+float Magnitude(Vec3f v1)
+{
+	return sqrt(pow(v1.x, 2) + pow(v1.y, 2) + pow(v1.z, 2)); //return the magnitude (pythagoras)
+}
+
 void handlePhase()
 {
 
@@ -3279,6 +3284,10 @@ void handlePhase()
                 effects.createLine(gvars::heldClickPos.x,gvars::heldClickPos.y,gvars::mousePos.x,gvars::mousePos.y,3,sf::Color::Yellow);
 
                 std::string outputText = "Speed: " + std::to_string(math::closeish(gvars::heldClickPos.x,gvars::heldClickPos.y,gvars::mousePos.x,gvars::mousePos.y) / 10);
+                //Vec3f velo((gvars::heldClickPos.x - gvars::mousePos.x)/10,(gvars::heldClickPos.y - gvars::mousePos.y)/10 );
+
+                //std::string outputText = "Magnitude: " + std::to_string(Magnitude(velo));
+
                 textList.createText(gvars::mousePos.x,gvars::mousePos.y,10,sf::Color::Yellow,outputText);
 
                 Bullet boolet;
@@ -3288,15 +3297,21 @@ void handlePhase()
                 boolet.speed = math::closeish(gvars::heldClickPos.x,gvars::heldClickPos.y,gvars::mousePos.x,gvars::mousePos.y) / 10;
                 boolet.lifetime = 600;
 
-                predictBullet(boolet);
+
+                //predictBullet(boolet);
             }
             if(!inputState.lmb && gvars::heldClickPos != sf::Vector2f(-1,-1))
             {
                 Bullet boolet;
-                boolet.pos = Vec3f(gvars::mousePos.x,gvars::mousePos.y,gvars::currentz*GRID_SIZE);
+                boolet.pos = Vec3f(gvars::heldClickPos.x,gvars::heldClickPos.y,gvars::currentz*GRID_SIZE);
                 boolet.positions.push_back(boolet.pos);
                 boolet.angle = math::angleBetweenVectors(gvars::heldClickPos,gvars::mousePos);
+                Vec3f velo((gvars::heldClickPos.x - gvars::mousePos.x)/10,(gvars::heldClickPos.y - gvars::mousePos.y)/10 );
+                boolet.velocity = velo;
+
+
                 boolet.speed = math::closeish(gvars::heldClickPos.x,gvars::heldClickPos.y,gvars::mousePos.x,gvars::mousePos.y) / 10;
+                //boolet.speed = 0;
                 boolet.lifetime = 600;
                 bullets.push_back(boolet);
                 if(inputState.key[Key::LShift])

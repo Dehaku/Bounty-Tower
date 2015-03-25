@@ -35,25 +35,85 @@ void Bullet::moveBullet()
             predictions.push_back(predPos);
     }
 
-    for(int i = 0; i != speed; i++)
+
+    if(true == false)
     {
+        //sf::Vector2f newPos = math::angleCalc(sf::Vector2f(pos.x,pos.y),angle,1);
+        sf::Vector2f newPos = sf::Vector2f(pos.x + velocity.x, pos.y + velocity.y);//math::angleCalc(sf::Vector2f(pos.x,pos.y),angle,1);
+        pos = Vec3f(newPos.x,newPos.y,pos.z);
+        effects.createCircle(pos.x,pos.y,3,sf::Color(150,150,150),1,sf::Color(0,0,0));
+
+        if(aabb(pos.x,pos.y,20,1900,20,1900) &&
+           !tiles[abs_to_index(pos.x/GRID_SIZE)][abs_to_index(pos.y/GRID_SIZE)][abs_to_index(pos.z/GRID_SIZE)].walkable)
+        {
+
+            Vec3f tempPos(positions[positions.size()-1]);
+            Vec3f tempVelocity(pos.x - tempPos.x, pos.y - tempPos.y, pos.z - tempPos.z);
+            //Vec3f tempVelocity(tempPos.x - pos.x, tempPos.y - pos.y, tempPos.z - pos.z);
+
+            std::string Face = tileFace(pos.x,pos.y,GRID_SIZE);
+            if(Face == "UP" || Face == "DOWN")
+                velocity.y = -velocity.y;
+                //faceAngle = -90;
+            if(Face == "LEFT" || Face == "RIGHT")
+                velocity.x = -velocity.x;
+
+            positions.push_back(pos);
+        }
+    }
+
+    for(int i = 0; i != speed; i++)
+
+    {
+        //int i = 0;
         sf::Vector2f newPos = math::angleCalc(sf::Vector2f(pos.x,pos.y),angle,1);
         pos = Vec3f(newPos.x,newPos.y,pos.z);
         effects.createCircle(pos.x,pos.y,3,sf::Color(150,150,150),1,sf::Color(0,0,0));
 
-        if(!tiles[abs_to_index(pos.x/GRID_SIZE)][abs_to_index(pos.y/GRID_SIZE)][abs_to_index(pos.z/GRID_SIZE)].walkable)
+        if(aabb(pos.x,pos.y,20,1900,20,1900) &&
+           !tiles[abs_to_index(pos.x/GRID_SIZE)][abs_to_index(pos.y/GRID_SIZE)][abs_to_index(pos.z/GRID_SIZE)].walkable)
         {
+            Vec3f tempPos(positions[positions.size()-1]);
+            Vec3f secondVelo(tempPos.x - pos.x, tempPos.y - pos.y, tempPos.z - pos.z);
+            Vec3f secondPos(tempPos.x + secondVelo.x, tempPos.y + secondVelo.y);
+
+            Vec3f tempVelocity(pos.x - secondPos.x, pos.y - secondPos.y, pos.z - secondPos.z);
+            //Vec3f tempVelocity(tempPos.x - pos.x, tempPos.y - pos.y, tempPos.z - pos.z);
+
+
             int faceAngle;
             std::string Face = tileFace(pos.x,pos.y,GRID_SIZE);
             if(Face == "UP" || Face == "DOWN")
-                faceAngle = -90;
-            if(Face == "LEFT" || Face == "RIGHT")
-                faceAngle = 90;
+                tempVelocity.y = -tempVelocity.y;
+                //faceAngle = -90;
+            else if(Face == "LEFT" || Face == "RIGHT")
+                tempVelocity.x = -tempVelocity.x;
 
-            std::cout << "Approach Angle: " << angle << ", Collision Angle: " << faceAngle << std::endl;
-            std::cout << "Theoretical Angles, 1:" << math::constrainAngle(angle+faceAngle) << ", 2: " << math::constrainAngle(angle+(-faceAngle)) << std::endl;
-            std::cout << Face << " BOING! \n";
-            angle = math::constrainAngle(angle+faceAngle);
+            std::cout << Face << std::endl;
+                //faceAngle = 90;
+            //tempPos += tempVelocity;
+            effects.createLine(tempPos.x,tempPos.y,pos.x,pos.y,1,sf::Color::Red);
+
+            tempPos.x += tempVelocity.x;
+            tempPos.y += tempVelocity.y;
+            tempPos.z += tempVelocity.z;
+
+
+            /*
+            pos.x += tempVelocity.x;
+            pos.y += tempVelocity.y;
+            pos.z += tempVelocity.z;
+            */
+
+            effects.createLine(tempPos.x,tempPos.y,pos.x,pos.y,1,sf::Color::Red);
+
+            //angle = math::constrainAngle(angle + math::angleBetweenVectors(newPos,sf::Vector2f(tempPos.x,tempPos.y)));
+            angle = math::constrainAngle(math::angleBetweenVectors(newPos,sf::Vector2f(tempPos.x,tempPos.y)));
+
+
+            effects.createCircle(tempPos.x,tempPos.y,3,sf::Color::Red,1,sf::Color(0,0,0));
+
+            //angle = math::constrainAngle(angle+faceAngle);
             positions.push_back(pos);
         }
     }

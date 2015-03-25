@@ -10,6 +10,7 @@ class Bullet
 {
 public:
     Vec3f pos;
+    Vec3f velocity;
     std::vector<Vec3f> positions;
     float angle;
     int speed;
