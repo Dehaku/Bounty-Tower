@@ -12,7 +12,7 @@ public:
     Vec3f pos;
     Vec3f velocity;
     std::vector<Vec3f> positions;
-    float angle;
+    double angle;
     int speed;
     int lifetime;
     int penetration;

@@ -3152,9 +3152,9 @@ void handleEvents()
 
 void predictBullet(Bullet bullet)
 {
-    std::vector<Vec3f> predictions;
+    std::vector<Vec3f> predictions = bullet.positions;
     Vec3f predPos = bullet.pos;
-    float predAngle = bullet.angle;
+    double predAngle = bullet.angle;
     for(int z = 0; z != bullet.lifetime; z++)
     {
         for(int i = 0; i != bullet.speed; i++)
@@ -3162,17 +3162,27 @@ void predictBullet(Bullet bullet)
             sf::Vector2f newPos = math::angleCalc(sf::Vector2f(predPos.x,predPos.y),predAngle,1);
             predPos = Vec3f(newPos.x,newPos.y,predPos.z);
 
+
             if(aabb(predPos.x,predPos.y,20,1900,20,1900))
                 if(!tiles[abs_to_index(predPos.x/GRID_SIZE)][abs_to_index(predPos.y/GRID_SIZE)][abs_to_index(predPos.z/GRID_SIZE)].walkable)
             {
-                int faceAngle;
+                Vec3f tempPos(predictions[predictions.size()-1]);
+                Vec3f secondVelo(tempPos.x - predPos.x, tempPos.y - predPos.y, tempPos.z - predPos.z);
+                Vec3f secondPos(tempPos.x + secondVelo.x, tempPos.y + secondVelo.y);
+
+                Vec3f tempVelocity(predPos.x - secondPos.x, predPos.y - secondPos.y, predPos.z - secondPos.z);
+
                 std::string Face = tileFace(predPos.x,predPos.y,GRID_SIZE);
                 if(Face == "UP" || Face == "DOWN")
-                    faceAngle = -90;
-                if(Face == "LEFT" || Face == "RIGHT")
-                    faceAngle = 90;
+                    tempVelocity.y = -tempVelocity.y;
+                else if(Face == "LEFT" || Face == "RIGHT")
+                    tempVelocity.x = -tempVelocity.x;
 
-                predAngle = math::constrainAngle(predAngle+faceAngle);
+                tempPos.x += tempVelocity.x;
+                tempPos.y += tempVelocity.y;
+                tempPos.z += tempVelocity.z;
+
+                predAngle = math::constrainAngle(math::angleBetweenVectors(newPos,sf::Vector2f(tempPos.x,tempPos.y)));
                 predictions.push_back(predPos);
             }
         }
@@ -3298,7 +3308,7 @@ void handlePhase()
                 boolet.lifetime = 600;
 
 
-                //predictBullet(boolet);
+                predictBullet(boolet);
             }
             if(!inputState.lmb && gvars::heldClickPos != sf::Vector2f(-1,-1))
             {
