@@ -27,4 +27,17 @@ struct Vec3
     }
 };
 
+struct Vec3f
+{
+    float x;
+    float y;
+    float z;
+    Vec3f(float First = 0, float Second = 0, float Third = 0)
+    {
+        x = First;
+        y = Second;
+        z = Third;
+    }
+};
+
 #endif // __DEFS_H_INCLUDED__

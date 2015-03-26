@@ -18,6 +18,7 @@
 #include "util.h"
 #include "globalvars.h"
 #include "Networking.h"
+#include "Bullet.h"
 
 #define USE_PATHER
 
@@ -2891,6 +2892,44 @@ void frames()
     }
 }
 
+struct whereInTile
+{
+    std::string xAxis;
+    std::string yAxis;
+};
+
+whereInTile whereAmI(int xpos, int ypos, int size)
+{
+    int whereX = (xpos % size);
+    int whereY = (ypos % size);
+    whereInTile returns;
+    if(whereX < (size/2))
+    {
+        returns.xAxis = "Left";
+    }
+    else if(whereX > (size/2))
+    {
+        returns.xAxis = "Right";
+    }
+    else
+        returns.xAxis = "Center";
+
+    if(whereY < (size/2))
+    {
+        returns.yAxis = "Up";
+    }
+    else if(whereY > (size/2))
+    {
+        returns.yAxis = "Down";
+    }
+    else
+        returns.yAxis = "Center";
+
+
+
+    return returns;
+}
+
 void genericLoop()
 {
     if (gvars::cycleGrowth)
@@ -2956,6 +2995,12 @@ void genericLoop()
     {
         gvars::view1.setCenter(gvars::currentx * GRID_SIZE,gvars::currenty * GRID_SIZE);
     }
+
+    for(auto &bullet : bullets)
+    {
+        bullet.moveBullet();
+    }
+    removeBullets();
 
 }
 
@@ -3105,6 +3150,63 @@ void handleEvents()
         }
 }
 
+void predictBullet(Bullet bullet)
+{
+    std::vector<Vec3f> predictions;
+    Vec3f predPos = bullet.pos;
+    float predAngle = bullet.angle;
+    for(int z = 0; z != bullet.lifetime; z++)
+    {
+        for(int i = 0; i != bullet.speed; i++)
+        {
+            sf::Vector2f newPos = math::angleCalc(sf::Vector2f(predPos.x,predPos.y),predAngle,1);
+            predPos = Vec3f(newPos.x,newPos.y,predPos.z);
+
+            if(aabb(predPos.x,predPos.y,20,1900,20,1900))
+                if(!tiles[abs_to_index(predPos.x/GRID_SIZE)][abs_to_index(predPos.y/GRID_SIZE)][abs_to_index(predPos.z/GRID_SIZE)].walkable)
+            {
+                int faceAngle;
+                std::string Face = tileFace(predPos.x,predPos.y,GRID_SIZE);
+                if(Face == "UP" || Face == "DOWN")
+                    faceAngle = -90;
+                if(Face == "LEFT" || Face == "RIGHT")
+                    faceAngle = 90;
+
+                predAngle = math::constrainAngle(predAngle+faceAngle);
+                predictions.push_back(predPos);
+            }
+        }
+        if(z == bullet.lifetime-1)
+            predictions.push_back(predPos);
+    }
+
+    for(int i = 0; i != predictions.size(); i++)
+    {
+        if(i == 0)
+        {
+            sf::Vector2f startPos(predictions[i].x,predictions[i].y);
+            effects.createLine(startPos.x,startPos.y,bullet.pos.x,bullet.pos.y,1,sf::Color::Cyan);
+        }
+        else if(i == predictions.size()-1)
+        {
+            sf::Vector2f startPos(predictions[i].x,predictions[i].y);
+            sf::Vector2f endPos(predictions[i-1].x,predictions[i-1].y);
+            effects.createLine(startPos.x,startPos.y,endPos.x,endPos.y,1,sf::Color::Red);
+        }
+        else
+        {
+            sf::Vector2f startPos(predictions[i].x,predictions[i].y);
+            sf::Vector2f endPos(predictions[i-1].x,predictions[i-1].y);
+            effects.createLine(startPos.x,startPos.y,endPos.x,endPos.y,1,sf::Color::Cyan);
+        }
+    }
+}
+
+float Magnitude(Vec3f v1)
+{
+	return sqrt(pow(v1.x, 2) + pow(v1.y, 2) + pow(v1.z, 2)); //return the magnitude (pythagoras)
+}
+
 void handlePhase()
 {
 
@@ -3176,6 +3278,53 @@ void handlePhase()
 
         if (gCtrl.phase == "Local")
         { //=======================================================*Local*============================================================================
+
+            if(inputState.lmbTime > 2)
+            {
+                effects.createLine(gvars::heldClickPos.x,gvars::heldClickPos.y,gvars::mousePos.x,gvars::mousePos.y,3,sf::Color::Yellow);
+
+                std::string outputText = "Speed: " + std::to_string(math::closeish(gvars::heldClickPos.x,gvars::heldClickPos.y,gvars::mousePos.x,gvars::mousePos.y) / 10);
+                //Vec3f velo((gvars::heldClickPos.x - gvars::mousePos.x)/10,(gvars::heldClickPos.y - gvars::mousePos.y)/10 );
+
+                //std::string outputText = "Magnitude: " + std::to_string(Magnitude(velo));
+
+                textList.createText(gvars::mousePos.x,gvars::mousePos.y,10,sf::Color::Yellow,outputText);
+
+                Bullet boolet;
+                boolet.pos = Vec3f(gvars::mousePos.x,gvars::mousePos.y,gvars::currentz*GRID_SIZE);
+                boolet.positions.push_back(boolet.pos);
+                boolet.angle = math::angleBetweenVectors(gvars::heldClickPos,gvars::mousePos);
+                boolet.speed = math::closeish(gvars::heldClickPos.x,gvars::heldClickPos.y,gvars::mousePos.x,gvars::mousePos.y) / 10;
+                boolet.lifetime = 600;
+
+
+                //predictBullet(boolet);
+            }
+            if(!inputState.lmb && gvars::heldClickPos != sf::Vector2f(-1,-1))
+            {
+                Bullet boolet;
+                boolet.pos = Vec3f(gvars::heldClickPos.x,gvars::heldClickPos.y,gvars::currentz*GRID_SIZE);
+                boolet.positions.push_back(boolet.pos);
+                boolet.angle = math::angleBetweenVectors(gvars::heldClickPos,gvars::mousePos);
+                Vec3f velo((gvars::heldClickPos.x - gvars::mousePos.x)/10,(gvars::heldClickPos.y - gvars::mousePos.y)/10 );
+                boolet.velocity = velo;
+
+
+                boolet.speed = math::closeish(gvars::heldClickPos.x,gvars::heldClickPos.y,gvars::mousePos.x,gvars::mousePos.y) / 10;
+                //boolet.speed = 0;
+                boolet.lifetime = 600;
+                bullets.push_back(boolet);
+                if(inputState.key[Key::LShift])
+                {
+                    for(int i = 0; i != 360; i++)
+                    {
+                        boolet.angle = i;
+                        boolet.speed = 1;
+                        boolet.lifetime = 600;
+                        bullets.push_back(boolet);
+                    }
+                }
+            }
 
             attractNPCs(gvars::mousePos);
 
@@ -4522,6 +4671,8 @@ void cleanMenu()
             con("Closing Menus Due To Outside Clicking");
         }
 }
+
+
 
 int main()
 {
