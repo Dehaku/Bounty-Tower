@@ -22,7 +22,7 @@ void Bullet::moveBullet()
 
                 Vec3f tempVelocity(predPos.x - secondPos.x, predPos.y - secondPos.y, predPos.z - secondPos.z);
 
-                std::string Face = tileFace(predPos.x,predPos.y,GRID_SIZE);
+                std::string Face = tileFace(predPos.x,predPos.y,predPos.z,GRID_SIZE,tiles);
                 if(Face == "UP" || Face == "DOWN")
                     tempVelocity.y = -tempVelocity.y;
                 else if(Face == "LEFT" || Face == "RIGHT")
@@ -55,7 +55,7 @@ void Bullet::moveBullet()
             Vec3f tempVelocity(pos.x - tempPos.x, pos.y - tempPos.y, pos.z - tempPos.z);
             //Vec3f tempVelocity(tempPos.x - pos.x, tempPos.y - pos.y, tempPos.z - pos.z);
 
-            std::string Face = tileFace(pos.x,pos.y,GRID_SIZE);
+            std::string Face = tileFace(pos.x,pos.y,pos.z,GRID_SIZE,tiles);
             if(Face == "UP" || Face == "DOWN")
                 velocity.y = -velocity.y;
                 //faceAngle = -90;
@@ -81,11 +81,13 @@ void Bullet::moveBullet()
 
             Vec3f tempVelocity(pos.x - secondPos.x, pos.y - secondPos.y, pos.z - secondPos.z);
 
-            std::string Face = tileFace(pos.x,pos.y,GRID_SIZE);
+            std::string Face = tileFace(pos.x,pos.y,pos.z,GRID_SIZE,tiles);
             if(Face == "UP" || Face == "DOWN")
                 tempVelocity.y = -tempVelocity.y;
             else if(Face == "LEFT" || Face == "RIGHT")
                 tempVelocity.x = -tempVelocity.x;
+
+            std::cout << "Face: " << Face << std::endl;
 
             tempPos.x += tempVelocity.x;
             tempPos.y += tempVelocity.y;

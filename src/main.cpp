@@ -3172,7 +3172,7 @@ void predictBullet(Bullet bullet)
 
                 Vec3f tempVelocity(predPos.x - secondPos.x, predPos.y - secondPos.y, predPos.z - secondPos.z);
 
-                std::string Face = tileFace(predPos.x,predPos.y,GRID_SIZE);
+                std::string Face = tileFace(predPos.x,predPos.y,predPos.z,GRID_SIZE,tiles);
                 if(Face == "UP" || Face == "DOWN")
                     tempVelocity.y = -tempVelocity.y;
                 else if(Face == "LEFT" || Face == "RIGHT")
