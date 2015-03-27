@@ -832,9 +832,9 @@ public:
         *z = Nodeling->pos.z;
     }
 
-    void *XYZToNode(int x, int y, int z)
+    void *XYZToNode(int x, int y, int z, std::vector<std::vector<std::vector<Tile>>> &Tiles)
     {
-        return (void *)&(tiles[x][y][z]);
+        return (void *)&(Tiles[x][y][z]);
     }
 
     int Passable(int nx, int ny, int nz)
@@ -930,8 +930,8 @@ public:
 
             float totalCost;
 
-            result = pather->Solve(XYZToNode(Ori.x, Ori.y, Ori.z),
-                                   XYZToNode(Tar.x, Tar.y, Tar.z), &microPath,
+            result = pather->Solve(XYZToNode(Ori.x, Ori.y, Ori.z, tiles),
+                                   XYZToNode(Tar.x, Tar.y, Tar.z, tiles), &microPath,
                                    &totalCost);
 
             if (result == MicroPather::SOLVED)
@@ -1045,7 +1045,7 @@ public:
         if (Nodeling->teleporter)
         {
             Vec3 N(Nodeling->telePos);
-            StateCost nodeCost = {XYZToNode(N.x, N.y, N.z), 3};
+            StateCost nodeCost = {XYZToNode(N.x, N.y, N.z, tiles), 3};
             neighbors->push_back(nodeCost);
         }
 
@@ -1060,27 +1060,27 @@ public:
             {
                 if (pass == 4)
                 {
-                    StateCost nodeCost = {XYZToNode(nx, ny, nz), cost[i]};
+                    StateCost nodeCost = {XYZToNode(nx, ny, nz, tiles), cost[i]};
                     neighbors->push_back(nodeCost);
                 }
                 else if ( (pass == 1 || pass == 2 || pass == 3) && dz[i] == 0)
                 {
-                    StateCost nodeCost = {XYZToNode(nx, ny, nz), cost[i]};
+                    StateCost nodeCost = {XYZToNode(nx, ny, nz, tiles), cost[i]};
                     neighbors->push_back(nodeCost);
                 }
                 else if (pass == 3 && dz[i] == -1 && dx[i] == 0 && dy[i] == 0)
                 {
-                    StateCost nodeCost = {XYZToNode(nx, ny, nz), cost[i]};
+                    StateCost nodeCost = {XYZToNode(nx, ny, nz, tiles), cost[i]};
                     neighbors->push_back(nodeCost);
                 }
                 else if (pass == 2 && dz[i] == 1 && dx[i] == 0 && dy[i] == 0)
                 {
-                    StateCost nodeCost = {XYZToNode(nx, ny, nz), cost[i]};
+                    StateCost nodeCost = {XYZToNode(nx, ny, nz, tiles), cost[i]};
                     neighbors->push_back(nodeCost);
                 }
                 else
                 {
-                    StateCost nodeCost = {XYZToNode(nx, ny, nz), FLT_MAX};
+                    StateCost nodeCost = {XYZToNode(nx, ny, nz, tiles), FLT_MAX};
                     neighbors->push_back(nodeCost);
                 }
             }
@@ -4691,8 +4691,9 @@ int main()
     itemmanager.initializeItems();
     npcmanager.initializeCritters();
 
-    bountyTowerSetup();
+
     galaxySetup();
+    bountyTowerSetup();
 
     window.create(sf::VideoMode(RESOLUTION.x, RESOLUTION.y, 32), randomWindowName());
     window.setVerticalSyncEnabled(true);
