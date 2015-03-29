@@ -28,7 +28,7 @@ if(USING_GCC)
 endif()
 
 set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/CMake/Modules)
-find_package(SFML 2 COMPONENTS graphics window audio system REQUIRED)
+find_package(SFML 2 COMPONENTS graphics window audio network system REQUIRED)
 include_directories(${SFML_INCLUDE_DIR})
 
 file(GLOB_RECURSE SOURCE_FILES src/*)
