@@ -61,6 +61,7 @@ public:
     std::string sForwardText;
     int textSize;
     sf::Color textColor;
+    bool hovering;
     int id;
 
     void draw();
@@ -96,6 +97,8 @@ bool buttonClicked(int id);
 
 bool squareButtonClicked(int id);
 bool imageButtonClicked(int id);
+
+bool imageButtonHovered(int id);
 
 class MenuPointerContainer
 {

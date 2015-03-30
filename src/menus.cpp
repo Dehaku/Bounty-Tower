@@ -110,6 +110,7 @@ ImageButton::ImageButton() : textSize{}
 {
     beenPressed = false;
     textColor = sf::Color(175, 175, 0);
+    hovering = false;
     id = gvars::glbbtn++;
 }
 
@@ -277,6 +278,29 @@ bool imageButtonClicked(int id)
                 gvars::buttonClickedTime = 3;
                 return true;
             }
+        }
+    }
+    return false;
+}
+
+bool imageButtonHovered(int id)
+{
+    for (auto &button : vImageButtonList)
+    {
+        if (button.id == id)
+        {
+            sf::Vector2f vPos(button.sprite.getPosition());
+            sf::Vector2f vSize(button.sprite.getTexture()->getSize().x/2,button.sprite.getTexture()->getSize().y/2);
+
+            if (aabb(gvars::mousePos, vPos.x - vSize.x,
+                     vPos.x + vSize.x,
+                     vPos.y - vSize.y,
+                     vPos.y + vSize.y))
+            {
+                button.hovering = true;
+                return true;
+            }
+            button.hovering = false;
         }
     }
     return false;
@@ -1429,15 +1453,18 @@ void menuPopUp()
                 sf::Vector2f vPos(gCtrl.menuPos.x + brd, gCtrl.menuPos.y + (iY * 13) + mbd);
 
                 int buttz = createImageButton(vPos,texturemanager.getTexture("TowerTile.png"),"text?");
+                if(imageButtonHovered(buttz))
+                {
+                    int butty = createImageButton(gvars::mousePos,texturemanager.getTexture("MercRogueFem.png"));
+                    textList.createText(gvars::mousePos.x
+                                        ,gvars::mousePos.y,15
+                                        ,sf::Color::Red
+                                        ,std::to_string(gvars::mousePos.x));
+                }
+
                 if (imageButtonClicked(buttz) ||
                     inputState.key[Key::Num1].time == 1)
                 {
-                    /*
-                    gCtrl.menuPos = sf::Vector2f(-10000, -10000);
-                    gCtrl.menuType = "NULL";
-
-                    break;
-                    */
                 }
             }
             iY++;
