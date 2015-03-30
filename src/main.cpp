@@ -832,9 +832,9 @@ public:
         *z = Nodeling->pos.z;
     }
 
-    void *XYZToNode(int x, int y, int z)
+    void *XYZToNode(int x, int y, int z, std::vector<std::vector<std::vector<Tile>>> &Tiles)
     {
-        return (void *)&(tiles[x][y][z]);
+        return (void *)&(Tiles[x][y][z]);
     }
 
     int Passable(int nx, int ny, int nz)
@@ -930,8 +930,8 @@ public:
 
             float totalCost;
 
-            result = pather->Solve(XYZToNode(Ori.x, Ori.y, Ori.z),
-                                   XYZToNode(Tar.x, Tar.y, Tar.z), &microPath,
+            result = pather->Solve(XYZToNode(Ori.x, Ori.y, Ori.z, tiles),
+                                   XYZToNode(Tar.x, Tar.y, Tar.z, tiles), &microPath,
                                    &totalCost);
 
             if (result == MicroPather::SOLVED)
@@ -1045,7 +1045,7 @@ public:
         if (Nodeling->teleporter)
         {
             Vec3 N(Nodeling->telePos);
-            StateCost nodeCost = {XYZToNode(N.x, N.y, N.z), 3};
+            StateCost nodeCost = {XYZToNode(N.x, N.y, N.z, tiles), 3};
             neighbors->push_back(nodeCost);
         }
 
@@ -1060,27 +1060,27 @@ public:
             {
                 if (pass == 4)
                 {
-                    StateCost nodeCost = {XYZToNode(nx, ny, nz), cost[i]};
+                    StateCost nodeCost = {XYZToNode(nx, ny, nz, tiles), cost[i]};
                     neighbors->push_back(nodeCost);
                 }
                 else if ( (pass == 1 || pass == 2 || pass == 3) && dz[i] == 0)
                 {
-                    StateCost nodeCost = {XYZToNode(nx, ny, nz), cost[i]};
+                    StateCost nodeCost = {XYZToNode(nx, ny, nz, tiles), cost[i]};
                     neighbors->push_back(nodeCost);
                 }
                 else if (pass == 3 && dz[i] == -1 && dx[i] == 0 && dy[i] == 0)
                 {
-                    StateCost nodeCost = {XYZToNode(nx, ny, nz), cost[i]};
+                    StateCost nodeCost = {XYZToNode(nx, ny, nz, tiles), cost[i]};
                     neighbors->push_back(nodeCost);
                 }
                 else if (pass == 2 && dz[i] == 1 && dx[i] == 0 && dy[i] == 0)
                 {
-                    StateCost nodeCost = {XYZToNode(nx, ny, nz), cost[i]};
+                    StateCost nodeCost = {XYZToNode(nx, ny, nz, tiles), cost[i]};
                     neighbors->push_back(nodeCost);
                 }
                 else
                 {
-                    StateCost nodeCost = {XYZToNode(nx, ny, nz), FLT_MAX};
+                    StateCost nodeCost = {XYZToNode(nx, ny, nz, tiles), FLT_MAX};
                     neighbors->push_back(nodeCost);
                 }
             }
@@ -3152,9 +3152,9 @@ void handleEvents()
 
 void predictBullet(Bullet bullet)
 {
-    std::vector<Vec3f> predictions;
+    std::vector<Vec3f> predictions = bullet.positions;
     Vec3f predPos = bullet.pos;
-    float predAngle = bullet.angle;
+    double predAngle = bullet.angle;
     for(int z = 0; z != bullet.lifetime; z++)
     {
         for(int i = 0; i != bullet.speed; i++)
@@ -3162,17 +3162,27 @@ void predictBullet(Bullet bullet)
             sf::Vector2f newPos = math::angleCalc(sf::Vector2f(predPos.x,predPos.y),predAngle,1);
             predPos = Vec3f(newPos.x,newPos.y,predPos.z);
 
+
             if(aabb(predPos.x,predPos.y,20,1900,20,1900))
                 if(!tiles[abs_to_index(predPos.x/GRID_SIZE)][abs_to_index(predPos.y/GRID_SIZE)][abs_to_index(predPos.z/GRID_SIZE)].walkable)
             {
-                int faceAngle;
-                std::string Face = tileFace(predPos.x,predPos.y,GRID_SIZE);
-                if(Face == "UP" || Face == "DOWN")
-                    faceAngle = -90;
-                if(Face == "LEFT" || Face == "RIGHT")
-                    faceAngle = 90;
+                Vec3f tempPos(predictions[predictions.size()-1]);
+                Vec3f secondVelo(tempPos.x - predPos.x, tempPos.y - predPos.y, tempPos.z - predPos.z);
+                Vec3f secondPos(tempPos.x + secondVelo.x, tempPos.y + secondVelo.y);
 
-                predAngle = math::constrainAngle(predAngle+faceAngle);
+                Vec3f tempVelocity(predPos.x - secondPos.x, predPos.y - secondPos.y, predPos.z - secondPos.z);
+
+                std::string Face = tileFace(predPos.x,predPos.y,predPos.z,GRID_SIZE,tiles);
+                if(Face == "UP" || Face == "DOWN")
+                    tempVelocity.y = -tempVelocity.y;
+                else if(Face == "LEFT" || Face == "RIGHT")
+                    tempVelocity.x = -tempVelocity.x;
+
+                tempPos.x += tempVelocity.x;
+                tempPos.y += tempVelocity.y;
+                tempPos.z += tempVelocity.z;
+
+                predAngle = math::constrainAngle(math::angleBetweenVectors(newPos,sf::Vector2f(tempPos.x,tempPos.y)));
                 predictions.push_back(predPos);
             }
         }
@@ -3298,7 +3308,7 @@ void handlePhase()
                 boolet.lifetime = 600;
 
 
-                //predictBullet(boolet);
+                predictBullet(boolet);
             }
             if(!inputState.lmb && gvars::heldClickPos != sf::Vector2f(-1,-1))
             {
@@ -4681,8 +4691,9 @@ int main()
     itemmanager.initializeItems();
     npcmanager.initializeCritters();
 
-    bountyTowerSetup();
+
     galaxySetup();
+    bountyTowerSetup();
 
     window.create(sf::VideoMode(RESOLUTION.x, RESOLUTION.y, 32), randomWindowName());
     window.setVerticalSyncEnabled(true);

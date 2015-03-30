@@ -1454,7 +1454,7 @@ sf::Vector2f gridEject(sf::Vector2f position)
     return correction;
 }
 
-std::string tileFace(int xpos, int ypos, int size)
+std::string tileFace(int xpos, int ypos, int zpos, int size, std::vector<std::vector<std::vector<Tile>>> &Tiles)
 {
     float whereX = (xpos % size);
     float whereY = (ypos % size);
@@ -1463,6 +1463,37 @@ std::string tileFace(int xpos, int ypos, int size)
     float DOWN = (size-1)-UP;
     float LEFT = whereX;
     float RIGHT = (size-1)-LEFT;
+    bool UPDOWN = false;
+    bool LEFTRIGHT = false;
+
+    if(aabb(xpos,ypos,20,1899,20,1899))
+    {
+        if(!Tiles[abs_to_index(xpos/20)][abs_to_index(ypos/20)][abs_to_index(zpos/20)].walkable)
+        {
+            if(!Tiles[abs_to_index(xpos/20)-1][abs_to_index(ypos/20)][abs_to_index(zpos/20)].walkable
+               && !Tiles[abs_to_index(xpos/20)+1][abs_to_index(ypos/20)][abs_to_index(zpos/20)].walkable
+               )
+                UPDOWN = true;
+            if(!Tiles[abs_to_index(xpos/20)][abs_to_index(ypos/20)-1][abs_to_index(zpos/20)].walkable
+               && !Tiles[abs_to_index(xpos/20)][abs_to_index(ypos/20)+1][abs_to_index(zpos/20)].walkable
+                )
+                LEFTRIGHT = true;
+        }
+    }
+    if(UPDOWN)
+    {
+        if(UP <= DOWN)
+            return "UP";
+        if(DOWN <= UP)
+            return "DOWN";
+    }
+    if(LEFTRIGHT)
+    {
+        if(LEFT <= RIGHT)
+            return "LEFT";
+        if(RIGHT <= LEFT)
+            return "RIGHT";
+    }
 
     if(UP <= DOWN && UP <= LEFT && UP <= RIGHT)
         return "UP";

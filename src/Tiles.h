@@ -159,7 +159,7 @@ void networkGridUpdate(sf::Packet pack);
 void processLiquid();
 void resizeGrid(int x, int y, int z);
 sf::Vector2f gridEject(sf::Vector2f position);
-std::string tileFace(int xpos, int ypos, int size);
+std::string tileFace(int xpos, int ypos, int zpos, int size, std::vector<std::vector<std::vector<Tile>>> &Tiles);
 bool gridTrace(sf::Vector2f Ori, sf::Vector2f Tar);
 
 
