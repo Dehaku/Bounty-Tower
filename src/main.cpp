@@ -2140,7 +2140,7 @@ ReDesire:
                             sf::Packet pack;
                             pack << ident.tilesUpdate;
                             pack << gvars::currentregionx << gvars::currentregiony;
-                            pack << abs_to_index(wPos.x / 20) << abs_to_index(wPos.y / 20) << abs_to_index(wPos.z / 20);
+                            pack << std::abs(wPos.x / 20) << std::abs(wPos.y / 20) << std::abs(wPos.z / 20);
                             pack << tiles[abs_to_index(wPos.x / 20)][abs_to_index(wPos.y / 20)][abs_to_index(wPos.z / 20)].id;
                             cliSocket.send(pack);
                         }
