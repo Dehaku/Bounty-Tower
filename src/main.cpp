@@ -1285,9 +1285,10 @@ void updateItem()
                         for (int rot = 1; rot != 361; rot++)
                         {
                             //int Rot = GX;
-                            int XPos = ((abs(item.xpos / 20)) +
+                            int itemX = item.xpos / 20, itemY = item.ypos / 20;
+                            int XPos = ((itemX) +
                                         cosf(rot * PI / 180) * itLength);
-                            int YPos = ((abs(item.ypos / 20)) +
+                            int YPos = ((itemY) +
                                         sinf(rot * PI / 180) * itLength);
                             tiles[XPos][YPos][30].stone();
 
@@ -4690,7 +4691,6 @@ int main()
     texturemanager.init();
     itemmanager.initializeItems();
     npcmanager.initializeCritters();
-
 
     galaxySetup();
     bountyTowerSetup();
