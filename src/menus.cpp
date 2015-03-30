@@ -14,6 +14,7 @@
 
 std::vector<Button> vButtonList;
 std::vector<SquareButton> vSquareButtonList;
+std::vector<ImageButton> vImageButtonList;
 MenuPointerContainer menuPtrCon;
 
 using std::abs;
@@ -105,6 +106,51 @@ SquareButton::SquareButton() : iSizex{}, iSizey{}, textSize{}
     id = gvars::glbbtn++;
 }
 
+ImageButton::ImageButton() : textSize{}
+{
+    beenPressed = false;
+    textColor = sf::Color(175, 175, 0);
+    hovering = false;
+    id = gvars::glbbtn++;
+}
+
+void ImageButton::draw()
+{
+    /*
+    if (beenPressed)
+    {
+        effects.createSquare(vPos.x - iSizex, vPos.y - iSizey, vPos.x + iSizex,
+                             vPos.y + iSizey,
+                             sf::Color(color.r / 2, color.g / 2, color.b / 2),
+                             2, sf::Color::White);
+    }
+    else if (aabb(gvars::mousePos, vPos.x - iSizex, vPos.x + iSizex,
+                  vPos.y - iSizey, vPos.y + iSizey))
+    {
+        effects.createSquare(vPos.x - iSizex, vPos.y - iSizey, vPos.x + iSizex,
+                             vPos.y + iSizey, color, 2, sf::Color::White);
+        if (gvars::mouseStagnation > 10 && sButtonText.length() != 0)
+        {
+            effects.createSquare(gvars::mousePos.x + 10, gvars::mousePos.y - 6,
+                                 gvars::mousePos.x + (sButtonText.length() * 7),
+                                 gvars::mousePos.y + 6, sf::Color::Black, 1,
+                                 sf::Color(175, 175, 0));
+            textList.createText(gvars::mousePos.x + 12, gvars::mousePos.y - 6,
+                                11, textColor, sButtonText);
+        }
+    }
+    else
+    {
+        effects.createSquare(vPos.x - iSizex, vPos.y - iSizey, vPos.x + iSizex,
+                             vPos.y + iSizey, color, 2, sf::Color::Black);
+    }
+    */
+    window.draw(sprite);
+    textList.createText(sprite.getPosition().x + 10, sprite.getPosition().y - (textSize / 2), textSize,
+                        textColor, sForwardText);
+    effects.drawEffects();
+}
+
 void Buttons::pressed()
 {
     for (auto const &button : vButtonList)
@@ -156,6 +202,18 @@ int createSquareButton(sf::Vector2f vPos, int iSizex, int iSizey,
     return var.id;
 }
 
+
+int createImageButton(sf::Vector2f vPos, sf::Texture &Tex, std::string text)
+{
+    ImageButton var;
+    var.sprite.setTexture(Tex);
+    var.sprite.setPosition(vPos);
+    var.sprite.setOrigin(Tex.getSize().x/2,Tex.getSize().y/2);
+    var.sButtonText = text;
+    vImageButtonList.push_back(var);
+    return var.id;
+}
+
 bool buttonClicked(int id)
 {
     for (auto &button : vButtonList)
@@ -199,6 +257,55 @@ bool squareButtonClicked(int id)
     return false;
 }
 
+bool imageButtonClicked(int id)
+{
+    for (auto &button : vImageButtonList)
+    {
+        if (button.id == id)
+        {
+            sf::Vector2f vPos(button.sprite.getPosition());
+            sf::Vector2f vSize(button.sprite.getTexture()->getSize().x/2,button.sprite.getTexture()->getSize().y/2);
+
+            if (aabb(gvars::mousePos, vPos.x - vSize.x,
+                     vPos.x + vSize.x,
+                     vPos.y - vSize.y,
+                     vPos.y + vSize.y) &&
+                (inputState.lmbTime == 1 || inputState.lmbTime > 20))
+            {
+                button.beenPressed = true;
+                std::cout << "Pressed! \n";
+                gvars::buttonClicked = true;
+                gvars::buttonClickedTime = 3;
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+bool imageButtonHovered(int id)
+{
+    for (auto &button : vImageButtonList)
+    {
+        if (button.id == id)
+        {
+            sf::Vector2f vPos(button.sprite.getPosition());
+            sf::Vector2f vSize(button.sprite.getTexture()->getSize().x/2,button.sprite.getTexture()->getSize().y/2);
+
+            if (aabb(gvars::mousePos, vPos.x - vSize.x,
+                     vPos.x + vSize.x,
+                     vPos.y - vSize.y,
+                     vPos.y + vSize.y))
+            {
+                button.hovering = true;
+                return true;
+            }
+            button.hovering = false;
+        }
+    }
+    return false;
+}
+
 MenuPointerContainer::MenuPointerContainer()
 {
     pItem = nullptr;
@@ -208,6 +315,9 @@ MenuPointerContainer::MenuPointerContainer()
 
 // TODO: Add functionality to allow you to press 1-9
 // to activate the menu buttons.
+
+
+
 void menuPopUp()
 {
 
@@ -793,6 +903,7 @@ void menuPopUp()
                     gCtrl.menuPos.x, (gCtrl.menuPos.y + (iY * 13)) + 13,
                     gCtrl.menuPos.x + 90, (gCtrl.menuPos.y + (iY * 13)) + 13, 1,
                     sf::Color::Cyan);
+
                 textList.createText(gCtrl.menuPos.x + 2,
                                     gCtrl.menuPos.y + (iY * 13), 12,
                                     sf::Color::White, "Close Menu");
@@ -1286,6 +1397,127 @@ void menuPopUp()
             con("Closing Menu due to No Target && CritterContext");
         }
     }
+
+    if (gCtrl.menuType == "BTTowers")
+    {
+
+        int options = 10;
+        gCtrl.menuEndPos = sf::Vector2f(gCtrl.menuPos.x + 150,
+                                        (gCtrl.menuPos.y + (options * 13)) + 5);
+        effects.createSquare(gCtrl.menuPos.x, gCtrl.menuPos.y,
+                             gCtrl.menuEndPos.x, gCtrl.menuEndPos.y,
+                             sf::Color::Black, 2, sf::Color::Cyan);
+        int iY = 0;
+        int brd = 140;                      // ButtonRightDisplacement.
+        int bs = 7;                         // ButtonSize;
+        int bsy = 5;                        // ButtonSize;
+        int mbd = 8;                        // MoveButtonDown
+        sf::Color butCol = sf::Color::Cyan; // ButtonColor.
+
+        for (int i = 0; i != options; i++)
+        {
+
+            if (i == 0)
+            {
+                effects.createLine(
+                    gCtrl.menuPos.x, (gCtrl.menuPos.y + (iY * 13)) + 13,
+                    gCtrl.menuPos.x + 90, (gCtrl.menuPos.y + (iY * 13)) + 13, 1,
+                    sf::Color::Cyan);
+
+                textList.createText(gCtrl.menuPos.x + 2,
+                                    gCtrl.menuPos.y + (iY * 13), 12,
+                                    sf::Color::White, "Close Menu");
+                sf::Vector2f butPos(gCtrl.menuEndPos.x,gCtrl.menuPos.y);
+                int butt = createSquareButton(butPos,bs, bs, sf::Color::Red, "Close Menu");
+                if (squareButtonClicked(butt) ||
+                    inputState.key[Key::Num1].time == 1)
+                {
+                    gCtrl.menuPos = sf::Vector2f(-10000, -10000);
+                    gCtrl.menuType = "NULL";
+
+                    break;
+                }
+            }
+            if (i == 1)
+            {
+                effects.createLine(
+                    gCtrl.menuPos.x, (gCtrl.menuPos.y + (iY * 13)) + 13,
+                    gCtrl.menuPos.x + 90, (gCtrl.menuPos.y + (iY * 13)) + 13, 1,
+                    sf::Color::Cyan);
+
+                textList.createText(gCtrl.menuPos.x + 2,
+                                    gCtrl.menuPos.y + (iY * 13), 12,
+                                    sf::Color::White, "Close Menu");
+
+
+                sf::Vector2f vPos(gCtrl.menuPos.x + brd, gCtrl.menuPos.y + (iY * 13) + mbd);
+
+                int buttz = createImageButton(vPos,texturemanager.getTexture("TowerTile.png"),"text?");
+                if(imageButtonHovered(buttz))
+                {
+                    int butty = createImageButton(gvars::mousePos,texturemanager.getTexture("MercRogueFem.png"));
+                    textList.createText(gvars::mousePos.x
+                                        ,gvars::mousePos.y,15
+                                        ,sf::Color::Red
+                                        ,std::to_string(gvars::mousePos.x));
+                }
+
+                if (imageButtonClicked(buttz) ||
+                    inputState.key[Key::Num1].time == 1)
+                {
+                }
+            }
+            iY++;
+        }
+    }
+
+    if (gCtrl.menuType == "BaseMenu")
+    {
+
+        int options = 10;
+        gCtrl.menuEndPos = sf::Vector2f(gCtrl.menuPos.x + 150,
+                                        (gCtrl.menuPos.y + (options * 13)) + 5);
+        effects.createSquare(gCtrl.menuPos.x, gCtrl.menuPos.y,
+                             gCtrl.menuEndPos.x, gCtrl.menuEndPos.y,
+                             sf::Color::Black, 2, sf::Color::Cyan);
+        int iY = 0;
+        int brd = 140;                      // ButtonRightDisplacement.
+        int bs = 7;                         // ButtonSize;
+        int bsy = 5;                        // ButtonSize;
+        int mbd = 8;                        // MoveButtonDown
+        sf::Color butCol = sf::Color::Cyan; // ButtonColor.
+
+        for (int i = 0; i != options; i++)
+        {
+
+            if (i == 0)
+            {
+                effects.createLine(
+                    gCtrl.menuPos.x, (gCtrl.menuPos.y + (iY * 13)) + 13,
+                    gCtrl.menuPos.x + 90, (gCtrl.menuPos.y + (iY * 13)) + 13, 1,
+                    sf::Color::Cyan);
+
+                textList.createText(gCtrl.menuPos.x + 2,
+                                    gCtrl.menuPos.y + (iY * 13), 12,
+                                    sf::Color::White, "Close Menu");
+                int butt = createSquareButton(
+                    math::Vec2f(gCtrl.menuPos.x + brd,
+                                (gCtrl.menuPos.y + (iY * 13)) + mbd),
+                    bs, bsy, butCol, "Close Menu");
+                if (squareButtonClicked(butt) ||
+                    inputState.key[Key::Num1].time == 1)
+                {
+                    gCtrl.menuPos = sf::Vector2f(-10000, -10000);
+                    gCtrl.menuType = "NULL";
+
+                    break;
+                }
+            }
+            iY++;
+        }
+    }
+
+
 }
 
 void rightMouseButtonContextMenu()

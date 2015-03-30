@@ -2468,8 +2468,8 @@ void displayChat(sf::Vector2f position)
 
 void drawStuffs()
 {
-    textList.createText(15,15,10,sf::Color::White,"Server Port: " + std::to_string(network::mainPort));
-    textList.createText(15,30,10,sf::Color::White,"Internal Port: " + std::to_string(network::mainPort+23));
+    //textList.createText(15,15,10,sf::Color::White,"Server Port: " + std::to_string(network::mainPort));
+    //textList.createText(15,30,10,sf::Color::White,"Internal Port: " + std::to_string(network::mainPort+23));
 
     //sf::Vector2f correction = gridEject(gvars::mousePos);
     //effects.createCircle(correction.x,correction.y,5,sf::Color::Red);
@@ -2604,6 +2604,12 @@ void drawStuffs()
     }
     vSquareButtonList.clear();
     debug("Drew and Cleared square buttons");
+
+    for (auto &button : vImageButtonList)
+    {
+        button.draw();
+    }
+    vImageButtonList.clear();
 
     textList.drawTextz();
     debug("Drew Text");
@@ -2776,8 +2782,24 @@ void bountyTowerLoop()
     cameraControls();
     int mouseX = gvars::mousePos.x, mouseY = gvars::mousePos.y;
     std::string stringy = std::to_string(mouseX) + "/" + std::to_string(mouseY);
-    textList.createText(gvars::mousePos.x,gvars::mousePos.y,15,sf::Color::Cyan,stringy);
+    //textList.createText(gvars::mousePos.x,gvars::mousePos.y,15,sf::Color::Cyan,stringy);
     UnyTiles.drawTiles();
+
+    if(inputState.key[Key::Space].time == 1)
+    {
+        gCtrl.menuType = "BTTowers";
+        menuPopUp();
+    }
+
+    if (gCtrl.menuType != "NULL")
+    {
+        menuPopUp();
+    }
+    else
+    {
+        gCtrl.menuPos = math::Vec2f(-10000, -10000);
+    }
+
 }
 
 void bountyTowerSetup()
@@ -4692,8 +4714,10 @@ int main()
     itemmanager.initializeItems();
     npcmanager.initializeCritters();
 
-    galaxySetup();
+
     bountyTowerSetup();
+    galaxySetup();
+
 
     window.create(sf::VideoMode(RESOLUTION.x, RESOLUTION.y, 32), randomWindowName());
     window.setVerticalSyncEnabled(true);

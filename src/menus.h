@@ -8,6 +8,7 @@
 
 // TODO: Add a tooltip to the buttons, When you hover over it,
 // it will display some text
+extern sf::RenderWindow window;
 
 class Button
 {
@@ -48,8 +49,29 @@ public:
     SquareButton();
 };
 
+class ImageButton
+{
+public:
+    bool beenPressed;
+    sf::Sprite sprite;
+    //sf::Vector2f vPos;
+    sf::Color color;
+    std::string sFunction;
+    std::string sButtonText;
+    std::string sForwardText;
+    int textSize;
+    sf::Color textColor;
+    bool hovering;
+    int id;
+
+    void draw();
+
+    ImageButton();
+};
+
 extern std::vector<Button> vButtonList;
 extern std::vector<SquareButton> vSquareButtonList;
+extern std::vector<ImageButton> vImageButtonList;
 
 class Buttons
 {
@@ -68,10 +90,15 @@ int createButton(sf::Vector2f vPos, int iSize, sf::Color color,
 
 int createSquareButton(sf::Vector2f vPos, int iSizex, int iSizey,
                        sf::Color color, std::string text = "");
+int createImageButton(sf::Vector2f vPos, sf::Texture &Tex, std::string text = "");
+
 
 bool buttonClicked(int id);
 
 bool squareButtonClicked(int id);
+bool imageButtonClicked(int id);
+
+bool imageButtonHovered(int id);
 
 class MenuPointerContainer
 {
