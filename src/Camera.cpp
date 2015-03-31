@@ -32,21 +32,22 @@ void cameraControls()
     if (inputState.key[Key::Subtract].time == 1)
     gvars::view1.zoom(0.5);
 
-    if (inputState.key[Key::Comma].time == 1 &&
+    if ( (inputState.key[Key::Comma].time == 1 || inputState.key[Key::Comma].time >= 20)
+         &&
                 inputState.key[Key::LShift] &&
-                gvars::currentz <= CHUNK_SIZE - 1)
+                gvars::currentz < CHUNK_SIZE-1)
         gvars::currentz++;
 
-    if (inputState.key[Key::Period].time == 1 &&
+    if ( (inputState.key[Key::Period].time == 1 || inputState.key[Key::Period].time >= 20) &&
         inputState.key[Key::LShift] && gvars::currentz >= 1)
         gvars::currentz--;
 
-    if (inputState.key[Key::Comma].time == 1 &&
+    if ((inputState.key[Key::Comma].time == 1 || inputState.key[Key::Comma].time >= 20) &&
         inputState.key[Key::RShift] &&
-        gvars::currentz <= CHUNK_SIZE - 1)
+        gvars::currentz < CHUNK_SIZE-1)
         gvars::currentz++;
 
-    if (inputState.key[Key::Period].time == 1 &&
+    if ( (inputState.key[Key::Period].time == 1 || inputState.key[Key::Period].time >= 20) &&
         inputState.key[Key::RShift] && gvars::currentz >= 1)
         gvars::currentz--;
 }

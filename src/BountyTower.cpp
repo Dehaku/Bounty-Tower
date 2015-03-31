@@ -8,6 +8,7 @@ void bountyTowerSetup()
     window.setView(gvars::view1);
     gvars::currentx = 32;
     gvars::currenty = 18;
+    gvars::currentz = 1;
     {
         int Amt = randz(5,30);
         for(int i = 0; i != Amt; i++)
@@ -26,7 +27,7 @@ void bountyTowerLoop()
 {
     cameraControls();
     int mouseX = gvars::mousePos.x, mouseY = gvars::mousePos.y;
-    std::string stringy = std::to_string(mouseX) + "/" + std::to_string(mouseY);
+    std::string stringy = std::to_string(mouseX) + "/" + std::to_string(mouseY) + "(" + std::to_string(gvars::currentz) + ")";
     textList.createText(gvars::mousePos.x,gvars::mousePos.y,15,sf::Color::Cyan,stringy);
     //UnyTiles.drawTiles();
     if(inputState.key[Key::G].time == 1)
@@ -65,13 +66,23 @@ void buildTower(std::string towerName)
             for (int y = 0; y != GRIDS; y++)
                 for (int z = 0; z != CHUNK_SIZE; z++)
         {
-            int holder = randz(1,3);
-            if(holder == 1)
-                tiles[x][y][z].stoneWall();
-            else if(holder == 2)
-                tiles[x][y][z].stone();
-            else if(holder == 3)
+            if(z == 0 || z == 1)
                 tiles[x][y][z].lava();
+            else
+                tiles[x][y][z].sky();
+            if(aabb(x,y,31,64,31,64))
+            {
+                tiles[x][y][z].wall();
+            }
+            if(aabb(x,y,32,63,32,63))
+            {
+                tiles[x][y][z].stone();
+            }
+            tiles[48][64][1].door();
+            tiles[47][64][1].door();
+            if( (x == 48 || x == 47) && y > 64 && z == 1)
+                tiles[x][y][z].stone();
+
         }
     }
 }
