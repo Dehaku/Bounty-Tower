@@ -2782,7 +2782,7 @@ void bountyTowerLoop()
     cameraControls();
     int mouseX = gvars::mousePos.x, mouseY = gvars::mousePos.y;
     std::string stringy = std::to_string(mouseX) + "/" + std::to_string(mouseY);
-    //textList.createText(gvars::mousePos.x,gvars::mousePos.y,15,sf::Color::Cyan,stringy);
+    textList.createText(gvars::mousePos.x,gvars::mousePos.y,15,sf::Color::Cyan,stringy);
     UnyTiles.drawTiles();
 
     if(inputState.key[Key::Space].time == 1)
@@ -2804,11 +2804,16 @@ void bountyTowerLoop()
 
 void bountyTowerSetup()
 {
-    gvars::currentx = 4;
-    gvars::currenty = 2;
     gCtrl.phase = "Lobby";
     window.setFramerateLimit(30); // 0 is unlimited
     UnyTiles.makeTest();
+    window.setView(gvars::view1);
+    gvars::currentx = 32;
+    gvars::currenty = 18;
+
+    gCtrl.menuType = "BTTowers";
+    menuPopUp();
+
 }
 
 sf::Thread TcpServerThread(&runTcpServer, network::mainPort);
@@ -3009,6 +3014,7 @@ void genericLoop()
         gvars::bottomRight =
             sf::Vector2f(gvars::view1.getCenter().x + HALF_SIZE.x,
                          gvars::view1.getCenter().y + HALF_SIZE.y);
+        gvars::centerScreen = gvars::view1.getCenter();
 
     if (inputState.key[Key::K].time == 1 && !network::chatting)
         std::cout << generateName() << std::endl;
@@ -3016,7 +3022,7 @@ void genericLoop()
     if (gCtrl.phase != "MainMenu" && gvars::following == false &&
             gCtrl.phase != "MakeSquad" && gCtrl.phase != "MicroPatherTest")
     {
-        gvars::view1.setCenter(gvars::currentx * GRID_SIZE,gvars::currenty * GRID_SIZE);
+        gvars::view1.setCenter(gvars::currentx * 20,gvars::currenty * 20);
     }
 
     for(auto &bullet : bullets)
@@ -4714,9 +4720,9 @@ int main()
     itemmanager.initializeItems();
     npcmanager.initializeCritters();
 
-
-    bountyTowerSetup();
     galaxySetup();
+    bountyTowerSetup();
+
 
 
     window.create(sf::VideoMode(RESOLUTION.x, RESOLUTION.y, 32), randomWindowName());

@@ -1,0 +1,5 @@
+
+
+Critter Abilities
+Vision Evasion Invisibility - Whenever this creature is within a specific degree of angle of vision, they turn invisible
+	Only able to be seen when critters are not directly looking at them.
