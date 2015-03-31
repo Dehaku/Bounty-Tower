@@ -89,7 +89,8 @@ void buildTower(std::string towerName)
 
 Tower::Tower()
 {
-    tex = &texturemanager.getTexture("TowerTile.png");
+    //tex = &texturemanager.getTexture("TowerTile.png");
+    tex = &texturemanager.getTexture("FantasyModern.png");
     name = "The Tower mk" + std::to_string(randz(1,10));
     difficulty = randz(10,100);
     minioncount = difficulty * randz(3,10);

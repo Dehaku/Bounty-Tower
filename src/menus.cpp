@@ -207,6 +207,7 @@ int createImageButton(sf::Vector2f vPos, sf::Texture &Tex, std::string text)
 {
     ImageButton var;
     var.sprite.setTexture(Tex);
+    //var.sprite.setScale(0.2,0.2);
     var.sprite.setPosition(vPos);
     var.sprite.setOrigin(Tex.getSize().x/2,Tex.getSize().y/2);
     var.sButtonText = text;
@@ -1413,13 +1414,15 @@ void menuPopUp()
         for (auto i = 0; i != towers.size(); i++)
         {
 
-            if((i % 10) == 0)
+            if((i % 4) == 0)
             {
                 yMulti++;
             }
             sf::Vector2f vPos;
-            vPos.x = gCtrl.menuPos.x + 40 + ((i * 80)-(800*yMulti));
-            vPos.y = gCtrl.menuPos.y + 40 + (80*yMulti);
+            //int imageSpacing = 40;
+            int imageSpacing = 150;
+            vPos.x = gCtrl.menuPos.x + imageSpacing + ((i * (imageSpacing*2))-(((1200))*yMulti));
+            vPos.y = gCtrl.menuPos.y + imageSpacing + ((imageSpacing*2)*yMulti);
 
             int buttz = createImageButton(vPos,*towers[i].tex);
             if(imageButtonHovered(buttz))
