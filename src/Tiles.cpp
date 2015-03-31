@@ -703,11 +703,36 @@ void drawNewTiles()
     {
         for (int t = 0; t != GRIDS; t++)
         {
-            if (aabb(i * 20, t * 20, gvars::topLeft.x - 20, gvars::topRight.x,
-                     gvars::topLeft.y - 20, gvars::bottomRight.y))
+            if (aabb(i * GRID_SIZE, t * GRID_SIZE, gvars::topLeft.x - GRID_SIZE, gvars::topRight.x,
+                     gvars::topLeft.y - GRID_SIZE, gvars::bottomRight.y))
             {
-                tiles[i][t][gvars::currentz].img.setPosition(i * 20, t * 20);
-                window.draw(tiles[i][t][gvars::currentz].img);
+                tiles[i][t][gvars::currentz].img.setPosition(i * GRID_SIZE, t * GRID_SIZE);
+                if(gvars::currentz != 0 && tiles[i][t][gvars::currentz].id == 1700)
+                {
+                    sf::Sprite downTile;
+                    int newZ = gvars::currentz;
+                    int depth = 0;
+                    while(newZ != 0)
+                    {
+                        depth++;
+                        if(tiles[i][t][newZ-1].id != 1700)
+                        {
+                            downTile.setTexture( *tiles[i][t][newZ-1].img.getTexture());
+                            sf::Color darken(std::max(downTile.getColor().r-(25*depth),0),
+                                             std::max(downTile.getColor().g-(25*depth),0),
+                                             std::max(downTile.getColor().b-(25*depth),0)
+                                             );
+                            downTile.setColor(darken);
+                            break;
+                        }
+                        newZ--;
+                    }
+
+                    downTile.setPosition(i * GRID_SIZE, t * GRID_SIZE);
+                    window.draw(downTile);
+                }
+                else
+                    window.draw(tiles[i][t][gvars::currentz].img);
                 if(tiles[i][t][gvars::currentz].teleporter)
                 {
                     sf::Sprite spinner;

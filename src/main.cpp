@@ -4609,6 +4609,8 @@ int main()
     itemmanager.initializeItems();
     npcmanager.initializeCritters();
 
+    std::cout << std::min(0,-313) << " " << std::max(0,313) << std::endl;
+
     galaxySetup();
     bountyTowerSetup();
 
