@@ -3,3 +3,10 @@
 Critter Abilities
 Vision Evasion Invisibility - Whenever this creature is within a specific degree of angle of vision, they turn invisible
 	Only able to be seen when critters are not directly looking at them.
+	
+Liquifier, Liquify items.
+
+Workshops produce various waste types
+Workshops will need to be upgradable in various ways
+Workshops will be critter powered at low tech, Later upgrades will allow it to automate production with various power inputs
+Perhaps have robits or other forms of mechanical means to transfer items from buildings?

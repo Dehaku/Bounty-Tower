@@ -11,6 +11,7 @@
 #include "Tiles.h"
 #include "FactionJobSecurity.h"
 #include "Galaxy.h"
+#include "BountyTower.h"
 #include "menus.h"
 #include "astar.h"
 #include "Textures.h"
@@ -19,6 +20,7 @@
 #include "globalvars.h"
 #include "Networking.h"
 #include "Bullet.h"
+#include "Camera.h"
 
 #define USE_PATHER
 
@@ -2725,96 +2727,8 @@ void testProcess()
                 */
 }
 
-void cameraControls()
-{
-    if (inputState.key[Key::Left])
-        gvars::currentx--;
-    if (inputState.key[Key::Right])
-        gvars::currentx++;
-    if (inputState.key[Key::Up])
-        gvars::currenty--;
-    if (inputState.key[Key::Down])
-        gvars::currenty++;
-    if (inputState.key[Key::LShift] && inputState.key[Key::Left])
-    {
-        gvars::currentx--;
-        gvars::currentx--;
-        gvars::currentx--;
-        gvars::currentx--;
-    }
-    if (inputState.key[Key::LShift] && inputState.key[Key::Right])
-    {
-        gvars::currentx++;
-        gvars::currentx++;
-        gvars::currentx++;
-        gvars::currentx++;
-    }
-    if (inputState.key[Key::LShift] && inputState.key[Key::Up])
-    {
-        gvars::currenty--;
-        gvars::currenty--;
-        gvars::currenty--;
-        gvars::currenty--;
-    }
-    if (inputState.key[Key::LShift] && inputState.key[Key::Down])
-    {
-        gvars::currenty++;
-        gvars::currenty++;
-        gvars::currenty++;
-        gvars::currenty++;
-    }
 
-    if (inputState.key[Key::Add])
-    {
-        gvars::view1.zoom(2);
-        fSleep(0.2);
-    }
-    if (inputState.key[Key::Subtract])
-    {
-        gvars::view1.zoom(0.5);
-        fSleep(0.2);
-    }
 
-}
-
-void bountyTowerLoop()
-{
-    cameraControls();
-    int mouseX = gvars::mousePos.x, mouseY = gvars::mousePos.y;
-    std::string stringy = std::to_string(mouseX) + "/" + std::to_string(mouseY);
-    textList.createText(gvars::mousePos.x,gvars::mousePos.y,15,sf::Color::Cyan,stringy);
-    UnyTiles.drawTiles();
-
-    if(inputState.key[Key::Space].time == 1)
-    {
-        gCtrl.menuType = "BTTowers";
-        menuPopUp();
-    }
-
-    if (gCtrl.menuType != "NULL")
-    {
-        menuPopUp();
-    }
-    else
-    {
-        gCtrl.menuPos = math::Vec2f(-10000, -10000);
-    }
-
-}
-
-void bountyTowerSetup()
-{
-    gCtrl.phase = "Lobby";
-    window.setFramerateLimit(30); // 0 is unlimited
-    UnyTiles.makeTest();
-    window.setView(gvars::view1);
-    gvars::currentx = 32;
-    gvars::currenty = 18;
-
-    gCtrl.menuType = "BTTowers";
-    menuPopUp();
-
-}
 
 sf::Thread TcpServerThread(&runTcpServer, network::mainPort);
 sf::Thread TcpClientThread(&runTcpClient, network::mainPort+23);
@@ -3474,32 +3388,7 @@ void handlePhase()
 
             cameraControls();
 
-            if (inputState.key[Key::Comma] &&
-                inputState.key[Key::LShift] &&
-                gvars::currentz <= CHUNK_SIZE - 1)
-            {
-                gvars::currentz++;
-                fSleep(0.1f);
-            }
-            if (inputState.key[Key::Period] &&
-                inputState.key[Key::LShift] && gvars::currentz >= 1)
-            {
-                gvars::currentz--;
-                fSleep(0.1f);
-            }
-            if (inputState.key[Key::Comma] &&
-                inputState.key[Key::RShift] &&
-                gvars::currentz <= CHUNK_SIZE - 1)
-            {
-                gvars::currentz++;
-                fSleep(0.1f);
-            }
-            if (inputState.key[Key::Period] &&
-                inputState.key[Key::RShift] && gvars::currentz >= 1)
-            {
-                gvars::currentz--;
-                fSleep(0.1f);
-            }
+
             if (gvars::myTarget == -1)
             {
                 gvars::following = false;

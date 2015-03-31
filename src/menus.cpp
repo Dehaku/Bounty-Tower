@@ -315,42 +315,10 @@ MenuPointerContainer::MenuPointerContainer()
 
 // TODO: Add functionality to allow you to press 1-9
 // to activate the menu buttons.
-class Tower
-{
-public:
-    sf::Texture *tex;
-    std::string name;
-    int difficulty;
-    int minioncount;
-    std::string bountyTarget;
-    int bountyPay;
-    int floors;
-    Tower()
-    {
-        tex = &texturemanager.getTexture("TowerTile.png");
-        name = "The Tower mk" + std::to_string(randz(1,10));
-        difficulty = randz(10,100);
-        minioncount = difficulty * randz(3,10);
-        bountyTarget = "Dudeman mk" + std::to_string(randz(1,300));
-        bountyPay = (difficulty/10) * (minioncount / 10);
-    }
-};
 
-std::vector<Tower> towers;
 
 void menuPopUp()
 {
-    if(inputState.key[Key::G].time == 10)
-    {
-        towers.clear();
-        int Amt = randz(5,30);
-        for(int i = 0; i != Amt; i++)
-        {
-            Tower tower;
-            towers.push_back(tower);
-        }
-    }
-
     if (gCtrl.menuPos.x == -10000)
     {
         gCtrl.menuPos = gvars::mousePos;
@@ -1468,7 +1436,11 @@ void menuPopUp()
             if (imageButtonClicked(buttz) ||
                     inputState.key[Key::Num1].time == 1)
             {
-                towers[i].tex = &texturemanager.getTexture("Error.bmp");
+                //towers[i].tex = &texturemanager.getTexture("Error.bmp");
+                buildTower("FantasyModern");
+                gCtrl.menuPos = sf::Vector2f(-10000, -10000);
+                gCtrl.menuType = "NULL";
+                break;
             }
 
         }

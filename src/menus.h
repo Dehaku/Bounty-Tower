@@ -3,6 +3,7 @@
 
 #include "Items.h"
 #include "Tiles.h"
+#include "BountyTower.h"
 
 #include <SFML/Graphics.hpp>
 
