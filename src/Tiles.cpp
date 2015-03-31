@@ -722,14 +722,20 @@ void drawNewTiles()
                                              std::max(downTile.getColor().g-(25*depth),0),
                                              std::max(downTile.getColor().b-(25*depth),0)
                                              );
-                            downTile.setColor(darken);
+                            //downTile.setColor(darken);
                             break;
                         }
                         newZ--;
                     }
 
                     downTile.setPosition(i * GRID_SIZE, t * GRID_SIZE);
-                    window.draw(downTile);
+                    if(depth < 5)
+                        window.draw(downTile);
+                    sf::Color skyward(tiles[i][t][gvars::currentz].img.getColor());
+                    skyward.a = 0;
+                    skyward.a = (std::min(50*depth,255));
+                    tiles[i][t][gvars::currentz].img.setColor(skyward);
+                    window.draw(tiles[i][t][gvars::currentz].img);
                 }
                 else
                     window.draw(tiles[i][t][gvars::currentz].img);
