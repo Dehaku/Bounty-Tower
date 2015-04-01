@@ -2304,6 +2304,38 @@ void addInitialFaction()
     conFact = &listAt(uniFact,0);
 }
 
+void addFaction(std::string name)
+{
+    Faction g_pf;
+
+    g_pf.name = name;
+    g_pf.playerControlled = true;
+    g_pf.initialized = true;
+    uniFact.push_back(g_pf);
+
+}
+
+void addMembers(int amount, std::string faction)
+{
+    for (auto &fact : uniFact)
+    {
+        if(fact.name == faction)
+        {
+            for(int i = 0; i != amount; i++)
+            {
+                Npc member;
+                member = *getGlobalCritter("Human");
+                member.faction = faction;
+                member.factionPtr = &fact;
+                member.xpos = (GRIDS*GRID_SIZE)/2;
+                member.ypos = (GRIDS*GRID_SIZE)-100;
+                member.zpos = (1*GRID_SIZE);
+                npclist.push_back(member);
+            }
+        }
+    }
+}
+
 void offloadNpcs()
 {
     for (auto &i : npclist)

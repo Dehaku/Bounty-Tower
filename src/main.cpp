@@ -1948,7 +1948,7 @@ ReDesire:
     debug("debug 8", false);
     // Acting on Highest Desire
 
-    Vec3 startPos(npc.xpos/20,npc.ypos/20,npc.zpos/20);
+    Vec3 startPos(npc.xpos/GRID_SIZE,npc.ypos/GRID_SIZE,npc.zpos/GRID_SIZE);
     Vec3 endPos;
     bool hasPath = false;
     debug("Acting on highest Desire:" + (*highestDesire).type);
@@ -2002,11 +2002,11 @@ ReDesire:
             {
                 Vec3 ItemPos((*npc.targetInfo.item).xpos,(*npc.targetInfo.item).ypos,(*npc.targetInfo.item).zpos);
                 Vec3 myPos(npc.xpos,npc.ypos,npc.zpos);
-                endPos = Vec3(npc.targetInfo.item->xpos/20, npc.targetInfo.item->ypos/20, npc.targetInfo.item->zpos/20);
+                endPos = Vec3(npc.targetInfo.item->xpos/GRID_SIZE, npc.targetInfo.item->ypos/GRID_SIZE, npc.targetInfo.item->zpos/GRID_SIZE);
                 hasPath = true;
 
                 //if (math::closeish(npc.xpos, npc.ypos, ItemPos.x, ItemPos.y) <= npc.size * 3)
-                if(math::distance(myPos,ItemPos) <= npc.size*3 && myPos.z/20 == ItemPos.z/20)
+                if(math::distance(myPos,ItemPos) <= npc.size*3 && myPos.z/GRID_SIZE == ItemPos.z/GRID_SIZE)
                 {
                     Item *tar = npc.targetInfo.item;
                     npc.targetInfo.item = nullptr;
@@ -2084,7 +2084,7 @@ ReDesire:
                     Item * item = npc.targetInfo.item;
                     if(item != nullptr)
                     {
-                        endPos = Vec3(npc.targetInfo.item->xpos/20, npc.targetInfo.item->ypos/20, npc.targetInfo.item->zpos/20);
+                        endPos = Vec3(npc.targetInfo.item->xpos/GRID_SIZE, npc.targetInfo.item->ypos/GRID_SIZE, npc.targetInfo.item->zpos/GRID_SIZE);
                         hasPath = true;
                         if(math::closeish(npc.xpos,npc.ypos,item->xpos,item->ypos) <= npc.size*2)
                         {
@@ -2109,14 +2109,14 @@ ReDesire:
 
                 if(material != nullptr)
                 {
-                    endPos = Vec3(npc.jobPtr->workPos.x/20,npc.jobPtr->workPos.y/20, npc.jobPtr->workPos.z/20);
+                    endPos = Vec3(npc.jobPtr->workPos.x/GRID_SIZE,npc.jobPtr->workPos.y/GRID_SIZE, npc.jobPtr->workPos.z/GRID_SIZE);
                     hasPath = true;
                 }
 
-                if(math::distance(myPos,wPos) <= npc.size*3 && myPos.z/20 == wPos.z/20 && material != nullptr)
+                if(math::distance(myPos,wPos) <= npc.size*3 && myPos.z/GRID_SIZE == wPos.z/GRID_SIZE && material != nullptr)
                 {
                     debug("Close to workPos and has material.");
-                    endPos = Vec3(myPos.x/20,myPos.y/20,myPos.z/20);
+                    endPos = Vec3(myPos.x/GRID_SIZE,myPos.y/GRID_SIZE,myPos.z/GRID_SIZE);
                     hasPath = false;
 
                     npc.jobPtr->completionProgress += npc.skills.intelligence / 2;
@@ -2132,7 +2132,7 @@ ReDesire:
 
                     if (npc.jobPtr->completionProgress >= npc.jobPtr->completionTimer)
                     {
-                        tiles[abs_to_index(wPos.x / 20)][abs_to_index(wPos.y / 20)][abs_to_index(wPos.z / 20)].wall();
+                        tiles[abs_to_index(wPos.x / GRID_SIZE)][abs_to_index(wPos.y / GRID_SIZE)][abs_to_index(wPos.z / GRID_SIZE)].wall();
                         material->toDelete = true;
                         npc.jobPtr->toDelete = true;
                         npc.jobPtr->pWorker->hasJob = false;/* Oops... this amuses me. */
@@ -2143,8 +2143,8 @@ ReDesire:
                             sf::Packet pack;
                             pack << ident.tilesUpdate;
                             pack << gvars::currentregionx << gvars::currentregiony;
-                            pack << std::abs(wPos.x / 20) << std::abs(wPos.y / 20) << std::abs(wPos.z / 20);
-                            pack << tiles[abs_to_index(wPos.x / 20)][abs_to_index(wPos.y / 20)][abs_to_index(wPos.z / 20)].id;
+                            pack << std::abs(wPos.x / GRID_SIZE) << std::abs(wPos.y / GRID_SIZE) << std::abs(wPos.z / GRID_SIZE);
+                            pack << tiles[abs_to_index(wPos.x / GRID_SIZE)][abs_to_index(wPos.y / GRID_SIZE)][abs_to_index(wPos.z / GRID_SIZE)].id;
                             cliSocket.send(pack);
                         }
 
@@ -2155,10 +2155,10 @@ ReDesire:
             else if(npc.jobPtr != nullptr && npc.jobPtr->type == "Chop" && npc.jobPtr->pItem != nullptr)
             {
                 Item * itemPtr = npc.jobPtr->pItem;
-                endPos = Vec3(abs_to_index(itemPtr->xpos/20),abs_to_index(itemPtr->ypos/20),abs_to_index(itemPtr->zpos/20));
+                endPos = Vec3(abs_to_index(itemPtr->xpos/GRID_SIZE),abs_to_index(itemPtr->ypos/GRID_SIZE),abs_to_index(itemPtr->zpos/GRID_SIZE));
                 hasPath = true;
 
-                if(math::closeish(npc.xpos,npc.ypos,endPos.x*20,endPos.y*20) <= npc.size*3)
+                if(math::closeish(npc.xpos,npc.ypos,endPos.x*GRID_SIZE,endPos.y*GRID_SIZE) <= npc.size*3)
                 {
 
                     npc.jobPtr->completionProgress += npc.skills.intelligence / 2;
@@ -2187,11 +2187,11 @@ ReDesire:
             else if(npc.jobPtr != nullptr && npc.jobPtr->type == "PickUp" && npc.jobPtr->pItem != nullptr)
             {
                 Item * itemPtr = npc.jobPtr->pItem;
-                endPos = Vec3(abs_to_index(itemPtr->xpos/20),abs_to_index(itemPtr->ypos/20),abs_to_index(itemPtr->zpos/20));
+                endPos = Vec3(abs_to_index(itemPtr->xpos/GRID_SIZE),abs_to_index(itemPtr->ypos/GRID_SIZE),abs_to_index(itemPtr->zpos/GRID_SIZE));
                 hasPath = true;
 
                 //if(math::closeish(npc.xpos,npc.ypos,endPos.x*20,endPos.y*20) <= npc.size*3)
-                if(math::distance(myPos,wPos) <= npc.size*3 && myPos.z/20 == wPos.z/20)
+                if(math::distance(myPos,wPos) <= npc.size*3 && myPos.z/GRID_SIZE == wPos.z/GRID_SIZE)
                 {
                     itemPtr->user = nullptr;
                     npc.inventory.push_back(*itemPtr);
@@ -2202,14 +2202,14 @@ ReDesire:
             }
             else if(npc.jobPtr != nullptr && npc.jobPtr->type == "Dig")
             {
-                endPos = Vec3(npc.jobPtr->workPos.x/20,npc.jobPtr->workPos.y/20,npc.jobPtr->workPos.z/20);
+                endPos = Vec3(npc.jobPtr->workPos.x/GRID_SIZE,npc.jobPtr->workPos.y/GRID_SIZE,npc.jobPtr->workPos.z/GRID_SIZE);
                 hasPath = true;
 
                 //if(math::closeish(myPos.x,myPos.y,wPos.x,wPos.y) <= npc.size*3)
-                if(math::distance(myPos,wPos) <= npc.size*3 && myPos.z/20 == wPos.z/20)
+                if(math::distance(myPos,wPos) <= npc.size*3 && myPos.z/GRID_SIZE == wPos.z/GRID_SIZE)
                 {
                     debug("Close to workPos");
-                    endPos = Vec3(myPos.x/20,myPos.y/20,myPos.z/20);
+                    endPos = Vec3(myPos.x/GRID_SIZE,myPos.y/GRID_SIZE,myPos.z/GRID_SIZE);
                     hasPath = false;
 
                     npc.jobPtr->completionProgress += npc.skills.intelligence / 2;
@@ -2229,7 +2229,7 @@ ReDesire:
                     {
                         debug("Job complete!");
 
-                        tiles[abs_to_index(wPos.x / 20)][abs_to_index(wPos.y / 20)][abs_to_index(wPos.z / 20)].stone();
+                        tiles[abs_to_index(wPos.x / GRID_SIZE)][abs_to_index(wPos.y / GRID_SIZE)][abs_to_index(wPos.z / GRID_SIZE)].stone();
                         for(int Stoney = 0; Stoney != 5; Stoney++)
                             spawnItem("Rock",wPos.x+randz(-3,3),wPos.y+randz(-3,3),wPos.z);
 
@@ -2241,9 +2241,9 @@ ReDesire:
 
             else if(npc.jobPtr != nullptr && npc.jobPtr->type == "Move")
             {
-                endPos = Vec3(wPos.x/20,wPos.y/20,wPos.z/20);
+                endPos = Vec3(wPos.x/GRID_SIZE,wPos.y/GRID_SIZE,wPos.z/GRID_SIZE);
                 hasPath = true;
-                if(math::distance(myPos,wPos) <= npc.size*2 && myPos.z/20 == wPos.z/20)
+                if(math::distance(myPos,wPos) <= npc.size*2 && myPos.z/GRID_SIZE == wPos.z/GRID_SIZE)
                 {
                     hasPath = false;
 
@@ -2276,7 +2276,7 @@ ReDesire:
     debug(npc.name + ", mhmm.", false);
     debug("debug 9", false);
     debug("(" + std::to_string(npc.xpos) + "/" + std::to_string(npc.ypos) + "/" + std::to_string(npc.zpos) + ")");
-    bool npcWalkable = tiles[abs_to_index(npc.xpos/20)][abs_to_index(npc.ypos/20)][abs_to_index(npc.zpos/20)].walkable;
+    bool npcWalkable = tiles[abs_to_index(npc.xpos/GRID_SIZE)][abs_to_index(npc.ypos/GRID_SIZE)][abs_to_index(npc.zpos/GRID_SIZE)].walkable;
     debug("pro debug 1", false);
 
     if(hasPath && (gvars::framesPassed % 5) == 0 && npcWalkable)
@@ -2284,7 +2284,9 @@ ReDesire:
         debug("hasPath");
         bool prevWalkable = tiles[endPos.x][endPos.y][endPos.z].walkable;
         tiles[endPos.x][endPos.y][endPos.z].walkable = true;
+        debug("hasPath");
         int result = pathCon.makePath(startPos, endPos);
+        debug("hasPath");
         tiles[endPos.x][endPos.y][endPos.z].walkable = prevWalkable;
         npc.storedPath.clear();
         for(auto &i : pathCon.storedPath)
@@ -2387,7 +2389,7 @@ void drawNPCs()
     {
         if (npc.hasSpawned == true)
         {
-            int CritterZ = npc.zpos/20;
+            int CritterZ = npc.zpos/GRID_SIZE;
             if(aabb(npc.xpos,npc.ypos,gvars::topLeft.x,gvars::topRight.x,gvars::topLeft.y,gvars::bottomRight.y) && CritterZ == gvars::currentz)
             {
 
@@ -3163,6 +3165,40 @@ float Magnitude(Vec3f v1)
 	return sqrt(pow(v1.x, 2) + pow(v1.y, 2) + pow(v1.z, 2)); //return the magnitude (pythagoras)
 }
 
+void lmbPress()
+{
+    bool foundOne = false;
+    debug("Pre Mouse Based Functions");
+    if (inputState.lmb)
+    {
+        myTargetPtr = nullptr;
+        gvars::myTarget = -1;
+        gvars::myTargetid = -1;
+        int tfunz = -1;
+        sf::Lock lock(mutex::npcList);
+        for (auto &elem : npclist)
+        {
+            tfunz++;
+            if (inputState.lmb == true)
+            {
+                int dist = math::closeish(gvars::mousePos.x,
+                                            gvars::mousePos.y,
+                                            elem.xpos, elem.ypos);
+                if (dist <= GRID_SIZE)
+                {
+                    gvars::myTarget = tfunz;
+                    myTargetPtr = &elem;
+                    foundOne = true;
+                }
+            }
+        }
+    }
+    debug("Post Mouse Based Functions");
+}
+
+
+
+
 void handlePhase()
 {
 
@@ -3682,33 +3718,8 @@ void handlePhase()
             npcmanager.addCritters();
             debug("Post Add Critters");
 
-            bool foundOne = false;
-            debug("Pre Mouse Based Functions");
-            if (inputState.lmb)
-            {
-                myTargetPtr = nullptr;
-                gvars::myTarget = -1;
-                gvars::myTargetid = -1;
-                int tfunz = -1;
-                sf::Lock lock(mutex::npcList);
-                for (auto &elem : npclist)
-                {
-                    tfunz++;
-                    if (inputState.lmb == true)
-                    {
-                        int dist = math::closeish(gvars::mousePos.x,
-                                                      gvars::mousePos.y,
-                                                      elem.xpos, elem.ypos);
-                        if (dist <= GRID_SIZE)
-                        {
-                            gvars::myTarget = tfunz;
-                            myTargetPtr = &elem;
-                            foundOne = true;
-                        }
-                    }
-                }
-            }
-            debug("Post Mouse Based Functions");
+            lmbPress();
+
 
         } //=============================================================================*End of Local*========================================================================
 
@@ -4612,11 +4623,8 @@ int main()
     itemmanager.initializeItems();
     npcmanager.initializeCritters();
 
-
-
     galaxySetup();
-    bountyTowerSetup();
-
+    //bountyTowerSetup();
 
     window.create(sf::VideoMode(RESOLUTION.x, RESOLUTION.y, 32), randomWindowName());
     window.setVerticalSyncEnabled(true);

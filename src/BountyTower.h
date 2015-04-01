@@ -11,8 +11,14 @@
 #include "Camera.h"
 #include "math.h"
 #include "Tiles.h"
+#include "Faction.h"
 
 extern sf::RenderWindow window;
+
+extern void lmbPress();
+extern void critterBrain(Npc &npc, std::list<Npc> &container);
+extern void critterBrain(std::list<Npc> &npcs);
+
 
 void bountyTowerSetup();
 void bountyTowerLoop();

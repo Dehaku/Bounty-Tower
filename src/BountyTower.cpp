@@ -1,5 +1,13 @@
 #include "BountyTower.h"
 
+template <typename T> T &listAt(std::list<T> &list, size_t index)
+{
+    auto it = list.begin();
+    std::advance(it, index);
+    return *it;
+}
+
+
 void bountyTowerSetup()
 {
     gCtrl.phase = "Lobby";
@@ -18,8 +26,21 @@ void bountyTowerSetup()
         }
     }
 
+
+
+    addFaction("The Titanium Grip");
+    conFact = &listAt(uniFact,0);
+    conFact->playerControlled = false;
+    conFact = &listAt(uniFact,1);
+    addMembers(4,"The Titanium Grip");
+
+    addFaction("Towerlings");
+
+
     gCtrl.menuType = "BTTowers";
     menuPopUp();
+
+    //gvars::debug = true;
 }
 
 void bountyTowerLoop()
@@ -28,6 +49,14 @@ void bountyTowerLoop()
     int mouseX = gvars::mousePos.x, mouseY = gvars::mousePos.y;
     std::string stringy = std::to_string(mouseX) + "/" + std::to_string(mouseY) + "(" + std::to_string(gvars::currentz) + ")";
     textList.createText(gvars::mousePos.x,gvars::mousePos.y,15,sf::Color::Cyan,stringy);
+
+    if(inputState.key[Key::X].time == 1)
+    {
+        for(auto & fact : uniFact)
+        {
+            std::cout << fact.name << std::endl;
+        }
+    }
 
     if(inputState.key[Key::G].time == 1)
     {
@@ -54,6 +83,15 @@ void bountyTowerLoop()
     {
         gCtrl.menuPos = math::Vec2f(-10000, -10000);
     }
+
+    if(gCtrl.phase == "Lobby")
+    {
+        lmbPress();
+        rightMouseButtonContextMenu();
+
+        critterBrain(npclist);
+    }
+
 
 }
 
@@ -88,7 +126,6 @@ void buildTower(std::string towerName)
 
 Tower::Tower()
 {
-    //tex = &texturemanager.getTexture("TowerTile.png");
     tex = &texturemanager.getTexture("FantasyModern.png");
     name = "The Tower mk" + std::to_string(randz(1,10));
     difficulty = randz(10,100);

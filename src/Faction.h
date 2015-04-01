@@ -422,5 +422,7 @@ Npc *getCritter(int id);
 void selectedNPCprocess();
 void drawSelectedCritterHUD();
 void runCritterBody(Npc &npc);
+void addFaction(std::string name);
+void addMembers(int amount, std::string faction);
 
 #endif // FACTION_H_INCLUDED

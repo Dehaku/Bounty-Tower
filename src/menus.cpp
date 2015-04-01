@@ -1443,6 +1443,8 @@ void menuPopUp()
                 buildTower("FantasyModern");
                 gCtrl.menuPos = sf::Vector2f(-10000, -10000);
                 gCtrl.menuType = "NULL";
+                gvars::currentx = 96/2;
+                gvars::currenty = 96;
                 break;
             }
 
@@ -1510,8 +1512,7 @@ void menuPopUp()
 
 void rightMouseButtonContextMenu()
 {
-    if (inputState.rmbTime ==
-        1) // This is the RightMouseButton's context menu for Tiles/Critters/Items, This will probably be rather robust
+    if (inputState.rmbTime == 1) // This is the RightMouseButton's context menu for Tiles/Critters/Items, This will probably be rather robust
     {
 
         {
