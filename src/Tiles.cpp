@@ -1361,6 +1361,18 @@ void Tile::BTwater()
     walkable = false;
 }
 
+void Tile::BTstairs()
+{ // 2031
+    id = 2031;
+    worldColor = sf::Color(150, 150, 0);
+    img.setTexture(texturemanager.getTexture("Stairs.png"));
+    transparent = true;
+    walkable = true;
+    goesUp = true;
+    goesDown = true;
+}
+
+
 void Tile::BTdoor()
 { // 2100
     id = 2100;
@@ -1370,6 +1382,46 @@ void Tile::BTdoor()
     walkable = true;
     health = 15;
     deathID = 7;
+}
+
+void Tile::BTelevatordoor()
+{ // 3200
+    id = 3200;
+    worldColor = sf::Color(150, 150, 150);
+    transparent = true;
+    walkable = true;
+    int rannum = randz(1,3);
+    if(rannum == 1)
+        img.setTexture(texturemanager.getTexture("FMTtile1.png"));
+    if(rannum == 2)
+        img.setTexture(texturemanager.getTexture("FMTtile2.png"));
+    /*
+    if(rannum == 3)
+        img.setTexture(texturemanager.getTexture("FMTtile3.png"));
+    */
+    if(rannum == 3)
+        img.setTexture(texturemanager.getTexture("FMTtile4.png"));
+    img.setColor(sf::Color(150,150,150));
+}
+
+void Tile::BTelevator()
+{ // 3202
+    id = 3202;
+    worldColor = sf::Color(150, 150, 150);
+    transparent = true;
+    walkable = true;
+    int rannum = randz(1,3);
+    if(rannum == 1)
+        img.setTexture(texturemanager.getTexture("FMTtile1.png"));
+    if(rannum == 2)
+        img.setTexture(texturemanager.getTexture("FMTtile2.png"));
+    /*
+    if(rannum == 3)
+        img.setTexture(texturemanager.getTexture("FMTtile3.png"));
+    */
+    if(rannum == 3)
+        img.setTexture(texturemanager.getTexture("FMTtile4.png"));
+    img.setColor(sf::Color(50,50,50));
 }
 
 
@@ -1382,6 +1434,15 @@ void Tile::BTlava()
     health = 200;
     deathID = 1007;
     walkable = false;
+}
+
+void Tile::BTswitch()
+{ // 3500
+    id = 3500;
+    worldColor = sf::Color(150, 150, 150);
+    transparent = true;
+    walkable = true;
+    img.setTexture(texturemanager.getTexture("FMTtile3.png"));
 }
 
 

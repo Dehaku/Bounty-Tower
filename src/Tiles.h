@@ -78,6 +78,11 @@ public:
     void BTdoor();
     void BTlava();
     void BTsky();
+
+    void BTstairs();
+    void BTelevatordoor();
+    void BTelevator();
+    void BTswitch();
     void setTilebyID(int ID);
     void teleportPad(Vec3 teleportPosition);
     Tile();

@@ -478,10 +478,10 @@ public:
             sf::Color pathColor(255, 255, 255, 100);
 
             if (!firstRun)
-                effects.createLine((oldPos.x + 1) * GRID_SIZE - GRID_SIZE/2,
-                                   (oldPos.y + 1) * GRID_SIZE - GRID_SIZE/2,
-                                   (pathPos.x + 1) * GRID_SIZE - GRID_SIZE/2,
-                                   (pathPos.y + 1) * GRID_SIZE - GRID_SIZE/2, 5, pathColor);
+                effects.createLine((oldPos.x + 1) * GRID_SIZE - (GRID_SIZE/2),
+                                   (oldPos.y + 1) * GRID_SIZE - (GRID_SIZE/2),
+                                   (pathPos.x + 1) * GRID_SIZE - (GRID_SIZE/2),
+                                   (pathPos.y + 1) * GRID_SIZE - (GRID_SIZE/2), 5, pathColor);
 
             oldPos = pathPos;
             firstRun = false;
@@ -718,10 +718,10 @@ void drawStoredPath(std::vector<Tile *> storedPath)
             sf::Color pathColor(255, 255, 255, 100);
 
             if (!firstRun)
-                effects.createLine((oldPos.x + 1) * 20 - 10,
-                                   (oldPos.y + 1) * 20 - 10,
-                                   (pathPos.x + 1) * 20 - 10,
-                                   (pathPos.y + 1) * 20 - 10, 5, pathColor);
+                effects.createLine((oldPos.x + 1) * GRID_SIZE - (GRID_SIZE/2),
+                                   (oldPos.y + 1) * GRID_SIZE - (GRID_SIZE/2),
+                                   (pathPos.x + 1) * GRID_SIZE - (GRID_SIZE/2),
+                                   (pathPos.y + 1) * GRID_SIZE - (GRID_SIZE/2), 5, pathColor);
 
             oldPos = pathPos;
             firstRun = false;
@@ -1911,7 +1911,7 @@ void critterBrain(Npc &npc, std::list<Npc> &container)
 
     for (auto &des : desires)
     {
-        if (npc.name != "Mini Turret" && des.type == "Sustainence")
+        if (npc.name != "Mini Turret" && des.type == "Sustainence" && GRID_SIZE == 20)
             des.potency += hydration + nutrients;
         if (des.type == "SelfDefense")
         {
@@ -2280,12 +2280,14 @@ ReDesire:
     debug("pro debug 1", false);
 
     if(hasPath && (gvars::framesPassed % 5) == 0 && npcWalkable)
+    //if(hasPath && npcWalkable)
     {
         debug("hasPath");
         bool prevWalkable = tiles[endPos.x][endPos.y][endPos.z].walkable;
         tiles[endPos.x][endPos.y][endPos.z].walkable = true;
         debug("hasPath");
         int result = pathCon.makePath(startPos, endPos);
+        std::cout << "path result: " << result << std::endl;
         debug("hasPath");
         tiles[endPos.x][endPos.y][endPos.z].walkable = prevWalkable;
         npc.storedPath.clear();
@@ -2302,7 +2304,7 @@ ReDesire:
         drawStoredPath(npc.storedPath);
         Vec3 Pos(npc.storedPath[1]->getPos());
 
-        double pathTime = (((npc.storedPath.size()*20)*1.2)/npc.moverate)/30;
+        double pathTime = (((npc.storedPath.size()*GRID_SIZE)*1.2)/npc.moverate)/30;
 
         std::ostringstream out;
         out << std::setprecision(2) << pathTime;
@@ -2311,24 +2313,24 @@ ReDesire:
         pathy.append(out.str()  );
 
         Vec3 endPathPos(npc.storedPath[npc.storedPath.size()-1]->getPos());
-        textList.createText((endPathPos.x)*20-20,(endPathPos.y)*20-20,10,sf::Color(255,255,255), pathy );
+        textList.createText((endPathPos.x)*GRID_SIZE-GRID_SIZE,(endPathPos.y)*GRID_SIZE-GRID_SIZE,10,sf::Color(255,255,255), pathy );
 
-        npc.dirMove(sf::Vector2f(Pos.x*20+10,Pos.y*20+10));
+        npc.dirMove(sf::Vector2f(Pos.x*GRID_SIZE+(GRID_SIZE/2),Pos.y*GRID_SIZE+(GRID_SIZE/2)));
 
         if(Pos.z != npc.zpos)
-            npc.zpos = Pos.z*20;
+            npc.zpos = Pos.z*GRID_SIZE;
 
         if(npc.storedPath.size() >= 2)
         {
             if(npc.storedPath[0]->teleporter && npc.storedPath[1]->teleporter)
             {
-                npc.xpos = npc.storedPath[0]->telePos.x*20;
-                npc.ypos = npc.storedPath[0]->telePos.y*20;
-                npc.zpos = npc.storedPath[0]->telePos.z*20;
+                npc.xpos = npc.storedPath[0]->telePos.x*GRID_SIZE;
+                npc.ypos = npc.storedPath[0]->telePos.y*GRID_SIZE;
+                npc.zpos = npc.storedPath[0]->telePos.z*GRID_SIZE;
             }
         }
         Vec3 myPos(npc.xpos,npc.ypos,npc.zpos);
-        Vec3 posExtended(Pos.x*20+10,Pos.y*20+10,Pos.z*20+10);
+        Vec3 posExtended(Pos.x*GRID_SIZE+(GRID_SIZE/2),Pos.y*GRID_SIZE+(GRID_SIZE/2),Pos.z*GRID_SIZE+(GRID_SIZE/2));
 
         if(math::distance(myPos,posExtended) <= npc.size)
             npc.storedPath.erase(npc.storedPath.begin() );

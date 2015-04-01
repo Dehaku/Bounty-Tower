@@ -69,12 +69,6 @@ void bountyTowerLoop()
         }
     }
 
-    if(inputState.key[Key::Space].time == 1)
-    {
-        gCtrl.menuType = "BTTowers";
-        menuPopUp();
-    }
-
     if (gCtrl.menuType != "NULL")
     {
         menuPopUp();
@@ -84,12 +78,20 @@ void bountyTowerLoop()
         gCtrl.menuPos = math::Vec2f(-10000, -10000);
     }
 
+    lmbPress();
+    rightMouseButtonContextMenu();
+
+    critterBrain(npclist);
+
+    if(inputState.key[Key::Space])
+        for(auto &npc : npclist)
+    {
+        npc.dirMove(gvars::mousePos);
+    }
+
     if(gCtrl.phase == "Lobby")
     {
-        lmbPress();
-        rightMouseButtonContextMenu();
 
-        critterBrain(npclist);
     }
 
 
@@ -119,6 +121,32 @@ void buildTower(std::string towerName)
             tiles[47][64][1].BTdoor();
             if( (x == 48 || x == 47) && y > 64 && z == 1)
                 tiles[x][y][z].BTstone();
+
+            tiles[48][32][z].BTstairs();
+            tiles[47][32][z].BTstairs();
+
+            tiles[32][48][z].BTstairs();
+            tiles[32][47][z].BTstairs();
+
+            tiles[63][48][z].BTstairs();
+            tiles[63][47][z].BTstairs();
+
+
+            if(aabb(x,y,47,50,47,50))
+            {
+                tiles[x][y][z].BTwall();
+            }
+            if(aabb(x,y,48,49,48,49))
+            {
+                tiles[x][y][z].BTelevator();
+            }
+
+            tiles[48][47][z].BTelevatordoor();
+            tiles[49][47][z].BTelevatordoor();
+
+            tiles[51][32][z].BTswitch();
+            tiles[44][32][z].BTswitch();
+
 
         }
     }
