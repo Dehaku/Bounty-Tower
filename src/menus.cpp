@@ -207,6 +207,7 @@ int createImageButton(sf::Vector2f vPos, sf::Texture &Tex, std::string text)
 {
     ImageButton var;
     var.sprite.setTexture(Tex);
+    //var.sprite.setScale(0.2,0.2);
     var.sprite.setPosition(vPos);
     var.sprite.setOrigin(Tex.getSize().x/2,Tex.getSize().y/2);
     var.sButtonText = text;
@@ -317,20 +318,12 @@ MenuPointerContainer::MenuPointerContainer()
 // to activate the menu buttons.
 
 
-
 void menuPopUp()
 {
-
     if (gCtrl.menuPos.x == -10000)
     {
         gCtrl.menuPos = gvars::mousePos;
     }
-
-    sf::Vector2f tiled(abs(gCtrl.menuPos.x / 20) * 20,
-                       abs(gCtrl.menuPos.y / 20) * 20);
-
-    effects.createSquare(tiled.x, tiled.y, tiled.x + 20, tiled.y + 20,
-                         sf::Color::Transparent, 1, sf::Color::Cyan);
 
     if (gCtrl.menuType == "Orbital Drop")
     {
@@ -1402,8 +1395,11 @@ void menuPopUp()
     {
 
         int options = 10;
-        gCtrl.menuEndPos = sf::Vector2f(gCtrl.menuPos.x + 150,
-                                        (gCtrl.menuPos.y + (options * 13)) + 5);
+        sf::Vector2f lowerBound(RESOLUTION.x*0.1,RESOLUTION.y*0.1);
+        gCtrl.menuPos = lowerBound;
+
+        gCtrl.menuEndPos = sf::Vector2f(RESOLUTION.x-lowerBound.x,RESOLUTION.y-lowerBound.y);
+
         effects.createSquare(gCtrl.menuPos.x, gCtrl.menuPos.y,
                              gCtrl.menuEndPos.x, gCtrl.menuEndPos.y,
                              sf::Color::Black, 2, sf::Color::Cyan);
@@ -1414,61 +1410,53 @@ void menuPopUp()
         int mbd = 8;                        // MoveButtonDown
         sf::Color butCol = sf::Color::Cyan; // ButtonColor.
 
-        for (int i = 0; i != options; i++)
+        int yMulti = -1;
+        for (auto i = 0; i != towers.size(); i++)
         {
 
-            if (i == 0)
+            if((i % 4) == 0)
             {
-                effects.createLine(
-                    gCtrl.menuPos.x, (gCtrl.menuPos.y + (iY * 13)) + 13,
-                    gCtrl.menuPos.x + 90, (gCtrl.menuPos.y + (iY * 13)) + 13, 1,
-                    sf::Color::Cyan);
-
-                textList.createText(gCtrl.menuPos.x + 2,
-                                    gCtrl.menuPos.y + (iY * 13), 12,
-                                    sf::Color::White, "Close Menu");
-                sf::Vector2f butPos(gCtrl.menuEndPos.x,gCtrl.menuPos.y);
-                int butt = createSquareButton(butPos,bs, bs, sf::Color::Red, "Close Menu");
-                if (squareButtonClicked(butt) ||
-                    inputState.key[Key::Num1].time == 1)
-                {
-                    gCtrl.menuPos = sf::Vector2f(-10000, -10000);
-                    gCtrl.menuType = "NULL";
-
-                    break;
-                }
+                yMulti++;
             }
-            if (i == 1)
+            sf::Vector2f vPos;
+            //int imageSpacing = 40;
+            int imageSpacing = 150;
+            vPos.x = gCtrl.menuPos.x + imageSpacing + ((i * (imageSpacing*2))-(((1200))*yMulti));
+            vPos.y = gCtrl.menuPos.y + imageSpacing + ((imageSpacing*2)*yMulti);
+
+            int buttz = createImageButton(vPos,*towers[i].tex);
+            if(imageButtonHovered(buttz))
             {
-                effects.createLine(
-                    gCtrl.menuPos.x, (gCtrl.menuPos.y + (iY * 13)) + 13,
-                    gCtrl.menuPos.x + 90, (gCtrl.menuPos.y + (iY * 13)) + 13, 1,
-                    sf::Color::Cyan);
-
-                textList.createText(gCtrl.menuPos.x + 2,
-                                    gCtrl.menuPos.y + (iY * 13), 12,
-                                    sf::Color::White, "Close Menu");
-
-
-                sf::Vector2f vPos(gCtrl.menuPos.x + brd, gCtrl.menuPos.y + (iY * 13) + mbd);
-
-                int buttz = createImageButton(vPos,texturemanager.getTexture("TowerTile.png"),"text?");
-                if(imageButtonHovered(buttz))
-                {
-                    int butty = createImageButton(gvars::mousePos,texturemanager.getTexture("MercRogueFem.png"));
-                    textList.createText(gvars::mousePos.x
+                int butty = createImageButton(gvars::mousePos,texturemanager.getTexture("MercRogueFem.png"));
+                std::string textOut = "Tower: " + towers[i].name + ", (" + std::to_string(towers[i].difficulty) + "/" +
+                                            std::to_string(towers[i].minioncount) + ") , (Difficulty/Minions).";
+                textList.createText(gvars::mousePos.x
                                         ,gvars::mousePos.y,15
                                         ,sf::Color::Red
-                                        ,std::to_string(gvars::mousePos.x));
-                }
-
-                if (imageButtonClicked(buttz) ||
-                    inputState.key[Key::Num1].time == 1)
-                {
-                }
+                                        ,textOut);
             }
-            iY++;
+
+            if (imageButtonClicked(buttz) ||
+                    inputState.key[Key::Num1].time == 1)
+            {
+                //towers[i].tex = &texturemanager.getTexture("Error.bmp");
+                buildTower("FantasyModern");
+                gCtrl.menuPos = sf::Vector2f(-10000, -10000);
+                gCtrl.menuType = "NULL";
+                break;
+            }
+
         }
+
+        sf::Vector2f butPos(gCtrl.menuEndPos.x,gCtrl.menuPos.y);
+        int butt = createSquareButton(butPos,bs, bs, sf::Color::Red, "Close Menu");
+        if (squareButtonClicked(butt) ||
+                inputState.key[Key::Num1].time == 1)
+        {
+            gCtrl.menuPos = sf::Vector2f(-10000, -10000);
+            gCtrl.menuType = "NULL";
+        }
+
     }
 
     if (gCtrl.menuType == "BaseMenu")

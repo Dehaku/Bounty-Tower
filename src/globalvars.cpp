@@ -62,6 +62,7 @@ sf::Vector2f topLeft;
 sf::Vector2f topRight;
 sf::Vector2f bottomLeft;
 sf::Vector2f bottomRight;
+sf::Vector2f centerScreen;
 std::string genString;
 sf::Vector2i cords;
 bool initalZeds = false;

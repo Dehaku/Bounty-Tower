@@ -51,6 +51,7 @@ extern sf::Vector2f topLeft;
 extern sf::Vector2f topRight;
 extern sf::Vector2f bottomLeft;
 extern sf::Vector2f bottomRight;
+extern sf::Vector2f centerScreen;
 extern std::string genString;
 extern sf::Vector2i cords;
 extern bool initalZeds;
