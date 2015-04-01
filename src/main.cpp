@@ -163,10 +163,10 @@ public:
                 pathColor.b = 255;
 
             if (k != 0)
-                effects.createLine((oldPos.x + 1) * 20 - 10,
-                                   (oldPos.y + 1) * 20 - 10,
-                                   (pathPos.x + 1) * 20 - 10,
-                                   (pathPos.y + 1) * 20 - 10, 5, pathColor);
+                effects.createLine((oldPos.x + 1) * GRID_SIZE - GRID_SIZE/2,
+                                   (oldPos.y + 1) * GRID_SIZE - GRID_SIZE/2,
+                                   (pathPos.x + 1) * GRID_SIZE - GRID_SIZE/2,
+                                   (pathPos.y + 1) * GRID_SIZE - GRID_SIZE/2, 5, pathColor);
 
             oldPos = pathPos;
         }
@@ -190,10 +190,10 @@ public:
                 pathColor.b = 255;
 
             if (!firstRun)
-                effects.createLine((oldPos.x + 1) * 20 - 10,
-                                   (oldPos.y + 1) * 20 - 10,
-                                   (pathPos.x + 1) * 20 - 10,
-                                   (pathPos.y + 1) * 20 - 10, 5, pathColor);
+                effects.createLine((oldPos.x + 1) * GRID_SIZE - GRID_SIZE/2,
+                                   (oldPos.y + 1) * GRID_SIZE - GRID_SIZE/2,
+                                   (pathPos.x + 1) * GRID_SIZE - GRID_SIZE/2,
+                                   (pathPos.y + 1) * GRID_SIZE - GRID_SIZE/2, 5, pathColor);
 
             oldPos = pathPos;
             firstRun = false;
@@ -457,10 +457,10 @@ public:
                 pathColor.b = 255;
 
             if (k != 0)
-                effects.createLine((oldPos.x + 1) * 20 - 10,
-                                   (oldPos.y + 1) * 20 - 10,
-                                   (pathPos.x + 1) * 20 - 10,
-                                   (pathPos.y + 1) * 20 - 10, 5, pathColor);
+                effects.createLine((oldPos.x + 1) * GRID_SIZE - GRID_SIZE/2,
+                                   (oldPos.y + 1) * GRID_SIZE - GRID_SIZE/2,
+                                   (pathPos.x + 1) * GRID_SIZE - GRID_SIZE/2,
+                                   (pathPos.y + 1) * GRID_SIZE - GRID_SIZE/2, 5, pathColor);
 
             oldPos = pathPos;
         }
@@ -478,10 +478,10 @@ public:
             sf::Color pathColor(255, 255, 255, 100);
 
             if (!firstRun)
-                effects.createLine((oldPos.x + 1) * 20 - 10,
-                                   (oldPos.y + 1) * 20 - 10,
-                                   (pathPos.x + 1) * 20 - 10,
-                                   (pathPos.y + 1) * 20 - 10, 5, pathColor);
+                effects.createLine((oldPos.x + 1) * GRID_SIZE - GRID_SIZE/2,
+                                   (oldPos.y + 1) * GRID_SIZE - GRID_SIZE/2,
+                                   (pathPos.x + 1) * GRID_SIZE - GRID_SIZE/2,
+                                   (pathPos.y + 1) * GRID_SIZE - GRID_SIZE/2, 5, pathColor);
 
             oldPos = pathPos;
             firstRun = false;
@@ -1712,7 +1712,7 @@ void critterBrain(Npc &npc, std::list<Npc> &container)
     npc.img.getTextureRect().height / 2);
     if (npc.race == "Human")
     {
-        npc.img.setScale(0.5, 0.5);
+        //npc.img.setScale(0.5, 0.5);
         npc.img.setRotation(npc.angle);
     }
 
@@ -4624,7 +4624,7 @@ int main()
     npcmanager.initializeCritters();
 
     galaxySetup();
-    //bountyTowerSetup();
+    bountyTowerSetup();
 
     window.create(sf::VideoMode(RESOLUTION.x, RESOLUTION.y, 32), randomWindowName());
     window.setVerticalSyncEnabled(true);

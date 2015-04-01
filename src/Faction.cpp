@@ -2327,9 +2327,10 @@ void addMembers(int amount, std::string faction)
                 member = *getGlobalCritter("Human");
                 member.faction = faction;
                 member.factionPtr = &fact;
-                member.xpos = (GRIDS*GRID_SIZE)/2;
-                member.ypos = (GRIDS*GRID_SIZE)-100;
+                member.xpos = ((GRIDS*GRID_SIZE)/2)+randz(-20,20);
+                member.ypos = ((GRIDS*GRID_SIZE)-100)+randz(-20,20);
                 member.zpos = (1*GRID_SIZE);
+                member.id = gvars::globalid++;
                 npclist.push_back(member);
             }
         }
