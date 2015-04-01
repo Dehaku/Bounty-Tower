@@ -1385,6 +1385,7 @@ void NpcManager::initializeCritters()
             //thirstrate = 1;
 
             critter.name = stringFindString(line, "[Name:");
+            std::cout << "Added: " << critter.name << std::endl;
             critter.race = critter.name;
             if (critter.name == "Zombie")
                 critter.race = "Zombie";
@@ -1963,6 +1964,7 @@ Npc *getGlobalCritter(std::string strtype)
             return &elem;
         }
     }
+    debug("Returning nullptr from getGlobalCritter");
     return nullptr;
 }
 
@@ -2324,7 +2326,7 @@ void addMembers(int amount, std::string faction)
             for(int i = 0; i != amount; i++)
             {
                 Npc member;
-                member = *getGlobalCritter("Human");
+                member = *getGlobalCritter("BTHuman");
                 member.faction = faction;
                 member.factionPtr = &fact;
                 member.xpos = ((GRIDS*GRID_SIZE)/2)+randz(-20,20);

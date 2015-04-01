@@ -95,6 +95,41 @@ void bountyTowerLoop()
     }
 
 
+
+
+    if( (gvars::framesPassed % 300) == 0 )
+    {
+        debug("Gettin Stairs");
+        std::vector<Tile*> stairs;
+        for(int x = 0; x != GRIDS; x++)
+            for(int y = 0; y != GRIDS; y++)
+        {
+            if(tiles[x][y][gvars::currentz].id == 2031)
+                stairs.push_back(&tiles[x][y][gvars::currentz]);
+        }
+        debug("Placin Towerlings");
+        for(auto &stair : stairs)
+        {
+            Npc member;
+            debug("V");
+            member = *getGlobalCritter("BTHalfCelestial");
+            debug("X");
+            member.faction = "Towerlings";
+            debug("Y");
+            member.factionPtr = &listAt(uniFact,2);
+            debug("Z");
+            //member.xpos = ((GRIDS*GRID_SIZE)/2)+randz(-20,20);
+            //member.ypos = ((GRIDS*GRID_SIZE)-100)+randz(-20,20);
+            member.xpos = stair->pos.x*GRID_SIZE; //((GRIDS*GRID_SIZE)/2)+randz(-20,20);
+            member.ypos = stair->pos.y*GRID_SIZE;
+            member.zpos = (gvars::currentz*GRID_SIZE);
+            member.id = gvars::globalid++;
+            npclist.push_back(member);
+        }
+        debug("Done placin Towerlings");
+    }
+
+
 }
 
 void buildTower(std::string towerName)
@@ -149,6 +184,9 @@ void buildTower(std::string towerName)
 
 
         }
+
+
+
     }
 }
 
