@@ -7,6 +7,7 @@
 
 #include "defs.h"
 
+
 const int GRIDS = 96;
 
 const int CHUNK_SIZE = 32;
@@ -69,6 +70,14 @@ public:
     void baseRune();
     void sky();
     void cake();
+    void BTstone();
+
+    void BTwater();
+    void BTgrass();
+    void BTwall();
+    void BTdoor();
+    void BTlava();
+    void BTsky();
     void setTilebyID(int ID);
     void teleportPad(Vec3 teleportPosition);
     Tile();

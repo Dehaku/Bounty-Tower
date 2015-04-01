@@ -4613,9 +4613,9 @@ int main()
     npcmanager.initializeCritters();
 
 
-    bountyTowerSetup();
-    galaxySetup();
 
+    galaxySetup();
+    bountyTowerSetup();
 
 
     window.create(sf::VideoMode(RESOLUTION.x, RESOLUTION.y, 32), randomWindowName());

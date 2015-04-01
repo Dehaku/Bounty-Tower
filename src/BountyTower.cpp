@@ -18,9 +18,8 @@ void bountyTowerSetup()
         }
     }
 
-    //gCtrl.menuType = "BTTowers";
-    //menuPopUp();
-
+    gCtrl.menuType = "BTTowers";
+    menuPopUp();
 }
 
 void bountyTowerLoop()
@@ -29,7 +28,7 @@ void bountyTowerLoop()
     int mouseX = gvars::mousePos.x, mouseY = gvars::mousePos.y;
     std::string stringy = std::to_string(mouseX) + "/" + std::to_string(mouseY) + "(" + std::to_string(gvars::currentz) + ")";
     textList.createText(gvars::mousePos.x,gvars::mousePos.y,15,sf::Color::Cyan,stringy);
-    //UnyTiles.drawTiles();
+
     if(inputState.key[Key::G].time == 1)
     {
         towers.clear();
@@ -67,21 +66,21 @@ void buildTower(std::string towerName)
                 for (int z = 0; z != CHUNK_SIZE; z++)
         {
             if(z == 0 || z == 1)
-                tiles[x][y][z].lava();
+                tiles[x][y][z].BTgrass();
             else
-                tiles[x][y][z].sky();
+                tiles[x][y][z].BTsky();
             if(aabb(x,y,31,64,31,64))
             {
-                tiles[x][y][z].wall();
+                tiles[x][y][z].BTwall();
             }
             if(aabb(x,y,32,63,32,63))
             {
-                tiles[x][y][z].stone();
+                tiles[x][y][z].BTstone();
             }
-            tiles[48][64][1].door();
-            tiles[47][64][1].door();
+            tiles[48][64][1].BTdoor();
+            tiles[47][64][1].BTdoor();
             if( (x == 48 || x == 47) && y > 64 && z == 1)
-                tiles[x][y][z].stone();
+                tiles[x][y][z].BTstone();
 
         }
     }
