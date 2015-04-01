@@ -18,8 +18,8 @@ void bountyTowerSetup()
         }
     }
 
-    gCtrl.menuType = "BTTowers";
-    menuPopUp();
+    //gCtrl.menuType = "BTTowers";
+    //menuPopUp();
 
 }
 

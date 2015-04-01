@@ -2809,6 +2809,9 @@ void galaxySetup()
         */
     }
     gCtrl.phase = "MainMenu";
+    gvars::currentx = 48;
+    gvars::currenty = 48;
+    gvars::currentz = 30;
 
     // Building the players faction, This is temporary.
     addInitialFaction();
@@ -4609,10 +4612,9 @@ int main()
     itemmanager.initializeItems();
     npcmanager.initializeCritters();
 
-    std::cout << std::min(0,-313) << " " << std::max(0,313) << std::endl;
 
-    galaxySetup();
     bountyTowerSetup();
+    galaxySetup();
 
 
 
