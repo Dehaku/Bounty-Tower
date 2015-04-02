@@ -7,6 +7,7 @@
 
 #include "defs.h"
 
+
 const int GRIDS = 96;
 
 const int CHUNK_SIZE = 32;
@@ -48,6 +49,7 @@ public:
     Vec3 telePos;
     sf::Sprite img;
     sf::Color worldColor;
+    std::string state;
 
     std::vector<Liquid> liquids;
 
@@ -69,6 +71,19 @@ public:
     void baseRune();
     void sky();
     void cake();
+    void BTstone();
+
+    void BTwater();
+    void BTgrass();
+    void BTwall();
+    void BTdoor();
+    void BTlava();
+    void BTsky();
+
+    void BTstairs();
+    void BTelevatordoor();
+    void BTelevator();
+    void BTswitch();
     void setTilebyID(int ID);
     void teleportPad(Vec3 teleportPosition);
     Tile();

@@ -359,12 +359,26 @@ public:
 
 void cleanTerritories(std::vector<Territory> &territories);
 
+struct FactionRelation
+{
+    std::string faction;
+    int appeal;
+    int debt;
+    //Later to add for Galaxy...
+    //Trade Agreements
+    //Interrelation members
+    //Rivals
+    //Tech envies
+};
+
 class Faction
 {
 public:
     std::string name;
     bool playerControlled;
     bool initialized;
+
+    std::vector<FactionRelation> factRelations;
 
     int members;
 
@@ -422,5 +436,7 @@ Npc *getCritter(int id);
 void selectedNPCprocess();
 void drawSelectedCritterHUD();
 void runCritterBody(Npc &npc);
+Faction * addFaction(std::string name);
+void addMembers(int amount, std::string faction);
 
 #endif // FACTION_H_INCLUDED

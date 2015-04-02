@@ -721,7 +721,9 @@ void Npc::move(sf::Vector2f tar)
     angle = (180 / PI) * (atan2f(xpos - tar.x, ypos - tar.y));
 }
 
-void Npc::dirMove(sf::Vector2f tar)
+/*
+
+void dirMove(sf::Vector2f tar)
 {
     bool atTargetx = false;
     bool atTargety = false;
@@ -790,6 +792,35 @@ void Npc::dirMove(sf::Vector2f tar)
         ypos -= yy;
     }
 }
+
+*/
+
+void Npc::dirMove(sf::Vector2f tar)
+{
+    sf::Vector2f pos(xpos,ypos);
+    if(math::closeish(pos.x,pos.y,tar.x,tar.y) <= moverate)
+    {
+        xpos = tar.x;
+        ypos = tar.y;
+    }
+    else
+    {
+        int xx = 0;
+        int yy = 0;
+        int tempangle =
+            90 -
+            (180 / PI) *
+                (atan2f(
+                    xpos - tar.x,
+                    ypos -
+                        tar.y)); //To be honest, I spent alot of time with trial and error to get this part to work.
+        xx = cosf((tempangle)*PI / 180) * moverate;
+        yy = sinf((tempangle)*PI / 180) * moverate;
+        xpos -= xx;
+        ypos -= yy;
+    }
+}
+
 
 void Npc::angMove(float ang)
 {
@@ -1385,6 +1416,7 @@ void NpcManager::initializeCritters()
             //thirstrate = 1;
 
             critter.name = stringFindString(line, "[Name:");
+            std::cout << "Added: " << critter.name << std::endl;
             critter.race = critter.name;
             if (critter.name == "Zombie")
                 critter.race = "Zombie";
@@ -1963,6 +1995,7 @@ Npc *getGlobalCritter(std::string strtype)
             return &elem;
         }
     }
+    debug("Returning nullptr from getGlobalCritter");
     return nullptr;
 }
 
@@ -2302,6 +2335,40 @@ void addInitialFaction()
     g_pf.initialized = true;
     uniFact.push_back(g_pf);
     conFact = &listAt(uniFact,0);
+}
+
+Faction * addFaction(std::string name)
+{
+    Faction g_pf;
+
+    g_pf.name = name;
+    g_pf.playerControlled = true;
+    g_pf.initialized = true;
+    uniFact.push_back(g_pf);
+    //return &listAt(uniFact,uniFact.size()-1);
+    return &(uniFact.back());
+}
+
+void addMembers(int amount, std::string faction)
+{
+    for (auto &fact : uniFact)
+    {
+        if(fact.name == faction)
+        {
+            for(int i = 0; i != amount; i++)
+            {
+                Npc member;
+                member = *getGlobalCritter("BTHuman");
+                member.faction = faction;
+                member.factionPtr = &fact;
+                member.xpos = ((GRIDS*GRID_SIZE)/2)+randz(-20,20);
+                member.ypos = ((GRIDS*GRID_SIZE)-100)+randz(-20,20);
+                member.zpos = (1*GRID_SIZE);
+                member.id = gvars::globalid++;
+                npclist.push_back(member);
+            }
+        }
+    }
 }
 
 void offloadNpcs()

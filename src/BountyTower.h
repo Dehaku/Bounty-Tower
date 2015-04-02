@@ -11,8 +11,14 @@
 #include "Camera.h"
 #include "math.h"
 #include "Tiles.h"
+#include "Faction.h"
 
 extern sf::RenderWindow window;
+
+extern void lmbPress();
+extern void critterBrain(Npc &npc, std::list<Npc> &container);
+extern void critterBrain(std::list<Npc> &npcs);
+
 
 void bountyTowerSetup();
 void bountyTowerLoop();
@@ -31,6 +37,14 @@ public:
     int floors;
     Tower();
 };
+
+void bountyBrain(Npc &npc, std::list<Npc> &container);
+
+namespace bountytower
+{
+    extern bool elevatoravailable;
+    extern bool towerlingassault;
+}
 
 extern std::vector<Tower> towers;
 
