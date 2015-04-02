@@ -4665,7 +4665,7 @@ int main()
     npcmanager.initializeCritters();
 
     galaxySetup();
-    bountyTowerSetup();
+    //bountyTowerSetup();
 
     window.create(sf::VideoMode(RESOLUTION.x, RESOLUTION.y, 32), randomWindowName());
     window.setVerticalSyncEnabled(true);
