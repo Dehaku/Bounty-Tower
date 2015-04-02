@@ -2205,7 +2205,6 @@ ReDesire:
                 endPos = Vec3(npc.jobPtr->workPos.x/GRID_SIZE,npc.jobPtr->workPos.y/GRID_SIZE,npc.jobPtr->workPos.z/GRID_SIZE);
                 hasPath = true;
 
-                //if(math::closeish(myPos.x,myPos.y,wPos.x,wPos.y) <= npc.size*3)
                 if(math::distance(myPos,wPos) <= npc.size*3 && myPos.z/GRID_SIZE == wPos.z/GRID_SIZE)
                 {
                     debug("Close to workPos");
@@ -2238,7 +2237,33 @@ ReDesire:
                     }
                 }
             }
+            else if(npc.jobPtr != nullptr && npc.jobPtr->type == "FlipSwitch")
+            {
+                endPos = Vec3(npc.jobPtr->workPos.x/GRID_SIZE,npc.jobPtr->workPos.y/GRID_SIZE,npc.jobPtr->workPos.z/GRID_SIZE);
+                hasPath = true;
 
+                if(math::distance(myPos,wPos) <= npc.size*3 && myPos.z/GRID_SIZE == wPos.z/GRID_SIZE)
+                {
+                    debug("Close to workPos");
+                    endPos = Vec3(myPos.x/GRID_SIZE,myPos.y/GRID_SIZE,myPos.z/GRID_SIZE);
+                    hasPath = false;
+
+                    npc.jobPtr->completionProgress += npc.skills.intelligence / 2;
+                    debug("post job completetion progress");
+                    int percentage = percentIs( npc.jobPtr->completionTimer,npc.jobPtr->completionProgress);
+                    textList.createText(wPos.x-10,wPos.y-20,15,sf::Color::Yellow,"%" + std::to_string(percentage));
+
+                    if (npc.jobPtr->completionProgress >= npc.jobPtr->completionTimer)
+                    {
+                        debug("Job complete!");
+
+                        tiles[abs_to_index(wPos.x / GRID_SIZE)][abs_to_index(wPos.y / GRID_SIZE)][abs_to_index(wPos.z / GRID_SIZE)].state = "On";
+
+                        npc.jobPtr->toDelete = true;
+                        npc.jobPtr = nullptr;
+                    }
+                }
+            }
             else if(npc.jobPtr != nullptr && npc.jobPtr->type == "Move")
             {
                 endPos = Vec3(wPos.x/GRID_SIZE,wPos.y/GRID_SIZE,wPos.z/GRID_SIZE);
@@ -2262,20 +2287,6 @@ ReDesire:
                     npc.jobPtr->toDelete = true;
                     npc.jobPtr = nullptr;
                 }
-
-                /*
-                if(math::distance(myPos,wPos) <= npc.size*2 && myPos.z/GRID_SIZE == wPos.z/GRID_SIZE)
-                {
-                    hasPath = false;
-
-                    npc.xpos = wPos.x;
-                    npc.ypos = wPos.y;
-                    npc.zpos = wPos.z;
-
-                    npc.jobPtr->toDelete = true;
-                    npc.jobPtr = nullptr;
-                }
-                */
             }
 
         }

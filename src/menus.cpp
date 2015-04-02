@@ -458,6 +458,9 @@ void menuPopUp()
         effects.createSquare(gCtrl.menuPos.x, gCtrl.menuPos.y,
                              gCtrl.menuEndPos.x, gCtrl.menuEndPos.y,
                              sf::Color::Black, 2, sf::Color::Cyan);
+
+        Vec3 vPos(gCtrl.menuPos.x/GRID_SIZE,gCtrl.menuPos.y/GRID_SIZE,gvars::currentz);
+
         int iY = 0;
         int brd = 140;                      // ButtonRightDisplacement.
         int bs = 7;                         // ButtonSize;
@@ -558,7 +561,46 @@ void menuPopUp()
                     return;
                 }
             }
+            if (i == 3 && myTargetPtr != nullptr && tiles[vPos.x][vPos.y][vPos.z].state == "Off")
+            {
+                effects.createLine(
+                    gCtrl.menuPos.x, (gCtrl.menuPos.y + (iY * 13)) + 13,
+                    gCtrl.menuPos.x + 90, (gCtrl.menuPos.y + (iY * 13)) + 13, 1,
+                    sf::Color::Cyan);
+                textList.createText(gCtrl.menuPos.x + 2,
+                                    gCtrl.menuPos.y + (iY * 13), 12,
+                                    sf::Color::White, "Switch - Turn On");
+                int butt = createSquareButton(
+                    math::Vec2f(gCtrl.menuPos.x + brd,
+                                (gCtrl.menuPos.y + (iY * 13)) + mbd),
+                    bs, bsy, butCol, "Makes currently selected fella flip the switch.");
+                if (squareButtonClicked(butt) ||
+                    inputState.key[Key::Num4].time == 1)
+                {
 
+                    Job job;
+                    job.name = "FlipSelectedSwitch";
+                    job.type = "FlipSwitch";
+                    job.workPos.x = gCtrl.menuPos.x;
+                    job.workPos.y = gCtrl.menuPos.y;
+                    job.workPos.z = gvars::currentz*GRID_SIZE;
+                    job.completionTimer = 600*30;
+
+                    if(myTargetPtr->jobPtr != nullptr)
+                    {
+                        myTargetPtr->jobPtr->pWorker = nullptr;
+                        myTargetPtr->jobPtr = nullptr;
+                    }
+
+                    job.pWorker = myTargetPtr;
+                    int jobListSize = myTargetPtr->factionPtr->jobList.size();
+
+                    myTargetPtr->factionPtr->jobList.push_back(job);
+                    myTargetPtr->jobPtr = &listAt(myTargetPtr->factionPtr->jobList,jobListSize);
+
+                    return;
+                }
+            }
 
 
             if (i == -5)

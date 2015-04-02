@@ -49,6 +49,7 @@ public:
     Vec3 telePos;
     sf::Sprite img;
     sf::Color worldColor;
+    std::string state;
 
     std::vector<Liquid> liquids;
 

@@ -1443,6 +1443,7 @@ void Tile::BTswitch()
     transparent = true;
     walkable = true;
     img.setTexture(texturemanager.getTexture("FMTtile3.png"));
+    state = "Off";
 }
 
 
