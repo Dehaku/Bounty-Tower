@@ -97,7 +97,7 @@ void bountyTowerLoop()
 
 
 
-    if( (gvars::framesPassed % 300) == 0 )
+    if( (gvars::framesPassed % 300) == 0 && npclist.size() < 20)
     {
         debug("Gettin Stairs");
         std::vector<Tile*> stairs;
@@ -120,8 +120,8 @@ void bountyTowerLoop()
             debug("Z");
             //member.xpos = ((GRIDS*GRID_SIZE)/2)+randz(-20,20);
             //member.ypos = ((GRIDS*GRID_SIZE)-100)+randz(-20,20);
-            member.xpos = stair->pos.x*GRID_SIZE; //((GRIDS*GRID_SIZE)/2)+randz(-20,20);
-            member.ypos = stair->pos.y*GRID_SIZE;
+            member.xpos = stair->pos.x*GRID_SIZE+(GRID_SIZE/2); //((GRIDS*GRID_SIZE)/2)+randz(-20,20);
+            member.ypos = stair->pos.y*GRID_SIZE+(GRID_SIZE/2);
             member.zpos = (gvars::currentz*GRID_SIZE);
             member.id = gvars::globalid++;
             npclist.push_back(member);

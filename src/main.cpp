@@ -2243,6 +2243,27 @@ ReDesire:
             {
                 endPos = Vec3(wPos.x/GRID_SIZE,wPos.y/GRID_SIZE,wPos.z/GRID_SIZE);
                 hasPath = true;
+
+                if(math::distance(myPos,wPos) <= npc.size*2 && myPos.z/GRID_SIZE == wPos.z/GRID_SIZE
+                   && npc.storedPath.empty())
+                {
+
+                    npc.dirMove(sf::Vector2f(wPos.x,wPos.y));
+                }
+
+                if(math::distance(myPos,wPos) <= npc.moverate && myPos.z/GRID_SIZE == wPos.z/GRID_SIZE)
+                {
+                    hasPath = false;
+
+                    npc.xpos = wPos.x;
+                    npc.ypos = wPos.y;
+                    npc.zpos = wPos.z;
+
+                    npc.jobPtr->toDelete = true;
+                    npc.jobPtr = nullptr;
+                }
+
+                /*
                 if(math::distance(myPos,wPos) <= npc.size*2 && myPos.z/GRID_SIZE == wPos.z/GRID_SIZE)
                 {
                     hasPath = false;
@@ -2254,6 +2275,7 @@ ReDesire:
                     npc.jobPtr->toDelete = true;
                     npc.jobPtr = nullptr;
                 }
+                */
             }
 
         }
@@ -2287,7 +2309,7 @@ ReDesire:
         tiles[endPos.x][endPos.y][endPos.z].walkable = true;
         debug("hasPath");
         int result = pathCon.makePath(startPos, endPos);
-        std::cout << "path result: " << result << std::endl;
+        //std::cout << "path result: " << result << std::endl;
         debug("hasPath");
         tiles[endPos.x][endPos.y][endPos.z].walkable = prevWalkable;
         npc.storedPath.clear();
@@ -2332,7 +2354,7 @@ ReDesire:
         Vec3 myPos(npc.xpos,npc.ypos,npc.zpos);
         Vec3 posExtended(Pos.x*GRID_SIZE+(GRID_SIZE/2),Pos.y*GRID_SIZE+(GRID_SIZE/2),Pos.z*GRID_SIZE+(GRID_SIZE/2));
 
-        if(math::distance(myPos,posExtended) <= npc.size)
+        if(math::distance(myPos,posExtended) <= npc.moverate)
             npc.storedPath.erase(npc.storedPath.begin() );
     }
     else if(npc.targetInfo.item != nullptr && pathCon.storedPath.size() == 1 || npc.targetInfo.item != nullptr && pathCon.storedPath.size() == 2)

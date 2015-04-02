@@ -721,7 +721,9 @@ void Npc::move(sf::Vector2f tar)
     angle = (180 / PI) * (atan2f(xpos - tar.x, ypos - tar.y));
 }
 
-void Npc::dirMove(sf::Vector2f tar)
+/*
+
+void dirMove(sf::Vector2f tar)
 {
     bool atTargetx = false;
     bool atTargety = false;
@@ -790,6 +792,35 @@ void Npc::dirMove(sf::Vector2f tar)
         ypos -= yy;
     }
 }
+
+*/
+
+void Npc::dirMove(sf::Vector2f tar)
+{
+    sf::Vector2f pos(xpos,ypos);
+    if(math::closeish(pos.x,pos.y,tar.x,tar.y) <= moverate)
+    {
+        xpos = tar.x;
+        ypos = tar.y;
+    }
+    else
+    {
+        int xx = 0;
+        int yy = 0;
+        int tempangle =
+            90 -
+            (180 / PI) *
+                (atan2f(
+                    xpos - tar.x,
+                    ypos -
+                        tar.y)); //To be honest, I spent alot of time with trial and error to get this part to work.
+        xx = cosf((tempangle)*PI / 180) * moverate;
+        yy = sinf((tempangle)*PI / 180) * moverate;
+        xpos -= xx;
+        ypos -= yy;
+    }
+}
+
 
 void Npc::angMove(float ang)
 {
