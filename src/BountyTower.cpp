@@ -26,15 +26,29 @@ void bountyTowerSetup()
         }
     }
 
+    Faction * FactPtr;
 
+    FactPtr = addFaction("The Titanium Grip");
+    std::cout << FactPtr->name << " added. \n";
 
-    addFaction("The Titanium Grip");
     conFact = &listAt(uniFact,0);
     conFact->playerControlled = false;
     conFact = &listAt(uniFact,1);
+
+    FactionRelation factR;
+
+    factR.faction = "Towerlings";
+    factR.appeal = -1337;
+
+    conFact->factRelations.push_back(factR);
+
     addMembers(4,"The Titanium Grip");
 
-    addFaction("Towerlings");
+
+    FactPtr = addFaction("Towerlings");
+    std::cout << FactPtr->name << " added. \n";
+    factR.faction = "The Titanium Grip";
+    FactPtr->factRelations.push_back(factR);
 
 
     gCtrl.menuType = "BTTowers";
@@ -224,3 +238,52 @@ Tower::Tower()
 }
 
 std::vector<Tower> towers;
+
+void bountyBrain(Npc &npc, std::list<Npc> &container)
+{
+    if(bountytower::towerlingassault)
+    {
+        std::vector<Npc*> enemyPtrs;
+        for (auto &enemys : container)
+        {
+            if(enemys.faction != npc.faction)
+            {
+                for (auto &i : npc.factionPtr->factRelations)
+                {
+                    if(enemys.faction == i.faction && i.appeal < 1000)
+                    {
+                        //std::cout << "ZE ENEMY HAS BEEN SPOTTED AT " << enemys.xpos << "/" << enemys.ypos << std::endl;
+                        enemyPtrs.push_back(&enemys);
+                    }
+                }
+            }
+        }
+        Npc * closEnmy = nullptr;
+        for (auto &enemy : enemyPtrs)
+        {
+            effects.createLine(npc.xpos,npc.ypos,enemy->xpos,enemy->ypos,2,sf::Color::Yellow);
+            if(closEnmy == nullptr)
+                closEnmy = enemy;
+            else if(math::closeish(npc.xpos,npc.ypos,enemy->xpos,enemy->ypos) <
+                    math::closeish(npc.xpos,npc.ypos,closEnmy->xpos,closEnmy->ypos)
+                    )
+            {
+                closEnmy = enemy;
+            }
+
+        }
+
+        if(closEnmy != nullptr)
+        {
+            effects.createLine(npc.xpos,npc.ypos,closEnmy->xpos,closEnmy->ypos,4,sf::Color::Red);
+
+        }
+
+    }
+}
+
+namespace bountytower
+{
+    bool elevatoravailable = false;
+    bool towerlingassault = true;
+}

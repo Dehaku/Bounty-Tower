@@ -38,6 +38,14 @@ public:
     Tower();
 };
 
+void bountyBrain(Npc &npc, std::list<Npc> &container);
+
+namespace bountytower
+{
+    extern bool elevatoravailable;
+    extern bool towerlingassault;
+}
+
 extern std::vector<Tower> towers;
 
 #endif // BOUNTYTOWER_H_INCLUDED

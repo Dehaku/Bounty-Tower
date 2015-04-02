@@ -1712,9 +1712,15 @@ void critterBrain(Npc &npc, std::list<Npc> &container)
     npc.img.getTextureRect().height / 2);
     if (npc.race == "Human")
     {
-        //npc.img.setScale(0.5, 0.5);
-        npc.img.setRotation(npc.angle);
+        npc.img.setScale(0.5, 0.5);
     }
+
+    if(npc.faction == "Towerlings")
+    {
+        bountyBrain(npc, container);
+    }
+
+    npc.img.setRotation(npc.angle);
 
     int critterZ = npc.zpos/20;
     textList.createText(npc.xpos,npc.ypos,10,sf::Color::White,"ZPos:","",npc.zpos," /","",critterZ);

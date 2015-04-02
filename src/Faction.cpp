@@ -2337,7 +2337,7 @@ void addInitialFaction()
     conFact = &listAt(uniFact,0);
 }
 
-void addFaction(std::string name)
+Faction * addFaction(std::string name)
 {
     Faction g_pf;
 
@@ -2345,7 +2345,8 @@ void addFaction(std::string name)
     g_pf.playerControlled = true;
     g_pf.initialized = true;
     uniFact.push_back(g_pf);
-
+    //return &listAt(uniFact,uniFact.size()-1);
+    return &(uniFact.back());
 }
 
 void addMembers(int amount, std::string faction)
