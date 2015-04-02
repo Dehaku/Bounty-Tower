@@ -152,19 +152,35 @@ void buildTower(std::string towerName)
             {
                 tiles[x][y][z].BTstone();
             }
-            tiles[48][64][1].BTdoor();
-            tiles[47][64][1].BTdoor();
+
+            if(y == 64)
+            {
+                tiles[48][64][1].BTdoor();
+                tiles[47][64][1].BTdoor();
+            }
+
+
             if( (x == 48 || x == 47) && y > 64 && z == 1)
                 tiles[x][y][z].BTstone();
 
-            tiles[48][32][z].BTstairs();
-            tiles[47][32][z].BTstairs();
+            if(y == 32)
+            {
+                tiles[48][32][z].BTstairs();
+                tiles[47][32][z].BTstairs();
+            }
 
-            tiles[32][48][z].BTstairs();
-            tiles[32][47][z].BTstairs();
+            if(x == 32)
+            {
+                tiles[32][48][z].BTstairs();
+                tiles[32][47][z].BTstairs();
+            }
 
-            tiles[63][48][z].BTstairs();
-            tiles[63][47][z].BTstairs();
+            if(x == 63)
+            {
+                tiles[63][48][z].BTstairs();
+                tiles[63][47][z].BTstairs();
+            }
+
 
 
             if(aabb(x,y,47,50,47,50))
@@ -176,17 +192,24 @@ void buildTower(std::string towerName)
                 tiles[x][y][z].BTelevator();
             }
 
-            tiles[48][47][z].BTelevatordoor();
-            tiles[49][47][z].BTelevatordoor();
+            if(x == 48 || x == 49)
+            {
+                if(y == 47)
+                {
+                    tiles[48][47][z].BTelevatordoor();
+                    tiles[49][47][z].BTelevatordoor();
+                }
+            }
 
-            tiles[51][32][z].BTswitch();
-            tiles[44][32][z].BTswitch();
+            if(y == 32)
+            {
+                if(x == 51)
+                    tiles[51][32][z].BTswitch();
+                if(x == 44)
+                    tiles[44][32][z].BTswitch();
 
-
+            }
         }
-
-
-
     }
 }
 
