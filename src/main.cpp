@@ -4715,17 +4715,19 @@ void cleanMenu()
         }
 }
 
+sf::Music music;
 
 int main()
 {
+    soundmanager.init();
+    //soundmanager.playSound("Electro_Cabello.ogg");
+
 
     srand(clock());
     texturemanager.init();
-    soundmanager.init();
+
     itemmanager.initializeItems();
     npcmanager.initializeCritters();
-
-
 
 
     galaxySetup();
@@ -4737,6 +4739,7 @@ int main()
     textList.loadFont();
 
     soundmanager.playSound("Startup.wav");
+
 
     while (window.isOpen())
     {

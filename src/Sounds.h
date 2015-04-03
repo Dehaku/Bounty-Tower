@@ -21,4 +21,23 @@ public:
 };
 extern SoundManager soundmanager;
 
+
+struct MusicHolder
+{
+    sf::Music musictrack;
+    std::string name;
+};
+
+class MusicManager
+{
+public:
+    std::vector<MusicHolder> musics;
+    void playMusic(std::string input);
+    void init();
+};
+extern MusicManager musicmanager;
+
+
+
+
 #endif // SOUNDS_H_INCLUDED

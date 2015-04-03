@@ -3,6 +3,7 @@
 #include "filesystemUtils.hpp"
 
 SoundManager soundmanager;
+MusicManager musicmanager;
 
 sf::SoundBuffer &SoundManager::getSound(std::string input)
 {
@@ -70,6 +71,54 @@ void SoundManager::init()
             sound.name = namebit;
             //image.sound.setSmooth(false);
             sounds.push_back(sound);
+        }
+    }
+}
+
+
+
+
+void MusicManager::playMusic(std::string input)
+{
+    for (size_t i = 0; i != musics.size(); i++)
+    {
+        if (musics.at(i).name == input)
+        {
+            musics[i].musictrack.setVolume(50);
+            musics[i].musictrack.play();
+            return;
+        }
+    }
+    for (size_t i = 0; i != musics.size(); i++)
+    {
+        if (musics.at(i).name == "Error.wav")
+        {
+            musics[i].musictrack.setVolume(50);
+            musics[i].musictrack.play();
+            return;
+        }
+    }
+}
+
+void MusicManager::init()
+{
+    using namespace std;
+    string dir = string("./data/music");
+    vector<string> files = vector<string>();
+    getdir(dir, files);
+    for (auto &file : files)
+    {
+        string line("data/music/");
+        string ending(file);
+        if (file != "." && file != "..")
+        {
+            line.append(ending);
+            MusicHolder music;
+            music.musictrack.openFromFile(line);
+
+            std::string namebit = file;
+            music.name = namebit;
+            //musics.push_back(music);
         }
     }
 }
