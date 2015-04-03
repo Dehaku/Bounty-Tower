@@ -32,7 +32,7 @@ void SoundManager::playSound(std::string input)
         {
             //return sounds.at(i).soundstorage;
             sounds[i].sound.setBuffer(sounds[i].soundstorage);
-            sounds[i].sound.setVolume(50);
+            sounds[i].sound.setVolume(gvars::soundVolume);
             sounds[i].sound.play();
             return;
         }
@@ -43,7 +43,7 @@ void SoundManager::playSound(std::string input)
         {
             //return sounds.at(i).soundstorage;
             sounds[i].sound.setBuffer(sounds[i].soundstorage);
-            sounds[i].sound.setVolume(50);
+            sounds[i].sound.setVolume(gvars::vocalVolume);
             sounds[i].sound.play();
             return;
         }
@@ -65,69 +65,15 @@ void SoundManager::init()
             line.append(ending);
             SoundHolder sound;
             sound.soundstorage.loadFromFile(line);
-            //std::cout << Size.x << " : " << Size.y << std::endl;
 
             std::string namebit = file;
             sound.name = namebit;
-            //image.sound.setSmooth(false);
             sounds.push_back(sound);
         }
     }
 }
 
 std::vector<MusicHolder*> musics;
-
-
-/*
-
-void MusicManager::playMusic(std::string input)
-{
-    for (size_t i = 0; i != musics.size(); i++)
-    {
-        if (musics.at(i).name == input)
-        {
-            musics[i].musictrack.setVolume(50);
-            musics[i].musictrack.play();
-            return;
-        }
-    }
-    for (size_t i = 0; i != musics.size(); i++)
-    {
-        if (musics.at(i).name == "Error.wav")
-        {
-            musics[i].musictrack.setVolume(50);
-            musics[i].musictrack.play();
-            return;
-        }
-    }
-}
-
-
-
-void MusicManager::init()
-{
-    using namespace std;
-    string dir = string("./data/music");
-    vector<string> files = vector<string>();
-    getdir(dir, files);
-    for (auto &file : files)
-    {
-        string line("data/music/");
-        string ending(file);
-        if (file != "." && file != "..")
-        {
-            line.append(ending);
-            MusicHolder music;
-            music.musictrack.openFromFile(line);
-
-            std::string namebit = file;
-            music.name = namebit;
-            //musics.push_back(music);
-        }
-    }
-}
-
-*/
 
 void initializeMusic()
 {
@@ -149,6 +95,19 @@ void initializeMusic()
             std::string namebit = file;
             music->name = namebit;
             musics.push_back(music);
+        }
+    }
+}
+
+void playMusic(std::string track)
+{
+    for (size_t i = 0; i != musics.size(); i++)
+    {
+        if (musics[i]->name == track)
+        {
+            musics[i]->musictrack.setVolume(gvars::musicVolume);
+            musics[i]->musictrack.play();
+            return;
         }
     }
 }

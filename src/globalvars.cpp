@@ -83,4 +83,8 @@ bool workingNpcList = false;
 
 bool transitionLock = true;
 
+int soundVolume = 50;
+int musicVolume = 50;
+int vocalVolume = 50;
+
 } // namespace gvars

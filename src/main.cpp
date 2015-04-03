@@ -4809,10 +4809,22 @@ void newItemstuffs()
     std::cout << "Giga: " << totalDamageofItemsInternalized(itemlist) << std::endl;
 }
 
+void playThemeTrack()
+{
+    int ranNum = randz(1,3);
+    if(ranNum == 1)
+        playMusic("Electro_Cabello.ogg");
+    else if(ranNum == 2)
+        playMusic("Neo Western.ogg");
+    else if(ranNum == 3)
+        playMusic("Jalandhar.ogg");
+}
+
 int main()
 {
     soundmanager.init();
     initializeMusic();
+    playThemeTrack();
     //soundmanager.playSound("Electro_Cabello.ogg");
 
 
@@ -4834,7 +4846,6 @@ int main()
     soundmanager.playSound("Startup.wav");
     newItemstuffs();
 
-    musics[0]->musictrack.play();
 
     while (window.isOpen())
     {

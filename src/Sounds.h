@@ -2,6 +2,7 @@
 #define SOUNDS_H_INCLUDED
 
 #include <SFML/Audio.hpp>
+#include "globalvars.h"
 
 class SoundHolder
 {
@@ -33,6 +34,7 @@ struct MusicHolder
 extern std::vector<MusicHolder*> musics;
 
 void initializeMusic();
+void playMusic(std::string track);
 
 
 #endif // SOUNDS_H_INCLUDED
