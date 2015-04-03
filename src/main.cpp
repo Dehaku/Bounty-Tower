@@ -6,6 +6,7 @@
 #ifndef GALAXY_LINUX
 #include <windows.h>
 #endif
+
 #include "Items.h"
 #include "Faction.h"
 #include "Tiles.h"
@@ -15,12 +16,15 @@
 #include "menus.h"
 #include "astar.h"
 #include "Textures.h"
+#include "Sounds.h"
 #include "math.h"
 #include "util.h"
 #include "globalvars.h"
 #include "Networking.h"
 #include "Bullet.h"
 #include "Camera.h"
+
+#include <SFML/Audio.hpp>
 
 #define USE_PATHER
 
@@ -4712,13 +4716,17 @@ void cleanMenu()
 }
 
 
-
 int main()
 {
+
     srand(clock());
     texturemanager.init();
+    soundmanager.init();
     itemmanager.initializeItems();
     npcmanager.initializeCritters();
+
+
+
 
     galaxySetup();
     bountyTowerSetup();
@@ -4727,6 +4735,8 @@ int main()
     window.setVerticalSyncEnabled(true);
 
     textList.loadFont();
+
+    soundmanager.playSound("Startup.wav");
 
     while (window.isOpen())
     {

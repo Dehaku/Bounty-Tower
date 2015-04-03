@@ -225,6 +225,7 @@ void buildTower(std::string towerName)
             }
         }
     }
+
 }
 
 Tower::Tower()
