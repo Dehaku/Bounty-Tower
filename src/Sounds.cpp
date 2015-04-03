@@ -3,7 +3,7 @@
 #include "filesystemUtils.hpp"
 
 SoundManager soundmanager;
-MusicManager musicmanager;
+//MusicManager musicmanager;
 
 sf::SoundBuffer &SoundManager::getSound(std::string input)
 {
@@ -75,8 +75,10 @@ void SoundManager::init()
     }
 }
 
+std::vector<MusicHolder*> musics;
 
 
+/*
 
 void MusicManager::playMusic(std::string input)
 {
@@ -100,6 +102,8 @@ void MusicManager::playMusic(std::string input)
     }
 }
 
+
+
 void MusicManager::init()
 {
     using namespace std;
@@ -119,6 +123,32 @@ void MusicManager::init()
             std::string namebit = file;
             music.name = namebit;
             //musics.push_back(music);
+        }
+    }
+}
+
+*/
+
+void initializeMusic()
+{
+    using namespace std;
+    string dir = string("./data/music");
+    vector<string> files = vector<string>();
+    getdir(dir, files);
+    for (auto &file : files)
+    {
+        string line("data/music/");
+        string ending(file);
+        if (file != "." && file != "..")
+        {
+            line.append(ending);
+            MusicHolder * music;
+            music = new MusicHolder;
+            music->musictrack.openFromFile(line);
+
+            std::string namebit = file;
+            music->name = namebit;
+            musics.push_back(music);
         }
     }
 }

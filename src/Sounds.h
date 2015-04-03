@@ -11,6 +11,8 @@ public:
     std::string name;
 };
 
+
+
 class SoundManager
 {
 public:
@@ -28,16 +30,9 @@ struct MusicHolder
     std::string name;
 };
 
-class MusicManager
-{
-public:
-    std::vector<MusicHolder> musics;
-    void playMusic(std::string input);
-    void init();
-};
-extern MusicManager musicmanager;
+extern std::vector<MusicHolder*> musics;
 
-
+void initializeMusic();
 
 
 #endif // SOUNDS_H_INCLUDED

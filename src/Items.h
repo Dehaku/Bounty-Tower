@@ -11,6 +11,7 @@ class Npc;
 class Item
 {
 public:
+    std::list<Item> internalitems;
     bool toDelete;
     bool pickupable;
     sf::Sprite img;

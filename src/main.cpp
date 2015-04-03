@@ -1720,6 +1720,14 @@ void critterBrain(Npc &npc, std::list<Npc> &container)
     }
 
 
+    if(npc.name == "BTHalfCelestial")
+    {
+        if(randz(1,1000) == 1000)
+        {
+            soundmanager.playSound("AngryWallabee.ogg");
+        }
+    }
+
 
     npc.img.setRotation(npc.angle);
 
@@ -4715,11 +4723,96 @@ void cleanMenu()
         }
 }
 
-sf::Music music;
+std::list<Item> itemlist;
+
+struct itemPtrVector
+{
+    std::vector<Item*> ptrs;
+};
+
+itemPtrVector makeItems(std::list<Item> &items, int maxamount)
+{
+    itemPtrVector IPV;
+    int totalNew = randz(1,maxamount);
+    for(int i = 0; i != totalNew; i++)
+    {
+        Item item;
+        int globalItem = randz(0,itemmanager.globalItems.size()-1);
+        item = itemmanager.globalItems[globalItem];
+        item.maxdam = randz(3,9);
+        items.push_back(item);
+        IPV.ptrs.push_back(&items.back());
+    }
+    return IPV;
+}
+
+void printItems(std::list<Item> &items)
+{
+    for( auto &item : items)
+    {
+        std::cout << "Item: " << item.name << ", Damage: " << item.maxdam << std::endl;
+    }
+}
+
+int totalDamageofItems(std::list<Item> &items)
+{
+    int returns = 0;
+    for( auto &item : items)
+    {
+        returns += item.maxdam;
+    }
+    float average = (returns/items.size());
+    std::cout << "Average: " << average << std::endl;
+    return returns;
+}
+
+int totalDamageofItemsInternalized(std::list<Item> &items)
+{
+    int returns = 0;
+    for( auto &item : items)
+    {
+        int personalreturns = 0;
+        if(!item.internalitems.empty())
+        {
+            personalreturns += totalDamageofItemsInternalized(item.internalitems);
+        }
+
+        returns += (item.maxdam + personalreturns);
+    }
+    float average = (returns/items.size());
+    std::cout << "Average: " << average << std::endl;
+    return returns;
+}
+
+void newItemstuffs()
+{
+    std::cout << "Kaboom! \n";
+    makeItems(itemlist,1);
+    printItems(itemlist);
+    std::cout << "itemlist maxdam: " << totalDamageofItems(itemlist) << std::endl;
+
+    for( auto &item : itemlist)
+    {
+        std::cout << "====== \n";
+        itemPtrVector IPV;
+        IPV = makeItems(item.internalitems,3);
+        for ( auto &internal : IPV.ptrs)
+        {
+            makeItems(internal->internalitems,3);
+            std::cout << "X \n";
+            printItems(internal->internalitems);
+            std::cout << "X \n";
+        }
+        printItems(item.internalitems);
+        std::cout << "====== \n";
+    }
+    std::cout << "Giga: " << totalDamageofItemsInternalized(itemlist) << std::endl;
+}
 
 int main()
 {
     soundmanager.init();
+    initializeMusic();
     //soundmanager.playSound("Electro_Cabello.ogg");
 
 
@@ -4739,7 +4832,9 @@ int main()
     textList.loadFont();
 
     soundmanager.playSound("Startup.wav");
+    newItemstuffs();
 
+    musics[0]->musictrack.play();
 
     while (window.isOpen())
     {
