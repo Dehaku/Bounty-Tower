@@ -1715,10 +1715,7 @@ void critterBrain(Npc &npc, std::list<Npc> &container)
         npc.img.setScale(0.5, 0.5);
     }
 
-    if(npc.faction == "Towerlings")
-    {
-        bountyBrain(npc, container);
-    }
+
 
     npc.img.setRotation(npc.angle);
 
@@ -1858,6 +1855,49 @@ void critterBrain(Npc &npc, std::list<Npc> &container)
     debug("debug 5", false);
     /* Critter Prioritization */
 
+    std::vector<Npc*> enemyPtrs;
+    Npc * closEnmy = nullptr;
+    if(bountytower::towerlingassault)
+    {
+        for (auto &enemys : container)
+        {
+            if(enemys.faction != npc.faction)
+            {
+                for (auto &i : npc.factionPtr->factRelations)
+                {
+                    if(enemys.faction == i.faction && i.appeal < 1000)
+                    {
+                        //std::cout << "ZE ENEMY HAS BEEN SPOTTED AT " << enemys.xpos << "/" << enemys.ypos << std::endl;
+                        enemyPtrs.push_back(&enemys);
+                    }
+                }
+            }
+        }
+        for (auto &enemy : enemyPtrs)
+        {
+            //effects.createLine(npc.xpos,npc.ypos,enemy->xpos,enemy->ypos,2,sf::Color::Yellow);
+            if(closEnmy == nullptr)
+                closEnmy = enemy;
+            else if(math::closeish(npc.xpos,npc.ypos,enemy->xpos,enemy->ypos) <
+                    math::closeish(npc.xpos,npc.ypos,closEnmy->xpos,closEnmy->ypos)
+                    )
+            {
+                closEnmy = enemy;
+            }
+
+        }
+
+        if(closEnmy != nullptr)
+        {
+            effects.createLine(npc.xpos,npc.ypos,closEnmy->xpos,closEnmy->ypos,4,sf::Color::Red);
+            //hasPath = true;
+            //endPos = Vec3(closEnmy->xpos/GRID_SIZE,closEnmy->ypos/GRID_SIZE,closEnmy->zpos/GRID_SIZE);
+        }
+
+    }
+
+
+
     // Method Two, Struct Desires
     struct Desire
     {
@@ -1909,6 +1949,14 @@ void critterBrain(Npc &npc, std::list<Npc> &container)
 
     }
     desires.push_back(newDesire);
+    { //Assault
+        newDesire.type = "Assault";
+        newDesire.potency = 1000;
+        if(bountytower::towerlingassault && npc.faction != "Towerlings")
+            newDesire.potency = 0;
+
+    }
+    desires.push_back(newDesire);
     debug("debug 6", false);
     /*Causation to Desires*/
     // Get Critters max nutrition, then reduce it by critters nutrients in blood
@@ -1956,7 +2004,9 @@ ReDesire:
 
     Vec3 startPos(npc.xpos/GRID_SIZE,npc.ypos/GRID_SIZE,npc.zpos/GRID_SIZE);
     Vec3 endPos;
+
     bool hasPath = false;
+
     debug("Acting on highest Desire:" + (*highestDesire).type);
     if ((*highestDesire).type == "Apathy")
     {// TODO: Add blublublub
@@ -2027,7 +2077,6 @@ ReDesire:
         {
         }
     }
-
     if ((*highestDesire).type == "Work")
     {
         if(npc.jobPtr == nullptr)
@@ -2050,7 +2099,7 @@ ReDesire:
         }
         else
         {
-            debug("I have a job");
+            debug("I have a job, Now if only my programmer did.");
             Vec3 wPos(npc.jobPtr->workPos);
             Vec3 myPos(npc.xpos,npc.ypos,npc.zpos);
             if(npc.jobPtr != nullptr && npc.jobPtr->type == "Build")
@@ -2297,7 +2346,14 @@ ReDesire:
 
         }
     }
-
+    if ((*highestDesire).type == "Assault")
+    {
+        if(closEnmy != nullptr)
+        {
+            hasPath = true;
+            endPos = Vec3(closEnmy->xpos/GRID_SIZE,closEnmy->ypos/GRID_SIZE,closEnmy->zpos/GRID_SIZE);
+        }
+    }
 
     debug("Checking inComplete:" + std::to_string(inComplete));
     // Incase the highest desire isn't completable, Go through again for the next highest desire.
@@ -4665,7 +4721,7 @@ int main()
     npcmanager.initializeCritters();
 
     galaxySetup();
-    //bountyTowerSetup();
+    bountyTowerSetup();
 
     window.create(sf::VideoMode(RESOLUTION.x, RESOLUTION.y, 32), randomWindowName());
     window.setVerticalSyncEnabled(true);

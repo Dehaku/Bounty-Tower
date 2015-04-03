@@ -241,45 +241,7 @@ std::vector<Tower> towers;
 
 void bountyBrain(Npc &npc, std::list<Npc> &container)
 {
-    if(bountytower::towerlingassault)
-    {
-        std::vector<Npc*> enemyPtrs;
-        for (auto &enemys : container)
-        {
-            if(enemys.faction != npc.faction)
-            {
-                for (auto &i : npc.factionPtr->factRelations)
-                {
-                    if(enemys.faction == i.faction && i.appeal < 1000)
-                    {
-                        //std::cout << "ZE ENEMY HAS BEEN SPOTTED AT " << enemys.xpos << "/" << enemys.ypos << std::endl;
-                        enemyPtrs.push_back(&enemys);
-                    }
-                }
-            }
-        }
-        Npc * closEnmy = nullptr;
-        for (auto &enemy : enemyPtrs)
-        {
-            effects.createLine(npc.xpos,npc.ypos,enemy->xpos,enemy->ypos,2,sf::Color::Yellow);
-            if(closEnmy == nullptr)
-                closEnmy = enemy;
-            else if(math::closeish(npc.xpos,npc.ypos,enemy->xpos,enemy->ypos) <
-                    math::closeish(npc.xpos,npc.ypos,closEnmy->xpos,closEnmy->ypos)
-                    )
-            {
-                closEnmy = enemy;
-            }
 
-        }
-
-        if(closEnmy != nullptr)
-        {
-            effects.createLine(npc.xpos,npc.ypos,closEnmy->xpos,closEnmy->ypos,4,sf::Color::Red);
-
-        }
-
-    }
 }
 
 namespace bountytower
