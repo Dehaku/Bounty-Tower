@@ -2386,18 +2386,33 @@ ReDesire:
         {
             if(rangewep != nullptr)
                 effects.createCircle(npc.xpos,npc.ypos,rangewep->range,sf::Color(255,0,0,50),2,sf::Color::Red);
-            if(rangewep != nullptr)
-                effects.createCircle(npc.xpos,npc.ypos,rangewep->range,sf::Color(0,0,255,50),2,sf::Color::Blue);
+            if(meleewep != nullptr)
+                effects.createCircle(npc.xpos,npc.ypos,meleewep->range,sf::Color(0,0,255,50),2,sf::Color::Blue);
         }
         bool withinRange = false;
         if(rangewep != nullptr)
         {
-            if(math::closeish(npc.xpos,npc.ypos,closEnmy->xpos,closEnmy->ypos) <= rangewep->range)
+            withinRange = (math::closeish(npc.xpos,npc.ypos,closEnmy->xpos,closEnmy->ypos) <= rangewep->range);
+            if(withinRange)
             {
                 rangewep->user = &npc;
                 if((gvars::framesPassed % 30) == 0)
                     rangewep->activate(Vec3f(closEnmy->xpos,closEnmy->ypos,closEnmy->zpos));
             }
+        }
+
+        if(meleewep != nullptr)
+        {
+            if(!withinRange)
+                withinRange = (math::closeish(npc.xpos,npc.ypos,closEnmy->xpos,closEnmy->ypos) <= meleewep->range);
+            if(withinRange)
+            {
+                meleewep->user = &npc;
+            }
+        }
+        if(withinRange)
+        {
+            hasPath = false;
         }
 
 
