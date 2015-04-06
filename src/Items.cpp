@@ -4,6 +4,7 @@
 #include "Textures.h"
 #include "math.h"
 #include "util.h"
+#include "Bullet.h"
 
 #include <fstream>
 #include <sstream>
@@ -810,6 +811,40 @@ itemPtrVector randomEquipment(std::list<Item> &inventory)
     itemPtrVector returns;
 
     returns = makeItems(inventory,7);
+}
+
+void Item::activate(Vec3f vPos)
+{
+    if(type == 2)
+    {
+        if(user == nullptr)
+            return;
+
+        Vec3f muzzlePos(user->xpos,user->ypos,user->zpos);
+        sf::Vector2f muzzlePosV2f(muzzlePos.x,muzzlePos.y);
+        sf::Vector2f vPosV2f(vPos.x,vPos.y);
+
+        Bullet boolet;
+        boolet.pos = muzzlePos;
+        boolet.positions.push_back(boolet.pos);
+        boolet.angle = math::angleBetweenVectors(muzzlePosV2f,vPosV2f);
+        //Vec3f velo((muzzlePos.x - vPos.x)/10,(muzzlePos.y - vPos.y)/10 );
+        //boolet.velocity = velo;
+
+        //boolet.speed = math::closeish(muzzlePos.x,muzzlePos.y,vPos.x,vPos.y) / 10;
+        boolet.speed = 60;
+        boolet.lifetime = 600;
+        bullets.push_back(boolet);
+        int ranNum = randz(1,4);
+        if(ranNum == 1)
+            soundmanager.playSound("m16_lensflare_1.ogg");
+        if(ranNum == 2)
+            soundmanager.playSound("m16_lensflare_2.ogg");
+        if(ranNum == 3)
+            soundmanager.playSound("m16_lensflare_3.ogg");
+        if(ranNum == 4)
+            soundmanager.playSound("m16_lensflare_4.ogg");
+    }
 }
 
 

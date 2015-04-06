@@ -2382,10 +2382,25 @@ ReDesire:
         }
         Item * rangewep = npc.getItemType(2);
         Item * meleewep = npc.getItemType(1);
+        if(inputState.key[Key::LAlt])
+        {
+            if(rangewep != nullptr)
+                effects.createCircle(npc.xpos,npc.ypos,rangewep->range,sf::Color(255,0,0,50),2,sf::Color::Red);
+            if(rangewep != nullptr)
+                effects.createCircle(npc.xpos,npc.ypos,rangewep->range,sf::Color(0,0,255,50),2,sf::Color::Blue);
+        }
+        bool withinRange = false;
         if(rangewep != nullptr)
-            effects.createCircle(npc.xpos,npc.ypos,rangewep->range,sf::Color(255,0,0,50),2,sf::Color::Red);
-        if(rangewep != nullptr)
-            effects.createCircle(npc.xpos,npc.ypos,rangewep->range,sf::Color(0,0,255,50),2,sf::Color::Blue);
+        {
+            if(math::closeish(npc.xpos,npc.ypos,closEnmy->xpos,closEnmy->ypos) <= rangewep->range)
+            {
+                rangewep->user = &npc;
+                if((gvars::framesPassed % 30) == 0)
+                    rangewep->activate(Vec3f(closEnmy->xpos,closEnmy->ypos,closEnmy->zpos));
+            }
+        }
+
+
             //std::cout << rangewep->name << ",'s range: " << rangewep->range << std::endl;
     }
 
@@ -2430,7 +2445,8 @@ ReDesire:
 
     if(!npc.storedPath.empty())
     {
-        drawStoredPath(npc.storedPath);
+        if(inputState.key[Key::LAlt])
+            drawStoredPath(npc.storedPath);
         Vec3 Pos(npc.storedPath[1]->getPos());
 
         double pathTime = (((npc.storedPath.size()*GRID_SIZE)*1.2)/npc.moverate)/30;
@@ -3351,7 +3367,7 @@ void bulletTests()
 
                 predictBullet(boolet);
             }
-            if(!inputState.lmb && gvars::heldClickPos != sf::Vector2f(-1,-1))
+            if(!inputState.lmb && gvars::heldClickPos != sf::Vector2f(-1,-1) || inputState.key[Key::D] && gvars::heldClickPos != sf::Vector2f(-1,-1))
             {
                 Bullet boolet;
                 boolet.pos = Vec3f(gvars::heldClickPos.x,gvars::heldClickPos.y,gvars::currentz*GRID_SIZE);
@@ -3363,8 +3379,19 @@ void bulletTests()
 
                 boolet.speed = math::closeish(gvars::heldClickPos.x,gvars::heldClickPos.y,gvars::mousePos.x,gvars::mousePos.y) / 10;
                 //boolet.speed = 0;
-                boolet.lifetime = 600;
+                boolet.lifetime = 60;
+                //boolet.showPath = true;
+                //boolet.showPrediction = true;
                 bullets.push_back(boolet);
+                int ranNum = randz(1,4);
+        if(ranNum == 1)
+            soundmanager.playSound("m16_lensflare_1.ogg");
+        if(ranNum == 2)
+            soundmanager.playSound("m16_lensflare_2.ogg");
+        if(ranNum == 3)
+            soundmanager.playSound("m16_lensflare_3.ogg");
+        if(ranNum == 4)
+            soundmanager.playSound("m16_lensflare_4.ogg");
                 if(inputState.key[Key::LShift])
                 {
                     for(int i = 0; i != 360; i++)
