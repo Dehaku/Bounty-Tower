@@ -2601,9 +2601,13 @@ void drawSelectedCritterHUD()
             i.img.setPosition(nxpos+(20*itemCount),nypos);
             effects.createCircle(nxpos+(20*itemCount),nypos,20,gvars::cycleGreen);
             i.drawImg();
-            createImageButton(sf::Vector2f(nxpos+(20*itemCount),nypos),
+            int butt = createImageButton(sf::Vector2f(nxpos+(20*itemCount),nypos-5),
                               texturemanager.getTexture(i.name + ".png")  //(i.img.getTexture())
                               ,i.name);
+            if(imageButtonHovered(butt))
+            {
+                textList.createText(nxpos+(20*itemCount),nypos-40,15,sf::Color::Cyan,i.name);
+            }
             itemCount++;
         }
 

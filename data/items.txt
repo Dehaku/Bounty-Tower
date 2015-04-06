@@ -7,7 +7,7 @@
 [name:Gun][Pickupable:true][type:2][image:Gun.tga][baseid:5715712][mindam:5][maxdam:30][range:100][IsWeapon:true]
 [name:5mmCannon][Pickupable:true][type:2][image:Gun.tga][baseid:5572192][mindam:1][maxdam:20][range:100][IsWeapon:true]
 [name:DeathCannon][Pickupable:true][type:2][image:Gun.tga][baseid:5872122][mindam:100][maxdam:200][range:1000][IsWeapon:true]
-[name:Missile][Pickupable:true][type:1][image:Sword.tga][baseid:5413812][mindam:50][maxdam:100][range:200][IsWeapon:true]
+[name:Missile][Pickupable:true][type:50][image:Sword.tga][baseid:5413812][mindam:50][maxdam:100][range:200][IsWeapon:true]
 [name:Wood][Pickupable:true][image:Plank.png][type:12][baseid:7871787][produces:false]
 [name:Rock][Pickupable:true][image:Rock.png][type:12][baseid:7971787][produces:false]
 [name:Rune][Pickupable:true][image:BaseRune.png][type:12][baseid:8001747][produces:false]

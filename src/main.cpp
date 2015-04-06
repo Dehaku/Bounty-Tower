@@ -1914,7 +1914,7 @@ void critterBrain(Npc &npc, std::list<Npc> &container)
 
         }
 
-        if(closEnmy != nullptr)
+        if(closEnmy != nullptr && inputState.key[Key::LAlt])
         {
             effects.createLine(npc.xpos,npc.ypos,closEnmy->xpos,closEnmy->ypos,4,sf::Color::Red);
             //hasPath = true;
@@ -2380,6 +2380,13 @@ ReDesire:
             hasPath = true;
             endPos = Vec3(closEnmy->xpos/GRID_SIZE,closEnmy->ypos/GRID_SIZE,closEnmy->zpos/GRID_SIZE);
         }
+        Item * rangewep = npc.getItemType(2);
+        Item * meleewep = npc.getItemType(1);
+        if(rangewep != nullptr)
+            effects.createCircle(npc.xpos,npc.ypos,rangewep->range,sf::Color(255,0,0,50),2,sf::Color::Red);
+        if(rangewep != nullptr)
+            effects.createCircle(npc.xpos,npc.ypos,rangewep->range,sf::Color(0,0,255,50),2,sf::Color::Blue);
+            //std::cout << rangewep->name << ",'s range: " << rangewep->range << std::endl;
     }
 
     debug("Checking inComplete:" + std::to_string(inComplete));
