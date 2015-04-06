@@ -43,6 +43,21 @@ template <typename T> T &listAt(std::list<T> &list, size_t index)
     return *it;
 }
 
+template <typename T> T &AnyDeletes(std::vector<T> &list)
+{ // Oh my goodness, I freakkin love templates, I'll need to redesign a few things to incorporate this functionality.
+
+    //auto it = list.begin();
+    //std::advance(it, index);
+    for (auto &listings : list)
+    {
+        if(listings.toDelete)
+        {
+            std::cout << "To be deleted! \n";
+        }
+    }
+    //return;
+}
+
 
 const int worldSizeX = 32;
 const int worldSizeY = 32;
@@ -4811,6 +4826,8 @@ void newItemstuffs()
 
 void playThemeTrack()
 {
+    //gvars::soundVolume = 0;
+    gvars::musicVolume = 0;
     int ranNum = randz(1,3);
     if(ranNum == 1)
         playMusic("Electro_Cabello.ogg");
@@ -4825,8 +4842,6 @@ int main()
     soundmanager.init();
     initializeMusic();
     playThemeTrack();
-    //soundmanager.playSound("Electro_Cabello.ogg");
-
 
     srand(clock());
     texturemanager.init();
@@ -4855,6 +4870,13 @@ int main()
             fSleep(0.5);
         }
 
+        if(inputState.key[Key::U])
+        {
+            soundmanager.playSound("Startup.wav");
+        }
+
+        //std::cout << "soundstuffs: " << soundmanager.playSounds.size() << std::endl;
+
         frames();
         scaleImages();
         handleEvents();
@@ -4875,9 +4897,13 @@ int main()
         debug("Post Draw Stuffs");
 
         debug("Starting Removing process, NPC/Unpoint/Items/GC.Menu");
+
+        AnyDeletes(soundmanager.playSounds);
+
         removeNPCs(npclist, mutex::npcList);
         unpointItems(worlditems);
         removeItems(worlditems);
+        soundmanager.cleanSounds();
         cleanMenu();
     } // End of game loop
     return EXIT_SUCCESS;

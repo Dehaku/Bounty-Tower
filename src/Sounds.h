@@ -8,17 +8,25 @@ class SoundHolder
 {
 public:
     sf::SoundBuffer soundstorage;
-    sf::Sound sound;
     std::string name;
 };
 
-
+class SoundPlayer
+{
+    public:
+    sf::Sound sound;
+    std::string name;
+    bool toDelete;
+    SoundPlayer();
+};
 
 class SoundManager
 {
 public:
     std::vector<SoundHolder> sounds;
+    std::vector<SoundPlayer> playSounds;
     sf::SoundBuffer &getSound(std::string input);
+    void cleanSounds();
     void playSound(std::string input);
     void init();
 };

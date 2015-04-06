@@ -1,6 +1,7 @@
 #include "Sounds.h"
 
 #include "filesystemUtils.hpp"
+#include <iostream>
 
 SoundManager soundmanager;
 //MusicManager musicmanager;
@@ -31,9 +32,12 @@ void SoundManager::playSound(std::string input)
         if (sounds.at(i).name == input)
         {
             //return sounds.at(i).soundstorage;
-            sounds[i].sound.setBuffer(sounds[i].soundstorage);
-            sounds[i].sound.setVolume(gvars::soundVolume);
-            sounds[i].sound.play();
+            SoundPlayer SP;
+            SP.sound.setBuffer(sounds[i].soundstorage);
+            SP.sound.setVolume(gvars::soundVolume);
+            //SP.sound.play();
+            playSounds.push_back(SP);
+            playSounds.back().sound.play();
             return;
         }
     }
@@ -42,10 +46,55 @@ void SoundManager::playSound(std::string input)
         if (sounds.at(i).name == "Error.wav")
         {
             //return sounds.at(i).soundstorage;
-            sounds[i].sound.setBuffer(sounds[i].soundstorage);
-            sounds[i].sound.setVolume(gvars::vocalVolume);
-            sounds[i].sound.play();
+            SoundPlayer SP;
+            SP.sound.setBuffer(sounds[i].soundstorage);
+            SP.sound.setVolume(gvars::soundVolume);
+            playSounds.push_back(SP);
+            playSounds.back().sound.play();
             return;
+        }
+    }
+}
+
+SoundPlayer::SoundPlayer()
+{
+    toDelete = false;
+}
+
+void checkSounds(std::vector<SoundPlayer> &playsound)
+{
+    for (auto &i : playsound)
+    {
+        SoundPlayer SP;
+        //SP.sound.getStatus
+        //std::cout << "Sound Status: " << i.sound.getStatus() << ", VS: " << sf::Sound::Status::Stopped << std::endl;
+        if(i.sound.getStatus() == sf::Sound::Status::Stopped)
+        {
+            i.toDelete = true;
+        }
+    }
+}
+
+void SoundManager::cleanSounds()
+{
+    checkSounds(playSounds);
+    bool done = false;
+    while (done == false)
+    {
+        bool yet = false;
+        for (auto it = playSounds.begin(); it != playSounds.end(); ++it)
+        {
+            if (it->toDelete)
+            {
+                //std::cout << it->name << " to be deleted. \n";
+                playSounds.erase(it);
+                yet = true;
+                break;
+            }
+        }
+        if (yet == false)
+        {
+            done = true;
         }
     }
 }
