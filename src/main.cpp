@@ -3235,7 +3235,7 @@ void predictBullet(Bullet bullet)
             predPos = Vec3f(newPos.x,newPos.y,predPos.z);
 
 
-            if(aabb(predPos.x,predPos.y,20,1900,20,1900))
+            if(aabb(predPos.x,predPos.y,GRID_SIZE,GRID_SIZE*95,GRID_SIZE,GRID_SIZE*95))
                 if(!tiles[abs_to_index(predPos.x/GRID_SIZE)][abs_to_index(predPos.y/GRID_SIZE)][abs_to_index(predPos.z/GRID_SIZE)].walkable)
             {
                 Vec3f tempPos(predictions[predictions.size()-1]);
@@ -3321,7 +3321,55 @@ void lmbPress()
 }
 
 
+void bulletTests()
+{
+    if(inputState.lmbTime > 2)
+            {
+                effects.createLine(gvars::heldClickPos.x,gvars::heldClickPos.y,gvars::mousePos.x,gvars::mousePos.y,3,sf::Color::Yellow);
 
+                std::string outputText = "Speed: " + std::to_string(math::closeish(gvars::heldClickPos.x,gvars::heldClickPos.y,gvars::mousePos.x,gvars::mousePos.y) / 10);
+                //Vec3f velo((gvars::heldClickPos.x - gvars::mousePos.x)/10,(gvars::heldClickPos.y - gvars::mousePos.y)/10 );
+
+                //std::string outputText = "Magnitude: " + std::to_string(Magnitude(velo));
+
+                textList.createText(gvars::mousePos.x,gvars::mousePos.y,10,sf::Color::Yellow,outputText);
+
+                Bullet boolet;
+                boolet.pos = Vec3f(gvars::mousePos.x,gvars::mousePos.y,gvars::currentz*GRID_SIZE);
+                boolet.positions.push_back(boolet.pos);
+                boolet.angle = math::angleBetweenVectors(gvars::heldClickPos,gvars::mousePos);
+                boolet.speed = math::closeish(gvars::heldClickPos.x,gvars::heldClickPos.y,gvars::mousePos.x,gvars::mousePos.y) / 10;
+                boolet.lifetime = 600;
+
+
+                predictBullet(boolet);
+            }
+            if(!inputState.lmb && gvars::heldClickPos != sf::Vector2f(-1,-1))
+            {
+                Bullet boolet;
+                boolet.pos = Vec3f(gvars::heldClickPos.x,gvars::heldClickPos.y,gvars::currentz*GRID_SIZE);
+                boolet.positions.push_back(boolet.pos);
+                boolet.angle = math::angleBetweenVectors(gvars::heldClickPos,gvars::mousePos);
+                Vec3f velo((gvars::heldClickPos.x - gvars::mousePos.x)/10,(gvars::heldClickPos.y - gvars::mousePos.y)/10 );
+                boolet.velocity = velo;
+
+
+                boolet.speed = math::closeish(gvars::heldClickPos.x,gvars::heldClickPos.y,gvars::mousePos.x,gvars::mousePos.y) / 10;
+                //boolet.speed = 0;
+                boolet.lifetime = 600;
+                bullets.push_back(boolet);
+                if(inputState.key[Key::LShift])
+                {
+                    for(int i = 0; i != 360; i++)
+                    {
+                        boolet.angle = i;
+                        boolet.speed = 1;
+                        boolet.lifetime = 600;
+                        bullets.push_back(boolet);
+                    }
+                }
+            }
+}
 
 void handlePhase()
 {
@@ -3389,58 +3437,15 @@ void handlePhase()
 
         if(gCtrl.phase == "Lobby")
         {
+            bulletTests();
             bountyTowerLoop();
+
         }
 
         if (gCtrl.phase == "Local")
         { //=======================================================*Local*============================================================================
 
-            if(inputState.lmbTime > 2)
-            {
-                effects.createLine(gvars::heldClickPos.x,gvars::heldClickPos.y,gvars::mousePos.x,gvars::mousePos.y,3,sf::Color::Yellow);
-
-                std::string outputText = "Speed: " + std::to_string(math::closeish(gvars::heldClickPos.x,gvars::heldClickPos.y,gvars::mousePos.x,gvars::mousePos.y) / 10);
-                //Vec3f velo((gvars::heldClickPos.x - gvars::mousePos.x)/10,(gvars::heldClickPos.y - gvars::mousePos.y)/10 );
-
-                //std::string outputText = "Magnitude: " + std::to_string(Magnitude(velo));
-
-                textList.createText(gvars::mousePos.x,gvars::mousePos.y,10,sf::Color::Yellow,outputText);
-
-                Bullet boolet;
-                boolet.pos = Vec3f(gvars::mousePos.x,gvars::mousePos.y,gvars::currentz*GRID_SIZE);
-                boolet.positions.push_back(boolet.pos);
-                boolet.angle = math::angleBetweenVectors(gvars::heldClickPos,gvars::mousePos);
-                boolet.speed = math::closeish(gvars::heldClickPos.x,gvars::heldClickPos.y,gvars::mousePos.x,gvars::mousePos.y) / 10;
-                boolet.lifetime = 600;
-
-
-                predictBullet(boolet);
-            }
-            if(!inputState.lmb && gvars::heldClickPos != sf::Vector2f(-1,-1))
-            {
-                Bullet boolet;
-                boolet.pos = Vec3f(gvars::heldClickPos.x,gvars::heldClickPos.y,gvars::currentz*GRID_SIZE);
-                boolet.positions.push_back(boolet.pos);
-                boolet.angle = math::angleBetweenVectors(gvars::heldClickPos,gvars::mousePos);
-                Vec3f velo((gvars::heldClickPos.x - gvars::mousePos.x)/10,(gvars::heldClickPos.y - gvars::mousePos.y)/10 );
-                boolet.velocity = velo;
-
-
-                boolet.speed = math::closeish(gvars::heldClickPos.x,gvars::heldClickPos.y,gvars::mousePos.x,gvars::mousePos.y) / 10;
-                //boolet.speed = 0;
-                boolet.lifetime = 600;
-                bullets.push_back(boolet);
-                if(inputState.key[Key::LShift])
-                {
-                    for(int i = 0; i != 360; i++)
-                    {
-                        boolet.angle = i;
-                        boolet.speed = 1;
-                        boolet.lifetime = 600;
-                        bullets.push_back(boolet);
-                    }
-                }
-            }
+            bulletTests();
 
             attractNPCs(gvars::mousePos);
 

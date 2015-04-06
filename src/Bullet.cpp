@@ -13,7 +13,7 @@ void Bullet::moveBullet()
             predPos = Vec3f(newPos.x,newPos.y,predPos.z);
 
 
-            if(aabb(predPos.x,predPos.y,20,1900,20,1900))
+            if(aabb(predPos.x,predPos.y,GRID_SIZE,GRID_SIZE*95,GRID_SIZE,GRID_SIZE*95))
                 if(!tiles[abs_to_index(predPos.x/GRID_SIZE)][abs_to_index(predPos.y/GRID_SIZE)][abs_to_index(predPos.z/GRID_SIZE)].walkable)
             {
                 Vec3f tempPos(predictions[predictions.size()-1]);
@@ -47,7 +47,7 @@ void Bullet::moveBullet()
         pos = Vec3f(newPos.x,newPos.y,pos.z);
         effects.createCircle(pos.x,pos.y,3,sf::Color(150,150,150),1,sf::Color(0,0,0));
 
-        if(aabb(pos.x,pos.y,20,1900,20,1900) &&
+        if(aabb(pos.x,pos.y,GRID_SIZE,GRID_SIZE*95,GRID_SIZE,GRID_SIZE*95) &&
            !tiles[abs_to_index(pos.x/GRID_SIZE)][abs_to_index(pos.y/GRID_SIZE)][abs_to_index(pos.z/GRID_SIZE)].walkable)
         {
 
@@ -72,7 +72,7 @@ void Bullet::moveBullet()
         pos = Vec3f(newPos.x,newPos.y,pos.z);
         effects.createCircle(pos.x,pos.y,3,sf::Color(150,150,150),1,sf::Color(0,0,0));
 
-        if(aabb(pos.x,pos.y,20,1900,20,1900) &&
+        if(aabb(pos.x,pos.y,GRID_SIZE,GRID_SIZE*95,GRID_SIZE,GRID_SIZE*95) &&
            !tiles[abs_to_index(pos.x/GRID_SIZE)][abs_to_index(pos.y/GRID_SIZE)][abs_to_index(pos.z/GRID_SIZE)].walkable)
         {
             Vec3f tempPos(positions[positions.size()-1]);
