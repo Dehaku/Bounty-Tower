@@ -56,7 +56,7 @@ public:
     int type;
     // 0 = none, 1 = hand gun, 2 = rifle, 3 = slash, 4 = blunt, 5 = pierce
     std::string usedskill;
-    float amount;
+    int amount;
     // 0 None 1 Chem 2 Solar 3 Nuclear 4 Soul 5 Magic
     int celltype;
     int cellcharge;

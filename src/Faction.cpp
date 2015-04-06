@@ -2585,6 +2585,31 @@ void selectedNPCprocess()
 
 }
 
+void drawInventory(sf::Vector2f vPos, std::list<Item> &inventory)
+{
+    effects.createSquare(vPos.x,vPos.y,vPos.x+(20*inventory.size()),vPos.y-20,sf::Color(0,0,0),2,sf::Color::Cyan);
+        int itemCount = 0;
+        for(auto &i : inventory)
+        {
+            i.img.setPosition(vPos.x+(20*itemCount)+5,vPos.y);
+            //effects.createCircle(vPos.x+(20*itemCount),vPos.y,20,gvars::cycleGreen);
+            i.drawImg();
+            int butt = createImageButton(sf::Vector2f(vPos.x+(20*itemCount)+10,vPos.y-10),
+                              texturemanager.getTexture(i.name + ".png")  //(i.img.getTexture())
+                              ,i.name);
+            textList.createText(vPos.x+(20*itemCount)+5,vPos.y-5,10,sf::Color::Yellow,std::to_string(i.amount));
+            if(imageButtonHovered(butt))
+            {
+                textList.createText(vPos.x+(20*itemCount),vPos.y-40,15,sf::Color::Cyan,i.name);
+                if(!i.internalitems.empty())
+                {
+                    drawInventory(sf::Vector2f(vPos.x,vPos.y-40),i.internalitems);
+                }
+            }
+            itemCount++;
+        }
+}
+
 void drawSelectedCritterHUD()
 {
     if (gvars::myTarget != -1 && myTargetPtr != nullptr)
@@ -2594,22 +2619,8 @@ void drawSelectedCritterHUD()
         int nypos = gvars::topLeft.y + (RESOLUTION.y / 2);
 
         textList.createText(nxpos+5,nypos-20-13,10,sf::Color::Cyan,"<Inventory>");
-        effects.createSquare(nxpos,nypos,nxpos+(20*myTargetPtr->inventory.size()),nypos-20,sf::Color(0,0,0),2,sf::Color::Cyan);
-        int itemCount = 0;
-        for(auto &i : myTargetPtr->inventory)
-        {
-            i.img.setPosition(nxpos+(20*itemCount),nypos);
-            effects.createCircle(nxpos+(20*itemCount),nypos,20,gvars::cycleGreen);
-            i.drawImg();
-            int butt = createImageButton(sf::Vector2f(nxpos+(20*itemCount),nypos-5),
-                              texturemanager.getTexture(i.name + ".png")  //(i.img.getTexture())
-                              ,i.name);
-            if(imageButtonHovered(butt))
-            {
-                textList.createText(nxpos+(20*itemCount),nypos-40,15,sf::Color::Cyan,i.name);
-            }
-            itemCount++;
-        }
+        drawInventory(sf::Vector2f(nxpos,nypos), myTargetPtr->inventory);
+
 
 
 

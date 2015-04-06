@@ -2414,8 +2414,6 @@ ReDesire:
         {
             hasPath = false;
         }
-
-
             //std::cout << rangewep->name << ",'s range: " << rangewep->range << std::endl;
     }
 
@@ -3361,6 +3359,7 @@ void lmbPress()
 
 void bulletTests()
 {
+    /*
     if(inputState.lmbTime > 2)
             {
                 effects.createLine(gvars::heldClickPos.x,gvars::heldClickPos.y,gvars::mousePos.x,gvars::mousePos.y,3,sf::Color::Yellow);
@@ -3418,6 +3417,7 @@ void bulletTests()
                     }
                 }
             }
+*/
 }
 
 void handlePhase()

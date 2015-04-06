@@ -811,6 +811,7 @@ itemPtrVector randomEquipment(std::list<Item> &inventory)
     itemPtrVector returns;
 
     returns = makeItems(inventory,7);
+    return returns;
 }
 
 void Item::activate(Vec3f vPos)

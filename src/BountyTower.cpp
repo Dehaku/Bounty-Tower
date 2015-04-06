@@ -139,7 +139,22 @@ void bountyTowerLoop()
             member.zpos = (gvars::currentz*GRID_SIZE);
             member.id = gvars::globalid++;
 
-            randomEquipment(member.inventory);
+            itemPtrVector IPV = randomEquipment(member.inventory);
+
+            //std::cout << IPV.ptrs.size() << ", IPV. \n";
+            //fSleep(2);
+            for (auto &i : IPV.ptrs)
+            {
+                if(i->type == 2)
+                {
+                    Item bullet;
+                    bullet = *getGlobalItem("5.56mm");
+                    bullet.amount = 30;
+
+                    i->internalitems.push_back(bullet);
+                }
+            }
+
             printItems(member.inventory);
 
             npclist.push_back(member);
