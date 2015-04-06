@@ -138,6 +138,10 @@ void bountyTowerLoop()
             member.ypos = stair->pos.y*GRID_SIZE+(GRID_SIZE/2);
             member.zpos = (gvars::currentz*GRID_SIZE);
             member.id = gvars::globalid++;
+
+            randomEquipment(member.inventory);
+            printItems(member.inventory);
+
             npclist.push_back(member);
         }
         debug("Done placin Towerlings");

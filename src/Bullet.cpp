@@ -158,6 +158,7 @@ Bullet::Bullet()
     maxrichochet = 5;
     toDelete = false;
     owner = nullptr;
+    parent = nullptr;
 }
 
 std::vector<Bullet> bullets;

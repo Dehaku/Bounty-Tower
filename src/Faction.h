@@ -9,6 +9,7 @@
 #include "defs.h"
 #include "Tiles.h"
 #include "Networking.h"
+#include "menus.h"
 
 #include <list>
 #include <set>

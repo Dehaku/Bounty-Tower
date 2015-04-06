@@ -146,4 +146,24 @@ Item *findClosestItemPtr(int orix, int oriy, std::string tarItem, int Gxpos = 0,
                          int Gypos = 0, int Rxpos = 0, int Rypos = 0);
 void offloadItems();
 void hoverItemIDdisplay();
+
+extern std::list<Item> itemlist;
+
+struct itemPtrVector
+{
+    std::vector<Item*> ptrs;
+};
+
+itemPtrVector makeItems(std::list<Item> &items, int maxamount);
+
+void printItems(std::list<Item> &items);
+
+int totalDamageofItems(std::list<Item> &items);
+
+int totalDamageofItemsInternalized(std::list<Item> &items);
+
+
+
+itemPtrVector randomEquipment(std::list<Item> &inventory);
+
 #endif // ITEMS_H_INCLUDED

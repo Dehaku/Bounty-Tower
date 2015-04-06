@@ -740,4 +740,80 @@ void hoverItemIDdisplay()
     }
 }
 
+std::list<Item> itemlist;
+
+itemPtrVector makeItems(std::list<Item> &items, int maxamount)
+{
+    itemPtrVector IPV;
+    int totalNew = randz(1,maxamount);
+    for(int i = 0; i != totalNew; i++)
+    {
+        Item item;
+        int globalItem = randz(0,itemmanager.globalItems.size()-1);
+        item = itemmanager.globalItems[globalItem];
+        item.maxdam = randz(3,9);
+        items.push_back(item);
+        IPV.ptrs.push_back(&items.back());
+    }
+    return IPV;
+}
+
+void printItems(std::list<Item> &items)
+{
+    for( auto &item : items)
+    {
+        std::cout << "Item: " << item.name << ", Damage: " << item.maxdam << std::endl;
+    }
+}
+
+int totalDamageofItems(std::list<Item> &items)
+{
+    int returns = 0;
+    for( auto &item : items)
+    {
+        returns += item.maxdam;
+    }
+    float average = (returns/items.size());
+    std::cout << "Average: " << average << std::endl;
+    return returns;
+}
+
+int totalDamageofItemsInternalized(std::list<Item> &items)
+{
+    int returns = 0;
+    for( auto &item : items)
+    {
+        int personalreturns = 0;
+        if(!item.internalitems.empty())
+        {
+            personalreturns += totalDamageofItemsInternalized(item.internalitems);
+        }
+
+        returns += (item.maxdam + personalreturns);
+    }
+    float average = (returns/items.size());
+    std::cout << "Average: " << average << std::endl;
+    return returns;
+}
+
+
+
+
+itemPtrVector randomEquipment(std::list<Item> &inventory)
+{
+    std::cout << "Pre existing items: ";
+    for (auto &items : inventory)
+    {
+        std::cout << items.name << ", ";
+    }
+    std::cout << std::endl;
+    itemPtrVector returns;
+
+    returns = makeItems(inventory,7);
+}
+
+
+
+
+
 

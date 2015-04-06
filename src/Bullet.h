@@ -20,6 +20,7 @@ public:
     int maxrichochet;
     bool toDelete;
     Npc * owner;
+    Item * parent;
 
     void moveBullet();
 
