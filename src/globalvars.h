@@ -65,6 +65,9 @@ extern bool secondSwitch;
 extern bool sendGrid;
 extern bool workingNpcList;
 extern bool transitionLock;
+extern int soundVolume;
+extern int musicVolume;
+extern int vocalVolume;
 }
 
 #endif // GLOBALS_H_INCLUDED

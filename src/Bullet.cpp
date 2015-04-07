@@ -5,6 +5,11 @@ void Bullet::moveBullet()
     std::vector<Vec3f> predictions = positions;
     Vec3f predPos = pos;
     float predAngle = angle;
+    if(!aabb(pos.x,pos.y,GRID_SIZE,GRID_SIZE*95,GRID_SIZE,GRID_SIZE*95)
+       || speed == 0)
+       toDelete = true;
+
+    if(showPrediction)
     for(int z = 0; z != lifetime; z++)
     {
         for(int i = 0; i != speed; i++)
@@ -13,7 +18,7 @@ void Bullet::moveBullet()
             predPos = Vec3f(newPos.x,newPos.y,predPos.z);
 
 
-            if(aabb(predPos.x,predPos.y,20,1900,20,1900))
+            if(aabb(predPos.x,predPos.y,GRID_SIZE,GRID_SIZE*95,GRID_SIZE,GRID_SIZE*95))
                 if(!tiles[abs_to_index(predPos.x/GRID_SIZE)][abs_to_index(predPos.y/GRID_SIZE)][abs_to_index(predPos.z/GRID_SIZE)].walkable)
             {
                 Vec3f tempPos(predictions[predictions.size()-1]);
@@ -47,7 +52,7 @@ void Bullet::moveBullet()
         pos = Vec3f(newPos.x,newPos.y,pos.z);
         effects.createCircle(pos.x,pos.y,3,sf::Color(150,150,150),1,sf::Color(0,0,0));
 
-        if(aabb(pos.x,pos.y,20,1900,20,1900) &&
+        if(aabb(pos.x,pos.y,GRID_SIZE,GRID_SIZE*95,GRID_SIZE,GRID_SIZE*95) &&
            !tiles[abs_to_index(pos.x/GRID_SIZE)][abs_to_index(pos.y/GRID_SIZE)][abs_to_index(pos.z/GRID_SIZE)].walkable)
         {
 
@@ -66,13 +71,15 @@ void Bullet::moveBullet()
         }
     }
 
+    effects.createCircle(pos.x,pos.y,3,sf::Color(150,150,150),1,sf::Color(0,0,0));
+
     for(int i = 0; i != speed; i++)
     {
         sf::Vector2f newPos = math::angleCalc(sf::Vector2f(pos.x,pos.y),angle,1);
         pos = Vec3f(newPos.x,newPos.y,pos.z);
-        effects.createCircle(pos.x,pos.y,3,sf::Color(150,150,150),1,sf::Color(0,0,0));
+        //effects.createCircle(pos.x,pos.y,3,sf::Color(150,150,150),1,sf::Color(0,0,0));
 
-        if(aabb(pos.x,pos.y,20,1900,20,1900) &&
+        if(aabb(pos.x,pos.y,GRID_SIZE,GRID_SIZE*95,GRID_SIZE,GRID_SIZE*95) &&
            !tiles[abs_to_index(pos.x/GRID_SIZE)][abs_to_index(pos.y/GRID_SIZE)][abs_to_index(pos.z/GRID_SIZE)].walkable)
         {
             Vec3f tempPos(positions[positions.size()-1]);
@@ -87,7 +94,7 @@ void Bullet::moveBullet()
             else if(Face == "LEFT" || Face == "RIGHT")
                 tempVelocity.x = -tempVelocity.x;
 
-            std::cout << "Face: " << Face << std::endl;
+            //std::cout << "Face: " << Face << std::endl;
 
             tempPos.x += tempVelocity.x;
             tempPos.y += tempVelocity.y;
@@ -95,9 +102,25 @@ void Bullet::moveBullet()
 
             angle = math::constrainAngle(math::angleBetweenVectors(newPos,sf::Vector2f(tempPos.x,tempPos.y)));
             positions.push_back(pos);
+
+            int ranNum = randz(1,4);
+            if(ranNum == 1)
+                soundmanager.playSound("ricochet_cedarstudios_1.ogg");
+            if(ranNum == 2)
+                soundmanager.playSound("ricochet_cedarstudios_2.ogg");
+            if(ranNum == 3)
+                soundmanager.playSound("ricochet_cedarstudios_3.ogg");
+            if(ranNum == 4)
+                soundmanager.playSound("ricochet_cedarstudios_4.ogg");
+
+            maxrichochet--;
+            if(maxrichochet <= 0)
+                toDelete = true;
+
         }
     }
 
+    if(showPrediction)
     for(int i = 0; i != predictions.size(); i++)
     {
         if(i == 0)
@@ -119,6 +142,7 @@ void Bullet::moveBullet()
         }
     }
 
+    if(showPath)
     for(int i = 0; i != positions.size(); i++)
     {
         if(i == positions.size()-1)
@@ -155,9 +179,12 @@ Bullet::Bullet()
     speed = 5;
     penetration = 10;
     health = 5;
-    maxrichochet = 5;
+    maxrichochet = 3;
     toDelete = false;
+    showPrediction = false;
+    showPath = false;
     owner = nullptr;
+    parent = nullptr;
 }
 
 std::vector<Bullet> bullets;

@@ -62,7 +62,7 @@ void bountyTowerLoop()
     cameraControls();
     int mouseX = gvars::mousePos.x, mouseY = gvars::mousePos.y;
     std::string stringy = std::to_string(mouseX) + "/" + std::to_string(mouseY) + "(" + std::to_string(gvars::currentz) + ")";
-    textList.createText(gvars::mousePos.x,gvars::mousePos.y,15,sf::Color::Cyan,stringy);
+    //textList.createText(gvars::mousePos.x,gvars::mousePos.y,15,sf::Color::Cyan,stringy);
 
     if(inputState.key[Key::X].time == 1)
     {
@@ -138,6 +138,25 @@ void bountyTowerLoop()
             member.ypos = stair->pos.y*GRID_SIZE+(GRID_SIZE/2);
             member.zpos = (gvars::currentz*GRID_SIZE);
             member.id = gvars::globalid++;
+
+            itemPtrVector IPV = randomEquipment(member.inventory);
+
+            //std::cout << IPV.ptrs.size() << ", IPV. \n";
+            //fSleep(2);
+            for (auto &i : IPV.ptrs)
+            {
+                if(i->type == 2)
+                {
+                    Item bullet;
+                    bullet = *getGlobalItem("5.56mm");
+                    bullet.amount = 30;
+
+                    i->internalitems.push_back(bullet);
+                }
+            }
+
+            printItems(member.inventory);
+
             npclist.push_back(member);
         }
         debug("Done placin Towerlings");
@@ -225,6 +244,7 @@ void buildTower(std::string towerName)
             }
         }
     }
+
 }
 
 Tower::Tower()
@@ -241,49 +261,11 @@ std::vector<Tower> towers;
 
 void bountyBrain(Npc &npc, std::list<Npc> &container)
 {
-    if(bountytower::towerlingassault)
-    {
-        std::vector<Npc*> enemyPtrs;
-        for (auto &enemys : container)
-        {
-            if(enemys.faction != npc.faction)
-            {
-                for (auto &i : npc.factionPtr->factRelations)
-                {
-                    if(enemys.faction == i.faction && i.appeal < 1000)
-                    {
-                        //std::cout << "ZE ENEMY HAS BEEN SPOTTED AT " << enemys.xpos << "/" << enemys.ypos << std::endl;
-                        enemyPtrs.push_back(&enemys);
-                    }
-                }
-            }
-        }
-        Npc * closEnmy = nullptr;
-        for (auto &enemy : enemyPtrs)
-        {
-            effects.createLine(npc.xpos,npc.ypos,enemy->xpos,enemy->ypos,2,sf::Color::Yellow);
-            if(closEnmy == nullptr)
-                closEnmy = enemy;
-            else if(math::closeish(npc.xpos,npc.ypos,enemy->xpos,enemy->ypos) <
-                    math::closeish(npc.xpos,npc.ypos,closEnmy->xpos,closEnmy->ypos)
-                    )
-            {
-                closEnmy = enemy;
-            }
 
-        }
-
-        if(closEnmy != nullptr)
-        {
-            effects.createLine(npc.xpos,npc.ypos,closEnmy->xpos,closEnmy->ypos,4,sf::Color::Red);
-
-        }
-
-    }
 }
 
 namespace bountytower
 {
     bool elevatoravailable = false;
-    bool towerlingassault = true;
+    bool towerlingassault = false;
 }

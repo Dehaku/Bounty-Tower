@@ -2,6 +2,7 @@
 #define BOUNTYTOWER_H_INCLUDED
 
 #include <SFML/Graphics.hpp>
+#include "Sounds.h"
 #include "Textures.h"
 #include "util.h"
 #include "Galaxy.h"

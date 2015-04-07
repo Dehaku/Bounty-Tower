@@ -5,12 +5,15 @@
 
 #include <SFML/Graphics.hpp>
 #include "Text.h"
+#include "defs.h"
+
 
 class Npc;
 
 class Item
 {
 public:
+    std::list<Item> internalitems;
     bool toDelete;
     bool pickupable;
     sf::Sprite img;
@@ -53,7 +56,7 @@ public:
     int type;
     // 0 = none, 1 = hand gun, 2 = rifle, 3 = slash, 4 = blunt, 5 = pierce
     std::string usedskill;
-    float amount;
+    int amount;
     // 0 None 1 Chem 2 Solar 3 Nuclear 4 Soul 5 Magic
     int celltype;
     int cellcharge;
@@ -112,6 +115,7 @@ public:
     void drawImg();
     void spawn(int gposx, int gposy, int rposx, int rposy, int posx, int posy, int posz);
     void printConsoleInfo();
+    std::string activate(Vec3f vPos);
     Item();
 };
 
@@ -145,4 +149,24 @@ Item *findClosestItemPtr(int orix, int oriy, std::string tarItem, int Gxpos = 0,
                          int Gypos = 0, int Rxpos = 0, int Rypos = 0);
 void offloadItems();
 void hoverItemIDdisplay();
+
+extern std::list<Item> itemlist;
+
+struct itemPtrVector
+{
+    std::vector<Item*> ptrs;
+};
+
+itemPtrVector makeItems(std::list<Item> &items, int maxamount);
+
+void printItems(std::list<Item> &items);
+
+int totalDamageofItems(std::list<Item> &items);
+
+int totalDamageofItemsInternalized(std::list<Item> &items);
+
+Item *getItemType(std::list<Item> &inventory, int type);
+
+itemPtrVector randomEquipment(std::list<Item> &inventory);
+
 #endif // ITEMS_H_INCLUDED

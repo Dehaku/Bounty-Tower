@@ -148,6 +148,7 @@ void ImageButton::draw()
     window.draw(sprite);
     textList.createText(sprite.getPosition().x + 10, sprite.getPosition().y - (textSize / 2), textSize,
                         textColor, sForwardText);
+
     effects.drawEffects();
 }
 
@@ -211,6 +212,7 @@ int createImageButton(sf::Vector2f vPos, sf::Texture &Tex, std::string text)
     var.sprite.setPosition(vPos);
     var.sprite.setOrigin(Tex.getSize().x/2,Tex.getSize().y/2);
     var.sButtonText = text;
+    var.sForwardText = text;
     vImageButtonList.push_back(var);
     return var.id;
 }

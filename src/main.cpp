@@ -6,6 +6,7 @@
 #ifndef GALAXY_LINUX
 #include <windows.h>
 #endif
+
 #include "Items.h"
 #include "Faction.h"
 #include "Tiles.h"
@@ -15,12 +16,15 @@
 #include "menus.h"
 #include "astar.h"
 #include "Textures.h"
+#include "Sounds.h"
 #include "math.h"
 #include "util.h"
 #include "globalvars.h"
 #include "Networking.h"
 #include "Bullet.h"
 #include "Camera.h"
+
+#include <SFML/Audio.hpp>
 
 #define USE_PATHER
 
@@ -37,6 +41,21 @@ template <typename T> T &listAt(std::list<T> &list, size_t index)
     auto it = list.begin();
     std::advance(it, index);
     return *it;
+}
+
+template <typename T> T &AnyDeletes(std::vector<T> &list)
+{ // Oh my goodness, I freakkin love templates, I'll need to redesign a few things to incorporate this functionality.
+
+    //auto it = list.begin();
+    //std::advance(it, index);
+    for (auto &listings : list)
+    {
+        if(listings.toDelete)
+        {
+            std::cout << "To be deleted! \n";
+        }
+    }
+    //return;
 }
 
 
@@ -1715,10 +1734,15 @@ void critterBrain(Npc &npc, std::list<Npc> &container)
         npc.img.setScale(0.5, 0.5);
     }
 
-    if(npc.faction == "Towerlings")
+
+    if(npc.name == "BTHalfCelestial")
     {
-        bountyBrain(npc, container);
+        if(randz(1,1000) == 1000)
+        {
+            soundmanager.playSound("AngryWallabee.ogg");
+        }
     }
+
 
     npc.img.setRotation(npc.angle);
 
@@ -1858,6 +1882,49 @@ void critterBrain(Npc &npc, std::list<Npc> &container)
     debug("debug 5", false);
     /* Critter Prioritization */
 
+    std::vector<Npc*> enemyPtrs;
+    Npc * closEnmy = nullptr;
+    if(bountytower::towerlingassault)
+    {
+        for (auto &enemys : container)
+        {
+            if(enemys.faction != npc.faction)
+            {
+                for (auto &i : npc.factionPtr->factRelations)
+                {
+                    if(enemys.faction == i.faction && i.appeal < 1000)
+                    {
+                        //std::cout << "ZE ENEMY HAS BEEN SPOTTED AT " << enemys.xpos << "/" << enemys.ypos << std::endl;
+                        enemyPtrs.push_back(&enemys);
+                    }
+                }
+            }
+        }
+        for (auto &enemy : enemyPtrs)
+        {
+            //effects.createLine(npc.xpos,npc.ypos,enemy->xpos,enemy->ypos,2,sf::Color::Yellow);
+            if(closEnmy == nullptr)
+                closEnmy = enemy;
+            else if(math::closeish(npc.xpos,npc.ypos,enemy->xpos,enemy->ypos) <
+                    math::closeish(npc.xpos,npc.ypos,closEnmy->xpos,closEnmy->ypos)
+                    )
+            {
+                closEnmy = enemy;
+            }
+
+        }
+
+        if(closEnmy != nullptr && inputState.key[Key::LAlt])
+        {
+            effects.createLine(npc.xpos,npc.ypos,closEnmy->xpos,closEnmy->ypos,4,sf::Color::Red);
+            //hasPath = true;
+            //endPos = Vec3(closEnmy->xpos/GRID_SIZE,closEnmy->ypos/GRID_SIZE,closEnmy->zpos/GRID_SIZE);
+        }
+
+    }
+
+
+
     // Method Two, Struct Desires
     struct Desire
     {
@@ -1909,6 +1976,16 @@ void critterBrain(Npc &npc, std::list<Npc> &container)
 
     }
     desires.push_back(newDesire);
+    { //Assault
+        newDesire.type = "Assault";
+        newDesire.potency = 0;
+        if(bountytower::towerlingassault && npc.faction == "Towerlings")
+            newDesire.potency = 1000;
+
+
+
+    }
+    desires.push_back(newDesire);
     debug("debug 6", false);
     /*Causation to Desires*/
     // Get Critters max nutrition, then reduce it by critters nutrients in blood
@@ -1956,7 +2033,9 @@ ReDesire:
 
     Vec3 startPos(npc.xpos/GRID_SIZE,npc.ypos/GRID_SIZE,npc.zpos/GRID_SIZE);
     Vec3 endPos;
+
     bool hasPath = false;
+
     debug("Acting on highest Desire:" + (*highestDesire).type);
     if ((*highestDesire).type == "Apathy")
     {// TODO: Add blublublub
@@ -2027,7 +2106,6 @@ ReDesire:
         {
         }
     }
-
     if ((*highestDesire).type == "Work")
     {
         if(npc.jobPtr == nullptr)
@@ -2050,7 +2128,7 @@ ReDesire:
         }
         else
         {
-            debug("I have a job");
+            debug("I have a job, Now if only my programmer did.");
             Vec3 wPos(npc.jobPtr->workPos);
             Vec3 myPos(npc.xpos,npc.ypos,npc.zpos);
             if(npc.jobPtr != nullptr && npc.jobPtr->type == "Build")
@@ -2297,7 +2375,55 @@ ReDesire:
 
         }
     }
+    if ((*highestDesire).type == "Assault")
+    {
+        if(closEnmy != nullptr)
+        {
+            hasPath = true;
+            endPos = Vec3(closEnmy->xpos/GRID_SIZE,closEnmy->ypos/GRID_SIZE,closEnmy->zpos/GRID_SIZE);
+        }
+        Item * rangewep = npc.getItemType(2);
+        Item * meleewep = npc.getItemType(1);
+        if(inputState.key[Key::LAlt])
+        {
+            if(rangewep != nullptr)
+                effects.createCircle(npc.xpos,npc.ypos,rangewep->range,sf::Color(255,0,0,50),2,sf::Color::Red);
+            if(meleewep != nullptr)
+                effects.createCircle(npc.xpos,npc.ypos,meleewep->range,sf::Color(0,0,255,50),2,sf::Color::Blue);
+        }
+        bool withinRange = false;
+        if(rangewep != nullptr)
+        {
+            withinRange = (math::closeish(npc.xpos,npc.ypos,closEnmy->xpos,closEnmy->ypos) <= rangewep->range);
+            if(withinRange)
+            {
+                rangewep->user = &npc;
 
+                if((gvars::framesPassed % 30) == 0)
+                {
+                    std::string Status = rangewep->activate(Vec3f(closEnmy->xpos,closEnmy->ypos,closEnmy->zpos));
+                    if(Status != "Success")
+                        chatBox.addChat(npc.name + ", cannot fire " + rangewep->name + " due to :" + Status, sf::Color::Yellow);
+                }
+
+            }
+        }
+
+        if(meleewep != nullptr)
+        {
+            if(!withinRange)
+                withinRange = (math::closeish(npc.xpos,npc.ypos,closEnmy->xpos,closEnmy->ypos) <= meleewep->range);
+            if(withinRange)
+            {
+                meleewep->user = &npc;
+            }
+        }
+        if(withinRange)
+        {
+            hasPath = false;
+        }
+            //std::cout << rangewep->name << ",'s range: " << rangewep->range << std::endl;
+    }
 
     debug("Checking inComplete:" + std::to_string(inComplete));
     // Incase the highest desire isn't completable, Go through again for the next highest desire.
@@ -2340,7 +2466,8 @@ ReDesire:
 
     if(!npc.storedPath.empty())
     {
-        drawStoredPath(npc.storedPath);
+        if(inputState.key[Key::LAlt])
+            drawStoredPath(npc.storedPath);
         Vec3 Pos(npc.storedPath[1]->getPos());
 
         double pathTime = (((npc.storedPath.size()*GRID_SIZE)*1.2)/npc.moverate)/30;
@@ -3152,7 +3279,7 @@ void predictBullet(Bullet bullet)
             predPos = Vec3f(newPos.x,newPos.y,predPos.z);
 
 
-            if(aabb(predPos.x,predPos.y,20,1900,20,1900))
+            if(aabb(predPos.x,predPos.y,GRID_SIZE,GRID_SIZE*95,GRID_SIZE,GRID_SIZE*95))
                 if(!tiles[abs_to_index(predPos.x/GRID_SIZE)][abs_to_index(predPos.y/GRID_SIZE)][abs_to_index(predPos.z/GRID_SIZE)].walkable)
             {
                 Vec3f tempPos(predictions[predictions.size()-1]);
@@ -3238,7 +3365,68 @@ void lmbPress()
 }
 
 
+void bulletTests()
+{
+    /*
+    if(inputState.lmbTime > 2)
+            {
+                effects.createLine(gvars::heldClickPos.x,gvars::heldClickPos.y,gvars::mousePos.x,gvars::mousePos.y,3,sf::Color::Yellow);
 
+                std::string outputText = "Speed: " + std::to_string(math::closeish(gvars::heldClickPos.x,gvars::heldClickPos.y,gvars::mousePos.x,gvars::mousePos.y) / 10);
+                //Vec3f velo((gvars::heldClickPos.x - gvars::mousePos.x)/10,(gvars::heldClickPos.y - gvars::mousePos.y)/10 );
+
+                //std::string outputText = "Magnitude: " + std::to_string(Magnitude(velo));
+
+                textList.createText(gvars::mousePos.x,gvars::mousePos.y,10,sf::Color::Yellow,outputText);
+
+                Bullet boolet;
+                boolet.pos = Vec3f(gvars::mousePos.x,gvars::mousePos.y,gvars::currentz*GRID_SIZE);
+                boolet.positions.push_back(boolet.pos);
+                boolet.angle = math::angleBetweenVectors(gvars::heldClickPos,gvars::mousePos);
+                boolet.speed = math::closeish(gvars::heldClickPos.x,gvars::heldClickPos.y,gvars::mousePos.x,gvars::mousePos.y) / 10;
+                boolet.lifetime = 600;
+
+
+                predictBullet(boolet);
+            }
+            if(!inputState.lmb && gvars::heldClickPos != sf::Vector2f(-1,-1) || inputState.key[Key::D] && gvars::heldClickPos != sf::Vector2f(-1,-1))
+            {
+                Bullet boolet;
+                boolet.pos = Vec3f(gvars::heldClickPos.x,gvars::heldClickPos.y,gvars::currentz*GRID_SIZE);
+                boolet.positions.push_back(boolet.pos);
+                boolet.angle = math::angleBetweenVectors(gvars::heldClickPos,gvars::mousePos);
+                Vec3f velo((gvars::heldClickPos.x - gvars::mousePos.x)/10,(gvars::heldClickPos.y - gvars::mousePos.y)/10 );
+                boolet.velocity = velo;
+
+
+                boolet.speed = math::closeish(gvars::heldClickPos.x,gvars::heldClickPos.y,gvars::mousePos.x,gvars::mousePos.y) / 10;
+                //boolet.speed = 0;
+                boolet.lifetime = 60;
+                //boolet.showPath = true;
+                //boolet.showPrediction = true;
+                bullets.push_back(boolet);
+                int ranNum = randz(1,4);
+        if(ranNum == 1)
+            soundmanager.playSound("m16_lensflare_1.ogg");
+        if(ranNum == 2)
+            soundmanager.playSound("m16_lensflare_2.ogg");
+        if(ranNum == 3)
+            soundmanager.playSound("m16_lensflare_3.ogg");
+        if(ranNum == 4)
+            soundmanager.playSound("m16_lensflare_4.ogg");
+                if(inputState.key[Key::LShift])
+                {
+                    for(int i = 0; i != 360; i++)
+                    {
+                        boolet.angle = i;
+                        boolet.speed = 1;
+                        boolet.lifetime = 600;
+                        bullets.push_back(boolet);
+                    }
+                }
+            }
+*/
+}
 
 void handlePhase()
 {
@@ -3306,58 +3494,15 @@ void handlePhase()
 
         if(gCtrl.phase == "Lobby")
         {
+            bulletTests();
             bountyTowerLoop();
+
         }
 
         if (gCtrl.phase == "Local")
         { //=======================================================*Local*============================================================================
 
-            if(inputState.lmbTime > 2)
-            {
-                effects.createLine(gvars::heldClickPos.x,gvars::heldClickPos.y,gvars::mousePos.x,gvars::mousePos.y,3,sf::Color::Yellow);
-
-                std::string outputText = "Speed: " + std::to_string(math::closeish(gvars::heldClickPos.x,gvars::heldClickPos.y,gvars::mousePos.x,gvars::mousePos.y) / 10);
-                //Vec3f velo((gvars::heldClickPos.x - gvars::mousePos.x)/10,(gvars::heldClickPos.y - gvars::mousePos.y)/10 );
-
-                //std::string outputText = "Magnitude: " + std::to_string(Magnitude(velo));
-
-                textList.createText(gvars::mousePos.x,gvars::mousePos.y,10,sf::Color::Yellow,outputText);
-
-                Bullet boolet;
-                boolet.pos = Vec3f(gvars::mousePos.x,gvars::mousePos.y,gvars::currentz*GRID_SIZE);
-                boolet.positions.push_back(boolet.pos);
-                boolet.angle = math::angleBetweenVectors(gvars::heldClickPos,gvars::mousePos);
-                boolet.speed = math::closeish(gvars::heldClickPos.x,gvars::heldClickPos.y,gvars::mousePos.x,gvars::mousePos.y) / 10;
-                boolet.lifetime = 600;
-
-
-                predictBullet(boolet);
-            }
-            if(!inputState.lmb && gvars::heldClickPos != sf::Vector2f(-1,-1))
-            {
-                Bullet boolet;
-                boolet.pos = Vec3f(gvars::heldClickPos.x,gvars::heldClickPos.y,gvars::currentz*GRID_SIZE);
-                boolet.positions.push_back(boolet.pos);
-                boolet.angle = math::angleBetweenVectors(gvars::heldClickPos,gvars::mousePos);
-                Vec3f velo((gvars::heldClickPos.x - gvars::mousePos.x)/10,(gvars::heldClickPos.y - gvars::mousePos.y)/10 );
-                boolet.velocity = velo;
-
-
-                boolet.speed = math::closeish(gvars::heldClickPos.x,gvars::heldClickPos.y,gvars::mousePos.x,gvars::mousePos.y) / 10;
-                //boolet.speed = 0;
-                boolet.lifetime = 600;
-                bullets.push_back(boolet);
-                if(inputState.key[Key::LShift])
-                {
-                    for(int i = 0; i != 360; i++)
-                    {
-                        boolet.angle = i;
-                        boolet.speed = 1;
-                        boolet.lifetime = 600;
-                        bullets.push_back(boolet);
-                    }
-                }
-            }
+            bulletTests();
 
             attractNPCs(gvars::mousePos);
 
@@ -4656,13 +4801,56 @@ void cleanMenu()
 }
 
 
+void newItemstuffs()
+{
+    std::cout << "Kaboom! \n";
+    makeItems(itemlist,1);
+    printItems(itemlist);
+    std::cout << "itemlist maxdam: " << totalDamageofItems(itemlist) << std::endl;
+
+    for( auto &item : itemlist)
+    {
+        std::cout << "====== \n";
+        itemPtrVector IPV;
+        IPV = makeItems(item.internalitems,3);
+        for ( auto &internal : IPV.ptrs)
+        {
+            makeItems(internal->internalitems,3);
+            std::cout << "X \n";
+            printItems(internal->internalitems);
+            std::cout << "X \n";
+        }
+        printItems(item.internalitems);
+        std::cout << "====== \n";
+    }
+    std::cout << "Giga: " << totalDamageofItemsInternalized(itemlist) << std::endl;
+}
+
+void playThemeTrack()
+{
+    //gvars::soundVolume = 0;
+    gvars::musicVolume = 0;
+    int ranNum = randz(1,3);
+    if(ranNum == 1)
+        playMusic("Electro_Cabello.ogg");
+    else if(ranNum == 2)
+        playMusic("Neo Western.ogg");
+    else if(ranNum == 3)
+        playMusic("Jalandhar.ogg");
+}
 
 int main()
 {
+    soundmanager.init();
+    initializeMusic();
+    playThemeTrack();
+
     srand(clock());
     texturemanager.init();
+
     itemmanager.initializeItems();
     npcmanager.initializeCritters();
+
 
     galaxySetup();
     //bountyTowerSetup();
@@ -4672,6 +4860,10 @@ int main()
 
     textList.loadFont();
 
+    soundmanager.playSound("Startup.wav");
+    newItemstuffs();
+
+
     while (window.isOpen())
     {
         if (inputState.key[Key::R] && !network::chatting)
@@ -4679,6 +4871,13 @@ int main()
             toggle(gvars::debug);
             fSleep(0.5);
         }
+
+        if(inputState.key[Key::U])
+        {
+            soundmanager.playSound("Startup.wav");
+        }
+
+        //std::cout << "soundstuffs: " << soundmanager.playSounds.size() << std::endl;
 
         frames();
         scaleImages();
@@ -4700,9 +4899,13 @@ int main()
         debug("Post Draw Stuffs");
 
         debug("Starting Removing process, NPC/Unpoint/Items/GC.Menu");
+
+        AnyDeletes(soundmanager.playSounds);
+
         removeNPCs(npclist, mutex::npcList);
         unpointItems(worlditems);
         removeItems(worlditems);
+        soundmanager.cleanSounds();
         cleanMenu();
     } // End of game loop
     return EXIT_SUCCESS;

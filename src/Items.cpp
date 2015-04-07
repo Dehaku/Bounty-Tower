@@ -4,6 +4,7 @@
 #include "Textures.h"
 #include "math.h"
 #include "util.h"
+#include "Bullet.h"
 
 #include <fstream>
 #include <sstream>
@@ -739,5 +740,133 @@ void hoverItemIDdisplay()
             textList.createText(item.xpos, item.ypos, 11,sf::Color::White, item.name, " ID:",item.id);
     }
 }
+
+std::list<Item> itemlist;
+
+itemPtrVector makeItems(std::list<Item> &items, int maxamount)
+{
+    itemPtrVector IPV;
+    int totalNew = randz(1,maxamount);
+    for(int i = 0; i != totalNew; i++)
+    {
+        Item item;
+        int globalItem = randz(0,itemmanager.globalItems.size()-1);
+        item = itemmanager.globalItems[globalItem];
+        item.maxdam = randz(3,9);
+        items.push_back(item);
+        IPV.ptrs.push_back(&items.back());
+    }
+    return IPV;
+}
+
+void printItems(std::list<Item> &items)
+{
+    for( auto &item : items)
+    {
+        std::cout << "Item: " << item.name << ", Damage: " << item.maxdam << std::endl;
+    }
+}
+
+int totalDamageofItems(std::list<Item> &items)
+{
+    int returns = 0;
+    for( auto &item : items)
+    {
+        returns += item.maxdam;
+    }
+    float average = (returns/items.size());
+    std::cout << "Average: " << average << std::endl;
+    return returns;
+}
+
+int totalDamageofItemsInternalized(std::list<Item> &items)
+{
+    int returns = 0;
+    for( auto &item : items)
+    {
+        int personalreturns = 0;
+        if(!item.internalitems.empty())
+        {
+            personalreturns += totalDamageofItemsInternalized(item.internalitems);
+        }
+
+        returns += (item.maxdam + personalreturns);
+    }
+    float average = (returns/items.size());
+    std::cout << "Average: " << average << std::endl;
+    return returns;
+}
+
+Item *getItemType(std::list<Item> &inventory, int type)
+{
+    //for(int i = 0; i < inventory.size(); i++)
+    for (auto &elem : inventory)
+    {
+        if ((elem).type == type)
+        {
+            return &(elem);
+        }
+    }
+    return nullptr;
+}
+
+
+itemPtrVector randomEquipment(std::list<Item> &inventory)
+{
+    std::cout << "Pre existing items: ";
+    for (auto &items : inventory)
+    {
+        std::cout << items.name << ", ";
+    }
+    std::cout << std::endl;
+    itemPtrVector returns;
+
+    returns = makeItems(inventory,7);
+    return returns;
+}
+
+std::string Item::activate(Vec3f vPos) // Returns a string declaring the problem.
+{
+    if(type == 2)
+    {
+        if(user == nullptr)
+            return "No Owner";
+
+        Item * itemptr = getItemType(internalitems,3);
+        if(itemptr == nullptr)
+            return "No Ammo";
+
+        Vec3f muzzlePos(user->xpos,user->ypos,user->zpos);
+        sf::Vector2f muzzlePosV2f(muzzlePos.x,muzzlePos.y);
+        sf::Vector2f vPosV2f(vPos.x,vPos.y);
+
+        Bullet boolet;
+        boolet.pos = muzzlePos;
+        boolet.positions.push_back(boolet.pos);
+        boolet.angle = math::angleBetweenVectors(muzzlePosV2f,vPosV2f);
+        //Vec3f velo((muzzlePos.x - vPos.x)/10,(muzzlePos.y - vPos.y)/10 );
+        //boolet.velocity = velo;
+
+        //boolet.speed = math::closeish(muzzlePos.x,muzzlePos.y,vPos.x,vPos.y) / 10;
+        boolet.speed = 60;
+        boolet.lifetime = 600;
+        bullets.push_back(boolet);
+        int ranNum = randz(1,4);
+        if(ranNum == 1)
+            soundmanager.playSound("m16_lensflare_1.ogg");
+        if(ranNum == 2)
+            soundmanager.playSound("m16_lensflare_2.ogg");
+        if(ranNum == 3)
+            soundmanager.playSound("m16_lensflare_3.ogg");
+        if(ranNum == 4)
+            soundmanager.playSound("m16_lensflare_4.ogg");
+        return "Success";
+    }
+    return "Failed";
+}
+
+
+
+
 
 

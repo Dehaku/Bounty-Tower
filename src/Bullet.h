@@ -19,7 +19,10 @@ public:
     int health;
     int maxrichochet;
     bool toDelete;
+    bool showPrediction;
+    bool showPath;
     Npc * owner;
+    Item * parent;
 
     void moveBullet();
 
