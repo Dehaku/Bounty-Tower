@@ -617,6 +617,9 @@ void ItemManager::initializeItems()
             item.mindam = stringFindNumber(line, "[mindam:");
             item.maxdam = stringFindNumber(line, "[maxdam:");
             item.range = stringFindNumber(line, "[range:");
+            item.activaterate = 0 ; //stringFindNumber(line, "[range:");
+            item.activaterategrowth = stringFindNumber(line, "[activaterategrowth:");
+            item.activateratemax = stringFindNumber(line, "[activateratemax:");
             item.isWeapon = booleanize(stringFindNumber(line, "[IsWeapon:"));
             std::string imagery = stringFindString(line, "[image:");
             for (auto const &image : texturemanager.textures)
@@ -884,6 +887,18 @@ std::string Item::activate(Vec3f vPos) // Returns a string declaring the problem
         return "Success";
     }
     return "Failed";
+}
+
+bool Item::trigger() // Processes activation time, if activation time is ready/reset, returns true, else, returns false.
+{
+    activaterate += activaterategrowth;
+    if(activaterate >= activateratemax)
+    {
+        activaterate -= activateratemax;
+        // TODO: Change this to return the amount of times activaterate surpasses the max for increased spamming goodness.
+        return true;
+    }
+    return false;
 }
 
 
