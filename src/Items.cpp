@@ -797,7 +797,18 @@ int totalDamageofItemsInternalized(std::list<Item> &items)
     return returns;
 }
 
-
+Item *getItemType(std::list<Item> &inventory, int type)
+{
+    //for(int i = 0; i < inventory.size(); i++)
+    for (auto &elem : inventory)
+    {
+        if ((elem).type == type)
+        {
+            return &(elem);
+        }
+    }
+    return nullptr;
+}
 
 
 itemPtrVector randomEquipment(std::list<Item> &inventory)
@@ -814,12 +825,16 @@ itemPtrVector randomEquipment(std::list<Item> &inventory)
     return returns;
 }
 
-void Item::activate(Vec3f vPos)
+std::string Item::activate(Vec3f vPos) // Returns a string declaring the problem.
 {
     if(type == 2)
     {
         if(user == nullptr)
-            return;
+            return "No Owner";
+
+        Item * itemptr = getItemType(internalitems,3);
+        if(itemptr == nullptr)
+            return "No Ammo";
 
         Vec3f muzzlePos(user->xpos,user->ypos,user->zpos);
         sf::Vector2f muzzlePosV2f(muzzlePos.x,muzzlePos.y);
@@ -845,7 +860,9 @@ void Item::activate(Vec3f vPos)
             soundmanager.playSound("m16_lensflare_3.ogg");
         if(ranNum == 4)
             soundmanager.playSound("m16_lensflare_4.ogg");
+        return "Success";
     }
+    return "Failed";
 }
 
 

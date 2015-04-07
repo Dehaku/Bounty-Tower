@@ -2396,8 +2396,14 @@ ReDesire:
             if(withinRange)
             {
                 rangewep->user = &npc;
+
                 if((gvars::framesPassed % 30) == 0)
-                    rangewep->activate(Vec3f(closEnmy->xpos,closEnmy->ypos,closEnmy->zpos));
+                {
+                    std::string Status = rangewep->activate(Vec3f(closEnmy->xpos,closEnmy->ypos,closEnmy->zpos));
+                    if(Status != "Success")
+                        chatBox.addChat(npc.name + ", cannot fire " + rangewep->name + " due to :" + Status, sf::Color::Yellow);
+                }
+
             }
         }
 

@@ -115,7 +115,7 @@ public:
     void drawImg();
     void spawn(int gposx, int gposy, int rposx, int rposy, int posx, int posy, int posz);
     void printConsoleInfo();
-    void activate(Vec3f vPos);
+    std::string activate(Vec3f vPos);
     Item();
 };
 
@@ -165,7 +165,7 @@ int totalDamageofItems(std::list<Item> &items);
 
 int totalDamageofItemsInternalized(std::list<Item> &items);
 
-
+Item *getItemType(std::list<Item> &inventory, int type);
 
 itemPtrVector randomEquipment(std::list<Item> &inventory);
 

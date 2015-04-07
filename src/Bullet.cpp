@@ -94,7 +94,7 @@ void Bullet::moveBullet()
             else if(Face == "LEFT" || Face == "RIGHT")
                 tempVelocity.x = -tempVelocity.x;
 
-            std::cout << "Face: " << Face << std::endl;
+            //std::cout << "Face: " << Face << std::endl;
 
             tempPos.x += tempVelocity.x;
             tempPos.y += tempVelocity.y;
