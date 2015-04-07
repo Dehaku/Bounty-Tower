@@ -48,6 +48,7 @@ template <typename T> T &AnyDeletes(std::vector<T> &list)
 
     //auto it = list.begin();
     //std::advance(it, index);
+    /*
     for (auto &listings : list)
     {
         if(listings.toDelete)
@@ -55,6 +56,63 @@ template <typename T> T &AnyDeletes(std::vector<T> &list)
             std::cout << "To be deleted! \n";
         }
     }
+    */
+    bool done = false;
+    while (done == false)
+    {
+        bool yet = false;
+        for (auto it = list.begin(); it != list.end(); ++it)
+        {
+            if (it->toDelete)
+            {
+                list.erase(it);
+                yet = true;
+                break;
+            }
+        }
+        if (yet == false)
+        {
+            done = true;
+        }
+    }
+
+    //return;
+}
+
+template <typename T> T &AnyDeletes(std::list<T> &list)
+{ // Oh my goodness, I freakkin love templates, I'll need to redesign a few things to incorporate this functionality.
+
+    //auto it = list.begin();
+    //std::advance(it, index);
+    /*
+    for (auto &listings : list)
+    {
+        if(listings.toDelete)
+        {
+            std::cout << "To be deleted! \n";
+        }
+    }
+    */
+    bool done = false;
+    while (done == false)
+    {
+        bool yet = false;
+        for (auto it = list.begin(); it != list.end(); ++it)
+        {
+            //std::cout << it->name << ",'s toDelete: " << it->toDelete << std::endl;
+            if (it->toDelete)
+            {
+                list.erase(it);
+                yet = true;
+                break;
+            }
+        }
+        if (yet == false)
+        {
+            done = true;
+        }
+    }
+
     //return;
 }
 
@@ -2396,6 +2454,8 @@ ReDesire:
         if(rangewep != nullptr)
         {
             withinRange = (math::closeish(npc.xpos,npc.ypos,closEnmy->xpos,closEnmy->ypos) <= rangewep->getRange());
+            if(getItemType(rangewep->internalitems,3) == nullptr)
+                withinRange = false;
             if(withinRange)
             {
                 rangewep->user = &npc;
@@ -2403,6 +2463,7 @@ ReDesire:
                 if((gvars::framesPassed % 30) == 0)
                 {
                     std::string Status = rangewep->activate(Vec3f(closEnmy->xpos,closEnmy->ypos,closEnmy->zpos));
+                    AnyDeletes(rangewep->internalitems);
                     if(Status != "Success")
                         chatBox.addChat(npc.name + ", cannot fire " + rangewep->name + " due to :" + Status, sf::Color::Yellow);
                 }

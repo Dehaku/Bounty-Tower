@@ -868,8 +868,10 @@ std::string Item::activate(Vec3f vPos) // Returns a string declaring the problem
         boolet.lifetime = 600;
         bullets.push_back(boolet);
         itemptr->amount--;
+        //std::cout << itemptr->name << "'s amount: " << itemptr->amount << ", toDelete: " << itemptr->toDelete << std::endl;
         if(itemptr->amount <= 0)
-            itemptr->toDelete;
+            itemptr->toDelete = true;
+        //std::cout << itemptr->name << "'s amount: " << itemptr->amount << ", toDelete: " << itemptr->toDelete << std::endl;
         int ranNum = randz(1,4);
         if(ranNum == 1)
             soundmanager.playSound("m16_lensflare_1.ogg");
