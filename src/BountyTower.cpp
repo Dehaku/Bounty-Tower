@@ -267,5 +267,5 @@ void bountyBrain(Npc &npc, std::list<Npc> &container)
 namespace bountytower
 {
     bool elevatoravailable = false;
-    bool towerlingassault = false;
+    bool towerlingassault = true;
 }
