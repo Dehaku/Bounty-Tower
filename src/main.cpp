@@ -1978,9 +1978,11 @@ void critterBrain(Npc &npc, std::list<Npc> &container)
     desires.push_back(newDesire);
     { //Assault
         newDesire.type = "Assault";
-        newDesire.potency = 1000;
-        if(bountytower::towerlingassault && npc.faction != "Towerlings")
-            newDesire.potency = 0;
+        newDesire.potency = 0;
+        if(bountytower::towerlingassault && npc.faction == "Towerlings")
+            newDesire.potency = 1000;
+
+
 
     }
     desires.push_back(newDesire);
@@ -4851,7 +4853,7 @@ int main()
 
 
     galaxySetup();
-    bountyTowerSetup();
+    //bountyTowerSetup();
 
     window.create(sf::VideoMode(RESOLUTION.x, RESOLUTION.y, 32), randomWindowName());
     window.setVerticalSyncEnabled(true);
