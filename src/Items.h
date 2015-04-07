@@ -115,6 +115,7 @@ public:
     void drawImg();
     void spawn(int gposx, int gposy, int rposx, int rposy, int posx, int posy, int posz);
     void printConsoleInfo();
+    int getRange();
     std::string activate(Vec3f vPos);
     Item();
 };

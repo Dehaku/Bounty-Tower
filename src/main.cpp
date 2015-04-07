@@ -1980,7 +1980,7 @@ void critterBrain(Npc &npc, std::list<Npc> &container)
         newDesire.type = "Assault";
         newDesire.potency = 0;
         if(bountytower::towerlingassault && npc.faction == "Towerlings")
-            newDesire.potency = 1000;
+            newDesire.potency = 700;
 
 
 
@@ -2386,15 +2386,16 @@ ReDesire:
         Item * meleewep = npc.getItemType(1);
         if(inputState.key[Key::LAlt])
         {
+            //rangewep->getRange();
             if(rangewep != nullptr)
-                effects.createCircle(npc.xpos,npc.ypos,rangewep->range,sf::Color(255,0,0,50),2,sf::Color::Red);
+                effects.createCircle(npc.xpos,npc.ypos,rangewep->getRange(),sf::Color(255,0,0,50),2,sf::Color::Red);
             if(meleewep != nullptr)
-                effects.createCircle(npc.xpos,npc.ypos,meleewep->range,sf::Color(0,0,255,50),2,sf::Color::Blue);
+                effects.createCircle(npc.xpos,npc.ypos,meleewep->getRange(),sf::Color(0,0,255,50),2,sf::Color::Blue);
         }
         bool withinRange = false;
         if(rangewep != nullptr)
         {
-            withinRange = (math::closeish(npc.xpos,npc.ypos,closEnmy->xpos,closEnmy->ypos) <= rangewep->range);
+            withinRange = (math::closeish(npc.xpos,npc.ypos,closEnmy->xpos,closEnmy->ypos) <= rangewep->getRange());
             if(withinRange)
             {
                 rangewep->user = &npc;

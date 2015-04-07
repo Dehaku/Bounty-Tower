@@ -482,6 +482,22 @@ void Item::printConsoleInfo()
     cout << "Ypos: " << ypos << endl;
 }
 
+int Item::getRange()
+{
+    debug(name + " getRange()");
+    int returns = range;
+    if(type == 2)
+    {
+        Item * itemptr = getItemType(internalitems,3);
+        if(itemptr == nullptr)
+            returns += 0;
+        else
+            returns += itemptr->range;
+    }
+    debug(name + " getRange() done");
+    return returns;
+}
+
 Item::Item()
     : cbaseid{}, range{}, xpos{}, ypos{}, zpos{30*20}, rxpos{}, rypos{}, gxpos{},
       gypos{}, imgstrx{}, imgstry{}, imgendx{}, imgendy{}, isWeapon{},
@@ -833,7 +849,7 @@ std::string Item::activate(Vec3f vPos) // Returns a string declaring the problem
             return "No Owner";
 
         Item * itemptr = getItemType(internalitems,3);
-        if(itemptr == nullptr)
+        if(itemptr == nullptr || itemptr->amount <= 0)
             return "No Ammo";
 
         Vec3f muzzlePos(user->xpos,user->ypos,user->zpos);
@@ -851,6 +867,9 @@ std::string Item::activate(Vec3f vPos) // Returns a string declaring the problem
         boolet.speed = 60;
         boolet.lifetime = 600;
         bullets.push_back(boolet);
+        itemptr->amount--;
+        if(itemptr->amount <= 0)
+            itemptr->toDelete;
         int ranNum = randz(1,4);
         if(ranNum == 1)
             soundmanager.playSound("m16_lensflare_1.ogg");
