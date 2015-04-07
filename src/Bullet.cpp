@@ -113,6 +113,10 @@ void Bullet::moveBullet()
             if(ranNum == 4)
                 soundmanager.playSound("ricochet_cedarstudios_4.ogg");
 
+            maxrichochet--;
+            if(maxrichochet <= 0)
+                toDelete = true;
+
         }
     }
 
@@ -175,7 +179,7 @@ Bullet::Bullet()
     speed = 5;
     penetration = 10;
     health = 5;
-    maxrichochet = 5;
+    maxrichochet = 3;
     toDelete = false;
     showPrediction = false;
     showPath = false;
