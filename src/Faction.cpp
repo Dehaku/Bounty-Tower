@@ -2717,7 +2717,7 @@ void drawSelectedCritterHUD()
         if (myTargetPtr->inventory.size() != 0 ||
                     myTargetPtr->bloodcontent != "")
         {
-            effects.createSquare(nxpos, nypos, nxpos + 130, nypos + 70,
+            effects.createSquare(nxpos, nypos, nxpos + 230, nypos + 70,
                                          sf::Color(0, 0, 0, 100));
             int yv = nypos;
             for (auto const &item :
@@ -2725,7 +2725,7 @@ void drawSelectedCritterHUD()
             { // Listing all the current items from this critters inventory.
                 if (item.insidePart.size() == 0)
                 {
-                    textList.createText(nxpos + 65, yv, 11,
+                    textList.createText(nxpos + 165, yv, 11,
                                                 sf::Color::White, item.name,
                                                 ": ", item.amount);
                     yv += 10;

@@ -2477,6 +2477,13 @@ ReDesire:
             if(withinRange)
             {
                 meleewep->user = &npc;
+                if(meleewep->trigger())
+                {
+                    std::string Status = meleewep->activate(Vec3f(closEnmy->xpos,closEnmy->ypos,closEnmy->zpos));
+                    AnyDeletes(meleewep->internalitems);
+                    if(Status != "Success")
+                        chatBox.addChat(npc.name + ", cannot strike with " + meleewep->name + " due to :" + Status, sf::Color::Yellow);
+                }
             }
         }
         if(withinRange)

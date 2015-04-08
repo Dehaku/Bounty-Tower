@@ -846,6 +846,23 @@ itemPtrVector randomEquipment(std::list<Item> &inventory)
 
 std::string Item::activate(Vec3f vPos) // Returns a string declaring the problem.
 {
+    if(type == 1)
+    {
+        if(user == nullptr)
+            return "No Owner";
+
+        Vec3f muzzlePos(user->xpos,user->ypos,user->zpos);
+        sf::Vector2f muzzlePosV2f(muzzlePos.x,muzzlePos.y);
+        sf::Vector2f vPosV2f(vPos.x,vPos.y);
+        int rot = math::angleBetweenVectors(muzzlePosV2f,vPosV2f);
+
+
+
+        createImageButton(math::angleCalc(muzzlePosV2f,rot,60),texturemanager.getTexture("BTSword.png"),"", rot+90);
+
+        soundmanager.playSound("Swing_xxchr0nosxx_1.ogg");
+    }
+
     if(type == 2)
     {
         if(user == nullptr)
