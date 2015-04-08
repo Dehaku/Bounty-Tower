@@ -1767,6 +1767,9 @@ entityvectorpointercontainer entityTrace(Vec3 Ori, Vec3 Tar) /* TODO: Improve th
 void critterBrain(Npc &npc, std::list<Npc> &container)
 {
 
+    if(!npc.alive)
+        return;
+
     npc.container = &container;
 
     if(tiles[abs_to_index(npc.xpos/GRID_SIZE)][abs_to_index(npc.ypos/GRID_SIZE)][abs_to_index(npc.zpos/GRID_SIZE)].walkable == false)
@@ -1785,7 +1788,7 @@ void critterBrain(Npc &npc, std::list<Npc> &container)
 
 
     int alph = 255;
-    npc.img.setColor(sf::Color(255, 255, 255, alph));
+    //npc.img.setColor(sf::Color(255, 255, 255, alph));
     npc.img.setScale(gvars::scalex, gvars::scaley);
     npc.img.setOrigin(npc.img.getTextureRect().width / 2,
     npc.img.getTextureRect().height / 2);
@@ -1952,7 +1955,7 @@ void critterBrain(Npc &npc, std::list<Npc> &container)
             {
                 for (auto &i : npc.factionPtr->factRelations)
                 {
-                    if(enemys.faction == i.faction && i.appeal < 1000)
+                    if(enemys.faction == i.faction && i.appeal < 1000 && enemys.alive)
                     {
                         //std::cout << "ZE ENEMY HAS BEEN SPOTTED AT " << enemys.xpos << "/" << enemys.ypos << std::endl;
                         enemyPtrs.push_back(&enemys);

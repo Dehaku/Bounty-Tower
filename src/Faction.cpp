@@ -961,6 +961,8 @@ bool Npc::modhealth(float amount)
     if (health < 1)
     {
         health = 0;
+        alive = false;
+        img.setColor(sf::Color(255,0,0,100));
         return false;
     }
     else
