@@ -877,9 +877,21 @@ std::string Item::activate(Vec3f vPos) // Returns a string declaring the problem
         sf::Vector2f vPosV2f(vPos.x,vPos.y);
 
         Bullet boolet;
+        boolet.owner = user;
+        boolet.parent = this;
         boolet.pos = muzzlePos;
         boolet.positions.push_back(boolet.pos);
         boolet.angle = math::angleBetweenVectors(muzzlePosV2f,vPosV2f);
+
+
+        boolet.targets = user->getEnemies();
+        /*
+        for(auto &i : nPV.ptrs)
+        {
+            i->img.setTexture(texturemanager.getTexture("Error.png"));
+        }
+        */
+
         //Vec3f velo((muzzlePos.x - vPos.x)/10,(muzzlePos.y - vPos.y)/10 );
         //boolet.velocity = velo;
 

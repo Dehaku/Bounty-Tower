@@ -538,6 +538,25 @@ void Npc::blankSkills()
     health = maxhealth;
 }
 
+npcPtrVector Npc::getEnemies()
+{
+    npcPtrVector enemyPtrs;
+    for (auto &enemys : *container)
+    {
+        if(enemys.faction != faction)
+        {
+            for (auto &i : factionPtr->factRelations)
+            {
+                if(enemys.faction == i.faction && i.appeal < 1000)
+                {
+                    enemyPtrs.ptrs.push_back(&enemys);
+                }
+            }
+        }
+    }
+    return enemyPtrs;
+}
+
 bool Npc::hasWeapon(std::string weapon)
 {
     bool specific = false;

@@ -25,7 +25,10 @@ std::set<int> npcTrace(int xa, int ya, int xb, int yb, int id,
                        std::set<int> exceptions);
 extern std::list<Npc> npclist;
 
-
+struct npcPtrVector
+{
+    std::vector<Npc*> ptrs;
+};
 
 class Npc
 {
@@ -262,6 +265,8 @@ public:
     Npc();
     void reCreateSkills();
     void blankSkills();
+    npcPtrVector getEnemies();
+    std::list<Npc> * container;
     bool hasWeapon(std::string weapon = "");
     Item *hasItem(std::string name);
     Item *getItemType(int type);
@@ -413,6 +418,8 @@ public:
 };
 
 extern std::list<Faction> uniFact;
+
+
 
 int factionMembers(std::string factionName);
 float factionAggression(std::string factionName);

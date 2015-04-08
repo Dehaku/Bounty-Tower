@@ -1767,6 +1767,8 @@ entityvectorpointercontainer entityTrace(Vec3 Ori, Vec3 Tar) /* TODO: Improve th
 void critterBrain(Npc &npc, std::list<Npc> &container)
 {
 
+    npc.container = &container;
+
     if(tiles[abs_to_index(npc.xpos/GRID_SIZE)][abs_to_index(npc.ypos/GRID_SIZE)][abs_to_index(npc.zpos/GRID_SIZE)].walkable == false)
     {
         //sf::Vector2f position(abs_to_index(npc.xpos/GRID_SIZE)*GRID_SIZE+10.5,abs_to_index(npc.ypos/GRID_SIZE)*GRID_SIZE+10.5);
