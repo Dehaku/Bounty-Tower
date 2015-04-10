@@ -1229,6 +1229,7 @@ void Npc::addItem(const std::string &itemname, int amount)
     }
     for (int Times = 0; Times != amount; Times++)
     {
+        var.id = gvars::globalid++;
         inventory.push_back(var);
     }
 }
