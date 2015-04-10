@@ -1530,10 +1530,10 @@ void NpcManager::initializeCritters()
             debug(stringFindChaos(line, "{Tags:", "}"));
             debug("^-Added Tags-^");
             critter.tags.append(stringFindChaos(line, "{Tags:", "}"));
-            std::set<std::string> items;
+            std::vector<std::string> items;
             std::string list;
             list.append(stringFindChaos(line, "{Items:", "}"));
-            items = stringFindSetChaos(list, "[", "]");
+            items = stringFindVectorChaos(list, "[", "]");
             for (auto item : items)
             {
 

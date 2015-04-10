@@ -266,6 +266,48 @@ std::set<std::string> stringFindSetChaos(std::string stringy, std::string term,
     return returns;
 }
 
+std::vector<std::string> stringFindVectorChaos(std::string stringy, std::string term,
+                                         std::string ending)
+{
+    std::vector<std::string> returns;
+    bool notDone = true;
+    // std::cout <<"Working With:" << Stringy << std::endl;
+    int goal = 0;
+    while (notDone)
+    {
+        notDone = false;
+        size_t tStart = stringy.find(term);
+        size_t tEnd;
+        std::string output;
+        tEnd = stringy.find(ending, tStart + 1);
+        if (tEnd != std::string::npos)
+        {
+            std::cout << tEnd << std::endl;
+            sf::sleep(sf::seconds(0.2));
+            int iLength = term.length();
+            output.assign(stringy, tStart + iLength, tEnd - (tStart + iLength));
+            returns.push_back(output);
+            stringy.replace((tStart + iLength) - 1,
+                            (tEnd - ((tStart)+iLength)) + 2, "");
+            std::cout << stringy << std::endl;
+            if (goal < 500)
+            {
+                notDone = true;
+            }
+            goal++;
+            //tStart = tEnd;
+        }
+        else
+        {
+        }
+    }
+    for (const auto &Return : returns)
+    {
+        std::cout << Return << std::endl;
+    }
+    return returns;
+}
+
 float percentIs(float value, float percentage)
 {
     // Divide the return by 100 for maths.

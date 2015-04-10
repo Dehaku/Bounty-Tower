@@ -1837,7 +1837,11 @@ void critterEquip(Npc &npc, std::list<Npc> &container)
         std::cout << "<Left Hand: " << npc.graspItemLeft->name << npc.graspItemLeft->id << std::endl;
     if(npc.graspItemRight != nullptr)
         std::cout << ">Right Hand: " << npc.graspItemRight->name << npc.graspItemRight->id  << std::endl;
-
+    for(auto &i : npc.inventory)
+    {
+        std::cout << i.name << i.id << ", ";
+    }
+    std::cout << std::endl;
 
 
 }
