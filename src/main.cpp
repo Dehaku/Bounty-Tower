@@ -1800,21 +1800,21 @@ void critterEquip(Npc &npc, std::list<Npc> &container)
         if(weapon == nullptr)
             return;
 
-        if(weapon->size <= 1)
-        {
-            if(npc.graspItemRight == nullptr)
-                npc.graspItemLeft = weapon;
-            else if(npc.graspItemRight != nullptr && npc.graspItemRight->id != weapon->id)
-                npc.graspItemLeft = weapon;
-
-        }
-        else if(weapon->size >= 2)
+        if(weapon->size >= 2)
         {
             if(npc.graspItemRight == nullptr && npc.graspNpcRight == nullptr)
             {
                 npc.graspItemLeft = weapon;
                 npc.graspItemRight = weapon;
             }
+        }
+        else if(weapon->size <= 1)
+        {
+            if(npc.graspItemRight == nullptr)
+                npc.graspItemLeft = weapon;
+            else if(npc.graspItemRight != nullptr && npc.graspItemRight->id != weapon->id)
+                npc.graspItemLeft = weapon;
+
         }
     }
     if(npc.graspItemRight == nullptr && npc.graspNpcRight == nullptr)
@@ -1831,17 +1831,13 @@ void critterEquip(Npc &npc, std::list<Npc> &container)
     }
 
 
-
+    /*
     std::cout << npc.name << npc.id << "\n";
     if(npc.graspItemLeft != nullptr)
         std::cout << "<Left Hand: " << npc.graspItemLeft->name << npc.graspItemLeft->id << std::endl;
     if(npc.graspItemRight != nullptr)
         std::cout << ">Right Hand: " << npc.graspItemRight->name << npc.graspItemRight->id  << std::endl;
-    for(auto &i : npc.inventory)
-    {
-        std::cout << i.name << i.id << ", ";
-    }
-    std::cout << std::endl;
+    */
 
 
 }
