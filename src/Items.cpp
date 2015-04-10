@@ -607,6 +607,9 @@ void ItemManager::initializeItems()
             item.massVeggy = stringFindNumber(line, "[MassVeggy:");
             item.massWater = stringFindNumber(line, "[MassWater:");
 
+            item.size = 0;
+            item.size = stringFindNumber(line, "[Size:");
+
             item.pickupable =
                 booleanize(stringFindNumber(line, "[Pickupable:"));
             item.type = stringFindNumber(line, "[type:");
