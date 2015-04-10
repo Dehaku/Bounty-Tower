@@ -1764,6 +1764,51 @@ entityvectorpointercontainer entityTrace(Vec3 Ori, Vec3 Tar) /* TODO: Improve th
     return EVPC;
 }
 
+
+
+void critterEquip(Npc &npc, std::list<Npc> &container)
+{
+    /*
+    itemPtrVector iPV;
+    npcPtrVector nPV;
+
+    for (auto &part : npc.graspers)
+    {
+        if(part.graspItem != nullptr)
+            iPV.ptrs.push_back(part.graspItem);
+        if(part.graspNpc != nullptr)
+            nPV.ptrs.push_back(part.graspNpc);
+    }
+    if(iPV.size() < 2)
+    {
+        for (auto &part : npc.graspers)
+        {
+            if(part.graspItem == nullptr)
+            {
+
+            }
+        }
+    }
+    */
+    if(npc.graspItemLeft == nullptr && npc.graspNpcLeft == nullptr)
+    {
+        Item * weapon = getItemType(npc.inventory,2);
+
+        //weapon = getItemType(2);
+        if(weapon == nullptr)
+            weapon = getItemType(npc.inventory,1);
+
+        if(weapon == nullptr)
+        {
+            std::cout << npc.name << "has no weapons. \n";
+        }
+
+    }
+
+
+
+}
+
 void critterBrain(Npc &npc, std::list<Npc> &container)
 {
 
@@ -1986,7 +2031,7 @@ void critterBrain(Npc &npc, std::list<Npc> &container)
 
     }
 
-
+    critterEquip(npc,container);
 
     // Method Two, Struct Desires
     struct Desire

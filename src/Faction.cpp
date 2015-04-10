@@ -328,6 +328,11 @@ Npc::Npc()
 
     factionPtr = nullptr;
 
+    graspItemLeft = nullptr;
+    graspItemRight = nullptr;
+    graspNpcLeft = nullptr;
+    graspNpcRight = nullptr;
+
     toDelete = false;
     viewangle = 180;
     viewrange = 200;
@@ -1407,6 +1412,15 @@ void NpcManager::addCritters()
     addedCritters.clear();
 }
 
+void initializeGraspers(Npc &critter)
+{
+    partGrasp pG;
+    pG.part = "Left Hand";
+    critter.graspers.push_back(pG);
+    pG.part = "Right Hand";
+    critter.graspers.push_back(pG);
+}
+
 void NpcManager::initializeCritters()
 {
 
@@ -1564,6 +1578,41 @@ void NpcManager::initializeCritters()
 
             // Critter Bodies
             {
+                if(critter.race == "BTHuman" || critter.race == "BTHalfCelestial")
+                {
+
+                    critter.body.bodyParts =
+                        "{[Name:UpperTorso][BloodPumpRate:100][AirCapacity:"
+                        "200][AirAbsorbtion:100][ObjectCapacity:1]["
+                        "MassFlesh:15:1000]}";
+                    critter.body.bodyParts.append(
+                        "{[Name:Head][Mind:true][MassFlesh:5:"
+                        "1000][Dependant:UpperTorso]}");
+                    critter.body.bodyParts.append(
+                        "{[Name:LowerTorso][ObjectCapacity:10]["
+                        "DigestionRate:125][NutritionExtraction:10]["
+                        "DigestsFlesh:60][DigestsVeggy:60][DigestsWater:"
+                        "100][MassFlesh:15:1000][Dependant:UpperTorso]}");
+
+                    critter.body.bodyParts.append("{[Name:Left "
+                                                  "Leg][Walk:3][MassFlesh:"
+                                                  "15:1000][Dependant:"
+                                                  "LowerTorso]}");
+                    critter.body.bodyParts.append("{[Name:Right "
+                                                  "Leg][Walk:3][MassFlesh:"
+                                                  "15:1000][Dependant:"
+                                                  "LowerTorso]}");
+
+                    critter.body.bodyParts.append("{[Name:Left "
+                                                  "Arm][Grasp:2][MassFlesh:"
+                                                  "10:1000][Dependant:"
+                                                  "UpperTorso]}");
+                    critter.body.bodyParts.append("{[Name:Right "
+                                                  "Arm][Grasp:2][MassFlesh:"
+                                                  "10:1000][Dependant:"
+                                                  "UpperTorso]}");
+
+                }
                 if (critter.race == "Human" || critter.race == "Zombie")
                 {
                     critter.body.bodyParts =
@@ -1652,6 +1701,10 @@ void NpcManager::initializeCritters()
                     //Critter.img.SetCenter(i->Image.GetWidth()/2,i->Image.GetHeight()/2);
                 }
             }
+
+            debug("Performing Grasper Initialization");
+            initializeGraspers(critter);
+
             if (critter.name != "Debuggery")
             {
                 globalCritter.push_back(critter);
@@ -2382,7 +2435,7 @@ void addMembers(int amount, std::string faction)
                 member = *getGlobalCritter("BTHuman");
                 member.faction = faction;
                 member.factionPtr = &fact;
-                member.xpos = ((GRIDS*GRID_SIZE)/2)+randz(-20,20);
+                member.xpos = ((GRIDS*GRID_SIZE)/2)+randz(-80,80);
                 member.ypos = ((GRIDS*GRID_SIZE)-100)+randz(-20,20);
                 member.zpos = (1*GRID_SIZE);
                 member.id = gvars::globalid++;

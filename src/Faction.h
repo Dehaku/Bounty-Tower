@@ -30,6 +30,18 @@ struct npcPtrVector
     std::vector<Npc*> ptrs;
 };
 
+struct partGrasp
+{
+    std::string part;
+    Item * graspItem;
+    Npc * graspNpc;
+    partGrasp()
+    {
+        graspItem = nullptr;
+        graspNpc = nullptr;
+    }
+};
+
 class Npc
 {
 public:
@@ -38,6 +50,11 @@ public:
     sf::Sprite img;
     std::list<Item> inventory;
     std::list<Item> equipped;
+
+    Npc * graspNpcLeft;
+    Npc * graspNpcRight;
+    Item * graspItemLeft;
+    Item * graspItemRight;
 
     std::vector<Tile *> storedPath;
 
@@ -97,6 +114,9 @@ public:
         int leftfoot;      // lf
     };
     BodyDefinition body;
+
+    std::list<partGrasp> graspers;
+
 
     float rot;
     float xxx;

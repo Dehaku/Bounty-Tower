@@ -19,6 +19,7 @@ public:
     sf::Sprite img;
     int id;
     int cbaseid;
+    int size;
     std::string name;
     std::string inventor;
     std::string contains;
