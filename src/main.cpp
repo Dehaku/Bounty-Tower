@@ -2055,7 +2055,7 @@ void critterBrain(Npc &npc, std::list<Npc> &container)
 
         }
 
-        if(closEnmy != nullptr && inputState.key[Key::LAlt])
+        if(closEnmy != nullptr && inputState.key[Key::LAlt] && true == false)
         {
             effects.createLine(npc.xpos,npc.ypos,closEnmy->xpos,closEnmy->ypos,4,sf::Color::Red);
             //hasPath = true;
@@ -2525,7 +2525,7 @@ ReDesire:
         }
         Item * rangewep = npc.getItemType(2);
         Item * meleewep = npc.getItemType(1);
-        if(inputState.key[Key::LAlt])
+        if(inputState.key[Key::LAlt] && true == false)
         {
             //rangewep->getRange();
             if(rangewep != nullptr)

@@ -2837,10 +2837,98 @@ void drawSelectedCritterHUD()
         CIH.setTexture(texturemanager.getTexture("CritterInventoryHud.png"));
         CIH.setPosition(Center);
 
-
-
-
         window.draw(CIH);
+        itemPtrVector iPV;
+        for (auto &i : myTargetPtr->inventory)
+        {
+            iPV.ptrs.push_back(&i);
+        }
+        for (int i = 0; i != iPV.ptrs.size(); i++)
+        {
+
+            sf::Vector2f vPos;
+            //Left slots
+            if(i == 1)
+                vPos = sf::Vector2f(548, 674); // 764?
+            if(i == 3)
+                vPos = sf::Vector2f(485, 674);
+            if(i == 5)
+                vPos = sf::Vector2f(422, 674);
+            if(i == 7)
+                vPos = sf::Vector2f(359, 674);
+            if(i == 9)
+                vPos = sf::Vector2f(296, 674);
+            if(i == 11)
+                vPos = sf::Vector2f(233, 674);
+            if(i == 13)
+                vPos = sf::Vector2f(170, 674);
+            if(i == 15)
+                vPos = sf::Vector2f(107, 674);
+            if(i == 17)
+                vPos = sf::Vector2f(44, 674);
+
+
+            // Right slots
+            if(i == 2)
+                vPos = sf::Vector2f(730, 674);
+            if(i == 4)
+                vPos = sf::Vector2f(793, 674);
+            if(i == 6)
+                vPos = sf::Vector2f(858, 674);
+            if(i == 8)
+                vPos = sf::Vector2f(919, 674);
+            if(i == 10)
+                vPos = sf::Vector2f(982, 674);
+            if(i == 12)
+                vPos = sf::Vector2f(1045, 674);
+            if(i == 14)
+                vPos = sf::Vector2f(1108, 674);
+            if(i == 16)
+                vPos = sf::Vector2f(1171, 674);
+            if(i == 18)
+                vPos = sf::Vector2f(1234, 674);
+
+            // Center slots
+            //if(i == 19)
+            //    vPos = sf::Vector2f(608,657);
+            //if(i == 20)
+            //    vPos = sf::Vector2f(670,657);
+
+            sf::Sprite SP;
+
+            sf::Vector2u TexySize = (*iPV.ptrs[i]->img.getTexture()).getSize();
+            SP.setTexture(*iPV.ptrs[i]->img.getTexture());
+            sf::Vector2f rPos(gvars::topLeft.x + vPos.x, gvars::topLeft.y + vPos.y);
+            SP.setPosition(rPos);
+            SP.setOrigin(TexySize.x/2,TexySize.y/2);
+            window.draw(SP);
+            //Item.img;
+
+
+        }
+        if(myTargetPtr->graspItemLeft != nullptr)
+        {
+            sf::Sprite SP;
+            sf::Vector2u TexySize = (*myTargetPtr->graspItemLeft->img.getTexture()).getSize();
+            SP.setTexture(*myTargetPtr->graspItemLeft->img.getTexture());
+            sf::Vector2f vPos(608,657);
+            sf::Vector2f rPos(gvars::topLeft.x + vPos.x, gvars::topLeft.y + vPos.y);
+            SP.setPosition(rPos);
+            SP.setOrigin(TexySize.x/2,TexySize.y/2);
+            window.draw(SP);
+        }
+        if(myTargetPtr->graspItemRight != nullptr)
+        {
+            sf::Sprite SP;
+            sf::Vector2u TexySize = (*myTargetPtr->graspItemRight->img.getTexture()).getSize();
+            SP.setTexture(*myTargetPtr->graspItemRight->img.getTexture());
+            sf::Vector2f vPos(670,657);
+            sf::Vector2f rPos(gvars::topLeft.x + vPos.x, gvars::topLeft.y + vPos.y);
+            SP.setPosition(rPos);
+            SP.setOrigin(TexySize.x/2,TexySize.y/2);
+            window.draw(SP);
+        }
+
     }
 }
 
