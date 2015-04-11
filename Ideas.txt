@@ -10,3 +10,7 @@ Workshops produce various waste types
 Workshops will need to be upgradable in various ways
 Workshops will be critter powered at low tech, Later upgrades will allow it to automate production with various power inputs
 Perhaps have robits or other forms of mechanical means to transfer items from buildings?
+
+Immovable Object Power Generator
+	This material, when supplied with a power connection, locks it's position with the nearest celestial body, All momentum(damage)
+	applied to it is then sent along the power lines as direct power, can be used for charging batteries.

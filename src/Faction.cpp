@@ -2824,6 +2824,24 @@ void drawSelectedCritterHUD()
                         "Blood: " + myTargetPtr->bloodcontent);
         }
     }
+
+    if(myTargetPtr != nullptr && bountytower::bountytower)
+    {
+        //sf::Vector2f Center = gvars::view1.getCenter();
+        sf::Vector2f Center = gvars::centerScreen;
+        //createImageButton(Center,texturemanager.getTexture("CritterInventoryHud.png"),"",0);
+        sf::Sprite CIH;
+        sf::Texture Tex;
+        sf::Vector2u TexSize = texturemanager.getTexture("CritterInventoryHud.png").getSize();
+        CIH.setOrigin(TexSize.x/2,TexSize.y/2);
+        CIH.setTexture(texturemanager.getTexture("CritterInventoryHud.png"));
+        CIH.setPosition(Center);
+
+
+
+
+        window.draw(CIH);
+    }
 }
 
 void runCritterBody(Npc &npc)
