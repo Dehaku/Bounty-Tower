@@ -26,8 +26,65 @@ namespace mutex
     sf::Mutex itemList;
 }
 
+void assignSlotPos()
+{
+    for( int i = 0; i != 20; i++)
+    {
+        sf::Vector2f vPos;
+            //Left slots
+            if(i == 0)
+                vPos = sf::Vector2f(608,657);
+            if(i == 1)
+                vPos = sf::Vector2f(670,657);
+
+            if(i == 2)
+                vPos = sf::Vector2f(548, 674); // 764?
+            if(i == 4)
+                vPos = sf::Vector2f(485, 674);
+            if(i == 6)
+                vPos = sf::Vector2f(422, 674);
+            if(i == 8)
+                vPos = sf::Vector2f(359, 674);
+            if(i == 10)
+                vPos = sf::Vector2f(296, 674);
+            if(i == 12)
+                vPos = sf::Vector2f(233, 674);
+            if(i == 14)
+                vPos = sf::Vector2f(170, 674);
+            if(i == 16)
+                vPos = sf::Vector2f(107, 674);
+            if(i == 18)
+                vPos = sf::Vector2f(44, 674);
+
+
+            // Right slots
+            if(i == 3)
+                vPos = sf::Vector2f(730, 674);
+            if(i == 5)
+                vPos = sf::Vector2f(793, 674);
+            if(i == 7)
+                vPos = sf::Vector2f(858, 674);
+            if(i == 9)
+                vPos = sf::Vector2f(919, 674);
+            if(i == 11)
+                vPos = sf::Vector2f(982, 674);
+            if(i == 13)
+                vPos = sf::Vector2f(1045, 674);
+            if(i == 15)
+                vPos = sf::Vector2f(1108, 674);
+            if(i == 17)
+                vPos = sf::Vector2f(1171, 674);
+            if(i == 19)
+                vPos = sf::Vector2f(1234, 674);
+        gvars::slotPos.push_back(vPos);
+    }
+
+}
+
 namespace gvars
 {
+bool hovering = false;
+std::vector<sf::Vector2f> slotPos;
 std::string version = "0.0.1.0";
 unsigned int framesPassed = 0;
 bool debug = false;

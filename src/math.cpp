@@ -2,6 +2,11 @@
 
 #include "util.h"
 
+int math::closeish(sf::Vector2f ori, sf::Vector2f tar)
+{
+    return sqrt(pow((tar.x - ori.x), 2) + pow((tar.y - ori.y), 2));
+}
+
 int math::closeish(int orix, int oriy, int tarx, int tary)
 {
     return sqrt(pow((tarx - orix), 2) + pow((tary - oriy), 2));

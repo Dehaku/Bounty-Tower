@@ -12,6 +12,8 @@
 
 extern sf::RenderWindow window;
 
+Item * mouseItem = nullptr;
+
 std::list<Item> worlditems;
 ItemManager itemmanager;
 
@@ -507,6 +509,7 @@ Item::Item()
     toDelete = false;
     targetPos = sf::Vector2f(-1, -1);
     id = gvars::globalid++;
+    slotted = false;
     name = "";
     weight = 0;
     value = 0;

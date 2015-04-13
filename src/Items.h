@@ -16,6 +16,7 @@ public:
     std::list<Item> internalitems;
     bool toDelete;
     bool pickupable;
+    bool slotted;
     sf::Sprite img;
     int id;
     int cbaseid;
@@ -124,6 +125,8 @@ public:
     bool trigger();
     Item();
 };
+
+extern Item * mouseItem;
 
 Item *getGlobalItem(std::string strtype);
 

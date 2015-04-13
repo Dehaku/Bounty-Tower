@@ -11,6 +11,7 @@
 #include "Networking.h"
 #include "menus.h"
 
+
 #include <list>
 #include <set>
 
@@ -19,6 +20,7 @@
 class Faction;
 
 extern Faction *conFact;
+extern Npc * mouseNPC;
 
 class Npc;
 std::set<int> npcTrace(int xa, int ya, int xb, int yb, int id,
@@ -55,6 +57,8 @@ public:
     Npc * graspNpcRight;
     Item * graspItemLeft;
     Item * graspItemRight;
+
+    Item * invSlots[20];
 
     std::vector<Tile *> storedPath;
 

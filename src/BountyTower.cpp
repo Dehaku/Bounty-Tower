@@ -10,6 +10,7 @@ template <typename T> T &listAt(std::list<T> &list, size_t index)
 
 void bountyTowerSetup()
 {
+    assignSlotPos();
     gCtrl.phase = "Lobby";
     window.setFramerateLimit(30); // 0 is unlimited
     //UnyTiles.makeTest();
@@ -60,6 +61,7 @@ void bountyTowerSetup()
 void bountyTowerLoop()
 {
     cameraControls();
+
     int mouseX = gvars::mousePos.x, mouseY = gvars::mousePos.y;
     std::string stringy = std::to_string(mouseX) + "/" + std::to_string(mouseY) + "(" + std::to_string(gvars::currentz) + ")";
     //textList.createText(gvars::mousePos.x,gvars::mousePos.y,15,sf::Color::Cyan,stringy);

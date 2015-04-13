@@ -31,6 +31,8 @@ extern sf::RenderWindow window;
 
 Npc * myTargetPtr = nullptr;
 
+Npc * mouseNPC = nullptr;
+
 void Npc::BodyDefinition::bodyPartFind(std::string part, int amount)
 {
 
@@ -332,6 +334,11 @@ Npc::Npc()
     graspItemRight = nullptr;
     graspNpcLeft = nullptr;
     graspNpcRight = nullptr;
+
+    for (int i = 0; i != 20; i++)
+    {
+        invSlots[i] = nullptr;
+    }
 
     toDelete = false;
     viewangle = 180;
@@ -2685,6 +2692,10 @@ void drawInventory(sf::Vector2f vPos, std::list<Item> &inventory)
         }
 }
 
+
+
+
+
 void drawSelectedCritterHUD()
 {
     if (gvars::myTarget != -1 && myTargetPtr != nullptr)
@@ -2843,6 +2854,30 @@ void drawSelectedCritterHUD()
         {
             iPV.ptrs.push_back(&i);
         }
+
+        for (int i = 0; i != 20; i++)
+        {
+            sf::Vector2f vPos = gvars::slotPos[i];
+
+
+            if(myTargetPtr->invSlots[i] != nullptr)
+            {
+                sf::Sprite SP;
+                //myTargetPtr->invSlots[i]->img.getTexture()->getSize();
+
+                //myTargetPtr->invSlots[i].img.getTexture().getSize();
+                //sf::Vector2u TexySize = (myTargetPtr->invSlots[i]->img.getTexture()).getSize();
+                sf::Vector2u TexySize = myTargetPtr->invSlots[i]->img.getTexture()->getSize();
+                SP.setTexture(*myTargetPtr->invSlots[i]->img.getTexture());
+                sf::Vector2f rPos(gvars::topLeft.x + vPos.x, gvars::topLeft.y + vPos.y);
+                SP.setPosition(rPos);
+                SP.setOrigin(TexySize.x/2,TexySize.y/2);
+                window.draw(SP);
+            }
+
+
+        }
+
         for (int i = 0; i != iPV.ptrs.size(); i++)
         {
 
@@ -2901,11 +2936,12 @@ void drawSelectedCritterHUD()
             sf::Vector2f rPos(gvars::topLeft.x + vPos.x, gvars::topLeft.y + vPos.y);
             SP.setPosition(rPos);
             SP.setOrigin(TexySize.x/2,TexySize.y/2);
-            window.draw(SP);
+            //window.draw(SP);
             //Item.img;
 
 
         }
+        /*
         if(myTargetPtr->graspItemLeft != nullptr)
         {
             sf::Sprite SP;
@@ -2928,6 +2964,7 @@ void drawSelectedCritterHUD()
             SP.setOrigin(TexySize.x/2,TexySize.y/2);
             window.draw(SP);
         }
+        */
 
     }
 }
