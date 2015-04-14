@@ -2838,6 +2838,47 @@ void drawSelectedCritterHUD()
 
     if(myTargetPtr != nullptr && bountytower::bountytower)
     {
+        sf::View view = window.getDefaultView();
+        //view.zoom(0.5f);
+        window.setView(view);
+
+        // restore the default view
+        window.setView(window.getDefaultView());
+
+        sf::Sprite CIH;
+        sf::Texture Tex;
+        sf::Vector2u TexSize = texturemanager.getTexture("CritterInventoryHud.png").getSize();
+        //CIH.setOrigin(TexSize.x/2,TexSize.y/2);
+        CIH.setTexture(texturemanager.getTexture("CritterInventoryHud.png"));
+        CIH.setPosition(0,0);
+
+        window.draw(CIH);
+
+        for (int i = 0; i != 20; i++)
+        {
+            sf::Vector2f vPos = gvars::slotPos[i];
+
+
+            if(myTargetPtr->invSlots[i] != nullptr)
+            {
+                sf::Sprite SP;
+                sf::Vector2u TexySize = myTargetPtr->invSlots[i]->img.getTexture()->getSize();
+                SP.setTexture(*myTargetPtr->invSlots[i]->img.getTexture());
+                //sf::Vector2f rPos(gvars::topLeft.x + vPos.x, gvars::topLeft.y + vPos.y);
+                SP.setPosition(vPos);
+                SP.setOrigin(TexySize.x/2,TexySize.y/2);
+                window.draw(SP);
+            }
+
+
+        }
+
+        window.setView(gvars::view1);
+
+        /*
+
+
+
         //sf::Vector2f Center = gvars::view1.getCenter();
         sf::Vector2f Center = gvars::centerScreen;
         //createImageButton(Center,texturemanager.getTexture("CritterInventoryHud.png"),"",0);
@@ -2941,6 +2982,7 @@ void drawSelectedCritterHUD()
 
 
         }
+        */
         /*
         if(myTargetPtr->graspItemLeft != nullptr)
         {
@@ -2965,6 +3007,7 @@ void drawSelectedCritterHUD()
             window.draw(SP);
         }
         */
+
 
     }
 }

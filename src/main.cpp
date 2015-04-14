@@ -2843,17 +2843,34 @@ void displayMouseItem()
 
 void hoverItemHUD()
 {
+    window.setView(window.getDefaultView());
+    sf::Vector2i pixelPosi = sf::Mouse::getPosition(window);
+    sf::Vector2f pixelPos(pixelPosi.x,pixelPosi.y);
+    //std::cout << "pixelPos: " << pixelPos.x << ":" << pixelPos.y << std::endl;
+
+    sf::Sprite SP;
+    //sf::Vector2u TexySize = myTargetPtr->invSlots[i]->img.getTexture()->getSize();
+    SP.setTexture(texturemanager.getTexture("Food.png"));
+
+    SP.setPosition(pixelPos);
+    //SP.setOrigin(TexySize.x/2,TexySize.y/2);
+    window.draw(SP);
+
     if(myTargetPtr != nullptr)
         for (int i = 0; i != 20; i++)
     {
-        sf::Vector2f rPos(gvars::topLeft.x + gvars::slotPos[i].x, gvars::topLeft.y + gvars::slotPos[i].y);
-        if(math::closeish(gvars::mousePos,rPos) <= 20)
+
+        sf::Vector2f vPos(gvars::slotPos[i]);
+        //sf::Vector2f rPos(gvars::topLeft.x + gvars::slotPos[i].x, gvars::topLeft.y + gvars::slotPos[i].y);
+        if(math::closeish(pixelPos,vPos) <= 20)
         {
             //std::cout << "Success! on: " << i << std::endl;
             if(myTargetPtr->invSlots[i] != nullptr)
             {
 
+                //window.setView(gvars::view1);
                 textList.createText(gvars::mousePos.x,gvars::mousePos.y-15,15,sf::Color::Cyan,myTargetPtr->invSlots[i]->name);
+                //window.setView(window.getDefaultView());
                 if(inputState.lmb)
                 {
                     //std::cout << "Clicked on " << myTargetPtr->invSlots[i]->name << std::endl;
@@ -2863,6 +2880,7 @@ void hoverItemHUD()
             }
         }
     }
+    window.setView(gvars::view1);
 }
 
 void drawStuffs()
