@@ -1453,6 +1453,8 @@ void NpcManager::initializeCritters()
             std::string line;
             getline(input, line);
             Npc critter;
+            critter.faction = "";
+            critter.factionPtr = nullptr;
             critter.name = "Debuggery";
 
             //hungerrate = 1; // TODO: Should these be modded? Or only effected by Diseases/Bionics ect.

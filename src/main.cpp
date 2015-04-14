@@ -2067,7 +2067,7 @@ void critterBrain(Npc &npc, std::list<Npc> &container)
     {
         for (auto &enemys : container)
         {
-            if(enemys.faction != npc.faction)
+            if( enemys.factionPtr != nullptr && npc.factionPtr != nullptr && enemys.faction != npc.faction)
             {
                 for (auto &i : npc.factionPtr->factRelations)
                 {
@@ -2856,7 +2856,7 @@ void hoverItemHUD()
     //SP.setOrigin(TexySize.x/2,TexySize.y/2);
     window.draw(SP);
 
-    if(myTargetPtr != nullptr)
+    if(myTargetPtr != nullptr && bountytower::bountytower)
         for (int i = 0; i != 20; i++)
     {
 
@@ -5100,7 +5100,7 @@ int main()
 
 
     galaxySetup();
-    bountyTowerSetup();
+    //bountyTowerSetup();
 
     window.create(sf::VideoMode(RESOLUTION.x, RESOLUTION.y, 32), randomWindowName());
     window.setVerticalSyncEnabled(true);
