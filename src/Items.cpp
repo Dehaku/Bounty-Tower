@@ -12,6 +12,8 @@
 
 extern sf::RenderWindow window;
 
+Item * mouseItem = nullptr;
+
 std::list<Item> worlditems;
 ItemManager itemmanager;
 
@@ -482,6 +484,22 @@ void Item::printConsoleInfo()
     cout << "Ypos: " << ypos << endl;
 }
 
+int Item::getRange()
+{
+    debug(name + " getRange()");
+    int returns = range;
+    if(type == 2)
+    {
+        Item * itemptr = getItemType(internalitems,3);
+        if(itemptr == nullptr)
+            returns += 0;
+        else
+            returns += itemptr->range;
+    }
+    debug(name + " getRange() done");
+    return returns;
+}
+
 Item::Item()
     : cbaseid{}, range{}, xpos{}, ypos{}, zpos{30*20}, rxpos{}, rypos{}, gxpos{},
       gypos{}, imgstrx{}, imgstry{}, imgendx{}, imgendy{}, isWeapon{},
@@ -491,6 +509,7 @@ Item::Item()
     toDelete = false;
     targetPos = sf::Vector2f(-1, -1);
     id = gvars::globalid++;
+    slotted = false;
     name = "";
     weight = 0;
     value = 0;
@@ -591,6 +610,9 @@ void ItemManager::initializeItems()
             item.massVeggy = stringFindNumber(line, "[MassVeggy:");
             item.massWater = stringFindNumber(line, "[MassWater:");
 
+            item.size = 0;
+            item.size = stringFindNumber(line, "[Size:");
+
             item.pickupable =
                 booleanize(stringFindNumber(line, "[Pickupable:"));
             item.type = stringFindNumber(line, "[type:");
@@ -601,6 +623,9 @@ void ItemManager::initializeItems()
             item.mindam = stringFindNumber(line, "[mindam:");
             item.maxdam = stringFindNumber(line, "[maxdam:");
             item.range = stringFindNumber(line, "[range:");
+            item.activaterate = 0 ; //stringFindNumber(line, "[range:");
+            item.activaterategrowth = stringFindNumber(line, "[activaterategrowth:");
+            item.activateratemax = stringFindNumber(line, "[activateratemax:");
             item.isWeapon = booleanize(stringFindNumber(line, "[IsWeapon:"));
             std::string imagery = stringFindString(line, "[image:");
             for (auto const &image : texturemanager.textures)
@@ -753,6 +778,7 @@ itemPtrVector makeItems(std::list<Item> &items, int maxamount)
         int globalItem = randz(0,itemmanager.globalItems.size()-1);
         item = itemmanager.globalItems[globalItem];
         item.maxdam = randz(3,9);
+        item.id = gvars::globalid++;
         items.push_back(item);
         IPV.ptrs.push_back(&items.back());
     }
@@ -827,13 +853,30 @@ itemPtrVector randomEquipment(std::list<Item> &inventory)
 
 std::string Item::activate(Vec3f vPos) // Returns a string declaring the problem.
 {
+    if(type == 1)
+    {
+        if(user == nullptr)
+            return "No Owner";
+
+        Vec3f muzzlePos(user->xpos,user->ypos,user->zpos);
+        sf::Vector2f muzzlePosV2f(muzzlePos.x,muzzlePos.y);
+        sf::Vector2f vPosV2f(vPos.x,vPos.y);
+        int rot = math::angleBetweenVectors(muzzlePosV2f,vPosV2f);
+
+
+
+        createImageButton(math::angleCalc(muzzlePosV2f,rot,60),texturemanager.getTexture("BTSword.png"),"", rot+90);
+
+        soundmanager.playSound("Swing_xxchr0nosxx_1.ogg");
+    }
+
     if(type == 2)
     {
         if(user == nullptr)
             return "No Owner";
 
         Item * itemptr = getItemType(internalitems,3);
-        if(itemptr == nullptr)
+        if(itemptr == nullptr || itemptr->amount <= 0)
             return "No Ammo";
 
         Vec3f muzzlePos(user->xpos,user->ypos,user->zpos);
@@ -841,9 +884,21 @@ std::string Item::activate(Vec3f vPos) // Returns a string declaring the problem
         sf::Vector2f vPosV2f(vPos.x,vPos.y);
 
         Bullet boolet;
+        boolet.owner = user;
+        boolet.parent = this;
         boolet.pos = muzzlePos;
         boolet.positions.push_back(boolet.pos);
         boolet.angle = math::angleBetweenVectors(muzzlePosV2f,vPosV2f);
+
+
+        boolet.targets = user->getEnemies();
+        /*
+        for(auto &i : nPV.ptrs)
+        {
+            i->img.setTexture(texturemanager.getTexture("Error.png"));
+        }
+        */
+
         //Vec3f velo((muzzlePos.x - vPos.x)/10,(muzzlePos.y - vPos.y)/10 );
         //boolet.velocity = velo;
 
@@ -851,6 +906,11 @@ std::string Item::activate(Vec3f vPos) // Returns a string declaring the problem
         boolet.speed = 60;
         boolet.lifetime = 600;
         bullets.push_back(boolet);
+        itemptr->amount--;
+        //std::cout << itemptr->name << "'s amount: " << itemptr->amount << ", toDelete: " << itemptr->toDelete << std::endl;
+        if(itemptr->amount <= 0)
+            itemptr->toDelete = true;
+        //std::cout << itemptr->name << "'s amount: " << itemptr->amount << ", toDelete: " << itemptr->toDelete << std::endl;
         int ranNum = randz(1,4);
         if(ranNum == 1)
             soundmanager.playSound("m16_lensflare_1.ogg");
@@ -863,6 +923,18 @@ std::string Item::activate(Vec3f vPos) // Returns a string declaring the problem
         return "Success";
     }
     return "Failed";
+}
+
+bool Item::trigger() // Processes activation time, if activation time is ready/reset, returns true, else, returns false.
+{
+    activaterate += activaterategrowth;
+    if(activaterate >= activateratemax)
+    {
+        activaterate -= activateratemax;
+        // TODO: Change this to return the amount of times activaterate surpasses the max for increased spamming goodness.
+        return true;
+    }
+    return false;
 }
 
 

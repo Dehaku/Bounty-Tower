@@ -91,7 +91,7 @@ int createButton(sf::Vector2f vPos, int iSize, sf::Color color,
 
 int createSquareButton(sf::Vector2f vPos, int iSizex, int iSizey,
                        sf::Color color, std::string text = "");
-int createImageButton(sf::Vector2f vPos, sf::Texture &Tex, std::string text = "");
+int createImageButton(sf::Vector2f vPos, sf::Texture &Tex, std::string text = "", int rotation = 0);
 
 
 bool buttonClicked(int id);

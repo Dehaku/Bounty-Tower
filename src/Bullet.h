@@ -23,6 +23,8 @@ public:
     bool showPath;
     Npc * owner;
     Item * parent;
+    npcPtrVector targets;
+    npcPtrVector targetsHit;
 
     void moveBullet();
 

@@ -48,6 +48,7 @@ template <typename T> T &AnyDeletes(std::vector<T> &list)
 
     //auto it = list.begin();
     //std::advance(it, index);
+    /*
     for (auto &listings : list)
     {
         if(listings.toDelete)
@@ -55,6 +56,63 @@ template <typename T> T &AnyDeletes(std::vector<T> &list)
             std::cout << "To be deleted! \n";
         }
     }
+    */
+    bool done = false;
+    while (done == false)
+    {
+        bool yet = false;
+        for (auto it = list.begin(); it != list.end(); ++it)
+        {
+            if (it->toDelete)
+            {
+                list.erase(it);
+                yet = true;
+                break;
+            }
+        }
+        if (yet == false)
+        {
+            done = true;
+        }
+    }
+
+    //return;
+}
+
+template <typename T> T &AnyDeletes(std::list<T> &list)
+{ // Oh my goodness, I freakkin love templates, I'll need to redesign a few things to incorporate this functionality.
+
+    //auto it = list.begin();
+    //std::advance(it, index);
+    /*
+    for (auto &listings : list)
+    {
+        if(listings.toDelete)
+        {
+            std::cout << "To be deleted! \n";
+        }
+    }
+    */
+    bool done = false;
+    while (done == false)
+    {
+        bool yet = false;
+        for (auto it = list.begin(); it != list.end(); ++it)
+        {
+            //std::cout << it->name << ",'s toDelete: " << it->toDelete << std::endl;
+            if (it->toDelete)
+            {
+                list.erase(it);
+                yet = true;
+                break;
+            }
+        }
+        if (yet == false)
+        {
+            done = true;
+        }
+    }
+
     //return;
 }
 
@@ -1706,8 +1764,129 @@ entityvectorpointercontainer entityTrace(Vec3 Ori, Vec3 Tar) /* TODO: Improve th
     return EVPC;
 }
 
+
+
+void critterEquip(Npc &npc, std::list<Npc> &container)
+{
+    /*
+    itemPtrVector iPV;
+    npcPtrVector nPV;
+
+    for (auto &part : npc.graspers)
+    {
+        if(part.graspItem != nullptr)
+            iPV.ptrs.push_back(part.graspItem);
+        if(part.graspNpc != nullptr)
+            nPV.ptrs.push_back(part.graspNpc);
+    }
+    if(iPV.size() < 2)
+    {
+        for (auto &part : npc.graspers)
+        {
+            if(part.graspItem == nullptr)
+            {
+
+            }
+        }
+    }
+    */
+
+
+    for (int i = 0; i != 20; i++)
+    {
+        if(npc.invSlots[i] == nullptr)
+        {
+            for (auto &item : npc.inventory)
+            {
+                //std::cout << item.name << ", " << item.slotted << ": ";
+                if(item.slotted == false)
+                {
+                    npc.invSlots[i] = &item;
+                    npc.invSlots[i]->slotted = true;
+                    break;
+                    //std::cout << npc.invSlots[i]->name << npc.invSlots[i]->slotted;
+                }
+                //std::cout << std::endl;
+            }
+        }
+
+    }
+    if(inputState.key[Key::I].time == 1)
+    {
+        std::cout << npc.name << "'s inventory; \n";
+        for (int i = 0; i != 20; i++)
+        {
+            //std::cout << i << ", " << (npc.invSlots[i] != nullptr) << std::endl;
+            if(npc.invSlots[i] != nullptr)
+            {
+                //std::cout << "...que? \n";
+                std::cout << i << ": " << npc.invSlots[i]->name << std::endl;
+            }
+
+        }
+    }
+
+
+    if(npc.graspItemLeft == nullptr && npc.graspNpcLeft == nullptr)
+    {
+        Item * weapon = getItemType(npc.inventory,2);
+
+        if(weapon == nullptr)
+            weapon = getItemType(npc.inventory,1);
+
+        if(weapon == nullptr)
+            return;
+
+        if(weapon->size >= 2)
+        {
+            if(npc.graspItemRight == nullptr && npc.graspNpcRight == nullptr)
+            {
+                npc.graspItemLeft = weapon;
+                npc.graspItemRight = weapon;
+            }
+        }
+        else if(weapon->size <= 1)
+        {
+            if(npc.graspItemRight == nullptr)
+                npc.graspItemLeft = weapon;
+            else if(npc.graspItemRight != nullptr && npc.graspItemRight->id != weapon->id)
+                npc.graspItemLeft = weapon;
+
+        }
+    }
+    if(npc.graspItemRight == nullptr && npc.graspNpcRight == nullptr)
+    {
+        Item * weapon = nullptr;
+        for (auto &item : npc.inventory)
+        {
+            if( (item.type == 1 || item.type == 2) && item.size <= 1 )
+            {
+                if(npc.graspItemLeft == nullptr || npc.graspItemLeft->id != item.id)
+                    npc.graspItemRight = &item;
+            }
+        }
+    }
+
+
+
+    /*
+    std::cout << npc.name << npc.id << "\n";
+    if(npc.graspItemLeft != nullptr)
+        std::cout << "<Left Hand: " << npc.graspItemLeft->name << npc.graspItemLeft->id << std::endl;
+    if(npc.graspItemRight != nullptr)
+        std::cout << ">Right Hand: " << npc.graspItemRight->name << npc.graspItemRight->id  << std::endl;
+    */
+
+
+}
+
 void critterBrain(Npc &npc, std::list<Npc> &container)
 {
+
+    if(!npc.alive)
+        return;
+
+    npc.container = &container;
 
     if(tiles[abs_to_index(npc.xpos/GRID_SIZE)][abs_to_index(npc.ypos/GRID_SIZE)][abs_to_index(npc.zpos/GRID_SIZE)].walkable == false)
     {
@@ -1725,7 +1904,7 @@ void critterBrain(Npc &npc, std::list<Npc> &container)
 
 
     int alph = 255;
-    npc.img.setColor(sf::Color(255, 255, 255, alph));
+    //npc.img.setColor(sf::Color(255, 255, 255, alph));
     npc.img.setScale(gvars::scalex, gvars::scaley);
     npc.img.setOrigin(npc.img.getTextureRect().width / 2,
     npc.img.getTextureRect().height / 2);
@@ -1888,11 +2067,11 @@ void critterBrain(Npc &npc, std::list<Npc> &container)
     {
         for (auto &enemys : container)
         {
-            if(enemys.faction != npc.faction)
+            if( enemys.factionPtr != nullptr && npc.factionPtr != nullptr && enemys.faction != npc.faction)
             {
                 for (auto &i : npc.factionPtr->factRelations)
                 {
-                    if(enemys.faction == i.faction && i.appeal < 1000)
+                    if(enemys.faction == i.faction && i.appeal < 1000 && enemys.alive)
                     {
                         //std::cout << "ZE ENEMY HAS BEEN SPOTTED AT " << enemys.xpos << "/" << enemys.ypos << std::endl;
                         enemyPtrs.push_back(&enemys);
@@ -1914,7 +2093,7 @@ void critterBrain(Npc &npc, std::list<Npc> &container)
 
         }
 
-        if(closEnmy != nullptr && inputState.key[Key::LAlt])
+        if(closEnmy != nullptr && inputState.key[Key::LAlt] && true == false)
         {
             effects.createLine(npc.xpos,npc.ypos,closEnmy->xpos,closEnmy->ypos,4,sf::Color::Red);
             //hasPath = true;
@@ -1923,7 +2102,7 @@ void critterBrain(Npc &npc, std::list<Npc> &container)
 
     }
 
-
+    critterEquip(npc,container);
 
     // Method Two, Struct Desires
     struct Desire
@@ -1980,7 +2159,7 @@ void critterBrain(Npc &npc, std::list<Npc> &container)
         newDesire.type = "Assault";
         newDesire.potency = 0;
         if(bountytower::towerlingassault && npc.faction == "Towerlings")
-            newDesire.potency = 1000;
+            newDesire.potency = 700;
 
 
 
@@ -2384,28 +2563,31 @@ ReDesire:
         }
         Item * rangewep = npc.getItemType(2);
         Item * meleewep = npc.getItemType(1);
-        if(inputState.key[Key::LAlt])
+        if(inputState.key[Key::LAlt] && true == false)
         {
+            //rangewep->getRange();
             if(rangewep != nullptr)
-                effects.createCircle(npc.xpos,npc.ypos,rangewep->range,sf::Color(255,0,0,50),2,sf::Color::Red);
+                effects.createCircle(npc.xpos,npc.ypos,rangewep->getRange(),sf::Color(255,0,0,50),2,sf::Color::Red);
             if(meleewep != nullptr)
-                effects.createCircle(npc.xpos,npc.ypos,meleewep->range,sf::Color(0,0,255,50),2,sf::Color::Blue);
+                effects.createCircle(npc.xpos,npc.ypos,meleewep->getRange(),sf::Color(0,0,255,50),2,sf::Color::Blue);
         }
         bool withinRange = false;
         if(rangewep != nullptr)
         {
-            withinRange = (math::closeish(npc.xpos,npc.ypos,closEnmy->xpos,closEnmy->ypos) <= rangewep->range);
+            withinRange = (math::closeish(npc.xpos,npc.ypos,closEnmy->xpos,closEnmy->ypos) <= rangewep->getRange());
+            if(getItemType(rangewep->internalitems,3) == nullptr)
+                withinRange = false;
             if(withinRange)
             {
                 rangewep->user = &npc;
 
-                if((gvars::framesPassed % 30) == 0)
+                if(rangewep->trigger())
                 {
                     std::string Status = rangewep->activate(Vec3f(closEnmy->xpos,closEnmy->ypos,closEnmy->zpos));
+                    AnyDeletes(rangewep->internalitems);
                     if(Status != "Success")
                         chatBox.addChat(npc.name + ", cannot fire " + rangewep->name + " due to :" + Status, sf::Color::Yellow);
                 }
-
             }
         }
 
@@ -2416,6 +2598,13 @@ ReDesire:
             if(withinRange)
             {
                 meleewep->user = &npc;
+                if(meleewep->trigger())
+                {
+                    std::string Status = meleewep->activate(Vec3f(closEnmy->xpos,closEnmy->ypos,closEnmy->zpos));
+                    AnyDeletes(meleewep->internalitems);
+                    if(Status != "Success")
+                        chatBox.addChat(npc.name + ", cannot strike with " + meleewep->name + " due to :" + Status, sf::Color::Yellow);
+                }
             }
         }
         if(withinRange)
@@ -2638,6 +2827,62 @@ void displayChat(sf::Vector2f position)
 
 }
 
+void displayMouseItem()
+{
+    if(mouseItem != nullptr)
+    {
+        sf::Sprite SP;
+        sf::Vector2u TexySize = mouseItem->img.getTexture()->getSize();
+        SP.setTexture(*mouseItem->img.getTexture());
+        //sf::Vector2f rPos(gvars::topLeft.x + vPos.x, gvars::topLeft.y + vPos.y);
+        SP.setPosition(gvars::mousePos);
+        SP.setOrigin(TexySize.x/2,TexySize.y/2);
+        window.draw(SP);
+    }
+}
+
+void hoverItemHUD()
+{
+    window.setView(window.getDefaultView());
+    sf::Vector2i pixelPosi = sf::Mouse::getPosition(window);
+    sf::Vector2f pixelPos(pixelPosi.x,pixelPosi.y);
+    //std::cout << "pixelPos: " << pixelPos.x << ":" << pixelPos.y << std::endl;
+
+    sf::Sprite SP;
+    //sf::Vector2u TexySize = myTargetPtr->invSlots[i]->img.getTexture()->getSize();
+    SP.setTexture(texturemanager.getTexture("Food.png"));
+
+    SP.setPosition(pixelPos);
+    //SP.setOrigin(TexySize.x/2,TexySize.y/2);
+    window.draw(SP);
+
+    if(myTargetPtr != nullptr && bountytower::bountytower)
+        for (int i = 0; i != 20; i++)
+    {
+
+        sf::Vector2f vPos(gvars::slotPos[i]);
+        //sf::Vector2f rPos(gvars::topLeft.x + gvars::slotPos[i].x, gvars::topLeft.y + gvars::slotPos[i].y);
+        if(math::closeish(pixelPos,vPos) <= 20)
+        {
+            //std::cout << "Success! on: " << i << std::endl;
+            if(myTargetPtr->invSlots[i] != nullptr)
+            {
+
+                //window.setView(gvars::view1);
+                textList.createText(gvars::mousePos.x,gvars::mousePos.y-15,15,sf::Color::Cyan,myTargetPtr->invSlots[i]->name);
+                //window.setView(window.getDefaultView());
+                if(inputState.lmb)
+                {
+                    //std::cout << "Clicked on " << myTargetPtr->invSlots[i]->name << std::endl;
+                    gvars::hovering = true;
+                    mouseItem = myTargetPtr->invSlots[i];
+                }
+            }
+        }
+    }
+    window.setView(gvars::view1);
+}
+
 void drawStuffs()
 {
     //textList.createText(15,15,10,sf::Color::White,"Server Port: " + std::to_string(network::mainPort));
@@ -2703,7 +2948,7 @@ void drawStuffs()
         drawNPCs();
     }
 
-
+    //hoverItemHUD();
 
 
     drawJobList(window.getView().getCenter().x - 500,
@@ -2752,6 +2997,7 @@ void drawStuffs()
 
     }
 
+    displayMouseItem();
 
     effects.drawEffects();
     debug("Drew Effects");
@@ -3335,9 +3581,10 @@ float Magnitude(Vec3f v1)
 
 void lmbPress()
 {
+    hoverItemHUD();
     bool foundOne = false;
     debug("Pre Mouse Based Functions");
-    if (inputState.lmb)
+    if (inputState.lmb && gvars::hovering == false)
     {
         myTargetPtr = nullptr;
         gvars::myTarget = -1;
@@ -4866,6 +5113,7 @@ int main()
 
     while (window.isOpen())
     {
+        gvars::hovering = false;
         if (inputState.key[Key::R] && !network::chatting)
         {
             toggle(gvars::debug);

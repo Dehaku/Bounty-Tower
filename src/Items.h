@@ -16,9 +16,11 @@ public:
     std::list<Item> internalitems;
     bool toDelete;
     bool pickupable;
+    bool slotted;
     sf::Sprite img;
     int id;
     int cbaseid;
+    int size;
     std::string name;
     std::string inventor;
     std::string contains;
@@ -49,6 +51,9 @@ public:
     int imgendx;
     int imgendy;
     bool isWeapon;
+    float activaterate;
+    float activaterategrowth;
+    float activateratemax;
     // 0 = none, 1 = melee weapon, 2 = ranged weapon,
     // 3 = thrown weapon, 4 = food, 5 = water, 6 = cell, 7 = Ore,
     // 8 = Digging Tool, 9 = Cutting Tool, 10 = Fishing Tool,
@@ -115,9 +120,13 @@ public:
     void drawImg();
     void spawn(int gposx, int gposy, int rposx, int rposy, int posx, int posy, int posz);
     void printConsoleInfo();
+    int getRange();
     std::string activate(Vec3f vPos);
+    bool trigger();
     Item();
 };
+
+extern Item * mouseItem;
 
 Item *getGlobalItem(std::string strtype);
 

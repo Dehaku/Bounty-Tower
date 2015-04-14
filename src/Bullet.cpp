@@ -40,6 +40,7 @@ void Bullet::moveBullet()
                 predAngle = math::constrainAngle(math::angleBetweenVectors(newPos,sf::Vector2f(tempPos.x,tempPos.y)));
                 predictions.push_back(predPos);
             }
+
         }
         if(z == lifetime-1)
             predictions.push_back(predPos);
@@ -118,6 +119,28 @@ void Bullet::moveBullet()
                 toDelete = true;
 
         }
+
+
+        for(auto &i : targets.ptrs)
+        {
+            //i->img.setTexture(texturemanager.getTexture("Error.png"));
+            int dist = math::closeish(pos.x,pos.y,i->xpos,i->ypos);
+            bool alreadyHit = false;
+            for(auto &t : targetsHit.ptrs)
+                if(i->id == t->id)
+                    alreadyHit = true;
+
+            if(dist <= i->size && !alreadyHit)
+            {
+                toDelete = true;
+                i->modhealth(-50);
+                targetsHit.ptrs.push_back(i);
+            }
+        }
+
+
+        //int dist = math::closeish()
+        //if(math)
     }
 
     if(showPrediction)

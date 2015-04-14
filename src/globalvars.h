@@ -7,6 +7,7 @@
 
 float cz(float number);
 void debug(std::string info, bool endline = true);
+void assignSlotPos();
 
 
 namespace mutex
@@ -17,6 +18,8 @@ namespace mutex
 
 namespace gvars
 {
+extern bool hovering;
+extern std::vector<sf::Vector2f> slotPos;
 extern std::string version;
 extern unsigned int framesPassed;
 extern bool debug;

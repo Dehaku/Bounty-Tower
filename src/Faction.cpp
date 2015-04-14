@@ -31,6 +31,8 @@ extern sf::RenderWindow window;
 
 Npc * myTargetPtr = nullptr;
 
+Npc * mouseNPC = nullptr;
+
 void Npc::BodyDefinition::bodyPartFind(std::string part, int amount)
 {
 
@@ -328,6 +330,16 @@ Npc::Npc()
 
     factionPtr = nullptr;
 
+    graspItemLeft = nullptr;
+    graspItemRight = nullptr;
+    graspNpcLeft = nullptr;
+    graspNpcRight = nullptr;
+
+    for (int i = 0; i != 20; i++)
+    {
+        invSlots[i] = nullptr;
+    }
+
     toDelete = false;
     viewangle = 180;
     viewrange = 200;
@@ -536,6 +548,25 @@ void Npc::blankSkills()
     regentimer = regentimerint;
     regenrate = skills.endurance / 10;
     health = maxhealth;
+}
+
+npcPtrVector Npc::getEnemies()
+{
+    npcPtrVector enemyPtrs;
+    for (auto &enemys : *container)
+    {
+        if(enemys.faction != faction)
+        {
+            for (auto &i : factionPtr->factRelations)
+            {
+                if(enemys.faction == i.faction && i.appeal < 1000)
+                {
+                    enemyPtrs.ptrs.push_back(&enemys);
+                }
+            }
+        }
+    }
+    return enemyPtrs;
 }
 
 bool Npc::hasWeapon(std::string weapon)
@@ -942,6 +973,8 @@ bool Npc::modhealth(float amount)
     if (health < 1)
     {
         health = 0;
+        alive = false;
+        img.setColor(sf::Color(255,0,0,100));
         return false;
     }
     else
@@ -1203,6 +1236,7 @@ void Npc::addItem(const std::string &itemname, int amount)
     }
     for (int Times = 0; Times != amount; Times++)
     {
+        var.id = gvars::globalid++;
         inventory.push_back(var);
     }
 }
@@ -1386,6 +1420,15 @@ void NpcManager::addCritters()
     addedCritters.clear();
 }
 
+void initializeGraspers(Npc &critter)
+{
+    partGrasp pG;
+    pG.part = "Left Hand";
+    critter.graspers.push_back(pG);
+    pG.part = "Right Hand";
+    critter.graspers.push_back(pG);
+}
+
 void NpcManager::initializeCritters()
 {
 
@@ -1410,6 +1453,8 @@ void NpcManager::initializeCritters()
             std::string line;
             getline(input, line);
             Npc critter;
+            critter.faction = "";
+            critter.factionPtr = nullptr;
             critter.name = "Debuggery";
 
             //hungerrate = 1; // TODO: Should these be modded? Or only effected by Diseases/Bionics ect.
@@ -1494,10 +1539,10 @@ void NpcManager::initializeCritters()
             debug(stringFindChaos(line, "{Tags:", "}"));
             debug("^-Added Tags-^");
             critter.tags.append(stringFindChaos(line, "{Tags:", "}"));
-            std::set<std::string> items;
+            std::vector<std::string> items;
             std::string list;
             list.append(stringFindChaos(line, "{Items:", "}"));
-            items = stringFindSetChaos(list, "[", "]");
+            items = stringFindVectorChaos(list, "[", "]");
             for (auto item : items)
             {
 
@@ -1543,6 +1588,41 @@ void NpcManager::initializeCritters()
 
             // Critter Bodies
             {
+                if(critter.race == "BTHuman" || critter.race == "BTHalfCelestial")
+                {
+
+                    critter.body.bodyParts =
+                        "{[Name:UpperTorso][BloodPumpRate:100][AirCapacity:"
+                        "200][AirAbsorbtion:100][ObjectCapacity:1]["
+                        "MassFlesh:15:1000]}";
+                    critter.body.bodyParts.append(
+                        "{[Name:Head][Mind:true][MassFlesh:5:"
+                        "1000][Dependant:UpperTorso]}");
+                    critter.body.bodyParts.append(
+                        "{[Name:LowerTorso][ObjectCapacity:10]["
+                        "DigestionRate:125][NutritionExtraction:10]["
+                        "DigestsFlesh:60][DigestsVeggy:60][DigestsWater:"
+                        "100][MassFlesh:15:1000][Dependant:UpperTorso]}");
+
+                    critter.body.bodyParts.append("{[Name:Left "
+                                                  "Leg][Walk:3][MassFlesh:"
+                                                  "15:1000][Dependant:"
+                                                  "LowerTorso]}");
+                    critter.body.bodyParts.append("{[Name:Right "
+                                                  "Leg][Walk:3][MassFlesh:"
+                                                  "15:1000][Dependant:"
+                                                  "LowerTorso]}");
+
+                    critter.body.bodyParts.append("{[Name:Left "
+                                                  "Arm][Grasp:2][MassFlesh:"
+                                                  "10:1000][Dependant:"
+                                                  "UpperTorso]}");
+                    critter.body.bodyParts.append("{[Name:Right "
+                                                  "Arm][Grasp:2][MassFlesh:"
+                                                  "10:1000][Dependant:"
+                                                  "UpperTorso]}");
+
+                }
                 if (critter.race == "Human" || critter.race == "Zombie")
                 {
                     critter.body.bodyParts =
@@ -1631,6 +1711,10 @@ void NpcManager::initializeCritters()
                     //Critter.img.SetCenter(i->Image.GetWidth()/2,i->Image.GetHeight()/2);
                 }
             }
+
+            debug("Performing Grasper Initialization");
+            initializeGraspers(critter);
+
             if (critter.name != "Debuggery")
             {
                 globalCritter.push_back(critter);
@@ -2361,7 +2445,7 @@ void addMembers(int amount, std::string faction)
                 member = *getGlobalCritter("BTHuman");
                 member.faction = faction;
                 member.factionPtr = &fact;
-                member.xpos = ((GRIDS*GRID_SIZE)/2)+randz(-20,20);
+                member.xpos = ((GRIDS*GRID_SIZE)/2)+randz(-80,80);
                 member.ypos = ((GRIDS*GRID_SIZE)-100)+randz(-20,20);
                 member.zpos = (1*GRID_SIZE);
                 member.id = gvars::globalid++;
@@ -2610,6 +2694,10 @@ void drawInventory(sf::Vector2f vPos, std::list<Item> &inventory)
         }
 }
 
+
+
+
+
 void drawSelectedCritterHUD()
 {
     if (gvars::myTarget != -1 && myTargetPtr != nullptr)
@@ -2717,7 +2805,7 @@ void drawSelectedCritterHUD()
         if (myTargetPtr->inventory.size() != 0 ||
                     myTargetPtr->bloodcontent != "")
         {
-            effects.createSquare(nxpos, nypos, nxpos + 130, nypos + 70,
+            effects.createSquare(nxpos, nypos, nxpos + 230, nypos + 70,
                                          sf::Color(0, 0, 0, 100));
             int yv = nypos;
             for (auto const &item :
@@ -2725,7 +2813,7 @@ void drawSelectedCritterHUD()
             { // Listing all the current items from this critters inventory.
                 if (item.insidePart.size() == 0)
                 {
-                    textList.createText(nxpos + 65, yv, 11,
+                    textList.createText(nxpos + 165, yv, 11,
                                                 sf::Color::White, item.name,
                                                 ": ", item.amount);
                     yv += 10;
@@ -2748,6 +2836,181 @@ void drawSelectedCritterHUD()
                         nxpos + 85, yv, 11, sf::Color(255, 150, 150),
                         "Blood: " + myTargetPtr->bloodcontent);
         }
+    }
+
+    if(myTargetPtr != nullptr && bountytower::bountytower)
+    {
+        sf::View view = window.getDefaultView();
+        //view.zoom(0.5f);
+        window.setView(view);
+
+        // restore the default view
+        window.setView(window.getDefaultView());
+
+        sf::Sprite CIH;
+        sf::Texture Tex;
+        sf::Vector2u TexSize = texturemanager.getTexture("CritterInventoryHud.png").getSize();
+        //CIH.setOrigin(TexSize.x/2,TexSize.y/2);
+        CIH.setTexture(texturemanager.getTexture("CritterInventoryHud.png"));
+        CIH.setPosition(0,0);
+
+        window.draw(CIH);
+
+        for (int i = 0; i != 20; i++)
+        {
+            sf::Vector2f vPos = gvars::slotPos[i];
+
+
+            if(myTargetPtr->invSlots[i] != nullptr)
+            {
+                sf::Sprite SP;
+                sf::Vector2u TexySize = myTargetPtr->invSlots[i]->img.getTexture()->getSize();
+                SP.setTexture(*myTargetPtr->invSlots[i]->img.getTexture());
+                //sf::Vector2f rPos(gvars::topLeft.x + vPos.x, gvars::topLeft.y + vPos.y);
+                SP.setPosition(vPos);
+                SP.setOrigin(TexySize.x/2,TexySize.y/2);
+                window.draw(SP);
+            }
+
+
+        }
+
+        window.setView(gvars::view1);
+
+        /*
+
+
+
+        //sf::Vector2f Center = gvars::view1.getCenter();
+        sf::Vector2f Center = gvars::centerScreen;
+        //createImageButton(Center,texturemanager.getTexture("CritterInventoryHud.png"),"",0);
+        sf::Sprite CIH;
+        sf::Texture Tex;
+        sf::Vector2u TexSize = texturemanager.getTexture("CritterInventoryHud.png").getSize();
+        CIH.setOrigin(TexSize.x/2,TexSize.y/2);
+        CIH.setTexture(texturemanager.getTexture("CritterInventoryHud.png"));
+        CIH.setPosition(Center);
+
+        window.draw(CIH);
+        itemPtrVector iPV;
+        for (auto &i : myTargetPtr->inventory)
+        {
+            iPV.ptrs.push_back(&i);
+        }
+
+        for (int i = 0; i != 20; i++)
+        {
+            sf::Vector2f vPos = gvars::slotPos[i];
+
+
+            if(myTargetPtr->invSlots[i] != nullptr)
+            {
+                sf::Sprite SP;
+                //myTargetPtr->invSlots[i]->img.getTexture()->getSize();
+
+                //myTargetPtr->invSlots[i].img.getTexture().getSize();
+                //sf::Vector2u TexySize = (myTargetPtr->invSlots[i]->img.getTexture()).getSize();
+                sf::Vector2u TexySize = myTargetPtr->invSlots[i]->img.getTexture()->getSize();
+                SP.setTexture(*myTargetPtr->invSlots[i]->img.getTexture());
+                sf::Vector2f rPos(gvars::topLeft.x + vPos.x, gvars::topLeft.y + vPos.y);
+                SP.setPosition(rPos);
+                SP.setOrigin(TexySize.x/2,TexySize.y/2);
+                window.draw(SP);
+            }
+
+
+        }
+
+        for (int i = 0; i != iPV.ptrs.size(); i++)
+        {
+
+            sf::Vector2f vPos;
+            //Left slots
+            if(i == 1)
+                vPos = sf::Vector2f(548, 674); // 764?
+            if(i == 3)
+                vPos = sf::Vector2f(485, 674);
+            if(i == 5)
+                vPos = sf::Vector2f(422, 674);
+            if(i == 7)
+                vPos = sf::Vector2f(359, 674);
+            if(i == 9)
+                vPos = sf::Vector2f(296, 674);
+            if(i == 11)
+                vPos = sf::Vector2f(233, 674);
+            if(i == 13)
+                vPos = sf::Vector2f(170, 674);
+            if(i == 15)
+                vPos = sf::Vector2f(107, 674);
+            if(i == 17)
+                vPos = sf::Vector2f(44, 674);
+
+
+            // Right slots
+            if(i == 2)
+                vPos = sf::Vector2f(730, 674);
+            if(i == 4)
+                vPos = sf::Vector2f(793, 674);
+            if(i == 6)
+                vPos = sf::Vector2f(858, 674);
+            if(i == 8)
+                vPos = sf::Vector2f(919, 674);
+            if(i == 10)
+                vPos = sf::Vector2f(982, 674);
+            if(i == 12)
+                vPos = sf::Vector2f(1045, 674);
+            if(i == 14)
+                vPos = sf::Vector2f(1108, 674);
+            if(i == 16)
+                vPos = sf::Vector2f(1171, 674);
+            if(i == 18)
+                vPos = sf::Vector2f(1234, 674);
+
+            // Center slots
+            //if(i == 19)
+            //    vPos = sf::Vector2f(608,657);
+            //if(i == 20)
+            //    vPos = sf::Vector2f(670,657);
+
+            sf::Sprite SP;
+
+            sf::Vector2u TexySize = (*iPV.ptrs[i]->img.getTexture()).getSize();
+            SP.setTexture(*iPV.ptrs[i]->img.getTexture());
+            sf::Vector2f rPos(gvars::topLeft.x + vPos.x, gvars::topLeft.y + vPos.y);
+            SP.setPosition(rPos);
+            SP.setOrigin(TexySize.x/2,TexySize.y/2);
+            //window.draw(SP);
+            //Item.img;
+
+
+        }
+        */
+        /*
+        if(myTargetPtr->graspItemLeft != nullptr)
+        {
+            sf::Sprite SP;
+            sf::Vector2u TexySize = (*myTargetPtr->graspItemLeft->img.getTexture()).getSize();
+            SP.setTexture(*myTargetPtr->graspItemLeft->img.getTexture());
+            sf::Vector2f vPos(608,657);
+            sf::Vector2f rPos(gvars::topLeft.x + vPos.x, gvars::topLeft.y + vPos.y);
+            SP.setPosition(rPos);
+            SP.setOrigin(TexySize.x/2,TexySize.y/2);
+            window.draw(SP);
+        }
+        if(myTargetPtr->graspItemRight != nullptr)
+        {
+            sf::Sprite SP;
+            sf::Vector2u TexySize = (*myTargetPtr->graspItemRight->img.getTexture()).getSize();
+            SP.setTexture(*myTargetPtr->graspItemRight->img.getTexture());
+            sf::Vector2f vPos(670,657);
+            sf::Vector2f rPos(gvars::topLeft.x + vPos.x, gvars::topLeft.y + vPos.y);
+            SP.setPosition(rPos);
+            SP.setOrigin(TexySize.x/2,TexySize.y/2);
+            window.draw(SP);
+        }
+        */
+
+
     }
 }
 

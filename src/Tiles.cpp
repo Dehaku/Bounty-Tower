@@ -1343,7 +1343,7 @@ void Tile::BTwall()
 { // 2010
     id = 2010;
     worldColor = sf::Color(100, 100, 100);
-    img.setTexture(texturemanager.getTexture("FMTwallcheat.png"));
+    img.setTexture(texturemanager.getTexture("FMTwallcheat2.png"));
     transparent = false;
     health = 200;
     deathID = 1007;

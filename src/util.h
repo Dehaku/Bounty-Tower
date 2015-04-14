@@ -44,6 +44,8 @@ std::string stringFindChaos(std::string stringy, std::string term,
                             std::string ending);
 std::set<std::string> stringFindSetChaos(std::string stringy, std::string term,
                                          std::string ending);
+std::vector<std::string> stringFindVectorChaos(std::string stringy, std::string term,
+                                         std::string ending);
 float percentIs(float value, float percentage);
 
 std::string generateName(int minLength = 2, int maxLength = 10);

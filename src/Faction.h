@@ -11,6 +11,7 @@
 #include "Networking.h"
 #include "menus.h"
 
+
 #include <list>
 #include <set>
 
@@ -19,13 +20,29 @@
 class Faction;
 
 extern Faction *conFact;
+extern Npc * mouseNPC;
 
 class Npc;
 std::set<int> npcTrace(int xa, int ya, int xb, int yb, int id,
                        std::set<int> exceptions);
 extern std::list<Npc> npclist;
 
+struct npcPtrVector
+{
+    std::vector<Npc*> ptrs;
+};
 
+struct partGrasp
+{
+    std::string part;
+    Item * graspItem;
+    Npc * graspNpc;
+    partGrasp()
+    {
+        graspItem = nullptr;
+        graspNpc = nullptr;
+    }
+};
 
 class Npc
 {
@@ -35,6 +52,13 @@ public:
     sf::Sprite img;
     std::list<Item> inventory;
     std::list<Item> equipped;
+
+    Npc * graspNpcLeft;
+    Npc * graspNpcRight;
+    Item * graspItemLeft;
+    Item * graspItemRight;
+
+    Item * invSlots[20];
 
     std::vector<Tile *> storedPath;
 
@@ -94,6 +118,9 @@ public:
         int leftfoot;      // lf
     };
     BodyDefinition body;
+
+    std::list<partGrasp> graspers;
+
 
     float rot;
     float xxx;
@@ -262,6 +289,8 @@ public:
     Npc();
     void reCreateSkills();
     void blankSkills();
+    npcPtrVector getEnemies();
+    std::list<Npc> * container;
     bool hasWeapon(std::string weapon = "");
     Item *hasItem(std::string name);
     Item *getItemType(int type);
@@ -413,6 +442,8 @@ public:
 };
 
 extern std::list<Faction> uniFact;
+
+
 
 int factionMembers(std::string factionName);
 float factionAggression(std::string factionName);
