@@ -36,6 +36,8 @@ using namespace micropather;
 
 using std::abs;
 
+void drawBeams();
+
 template <typename T> T &listAt(std::list<T> &list, size_t index)
 {
     auto it = list.begin();
@@ -2999,6 +3001,8 @@ void drawStuffs()
 
     displayMouseItem();
 
+    drawBeams();
+
     effects.drawEffects();
     debug("Drew Effects");
 
@@ -5048,6 +5052,193 @@ void cleanMenu()
 }
 
 
+
+
+struct BeamAttribute
+{
+    sf::Color color;
+    int damage;
+    BeamAttribute()
+    {
+        color = sf::Color(0,0,0);
+        damage = 0;
+    }
+};
+
+class Beam
+{
+public:
+    std::vector<BeamAttribute> attributes;
+    sf::Vector2f startPos;
+    sf::Vector2f endPos;
+    double angle;
+    int lifeTime;
+    bool toDelete;
+    unsigned long long id;
+    sf::Color getColor()
+    {
+        sf::Color color(0,0,0);
+        for(auto &atr : attributes)
+        {
+            color += atr.color;
+        }
+        return color;
+    }
+    Beam()
+    {
+        angle = 0;
+        lifeTime = 0;
+        toDelete = false;
+        id = gvars::globalid++;
+    }
+};
+
+std::list<Beam> beams;
+
+void drawBeams()
+{
+    for(auto &beam : beams)
+    {
+        sf::Color color(0,0,0);
+        int damage = 0;
+        for(auto &atr : beam.attributes)
+        {
+            damage += atr.damage;
+            color += atr.color;
+        }
+
+        effects.createLine(beam.startPos.x,beam.startPos.y,beam.endPos.x,beam.endPos.y,3,color);
+        int angle = beam.angle;
+        textList.createText(beam.startPos.x,beam.startPos.y,10,color,std::to_string(angle));
+        textList.createText(beam.endPos.x,beam.endPos.y,10,color,std::to_string(angle));
+
+
+    }
+}
+
+std::vector<sf::Vector2i> traceTrail(int xa,int ya,int xb,int yb)
+{
+
+    int dx = xb - xa, dy = yb - ya, steps;
+    float xIncrement, yIncrement, x = xa, y = ya;
+    if (abs(dx) > abs(dy))
+        steps = abs(dx);
+    else
+        steps = abs(dy);
+    xIncrement = dx / (float)steps;
+    yIncrement = dy / (float)steps;
+    std::vector<int> vectorID;
+
+    std::vector<sf::Vector2i> returns;
+    for (int k = 0; k < steps; k++)
+    {
+        x += xIncrement;
+        y += yIncrement;
+        returns.push_back(sf::Vector2i(x,y));
+    }
+    return returns;
+}
+
+void beamTestLoop()
+{
+    //if(inputState.key[Key::Space].time == 1)
+    {
+        beams.clear();
+        {
+            Beam beam;
+        beam.startPos = sf::Vector2f(25,200);
+        //beam.endPos = sf::Vector2f(100,100);
+        beam.endPos = gvars::mousePos;
+        //beam.startPos = sf::Vector2f(100,100);
+        //beam.endPos = sf::Vector2f(25,25);
+        beam.angle = math::angleBetweenVectors(beam.startPos,beam.endPos);
+        BeamAttribute BA;
+        BA.damage = 5;
+        BA.color = sf::Color(0,150,0);
+        beam.attributes.push_back(BA);
+        BA.damage = 3;
+        BA.color = sf::Color(0,0,150);
+        beam.attributes.push_back(BA);
+        beams.push_back(beam);
+        }
+        {
+            Beam beam;
+        beam.startPos = sf::Vector2f(40,20);
+        beam.endPos = sf::Vector2f(40,400);
+        //beam.startPos = sf::Vector2f(100,40);
+        //beam.endPos = sf::Vector2f(20,40);
+        beam.angle = math::angleBetweenVectors(beam.startPos,beam.endPos);
+        BeamAttribute BA;
+        BA.damage = 5;
+        BA.color = sf::Color(150,0,0);
+        beam.attributes.push_back(BA);
+        beams.push_back(beam);
+        }
+    }
+    int Beams = 0;
+
+    for( auto &beam : beams)
+        {
+            std::vector<sf::Vector2i> trail = traceTrail(beam.startPos.x,beam.startPos.y,beam.endPos.x,beam.endPos.y);
+            /*
+            if(Beams == 0)
+            {
+
+                std::cout << "trail length: " << trail.size() << std::endl;
+                for(int i = 0; i != trail.size(); i++)
+                {
+                    std::cout << i << ": " << trail[i].x << "/" << trail[i].y << std::endl;
+                }
+                std::cout << "trail length: " << trail.size() << std::endl;
+                fSleep(5);
+
+            }
+            */
+
+
+
+            for( auto &otherbeam : beams)
+            {
+                if(beam.id != otherbeam.id)
+                {
+                    std::vector<sf::Vector2i> othertrail = traceTrail(otherbeam.startPos.x,otherbeam.startPos.y,otherbeam.endPos.x,otherbeam.endPos.y);
+
+
+                    for(int i = 0; i != trail.size(); i++)
+                        for(int t = 0; t != othertrail.size(); t++)
+                    {
+                        if(trail[i].x == othertrail[t].x && trail[i].y == othertrail[t].y)
+                        {
+                            sf::Color color = beam.getColor() + otherbeam.getColor();
+                            effects.createCircle(trail[i].x,trail[i].y,10,color);
+
+                            //int angle = beam.angle + otherbeam.angle;
+                            //int angle = math::constrainAngle( (beam.angle + otherbeam.angle) / 2);
+                            int angle = math::constrainAngle( math::angleDiff(beam.angle,otherbeam.angle));
+                            angle = math::constrainAngle(beam.angle + (angle/2) );
+
+                            textList.createText(trail[i].x,trail[i].y,10,color,std::to_string(angle));
+                            sf::Vector2f xxPos(trail[i].x,trail[i].y);
+                            sf::Vector2f vPos = math::angleCalc(xxPos,math::constrainAngle(angle),100);
+                            effects.createCircle(vPos.x,vPos.y,10,color);
+                            std::string outPut = std::to_string(beam.id) + ": a: " + std::to_string(angle);
+                            textList.createText(vPos.x,vPos.y,10,color,outPut);
+                            effects.createLine(trail[i].x,trail[i].y,vPos.x,vPos.y,3,color);
+
+                            if(inputState.key[Key::Z])
+                            {
+                                fSleep(1);
+                            }
+
+                        }
+                    }
+                }
+            }
+            Beams++;
+        }
+
+}
+
 void newItemstuffs()
 {
     std::cout << "Kaboom! \n";
@@ -5100,7 +5291,7 @@ int main()
 
 
     galaxySetup();
-    //bountyTowerSetup();
+    bountyTowerSetup();
 
     window.create(sf::VideoMode(RESOLUTION.x, RESOLUTION.y, 32), randomWindowName());
     window.setVerticalSyncEnabled(true);
@@ -5133,6 +5324,7 @@ int main()
 
         genericLoop();
         galaxyLoop();
+        beamTestLoop();
 
         handlePhase();
 

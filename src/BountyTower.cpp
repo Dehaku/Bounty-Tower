@@ -270,5 +270,5 @@ namespace bountytower
 {
     bool elevatoravailable = false;
     bool towerlingassault = true;
-    bool bountytower = false;
+    bool bountytower = true;
 }
