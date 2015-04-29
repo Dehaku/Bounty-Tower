@@ -2563,6 +2563,7 @@ ReDesire:
             hasPath = true;
             endPos = Vec3(closEnmy->xpos/GRID_SIZE,closEnmy->ypos/GRID_SIZE,closEnmy->zpos/GRID_SIZE);
         }
+        debug("0");
         Item * rangewep = npc.getItemType(2);
         Item * meleewep = npc.getItemType(1);
         if(inputState.key[Key::LAlt] && true == false)
@@ -2573,8 +2574,9 @@ ReDesire:
             if(meleewep != nullptr)
                 effects.createCircle(npc.xpos,npc.ypos,meleewep->getRange(),sf::Color(0,0,255,50),2,sf::Color::Blue);
         }
+        debug("1");
         bool withinRange = false;
-        if(rangewep != nullptr)
+        if(rangewep != nullptr && closEnmy != nullptr)
         {
             withinRange = (math::closeish(npc.xpos,npc.ypos,closEnmy->xpos,closEnmy->ypos) <= rangewep->getRange());
             if(getItemType(rangewep->internalitems,3) == nullptr)
@@ -2592,8 +2594,8 @@ ReDesire:
                 }
             }
         }
-
-        if(meleewep != nullptr)
+        debug("2");
+        if(meleewep != nullptr && closEnmy != nullptr)
         {
             if(!withinRange)
                 withinRange = (math::closeish(npc.xpos,npc.ypos,closEnmy->xpos,closEnmy->ypos) <= meleewep->range);
@@ -2609,11 +2611,13 @@ ReDesire:
                 }
             }
         }
+        debug("3");
         if(withinRange)
         {
             hasPath = false;
         }
             //std::cout << rangewep->name << ",'s range: " << rangewep->range << std::endl;
+        debug("4");
     }
 
     debug("Checking inComplete:" + std::to_string(inComplete));
@@ -5324,7 +5328,7 @@ int main()
 
         genericLoop();
         galaxyLoop();
-        beamTestLoop();
+        //beamTestLoop();
 
         handlePhase();
 
