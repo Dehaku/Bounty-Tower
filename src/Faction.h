@@ -10,7 +10,7 @@
 #include "Tiles.h"
 #include "Networking.h"
 #include "menus.h"
-
+#include "Skills.h"
 
 #include <list>
 #include <set>
@@ -66,6 +66,8 @@ public:
     std::string tags;
     Faction *factionPtr;
     std::string faction;
+
+    Skills abilities;
 
     bool attacking;
     bool firstStrike;
