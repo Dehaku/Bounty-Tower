@@ -94,10 +94,12 @@ void bountyTowerLoop()
         gCtrl.menuPos = math::Vec2f(-10000, -10000);
     }
 
-    lmbPress();
+
     rightMouseButtonContextMenu();
 
     critterBrain(npclist);
+
+
 
     if(inputState.key[Key::Space])
         for(auto &npc : npclist)
@@ -164,7 +166,7 @@ void bountyTowerLoop()
         debug("Done placin Towerlings");
     }
 
-
+    //lmbPress();
 }
 
 void buildTower(std::string towerName)

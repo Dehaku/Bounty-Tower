@@ -2868,8 +2868,9 @@ void hoverItemHUD()
 
         sf::Vector2f vPos(gvars::slotPos[i]);
         //sf::Vector2f rPos(gvars::topLeft.x + gvars::slotPos[i].x, gvars::topLeft.y + gvars::slotPos[i].y);
-        if(math::closeish(pixelPos,vPos) <= 20)
+        if(inputState.lmbTime == 1 && math::closeish(pixelPos,vPos) <= 20)
         {
+            gvars::hovering = true;
             //std::cout << "Success! on: " << i << std::endl;
             if(myTargetPtr->invSlots[i] != nullptr)
             {
@@ -2877,11 +2878,20 @@ void hoverItemHUD()
                 //window.setView(gvars::view1);
                 textList.createText(gvars::mousePos.x,gvars::mousePos.y-15,15,sf::Color::Cyan,myTargetPtr->invSlots[i]->name);
                 //window.setView(window.getDefaultView());
-                if(inputState.lmb)
+                if(mouseItem == nullptr)
                 {
                     //std::cout << "Clicked on " << myTargetPtr->invSlots[i]->name << std::endl;
                     gvars::hovering = true;
                     mouseItem = myTargetPtr->invSlots[i];
+                }
+                else if(mouseItem != nullptr)
+                {
+                    if(myTargetPtr->invSlots[i] == nullptr)
+                    {
+                        gvars::hovering = true;
+                        myTargetPtr->invSlots[i] = mouseItem;
+                        mouseItem = nullptr;
+                    }
                 }
             }
         }
@@ -4159,7 +4169,7 @@ void handlePhase()
             npcmanager.addCritters();
             debug("Post Add Critters");
 
-            lmbPress();
+
 
 
         } //=============================================================================*End of Local*========================================================================
@@ -5000,6 +5010,8 @@ void handlePhase()
             }
         } //=============================================================================*End of Main Menu*========================================================================
 
+
+
 }
 
 void scaleImages()
@@ -5335,6 +5347,7 @@ int main()
         acquireSelectedNPCs();
         selectedNPCprocess();
 
+        lmbPress();
         debug("Pre Draw Stuffs");
         hoverItemIDdisplay();
         drawStuffs();
