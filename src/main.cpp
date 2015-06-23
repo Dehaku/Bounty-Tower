@@ -1890,6 +1890,8 @@ void critterBrain(Npc &npc, std::list<Npc> &container)
 
     npc.container = &container;
 
+
+
     if(tiles[abs_to_index(npc.xpos/GRID_SIZE)][abs_to_index(npc.ypos/GRID_SIZE)][abs_to_index(npc.zpos/GRID_SIZE)].walkable == false)
     {
         //sf::Vector2f position(abs_to_index(npc.xpos/GRID_SIZE)*GRID_SIZE+10.5,abs_to_index(npc.ypos/GRID_SIZE)*GRID_SIZE+10.5);
@@ -5283,14 +5285,14 @@ void newItemstuffs()
 void playThemeTrack()
 {
     //gvars::soundVolume = 0;
-    gvars::musicVolume = 0;
+    gvars::musicVolume = 50;
     int ranNum = randz(1,3);
     if(ranNum == 1)
-        playMusic("Electro_Cabello.ogg");
+        playMusic("Jalandhar.ogg");
     else if(ranNum == 2)
         playMusic("Neo Western.ogg");
     else if(ranNum == 3)
-        playMusic("Jalandhar.ogg");
+        playMusic("Electro_Cabello.ogg");
 }
 
 int main()

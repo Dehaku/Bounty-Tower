@@ -113,10 +113,51 @@ void bountyTowerLoop()
     }
 
 
+    if(inputState.key[Key::LShift] && inputState.key[Key::X].time == 1)
+    { // Spit out some info about some states regard to global stuffs.
+        std::string outPut = "elevatoravailable: " + std::to_string(bountytower::elevatoravailable)
+                            + " towerlingassault: " + std::to_string(bountytower::towerlingassault)
+                            + " bountytower: " + std::to_string(bountytower::bountytower);
+
+        chatBox.addChat(outPut,sf::Color::Red);
+    }
+
+    if(inputState.key[Key::LShift] && inputState.key[Key::C].time == 1)
+    { // Toggle pausewave, Mostly for debug purposes.
+        toggle(bountytower::pausewaves);
+        std::string outPut = "***pausewaves has been toggled! pausewaves: " + std::to_string(bountytower::pausewaves);
+
+        chatBox.addChat(outPut,sf::Color::Red);
+    }
+
+    if( (gvars::framesPassed % 5) == 0 && !bountytower::elevatoravailable)
+    { // Here we scan the floor for all switches that are set to Off, If even a single one is off, then the elevator is not functional.
+        bool floorComplete = true;
+        for(int x = 0; x != GRIDS; x++)
+            for(int y = 0; y != GRIDS; y++)
+        {
+            if(tiles[x][y][gvars::currentz].id == 3500 && tiles[x][y][gvars::currentz].state == "Off")
+            {
+                floorComplete = false;
+            }
+        }
+
+        if(floorComplete)
+        {
+            bountytower::elevatoravailable = true;
 
 
-    if( (gvars::framesPassed % 300) == 0 && npclist.size() < 20)
-    {
+            std::string outPut = "*Ding!*";
+            chatBox.addChat(outPut,sf::Color(255,150,150));
+            outPut = "*Elevator is now functional, You may now progress* ";
+            chatBox.addChat(outPut,sf::Color(255,150,150));
+        }
+
+
+    }
+
+    if( (gvars::framesPassed % 300) == 0 && npclist.size() < 20 && !bountytower::pausewaves)
+    { // This looks for stairs, then spawns critters from them every 300 frames until a certain cap is met.
         debug("Gettin Stairs");
         std::vector<Tile*> stairs;
         for(int x = 0; x != GRIDS; x++)
@@ -273,4 +314,5 @@ namespace bountytower
     bool elevatoravailable = false;
     bool towerlingassault = true;
     bool bountytower = true;
+    bool pausewaves = true;
 }

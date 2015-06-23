@@ -46,6 +46,7 @@ namespace bountytower
     extern bool elevatoravailable;
     extern bool towerlingassault;
     extern bool bountytower;
+    extern bool pausewaves;
 }
 
 extern std::vector<Tower> towers;
