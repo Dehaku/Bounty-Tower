@@ -151,6 +151,7 @@ void bountyTowerLoop()
             chatBox.addChat(outPut,sf::Color(255,150,150));
             outPut = "*Elevator is now functional, You may now progress* ";
             chatBox.addChat(outPut,sf::Color(255,150,150));
+            soundmanager.playSound("ding.wav"); // zomfg sounds, so gud.
         }
 
 
