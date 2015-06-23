@@ -125,6 +125,7 @@ void bountyTowerLoop()
     if(inputState.key[Key::LShift] && inputState.key[Key::C].time == 1)
     { // Toggle pausewave, Mostly for debug purposes.
         toggle(bountytower::pausewaves);
+        toggle(bountytower::elevatoravailable);
         std::string outPut = "***pausewaves has been toggled! pausewaves: " + std::to_string(bountytower::pausewaves);
 
         chatBox.addChat(outPut,sf::Color::Red);
@@ -206,6 +207,19 @@ void bountyTowerLoop()
             npclist.push_back(member);
         }
         debug("Done placin Towerlings");
+    }
+
+    if(bountytower::elevatoravailable)
+    {
+        sf::Vector2f vPos(gvars::centerScreen.x,gvars::topLeft.y+100);
+        textList.createText(gvars::centerScreen.x,gvars::topLeft.y+50,20,sf::Color::Green,"Elevator is Ready!");
+        int butt = createImageButton(vPos,texturemanager.getTexture("ElevatorButton.png"),"text");
+        if(imageButtonClicked(butt))
+        {
+            chatBox.addChat("You progress to the next floor!", sf::Color::Blue);
+        }
+
+
     }
 
     //lmbPress();

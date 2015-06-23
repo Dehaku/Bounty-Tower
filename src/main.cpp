@@ -5297,11 +5297,14 @@ void playThemeTrack()
 
 int main()
 {
+    //srand(clock());
+    srand(time(NULL));
+
     soundmanager.init();
     initializeMusic();
     playThemeTrack();
 
-    srand(clock());
+
     texturemanager.init();
 
     itemmanager.initializeItems();
