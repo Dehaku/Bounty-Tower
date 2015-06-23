@@ -212,6 +212,8 @@ void bountyTowerLoop()
 
 void buildTower(std::string towerName)
 {
+    bountytower::elevatoravailable = false;
+    bountytower::pausewaves = true;
     if(towerName == "FantasyModern")
     {
         for (int x = 0; x != GRIDS; x++)
