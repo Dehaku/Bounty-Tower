@@ -2870,30 +2870,29 @@ void hoverItemHUD()
 
         sf::Vector2f vPos(gvars::slotPos[i]);
         //sf::Vector2f rPos(gvars::topLeft.x + gvars::slotPos[i].x, gvars::topLeft.y + gvars::slotPos[i].y);
-        if(inputState.lmbTime == 1 && math::closeish(pixelPos,vPos) <= 20)
+        if(math::closeish(pixelPos,vPos) <= 20)
         {
             gvars::hovering = true;
-            //std::cout << "Success! on: " << i << std::endl;
-            if(myTargetPtr->invSlots[i] != nullptr)
-            {
+        }
 
-                //window.setView(gvars::view1);
-                textList.createText(gvars::mousePos.x,gvars::mousePos.y-15,15,sf::Color::Cyan,myTargetPtr->invSlots[i]->name);
-                //window.setView(window.getDefaultView());
-                if(mouseItem == nullptr)
+        if(inputState.lmbTime == 1 && math::closeish(pixelPos,vPos) <= 20)
+        {
+            //std::cout << "Success! on: " << i << std::endl;
+
+
+
+            if(mouseItem == nullptr && myTargetPtr->invSlots[i] != nullptr)
+            {
+                //std::cout << "Clicked on " << myTargetPtr->invSlots[i]->name << std::endl;
+                mouseItem = myTargetPtr->invSlots[i];
+                myTargetPtr->invSlots[i] = nullptr;
+            }
+            else if(mouseItem != nullptr)
+            {
+                if(myTargetPtr->invSlots[i] == nullptr)
                 {
-                    //std::cout << "Clicked on " << myTargetPtr->invSlots[i]->name << std::endl;
-                    gvars::hovering = true;
-                    mouseItem = myTargetPtr->invSlots[i];
-                }
-                else if(mouseItem != nullptr)
-                {
-                    if(myTargetPtr->invSlots[i] == nullptr)
-                    {
-                        gvars::hovering = true;
-                        myTargetPtr->invSlots[i] = mouseItem;
-                        mouseItem = nullptr;
-                    }
+                    myTargetPtr->invSlots[i] = mouseItem;
+                    mouseItem = nullptr;
                 }
             }
         }
@@ -3606,6 +3605,7 @@ void lmbPress()
     debug("Pre Mouse Based Functions");
     if (inputState.lmb && gvars::hovering == false)
     {
+        std::cout << "lmbPress called successfully. \n";
         myTargetPtr = nullptr;
         gvars::myTarget = -1;
         gvars::myTargetid = -1;
