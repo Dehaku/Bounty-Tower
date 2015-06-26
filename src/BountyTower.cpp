@@ -58,6 +58,23 @@ void bountyTowerSetup()
     //gvars::debug = true;
 }
 
+int elevateElevatorInhabitants()
+{
+    int AmountRaised = 0;
+    for(auto &npc : npclist)
+    {
+        if(tiles[abs_to_index(npc.xpos/GRID_SIZE)][abs_to_index(npc.ypos/GRID_SIZE)][gvars::currentz].id == 3202)
+        {
+            std::cout << npc.name << " has arrisen. \n";
+            npc.zpos += GRID_SIZE;
+            AmountRaised++;
+        }
+    }
+
+    std::cout << "Arrisen: " << AmountRaised << std::endl;
+    return AmountRaised;
+}
+
 void bountyTowerLoop()
 {
     cameraControls();
@@ -211,12 +228,28 @@ void bountyTowerLoop()
 
     if(bountytower::elevatoravailable)
     {
-        sf::Vector2f vPos(gvars::centerScreen.x,gvars::topLeft.y+100);
+
         textList.createText(gvars::centerScreen.x,gvars::topLeft.y+50,20,sf::Color::Green,"Elevator is Ready!");
+
+        int AmountRaised = 0;
+        for(auto &npc : npclist)
+        {
+            if(tiles[abs_to_index(npc.xpos/GRID_SIZE)][abs_to_index(npc.ypos/GRID_SIZE)][gvars::currentz].id == 3202)
+            {
+                AmountRaised++;
+            }
+        }
+        textList.createText(gvars::centerScreen.x,gvars::topLeft.y+70,20,sf::Color::White,"On Elevator: " + std::to_string(AmountRaised));
+
+        sf::Vector2f vPos(gvars::centerScreen.x-25,gvars::topLeft.y+75);
         int butt = createImageButton(vPos,texturemanager.getTexture("ElevatorButton.png"),"text");
         if(imageButtonClicked(butt))
         {
             chatBox.addChat("You progress to the next floor!", sf::Color::Blue);
+            bountytower::elevatoravailable = false;
+            bountytower::pausewaves = true;
+            gvars::currentz++;
+            elevateElevatorInhabitants();
         }
 
 

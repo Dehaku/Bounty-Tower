@@ -2864,15 +2864,19 @@ void drawSelectedCritterHUD()
             if(myTargetPtr->invSlots[i] != nullptr)
             {
                 sf::Sprite SP;
-                sf::Vector2u TexySize = myTargetPtr->invSlots[i]->img.getTexture()->getSize();
+                sf::Vector2u TexySize;
+                try
+                {
+                    sf::Vector2u TexySize = myTargetPtr->invSlots[i]->img.getTexture()->getSize();
+                }
+                catch (std::exception& e) { std::cout << "Something went wrong in TexySize\n"; }
+
                 SP.setTexture(*myTargetPtr->invSlots[i]->img.getTexture());
                 //sf::Vector2f rPos(gvars::topLeft.x + vPos.x, gvars::topLeft.y + vPos.y);
                 SP.setPosition(vPos);
                 SP.setOrigin(TexySize.x/2,TexySize.y/2);
                 window.draw(SP);
             }
-
-
         }
 
         window.setView(gvars::view1);
