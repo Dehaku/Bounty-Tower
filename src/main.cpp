@@ -2162,7 +2162,7 @@ void critterBrain(Npc &npc, std::list<Npc> &container)
     { //Assault
         newDesire.type = "Assault";
         newDesire.potency = 0;
-        if(bountytower::towerlingassault && npc.faction == "Towerlings")
+        //if(bountytower::towerlingassault && npc.faction == "Towerlings")
             newDesire.potency = 700;
 
 
@@ -2560,7 +2560,7 @@ ReDesire:
     }
     if ((*highestDesire).type == "Assault")
     {
-        if(closEnmy != nullptr)
+        if(closEnmy != nullptr && npc.faction == "Towerlings")
         {
             hasPath = true;
             endPos = Vec3(closEnmy->xpos/GRID_SIZE,closEnmy->ypos/GRID_SIZE,closEnmy->zpos/GRID_SIZE);
@@ -5285,7 +5285,7 @@ void newItemstuffs()
 void playThemeTrack()
 {
     //gvars::soundVolume = 0;
-    gvars::musicVolume = 50;
+    gvars::musicVolume = 0;
     int ranNum = randz(1,3);
     if(ranNum == 1)
         playMusic("Jalandhar.ogg");

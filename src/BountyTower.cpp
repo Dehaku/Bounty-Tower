@@ -129,6 +129,7 @@ void bountyTowerLoop()
 
     }
 
+    textList.createText(gvars::centerScreen.x,gvars::topLeft.y+15,15,sf::Color::White,"Floor: " + std::to_string(gvars::currentz));
 
     if(inputState.key[Key::LShift] && inputState.key[Key::X].time == 1)
     { // Spit out some info about some states regard to global stuffs.
@@ -250,12 +251,12 @@ void bountyTowerLoop()
             bountytower::pausewaves = true;
             gvars::currentz++;
             elevateElevatorInhabitants();
+            soundmanager.playSound("ding.wav"); // zomfg sounds, so gud.
         }
-
-
     }
 
     //lmbPress();
+
 }
 
 void buildTower(std::string towerName)
