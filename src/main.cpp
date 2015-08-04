@@ -2812,12 +2812,20 @@ void drawItems()
 
 void displayChat(sf::Vector2f position)
 {
+    sf::View view = window.getDefaultView();
+    window.setView(view);
+    // restore the default view
+    window.setView(window.getDefaultView());
+
+
+
     if (gCtrl.phase != "MainMenu")
         effects.createSquare(
             position.x - 10, position.y + 10, position.x + 500,
-            (position.y - ((chatBox.chatStorage.size() + 1) * 10)),
+            (position.y - ((11) * 10)), // (position.y - ((chatBox.chatStorage.size() + 1) * 10)),
             sf::Color(0, 0, 0, 100), 2, sf::Color::Cyan);
 
+    /*
     for (size_t i = 0; i != chatBox.chatStorage.size(); i++)
     {
         textList.createText(
@@ -2825,6 +2833,23 @@ void displayChat(sf::Vector2f position)
             ((position.y - ((chatBox.chatStorage.size()) * 10))-10) + (i * 10), 10,
             chatBox.chatStorage[i].color, chatBox.chatStorage[i].line);
     }
+    */
+    if(chatBox.chatStorage.size() == 0)
+    {
+        for(int i = 0; i != 10; i++)
+        {
+            chatBox.addChat("X",sf::Color::Black);
+        }
+    }
+    for (size_t i = chatBox.chatStorage.size(); i != chatBox.chatStorage.size()-10; i--)
+    {
+        textList.createText(
+            position.x,
+            ((position.y - ((chatBox.chatStorage.size()) * 10))-10) + ((i-1) * 10), 10,
+            chatBox.chatStorage[i-1].color, chatBox.chatStorage[i-1].line);
+    }
+
+
     if(network::chatting)
     {
         if(gvars::secondSwitch)
@@ -2832,6 +2857,8 @@ void displayChat(sf::Vector2f position)
         else
             textList.createText(gvars::bottomLeft.x+10,gvars::bottomLeft.y-15,10,sf::Color::White,"Chat: " + cliCon.chatString + "|");
     }
+
+    window.setView(gvars::view1);
 
 }
 

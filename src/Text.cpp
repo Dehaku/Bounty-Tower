@@ -147,10 +147,22 @@ void ChatBox::addChat(std::string text, sf::Color color)
 
 void ChatBox::displayChat(sf::Vector2f position)
 {
+    /*
     for (size_t i = 0; i != chatStorage.size(); i++)
     {
         textList.createText(position.x,
                             (position.y - (chatStorage.size() * 10)) + (i * 10),
                             11, chatStorage[i].color, chatStorage[i].line);
     }
+    */
+
+    for (size_t i = chatStorage.size(); i != (chatStorage.size()-5); i--)
+    {
+        std::cout << "Chatbox (i):" << i << std::endl;
+        textList.createText(position.x,
+                            (position.y - (chatStorage.size() * 10)) + (i * 10),
+                            11, chatStorage[i].color, chatStorage[i].line);
+    }
+
+
 }
