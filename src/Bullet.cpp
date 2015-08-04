@@ -134,6 +134,7 @@ void Bullet::moveBullet()
             {
                 toDelete = true;
                 i->modhealth(-50);
+                //WorkHere
                 targetsHit.ptrs.push_back(i);
             }
         }

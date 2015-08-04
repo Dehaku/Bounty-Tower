@@ -2856,6 +2856,8 @@ void drawSelectedCritterHUD()
 
         window.draw(CIH);
 
+
+
         for (int i = 0; i != 20; i++)
         {
             sf::Vector2f vPos = gvars::slotPos[i];
@@ -2865,16 +2867,31 @@ void drawSelectedCritterHUD()
             {
                 sf::Sprite SP;
                 sf::Vector2u TexySize;
+                std::cout << "Slot: " << i << std::endl;
+                if(myTargetPtr->invSlots[i]->img.getTexture() == nullptr
+                   || myTargetPtr->invSlots[i]->name == "")
+                    //FUCK YOU
+                {
+                    std::cout << "Breaking on Item GetTexture() of slot:" << i << std::endl;
+                    break;
+                }
+
+                std::cout << "Working on item: " << myTargetPtr->invSlots[i]->name << std::endl;
+
                 try
                 {
-                    sf::Vector2u TexySize = myTargetPtr->invSlots[i]->img.getTexture()->getSize();
+                    //TexySize = myTargetPtr->invSlots[i]->img.getTexture()->getSize();
+                    std::cout << "Working on item: " << myTargetPtr->invSlots[i]->name << std::endl;
+                    //Item ItemTex = *getGlobalItem(myTargetPtr->invSlots[i]->name);
+
+                    //TexySize = ItemTex.img.getTexture()->getSize();
                 }
                 catch (std::exception& e) { std::cout << "Something went wrong in TexySize\n"; }
 
                 SP.setTexture(*myTargetPtr->invSlots[i]->img.getTexture());
                 //sf::Vector2f rPos(gvars::topLeft.x + vPos.x, gvars::topLeft.y + vPos.y);
                 SP.setPosition(vPos);
-                SP.setOrigin(TexySize.x/2,TexySize.y/2);
+                //SP.setOrigin(SP.getTexture()->getSize().x/2,SP.getTexture()->getSize().y/2);
                 window.draw(SP);
             }
         }

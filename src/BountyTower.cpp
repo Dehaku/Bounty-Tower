@@ -8,6 +8,29 @@ template <typename T> T &listAt(std::list<T> &list, size_t index)
 }
 
 
+void equipStarters()
+{
+    for(auto &member : npclist)
+    {
+        itemPtrVector IPV = randomEquipment(member.inventory);
+
+            //std::cout << IPV.ptrs.size() << ", IPV. \n";
+            //fSleep(2);
+            for (auto &i : IPV.ptrs)
+            {
+                if(i->type == 2)
+                {
+                    Item bullet;
+                    bullet = *getGlobalItem("5.56mm");
+                    bullet.amount = 30;
+
+                    i->internalitems.push_back(bullet);
+                }
+            }
+    }
+
+}
+
 void bountyTowerSetup()
 {
     assignSlotPos();
@@ -44,6 +67,7 @@ void bountyTowerSetup()
     conFact->factRelations.push_back(factR);
 
     addMembers(4,"The Titanium Grip");
+    equipStarters();
 
 
     FactPtr = addFaction("Towerlings");
@@ -77,6 +101,7 @@ int elevateElevatorInhabitants()
 
 void bountyTowerLoop()
 {
+
     cameraControls();
 
     int mouseX = gvars::mousePos.x, mouseY = gvars::mousePos.y;
@@ -84,7 +109,7 @@ void bountyTowerLoop()
     //textList.createText(gvars::mousePos.x,gvars::mousePos.y,15,sf::Color::Cyan,stringy);
 
     if(inputState.key[Key::X].time == 1)
-    {
+    { // Print Faction Names
         for(auto & fact : uniFact)
         {
             std::cout << fact.name << std::endl;
@@ -92,7 +117,7 @@ void bountyTowerLoop()
     }
 
     if(inputState.key[Key::G].time == 1)
-    {
+    { // Renew Menu Towers
         towers.clear();
         int Amt = randz(5,30);
         for(int i = 0; i != Amt; i++)
@@ -103,7 +128,7 @@ void bountyTowerLoop()
     }
 
     if (gCtrl.menuType != "NULL")
-    {
+    { // Menu Code
         menuPopUp();
     }
     else
@@ -117,10 +142,9 @@ void bountyTowerLoop()
     critterBrain(npclist);
 
 
-
     if(inputState.key[Key::Space])
         for(auto &npc : npclist)
-    {
+    { // Move NPC's towards mouse
         npc.dirMove(gvars::mousePos);
     }
 
@@ -228,7 +252,7 @@ void bountyTowerLoop()
     }
 
     if(bountytower::elevatoravailable)
-    {
+    { // Prints Elevator HUD and other such things
 
         textList.createText(gvars::centerScreen.x,gvars::topLeft.y+50,20,sf::Color::Green,"Elevator is Ready!");
 

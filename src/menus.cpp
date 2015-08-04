@@ -452,7 +452,7 @@ void menuPopUp()
         }
     }
 
-    if (gCtrl.menuType == "BlankRMB")
+    if (gCtrl.menuType == "BlankRMB" && inputState.key[Key::LControl])
     {
 
         int options = 8;
