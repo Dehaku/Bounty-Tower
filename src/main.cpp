@@ -2838,7 +2838,7 @@ void displayChat(sf::Vector2f position)
     {
         for(int i = 0; i != 10; i++)
         {
-            chatBox.addChat("X",sf::Color::Black);
+            chatBox.addChat("",sf::Color::Black);
         }
     }
     for (size_t i = chatBox.chatStorage.size(); i != chatBox.chatStorage.size()-10; i--)
