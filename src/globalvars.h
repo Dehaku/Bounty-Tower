@@ -73,4 +73,38 @@ extern int musicVolume;
 extern int vocalVolume;
 }
 
+
+struct critScore
+{
+     float normalCritChance;
+     float alphaCritChance;
+     float betaCritChance;
+     float gammaCritChance;
+     float deltaCritChance;
+     float epsilonCritChance;
+     float zetaCritChance;
+     float etaCritChance;
+     float thetaCritChance;
+     float iotaCritChance;
+     float kappaCritChance;
+     float lambdaCritChance;
+     float muCritChance;
+
+     float normalDamageMultiplier;
+     float alphaDamageMultiplier;
+     float betaDamageMultiplier;
+     float gammaDamageMultiplier;
+     float deltaDamageMultiplier;
+     float epsilonDamageMultiplier;
+     float zetaDamageMultiplier;
+     float etaDamageMultiplier;
+     float thetaDamageMultiplier;
+     float iotaDamageMultiplier;
+     float kappaDamageMultiplier;
+     float lambdaDamageMultiplier;
+     float muDamageMultiplier;
+
+    critScore();
+};
+
 #endif // GLOBALS_H_INCLUDED

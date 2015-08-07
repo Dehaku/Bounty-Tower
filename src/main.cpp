@@ -5399,6 +5399,44 @@ int voidValue(std::string Type, void* Object)
 }
 */
 
+
+double critDamages(float damage, critScore crit)
+{
+    std::cout << "\n===Crit Damages===\n";
+    std::cout << "damage = " << damage << std::endl;
+    std::cout << "Norm Crit Chance/Damage: " << crit.normalCritChance << " : " << crit.normalDamageMultiplier << std::endl;
+    //std::cout <<
+    std::cout << "Gamma Crit Chance/Damage: " << crit.gammaCritChance << " : " << crit.gammaDamageMultiplier << std::endl;
+    std::cout << "Iota Crit Chance/Damage: " << crit.iotaCritChance << " : " << crit.iotaDamageMultiplier << std::endl;
+
+    std::cout << "Mu Roll/Damage: " << randz(1,crit.muCritChance) << "/" << damage*crit.muDamageMultiplier << std::endl;
+    std::cout << "================== \n";
+    int dogEatDog = 0;
+    for(int x = 0; x != 4; x++)
+    {
+        int TopDog = 0;
+        for(int i = 0; i != 25; i++)
+        {
+            //int roll = randz(1,10000000);
+            int roll = random(1,crit.iotaCritChance);
+            if(roll > TopDog)
+                TopDog = roll;
+            std::cout << "iota Roll/Damage: " << roll << "/" << damage*crit.muDamageMultiplier << std::endl;
+        }
+        std::cout << "Highest Roll: " << TopDog << std::endl;
+    }
+    std::cout << "Ultimate High: " << dogEatDog << std::endl;
+
+
+
+    std::cout << "random(5,500): " << random(5,500) << std::endl;
+    std::cout << "random(5,500): " << random(5,500) << std::endl;
+    std::cout << "random(5,500): " << random(5,500) << std::endl;
+    std::cout << "random(5,500): " << random(5,500) << std::endl;
+
+
+}
+
 int main()
 {
     //srand(clock());
@@ -5427,6 +5465,12 @@ int main()
     newItemstuffs();
 
     VoidTypeTest();
+
+    critScore CRITZ;
+
+    critDamages(randz(1,100), CRITZ);
+
+
 
     while (window.isOpen())
     {

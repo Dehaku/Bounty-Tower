@@ -41,6 +41,10 @@ public:
 
 void bountyBrain(Npc &npc, std::list<Npc> &container);
 
+
+
+
+
 namespace bountytower
 {
     extern bool elevatoravailable;

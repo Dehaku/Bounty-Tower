@@ -11,6 +11,7 @@
 #include "Networking.h"
 #include "menus.h"
 #include "Skills.h"
+#include "BountyTower.h"
 
 #include <list>
 #include <set>
@@ -327,6 +328,7 @@ public:
     float bloodworkXX(std::string aliment, int amount);
     bool closeToTarget(int distance, sf::Vector2f Tar);
     void addItem(std::string const &itemname, int amount);
+    void takeDamage(float amount, critScore crit);
 
     short minmeleedamage;
     short maxmeleedamage;

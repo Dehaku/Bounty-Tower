@@ -1277,6 +1277,16 @@ bool Npc::operator<(const Npc &other) const
     return other.id > id;
 }
 
+double critDamage(float damage, critScore crit)
+{
+
+}
+
+void Npc::takeDamage(float amount, critScore crit)
+{
+
+}
+
 void timeTest()
 {
 
@@ -1726,6 +1736,8 @@ void NpcManager::initializeCritters()
         }
     }
 }
+
+
 
 MakeSquad::MakeSquad()
 {
