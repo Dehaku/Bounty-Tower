@@ -24,7 +24,9 @@
 #include "Bullet.h"
 #include "Camera.h"
 
+
 #include <SFML/Audio.hpp>
+#include "AnimatedSprite.hpp"
 
 #define USE_PATHER
 
@@ -5437,6 +5439,11 @@ double critDamages(float damage, critScore crit)
 
 }
 
+void testAnimation()
+{
+
+}
+
 int main()
 {
     //srand(clock());
@@ -5464,16 +5471,121 @@ int main()
     soundmanager.playSound("Startup.wav");
     newItemstuffs();
 
-    VoidTypeTest();
+    //VoidTypeTest();
 
-    critScore CRITZ;
+    //critScore CRITZ;
 
-    critDamages(randz(1,100), CRITZ);
+    //critDamages(randz(1,100), CRITZ);
 
 
+
+
+
+
+
+
+
+
+      sf::Texture texture;
+    if (!texture.loadFromFile("data/gfx/SpriteSheet.png"))
+    {
+        std::cout << "Failed to load player spritesheet!" << std::endl;
+        return 1;
+    }
+
+    // set up the animations for all four directions (set spritesheet and push frames)
+    Animation walkingAnimationDown;
+    walkingAnimationDown.setSpriteSheet(texture);
+    walkingAnimationDown.addFrame(sf::IntRect(32, 0, 32, 32));
+    walkingAnimationDown.addFrame(sf::IntRect(64, 0, 32, 32));
+    walkingAnimationDown.addFrame(sf::IntRect(32, 0, 32, 32));
+    walkingAnimationDown.addFrame(sf::IntRect( 0, 0, 32, 32));
+
+    Animation walkingAnimationLeft;
+    walkingAnimationLeft.setSpriteSheet(texture);
+    walkingAnimationLeft.addFrame(sf::IntRect(32, 32, 32, 32));
+    walkingAnimationLeft.addFrame(sf::IntRect(64, 32, 32, 32));
+    walkingAnimationLeft.addFrame(sf::IntRect(32, 32, 32, 32));
+    walkingAnimationLeft.addFrame(sf::IntRect( 0, 32, 32, 32));
+
+    Animation walkingAnimationRight;
+    walkingAnimationRight.setSpriteSheet(texture);
+    walkingAnimationRight.addFrame(sf::IntRect(32, 64, 32, 32));
+    walkingAnimationRight.addFrame(sf::IntRect(64, 64, 32, 32));
+    walkingAnimationRight.addFrame(sf::IntRect(32, 64, 32, 32));
+    walkingAnimationRight.addFrame(sf::IntRect( 0, 64, 32, 32));
+
+    Animation walkingAnimationUp;
+    walkingAnimationUp.setSpriteSheet(texture);
+    walkingAnimationUp.addFrame(sf::IntRect(32, 96, 32, 32));
+    walkingAnimationUp.addFrame(sf::IntRect(64, 96, 32, 32));
+    walkingAnimationUp.addFrame(sf::IntRect(32, 96, 32, 32));
+    walkingAnimationUp.addFrame(sf::IntRect( 0, 96, 32, 32));
+
+    Animation* currentAnimation = &walkingAnimationDown;
+
+    // set up AnimatedSprite
+    AnimatedSprite animatedSprite(sf::seconds(0.2), true, false);
+    animatedSprite.setPosition(sf::Vector2f(20,20));
+
+    sf::Clock frameClock;
+
+    float speed = 80.f;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    testAnimation();
 
     while (window.isOpen())
     {
+        sf::Time frameTime = frameClock.restart();
+
+        if(inputState.key[Key::U])
+        {
+            currentAnimation = &walkingAnimationUp;
+        }
+        if(inputState.key[Key::J])
+        {
+            currentAnimation = &walkingAnimationLeft;
+        }
+        if(inputState.key[Key::L])
+        {
+            currentAnimation = &walkingAnimationRight;
+        }
+        if(inputState.key[Key::K])
+        {
+            currentAnimation = &walkingAnimationDown;
+        }
+
+        animatedSprite.play(*currentAnimation);
+        animatedSprite.update(sf::milliseconds(500));
+        sf::Time timer = frameTime;
+        //std::cout << "frametime: " << timer.asSeconds() << std::endl;
+
+
+
+
+
         gvars::hovering = false;
         if (inputState.key[Key::R] && !network::chatting)
         {
@@ -5505,6 +5617,9 @@ int main()
         debug("Pre Draw Stuffs");
         hoverItemIDdisplay();
         drawStuffs();
+
+        window.draw(animatedSprite);
+
         window.display();
         window.clear();
         debug("Post Draw Stuffs");

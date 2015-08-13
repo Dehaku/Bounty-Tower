@@ -71,6 +71,7 @@ extern bool transitionLock;
 extern int soundVolume;
 extern int musicVolume;
 extern int vocalVolume;
+extern bool tileEdit;
 }
 
 

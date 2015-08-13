@@ -179,4 +179,6 @@ int soundVolume = 50;
 int musicVolume = 50;
 int vocalVolume = 50;
 
+bool tileEdit = false;
+
 } // namespace gvars

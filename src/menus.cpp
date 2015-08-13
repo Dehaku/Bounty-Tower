@@ -319,7 +319,11 @@ MenuPointerContainer::MenuPointerContainer()
 
 // TODO: Add functionality to allow you to press 1-9
 // to activate the menu buttons.
-
+void menuClose()
+{
+    gCtrl.menuPos = sf::Vector2f(-10000, -10000);
+    gCtrl.menuType = "NULL";
+}
 
 void menuPopUp()
 {
@@ -452,7 +456,72 @@ void menuPopUp()
         }
     }
 
-    if (gCtrl.menuType == "BlankRMB" && inputState.key[Key::LControl])
+
+    if (gCtrl.menuType == "DebugCreateTile")
+    {
+
+        int options = 8;
+        gCtrl.menuEndPos = sf::Vector2f(gCtrl.menuPos.x + 150,
+                                        (gCtrl.menuPos.y + (options * 13)) + 5);
+        effects.createSquare(gCtrl.menuPos.x, gCtrl.menuPos.y,
+                             gCtrl.menuEndPos.x, gCtrl.menuEndPos.y,
+                             sf::Color::Black, 2, sf::Color::Cyan);
+        int iY = 0;
+        int brd = 140;                      // ButtonRightDisplacement.
+        int bs = 7;                         // ButtonSize;
+        int bsy = 5;                        // ButtonSize;
+        int mbd = 8;                        // MoveButtonDown
+        sf::Color butCol = sf::Color::Cyan; // ButtonColor.
+
+        for (int i = 0; i != options; i++)
+        {
+
+            if (i == 0)
+            {
+                effects.createLine(
+                    gCtrl.menuPos.x, (gCtrl.menuPos.y + (iY * 13)) + 13,
+                    gCtrl.menuPos.x + 90, (gCtrl.menuPos.y + (iY * 13)) + 13, 1,
+                    sf::Color::Cyan);
+                textList.createText(gCtrl.menuPos.x + 2,
+                                    gCtrl.menuPos.y + (iY * 13), 12,
+                                    sf::Color::White, "Spawn - Wall");
+                int butt = createSquareButton(
+                    math::Vec2f(gCtrl.menuPos.x + brd,
+                                (gCtrl.menuPos.y + (iY * 13)) + mbd),
+                    bs, bsy, butCol, "Makes a Wall!");
+                if (squareButtonClicked(butt) ||
+                    inputState.key[Key::Num1].time == 1)
+                {
+                    rmbMenuTile(    Vec3(gCtrl.menuPos.x,gCtrl.menuPos.y,gvars::currentz*20)   );
+                }
+            }
+
+            if (i == 1)
+            {
+                effects.createLine(
+                    gCtrl.menuPos.x, (gCtrl.menuPos.y + (iY * 13)) + 13,
+                    gCtrl.menuPos.x + 90, (gCtrl.menuPos.y + (iY * 13)) + 13, 1,
+                    sf::Color::Cyan);
+                textList.createText(gCtrl.menuPos.x + 2,
+                                    gCtrl.menuPos.y + (iY * 13), 12,
+                                    sf::Color::White, "Spawn - Natural Wall");
+                int Butt = createSquareButton(
+                    math::Vec2f(gCtrl.menuPos.x + brd,
+                                (gCtrl.menuPos.y + (iY * 13)) + mbd),
+                    bs, bsy, butCol, "Digs out a natural wall.");
+                if (squareButtonClicked(Butt) ||
+                    inputState.key[Key::Num1].time == 1)
+                {
+                    digWall(Vec3(gCtrl.menuPos.x,gCtrl.menuPos.y,gvars::currentz*20));
+                }
+            }
+
+            iY++;
+        }
+    }
+
+
+    if (gCtrl.menuType == "BlankRMB")
     {
 
         int options = 8;
@@ -605,6 +674,30 @@ void menuPopUp()
                 }
             }
 
+            if (i == 7)
+            {
+                //Effectz.CreateLine(GC.MenuPos.x,(GC.MenuPos.y+(iY*13))+8,GC.MenuPos.x+90,(GC.MenuPos.y+(iY*13))+8,3,Black,1,Yellow);
+                effects.createLine(
+                    gCtrl.menuPos.x, (gCtrl.menuPos.y + (iY * 13)) + 13,
+                    gCtrl.menuPos.x + 90, (gCtrl.menuPos.y + (iY * 13)) + 13, 1,
+                    sf::Color::Cyan);
+                textList.createText(gCtrl.menuPos.x + 2,
+                                    gCtrl.menuPos.y + (iY * 13), 12,
+                                    sf::Color::White, "World Modify - Toggle");
+                int butt = createSquareButton(
+                    math::Vec2f(gCtrl.menuPos.x + brd,
+                                (gCtrl.menuPos.y + (iY * 13)) + mbd),
+                    bs, bsy, butCol,
+                    "This opens the menu to build various structures!");
+                if (squareButtonClicked(butt) ||
+                    inputState.key[Key::Num7].time == 1)
+                {
+                    toggle(gvars::tileEdit);
+                    //fSleep(0.2);
+                    menuClose();
+                    return;
+                }
+            }
 
             if (i == -5)
             {
