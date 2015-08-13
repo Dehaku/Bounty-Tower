@@ -1815,7 +1815,7 @@ void critterEquip(Npc &npc, std::list<Npc> &container)
         }
 
     }
-    if(inputState.key[Key::I].time == 1)
+    if(inputState.key[Key::I].time == 1 && inputState.key[Key::LShift])
     {
         std::cout << npc.name << "'s inventory; \n";
         for (int i = 0; i != 20; i++)
@@ -5482,24 +5482,22 @@ int main()
 
 
 
-
-
-
-
-      sf::Texture texture;
+    // http://en.sfml-dev.org/forums/index.php?topic=10281.0
+    Animation walkingAnimationDown;
+    sf::Texture texture;
     if (!texture.loadFromFile("data/gfx/SpriteSheet.png"))
     {
         std::cout << "Failed to load player spritesheet!" << std::endl;
         return 1;
     }
-
     // set up the animations for all four directions (set spritesheet and push frames)
-    Animation walkingAnimationDown;
     walkingAnimationDown.setSpriteSheet(texture);
     walkingAnimationDown.addFrame(sf::IntRect(32, 0, 32, 32));
     walkingAnimationDown.addFrame(sf::IntRect(64, 0, 32, 32));
     walkingAnimationDown.addFrame(sf::IntRect(32, 0, 32, 32));
     walkingAnimationDown.addFrame(sf::IntRect( 0, 0, 32, 32));
+
+
 
     Animation walkingAnimationLeft;
     walkingAnimationLeft.setSpriteSheet(texture);
@@ -5521,6 +5519,15 @@ int main()
     walkingAnimationUp.addFrame(sf::IntRect(64, 96, 32, 32));
     walkingAnimationUp.addFrame(sf::IntRect(32, 96, 32, 32));
     walkingAnimationUp.addFrame(sf::IntRect( 0, 96, 32, 32));
+
+    Animation shootingAnimationUp;
+    shootingAnimationUp.setSpriteSheet(texturemanager.getTexture("EnergySheet.png"));
+    shootingAnimationUp.addFrame(sf::IntRect(32, 0, 32, 32));
+    shootingAnimationUp.addFrame(sf::IntRect(64, 0, 32, 32));
+    shootingAnimationUp.addFrame(sf::IntRect(32, 0, 32, 32));
+    shootingAnimationUp.addFrame(sf::IntRect( 0, 0, 32, 32));
+
+
 
     Animation* currentAnimation = &walkingAnimationDown;
 
@@ -5560,9 +5567,14 @@ int main()
     {
         sf::Time frameTime = frameClock.restart();
 
-        if(inputState.key[Key::U])
+
+        if(inputState.key[Key::I])
         {
             currentAnimation = &walkingAnimationUp;
+        }
+        if(inputState.key[Key::U])
+        {
+            currentAnimation = &shootingAnimationUp;
         }
         if(inputState.key[Key::J])
         {
@@ -5578,7 +5590,15 @@ int main()
         }
 
         animatedSprite.play(*currentAnimation);
-        animatedSprite.update(sf::milliseconds(500));
+
+        if(inputState.key[Key::Space])
+            animatedSprite.update(sf::milliseconds(50));
+        else if(inputState.key[Key::Space] && inputState.key[Key::LShift])
+            animatedSprite.update(sf::milliseconds(500));
+        else if(inputState.key[Key::LControl])
+            animatedSprite.update(sf::milliseconds(2));
+        else
+            animatedSprite.update(sf::milliseconds(10));
         sf::Time timer = frameTime;
         //std::cout << "frametime: " << timer.asSeconds() << std::endl;
 
