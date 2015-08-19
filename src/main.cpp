@@ -27,6 +27,7 @@
 
 #include <SFML/Audio.hpp>
 #include "AnimatedSprite.hpp"
+#include "particle.h"
 
 #define USE_PATHER
 
@@ -3173,7 +3174,7 @@ void acquireSelectedNPCs()
     {
         if (gvars::heldClickPos == sf::Vector2f(-1, -1))
             gvars::heldClickPos = gvars::mousePos;
-        effects.createSquare(gvars::heldClickPos.x,gvars::heldClickPos.y, gvars::mousePos.x,gvars::mousePos.y,sf::Color(0, 255, 255, 100));
+        effects.createSquare(gvars::heldClickPos.x,gvars::heldClickPos.y, gvars::mousePos.x,gvars::mousePos.y,sf::Color(0, 0, 0, 0),5,sf::Color(0, 255, 255));
     }
     else
         gvars::heldClickPos = sf::Vector2f(-1, -1);
@@ -5444,6 +5445,46 @@ void testAnimation()
 
 }
 
+class fpsKeeper
+{
+public:
+    int framesPassed;
+    float framesPerSecond;
+
+    sf::Clock fpsTimerLive;
+    sf::Clock fpsTimer;
+
+    sf::Time framesPassedTime;
+
+    fpsKeeper()
+    {
+        framesPassed = 0;
+        framesPerSecond = 0;
+        framesPassedTime = fpsTimer.restart();
+    }
+
+    void calcFPS()
+    {
+        framesPassed++;
+
+        float estimatedFPS = -1;
+        if(fpsTimerLive.getElapsedTime().asMilliseconds() != 0)
+            estimatedFPS = 1000/fpsTimerLive.getElapsedTime().asMilliseconds();
+        fpsTimerLive.restart();
+
+        if(fpsTimer.getElapsedTime().asMilliseconds() >= 1000)
+        {
+            framesPerSecond = framesPassed;
+            framesPassed = 0;
+            framesPassedTime = fpsTimer.restart();
+        }
+
+        std::cout << "FPS(Live/Second/TenSecond): " << estimatedFPS << "/" << framesPerSecond << std::endl;
+    }
+
+};
+fpsKeeper fpsKeeper;
+
 int main()
 {
     //srand(clock());
@@ -5476,6 +5517,7 @@ int main()
     //critScore CRITZ;
 
     //critDamages(randz(1,100), CRITZ);
+
 
 
 
@@ -5545,12 +5587,17 @@ int main()
 
 
 
+    ParticleSystem particleSystem(window.getSize());
+    particleSystem.fuel(1000);
 
 
+    sf::Clock timer;
+    const sf::Uint32 UPDATE_STEP = 20;
+    const sf::Uint32 MAX_UPDATE_SKIP = 5;
+    sf::Uint32 nextUpdate = timer.getElapsedTime().asMilliseconds();
 
-
-
-
+    /* For some fancy mouse stuff */
+    sf::Vector2f lastMousePos(static_cast<sf::Vector2f>(window.getSize()));
 
 
 
@@ -5563,9 +5610,71 @@ int main()
 
     testAnimation();
 
+
+
     while (window.isOpen())
     {
+
+        fpsKeeper.calcFPS();
+
+
+
         sf::Time frameTime = frameClock.restart();
+
+
+
+
+        particleSystem.update(0.05);
+
+
+        if(inputState.key[Key::Space])
+            particleSystem.setDissolve();
+
+        if(inputState.key[Key::A])
+        {
+            if(particleSystem.getDissolutionRate() > 0)
+                particleSystem.setDissolutionRate( particleSystem.getDissolutionRate() - 1);
+        }
+
+        if(inputState.key[Key::S])
+            particleSystem.setDissolutionRate(particleSystem.getDissolutionRate() + 1);
+
+        if(inputState.key[Key::W])
+            particleSystem.setParticleSpeed(particleSystem.getParticleSpeed() + particleSystem.getParticleSpeed() * 0.1);
+
+        if(inputState.key[Key::Q] && particleSystem.getParticleSpeed() > 0)
+            particleSystem.setParticleSpeed( particleSystem.getParticleSpeed() - particleSystem.getParticleSpeed() * 0.1);
+
+        if(inputState.key[Key::E])
+            particleSystem.setDistribution();
+
+        sf::Vector2f mousePos =
+        static_cast<sf::Vector2f>(sf::Mouse::getPosition(window));
+
+        if(mousePos.x > 0
+        || mousePos.y > 0
+        || mousePos.x < window.getSize().x
+        || mousePos.y < window.getSize().y)
+            particleSystem.setPosition(mousePos);
+
+
+
+
+        if(sf::Mouse::isButtonPressed(sf::Mouse::Left))
+            particleSystem.fuel(250);
+        if(sf::Mouse::isButtonPressed(sf::Mouse::Right))
+        {
+            sf::Vector2f newGravity = lastMousePos - mousePos;
+            newGravity *= 0.75f;
+            particleSystem.setGravity(newGravity);
+        }
+        if(sf::Mouse::isButtonPressed(sf::Mouse::Middle))
+            particleSystem.setGravity(0.0f, 0.0f);
+
+        /* Update Last Mouse Position */
+        lastMousePos = mousePos;
+
+
 
 
         if(inputState.key[Key::I])
@@ -5639,6 +5748,7 @@ int main()
         drawStuffs();
 
         window.draw(animatedSprite);
+        window.draw(particleSystem);
 
         window.display();
         window.clear();
