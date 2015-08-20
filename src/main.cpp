@@ -5445,7 +5445,7 @@ void testAnimation()
 
 }
 
-class fpsKeeper
+class fpsTracker
 {
 public:
     int framesPassed;
@@ -5456,7 +5456,7 @@ public:
 
     sf::Time framesPassedTime;
 
-    fpsKeeper()
+    fpsTracker()
     {
         framesPassed = 0;
         framesPerSecond = 0;
@@ -5480,10 +5480,13 @@ public:
         }
 
         std::cout << "FPS(Live/Second/TenSecond): " << estimatedFPS << "/" << framesPerSecond << std::endl;
+        int floatConv1 = estimatedFPS, floatConv2 = framesPerSecond;
+        std::string outPut = "FPS(" + std::to_string(floatConv1) + "/" + std::to_string(floatConv2) + ")";
+        textList.createText(gvars::topLeft.x,gvars::topLeft.y,15,sf::Color::White,outPut);
     }
 
 };
-fpsKeeper fpsKeeper;
+fpsTracker fpsKeeper;
 
 int main()
 {
@@ -5659,7 +5662,7 @@ int main()
 
 
 
-
+        /*
         if(sf::Mouse::isButtonPressed(sf::Mouse::Left))
             particleSystem.fuel(250);
         if(sf::Mouse::isButtonPressed(sf::Mouse::Right))
@@ -5670,6 +5673,8 @@ int main()
         }
         if(sf::Mouse::isButtonPressed(sf::Mouse::Middle))
             particleSystem.setGravity(0.0f, 0.0f);
+
+            */
 
         /* Update Last Mouse Position */
         lastMousePos = mousePos;
