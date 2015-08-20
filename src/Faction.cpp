@@ -2655,6 +2655,9 @@ void selectedNPCprocess()
         sf::Vector2f Pos = sf::Vector2f(var.xpos, var.ypos);
         effects.createCircle(Pos.x, Pos.y, 5,
                                 sf::Color(0, 255, 255, 100));
+
+        createImageButton(Pos,texturemanager.getTexture("SelectionCircle.png"),"",gvars::constantRotation);
+
     }
     if (gvars::selected.size() > 0)
     {

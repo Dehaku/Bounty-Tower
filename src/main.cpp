@@ -3635,7 +3635,6 @@ void lmbPress()
     debug("Pre Mouse Based Functions");
     if (inputState.lmb && gvars::hovering == false)
     {
-        std::cout << "lmbPress called successfully. \n";
         myTargetPtr = nullptr;
         gvars::myTarget = -1;
         gvars::myTargetid = -1;
@@ -5479,7 +5478,7 @@ public:
             framesPassedTime = fpsTimer.restart();
         }
 
-        std::cout << "FPS(Live/Second/TenSecond): " << estimatedFPS << "/" << framesPerSecond << std::endl;
+        //std::cout << "FPS(Live/Second/TenSecond): " << estimatedFPS << "/" << framesPerSecond << std::endl;
         int floatConv1 = estimatedFPS, floatConv2 = framesPerSecond;
         std::string outPut = "FPS(" + std::to_string(floatConv1) + "/" + std::to_string(floatConv2) + ")";
         textList.createText(gvars::topLeft.x,gvars::topLeft.y,15,sf::Color::White,outPut);
