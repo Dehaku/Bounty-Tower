@@ -335,6 +335,8 @@ Npc::Npc()
     graspNpcLeft = nullptr;
     graspNpcRight = nullptr;
 
+    hasPath = false;
+
     for (int i = 0; i != 20; i++)
     {
         invSlots[i] = nullptr;

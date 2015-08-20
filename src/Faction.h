@@ -68,6 +68,10 @@ public:
     Faction *factionPtr;
     std::string faction;
 
+    bool hasPath;
+    Vec3 endPos;
+    Vec3 startPos;
+
     Skills abilities;
 
     bool attacking;

@@ -1684,6 +1684,22 @@ void rightMouseButtonContextMenu()
             menuPopUp();
             return;
         }
+        if(gvars::selected.size() != 0)
+        {
+            for(auto &lilguy : npclist)
+            {
+                for(int i = 0; i != gvars::selected.size(); i++)
+                {
+                    if(lilguy.id == gvars::selected[i])
+                    {
+                        lilguy.hasPath = true;
+                        lilguy.endPos = Vec3(gvars::mousePos.x/GRID_SIZE,gvars::mousePos.y/GRID_SIZE,gvars::currentz);
+                    }
+
+                }
+            }
+            return;
+        }
 
         gCtrl.menuType = "BlankRMB";
         menuPopUp();

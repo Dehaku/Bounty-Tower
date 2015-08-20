@@ -2222,6 +2222,7 @@ ReDesire:
 
     bool hasPath = false;
 
+
     debug("Acting on highest Desire:" + (*highestDesire).type);
     if ((*highestDesire).type == "Apathy")
     {// TODO: Add blublublub
@@ -2660,7 +2661,23 @@ ReDesire:
             npc.storedPath.push_back(i);
         pathCon.storedPath.clear();
     }
-    if(hasPath == false)
+
+    if(math::distance(npc.endPos,startPos) <= npc.size/GRID_SIZE)
+        npc.hasPath = false;
+
+    if(npc.hasPath && (gvars::framesPassed % 5) == 0 && npcWalkable)
+    {
+        bool prevWalkable = tiles[npc.endPos.x][npc.endPos.y][npc.endPos.z].walkable;
+        tiles[npc.endPos.x][npc.endPos.y][npc.endPos.z].walkable = true;
+        int result = pathCon.makePath(startPos, npc.endPos);
+        tiles[npc.endPos.x][npc.endPos.y][npc.endPos.z].walkable = prevWalkable;
+        npc.storedPath.clear();
+        for(auto &i : pathCon.storedPath)
+            npc.storedPath.push_back(i);
+        pathCon.storedPath.clear();
+    }
+
+    if(hasPath == false && npc.hasPath == false)
         npc.storedPath.clear();
     debug("post hasPath");
 
@@ -5487,6 +5504,7 @@ public:
 };
 fpsTracker fpsKeeper;
 
+
 int main()
 {
     //srand(clock());
@@ -5519,10 +5537,6 @@ int main()
     //critScore CRITZ;
 
     //critDamages(randz(1,100), CRITZ);
-
-
-
-
 
 
 
