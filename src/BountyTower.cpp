@@ -99,10 +99,77 @@ int elevateElevatorInhabitants()
     return AmountRaised;
 }
 
+class debugTileTracker
+{
+public:
+    Tile useTile;
+    sf::Texture tex;
+    debugTileTracker()
+    {
+        useTile.id = -1;
+    }
+};
+debugTileTracker debugTileKeeper;
+
+void debugTileMode()
+{
+    int menuEdgeL = gvars::centerScreen.x+300;
+    int menuEdgeU = gvars::topLeft.y;
+    effects.createSquare(menuEdgeL,gvars::topLeft.y,gvars::topRight.x,gvars::bottomLeft.y,sf::Color::Black);
+
+    if(debugTileKeeper.useTile.id != -1)
+    {
+        debugTileKeeper.tex = *debugTileKeeper.useTile.img.getTexture();
+        sf::Vector2f vPos((gvars::mousePos.x/GRID_SIZE)*GRID_SIZE,(gvars::mousePos.y/GRID_SIZE)*GRID_SIZE);
+        createImageButton(vPos,debugTileKeeper.tex);
+
+        if(inputState.lmbTime > 5)
+        {
+            tiles[gvars::mousePos.x/GRID_SIZE][gvars::mousePos.y/GRID_SIZE][gvars::currentz] = debugTileKeeper.useTile;
+        }
+
+
+    }
+
+
+
+    int wallButt = createImageButton(sf::Vector2f(menuEdgeL+30,menuEdgeU+30),texturemanager.getTexture("FMTwallcheat2.png"));
+    if(imageButtonClicked(wallButt))
+        debugTileKeeper.useTile.BTwall();
+
+    int floorButt = createImageButton(sf::Vector2f(menuEdgeL+90,menuEdgeU+30),texturemanager.getTexture("FMTtile1.png"));
+    if(imageButtonClicked(floorButt))
+        debugTileKeeper.useTile.BTstone();
+
+    //
+    int grassButt = createImageButton(sf::Vector2f(menuEdgeL+30,menuEdgeU+30+60),texturemanager.getTexture("BTGrass.png"));
+    if(imageButtonClicked(grassButt))
+        debugTileKeeper.useTile.BTgrass();
+    int waterButt = createImageButton(sf::Vector2f(menuEdgeL+30+60,menuEdgeU+30+60),texturemanager.getTexture("BTWater.png"));
+    if(imageButtonClicked(waterButt))
+        debugTileKeeper.useTile.BTwater();
+    int skyButt = createImageButton(sf::Vector2f(menuEdgeL+30+60+60,menuEdgeU+30+60),texturemanager.getTexture("BTSky.png"));
+    if(imageButtonClicked(skyButt))
+        debugTileKeeper.useTile.BTsky();
+
+
+}
+
 void bountyTowerLoop()
 {
 
+    if(gvars::tileEdit)
+    {
+        textList.createText(gvars::centerScreen.x,gvars::topLeft.y,10,gvars::cycleBlue,"Debug Tilemode Engaged");
+        debugTileMode();
+    }
+
+
+
+
     cameraControls();
+
+
 
     int mouseX = gvars::mousePos.x, mouseY = gvars::mousePos.y;
     std::string stringy = std::to_string(mouseX) + "/" + std::to_string(mouseY) + "(" + std::to_string(gvars::currentz) + ")";
