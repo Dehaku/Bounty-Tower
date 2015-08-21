@@ -506,7 +506,8 @@ void saveMap(int planet, int /*xcord*/, int /*ycord*/, int xpos, int ypos)
 {
     using namespace std; // Start to Save Map
     cout << "Saving current map to file...\n";
-    string line("saves/maps/map");
+    //string line("saves/maps/map");
+    string line("data/maps/Towers/map");
     stringstream convert;
     convert << planet;
     convert << xpos;
@@ -522,20 +523,24 @@ void saveMap(int planet, int /*xcord*/, int /*ycord*/, int xpos, int ypos)
     {
         for (int t = 0; t != GRIDS; t++)
         {
-            outputFile << tiles[i][t][30].id << endl;
+            for (int z = 0; z != CHUNK_SIZE; z++) // New
+            {
+                outputFile << tiles[i][t][z].id << endl;
+            }
         }
     }
 }
 
-void loadMap(int planet, int xcord, int ycord, int /*xpos*/, int /*ypos*/)
+void loadMap(int planet, int /*xcord*/, int /*ycord*/, int xpos, int ypos)
 {
     using namespace std;
     fstream file; // Start to Load Map
-    string newline("saves/maps/map");
+    //string newline("saves/maps/map");
+    string newline("data/maps/Towers/map");
     stringstream newconvert;
     newconvert << planet;
-    newconvert << xcord;
-    newconvert << ycord;
+    newconvert << xpos;
+    newconvert << ypos;
     newline.append(newconvert.str());
     string newending(".txt");
     newline.append(newending);
@@ -552,7 +557,14 @@ void loadMap(int planet, int xcord, int ycord, int /*xpos*/, int /*ypos*/)
         {
             for (int t = 0; t != GRIDS; t++)
             {
-                file >> tiles[i][t][30].id;
+                //Old - file >> tiles[i][t][z].id;
+                for (int z = 0; z != CHUNK_SIZE; z++) // New
+                {
+                    int tileID;
+                    file >> tileID;
+                    tiles[i][t][z].setTilebyID(tileID);
+                }
+
             }
         }
         file.close();
@@ -1484,6 +1496,29 @@ void Tile::setTilebyID(int ID)
         lava();
     else if(ID == 1700)
         sky();
+
+    else if(ID == 2001)
+        BTgrass();
+    else if(ID == 3007)
+        BTstone();
+    else if(ID == 2010)
+        BTwall();
+    else if(ID == 2020)
+        BTwater();
+    else if(ID == 2031)
+        BTstairs();
+    else if(ID == 2100)
+        BTdoor();
+    else if(ID == 3200)
+        BTelevatordoor();
+    else if(ID == 3202)
+        BTelevator();
+    else if(ID == 3500)
+        BTswitch();
+    else if(ID == 2700)
+        BTsky();
+
+
     else
         std::cout << "ERROR: ID not found for setTilebyID, ID: " << ID << std::endl;
 }

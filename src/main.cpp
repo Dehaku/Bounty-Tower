@@ -5630,7 +5630,10 @@ int main()
 
     while (window.isOpen())
     {
-
+        if(inputState.key[Key::Escape])
+        {
+            window.close();
+        }
         fpsKeeper.calcFPS();
 
 

@@ -130,6 +130,84 @@ void debugTileMode()
 
 
     }
+    if(inputState.key[Key::Space]) // Colors all walkable tiles
+    for(int x = 0; x != GRIDS; x++)
+        for(int y = 0; y != GRIDS; y++)
+    {
+        if(tiles[x][y][gvars::currentz].walkable)
+        {
+            effects.createSquare(x*GRID_SIZE,y*GRID_SIZE,(x+1)*GRID_SIZE,(y+1)*GRID_SIZE,sf::Color(0,255,255,100));
+        }
+    }
+
+    if(inputState.key[Key::H])
+    {// Identifies currently aimed Tile
+        std::cout << "Tile(ID/Walkable/transparent/health/deathID/goesUp/GoesDown/State): "
+        << std::endl
+        << tiles[gvars::mousePos.x/GRID_SIZE][gvars::mousePos.y/GRID_SIZE][gvars::currentz].id
+        << "/"
+        << tiles[gvars::mousePos.x/GRID_SIZE][gvars::mousePos.y/GRID_SIZE][gvars::currentz].walkable
+        << "/"
+        << tiles[gvars::mousePos.x/GRID_SIZE][gvars::mousePos.y/GRID_SIZE][gvars::currentz].transparent
+        << "/"
+        << tiles[gvars::mousePos.x/GRID_SIZE][gvars::mousePos.y/GRID_SIZE][gvars::currentz].health
+        << "/"
+        << tiles[gvars::mousePos.x/GRID_SIZE][gvars::mousePos.y/GRID_SIZE][gvars::currentz].deathID
+        << "/"
+        << tiles[gvars::mousePos.x/GRID_SIZE][gvars::mousePos.y/GRID_SIZE][gvars::currentz].goesUp
+        << "/"
+        << tiles[gvars::mousePos.x/GRID_SIZE][gvars::mousePos.y/GRID_SIZE][gvars::currentz].goesDown
+        << "/"
+        << tiles[gvars::mousePos.x/GRID_SIZE][gvars::mousePos.y/GRID_SIZE][gvars::currentz].state
+        << std::endl;
+    }
+
+    if(inputState.key[Key::LShift] && inputState.key[Key::LControl] && inputState.key[Key::O])
+    { // Saves map
+        if(inputState.key[Key::O].time == 30)
+        {
+            std::string outPut = "Hold for another ten seconds to save the current map layout, This cannot be undone. \n";
+            std::cout << outPut;
+            std::cout << outPut;
+            std::cout << outPut;
+            chatBox.addChat(outPut,sf::Color::Red);
+            chatBox.addChat(outPut,sf::Color::Red);
+            chatBox.addChat(outPut,sf::Color::Red);
+            soundmanager.playSound("Startup.wav");
+        }
+        if(inputState.key[Key::O].time == 300)
+        {
+            saveMap(636,0,0,50,50);
+            soundmanager.playSound("Startup.wav");
+            std::string outPut = "The current map has been saved! \n";
+            std::cout << outPut;
+            chatBox.addChat(outPut,sf::Color::Red);
+        }
+    }
+
+    if(inputState.key[Key::LShift] && inputState.key[Key::LControl] && inputState.key[Key::P])
+    { // Loads map
+        if(inputState.key[Key::P].time == 30)
+        {
+            std::string outPut = "Hold for another ten seconds to load the current map layout, This cannot be undone. \n";
+            std::cout << outPut;
+            std::cout << outPut;
+            std::cout << outPut;
+            chatBox.addChat(outPut,sf::Color::Blue);
+            chatBox.addChat(outPut,sf::Color::Blue);
+            chatBox.addChat(outPut,sf::Color::Blue);
+            soundmanager.playSound("Startup.wav");
+        }
+        if(inputState.key[Key::P].time == 300)
+        {
+            loadMap(636,0,0,50,50);
+            soundmanager.playSound("Startup.wav");
+            std::string outPut = "The current map has been loaded! \n";
+            std::cout << outPut;
+            chatBox.addChat(outPut,sf::Color::Blue);
+        }
+    }
+
 
 
 
