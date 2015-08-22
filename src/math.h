@@ -13,6 +13,7 @@ int closeish(int orix, int oriy, int tarx, int tary);
 int closeish(sf::Vector2f ori, sf::Vector2f tar);
 int closeisha(int orix, int oriy, int tarx, int tary);
 double distance(Vec3 Ori, Vec3 Tar);
+double distance(Vec3f Ori, Vec3f Tar);
 int distanceTrace(int xa, int ya, int xb, int yb);
 int closeishxx(int orix, int oriy, int tarx, int tary);
 int closeishS(int orix, int tarx);

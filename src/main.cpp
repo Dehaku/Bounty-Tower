@@ -1894,7 +1894,7 @@ void critterPush(Npc &npc, std::list<Npc> &container)
         int dist = math::distance(npc.myPos(),critters.myPos());
         if(dist <= npc.size)
         {
-            critters.momentum = sf::Vector2f(npc.myPos().x-critters.myPos().x,npc.myPos().y-critters.myPos().y);
+            critters.momentum = sf::Vector2f( -(npc.myPos().x-critters.myPos().x), -(npc.myPos().y-critters.myPos().y) );
         }
     }
 }

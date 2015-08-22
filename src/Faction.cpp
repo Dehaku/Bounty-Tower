@@ -313,6 +313,12 @@ void Npc::Skill::Train(std::string skill, int amount, int skillgain)
     }
 }
 
+Vec3f Npc::myPos()
+{
+    Vec3f myPos(xpos,ypos,zpos);
+    return myPos;
+}
+
 Npc::Npc()
     : attacking{}, firstStrike{}, imgRotates{}, prone{}, body{}, rot{}, xxx{},
       yyy{}, degrees{}, pathFinding{}, imgstrx{}, imgstry{}, imgendx{},
