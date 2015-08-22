@@ -333,8 +333,8 @@ public:
     float bloodworkXX(std::string aliment, int amount);
     bool closeToTarget(int distance, sf::Vector2f Tar);
     void addItem(std::string const &itemname, int amount);
-    void takeDamage(Npc &attacker, float amount, critScore crit);
-    void dealDamage(Npc &victim, Item &weapon);
+    std::string takeDamage(Npc &attacker, float amount, critScore crit);
+    std::string dealDamage(Npc &victim, Item &weapon);
 
     short minmeleedamage;
     short maxmeleedamage;

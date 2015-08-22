@@ -1290,20 +1290,26 @@ double critDamage(float damage, critScore crit)
 
 }
 
-void Npc::takeDamage(Npc &attacker, float amount, critScore crit)
+std::string Npc::takeDamage(Npc &attacker, float amount, critScore crit)
 {
-    std::cout << name << " is being harmed by " << attacker.name << std::endl;
-    std::cout << "Damage: " << amount << std::endl;
+
+    int dodgeChance = (skills.dexterity/2)+(skills.agility/2);
+    int dodgeRoll = random(0,100);
+    if(dodgeRoll <= dodgeChance)
+    {
+        std::cout << name << " dodged " << attacker.name << "'s attack! (" << dodgeRoll << "/" << dodgeChance << ")" << std::endl;
+        return "Dodged";
+    }
+
     modhealth(-amount);
-    attacker.momentum = sf::Vector2f(200,0);
+    return "";
 }
 
-void Npc::dealDamage(Npc &victim, Item &weapon)
+std::string Npc::dealDamage(Npc &victim, Item &weapon)
 {
-    std::cout << name << " is dealing damage to " << victim.name << std::endl;
     critScore pass;
-    std::cout << "Damage: " << weapon.maxdam << std::endl;
     victim.takeDamage(*this,weapon.maxdam,pass);
+    return "";
 }
 
 void timeTest()
