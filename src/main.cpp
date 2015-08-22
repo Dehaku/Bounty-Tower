@@ -1885,6 +1885,20 @@ void critterEquip(Npc &npc, std::list<Npc> &container)
 
 }
 
+void critterPush(Npc &npc, std::list<Npc> &container)
+{
+    for(auto &critters : container)
+    {
+        //Vec3f critterPos(critters.xpos,critters.ypos,critters.zpos);
+        //Vec3f myPos(critters.xpos,critters.ypos,critters.zpos);
+        int dist = math::distance(npc.myPos(),critters.myPos());
+        if(dist <= npc.size)
+        {
+            critters.momentum = sf::Vector2f(npc.myPos().x-critters.myPos().x,npc.myPos().y-critters.myPos().y);
+        }
+    }
+}
+
 void critterBrain(Npc &npc, std::list<Npc> &container)
 {
 
@@ -2730,6 +2744,8 @@ ReDesire:
         removeJobs(npc.factionPtr->jobList);
     removeItems(npc.inventory);
     debug("endCritterbrain2");
+
+    critterPush(npc, container);
 }
 
 void critterBrain(std::list<Npc> &npcs)
