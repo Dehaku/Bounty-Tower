@@ -5642,7 +5642,6 @@ int main()
 
     testAnimation();
 
-
     while (window.isOpen())
     {
         if(inputState.key[Key::Escape])

@@ -870,6 +870,8 @@ std::string Item::activate(Vec3f vPos) // Returns a string declaring the problem
                 continue;
             if(npc.health <= 0)
                 continue;
+            if(npc.faction == user->faction)
+                continue;
 
             sf::Vector2f npcPos(npc.xpos,npc.ypos);
 
@@ -878,12 +880,18 @@ std::string Item::activate(Vec3f vPos) // Returns a string declaring the problem
                 std::string outString;
                 outString.append(user->name + " has struck " + npc.name + " for " + std::to_string(maxdam) );
                 chatBox.addChat(outString,sf::Color::Red);
+
+                user->dealDamage(npc,*this);
+                //npc.modhealth(-maxdam);
+
                 Struck = true;
             }
         }
 
 
-        createImageButton(math::angleCalc(muzzlePosV2f,rot,60),texturemanager.getTexture("BTSword.png"),"", rot+90);
+        //createImageButton(math::angleCalc(muzzlePosV2f,rot,60),texturemanager.getTexture("BTSword.png"),"", rot+90);
+        //sf::Texture texy = ;
+        createImageButton(math::angleCalc(muzzlePosV2f,rot,60),*img.getTexture(),"", rot+90);
 
         soundmanager.playSound("Swing_xxchr0nosxx_1.ogg");
         if(Struck == true)

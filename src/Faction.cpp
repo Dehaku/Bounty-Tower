@@ -1290,9 +1290,20 @@ double critDamage(float damage, critScore crit)
 
 }
 
-void Npc::takeDamage(float amount, critScore crit)
+void Npc::takeDamage(Npc &attacker, float amount, critScore crit)
 {
+    std::cout << name << " is being harmed by " << attacker.name << std::endl;
+    std::cout << "Damage: " << amount << std::endl;
+    modhealth(-amount);
+    attacker.momentum = sf::Vector2f(200,0);
+}
 
+void Npc::dealDamage(Npc &victim, Item &weapon)
+{
+    std::cout << name << " is dealing damage to " << victim.name << std::endl;
+    critScore pass;
+    std::cout << "Damage: " << weapon.maxdam << std::endl;
+    victim.takeDamage(*this,weapon.maxdam,pass);
 }
 
 void timeTest()
