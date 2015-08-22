@@ -1387,6 +1387,7 @@ void Tile::BTstairs()
 
 void Tile::BTdoor()
 { // 2100
+    Tile();
     id = 2100;
     worldColor = sf::Color(255, 0, 0);
     img.setTexture(texturemanager.getTexture("FMTtile1.png"));

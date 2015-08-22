@@ -111,6 +111,16 @@ public:
 };
 debugTileTracker debugTileKeeper;
 
+void tileWipe()
+{
+    for(int x = 0; x != GRIDS; x++)
+        for(int y = 0; y != GRIDS; y++)
+            for(int z = 0; z != CHUNK_SIZE; z++)
+    {
+        tiles[x][y][z].BTgrass();
+    }
+}
+
 void debugTileMode()
 {
     int menuEdgeL = gvars::centerScreen.x+300;
@@ -125,7 +135,8 @@ void debugTileMode()
 
         if(inputState.lmbTime > 5)
         {
-            tiles[gvars::mousePos.x/GRID_SIZE][gvars::mousePos.y/GRID_SIZE][gvars::currentz] = debugTileKeeper.useTile;
+            //tiles[gvars::mousePos.x/GRID_SIZE][gvars::mousePos.y/GRID_SIZE][gvars::currentz] = debugTileKeeper.useTile;
+            tiles[gvars::mousePos.x/GRID_SIZE][gvars::mousePos.y/GRID_SIZE][gvars::currentz].setTilebyID(debugTileKeeper.useTile.id);
         }
 
 
@@ -200,6 +211,7 @@ void debugTileMode()
         }
         if(inputState.key[Key::P].time == 300)
         {
+            tileWipe();
             loadMap(636,0,0,50,50);
             soundmanager.playSound("Startup.wav");
             std::string outPut = "The current map has been loaded! \n";
@@ -209,7 +221,10 @@ void debugTileMode()
     }
 
 
-
+    if(inputState.key[Key::G].time == 10)
+    {
+        tileWipe();
+    }
 
     int wallButt = createImageButton(sf::Vector2f(menuEdgeL+30,menuEdgeU+30),texturemanager.getTexture("FMTwallcheat2.png"));
     if(imageButtonClicked(wallButt))
