@@ -245,6 +245,16 @@ void debugTileMode()
     if(imageButtonClicked(skyButt))
         debugTileKeeper.useTile.BTsky();
 
+    int switchButt = createImageButton(sf::Vector2f(menuEdgeL+30,menuEdgeU+30+60+60),texturemanager.getTexture("Switchboard.png"));
+    if(imageButtonClicked(switchButt))
+        debugTileKeeper.useTile.BTswitch();
+
+    int stairButt = createImageButton(sf::Vector2f(menuEdgeL+30+60,menuEdgeU+30+60+60),texturemanager.getTexture("Stairs.png"));
+    if(imageButtonClicked(stairButt))
+        debugTileKeeper.useTile.BTstairs();
+
+
+
 
 }
 

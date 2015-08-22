@@ -1455,7 +1455,7 @@ void Tile::BTswitch()
     worldColor = sf::Color(150, 150, 150);
     transparent = true;
     walkable = true;
-    img.setTexture(texturemanager.getTexture("FMTtile3.png"));
+    img.setTexture(texturemanager.getTexture("Switchboard.png"));
     state = "Off";
 }
 
