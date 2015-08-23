@@ -1312,7 +1312,7 @@ std::string Npc::dealDamage(Npc *victim, Item *weapon, float amount)
     if(weapon != nullptr)
         outPut = victim->takeDamage(this,weapon,weapon->maxdam,&pass);
     else
-        outPut = victim->takeDamage(this,weapon,0,&pass);
+        outPut = victim->takeDamage(this,weapon,amount);
 
 
     if(outPut == "Hit")
