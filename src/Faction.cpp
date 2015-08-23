@@ -1290,7 +1290,7 @@ double critDamage(float damage, critScore crit)
 
 }
 
-std::string Npc::takeDamage(Npc &attacker, float amount, critScore crit)
+std::string Npc::takeDamage(Npc &attacker, Item& weapon, float amount, critScore crit)
 {
 
     int dodgeChance = (skills.dexterity/2)+(skills.agility/2);
@@ -1302,13 +1302,13 @@ std::string Npc::takeDamage(Npc &attacker, float amount, critScore crit)
     }
 
     modhealth(-amount);
-    return "";
+    return "Hit";
 }
 
 std::string Npc::dealDamage(Npc &victim, Item &weapon)
 {
     critScore pass;
-    victim.takeDamage(*this,weapon.maxdam,pass);
+    victim.takeDamage(*this,weapon,weapon.maxdam,pass);
     return "";
 }
 
