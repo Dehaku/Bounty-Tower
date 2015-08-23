@@ -97,6 +97,10 @@ Skills::Skills()
     skill.desc = "Passive - Gain a 10% chance for magical projectiles/attacks to explode per rank.";
     list.push_back(skill);
 
+    skill.name = "Explosive Richochet";
+    skill.desc = "Passive - Gain a 60 radius for magical projectiles/attacks to explode per rank, each time they richochet.";
+    list.push_back(skill);
+
     skill.name = "Influencial Potential";
     skill.desc = "Passive - Gain a 5% chance for magical projectiles/attacks to charm minions per rank.";
     list.push_back(skill);
