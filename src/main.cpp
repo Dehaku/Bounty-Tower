@@ -27,7 +27,6 @@
 
 #include <SFML/Audio.hpp>
 #include "AnimatedSprite.hpp"
-#include "particle.h"
 
 #define USE_PATHER
 
@@ -5619,18 +5618,6 @@ int main()
 
 
 
-    ParticleSystem particleSystem(window.getSize());
-    particleSystem.fuel(1000);
-
-
-    sf::Clock timer;
-    const sf::Uint32 UPDATE_STEP = 20;
-    const sf::Uint32 MAX_UPDATE_SKIP = 5;
-    sf::Uint32 nextUpdate = timer.getElapsedTime().asMilliseconds();
-
-    /* For some fancy mouse stuff */
-    sf::Vector2f lastMousePos(static_cast<sf::Vector2f>(window.getSize()));
-
 
 
 
@@ -5654,60 +5641,6 @@ int main()
 
         sf::Time frameTime = frameClock.restart();
 
-
-
-
-        particleSystem.update(0.05);
-
-
-        if(inputState.key[Key::Space])
-            particleSystem.setDissolve();
-
-        if(inputState.key[Key::A])
-        {
-            if(particleSystem.getDissolutionRate() > 0)
-                particleSystem.setDissolutionRate( particleSystem.getDissolutionRate() - 1);
-        }
-
-        if(inputState.key[Key::S])
-            particleSystem.setDissolutionRate(particleSystem.getDissolutionRate() + 1);
-
-        if(inputState.key[Key::W])
-            particleSystem.setParticleSpeed(particleSystem.getParticleSpeed() + particleSystem.getParticleSpeed() * 0.1);
-
-        if(inputState.key[Key::Q] && particleSystem.getParticleSpeed() > 0)
-            particleSystem.setParticleSpeed( particleSystem.getParticleSpeed() - particleSystem.getParticleSpeed() * 0.1);
-
-        if(inputState.key[Key::E])
-            particleSystem.setDistribution();
-
-        sf::Vector2f mousePos =
-        static_cast<sf::Vector2f>(sf::Mouse::getPosition(window));
-
-        if(mousePos.x > 0
-        || mousePos.y > 0
-        || mousePos.x < window.getSize().x
-        || mousePos.y < window.getSize().y)
-            particleSystem.setPosition(mousePos);
-
-
-
-        /*
-        if(sf::Mouse::isButtonPressed(sf::Mouse::Left))
-            particleSystem.fuel(250);
-        if(sf::Mouse::isButtonPressed(sf::Mouse::Right))
-        {
-            sf::Vector2f newGravity = lastMousePos - mousePos;
-            newGravity *= 0.75f;
-            particleSystem.setGravity(newGravity);
-        }
-        if(sf::Mouse::isButtonPressed(sf::Mouse::Middle))
-            particleSystem.setGravity(0.0f, 0.0f);
-
-            */
-
-        /* Update Last Mouse Position */
-        lastMousePos = mousePos;
 
 
 
@@ -5744,6 +5677,32 @@ int main()
         else
             animatedSprite.update(sf::milliseconds(10));
         sf::Time timer = frameTime;
+
+        int  aniAngle = math::angleBetweenVectors(gvars::mousePos,sf::Vector2f(20,20));
+
+        textList.createText(0+20,60+20,10,sf::Color::White,"Angle:"+std::to_string(aniAngle));
+        int angMod = 45; // To help with the odd directionals.
+        if(inbetween(0,90,math::constrainAngle(aniAngle+angMod)))
+        {
+            std::cout << "Left \n";
+            effects.createLine(gvars::mousePos.x,gvars::mousePos.y,20,20,1,sf::Color::Red);
+        }
+        if(inbetween(90,180,math::constrainAngle(aniAngle+angMod)))
+        {
+            std::cout << "Up \n";
+            effects.createLine(gvars::mousePos.x,gvars::mousePos.y,20,20,1,sf::Color::Yellow);
+        }
+        if(inbetween(-180,-90,math::constrainAngle(aniAngle+angMod)))
+        {
+            std::cout << "Right \n";
+            effects.createLine(gvars::mousePos.x,gvars::mousePos.y,20,20,1,sf::Color::Blue);
+        }
+        if(inbetween(-90,0,math::constrainAngle(aniAngle+angMod)))
+        {
+            std::cout << "Down \n";
+            effects.createLine(gvars::mousePos.x,gvars::mousePos.y,20,20,1,sf::Color::Green);
+        }
+
         //std::cout << "frametime: " << timer.asSeconds() << std::endl;
 
 
@@ -5783,7 +5742,6 @@ int main()
         drawStuffs();
 
         window.draw(animatedSprite);
-        window.draw(particleSystem);
 
         window.display();
         window.clear();
