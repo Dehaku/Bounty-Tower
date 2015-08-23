@@ -5647,25 +5647,20 @@ int main()
 
 
         if(inputState.key[Key::I])
-        {
             currentAnimation = &walkingAnimationUp;
-        }
+
         if(inputState.key[Key::U])
-        {
             currentAnimation = &shootingAnimationUp;
-        }
+
         if(inputState.key[Key::J])
-        {
             currentAnimation = &walkingAnimationLeft;
-        }
+
         if(inputState.key[Key::L])
-        {
             currentAnimation = &walkingAnimationRight;
-        }
+
         if(inputState.key[Key::K])
-        {
             currentAnimation = &walkingAnimationDown;
-        }
+
 
         animatedSprite.play(*currentAnimation);
 
@@ -5677,7 +5672,6 @@ int main()
             animatedSprite.update(sf::milliseconds(2));
         else
             animatedSprite.update(sf::milliseconds(10));
-        sf::Time timer = frameTime;
 
         int  aniAngle = math::angleBetweenVectors(gvars::mousePos,sf::Vector2f(20,20));
 
