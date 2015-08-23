@@ -147,7 +147,9 @@ void Bullet::moveBullet()
         }
     }
 
-    effects.createCircle(pos.x,pos.y,3,sf::Color(150,150,150),1,sf::Color(0,0,0));
+    //effects.createCircle(pos.x,pos.y,3,sf::Color(150,150,150),1,sf::Color(0,0,0));
+    int newAngle = angle;
+    createImageButton(sf::Vector2f(pos.x,pos.y),texturemanager.getTexture("RocketBulletv2.png"),"",newAngle+90);
 
     for(int i = 0; i != speed; i++)
     {
