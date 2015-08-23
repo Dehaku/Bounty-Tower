@@ -5607,6 +5607,7 @@ int main()
     // set up AnimatedSprite
     AnimatedSprite animatedSprite(sf::seconds(0.2), true, false);
     animatedSprite.setPosition(sf::Vector2f(20,20));
+    animatedSprite.setOrigin(10,10);
 
     sf::Clock frameClock;
 
@@ -5684,23 +5685,33 @@ int main()
         int angMod = 45; // To help with the odd directionals.
         if(inbetween(0,90,math::constrainAngle(aniAngle+angMod)))
         {
-            std::cout << "Left \n";
-            effects.createLine(gvars::mousePos.x,gvars::mousePos.y,20,20,1,sf::Color::Red);
+            //std::cout << "Left \n";
+            if(math::closeish(gvars::mousePos,sf::Vector2f(20,20)) <= 100)
+                effects.createLine(gvars::mousePos.x,gvars::mousePos.y,20,20,1,sf::Color::Red);
+            currentAnimation = &walkingAnimationLeft;
+            //animatedSprite.setRotation(math::constrainAngle(aniAngle+angMod)-45);
         }
         if(inbetween(90,180,math::constrainAngle(aniAngle+angMod)))
         {
-            std::cout << "Up \n";
-            effects.createLine(gvars::mousePos.x,gvars::mousePos.y,20,20,1,sf::Color::Yellow);
+            //std::cout << "Up \n";
+            if(math::closeish(gvars::mousePos,sf::Vector2f(20,20)) <= 100)
+                effects.createLine(gvars::mousePos.x,gvars::mousePos.y,20,20,1,sf::Color::Yellow);
+            currentAnimation = &walkingAnimationUp;
+            //animatedSprite.setRotation(math::constrainAngle(aniAngle+angMod)-45-90);
         }
         if(inbetween(-180,-90,math::constrainAngle(aniAngle+angMod)))
         {
-            std::cout << "Right \n";
-            effects.createLine(gvars::mousePos.x,gvars::mousePos.y,20,20,1,sf::Color::Blue);
+            //std::cout << "Right \n";
+            if(math::closeish(gvars::mousePos,sf::Vector2f(20,20)) <= 100)
+                effects.createLine(gvars::mousePos.x,gvars::mousePos.y,20,20,1,sf::Color::Blue);
+            currentAnimation = &walkingAnimationRight;
         }
         if(inbetween(-90,0,math::constrainAngle(aniAngle+angMod)))
         {
-            std::cout << "Down \n";
-            effects.createLine(gvars::mousePos.x,gvars::mousePos.y,20,20,1,sf::Color::Green);
+            //std::cout << "Down \n";
+            if(math::closeish(gvars::mousePos,sf::Vector2f(20,20)) <= 100)
+                effects.createLine(gvars::mousePos.x,gvars::mousePos.y,20,20,1,sf::Color::Green);
+            currentAnimation = &walkingAnimationDown;
         }
 
         //std::cout << "frametime: " << timer.asSeconds() << std::endl;
