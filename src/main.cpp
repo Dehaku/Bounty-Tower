@@ -47,7 +47,7 @@ template <typename T> T &listAt(std::list<T> &list, size_t index)
     return *it;
 }
 
-template <typename T> T &AnyDeletes(std::vector<T> &list)
+template <typename T> void AnyDeletes(std::vector<T> &list)
 { // Oh my goodness, I freakkin love templates, I'll need to redesign a few things to incorporate this functionality.
 
     //auto it = list.begin();
@@ -83,7 +83,7 @@ template <typename T> T &AnyDeletes(std::vector<T> &list)
     //return;
 }
 
-template <typename T> T &AnyDeletes(std::list<T> &list)
+template <typename T> void AnyDeletes(std::list<T> &list)
 { // Oh my goodness, I freakkin love templates, I'll need to redesign a few things to incorporate this functionality.
 
     //auto it = list.begin();
