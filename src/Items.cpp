@@ -881,10 +881,9 @@ std::string Item::activate(Vec3f vPos) // Returns a string declaring the problem
                 outString.append(user->name + " has struck " + npc.name + " for " + std::to_string(maxdam) );
                 chatBox.addChat(outString,sf::Color::Red);
 
-                user->dealDamage(npc,*this);
-                //npc.modhealth(-maxdam);
-
-                Struck = true;
+                std::string atkStatus = user->dealDamage(&npc,this);
+                if(atkStatus == "Hit")
+                    Struck = true;
             }
         }
 

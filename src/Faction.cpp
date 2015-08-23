@@ -1290,14 +1290,14 @@ double critDamage(float damage, critScore crit)
 
 }
 
-std::string Npc::takeDamage(Npc &attacker, Item& weapon, float amount, critScore crit)
+std::string Npc::takeDamage(Npc *attacker, Item *weapon, float amount, critScore *crit)
 {
 
     int dodgeChance = (skills.dexterity/2)+(skills.agility/2);
     int dodgeRoll = random(0,100);
     if(dodgeRoll <= dodgeChance)
     {
-        std::cout << name << " dodged " << attacker.name << "'s attack! (" << dodgeRoll << "/" << dodgeChance << ")" << std::endl;
+        std::cout << name << " dodged " << attacker->name << "'s attack! (" << dodgeRoll << "/" << dodgeChance << ")" << std::endl;
         return "Dodged";
     }
 
@@ -1305,11 +1305,20 @@ std::string Npc::takeDamage(Npc &attacker, Item& weapon, float amount, critScore
     return "Hit";
 }
 
-std::string Npc::dealDamage(Npc &victim, Item &weapon)
+std::string Npc::dealDamage(Npc *victim, Item *weapon, float amount)
 {
     critScore pass;
-    victim.takeDamage(*this,weapon,weapon.maxdam,pass);
-    return "";
+    std::string outPut;
+    if(weapon != nullptr)
+        outPut = victim->takeDamage(this,weapon,weapon->maxdam,&pass);
+    else
+        outPut = victim->takeDamage(this,weapon,0,&pass);
+
+
+    if(outPut == "Hit")
+        return outPut;
+    else
+        return "Miss";
 }
 
 void timeTest()

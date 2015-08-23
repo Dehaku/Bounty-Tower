@@ -1,5 +1,31 @@
 #include "Bullet.h"
 
+void hitTarget(Bullet &bullet)
+{
+    for(auto &i : bullet.targets.ptrs)
+        {
+            //i->img.setTexture(texturemanager.getTexture("Error.png"));
+            int dist = math::closeish(bullet.pos.x,bullet.pos.y,i->xpos,i->ypos);
+            bool alreadyHit = false;
+            for(auto &t : bullet.targetsHit.ptrs)
+                if(i->id == t->id)
+                    alreadyHit = true;
+
+            if(dist <= i->size && !alreadyHit)
+            {
+
+                //i->modhealth(-50);
+                Item item;
+                std::string atkStatus = bullet.owner->dealDamage(i,&item,0);
+                //WorkHere
+                if(atkStatus == "Hit")
+                    bullet.toDelete = true;
+
+                bullet.targetsHit.ptrs.push_back(i);
+            }
+        }
+}
+
 void Bullet::moveBullet()
 {
     std::vector<Vec3f> predictions = positions;
@@ -120,24 +146,7 @@ void Bullet::moveBullet()
 
         }
 
-
-        for(auto &i : targets.ptrs)
-        {
-            //i->img.setTexture(texturemanager.getTexture("Error.png"));
-            int dist = math::closeish(pos.x,pos.y,i->xpos,i->ypos);
-            bool alreadyHit = false;
-            for(auto &t : targetsHit.ptrs)
-                if(i->id == t->id)
-                    alreadyHit = true;
-
-            if(dist <= i->size && !alreadyHit)
-            {
-                toDelete = true;
-                i->modhealth(-50);
-                //WorkHere
-                targetsHit.ptrs.push_back(i);
-            }
-        }
+        hitTarget(*this);
 
 
         //int dist = math::closeish()
