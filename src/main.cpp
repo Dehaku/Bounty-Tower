@@ -3682,7 +3682,7 @@ void lmbPress()
                 int dist = math::closeish(gvars::mousePos.x,
                                             gvars::mousePos.y,
                                             elem.xpos, elem.ypos);
-                if (dist <= GRID_SIZE)
+                if (dist <= GRID_SIZE/2)
                 {
                     gvars::myTarget = tfunz;
                     myTargetPtr = &elem;
