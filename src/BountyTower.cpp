@@ -35,7 +35,7 @@ void bountyTowerSetup()
 {
     assignSlotPos();
     gCtrl.phase = "Lobby";
-    window.setFramerateLimit(30); // 0 is unlimited
+    window.setFramerateLimit(60); // 0 is unlimited
     //UnyTiles.makeTest();
     window.setView(gvars::view1);
     gvars::currentx = 32;

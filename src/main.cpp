@@ -2964,6 +2964,42 @@ void hoverItemHUD()
     window.setView(gvars::view1);
 }
 
+void drawSquadHud()
+{
+    window.setView(window.getDefaultView());
+    int ydrawPos = 0;
+    for(auto &npc : npclist)
+    {
+        if(npc.faction == "The Titanium Grip")
+        {
+            sf::Sprite squadSprite;
+            squadSprite.setTexture(*npc.img.getTexture());
+            squadSprite.setPosition(60,100+(ydrawPos*60));
+            squadSprite.scale(0.5,0.5);
+            squadSprite.setRotation(npc.img.getRotation());
+            squadSprite.setOrigin(squadSprite.getTexture()->getSize().x/2,squadSprite.getTexture()->getSize().y/2);
+
+
+            sf::Text squadName;
+            squadName.setString(npc.name);
+            squadName.setColor(sf::Color::White);
+            squadName.setPosition(60,130+(ydrawPos*60));
+            squadName.setCharacterSize(10);
+
+            sf::Font font;
+            if (!font.loadFromFile("data/fonts/sansation.ttf"))
+                throw std::runtime_error("Failed to load font!");
+
+            squadName.setFont(font);
+
+            ydrawPos++;
+            window.draw(squadSprite);
+            window.draw(squadName);
+        }
+    }
+    window.setView(gvars::view1);
+}
+
 void drawStuffs()
 {
     //textList.createText(15,15,10,sf::Color::White,"Server Port: " + std::to_string(network::mainPort));
@@ -3035,6 +3071,8 @@ void drawStuffs()
     drawJobList(window.getView().getCenter().x - 500,
                 window.getView().getCenter().y);
     debug("Drew Joblist");
+
+    drawSquadHud();
 
     displayChat(sf::Vector2f(gvars::bottomLeft.x + 5, gvars::bottomLeft.y - 5));
     debug("Drew Chat");
@@ -3292,7 +3330,7 @@ void galaxySetup()
 
     initializeTilePositions();
 
-    window.setFramerateLimit(30); // 0 is unlimited
+    window.setFramerateLimit(60); // 0 is unlimited
 
     gvars::view1.zoom(2);
 
