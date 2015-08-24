@@ -22,7 +22,7 @@ sf::SoundBuffer &SoundManager::getSound(std::string input)
             return sounds.at(i).soundstorage;
         }
     }
-    //throw std::runtime_error("GetImage: Couldn't find image.");
+    throw std::runtime_error("GetSound: Couldn't find sound.");
 }
 
 void SoundManager::playSound(std::string input)

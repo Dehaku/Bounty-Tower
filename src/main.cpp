@@ -5438,7 +5438,7 @@ public:
     }
 };
 
-int voidValue(void* Object)
+void voidValue(void* Object)
 {
     //UseSwitch
     TypeCheat *voidObj = static_cast<TypeCheat *>(Object);
@@ -5474,7 +5474,7 @@ int voidValue(std::string Type, void* Object)
 */
 
 
-double critDamages(float damage, critScore crit)
+void critDamages(float damage, critScore crit)
 {
     std::cout << "\n===Crit Damages===\n";
     std::cout << "damage = " << damage << std::endl;

@@ -1287,7 +1287,7 @@ bool Npc::operator<(const Npc &other) const
 
 double critDamage(float damage, critScore crit)
 {
-
+    throw std::runtime_error("Unimplemented.");
 }
 
 std::string Npc::takeDamage(Npc *attacker, Item *weapon, float amount, critScore *crit)
