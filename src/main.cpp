@@ -1805,8 +1805,10 @@ void critterEquip(Npc &npc, std::list<Npc> &container)
                 //std::cout << item.name << ", " << item.slotted << ": ";
                 if(item.slotted == false)
                 {
+                    std::cout << "Putting" << item.name << " in mem: " << npc.invSlots[i] << "/";
                     npc.invSlots[i] = &item;
                     npc.invSlots[i]->slotted = true;
+                    std::cout << npc.invSlots[i] << std::endl;
                     break;
                     //std::cout << npc.invSlots[i]->name << npc.invSlots[i]->slotted;
                 }
@@ -5609,9 +5611,6 @@ int main()
     animatedSprite.setPosition(sf::Vector2f(20,20));
     animatedSprite.setOrigin(10,10);
 
-    sf::Clock frameClock;
-
-    float speed = 80.f;
 
 
 
@@ -5628,10 +5627,12 @@ int main()
 
 
 
-    testAnimation();
+
+
 
     while (window.isOpen())
     {
+        testAnimation();
         if(inputState.key[Key::Escape])
         {
             window.close();
@@ -5640,7 +5641,6 @@ int main()
 
 
 
-        sf::Time frameTime = frameClock.restart();
 
 
 
