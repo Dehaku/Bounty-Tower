@@ -2972,27 +2972,66 @@ void drawSquadHud()
     {
         if(npc.faction == "The Titanium Grip")
         {
+            sf::Vector2f spritePos(60,100+(ydrawPos*60));
             sf::Sprite squadSprite;
-            squadSprite.setTexture(*npc.img.getTexture());
-            squadSprite.setPosition(60,100+(ydrawPos*60));
-            squadSprite.scale(0.5,0.5);
-            squadSprite.setRotation(npc.img.getRotation());
-            squadSprite.setOrigin(squadSprite.getTexture()->getSize().x/2,squadSprite.getTexture()->getSize().y/2);
+            {
+                squadSprite.setTexture(*npc.img.getTexture());
+                squadSprite.setPosition(spritePos);
+                squadSprite.scale(0.5,0.5);
+                squadSprite.setRotation(npc.img.getRotation());
+                squadSprite.setOrigin(squadSprite.getTexture()->getSize().x/2,squadSprite.getTexture()->getSize().y/2);
+            }
 
+            sf::RectangleShape rectangle(sf::Vector2f(120, 50));
+            {
+                rectangle.setSize(sf::Vector2f(130, 50));
+                rectangle.setPosition(40,100+(ydrawPos*60)-30);
+                rectangle.setFillColor(sf::Color(0,0,0,100));
+                rectangle.setOutlineColor(sf::Color::Cyan);
+                rectangle.setOutlineThickness(1);
+            }
+
+            int healthSize = 15;
+            sf::CircleShape squadHealthBG;
+            {
+                squadHealthBG.setFillColor(sf::Color(100,100,100));
+                squadHealthBG.setPosition(100,spritePos.y-10);
+                squadHealthBG.setOutlineColor(gvars::cycleRed);
+                squadHealthBG.setOutlineThickness(2);
+                squadHealthBG.setRadius(healthSize);
+                squadHealthBG.setOrigin(healthSize,healthSize);
+            }
+
+            sf::CircleShape squadHealth;
+            {
+                squadHealth.setFillColor(sf::Color::Red);
+                squadHealth.setPosition(100,spritePos.y-10);
+                squadHealth.setOutlineColor(gvars::cycleRed);
+                squadHealth.setOutlineThickness(1);
+                //float remainingHealth = (npc.maxhealth - npc.health)/npc.maxhealth;
+                float remainingHealth = npc.health / npc.maxhealth;
+                //squadHealth.setRadius(50*remainingHealth);
+                squadHealth.setRadius(healthSize*remainingHealth);
+                squadHealth.setOrigin(squadHealth.getRadius(),squadHealth.getRadius());
+            }
 
             sf::Text squadName;
-            squadName.setString(npc.name);
-            squadName.setColor(sf::Color::White);
-            squadName.setPosition(60,130+(ydrawPos*60)-60);
-            squadName.setCharacterSize(10);
+            {
+                squadName.setString(npc.name);
+                squadName.setColor(sf::Color::White);
+                squadName.setPosition(45,130+(ydrawPos*60)-60);
+                squadName.setCharacterSize(10);
+                sf::Font font;
+                if (!font.loadFromFile("data/fonts/sansation.ttf"))
+                    throw std::runtime_error("Failed to load font!");
 
-            sf::Font font;
-            if (!font.loadFromFile("data/fonts/sansation.ttf"))
-                throw std::runtime_error("Failed to load font!");
-
-            squadName.setFont(font);
+                squadName.setFont(font);
+            }
 
             ydrawPos++;
+            window.draw(squadHealthBG);
+            window.draw(squadHealth);
+            window.draw(rectangle);
             window.draw(squadSprite);
             window.draw(squadName);
         }
