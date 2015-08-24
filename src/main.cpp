@@ -2983,7 +2983,7 @@ void drawSquadHud()
             sf::Text squadName;
             squadName.setString(npc.name);
             squadName.setColor(sf::Color::White);
-            squadName.setPosition(60,130+(ydrawPos*60));
+            squadName.setPosition(60,130+(ydrawPos*60)-60);
             squadName.setCharacterSize(10);
 
             sf::Font font;
@@ -5522,6 +5522,7 @@ public:
     int framesPassed;
     float framesPerSecond;
 
+    sf::Clock startTime;
     sf::Clock fpsTimerLive;
     sf::Clock fpsTimer;
 
@@ -5529,6 +5530,7 @@ public:
 
     fpsTracker()
     {
+        startTime.restart();
         framesPassed = 0;
         framesPerSecond = 0;
         framesPassedTime = fpsTimer.restart();
@@ -5552,7 +5554,13 @@ public:
 
         //std::cout << "FPS(Live/Second/TenSecond): " << estimatedFPS << "/" << framesPerSecond << std::endl;
         int floatConv1 = estimatedFPS, floatConv2 = framesPerSecond;
-        std::string outPut = "FPS(" + std::to_string(floatConv1) + "/" + std::to_string(floatConv2) + ")";
+        std::string outPut = "FPS(" + std::to_string(floatConv1) + "/" + std::to_string(floatConv2) + ") \n";
+        int gameHours = startTime.getElapsedTime().asSeconds()/60/60;
+        int gameMinutes = startTime.getElapsedTime().asSeconds()/60;
+        gameMinutes = (gameMinutes % 60);
+        int gameSeconds = ((startTime.getElapsedTime().asSeconds()));
+        gameSeconds = (gameSeconds % 60);
+        outPut.append("Game Time: " + std::to_string(gameHours) + "h" + std::to_string(gameMinutes) + "m" + std::to_string(gameSeconds) + "s" );
         textList.createText(gvars::topLeft.x,gvars::topLeft.y,15,sf::Color::White,outPut);
     }
 
