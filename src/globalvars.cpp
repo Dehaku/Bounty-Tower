@@ -181,4 +181,6 @@ int vocalVolume = 50;
 
 bool tileEdit = false;
 
+sf::Font defaultFont;
+
 } // namespace gvars

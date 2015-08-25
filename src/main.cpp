@@ -2968,11 +2968,15 @@ void drawSquadHud()
 {
     window.setView(window.getDefaultView());
     int ydrawPos = 0;
+
     for(auto &npc : npclist)
     {
+
         if(npc.faction == "The Titanium Grip")
         {
+
             sf::Vector2f spritePos(60,100+(ydrawPos*60));
+
             sf::Sprite squadSprite;
             {
                 squadSprite.setTexture(*npc.img.getTexture());
@@ -2982,7 +2986,8 @@ void drawSquadHud()
                 squadSprite.setOrigin(squadSprite.getTexture()->getSize().x/2,squadSprite.getTexture()->getSize().y/2);
             }
 
-            sf::RectangleShape rectangle(sf::Vector2f(120, 50));
+
+            sf::RectangleShape rectangle;
             {
                 rectangle.setSize(sf::Vector2f(130, 50));
                 rectangle.setPosition(40,100+(ydrawPos*60)-30);
@@ -2990,6 +2995,7 @@ void drawSquadHud()
                 rectangle.setOutlineColor(sf::Color::Cyan);
                 rectangle.setOutlineThickness(1);
             }
+
 
             int healthSize = 15;
             sf::CircleShape squadHealthBG;
@@ -3015,27 +3021,44 @@ void drawSquadHud()
                 squadHealth.setOrigin(squadHealth.getRadius(),squadHealth.getRadius());
             }
 
+            sf::Text squadHealthNum;
+            {
+                int npcHealth = npc.health;
+                squadHealthNum.setString(std::to_string(npcHealth));
+                squadHealthNum.setColor(sf::Color::White);
+                squadHealthNum.setPosition(95,spritePos.y-15);
+                squadHealthNum.setCharacterSize(10);
+
+                squadHealthNum.setFont(gvars::defaultFont);
+            }
+
             sf::Text squadName;
             {
                 squadName.setString(npc.name);
                 squadName.setColor(sf::Color::White);
                 squadName.setPosition(45,130+(ydrawPos*60)-60);
                 squadName.setCharacterSize(10);
-                sf::Font font;
-                if (!font.loadFromFile("data/fonts/sansation.ttf"))
-                    throw std::runtime_error("Failed to load font!");
 
-                squadName.setFont(font);
+                squadName.setFont(gvars::defaultFont);
             }
 
+
+
+
             ydrawPos++;
+            window.draw(rectangle);
+
             window.draw(squadHealthBG);
             window.draw(squadHealth);
-            window.draw(rectangle);
+            window.draw(squadHealthNum);
+
             window.draw(squadSprite);
             window.draw(squadName);
+
         }
+
     }
+
     window.setView(gvars::view1);
 }
 
@@ -3348,6 +3371,9 @@ void galaxyLoop()
 
 void galaxySetup()
 {
+    if (!gvars::defaultFont.loadFromFile("data/fonts/sansation.ttf"))
+        throw std::runtime_error("Failed to load font!");
+
     buildMicroPatherTest();
 
 
