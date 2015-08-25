@@ -2725,8 +2725,8 @@ void selectedNPCprocess()
     if (gvars::selected.size() > 0 && bountytower::bountytower == false)
     {
         if (inputState.rmb &&
-            tiles[abs_to_index(gvars::mousePos.x / GRID_SIZE)]
-                    [abs_to_index(gvars::mousePos.y / GRID_SIZE)][gvars::currentz].id !=
+            tiles[abs(gvars::mousePos.x / GRID_SIZE)]
+                    [abs(gvars::mousePos.y / GRID_SIZE)][gvars::currentz].id !=
                 1010)
         {
             sf::Lock lock(mutex::npcList);
