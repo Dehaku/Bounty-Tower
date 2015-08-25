@@ -5694,7 +5694,7 @@ int main()
 
 
     //while (window.isOpen())
-    while (!inputState.key[Key::Escape])
+    while (!inputState.key[Key::Escape] && window.isOpen())
     {
         testAnimation();
         if(inputState.key[Key::Escape])
