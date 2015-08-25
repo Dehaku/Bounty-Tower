@@ -3360,6 +3360,8 @@ sf::Thread TcpClientThread(&runTcpClient, network::mainPort+23);
 
 void galaxyLoop()
 {
+
+    /*
     if(network::servWait == false)
     {
         debug("Launching Server");
@@ -3391,6 +3393,7 @@ void galaxyLoop()
             std::cout << "sendGrid: " << gvars::sendGrid << std::endl;
         }
 
+    */
 
 
 }
@@ -5690,7 +5693,8 @@ int main()
 
 
 
-    while (window.isOpen())
+    //while (window.isOpen())
+    while (!inputState.key[Key::Escape])
     {
         testAnimation();
         if(inputState.key[Key::Escape])
@@ -5822,5 +5826,6 @@ int main()
         soundmanager.cleanSounds();
         cleanMenu();
     } // End of game loop
+
     return EXIT_SUCCESS;
 }
