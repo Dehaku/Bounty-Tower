@@ -5827,5 +5827,8 @@ int main()
         cleanMenu();
     } // End of game loop
 
+    TcpServerThread.terminate();
+    TcpClientThread.terminate();
+
     return EXIT_SUCCESS;
 }
