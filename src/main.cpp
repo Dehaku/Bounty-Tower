@@ -2733,7 +2733,7 @@ ReDesire:
         if(math::distance(myPos,posExtended) <= npc.moverate)
             npc.storedPath.erase(npc.storedPath.begin() );
     }
-    else if(npc.targetInfo.item != nullptr && pathCon.storedPath.size() == 1 || npc.targetInfo.item != nullptr && pathCon.storedPath.size() == 2)
+    else if((npc.targetInfo.item != nullptr && pathCon.storedPath.size() == 1) || (npc.targetInfo.item != nullptr && pathCon.storedPath.size() == 2))
     {
         debug("dir Moving");
         npc.dirMove(sf::Vector2f((*npc.targetInfo.item).xpos,
