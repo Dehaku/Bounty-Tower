@@ -458,7 +458,7 @@ public:
     {
         int x, y, z;
         NodeToXYZ(node, &x, &y, &z);
-        printf("(%d,%d,%d)", x, y, &z);
+        printf("(%d,%d,%d)", x, y, z);
     }
 
 #endif
@@ -779,7 +779,7 @@ public:
     {
         int x, y, z;
         NodeToXYZ(node, &x, &y, &z);
-        printf("(%d,%d,%d)", x, y, &z);
+        printf("(%d,%d,%d)", x, y, z);
     }
 
 #endif
@@ -1174,7 +1174,7 @@ public:
     {
         int x, y, z;
         NodeToXYZ(node, &x, &y, &z);
-        printf("(%d,%d,%d)", x, y, &z);
+        printf("(%d,%d,%d)", x, y, z);
     }
 
 };
