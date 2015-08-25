@@ -335,6 +335,7 @@ public:
     void addItem(std::string const &itemname, int amount);
     std::string takeDamage(Npc *attacker, Item *weapon = nullptr, float amount = 0, critScore *crit = nullptr);
     std::string dealDamage(Npc *victim, Item *weapon = nullptr, float amount = 0);
+    std::string onDeath(Npc *attacker, Item *weapon = nullptr, float amount = 0, critScore *crit = nullptr);
 
     short minmeleedamage;
     short maxmeleedamage;

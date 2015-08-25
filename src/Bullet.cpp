@@ -16,7 +16,7 @@ void hitTarget(Bullet &bullet)
 
                 //i->modhealth(-50);
                 Item item;
-                std::string atkStatus = bullet.owner->dealDamage(i,nullptr,50);
+                std::string atkStatus = bullet.owner->dealDamage(i,nullptr,random(10,50));
                 //WorkHere
                 if(atkStatus == "Hit")
                     bullet.toDelete = true;

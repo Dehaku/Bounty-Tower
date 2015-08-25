@@ -291,6 +291,15 @@ void bountyTowerLoop()
         }
     }
 
+    if(inputState.key[Key::C].time == 1)
+    { // Print All Items
+        for(auto & item : itemlist)
+        {
+            std::cout << item.name << std::endl;
+        }
+    }
+
+
     if(inputState.key[Key::G].time == 1)
     { // Renew Menu Towers
         towers.clear();

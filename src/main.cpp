@@ -2610,8 +2610,8 @@ ReDesire:
                 {
                     std::string Status = rangewep->activate(Vec3f(closEnmy->xpos,closEnmy->ypos,closEnmy->zpos));
                     AnyDeletes(rangewep->internalitems);
-                    if(Status != "Success")
-                        chatBox.addChat(npc.name + ", cannot fire " + rangewep->name + " due to :" + Status, sf::Color::Yellow);
+                    //if(Status != "Success")
+                    //    chatBox.addChat(npc.name + ", cannot fire " + rangewep->name + " due to :" + Status, sf::Color::Yellow);
                 }
             }
         }
@@ -2627,8 +2627,8 @@ ReDesire:
                 {
                     std::string Status = meleewep->activate(Vec3f(closEnmy->xpos,closEnmy->ypos,closEnmy->zpos));
                     AnyDeletes(meleewep->internalitems);
-                    if(Status != "Success")
-                        chatBox.addChat(npc.name + ", cannot strike with " + meleewep->name + " due to :" + Status, sf::Color::Yellow);
+                    //if(Status != "Success")
+                    //    chatBox.addChat(npc.name + ", cannot strike with " + meleewep->name + " due to :" + Status, sf::Color::Yellow);
                 }
             }
         }

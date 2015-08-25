@@ -1290,6 +1290,31 @@ double critDamage(float damage, critScore crit)
     throw std::runtime_error("Unimplemented.");
 }
 
+std::string Npc::onDeath(Npc *attacker, Item *weapon, float amount, critScore *crit)
+{
+    chatBox.addChat(name + " has died",sf::Color::White);
+    if(faction == "Towerlings")
+    {
+        //if(random(0,5) == 1)
+        std::cout << " 1 \n";
+        {
+            int scrapAmount = random(0,5);
+            for(int i = 0; i != scrapAmount; i++)
+            {
+                std::cout << " 2 \n";
+                Item scrap = *getGlobalItem("Scrap");
+                scrap.xpos = xpos+random(0,30);
+                scrap.ypos = ypos+random(0,30);
+                scrap.zpos = zpos;
+
+                scrap.amount = 1;
+                itemlist.push_back(scrap);
+            }
+        }
+    }
+    return "";
+}
+
 std::string Npc::takeDamage(Npc *attacker, Item *weapon, float amount, critScore *crit)
 {
 
@@ -1302,6 +1327,9 @@ std::string Npc::takeDamage(Npc *attacker, Item *weapon, float amount, critScore
     }
 
     modhealth(-amount);
+    if(health < 1)
+        onDeath(attacker, weapon, amount, crit);
+
     return "Hit";
 }
 
