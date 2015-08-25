@@ -1594,6 +1594,8 @@ void menuPopUp()
             {
                 //towers[i].tex = &texturemanager.getTexture("Error.bmp");
                 buildTower("FantasyModern");
+                loadMap(636,0,0,50,50);
+
                 gCtrl.menuPos = sf::Vector2f(-10000, -10000);
                 gCtrl.menuType = "NULL";
                 std::cout << "currentx: " << gvars::currentx << "/";
