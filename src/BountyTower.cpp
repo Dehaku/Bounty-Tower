@@ -170,8 +170,11 @@ void debugTileMode()
     int menuEdgeL = gvars::centerScreen.x+300;
     int menuEdgeU = gvars::topLeft.y;
     effects.createSquare(menuEdgeL,gvars::topLeft.y,gvars::topRight.x,gvars::bottomLeft.y,sf::Color::Black);
+    int mouseX = gvars::mousePos.x/GRID_SIZE;
+    int mouseY = gvars::mousePos.y/GRID_SIZE;
 
-    if(debugTileKeeper.useTile.id != -1)
+
+    if(debugTileKeeper.useTile.id != -1 && aabb(mouseX,mouseY,0,GRIDS-1,0,GRIDS-1))
     {
         debugTileKeeper.tex = *debugTileKeeper.useTile.img.getTexture();
         sf::Vector2f vPos((gvars::mousePos.x/GRID_SIZE)*GRID_SIZE,(gvars::mousePos.y/GRID_SIZE)*GRID_SIZE);
