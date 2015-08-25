@@ -2832,8 +2832,6 @@ void drawNPCs()
 
 void drawItems()
 {
-    //App.setActive(true);
-
     for (auto &worlditem : worlditems)
     {
         int itemZ = worlditem.zpos/GRID_SIZE;
