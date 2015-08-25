@@ -313,7 +313,7 @@ void Npc::Skill::Train(std::string skill, int amount, int skillgain)
     }
 }
 
-Vec3f Npc::myPos()
+Vec3f Npc::getPos()
 {
     Vec3f myPos(xpos,ypos,zpos);
     return myPos;
@@ -1296,8 +1296,9 @@ std::string Npc::onDeath(Npc *attacker, Item *weapon, float amount, critScore *c
     alive = false;
     if(faction == "Towerlings")
     {
-        //if(random(0,5) == 1)
+
         std::cout << " 1 \n";
+        if(random(0,5) == 1)
         {
             int scrapAmount = random(0,5);
             for(int i = 0; i != scrapAmount; i++)

@@ -500,6 +500,12 @@ int Item::getRange()
     return returns;
 }
 
+Vec3f Item::getPos()
+{
+    Vec3f myPos(xpos,ypos,zpos);
+    return myPos;
+}
+
 Item::Item()
     : cbaseid{}, range{}, xpos{}, ypos{}, zpos{30*20}, rxpos{}, rypos{}, gxpos{},
       gypos{}, imgstrx{}, imgstry{}, imgendx{}, imgendy{}, isWeapon{},

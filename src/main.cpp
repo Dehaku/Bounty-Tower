@@ -1892,10 +1892,36 @@ void critterPush(Npc &npc, std::list<Npc> &container)
     {
         //Vec3f critterPos(critters.xpos,critters.ypos,critters.zpos);
         //Vec3f myPos(critters.xpos,critters.ypos,critters.zpos);
-        int dist = math::distance(npc.myPos(),critters.myPos());
+        int dist = math::distance(npc.getPos(),critters.getPos());
         if(dist <= npc.size)
         {
-            critters.momentum = sf::Vector2f( -(npc.myPos().x-critters.myPos().x), -(npc.myPos().y-critters.myPos().y) );
+            critters.momentum = sf::Vector2f( -(npc.getPos().x-critters.getPos().x), -(npc.getPos().y-critters.getPos().y) );
+        }
+    }
+}
+
+void scrapPickup(Npc &npc, std::list<Npc> &container)
+{
+    for(auto &scraps : worlditems)
+    {
+        if(math::distance(npc.getPos(),scraps.getPos()) <= 60 && scraps.name == "Scrap")
+        {
+            bool scrapExists = false;
+            for(auto &myItems : npc.inventory)
+            {
+                if(myItems.name == "Scrap")
+                {
+                    scrapExists = true;
+                    myItems.amount++;
+                    scraps.toDelete = true;
+                    break;
+                }
+            }
+            if(!scrapExists)
+            {
+                Item item = *getGlobalItem("Scrap");
+                npc.inventory.push_back(item);
+            }
         }
     }
 }
@@ -1924,6 +1950,8 @@ void critterBrain(Npc &npc, std::list<Npc> &container)
         npc.ypos += Alter.y;
     }
 
+    if(npc.faction == "The Titanium Grip")
+        scrapPickup(npc,container);
 
     int alph = 255;
     //npc.img.setColor(sf::Color(255, 255, 255, alph));

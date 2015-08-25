@@ -42,6 +42,7 @@ public:
     float xpos;
     float ypos;
     float zpos;
+    Vec3f getPos();
     int rxpos;
     int rypos;
     int gxpos;

@@ -71,7 +71,7 @@ public:
     bool hasPath;
     Vec3 endPos;
     Vec3 startPos;
-    Vec3f myPos();
+    Vec3f getPos();
 
     Skills abilities;
 
