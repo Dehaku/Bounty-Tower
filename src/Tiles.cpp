@@ -1362,6 +1362,18 @@ void Tile::BTwall()
     walkable = false;
 }
 
+void Tile::BTwallFake()
+{ // 2012
+    id = 2012;
+    worldColor = sf::Color(100, 100, 100);
+    img.setTexture(texturemanager.getTexture("FMTwallcheat.png"));
+    transparent = false;
+    health = 10;
+    deathID = 3007;
+    walkable = false;
+}
+
+
 void Tile::BTwater()
 { // 2020
     id = 2020;
@@ -1377,7 +1389,7 @@ void Tile::BTstairs()
 { // 2031
     id = 2031;
     worldColor = sf::Color(150, 150, 0);
-    img.setTexture(texturemanager.getTexture("Stairs.png"));
+    img.setTexture(texturemanager.getTexture("BTStairs.png"));
     transparent = true;
     walkable = true;
     goesUp = true;
@@ -1390,7 +1402,7 @@ void Tile::BTdoor()
     Tile();
     id = 2100;
     worldColor = sf::Color(255, 0, 0);
-    img.setTexture(texturemanager.getTexture("FMTtile1.png"));
+    img.setTexture(texturemanager.getTexture("BTDoorTile.png"));
     transparent = true;
     walkable = true;
     health = 15;
@@ -1403,18 +1415,8 @@ void Tile::BTelevatordoor()
     worldColor = sf::Color(150, 150, 150);
     transparent = true;
     walkable = true;
-    int rannum = randz(1,3);
-    if(rannum == 1)
-        img.setTexture(texturemanager.getTexture("FMTtile1.png"));
-    if(rannum == 2)
-        img.setTexture(texturemanager.getTexture("FMTtile2.png"));
-    /*
-    if(rannum == 3)
-        img.setTexture(texturemanager.getTexture("FMTtile3.png"));
-    */
-    if(rannum == 3)
-        img.setTexture(texturemanager.getTexture("FMTtile4.png"));
-    img.setColor(sf::Color(150,150,150));
+    img.setTexture(texturemanager.getTexture("BTElevatorDoor.png"));
+    state = "Closed";
 }
 
 void Tile::BTelevator()
@@ -1423,18 +1425,8 @@ void Tile::BTelevator()
     worldColor = sf::Color(150, 150, 150);
     transparent = true;
     walkable = true;
-    int rannum = randz(1,3);
-    if(rannum == 1)
-        img.setTexture(texturemanager.getTexture("FMTtile1.png"));
-    if(rannum == 2)
-        img.setTexture(texturemanager.getTexture("FMTtile2.png"));
-    /*
-    if(rannum == 3)
-        img.setTexture(texturemanager.getTexture("FMTtile3.png"));
-    */
-    if(rannum == 3)
-        img.setTexture(texturemanager.getTexture("FMTtile4.png"));
-    img.setColor(sf::Color(50,50,50));
+    img.setTexture(texturemanager.getTexture("BTElevator.png"));
+    //img.setColor(sf::Color(50,50,50));
 }
 
 
@@ -1504,6 +1496,8 @@ void Tile::setTilebyID(int ID)
         BTstone();
     else if(ID == 2010)
         BTwall();
+    else if(ID == 2012)
+        BTwallFake();
     else if(ID == 2020)
         BTwater();
     else if(ID == 2031)

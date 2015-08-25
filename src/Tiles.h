@@ -76,6 +76,7 @@ public:
     void BTwater();
     void BTgrass();
     void BTwall();
+    void BTwallFake();
     void BTdoor();
     void BTlava();
     void BTsky();

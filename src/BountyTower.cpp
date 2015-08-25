@@ -300,6 +300,18 @@ void debugTileMode()
     if(imageButtonClicked(stairButt))
         debugTileKeeper.useTile.BTstairs();
 
+    int doorButt = createImageButton(sf::Vector2f(menuEdgeL+30+60+60,menuEdgeU+30+60+60),texturemanager.getTexture("BTDoorTile.png"));
+    if(imageButtonClicked(doorButt))
+        debugTileKeeper.useTile.BTdoor();
+
+    int elevatorButt = createImageButton(sf::Vector2f(menuEdgeL+30+60,menuEdgeU+30+60+60+60),texturemanager.getTexture("BTElevator.png"));
+    if(imageButtonClicked(elevatorButt))
+        debugTileKeeper.useTile.BTelevator();
+
+    int elevatordoorButt = createImageButton(sf::Vector2f(menuEdgeL+30+60+60,menuEdgeU+30+60+60+60),texturemanager.getTexture("BTElevatorDoor.png"));
+    if(imageButtonClicked(elevatordoorButt))
+        debugTileKeeper.useTile.BTelevatordoor();
+
 
 
 
