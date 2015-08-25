@@ -191,7 +191,7 @@ void DealPackets()
                             packetContainer[i].packet >> peerName;
                             for(auto &peer : peers.connected)
                             {
-                                if(peer.name == peerName);
+                                if(peer.name == peerName)
                                 {
                                     sf::Clock myClock;
                                     sf::Time recvTime;
