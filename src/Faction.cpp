@@ -2722,11 +2722,11 @@ void selectedNPCprocess()
         createImageButton(Pos,texturemanager.getTexture("SelectionCircle.png"),"",gvars::constantRotation);
 
     }
-    if (gvars::selected.size() > 0)
+    if (gvars::selected.size() > 0 && bountytower::bountytower)
     {
         if (inputState.rmb &&
             tiles[abs_to_index(gvars::mousePos.x / GRID_SIZE)]
-                    [abs_to_index(gvars::mousePos.y / GRID_SIZE)][30].id !=
+                    [abs_to_index(gvars::mousePos.y / GRID_SIZE)][gvars::currentz].id !=
                 1010)
         {
             sf::Lock lock(mutex::npcList);

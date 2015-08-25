@@ -281,6 +281,10 @@ void debugTileMode()
     if(imageButtonClicked(floorButt))
         debugTileKeeper.useTile.BTstone();
 
+    int fakewallButt = createImageButton(sf::Vector2f(menuEdgeL+30+60+60,menuEdgeU+30),texturemanager.getTexture("FMTwallcheat.png"));
+    if(imageButtonClicked(fakewallButt))
+        debugTileKeeper.useTile.BTwallFake();
+
     //
     int grassButt = createImageButton(sf::Vector2f(menuEdgeL+30,menuEdgeU+30+60),texturemanager.getTexture("BTGrass.png"));
     if(imageButtonClicked(grassButt))

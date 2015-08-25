@@ -557,7 +557,7 @@ void menuPopUp()
         for (int i = 0; i != options; i++)
         {
 
-            if (i == 0)
+            if (i == 0 && bountytower::bountytower == false)
             {
 
                 //Effectz.CreateLine(GC.MenuPos.x,(GC.MenuPos.y+(iY*13))+8,GC.MenuPos.x+90,(GC.MenuPos.y+(iY*13))+8,3,Black,1,Yellow);
@@ -581,7 +581,7 @@ void menuPopUp()
                     return;
                 }
             }
-            if (i == 1)
+            if (i == 1 && bountytower::bountytower == false)
             {
 
                 //Effectz.CreateLine(GC.MenuPos.x,(GC.MenuPos.y+(iY*13))+8,GC.MenuPos.x+90,(GC.MenuPos.y+(iY*13))+8,3,Black,1,Yellow);
@@ -1704,7 +1704,13 @@ void rightMouseButtonContextMenu()
             menuPopUp();
             return;
         }
-        if(gvars::selected.size() != 0)
+        int mouseX = gvars::mousePos.x/GRID_SIZE;
+        int mouseY = gvars::mousePos.y/GRID_SIZE;
+
+
+
+        if(gvars::selected.size() != 0 && aabb(mouseX,mouseY,0,GRIDS-1,0,GRIDS-1)
+           && tiles[mouseX][mouseY][gvars::currentz].walkable)
         {
             for(auto &lilguy : npclist)
             {
