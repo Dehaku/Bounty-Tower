@@ -267,7 +267,12 @@ void bountyTowerLoop()
         debugTileMode();
     }
 
-
+    if(bountytower::pausewaves)
+    {
+        int startButt = createImageButton(gvars::centerScreen,texturemanager.getTexture("ElevatorButton.png"),"Start the swarm!");
+        if(imageButtonClicked(startButt))
+            bountytower::pausewaves = false;
+    }
 
 
     cameraControls();
