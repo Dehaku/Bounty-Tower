@@ -7,6 +7,22 @@ TextList textList;
 
 extern sf::RenderWindow window;
 
+
+sf::Text drawText(sf::Vector2f vPos, std::string text, sf::Color color, int size)
+{
+    sf::Text returnText;
+    {
+        returnText.setString(text);
+        returnText.setColor(color);
+        returnText.setPosition(vPos);
+        returnText.setCharacterSize(size);
+
+        returnText.setFont(gvars::defaultFont);
+    }
+    return returnText;
+}
+
+
 std::string randomWindowName()
 {
     std::vector<std::string> const names{

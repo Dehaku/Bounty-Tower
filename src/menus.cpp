@@ -1596,8 +1596,11 @@ void menuPopUp()
                 buildTower("FantasyModern");
                 gCtrl.menuPos = sf::Vector2f(-10000, -10000);
                 gCtrl.menuType = "NULL";
-                gvars::currentx = 96/2;
-                gvars::currenty = 96;
+                std::cout << "currentx: " << gvars::currentx << "/";
+                int xview = (96*60)/20;
+                gvars::currentx = xview/2;
+                std::cout << gvars::currentx << std::endl;
+                gvars::currenty = xview;
                 break;
             }
 

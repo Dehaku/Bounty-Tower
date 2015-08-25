@@ -1293,6 +1293,7 @@ double critDamage(float damage, critScore crit)
 std::string Npc::onDeath(Npc *attacker, Item *weapon, float amount, critScore *crit)
 {
     chatBox.addChat(name + " has died",sf::Color::White);
+    alive = false;
     if(faction == "Towerlings")
     {
         //if(random(0,5) == 1)
@@ -1327,7 +1328,7 @@ std::string Npc::takeDamage(Npc *attacker, Item *weapon, float amount, critScore
     }
 
     modhealth(-amount);
-    if(health < 1)
+    if(health < 1 && alive)
         onDeath(attacker, weapon, amount, crit);
 
     return "Hit";
@@ -2953,6 +2954,8 @@ void drawSelectedCritterHUD()
                 SP.setPosition(vPos);
                 SP.setOrigin(SP.getTexture()->getSize().x/2,SP.getTexture()->getSize().y/2);
                 window.draw(SP);
+                sf::Vector2f uPos(vPos.x-20,vPos.y+20);
+                window.draw(drawText(uPos,myTargetPtr->invSlots[i]->name));
             }
         }
 

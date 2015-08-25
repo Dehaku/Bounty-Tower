@@ -313,7 +313,8 @@ void bountyTowerLoop()
 
     if(bountytower::pausewaves)
     {
-        int startButt = createImageButton(gvars::centerScreen,texturemanager.getTexture("ElevatorButton.png"),"Start the swarm!");
+        sf::Vector2f vPos(gvars::centerScreen.x,gvars::centerScreen.y-(RESOLUTION.y/4));
+        int startButt = createImageButton(vPos,texturemanager.getTexture("ElevatorButton.png"),"Start the swarm!");
         if(imageButtonClicked(startButt))
             bountytower::pausewaves = false;
     }
