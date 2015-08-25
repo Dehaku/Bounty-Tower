@@ -3062,6 +3062,33 @@ void drawSquadHud()
     window.setView(gvars::view1);
 }
 
+void drawEnemyCounterHud()
+{
+    window.setView(window.getDefaultView());
+    int ydrawPos = 0;
+
+    sf::Text enemyCounter;
+    {
+        int counter = 0;
+        for(auto &npc : npclist)
+        {
+            if(npc.faction == "Towerlings")
+                counter++;
+        }
+        if(counter > 0)
+            enemyCounter.setString("Enemies Remaining: " + std::to_string(counter));
+        enemyCounter.setColor(sf::Color::White);
+        enemyCounter.setPosition(RESOLUTION.x/1.5,50);
+        enemyCounter.setCharacterSize(15);
+        enemyCounter.setFont(gvars::defaultFont);
+    }
+
+    window.draw(enemyCounter);
+
+    window.setView(gvars::view1);
+}
+
+
 void drawStuffs()
 {
     //textList.createText(15,15,10,sf::Color::White,"Server Port: " + std::to_string(network::mainPort));
@@ -3135,6 +3162,7 @@ void drawStuffs()
     debug("Drew Joblist");
 
     drawSquadHud();
+    drawEnemyCounterHud();
 
     displayChat(sf::Vector2f(gvars::bottomLeft.x + 5, gvars::bottomLeft.y - 5));
     debug("Drew Chat");
