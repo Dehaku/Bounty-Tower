@@ -2836,7 +2836,7 @@ void drawItems()
 
     for (auto &worlditem : worlditems)
     {
-        int itemZ = worlditem.zpos/20;
+        int itemZ = worlditem.zpos/GRID_SIZE;
         if(aabb(worlditem.xpos,worlditem.ypos,gvars::topLeft.x,gvars::topRight.x,gvars::topLeft.y,gvars::bottomRight.y) && itemZ == gvars::currentz)
         {
             worlditem.img.setColor(sf::Color(255, 255, 255, 255));

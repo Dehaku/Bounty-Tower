@@ -1308,7 +1308,7 @@ std::string Npc::onDeath(Npc *attacker, Item *weapon, float amount, critScore *c
                 scrap.zpos = zpos;
 
                 scrap.amount = 1;
-                itemlist.push_back(scrap);
+                worlditems.push_back(scrap);
             }
         }
     }

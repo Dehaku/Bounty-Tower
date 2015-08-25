@@ -7,26 +7,70 @@ template <typename T> T &listAt(std::list<T> &list, size_t index)
     return *it;
 }
 
+template <typename T> void AnyDeletes(std::list<T> &list)
+{ // Oh my goodness, I freakkin love templates, I'll need to redesign a few things to incorporate this functionality.
+
+    //auto it = list.begin();
+    //std::advance(it, index);
+    /*
+    for (auto &listings : list)
+    {
+        if(listings.toDelete)
+        {
+            std::cout << "To be deleted! \n";
+        }
+    }
+    */
+    bool done = false;
+    while (done == false)
+    {
+        bool yet = false;
+        for (auto it = list.begin(); it != list.end(); ++it)
+        {
+            //std::cout << it->name << ",'s toDelete: " << it->toDelete << std::endl;
+            if (it->toDelete)
+            {
+                list.erase(it);
+                yet = true;
+                break;
+            }
+        }
+        if (yet == false)
+        {
+            done = true;
+        }
+    }
+
+    //return;
+}
 
 void equipStarters()
 {
     for(auto &member : npclist)
     {
-        itemPtrVector IPV = randomEquipment(member.inventory);
+        //itemPtrVector IPV = randomEquipment(member.inventory);
+        itemPtrVector IPV = makeItems(member.inventory,10);
+        for (auto &i : IPV.ptrs)
+        {
+            if(i->type != 1 && i->type != 2)
+                i->toDelete = true;
+        }
+        AnyDeletes(member.inventory);
+
 
             //std::cout << IPV.ptrs.size() << ", IPV. \n";
             //fSleep(2);
-            for (auto &i : IPV.ptrs)
+        for (auto &i : IPV.ptrs)
+        {
+            if(i->type == 2)
             {
-                if(i->type == 2)
-                {
-                    Item bullet;
-                    bullet = *getGlobalItem("5.56mm");
-                    bullet.amount = 30;
+                Item bullet;
+                bullet = *getGlobalItem("5.56mm");
+                bullet.amount = 30;
 
-                    i->internalitems.push_back(bullet);
-                }
+                i->internalitems.push_back(bullet);
             }
+        }
     }
 
 }
@@ -296,8 +340,10 @@ void bountyTowerLoop()
         for(auto & item : itemlist)
         {
             std::cout << item.name << std::endl;
+            std::cout << "X/Y/Z: " << item.xpos << "/" << item.ypos << "/" << item.zpos << std::endl;
         }
     }
+
 
 
     if(inputState.key[Key::G].time == 1)
