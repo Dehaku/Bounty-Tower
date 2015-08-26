@@ -531,12 +531,16 @@ void bountyTowerLoop()
         int butt = createImageButton(vPos,texturemanager.getTexture("ElevatorButton.png"),"text");
         if(imageButtonClicked(butt))
         {
-            chatBox.addChat("You progress to the next floor!", sf::Color::Blue);
-            bountytower::elevatoravailable = false;
-            bountytower::pausewaves = true;
-            gvars::currentz++;
-            elevateElevatorInhabitants();
-            soundmanager.playSound("ding.wav"); // zomfg sounds, so gud.
+            if (gvars::currentz < CHUNK_SIZE - 1) {
+                chatBox.addChat("You progress to the next floor!", sf::Color::Blue);
+                bountytower::elevatoravailable = false;
+                bountytower::pausewaves = true;
+                gvars::currentz++;
+                elevateElevatorInhabitants();
+                soundmanager.playSound("ding.wav"); // zomfg sounds, so gud.
+            } else {
+                chatBox.addChat("You cannot go further up.", sf::Color::Red);
+            }
         }
     }
 
