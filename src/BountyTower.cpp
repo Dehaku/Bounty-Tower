@@ -49,13 +49,16 @@ void equipStarters()
     for(auto &member : npclist)
     {
         //itemPtrVector IPV = randomEquipment(member.inventory);
+
         itemPtrVector IPV = makeItems(member.inventory,10);
+        /*
         for (auto &i : IPV.ptrs)
         {
             if(i->type != 1 && i->type != 2)
                 i->toDelete = true;
         }
         AnyDeletes(member.inventory);
+        */
 
 
             //std::cout << IPV.ptrs.size() << ", IPV. \n";
