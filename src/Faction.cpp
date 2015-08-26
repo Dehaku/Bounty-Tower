@@ -319,6 +319,12 @@ Vec3f Npc::getPos()
     return myPos;
 }
 
+sf::Vector2f Npc::getPos2d()
+{
+    sf::Vector2f myPos(xpos,ypos);
+    return myPos;
+}
+
 Npc::Npc()
     : attacking{}, firstStrike{}, imgRotates{}, prone{}, body{}, rot{}, xxx{},
       yyy{}, degrees{}, pathFinding{}, imgstrx{}, imgstry{}, imgendx{},
@@ -871,8 +877,17 @@ void Npc::angMove(float ang)
 
 void Npc::momMove()
 {
+    sf::Vector2f oldPos(xpos,ypos);
+
     xpos += (momentum.x / size);
     ypos += (momentum.y / size);
+
+
+    if(!isInBounds(getPos2d()))
+    {
+        xpos = oldPos.x;
+        ypos = oldPos.y;
+    }
 
     momentum.x = math::clamp((momentum.x - gvars::airPressure), 0, 9999999);
     momentum.y = math::clamp((momentum.y - gvars::airPressure), 0, 9999999);
@@ -2522,7 +2537,7 @@ void addMembers(int amount, std::string faction)
                 member.faction = faction;
                 member.factionPtr = &fact;
                 member.xpos = ((GRIDS*GRID_SIZE)/2)+randz(-80,80);
-                member.ypos = ((GRIDS*GRID_SIZE)-100)+randz(-20,20);
+                member.ypos = ((GRIDS*GRID_SIZE)-200)+randz(-20,20);
                 member.zpos = (1*GRID_SIZE);
                 member.id = gvars::globalid++;
                 npclist.push_back(member);

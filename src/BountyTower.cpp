@@ -651,4 +651,5 @@ namespace bountytower
     bool towerlingassault = true;
     bool bountytower = true;
     bool pausewaves = true;
+    std::string towerLoaded = "";
 }

@@ -2685,7 +2685,7 @@ ReDesire:
     debug(npc.name + ", mhmm.", false);
     debug("debug 9", false);
     debug("(" + std::to_string(npc.xpos) + "/" + std::to_string(npc.ypos) + "/" + std::to_string(npc.zpos) + ")");
-    bool npcWalkable = tiles[abs_to_index(npc.xpos/GRID_SIZE)][abs_to_index(npc.ypos/GRID_SIZE)][abs_to_index(npc.zpos/GRID_SIZE)].walkable;
+    bool npcWalkable = tiles[abs(npc.xpos/GRID_SIZE)][abs(npc.ypos/GRID_SIZE)][abs(npc.zpos/GRID_SIZE)].walkable;
     debug("pro debug 1", false);
 
     if(hasPath && (gvars::framesPassed % 5) == 0 && npcWalkable)

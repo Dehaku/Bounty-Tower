@@ -21,6 +21,15 @@ XTile xChunk[CHUNK_SIZE][CHUNK_SIZE][CHUNK_SIZE];
 
 extern sf::RenderWindow window;
 
+bool isInBounds(sf::Vector2f vPos)
+{
+    int xPos = vPos.x/GRID_SIZE;
+    int yPos = vPos.y/GRID_SIZE;
+    bool outPut = aabb(xPos,yPos,0,GRIDS-1,0,GRIDS-1);
+
+    return outPut;
+}
+
 void zGenerateChunk(std::string type, int planet, sf::Vector2i cords,
                     sf::Vector2i /*Pos*/)
 {

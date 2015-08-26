@@ -26,7 +26,7 @@ extern bool debug;
 extern bool inFocus;
 extern bool drawStuffsDone;
 extern sf::View view1;
-extern int airPressure;
+extern float airPressure;
 extern sf::Vector2f mousePos;
 extern int mouseStagnation;
 extern std::vector<int> selected;

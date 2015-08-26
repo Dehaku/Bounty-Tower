@@ -1593,6 +1593,12 @@ void menuPopUp()
                     inputState.key[Key::Num1].time == 1)
             {
                 //towers[i].tex = &texturemanager.getTexture("Error.bmp");
+                for(auto &npc : npclist)
+                {
+                    npc.momentum = sf::Vector2f(0,0);
+                }
+
+                bountytower::towerLoaded = "FantasyModern";
                 buildTower("FantasyModern");
                 loadMap(636,0,0,50,50);
 

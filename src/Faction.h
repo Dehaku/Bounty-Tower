@@ -72,6 +72,7 @@ public:
     Vec3 endPos;
     Vec3 startPos;
     Vec3f getPos();
+    sf::Vector2f getPos2d();
 
     Skills abilities;
 
