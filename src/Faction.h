@@ -10,7 +10,8 @@
 #include "Tiles.h"
 #include "Networking.h"
 #include "menus.h"
-
+#include "Skills.h"
+#include "BountyTower.h"
 
 #include <list>
 #include <set>
@@ -66,6 +67,14 @@ public:
     std::string tags;
     Faction *factionPtr;
     std::string faction;
+
+    bool hasPath;
+    Vec3 endPos;
+    Vec3 startPos;
+    Vec3f getPos();
+    sf::Vector2f getPos2d();
+
+    Skills abilities;
 
     bool attacking;
     bool firstStrike;
@@ -325,6 +334,9 @@ public:
     float bloodworkXX(std::string aliment, int amount);
     bool closeToTarget(int distance, sf::Vector2f Tar);
     void addItem(std::string const &itemname, int amount);
+    std::string takeDamage(Npc *attacker, Item *weapon = nullptr, float amount = 0, critScore *crit = nullptr);
+    std::string dealDamage(Npc *victim, Item *weapon = nullptr, float amount = 0);
+    std::string onDeath(Npc *attacker, Item *weapon = nullptr, float amount = 0, critScore *crit = nullptr);
 
     short minmeleedamage;
     short maxmeleedamage;

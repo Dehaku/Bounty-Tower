@@ -24,7 +24,9 @@
 #include "Bullet.h"
 #include "Camera.h"
 
+
 #include <SFML/Audio.hpp>
+#include "AnimatedSprite.hpp"
 
 #define USE_PATHER
 
@@ -36,6 +38,8 @@ using namespace micropather;
 
 using std::abs;
 
+void drawBeams();
+
 template <typename T> T &listAt(std::list<T> &list, size_t index)
 {
     auto it = list.begin();
@@ -43,7 +47,7 @@ template <typename T> T &listAt(std::list<T> &list, size_t index)
     return *it;
 }
 
-template <typename T> T &AnyDeletes(std::vector<T> &list)
+template <typename T> void AnyDeletes(std::vector<T> &list)
 { // Oh my goodness, I freakkin love templates, I'll need to redesign a few things to incorporate this functionality.
 
     //auto it = list.begin();
@@ -79,7 +83,7 @@ template <typename T> T &AnyDeletes(std::vector<T> &list)
     //return;
 }
 
-template <typename T> T &AnyDeletes(std::list<T> &list)
+template <typename T> void AnyDeletes(std::list<T> &list)
 { // Oh my goodness, I freakkin love templates, I'll need to redesign a few things to incorporate this functionality.
 
     //auto it = list.begin();
@@ -454,7 +458,7 @@ public:
     {
         int x, y, z;
         NodeToXYZ(node, &x, &y, &z);
-        printf("(%d,%d,%d)", x, y, &z);
+        printf("(%d,%d,%d)", x, y, z);
     }
 
 #endif
@@ -775,7 +779,7 @@ public:
     {
         int x, y, z;
         NodeToXYZ(node, &x, &y, &z);
-        printf("(%d,%d,%d)", x, y, &z);
+        printf("(%d,%d,%d)", x, y, z);
     }
 
 #endif
@@ -1170,7 +1174,7 @@ public:
     {
         int x, y, z;
         NodeToXYZ(node, &x, &y, &z);
-        printf("(%d,%d,%d)", x, y, &z);
+        printf("(%d,%d,%d)", x, y, z);
     }
 
 };
@@ -1801,8 +1805,10 @@ void critterEquip(Npc &npc, std::list<Npc> &container)
                 //std::cout << item.name << ", " << item.slotted << ": ";
                 if(item.slotted == false)
                 {
+                    std::cout << "Putting" << item.name << " in mem: " << npc.invSlots[i] << "/";
                     npc.invSlots[i] = &item;
                     npc.invSlots[i]->slotted = true;
+                    std::cout << npc.invSlots[i] << std::endl;
                     break;
                     //std::cout << npc.invSlots[i]->name << npc.invSlots[i]->slotted;
                 }
@@ -1811,7 +1817,7 @@ void critterEquip(Npc &npc, std::list<Npc> &container)
         }
 
     }
-    if(inputState.key[Key::I].time == 1)
+    if(inputState.key[Key::I].time == 1 && inputState.key[Key::LShift])
     {
         std::cout << npc.name << "'s inventory; \n";
         for (int i = 0; i != 20; i++)
@@ -1880,6 +1886,46 @@ void critterEquip(Npc &npc, std::list<Npc> &container)
 
 }
 
+void critterPush(Npc &npc, std::list<Npc> &container)
+{
+    for(auto &critters : container)
+    {
+        //Vec3f critterPos(critters.xpos,critters.ypos,critters.zpos);
+        //Vec3f myPos(critters.xpos,critters.ypos,critters.zpos);
+        int dist = math::distance(npc.getPos(),critters.getPos());
+        if(dist <= npc.size)
+        {
+            critters.momentum = sf::Vector2f( -(npc.getPos().x-critters.getPos().x), -(npc.getPos().y-critters.getPos().y) );
+        }
+    }
+}
+
+void scrapPickup(Npc &npc, std::list<Npc> &container)
+{
+    for(auto &scraps : worlditems)
+    {
+        if(math::distance(npc.getPos(),scraps.getPos()) <= 60 && scraps.name == "Scrap")
+        {
+            bool scrapExists = false;
+            for(auto &myItems : npc.inventory)
+            {
+                if(myItems.name == "Scrap")
+                {
+                    scrapExists = true;
+                    myItems.amount++;
+                    scraps.toDelete = true;
+                    break;
+                }
+            }
+            if(!scrapExists)
+            {
+                Item item = *getGlobalItem("Scrap");
+                npc.inventory.push_back(item);
+            }
+        }
+    }
+}
+
 void critterBrain(Npc &npc, std::list<Npc> &container)
 {
 
@@ -1887,6 +1933,8 @@ void critterBrain(Npc &npc, std::list<Npc> &container)
         return;
 
     npc.container = &container;
+
+
 
     if(tiles[abs_to_index(npc.xpos/GRID_SIZE)][abs_to_index(npc.ypos/GRID_SIZE)][abs_to_index(npc.zpos/GRID_SIZE)].walkable == false)
     {
@@ -1902,6 +1950,8 @@ void critterBrain(Npc &npc, std::list<Npc> &container)
         npc.ypos += Alter.y;
     }
 
+    if(npc.faction == "The Titanium Grip")
+        scrapPickup(npc,container);
 
     int alph = 255;
     //npc.img.setColor(sf::Color(255, 255, 255, alph));
@@ -2158,7 +2208,7 @@ void critterBrain(Npc &npc, std::list<Npc> &container)
     { //Assault
         newDesire.type = "Assault";
         newDesire.potency = 0;
-        if(bountytower::towerlingassault && npc.faction == "Towerlings")
+        //if(bountytower::towerlingassault && npc.faction == "Towerlings")
             newDesire.potency = 700;
 
 
@@ -2214,6 +2264,7 @@ ReDesire:
     Vec3 endPos;
 
     bool hasPath = false;
+
 
     debug("Acting on highest Desire:" + (*highestDesire).type);
     if ((*highestDesire).type == "Apathy")
@@ -2556,11 +2607,12 @@ ReDesire:
     }
     if ((*highestDesire).type == "Assault")
     {
-        if(closEnmy != nullptr)
+        if(closEnmy != nullptr && npc.faction == "Towerlings")
         {
             hasPath = true;
             endPos = Vec3(closEnmy->xpos/GRID_SIZE,closEnmy->ypos/GRID_SIZE,closEnmy->zpos/GRID_SIZE);
         }
+        debug("0");
         Item * rangewep = npc.getItemType(2);
         Item * meleewep = npc.getItemType(1);
         if(inputState.key[Key::LAlt] && true == false)
@@ -2571,8 +2623,9 @@ ReDesire:
             if(meleewep != nullptr)
                 effects.createCircle(npc.xpos,npc.ypos,meleewep->getRange(),sf::Color(0,0,255,50),2,sf::Color::Blue);
         }
+        debug("1");
         bool withinRange = false;
-        if(rangewep != nullptr)
+        if(rangewep != nullptr && closEnmy != nullptr)
         {
             withinRange = (math::closeish(npc.xpos,npc.ypos,closEnmy->xpos,closEnmy->ypos) <= rangewep->getRange());
             if(getItemType(rangewep->internalitems,3) == nullptr)
@@ -2585,13 +2638,13 @@ ReDesire:
                 {
                     std::string Status = rangewep->activate(Vec3f(closEnmy->xpos,closEnmy->ypos,closEnmy->zpos));
                     AnyDeletes(rangewep->internalitems);
-                    if(Status != "Success")
-                        chatBox.addChat(npc.name + ", cannot fire " + rangewep->name + " due to :" + Status, sf::Color::Yellow);
+                    //if(Status != "Success")
+                    //    chatBox.addChat(npc.name + ", cannot fire " + rangewep->name + " due to :" + Status, sf::Color::Yellow);
                 }
             }
         }
-
-        if(meleewep != nullptr)
+        debug("2");
+        if(meleewep != nullptr && closEnmy != nullptr)
         {
             if(!withinRange)
                 withinRange = (math::closeish(npc.xpos,npc.ypos,closEnmy->xpos,closEnmy->ypos) <= meleewep->range);
@@ -2602,16 +2655,18 @@ ReDesire:
                 {
                     std::string Status = meleewep->activate(Vec3f(closEnmy->xpos,closEnmy->ypos,closEnmy->zpos));
                     AnyDeletes(meleewep->internalitems);
-                    if(Status != "Success")
-                        chatBox.addChat(npc.name + ", cannot strike with " + meleewep->name + " due to :" + Status, sf::Color::Yellow);
+                    //if(Status != "Success")
+                    //    chatBox.addChat(npc.name + ", cannot strike with " + meleewep->name + " due to :" + Status, sf::Color::Yellow);
                 }
             }
         }
+        debug("3");
         if(withinRange)
         {
             hasPath = false;
         }
             //std::cout << rangewep->name << ",'s range: " << rangewep->range << std::endl;
+        debug("4");
     }
 
     debug("Checking inComplete:" + std::to_string(inComplete));
@@ -2630,7 +2685,7 @@ ReDesire:
     debug(npc.name + ", mhmm.", false);
     debug("debug 9", false);
     debug("(" + std::to_string(npc.xpos) + "/" + std::to_string(npc.ypos) + "/" + std::to_string(npc.zpos) + ")");
-    bool npcWalkable = tiles[abs_to_index(npc.xpos/GRID_SIZE)][abs_to_index(npc.ypos/GRID_SIZE)][abs_to_index(npc.zpos/GRID_SIZE)].walkable;
+    bool npcWalkable = tiles[abs(npc.xpos/GRID_SIZE)][abs(npc.ypos/GRID_SIZE)][abs(npc.zpos/GRID_SIZE)].walkable;
     debug("pro debug 1", false);
 
     if(hasPath && (gvars::framesPassed % 5) == 0 && npcWalkable)
@@ -2649,7 +2704,23 @@ ReDesire:
             npc.storedPath.push_back(i);
         pathCon.storedPath.clear();
     }
-    if(hasPath == false)
+
+    if(math::distance(npc.endPos,startPos) <= npc.size/GRID_SIZE)
+        npc.hasPath = false;
+
+    if(npc.hasPath && (gvars::framesPassed % 5) == 0 && npcWalkable)
+    {
+        bool prevWalkable = tiles[npc.endPos.x][npc.endPos.y][npc.endPos.z].walkable;
+        tiles[npc.endPos.x][npc.endPos.y][npc.endPos.z].walkable = true;
+        int result = pathCon.makePath(startPos, npc.endPos);
+        tiles[npc.endPos.x][npc.endPos.y][npc.endPos.z].walkable = prevWalkable;
+        npc.storedPath.clear();
+        for(auto &i : pathCon.storedPath)
+            npc.storedPath.push_back(i);
+        pathCon.storedPath.clear();
+    }
+
+    if(hasPath == false && npc.hasPath == false)
         npc.storedPath.clear();
     debug("post hasPath");
 
@@ -2690,7 +2761,7 @@ ReDesire:
         if(math::distance(myPos,posExtended) <= npc.moverate)
             npc.storedPath.erase(npc.storedPath.begin() );
     }
-    else if(npc.targetInfo.item != nullptr && pathCon.storedPath.size() == 1 || npc.targetInfo.item != nullptr && pathCon.storedPath.size() == 2)
+    else if((npc.targetInfo.item != nullptr && pathCon.storedPath.size() == 1) || (npc.targetInfo.item != nullptr && pathCon.storedPath.size() == 2))
     {
         debug("dir Moving");
         npc.dirMove(sf::Vector2f((*npc.targetInfo.item).xpos,
@@ -2702,6 +2773,8 @@ ReDesire:
         removeJobs(npc.factionPtr->jobList);
     removeItems(npc.inventory);
     debug("endCritterbrain2");
+
+    critterPush(npc, container);
 }
 
 void critterBrain(std::list<Npc> &npcs)
@@ -2787,11 +2860,9 @@ void drawNPCs()
 
 void drawItems()
 {
-    //App.setActive(true);
-
     for (auto &worlditem : worlditems)
     {
-        int itemZ = worlditem.zpos/20;
+        int itemZ = worlditem.zpos/GRID_SIZE;
         if(aabb(worlditem.xpos,worlditem.ypos,gvars::topLeft.x,gvars::topRight.x,gvars::topLeft.y,gvars::bottomRight.y) && itemZ == gvars::currentz)
         {
             worlditem.img.setColor(sf::Color(255, 255, 255, 255));
@@ -2804,12 +2875,20 @@ void drawItems()
 
 void displayChat(sf::Vector2f position)
 {
+    sf::View view = window.getDefaultView();
+    window.setView(view);
+    // restore the default view
+    window.setView(window.getDefaultView());
+
+
+
     if (gCtrl.phase != "MainMenu")
         effects.createSquare(
             position.x - 10, position.y + 10, position.x + 500,
-            (position.y - ((chatBox.chatStorage.size() + 1) * 10)),
+            (position.y - ((11) * 10)), // (position.y - ((chatBox.chatStorage.size() + 1) * 10)),
             sf::Color(0, 0, 0, 100), 2, sf::Color::Cyan);
 
+    /*
     for (size_t i = 0; i != chatBox.chatStorage.size(); i++)
     {
         textList.createText(
@@ -2817,6 +2896,23 @@ void displayChat(sf::Vector2f position)
             ((position.y - ((chatBox.chatStorage.size()) * 10))-10) + (i * 10), 10,
             chatBox.chatStorage[i].color, chatBox.chatStorage[i].line);
     }
+    */
+    if(chatBox.chatStorage.size() == 0)
+    {
+        for(int i = 0; i != 10; i++)
+        {
+            chatBox.addChat("",sf::Color::Black);
+        }
+    }
+    for (size_t i = chatBox.chatStorage.size(); i != chatBox.chatStorage.size()-10; i--)
+    {
+        textList.createText(
+            position.x,
+            ((position.y - ((chatBox.chatStorage.size()) * 10))-10) + ((i-1) * 10), 10,
+            chatBox.chatStorage[i-1].color, chatBox.chatStorage[i-1].line);
+    }
+
+
     if(network::chatting)
     {
         if(gvars::secondSwitch)
@@ -2824,6 +2920,8 @@ void displayChat(sf::Vector2f position)
         else
             textList.createText(gvars::bottomLeft.x+10,gvars::bottomLeft.y-15,10,sf::Color::White,"Chat: " + cliCon.chatString + "|");
     }
+
+    window.setView(gvars::view1);
 
 }
 
@@ -2864,24 +2962,158 @@ void hoverItemHUD()
         //sf::Vector2f rPos(gvars::topLeft.x + gvars::slotPos[i].x, gvars::topLeft.y + gvars::slotPos[i].y);
         if(math::closeish(pixelPos,vPos) <= 20)
         {
-            //std::cout << "Success! on: " << i << std::endl;
-            if(myTargetPtr->invSlots[i] != nullptr)
-            {
+            gvars::hovering = true;
+        }
 
-                //window.setView(gvars::view1);
-                textList.createText(gvars::mousePos.x,gvars::mousePos.y-15,15,sf::Color::Cyan,myTargetPtr->invSlots[i]->name);
-                //window.setView(window.getDefaultView());
-                if(inputState.lmb)
+        if(inputState.lmbTime == 1 && math::closeish(pixelPos,vPos) <= 20)
+        {
+            //std::cout << "Success! on: " << i << std::endl;
+
+
+
+            if(mouseItem == nullptr && myTargetPtr->invSlots[i] != nullptr)
+            {
+                //std::cout << "Clicked on " << myTargetPtr->invSlots[i]->name << std::endl;
+                mouseItem = myTargetPtr->invSlots[i];
+                myTargetPtr->invSlots[i] = nullptr;
+            }
+            else if(mouseItem != nullptr)
+            {
+                if(myTargetPtr->invSlots[i] == nullptr)
                 {
-                    //std::cout << "Clicked on " << myTargetPtr->invSlots[i]->name << std::endl;
-                    gvars::hovering = true;
-                    mouseItem = myTargetPtr->invSlots[i];
+                    myTargetPtr->invSlots[i] = mouseItem;
+                    mouseItem = nullptr;
                 }
             }
         }
     }
     window.setView(gvars::view1);
 }
+
+void drawSquadHud()
+{
+    window.setView(window.getDefaultView());
+    int ydrawPos = 0;
+
+    for(auto &npc : npclist)
+    {
+
+        if(npc.faction == "The Titanium Grip")
+        {
+
+            sf::Vector2f spritePos(60,100+(ydrawPos*60));
+
+            sf::Sprite squadSprite;
+            {
+                squadSprite.setTexture(*npc.img.getTexture());
+                squadSprite.setPosition(spritePos);
+                squadSprite.scale(0.5,0.5);
+                squadSprite.setRotation(npc.img.getRotation());
+                squadSprite.setOrigin(squadSprite.getTexture()->getSize().x/2,squadSprite.getTexture()->getSize().y/2);
+            }
+
+
+            sf::RectangleShape rectangle;
+            {
+                rectangle.setSize(sf::Vector2f(130, 50));
+                rectangle.setPosition(40,100+(ydrawPos*60)-30);
+                rectangle.setFillColor(sf::Color(0,0,0,100));
+                rectangle.setOutlineColor(sf::Color::Cyan);
+                rectangle.setOutlineThickness(1);
+            }
+
+
+            int healthSize = 15;
+            sf::CircleShape squadHealthBG;
+            {
+                squadHealthBG.setFillColor(sf::Color(100,100,100));
+                squadHealthBG.setPosition(100,spritePos.y-10);
+                squadHealthBG.setOutlineColor(gvars::cycleRed);
+                squadHealthBG.setOutlineThickness(2);
+                squadHealthBG.setRadius(healthSize);
+                squadHealthBG.setOrigin(healthSize,healthSize);
+            }
+
+            sf::CircleShape squadHealth;
+            {
+                squadHealth.setFillColor(sf::Color::Red);
+                squadHealth.setPosition(100,spritePos.y-10);
+                squadHealth.setOutlineColor(gvars::cycleRed);
+                squadHealth.setOutlineThickness(1);
+                //float remainingHealth = (npc.maxhealth - npc.health)/npc.maxhealth;
+                float remainingHealth = npc.health / npc.maxhealth;
+                //squadHealth.setRadius(50*remainingHealth);
+                squadHealth.setRadius(healthSize*remainingHealth);
+                squadHealth.setOrigin(squadHealth.getRadius(),squadHealth.getRadius());
+            }
+
+            sf::Text squadHealthNum;
+            {
+                int npcHealth = npc.health;
+                squadHealthNum.setString(std::to_string(npcHealth));
+                squadHealthNum.setColor(sf::Color::White);
+                squadHealthNum.setPosition(95,spritePos.y-15);
+                squadHealthNum.setCharacterSize(10);
+
+                squadHealthNum.setFont(gvars::defaultFont);
+            }
+
+            sf::Text squadName;
+            {
+                squadName.setString(npc.name);
+                squadName.setColor(sf::Color::White);
+                squadName.setPosition(45,130+(ydrawPos*60)-60);
+                squadName.setCharacterSize(10);
+
+                squadName.setFont(gvars::defaultFont);
+            }
+
+
+
+
+            ydrawPos++;
+            window.draw(rectangle);
+
+            window.draw(squadHealthBG);
+            window.draw(squadHealth);
+            window.draw(squadHealthNum);
+
+            window.draw(squadSprite);
+            window.draw(squadName);
+
+        }
+
+    }
+
+    window.setView(gvars::view1);
+}
+
+void drawEnemyCounterHud()
+{
+    window.setView(window.getDefaultView());
+    int ydrawPos = 0;
+
+    sf::Text enemyCounter;
+    {
+        int counter = 0;
+        for(auto &npc : npclist)
+        {
+            if(npc.faction == "Towerlings")
+                counter++;
+        }
+        if(counter > 0)
+            enemyCounter.setString("Enemies Remaining: " + std::to_string(counter));
+        enemyCounter.setColor(sf::Color::White);
+        enemyCounter.setPosition(RESOLUTION.x/1.5,50);
+        enemyCounter.setCharacterSize(15);
+        enemyCounter.setFont(gvars::defaultFont);
+    }
+
+    window.draw(enemyCounter);
+
+    window.setView(gvars::view1);
+}
+
 
 void drawStuffs()
 {
@@ -2955,6 +3187,9 @@ void drawStuffs()
                 window.getView().getCenter().y);
     debug("Drew Joblist");
 
+    drawSquadHud();
+    drawEnemyCounterHud();
+
     displayChat(sf::Vector2f(gvars::bottomLeft.x + 5, gvars::bottomLeft.y - 5));
     debug("Drew Chat");
 
@@ -2998,6 +3233,8 @@ void drawStuffs()
     }
 
     displayMouseItem();
+
+    drawBeams();
 
     effects.drawEffects();
     debug("Drew Effects");
@@ -3125,7 +3362,7 @@ void acquireSelectedNPCs()
     {
         if (gvars::heldClickPos == sf::Vector2f(-1, -1))
             gvars::heldClickPos = gvars::mousePos;
-        effects.createSquare(gvars::heldClickPos.x,gvars::heldClickPos.y, gvars::mousePos.x,gvars::mousePos.y,sf::Color(0, 255, 255, 100));
+        effects.createSquare(gvars::heldClickPos.x,gvars::heldClickPos.y, gvars::mousePos.x,gvars::mousePos.y,sf::Color(0, 0, 0, 0),5,sf::Color(0, 255, 255));
     }
     else
         gvars::heldClickPos = sf::Vector2f(-1, -1);
@@ -3151,6 +3388,8 @@ sf::Thread TcpClientThread(&runTcpClient, network::mainPort+23);
 
 void galaxyLoop()
 {
+
+    /*
     if(network::servWait == false)
     {
         debug("Launching Server");
@@ -3182,12 +3421,16 @@ void galaxyLoop()
             std::cout << "sendGrid: " << gvars::sendGrid << std::endl;
         }
 
+    */
 
 
 }
 
 void galaxySetup()
 {
+    if (!gvars::defaultFont.loadFromFile("data/fonts/sansation.ttf"))
+        throw std::runtime_error("Failed to load font!");
+
     buildMicroPatherTest();
 
 
@@ -3209,7 +3452,7 @@ void galaxySetup()
 
     initializeTilePositions();
 
-    window.setFramerateLimit(30); // 0 is unlimited
+    window.setFramerateLimit(60); // 0 is unlimited
 
     gvars::view1.zoom(2);
 
@@ -3599,7 +3842,7 @@ void lmbPress()
                 int dist = math::closeish(gvars::mousePos.x,
                                             gvars::mousePos.y,
                                             elem.xpos, elem.ypos);
-                if (dist <= GRID_SIZE)
+                if (dist <= GRID_SIZE/2)
                 {
                     gvars::myTarget = tfunz;
                     myTargetPtr = &elem;
@@ -4151,7 +4394,7 @@ void handlePhase()
             npcmanager.addCritters();
             debug("Post Add Critters");
 
-            lmbPress();
+
 
 
         } //=============================================================================*End of Local*========================================================================
@@ -4992,6 +5235,8 @@ void handlePhase()
             }
         } //=============================================================================*End of Main Menu*========================================================================
 
+
+
 }
 
 void scaleImages()
@@ -5048,6 +5293,193 @@ void cleanMenu()
 }
 
 
+
+
+struct BeamAttribute
+{
+    sf::Color color;
+    int damage;
+    BeamAttribute()
+    {
+        color = sf::Color(0,0,0);
+        damage = 0;
+    }
+};
+
+class Beam
+{
+public:
+    std::vector<BeamAttribute> attributes;
+    sf::Vector2f startPos;
+    sf::Vector2f endPos;
+    double angle;
+    int lifeTime;
+    bool toDelete;
+    unsigned long long id;
+    sf::Color getColor()
+    {
+        sf::Color color(0,0,0);
+        for(auto &atr : attributes)
+        {
+            color += atr.color;
+        }
+        return color;
+    }
+    Beam()
+    {
+        angle = 0;
+        lifeTime = 0;
+        toDelete = false;
+        id = gvars::globalid++;
+    }
+};
+
+std::list<Beam> beams;
+
+void drawBeams()
+{
+    for(auto &beam : beams)
+    {
+        sf::Color color(0,0,0);
+        int damage = 0;
+        for(auto &atr : beam.attributes)
+        {
+            damage += atr.damage;
+            color += atr.color;
+        }
+
+        effects.createLine(beam.startPos.x,beam.startPos.y,beam.endPos.x,beam.endPos.y,3,color);
+        int angle = beam.angle;
+        textList.createText(beam.startPos.x,beam.startPos.y,10,color,std::to_string(angle));
+        textList.createText(beam.endPos.x,beam.endPos.y,10,color,std::to_string(angle));
+
+
+    }
+}
+
+std::vector<sf::Vector2i> traceTrail(int xa,int ya,int xb,int yb)
+{
+
+    int dx = xb - xa, dy = yb - ya, steps;
+    float xIncrement, yIncrement, x = xa, y = ya;
+    if (abs(dx) > abs(dy))
+        steps = abs(dx);
+    else
+        steps = abs(dy);
+    xIncrement = dx / (float)steps;
+    yIncrement = dy / (float)steps;
+    std::vector<int> vectorID;
+
+    std::vector<sf::Vector2i> returns;
+    for (int k = 0; k < steps; k++)
+    {
+        x += xIncrement;
+        y += yIncrement;
+        returns.push_back(sf::Vector2i(x,y));
+    }
+    return returns;
+}
+
+void beamTestLoop()
+{
+    //if(inputState.key[Key::Space].time == 1)
+    {
+        beams.clear();
+        {
+            Beam beam;
+        beam.startPos = sf::Vector2f(25,200);
+        //beam.endPos = sf::Vector2f(100,100);
+        beam.endPos = gvars::mousePos;
+        //beam.startPos = sf::Vector2f(100,100);
+        //beam.endPos = sf::Vector2f(25,25);
+        beam.angle = math::angleBetweenVectors(beam.startPos,beam.endPos);
+        BeamAttribute BA;
+        BA.damage = 5;
+        BA.color = sf::Color(0,150,0);
+        beam.attributes.push_back(BA);
+        BA.damage = 3;
+        BA.color = sf::Color(0,0,150);
+        beam.attributes.push_back(BA);
+        beams.push_back(beam);
+        }
+        {
+            Beam beam;
+        beam.startPos = sf::Vector2f(40,20);
+        beam.endPos = sf::Vector2f(40,400);
+        //beam.startPos = sf::Vector2f(100,40);
+        //beam.endPos = sf::Vector2f(20,40);
+        beam.angle = math::angleBetweenVectors(beam.startPos,beam.endPos);
+        BeamAttribute BA;
+        BA.damage = 5;
+        BA.color = sf::Color(150,0,0);
+        beam.attributes.push_back(BA);
+        beams.push_back(beam);
+        }
+    }
+    int Beams = 0;
+
+    for( auto &beam : beams)
+        {
+            std::vector<sf::Vector2i> trail = traceTrail(beam.startPos.x,beam.startPos.y,beam.endPos.x,beam.endPos.y);
+            /*
+            if(Beams == 0)
+            {
+
+                std::cout << "trail length: " << trail.size() << std::endl;
+                for(int i = 0; i != trail.size(); i++)
+                {
+                    std::cout << i << ": " << trail[i].x << "/" << trail[i].y << std::endl;
+                }
+                std::cout << "trail length: " << trail.size() << std::endl;
+                fSleep(5);
+
+            }
+            */
+
+
+
+            for( auto &otherbeam : beams)
+            {
+                if(beam.id != otherbeam.id)
+                {
+                    std::vector<sf::Vector2i> othertrail = traceTrail(otherbeam.startPos.x,otherbeam.startPos.y,otherbeam.endPos.x,otherbeam.endPos.y);
+
+
+                    for(int i = 0; i != trail.size(); i++)
+                        for(int t = 0; t != othertrail.size(); t++)
+                    {
+                        if(trail[i].x == othertrail[t].x && trail[i].y == othertrail[t].y)
+                        {
+                            sf::Color color = beam.getColor() + otherbeam.getColor();
+                            effects.createCircle(trail[i].x,trail[i].y,10,color);
+
+                            //int angle = beam.angle + otherbeam.angle;
+                            //int angle = math::constrainAngle( (beam.angle + otherbeam.angle) / 2);
+                            int angle = math::constrainAngle( math::angleDiff(beam.angle,otherbeam.angle));
+                            angle = math::constrainAngle(beam.angle + (angle/2) );
+
+                            textList.createText(trail[i].x,trail[i].y,10,color,std::to_string(angle));
+                            sf::Vector2f xxPos(trail[i].x,trail[i].y);
+                            sf::Vector2f vPos = math::angleCalc(xxPos,math::constrainAngle(angle),100);
+                            effects.createCircle(vPos.x,vPos.y,10,color);
+                            std::string outPut = std::to_string(beam.id) + ": a: " + std::to_string(angle);
+                            textList.createText(vPos.x,vPos.y,10,color,outPut);
+                            effects.createLine(trail[i].x,trail[i].y,vPos.x,vPos.y,3,color);
+
+                            if(inputState.key[Key::Z])
+                            {
+                                fSleep(1);
+                            }
+
+                        }
+                    }
+                }
+            }
+            Beams++;
+        }
+
+}
+
 void newItemstuffs()
 {
     std::cout << "Kaboom! \n";
@@ -5079,20 +5511,118 @@ void playThemeTrack()
     gvars::musicVolume = 0;
     int ranNum = randz(1,3);
     if(ranNum == 1)
-        playMusic("Electro_Cabello.ogg");
+        playMusic("Jalandhar.ogg");
     else if(ranNum == 2)
         playMusic("Neo Western.ogg");
     else if(ranNum == 3)
-        playMusic("Jalandhar.ogg");
+        playMusic("Electro_Cabello.ogg");
 }
+
+
+void critDamages(float damage, critScore crit)
+{
+    std::cout << "\n===Crit Damages===\n";
+    std::cout << "damage = " << damage << std::endl;
+    std::cout << "Norm Crit Chance/Damage: " << crit.normalCritChance << " : " << crit.normalDamageMultiplier << std::endl;
+    //std::cout <<
+    std::cout << "Gamma Crit Chance/Damage: " << crit.gammaCritChance << " : " << crit.gammaDamageMultiplier << std::endl;
+    std::cout << "Iota Crit Chance/Damage: " << crit.iotaCritChance << " : " << crit.iotaDamageMultiplier << std::endl;
+
+    std::cout << "Mu Roll/Damage: " << randz(1,crit.muCritChance) << "/" << damage*crit.muDamageMultiplier << std::endl;
+    std::cout << "================== \n";
+    int dogEatDog = 0;
+    for(int x = 0; x != 4; x++)
+    {
+        int TopDog = 0;
+        for(int i = 0; i != 25; i++)
+        {
+            //int roll = randz(1,10000000);
+            int roll = random(1,crit.iotaCritChance);
+            if(roll > TopDog)
+                TopDog = roll;
+            std::cout << "iota Roll/Damage: " << roll << "/" << damage*crit.muDamageMultiplier << std::endl;
+        }
+        std::cout << "Highest Roll: " << TopDog << std::endl;
+    }
+    std::cout << "Ultimate High: " << dogEatDog << std::endl;
+
+
+
+    std::cout << "random(5,500): " << random(5,500) << std::endl;
+    std::cout << "random(5,500): " << random(5,500) << std::endl;
+    std::cout << "random(5,500): " << random(5,500) << std::endl;
+    std::cout << "random(5,500): " << random(5,500) << std::endl;
+
+
+}
+
+void testAnimation()
+{
+
+}
+
+class fpsTracker
+{
+public:
+    int framesPassed;
+    float framesPerSecond;
+
+    sf::Clock startTime;
+    sf::Clock fpsTimerLive;
+    sf::Clock fpsTimer;
+
+    sf::Time framesPassedTime;
+
+    fpsTracker()
+    {
+        startTime.restart();
+        framesPassed = 0;
+        framesPerSecond = 0;
+        framesPassedTime = fpsTimer.restart();
+    }
+
+    void calcFPS()
+    {
+        framesPassed++;
+
+        float estimatedFPS = -1;
+        if(fpsTimerLive.getElapsedTime().asMilliseconds() != 0)
+            estimatedFPS = 1000/fpsTimerLive.getElapsedTime().asMilliseconds();
+        fpsTimerLive.restart();
+
+        if(fpsTimer.getElapsedTime().asMilliseconds() >= 1000)
+        {
+            framesPerSecond = framesPassed;
+            framesPassed = 0;
+            framesPassedTime = fpsTimer.restart();
+        }
+
+        //std::cout << "FPS(Live/Second/TenSecond): " << estimatedFPS << "/" << framesPerSecond << std::endl;
+        int floatConv1 = estimatedFPS, floatConv2 = framesPerSecond;
+        std::string outPut = "FPS(" + std::to_string(floatConv1) + "/" + std::to_string(floatConv2) + ") \n";
+        int gameHours = startTime.getElapsedTime().asSeconds()/60/60;
+        int gameMinutes = startTime.getElapsedTime().asSeconds()/60;
+        gameMinutes = (gameMinutes % 60);
+        int gameSeconds = ((startTime.getElapsedTime().asSeconds()));
+        gameSeconds = (gameSeconds % 60);
+        outPut.append("Game Time: " + std::to_string(gameHours) + "h" + std::to_string(gameMinutes) + "m" + std::to_string(gameSeconds) + "s" );
+        textList.createText(gvars::topLeft.x,gvars::topLeft.y,15,sf::Color::White,outPut);
+    }
+
+};
+fpsTracker fpsKeeper;
+
 
 int main()
 {
+    //srand(clock());
+    srand(time(NULL));
+
     soundmanager.init();
     initializeMusic();
     playThemeTrack();
 
-    srand(clock());
+
     texturemanager.init();
 
     itemmanager.initializeItems();
@@ -5100,7 +5630,7 @@ int main()
 
 
     galaxySetup();
-    //bountyTowerSetup();
+    bountyTowerSetup();
 
     window.create(sf::VideoMode(RESOLUTION.x, RESOLUTION.y, 32), randomWindowName());
     window.setVerticalSyncEnabled(true);
@@ -5110,9 +5640,172 @@ int main()
     soundmanager.playSound("Startup.wav");
     newItemstuffs();
 
+    //VoidTypeTest();
 
-    while (window.isOpen())
+    //critScore CRITZ;
+
+    //critDamages(randz(1,100), CRITZ);
+
+
+
+    // http://en.sfml-dev.org/forums/index.php?topic=10281.0
+    Animation walkingAnimationDown;
+    sf::Texture texture;
+    if (!texture.loadFromFile("data/gfx/SpriteSheet.png"))
     {
+        std::cout << "Failed to load player spritesheet!" << std::endl;
+        return 1;
+    }
+    // set up the animations for all four directions (set spritesheet and push frames)
+    walkingAnimationDown.setSpriteSheet(texture);
+    walkingAnimationDown.addFrame(sf::IntRect(32, 0, 32, 32));
+    walkingAnimationDown.addFrame(sf::IntRect(64, 0, 32, 32));
+    walkingAnimationDown.addFrame(sf::IntRect(32, 0, 32, 32));
+    walkingAnimationDown.addFrame(sf::IntRect( 0, 0, 32, 32));
+
+
+
+    Animation walkingAnimationLeft;
+    walkingAnimationLeft.setSpriteSheet(texture);
+    walkingAnimationLeft.addFrame(sf::IntRect(32, 32, 32, 32));
+    walkingAnimationLeft.addFrame(sf::IntRect(64, 32, 32, 32));
+    walkingAnimationLeft.addFrame(sf::IntRect(32, 32, 32, 32));
+    walkingAnimationLeft.addFrame(sf::IntRect( 0, 32, 32, 32));
+
+    Animation walkingAnimationRight;
+    walkingAnimationRight.setSpriteSheet(texture);
+    walkingAnimationRight.addFrame(sf::IntRect(32, 64, 32, 32));
+    walkingAnimationRight.addFrame(sf::IntRect(64, 64, 32, 32));
+    walkingAnimationRight.addFrame(sf::IntRect(32, 64, 32, 32));
+    walkingAnimationRight.addFrame(sf::IntRect( 0, 64, 32, 32));
+
+    Animation walkingAnimationUp;
+    walkingAnimationUp.setSpriteSheet(texture);
+    walkingAnimationUp.addFrame(sf::IntRect(32, 96, 32, 32));
+    walkingAnimationUp.addFrame(sf::IntRect(64, 96, 32, 32));
+    walkingAnimationUp.addFrame(sf::IntRect(32, 96, 32, 32));
+    walkingAnimationUp.addFrame(sf::IntRect( 0, 96, 32, 32));
+
+    Animation shootingAnimationUp;
+    shootingAnimationUp.setSpriteSheet(texturemanager.getTexture("EnergySheet.png"));
+    shootingAnimationUp.addFrame(sf::IntRect(32, 0, 32, 32));
+    shootingAnimationUp.addFrame(sf::IntRect(64, 0, 32, 32));
+    shootingAnimationUp.addFrame(sf::IntRect(32, 0, 32, 32));
+    shootingAnimationUp.addFrame(sf::IntRect( 0, 0, 32, 32));
+
+
+
+    Animation* currentAnimation = &walkingAnimationDown;
+
+    // set up AnimatedSprite
+    AnimatedSprite animatedSprite(sf::seconds(0.2), true, false);
+    animatedSprite.setPosition(sf::Vector2f(20,20));
+    animatedSprite.setOrigin(10,10);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    //while (window.isOpen())
+    while (!inputState.key[Key::Escape] && window.isOpen())
+    {
+        testAnimation();
+        if(inputState.key[Key::Escape])
+        {
+            window.close();
+        }
+        fpsKeeper.calcFPS();
+
+
+
+
+
+
+
+
+        if(inputState.key[Key::I])
+            currentAnimation = &walkingAnimationUp;
+
+        if(inputState.key[Key::U])
+            currentAnimation = &shootingAnimationUp;
+
+        if(inputState.key[Key::J])
+            currentAnimation = &walkingAnimationLeft;
+
+        if(inputState.key[Key::L])
+            currentAnimation = &walkingAnimationRight;
+
+        if(inputState.key[Key::K])
+            currentAnimation = &walkingAnimationDown;
+
+
+        animatedSprite.play(*currentAnimation);
+
+        if(inputState.key[Key::Space])
+            animatedSprite.update(sf::milliseconds(50));
+        else if(inputState.key[Key::Space] && inputState.key[Key::LShift])
+            animatedSprite.update(sf::milliseconds(500));
+        else if(inputState.key[Key::LControl])
+            animatedSprite.update(sf::milliseconds(2));
+        else
+            animatedSprite.update(sf::milliseconds(10));
+
+        int  aniAngle = math::angleBetweenVectors(gvars::mousePos,sf::Vector2f(20,20));
+
+        textList.createText(0+20,60+20,10,sf::Color::White,"Angle:"+std::to_string(aniAngle));
+        int angMod = 45; // To help with the odd directionals.
+        if(inbetween(0,90,math::constrainAngle(aniAngle+angMod)))
+        {
+            //std::cout << "Left \n";
+            if(math::closeish(gvars::mousePos,sf::Vector2f(20,20)) <= 100)
+                effects.createLine(gvars::mousePos.x,gvars::mousePos.y,20,20,1,sf::Color::Red);
+            currentAnimation = &walkingAnimationLeft;
+            //animatedSprite.setRotation(math::constrainAngle(aniAngle+angMod)-45);
+        }
+        if(inbetween(90,180,math::constrainAngle(aniAngle+angMod)))
+        {
+            //std::cout << "Up \n";
+            if(math::closeish(gvars::mousePos,sf::Vector2f(20,20)) <= 100)
+                effects.createLine(gvars::mousePos.x,gvars::mousePos.y,20,20,1,sf::Color::Yellow);
+            currentAnimation = &walkingAnimationUp;
+            //animatedSprite.setRotation(math::constrainAngle(aniAngle+angMod)-45-90);
+        }
+        if(inbetween(-180,-90,math::constrainAngle(aniAngle+angMod)))
+        {
+            //std::cout << "Right \n";
+            if(math::closeish(gvars::mousePos,sf::Vector2f(20,20)) <= 100)
+                effects.createLine(gvars::mousePos.x,gvars::mousePos.y,20,20,1,sf::Color::Blue);
+            currentAnimation = &walkingAnimationRight;
+        }
+        if(inbetween(-90,0,math::constrainAngle(aniAngle+angMod)))
+        {
+            //std::cout << "Down \n";
+            if(math::closeish(gvars::mousePos,sf::Vector2f(20,20)) <= 100)
+                effects.createLine(gvars::mousePos.x,gvars::mousePos.y,20,20,1,sf::Color::Green);
+            currentAnimation = &walkingAnimationDown;
+        }
+
+        //std::cout << "frametime: " << timer.asSeconds() << std::endl;
+
+
+
+
+
         gvars::hovering = false;
         if (inputState.key[Key::R] && !network::chatting)
         {
@@ -5133,15 +5826,20 @@ int main()
 
         genericLoop();
         galaxyLoop();
+        //beamTestLoop();
 
         handlePhase();
 
         acquireSelectedNPCs();
         selectedNPCprocess();
 
+        lmbPress();
         debug("Pre Draw Stuffs");
         hoverItemIDdisplay();
         drawStuffs();
+
+        window.draw(animatedSprite);
+
         window.display();
         window.clear();
         debug("Post Draw Stuffs");
@@ -5156,5 +5854,9 @@ int main()
         soundmanager.cleanSounds();
         cleanMenu();
     } // End of game loop
+
+    TcpServerThread.terminate();
+    TcpClientThread.terminate();
+
     return EXIT_SUCCESS;
 }

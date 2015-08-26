@@ -12,6 +12,8 @@ const int GRIDS = 96;
 
 const int CHUNK_SIZE = 32;
 
+bool isInBounds(sf::Vector2f vPos);
+
 class WorldTileType
 {
 public:
@@ -76,6 +78,7 @@ public:
     void BTwater();
     void BTgrass();
     void BTwall();
+    void BTwallFake();
     void BTdoor();
     void BTlava();
     void BTsky();

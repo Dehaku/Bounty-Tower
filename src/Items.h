@@ -42,6 +42,7 @@ public:
     float xpos;
     float ypos;
     float zpos;
+    Vec3f getPos();
     int rxpos;
     int rypos;
     int gxpos;
@@ -163,7 +164,7 @@ extern std::list<Item> itemlist;
 
 struct itemPtrVector
 {
-    std::vector<Item*> ptrs;
+    std::list<Item*> ptrs;
 };
 
 itemPtrVector makeItems(std::list<Item> &items, int maxamount);

@@ -26,6 +26,41 @@ namespace mutex
     sf::Mutex itemList;
 }
 
+
+
+
+critScore::critScore()
+{
+    normalCritChance    = 100;
+    alphaCritChance     = 1000;
+    betaCritChance      = 10000;
+    gammaCritChance     = 100000;
+    deltaCritChance     = 1000000;
+    epsilonCritChance   = 10000000;
+    zetaCritChance      = 100000000;
+    etaCritChance       = 1000000000;
+    thetaCritChance     = 10000000000;
+    iotaCritChance      = 100000000000;
+    kappaCritChance     = 1000000000000;
+    lambdaCritChance    = 10000000000000;
+    muCritChance        = 100000000000000;
+
+    normalDamageMultiplier  = 10;
+    alphaDamageMultiplier   = 100;
+    betaDamageMultiplier    = 1000;
+    gammaDamageMultiplier   = 10000; // AoE damage
+    deltaDamageMultiplier   = 100000; // Timestop
+    epsilonDamageMultiplier = 1000000; //
+    zetaDamageMultiplier    = 10000000;
+    etaDamageMultiplier     = 100000000;
+    thetaDamageMultiplier   = 1000000000; // Growth stops here due to 2.4 billion cap on 32-bit systems.
+    iotaDamageMultiplier    = 1000000000; // Kill All
+    kappaDamageMultiplier   = 1000000000; // Turn All
+    lambdaDamageMultiplier  = 1000000000; // Liquidate All
+    muDamageMultiplier      = 1000000000; // Shadon Grace
+}
+
+
 void assignSlotPos()
 {
     for( int i = 0; i != 20; i++)
@@ -91,7 +126,7 @@ bool debug = false;
 bool inFocus = true;
 bool drawStuffsDone = true;
 sf::View view1(CENTER, HALF_SIZE);
-int airPressure = 2;
+float airPressure = 2;
 sf::Vector2f mousePos;
 int mouseStagnation = 0;
 std::vector<int> selected;
@@ -143,5 +178,9 @@ bool transitionLock = true;
 int soundVolume = 50;
 int musicVolume = 50;
 int vocalVolume = 50;
+
+bool tileEdit = false;
+
+sf::Font defaultFont;
 
 } // namespace gvars

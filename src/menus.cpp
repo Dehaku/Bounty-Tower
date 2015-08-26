@@ -218,6 +218,20 @@ int createImageButton(sf::Vector2f vPos, sf::Texture &Tex, std::string text, int
     return var.id;
 }
 
+int createImageButton(sf::Vector2f vPos, const sf::Texture &Tex, std::string text, int rotation)
+{
+    ImageButton var;
+    var.sprite.setTexture(Tex);
+    //var.sprite.setScale(0.2,0.2);
+    var.sprite.setPosition(vPos);
+    var.sprite.setOrigin(Tex.getSize().x/2,Tex.getSize().y/2);
+    var.sprite.setRotation(var.sprite.getRotation()+rotation);
+    var.sButtonText = text;
+    var.sForwardText = text;
+    vImageButtonList.push_back(var);
+    return var.id;
+}
+
 bool buttonClicked(int id)
 {
     for (auto &button : vButtonList)
@@ -319,7 +333,11 @@ MenuPointerContainer::MenuPointerContainer()
 
 // TODO: Add functionality to allow you to press 1-9
 // to activate the menu buttons.
-
+void menuClose()
+{
+    gCtrl.menuPos = sf::Vector2f(-10000, -10000);
+    gCtrl.menuType = "NULL";
+}
 
 void menuPopUp()
 {
@@ -452,6 +470,71 @@ void menuPopUp()
         }
     }
 
+
+    if (gCtrl.menuType == "DebugCreateTile")
+    {
+
+        int options = 8;
+        gCtrl.menuEndPos = sf::Vector2f(gCtrl.menuPos.x + 150,
+                                        (gCtrl.menuPos.y + (options * 13)) + 5);
+        effects.createSquare(gCtrl.menuPos.x, gCtrl.menuPos.y,
+                             gCtrl.menuEndPos.x, gCtrl.menuEndPos.y,
+                             sf::Color::Black, 2, sf::Color::Cyan);
+        int iY = 0;
+        int brd = 140;                      // ButtonRightDisplacement.
+        int bs = 7;                         // ButtonSize;
+        int bsy = 5;                        // ButtonSize;
+        int mbd = 8;                        // MoveButtonDown
+        sf::Color butCol = sf::Color::Cyan; // ButtonColor.
+
+        for (int i = 0; i != options; i++)
+        {
+
+            if (i == 0)
+            {
+                effects.createLine(
+                    gCtrl.menuPos.x, (gCtrl.menuPos.y + (iY * 13)) + 13,
+                    gCtrl.menuPos.x + 90, (gCtrl.menuPos.y + (iY * 13)) + 13, 1,
+                    sf::Color::Cyan);
+                textList.createText(gCtrl.menuPos.x + 2,
+                                    gCtrl.menuPos.y + (iY * 13), 12,
+                                    sf::Color::White, "Spawn - Wall");
+                int butt = createSquareButton(
+                    math::Vec2f(gCtrl.menuPos.x + brd,
+                                (gCtrl.menuPos.y + (iY * 13)) + mbd),
+                    bs, bsy, butCol, "Makes a Wall!");
+                if (squareButtonClicked(butt) ||
+                    inputState.key[Key::Num1].time == 1)
+                {
+                    rmbMenuTile(    Vec3(gCtrl.menuPos.x,gCtrl.menuPos.y,gvars::currentz*20)   );
+                }
+            }
+
+            if (i == 1)
+            {
+                effects.createLine(
+                    gCtrl.menuPos.x, (gCtrl.menuPos.y + (iY * 13)) + 13,
+                    gCtrl.menuPos.x + 90, (gCtrl.menuPos.y + (iY * 13)) + 13, 1,
+                    sf::Color::Cyan);
+                textList.createText(gCtrl.menuPos.x + 2,
+                                    gCtrl.menuPos.y + (iY * 13), 12,
+                                    sf::Color::White, "Spawn - Natural Wall");
+                int Butt = createSquareButton(
+                    math::Vec2f(gCtrl.menuPos.x + brd,
+                                (gCtrl.menuPos.y + (iY * 13)) + mbd),
+                    bs, bsy, butCol, "Digs out a natural wall.");
+                if (squareButtonClicked(Butt) ||
+                    inputState.key[Key::Num1].time == 1)
+                {
+                    digWall(Vec3(gCtrl.menuPos.x,gCtrl.menuPos.y,gvars::currentz*20));
+                }
+            }
+
+            iY++;
+        }
+    }
+
+
     if (gCtrl.menuType == "BlankRMB")
     {
 
@@ -474,7 +557,7 @@ void menuPopUp()
         for (int i = 0; i != options; i++)
         {
 
-            if (i == 0)
+            if (i == 0 && bountytower::bountytower == false)
             {
 
                 //Effectz.CreateLine(GC.MenuPos.x,(GC.MenuPos.y+(iY*13))+8,GC.MenuPos.x+90,(GC.MenuPos.y+(iY*13))+8,3,Black,1,Yellow);
@@ -498,7 +581,7 @@ void menuPopUp()
                     return;
                 }
             }
-            if (i == 1)
+            if (i == 1 && bountytower::bountytower == false)
             {
 
                 //Effectz.CreateLine(GC.MenuPos.x,(GC.MenuPos.y+(iY*13))+8,GC.MenuPos.x+90,(GC.MenuPos.y+(iY*13))+8,3,Black,1,Yellow);
@@ -605,6 +688,30 @@ void menuPopUp()
                 }
             }
 
+            if (i == 7)
+            {
+                //Effectz.CreateLine(GC.MenuPos.x,(GC.MenuPos.y+(iY*13))+8,GC.MenuPos.x+90,(GC.MenuPos.y+(iY*13))+8,3,Black,1,Yellow);
+                effects.createLine(
+                    gCtrl.menuPos.x, (gCtrl.menuPos.y + (iY * 13)) + 13,
+                    gCtrl.menuPos.x + 90, (gCtrl.menuPos.y + (iY * 13)) + 13, 1,
+                    sf::Color::Cyan);
+                textList.createText(gCtrl.menuPos.x + 2,
+                                    gCtrl.menuPos.y + (iY * 13), 12,
+                                    sf::Color::White, "World Modify - Toggle");
+                int butt = createSquareButton(
+                    math::Vec2f(gCtrl.menuPos.x + brd,
+                                (gCtrl.menuPos.y + (iY * 13)) + mbd),
+                    bs, bsy, butCol,
+                    "This opens the menu to build various structures!");
+                if (squareButtonClicked(butt) ||
+                    inputState.key[Key::Num7].time == 1)
+                {
+                    toggle(gvars::tileEdit);
+                    //fSleep(0.2);
+                    menuClose();
+                    return;
+                }
+            }
 
             if (i == -5)
             {
@@ -1440,10 +1547,11 @@ void menuPopUp()
     {
 
         int options = 10;
-        sf::Vector2f lowerBound(RESOLUTION.x*0.1,RESOLUTION.y*0.1);
-        gCtrl.menuPos = lowerBound;
+        //sf::Vector2f lowerBound(RESOLUTION.x*0.1,RESOLUTION.y*0.1);
+        gCtrl.menuPos = gvars::topLeft;
 
-        gCtrl.menuEndPos = sf::Vector2f(RESOLUTION.x-lowerBound.x,RESOLUTION.y-lowerBound.y);
+        //gCtrl.menuEndPos = sf::Vector2f(RESOLUTION.x-lowerBound.x,RESOLUTION.y-lowerBound.y);
+        gCtrl.menuEndPos = gvars::bottomRight;
 
         effects.createSquare(gCtrl.menuPos.x, gCtrl.menuPos.y,
                              gCtrl.menuEndPos.x, gCtrl.menuEndPos.y,
@@ -1485,11 +1593,22 @@ void menuPopUp()
                     inputState.key[Key::Num1].time == 1)
             {
                 //towers[i].tex = &texturemanager.getTexture("Error.bmp");
+                for(auto &npc : npclist)
+                {
+                    npc.momentum = sf::Vector2f(0,0);
+                }
+
+                bountytower::towerLoaded = "FantasyModern";
                 buildTower("FantasyModern");
+                loadMap(636,0,0,50,50);
+
                 gCtrl.menuPos = sf::Vector2f(-10000, -10000);
                 gCtrl.menuType = "NULL";
-                gvars::currentx = 96/2;
-                gvars::currenty = 96;
+                std::cout << "currentx: " << gvars::currentx << "/";
+                int xview = (96*60)/20;
+                gvars::currentx = xview/2;
+                std::cout << gvars::currentx << std::endl;
+                gvars::currenty = xview;
                 break;
             }
 
@@ -1589,6 +1708,28 @@ void rightMouseButtonContextMenu()
         if (gCtrl.menuPtrCon.pVecItem.size() != 0)
         {
             menuPopUp();
+            return;
+        }
+        int mouseX = gvars::mousePos.x/GRID_SIZE;
+        int mouseY = gvars::mousePos.y/GRID_SIZE;
+
+
+
+        if(gvars::selected.size() != 0 && aabb(mouseX,mouseY,0,GRIDS-1,0,GRIDS-1)
+           && tiles[mouseX][mouseY][gvars::currentz].walkable)
+        {
+            for(auto &lilguy : npclist)
+            {
+                for(int i = 0; i != gvars::selected.size(); i++)
+                {
+                    if(lilguy.id == gvars::selected[i])
+                    {
+                        lilguy.hasPath = true;
+                        lilguy.endPos = Vec3(gvars::mousePos.x/GRID_SIZE,gvars::mousePos.y/GRID_SIZE,gvars::currentz);
+                    }
+
+                }
+            }
             return;
         }
 

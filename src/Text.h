@@ -3,6 +3,7 @@
 
 #include <SFML/Graphics.hpp>
 #include "util.h"
+#include "globalvars.h"
 
 class TextList
 {
@@ -34,6 +35,8 @@ public:
     TextList();
 };
 extern TextList textList;
+
+sf::Text drawText(sf::Vector2f vPos, std::string text, sf::Color color = sf::Color::White, int size = 10);
 
 class ChatBox
 {

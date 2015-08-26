@@ -1,4 +1,6 @@
+
 #include "util.h"
+
 
 void fSleep(float time)
 {
@@ -42,6 +44,24 @@ int randz(int minValue, int maxValue)
     int range = (maxValue - minValue);
     int rawRand = (rand() % range);
     return (minValue + rawRand);
+}
+
+int random(int minValue, int maxValue)
+{
+    unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+    std::minstd_rand0 generator (seed); // minstd_rand0 is a standard linear_congruential_engine
+
+    maxValue = maxValue + 1;
+    if (minValue == maxValue)
+    {
+        return minValue;
+    }
+    int range = (maxValue - minValue);
+
+    int rawRand = (generator() % range);
+
+    return (minValue + rawRand);
+
 }
 
 bool aabb(int pointx, int pointy, int left, int right, int up, int down)

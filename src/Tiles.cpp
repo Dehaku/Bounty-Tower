@@ -21,6 +21,15 @@ XTile xChunk[CHUNK_SIZE][CHUNK_SIZE][CHUNK_SIZE];
 
 extern sf::RenderWindow window;
 
+bool isInBounds(sf::Vector2f vPos)
+{
+    int xPos = vPos.x/GRID_SIZE;
+    int yPos = vPos.y/GRID_SIZE;
+    bool outPut = aabb(xPos,yPos,0,GRIDS-1,0,GRIDS-1);
+
+    return outPut;
+}
+
 void zGenerateChunk(std::string type, int planet, sf::Vector2i cords,
                     sf::Vector2i /*Pos*/)
 {
@@ -506,7 +515,8 @@ void saveMap(int planet, int /*xcord*/, int /*ycord*/, int xpos, int ypos)
 {
     using namespace std; // Start to Save Map
     cout << "Saving current map to file...\n";
-    string line("saves/maps/map");
+    //string line("saves/maps/map");
+    string line("data/maps/Towers/map");
     stringstream convert;
     convert << planet;
     convert << xpos;
@@ -522,20 +532,24 @@ void saveMap(int planet, int /*xcord*/, int /*ycord*/, int xpos, int ypos)
     {
         for (int t = 0; t != GRIDS; t++)
         {
-            outputFile << tiles[i][t][30].id << endl;
+            for (int z = 0; z != CHUNK_SIZE; z++) // New
+            {
+                outputFile << tiles[i][t][z].id << endl;
+            }
         }
     }
 }
 
-void loadMap(int planet, int xcord, int ycord, int /*xpos*/, int /*ypos*/)
+void loadMap(int planet, int /*xcord*/, int /*ycord*/, int xpos, int ypos)
 {
     using namespace std;
     fstream file; // Start to Load Map
-    string newline("saves/maps/map");
+    //string newline("saves/maps/map");
+    string newline("data/maps/Towers/map");
     stringstream newconvert;
     newconvert << planet;
-    newconvert << xcord;
-    newconvert << ycord;
+    newconvert << xpos;
+    newconvert << ypos;
     newline.append(newconvert.str());
     string newending(".txt");
     newline.append(newending);
@@ -552,7 +566,14 @@ void loadMap(int planet, int xcord, int ycord, int /*xpos*/, int /*ypos*/)
         {
             for (int t = 0; t != GRIDS; t++)
             {
-                file >> tiles[i][t][30].id;
+                //Old - file >> tiles[i][t][z].id;
+                for (int z = 0; z != CHUNK_SIZE; z++) // New
+                {
+                    int tileID;
+                    file >> tileID;
+                    tiles[i][t][z].setTilebyID(tileID);
+                }
+
             }
         }
         file.close();
@@ -1350,6 +1371,18 @@ void Tile::BTwall()
     walkable = false;
 }
 
+void Tile::BTwallFake()
+{ // 2012
+    id = 2012;
+    worldColor = sf::Color(100, 100, 100);
+    img.setTexture(texturemanager.getTexture("FMTwallcheat.png"));
+    transparent = false;
+    health = 10;
+    deathID = 3007;
+    walkable = false;
+}
+
+
 void Tile::BTwater()
 { // 2020
     id = 2020;
@@ -1365,7 +1398,7 @@ void Tile::BTstairs()
 { // 2031
     id = 2031;
     worldColor = sf::Color(150, 150, 0);
-    img.setTexture(texturemanager.getTexture("Stairs.png"));
+    img.setTexture(texturemanager.getTexture("BTStairs.png"));
     transparent = true;
     walkable = true;
     goesUp = true;
@@ -1375,9 +1408,10 @@ void Tile::BTstairs()
 
 void Tile::BTdoor()
 { // 2100
+    Tile();
     id = 2100;
     worldColor = sf::Color(255, 0, 0);
-    img.setTexture(texturemanager.getTexture("FMTtile1.png"));
+    img.setTexture(texturemanager.getTexture("BTDoorTile.png"));
     transparent = true;
     walkable = true;
     health = 15;
@@ -1390,18 +1424,8 @@ void Tile::BTelevatordoor()
     worldColor = sf::Color(150, 150, 150);
     transparent = true;
     walkable = true;
-    int rannum = randz(1,3);
-    if(rannum == 1)
-        img.setTexture(texturemanager.getTexture("FMTtile1.png"));
-    if(rannum == 2)
-        img.setTexture(texturemanager.getTexture("FMTtile2.png"));
-    /*
-    if(rannum == 3)
-        img.setTexture(texturemanager.getTexture("FMTtile3.png"));
-    */
-    if(rannum == 3)
-        img.setTexture(texturemanager.getTexture("FMTtile4.png"));
-    img.setColor(sf::Color(150,150,150));
+    img.setTexture(texturemanager.getTexture("BTElevatorDoor.png"));
+    state = "Closed";
 }
 
 void Tile::BTelevator()
@@ -1410,18 +1434,8 @@ void Tile::BTelevator()
     worldColor = sf::Color(150, 150, 150);
     transparent = true;
     walkable = true;
-    int rannum = randz(1,3);
-    if(rannum == 1)
-        img.setTexture(texturemanager.getTexture("FMTtile1.png"));
-    if(rannum == 2)
-        img.setTexture(texturemanager.getTexture("FMTtile2.png"));
-    /*
-    if(rannum == 3)
-        img.setTexture(texturemanager.getTexture("FMTtile3.png"));
-    */
-    if(rannum == 3)
-        img.setTexture(texturemanager.getTexture("FMTtile4.png"));
-    img.setColor(sf::Color(50,50,50));
+    img.setTexture(texturemanager.getTexture("BTElevator.png"));
+    //img.setColor(sf::Color(50,50,50));
 }
 
 
@@ -1442,7 +1456,7 @@ void Tile::BTswitch()
     worldColor = sf::Color(150, 150, 150);
     transparent = true;
     walkable = true;
-    img.setTexture(texturemanager.getTexture("FMTtile3.png"));
+    img.setTexture(texturemanager.getTexture("Switchboard.png"));
     state = "Off";
 }
 
@@ -1484,6 +1498,31 @@ void Tile::setTilebyID(int ID)
         lava();
     else if(ID == 1700)
         sky();
+
+    else if(ID == 2001)
+        BTgrass();
+    else if(ID == 3007)
+        BTstone();
+    else if(ID == 2010)
+        BTwall();
+    else if(ID == 2012)
+        BTwallFake();
+    else if(ID == 2020)
+        BTwater();
+    else if(ID == 2031)
+        BTstairs();
+    else if(ID == 2100)
+        BTdoor();
+    else if(ID == 3200)
+        BTelevatordoor();
+    else if(ID == 3202)
+        BTelevator();
+    else if(ID == 3500)
+        BTswitch();
+    else if(ID == 2700)
+        BTsky();
+
+
     else
         std::cout << "ERROR: ID not found for setTilebyID, ID: " << ID << std::endl;
 }

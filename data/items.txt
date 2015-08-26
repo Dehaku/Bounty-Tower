@@ -17,3 +17,5 @@
 [name:Wood][Pickupable:true][image:Plank.png][type:12][baseid:7871787][produces:false]
 [name:Rock][Pickupable:true][image:Rock.png][type:12][baseid:7971787][produces:false]
 [name:Rune][Pickupable:true][image:BaseRune.png][type:12][baseid:8001747][produces:false]
+[name:PDA][Pickupable:true][type:23][image:PDA.png][baseid:529529][mindam:1][maxdam:10][range:75][IsWeapon:true][activaterategrowth:2][activateratemax:30][Size:1]
+[name:Scrap][Pickupable:true][image:BTScrap.png][type:12][baseid:7772987][produces:false]

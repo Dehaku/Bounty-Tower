@@ -500,6 +500,12 @@ int Item::getRange()
     return returns;
 }
 
+Vec3f Item::getPos()
+{
+    Vec3f myPos(xpos,ypos,zpos);
+    return myPos;
+}
+
 Item::Item()
     : cbaseid{}, range{}, xpos{}, ypos{}, zpos{30*20}, rxpos{}, rypos{}, gxpos{},
       gypos{}, imgstrx{}, imgstry{}, imgendx{}, imgendy{}, isWeapon{},
@@ -863,11 +869,38 @@ std::string Item::activate(Vec3f vPos) // Returns a string declaring the problem
         sf::Vector2f vPosV2f(vPos.x,vPos.y);
         int rot = math::angleBetweenVectors(muzzlePosV2f,vPosV2f);
 
+        bool Struck = false;
+        for(auto &npc : npclist)
+        {
+            if(npc.id == user->id)
+                continue;
+            if(npc.health <= 0)
+                continue;
+            if(npc.faction == user->faction)
+                continue;
+
+            sf::Vector2f npcPos(npc.xpos,npc.ypos);
+
+            if(math::closeish(npcPos,muzzlePosV2f) <= range)
+            {
+                std::string outString;
+                outString.append(user->name + " has struck " + npc.name + " for " + std::to_string(maxdam) );
+                chatBox.addChat(outString,sf::Color::Red);
+
+                std::string atkStatus = user->dealDamage(&npc,this);
+                if(atkStatus == "Hit")
+                    Struck = true;
+            }
+        }
 
 
-        createImageButton(math::angleCalc(muzzlePosV2f,rot,60),texturemanager.getTexture("BTSword.png"),"", rot+90);
+        //createImageButton(math::angleCalc(muzzlePosV2f,rot,60),texturemanager.getTexture("BTSword.png"),"", rot+90);
+        //sf::Texture texy = ;
+        createImageButton(math::angleCalc(muzzlePosV2f,rot,60),*img.getTexture(),"", rot+90);
 
         soundmanager.playSound("Swing_xxchr0nosxx_1.ogg");
+        if(Struck == true)
+            return "Success";
     }
 
     if(type == 2)

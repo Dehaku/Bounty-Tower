@@ -313,6 +313,18 @@ void Npc::Skill::Train(std::string skill, int amount, int skillgain)
     }
 }
 
+Vec3f Npc::getPos()
+{
+    Vec3f myPos(xpos,ypos,zpos);
+    return myPos;
+}
+
+sf::Vector2f Npc::getPos2d()
+{
+    sf::Vector2f myPos(xpos,ypos);
+    return myPos;
+}
+
 Npc::Npc()
     : attacking{}, firstStrike{}, imgRotates{}, prone{}, body{}, rot{}, xxx{},
       yyy{}, degrees{}, pathFinding{}, imgstrx{}, imgstry{}, imgendx{},
@@ -334,6 +346,8 @@ Npc::Npc()
     graspItemRight = nullptr;
     graspNpcLeft = nullptr;
     graspNpcRight = nullptr;
+
+    hasPath = false;
 
     for (int i = 0; i != 20; i++)
     {
@@ -863,8 +877,17 @@ void Npc::angMove(float ang)
 
 void Npc::momMove()
 {
+    sf::Vector2f oldPos(xpos,ypos);
+
     xpos += (momentum.x / size);
     ypos += (momentum.y / size);
+
+
+    if(!isInBounds(getPos2d()))
+    {
+        xpos = oldPos.x;
+        ypos = oldPos.y;
+    }
 
     momentum.x = math::clamp((momentum.x - gvars::airPressure), 0, 9999999);
     momentum.y = math::clamp((momentum.y - gvars::airPressure), 0, 9999999);
@@ -1275,6 +1298,72 @@ void Npc::printBloodContent()
 bool Npc::operator<(const Npc &other) const
 {
     return other.id > id;
+}
+
+double critDamage(float damage, critScore crit)
+{
+    throw std::runtime_error("Unimplemented.");
+}
+
+std::string Npc::onDeath(Npc *attacker, Item *weapon, float amount, critScore *crit)
+{
+    chatBox.addChat(name + " has died",sf::Color::White);
+    alive = false;
+    if(faction == "Towerlings")
+    {
+
+        std::cout << " 1 \n";
+        if(random(0,5) == 1)
+        {
+            int scrapAmount = random(0,5);
+            for(int i = 0; i != scrapAmount; i++)
+            {
+                std::cout << " 2 \n";
+                Item scrap = *getGlobalItem("Scrap");
+                scrap.xpos = xpos+random(0,30);
+                scrap.ypos = ypos+random(0,30);
+                scrap.zpos = zpos;
+
+                scrap.amount = 1;
+                worlditems.push_back(scrap);
+            }
+        }
+    }
+    return "";
+}
+
+std::string Npc::takeDamage(Npc *attacker, Item *weapon, float amount, critScore *crit)
+{
+
+    int dodgeChance = (skills.dexterity/2)+(skills.agility/2);
+    int dodgeRoll = random(0,100);
+    if(dodgeRoll <= dodgeChance)
+    {
+        std::cout << name << " dodged " << attacker->name << "'s attack! (" << dodgeRoll << "/" << dodgeChance << ")" << std::endl;
+        return "Dodged";
+    }
+
+    modhealth(-amount);
+    if(health < 1 && alive)
+        onDeath(attacker, weapon, amount, crit);
+
+    return "Hit";
+}
+
+std::string Npc::dealDamage(Npc *victim, Item *weapon, float amount)
+{
+    critScore pass;
+    std::string outPut;
+    if(weapon != nullptr)
+        outPut = victim->takeDamage(this,weapon,weapon->maxdam,&pass);
+    else
+        outPut = victim->takeDamage(this,weapon,amount);
+
+
+    if(outPut == "Hit")
+        return outPut;
+    else
+        return "Miss";
 }
 
 void timeTest()
@@ -1726,6 +1815,8 @@ void NpcManager::initializeCritters()
         }
     }
 }
+
+
 
 MakeSquad::MakeSquad()
 {
@@ -2446,7 +2537,7 @@ void addMembers(int amount, std::string faction)
                 member.faction = faction;
                 member.factionPtr = &fact;
                 member.xpos = ((GRIDS*GRID_SIZE)/2)+randz(-80,80);
-                member.ypos = ((GRIDS*GRID_SIZE)-100)+randz(-20,20);
+                member.ypos = ((GRIDS*GRID_SIZE)-200)+randz(-20,20);
                 member.zpos = (1*GRID_SIZE);
                 member.id = gvars::globalid++;
                 npclist.push_back(member);
@@ -2643,12 +2734,15 @@ void selectedNPCprocess()
         sf::Vector2f Pos = sf::Vector2f(var.xpos, var.ypos);
         effects.createCircle(Pos.x, Pos.y, 5,
                                 sf::Color(0, 255, 255, 100));
+
+        createImageButton(Pos,texturemanager.getTexture("SelectionCircle.png"),"",gvars::constantRotation);
+
     }
-    if (gvars::selected.size() > 0)
+    if (gvars::selected.size() > 0 && bountytower::bountytower == false)
     {
         if (inputState.rmb &&
             tiles[abs_to_index(gvars::mousePos.x / GRID_SIZE)]
-                    [abs_to_index(gvars::mousePos.y / GRID_SIZE)][30].id !=
+                    [abs_to_index(gvars::mousePos.y / GRID_SIZE)][gvars::currentz].id !=
                 1010)
         {
             sf::Lock lock(mutex::npcList);
@@ -2856,6 +2950,8 @@ void drawSelectedCritterHUD()
 
         window.draw(CIH);
 
+
+
         for (int i = 0; i != 20; i++)
         {
             sf::Vector2f vPos = gvars::slotPos[i];
@@ -2863,16 +2959,20 @@ void drawSelectedCritterHUD()
 
             if(myTargetPtr->invSlots[i] != nullptr)
             {
+                if(myTargetPtr->invSlots[i]->img.getTexture() == nullptr)
+                {
+                    std::cout << "Breaking on Item GetTexture() of slot:" << i << std::endl;
+                    break;
+                }
+
                 sf::Sprite SP;
-                sf::Vector2u TexySize = myTargetPtr->invSlots[i]->img.getTexture()->getSize();
                 SP.setTexture(*myTargetPtr->invSlots[i]->img.getTexture());
-                //sf::Vector2f rPos(gvars::topLeft.x + vPos.x, gvars::topLeft.y + vPos.y);
                 SP.setPosition(vPos);
-                SP.setOrigin(TexySize.x/2,TexySize.y/2);
+                SP.setOrigin(SP.getTexture()->getSize().x/2,SP.getTexture()->getSize().y/2);
                 window.draw(SP);
+                sf::Vector2f uPos(vPos.x-20,vPos.y+20);
+                window.draw(drawText(uPos,myTargetPtr->invSlots[i]->name));
             }
-
-
         }
 
         window.setView(gvars::view1);
@@ -3180,7 +3280,7 @@ void runCritterBody(Npc &npc)
                 if (partItem->massFlesh <= 0)
                 {
                     //*GetItemPtrfromVector(npc.inventory,"Blood").amount = 0;
-                    partItem->toDelete = true;
+                    //partItem->toDelete = true;
                     //Add Food to everyone, Make sure they go hungry to eat it, Figure out a way to Eject the empty item, Or do water! Everyone starts with water.
                     //npc.bloodwork("Nutrients",Nutr*PercentageBuff(GlobalNutritionPercentage));
                 }
@@ -3210,7 +3310,7 @@ void runCritterBody(Npc &npc)
                 }
                 if (partItem->massVeggy <= 0)
                 {
-                    partItem->toDelete = true;
+                    //partItem->toDelete = true;
                     //npc.bloodwork("Nutrients",Nutr*PercentageBuff(GlobalNutritionPercentage));
                 }
             }
@@ -3239,7 +3339,7 @@ void runCritterBody(Npc &npc)
                 }
                 if (partItem->massWater <= 0)
                 {
-                    partItem->toDelete = true;
+                    //partItem->toDelete = true;
                     //npc.bloodwork("Nutrients",Nutr*PercentageBuff(GlobalNutritionPercentage));
                 }
             }

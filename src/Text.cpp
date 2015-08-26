@@ -7,6 +7,22 @@ TextList textList;
 
 extern sf::RenderWindow window;
 
+
+sf::Text drawText(sf::Vector2f vPos, std::string text, sf::Color color, int size)
+{
+    sf::Text returnText;
+    {
+        returnText.setString(text);
+        returnText.setColor(color);
+        returnText.setPosition(vPos);
+        returnText.setCharacterSize(size);
+
+        returnText.setFont(gvars::defaultFont);
+    }
+    return returnText;
+}
+
+
 std::string randomWindowName()
 {
     std::vector<std::string> const names{
@@ -147,10 +163,22 @@ void ChatBox::addChat(std::string text, sf::Color color)
 
 void ChatBox::displayChat(sf::Vector2f position)
 {
+    /*
     for (size_t i = 0; i != chatStorage.size(); i++)
     {
         textList.createText(position.x,
                             (position.y - (chatStorage.size() * 10)) + (i * 10),
                             11, chatStorage[i].color, chatStorage[i].line);
     }
+    */
+
+    for (size_t i = chatStorage.size(); i != (chatStorage.size()-5); i--)
+    {
+        std::cout << "Chatbox (i):" << i << std::endl;
+        textList.createText(position.x,
+                            (position.y - (chatStorage.size() * 10)) + (i * 10),
+                            11, chatStorage[i].color, chatStorage[i].line);
+    }
+
+
 }
