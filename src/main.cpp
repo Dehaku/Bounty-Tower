@@ -3187,8 +3187,12 @@ void drawStuffs()
                 window.getView().getCenter().y);
     debug("Drew Joblist");
 
-    drawSquadHud();
-    drawEnemyCounterHud();
+    if(bountytower::towerLoaded != "")
+    {
+        drawSquadHud();
+        drawEnemyCounterHud();
+    }
+
 
     displayChat(sf::Vector2f(gvars::bottomLeft.x + 5, gvars::bottomLeft.y - 5));
     debug("Drew Chat");

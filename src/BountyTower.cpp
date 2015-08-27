@@ -123,8 +123,8 @@ void bountyTowerSetup()
     FactPtr->factRelations.push_back(factR);
 
 
-    gCtrl.menuType = "BTTowers";
-    menuPopUp();
+    //gCtrl.menuType = "BTTowers";
+    //menuPopUp();
 
     //gvars::debug = true;
 }
@@ -324,8 +324,88 @@ void debugTileMode()
 
 }
 
+void towerMenu()
+{
+    //Lock camera in a reasonable position.
+    gvars::currentx = 32;
+    gvars::currenty = 18;
+    //Screen position defaults
+    int xPart = RESOLUTION.x/5;
+    int yPart = RESOLUTION.y/3;
+    int xMinus = xPart/2;
+    int yMinus = yPart/2;
+
+    //Build the modern fantasy tower.
+    Tower fantasyTower;
+    {
+        fantasyTower.bountyPay = 2000;
+        fantasyTower.bountyTarget = "Trifecta";
+        fantasyTower.floors = 5;
+        fantasyTower.difficulty = 10;
+        fantasyTower.minioncount = 100;
+        fantasyTower.name = "FantasyModern";
+        fantasyTower.tex = &texturemanager.getTexture("FantasyModern.png");
+    }
+    //Place a button for the tower.
+    sf::Vector2f vPos((-xMinus)+xPart,(-yMinus)+yPart);
+    int fanTowButt = createImageButton(vPos,*fantasyTower.tex);
+    if(imageButtonClicked(fanTowButt))
+    {
+
+
+        bountytower::towerLoaded = fantasyTower.name;
+        buildTower(fantasyTower.name);
+
+        loadMap(636,0,0,50,50);
+
+        int xview = (96*60)/20;
+        gvars::currentx = xview/2;
+        gvars::currenty = xview;
+
+        for(auto &npc : npclist)
+            npc.momentum = sf::Vector2f(0,0);
+    }
+    if(imageButtonHovered(fanTowButt))
+    {
+        int butty = createImageButton(gvars::mousePos,texturemanager.getTexture("MercRogueFem.png"));
+        std::string textOut = "Tower: " + fantasyTower.name + ", (" + std::to_string(fantasyTower.difficulty) + "/" +
+                                            std::to_string(fantasyTower.minioncount) + ") , (Difficulty/Minions).";
+        textList.createText(gvars::mousePos.x,gvars::mousePos.y,15,sf::Color::Red,textOut);
+    }
+    //Draw some info about the thing.
+    {
+        std::string textOut = " Tower: " + fantasyTower.name +
+        "\n Minions: " + std::to_string(fantasyTower.minioncount) +
+        "\n Difficulty: " + std::to_string(fantasyTower.difficulty);
+        textList.createText(vPos.x+50,vPos.y-25,15,sf::Color::Red,textOut);
+    }
+
+    effects.createCircle((-xMinus)+xPart,(-yMinus)+yPart,50,gvars::cycleBlue);
+    effects.createCircle((-xMinus)+xPart*2,(-yMinus)+yPart,50,gvars::cycleBlue);
+    effects.createCircle((-xMinus)+xPart*3,(-yMinus)+yPart,50,gvars::cycleBlue);
+    effects.createCircle((-xMinus)+xPart*4,(-yMinus)+yPart,50,gvars::cycleBlue);
+    effects.createCircle((-xMinus)+xPart*5,(-yMinus)+yPart,50,gvars::cycleRed);
+
+    effects.createCircle((-xMinus)+xPart,(-yMinus)+yPart*2,50,gvars::cycleBlue);
+    effects.createCircle((-xMinus)+xPart*2,(-yMinus)+yPart*2,50,gvars::cycleBlue);
+    effects.createCircle((-xMinus)+xPart*3,(-yMinus)+yPart*2,50,gvars::cycleBlue);
+    effects.createCircle((-xMinus)+xPart*4,(-yMinus)+yPart*2,50,gvars::cycleBlue);
+    effects.createCircle((-xMinus)+xPart*5,(-yMinus)+yPart*2,50,gvars::cycleRed);
+
+    effects.createCircle((-xMinus)+xPart,(-yMinus)+yPart*3,50,gvars::cycleBlue);
+    effects.createCircle((-xMinus)+xPart*2,(-yMinus)+yPart*3,50,gvars::cycleBlue);
+    effects.createCircle((-xMinus)+xPart*3,(-yMinus)+yPart*3,50,gvars::cycleBlue);
+    effects.createCircle((-xMinus)+xPart*4,(-yMinus)+yPart*3,50,gvars::cycleBlue);
+    effects.createCircle((-xMinus)+xPart*5,(-yMinus)+yPart*3,50,gvars::cycleRed);
+
+
+}
+
 void bountyTowerLoop()
 {
+    if(bountytower::towerLoaded == "")
+        towerMenu();
+
 
     if(gvars::tileEdit)
     {
@@ -333,7 +413,7 @@ void bountyTowerLoop()
         debugTileMode();
     }
 
-    if(bountytower::pausewaves)
+    if(bountytower::pausewaves && bountytower::towerLoaded != "")
     {
         sf::Vector2f vPos(gvars::centerScreen.x,gvars::centerScreen.y-(RESOLUTION.y/4));
         int startButt = createImageButton(vPos,texturemanager.getTexture("ElevatorButton.png"),"Start the swarm!");
@@ -345,10 +425,6 @@ void bountyTowerLoop()
     cameraControls();
 
 
-
-    int mouseX = gvars::mousePos.x, mouseY = gvars::mousePos.y;
-    std::string stringy = std::to_string(mouseX) + "/" + std::to_string(mouseY) + "(" + std::to_string(gvars::currentz) + ")";
-    //textList.createText(gvars::mousePos.x,gvars::mousePos.y,15,sf::Color::Cyan,stringy);
 
     if(inputState.key[Key::X].time == 1)
     { // Print Faction Names
@@ -414,7 +490,7 @@ void bountyTowerLoop()
 
     }
 
-    textList.createText(gvars::centerScreen.x,gvars::topLeft.y+15,15,sf::Color::White,"Floor: " + std::to_string(gvars::currentz));
+
 
     if(inputState.key[Key::LShift] && inputState.key[Key::X].time == 1)
     { // Spit out some info about some states regard to global stuffs.
@@ -512,7 +588,10 @@ void bountyTowerLoop()
         debug("Done placin Towerlings");
     }
 
-    if(bountytower::elevatoravailable)
+    if(bountytower::towerLoaded != "")
+        textList.createText(gvars::centerScreen.x,gvars::topLeft.y+15,15,sf::Color::White,"Floor: " + std::to_string(gvars::currentz));
+
+    if(bountytower::elevatoravailable && bountytower::towerLoaded != "")
     { // Prints Elevator HUD and other such things
 
         textList.createText(gvars::centerScreen.x,gvars::topLeft.y+50,20,sf::Color::Green,"Elevator is Ready!");
