@@ -3352,9 +3352,13 @@ void acquireSelectedNPCs()
             {
                 if (inbetween(S.y, E.y, i.ypos) == true)
                 {
-                    std::cout << i.name << std::endl;
-                    gvars::selected.push_back(i.id);
-                    foundAny = true;
+                    if(i.alive)
+                    {
+                        std::cout << i.name << std::endl;
+                        gvars::selected.push_back(i.id);
+                        foundAny = true;
+                    }
+
                 }
             }
         }
@@ -3367,6 +3371,15 @@ void acquireSelectedNPCs()
         if (gvars::heldClickPos == sf::Vector2f(-1, -1))
             gvars::heldClickPos = gvars::mousePos;
         effects.createSquare(gvars::heldClickPos.x,gvars::heldClickPos.y, gvars::mousePos.x,gvars::mousePos.y,sf::Color(0, 0, 0, 0),5,sf::Color(0, 255, 255));
+        for (auto &npc : npclist)
+        {
+
+            if(npc.alive && aabb(npc.getPos2d(),gvars::heldClickPos.x,gvars::mousePos.x,gvars::heldClickPos.y,gvars::mousePos.y))
+            {
+                createImageButton(npc.getPos2d(),texturemanager.getTexture("SelectionCircle.png"));
+            }
+        }
+
     }
     else
         gvars::heldClickPos = sf::Vector2f(-1, -1);
@@ -5643,14 +5656,6 @@ int main()
 
     soundmanager.playSound("Startup.wav");
     newItemstuffs();
-
-    //VoidTypeTest();
-
-    //critScore CRITZ;
-
-    //critDamages(randz(1,100), CRITZ);
-
-
 
     // http://en.sfml-dev.org/forums/index.php?topic=10281.0
     Animation walkingAnimationDown;
