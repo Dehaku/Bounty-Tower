@@ -1312,8 +1312,10 @@ std::string Npc::onDeath(Npc *attacker, Item *weapon, float amount, critScore *c
     if(faction == "Towerlings")
     {
 
-        std::cout << " 1 \n";
-        if(random(0,5) == 1)
+
+        int dropRate = random(0,5);
+        std::cout << " Droprate: " << dropRate << std::endl;
+        if(dropRate == 1)
         {
             int scrapAmount = random(0,5);
             for(int i = 0; i != scrapAmount; i++)
@@ -1343,8 +1345,7 @@ std::string Npc::takeDamage(Npc *attacker, Item *weapon, float amount, critScore
         return "Dodged";
     }
 
-    modhealth(-amount);
-    if(health < 1 && alive)
+    if(modhealth(-amount) == false) // modhealth returns false on death.
         onDeath(attacker, weapon, amount, crit);
 
     return "Hit";
@@ -1354,8 +1355,13 @@ std::string Npc::dealDamage(Npc *victim, Item *weapon, float amount)
 {
     critScore pass;
     std::string outPut;
+
     if(weapon != nullptr)
-        outPut = victim->takeDamage(this,weapon,weapon->maxdam,&pass);
+    {
+        int damage = random(weapon->mindam,weapon->maxdam);
+        outPut = victim->takeDamage(this,weapon,damage,&pass);
+    }
+
     else
         outPut = victim->takeDamage(this,weapon,amount);
 

@@ -49,6 +49,7 @@ int randz(int minValue, int maxValue)
 int random(int minValue, int maxValue)
 {
     unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+    seed += randz(1,100); // Doing this because random() doesn't seem to reset quick enough for rapid random numbers.
     std::minstd_rand0 generator (seed); // minstd_rand0 is a standard linear_congruential_engine
 
     maxValue = maxValue + 1;

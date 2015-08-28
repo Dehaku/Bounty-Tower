@@ -8,7 +8,7 @@ template <typename T> T &listAt(std::list<T> &list, size_t index)
 }
 
 template <typename T> void AnyDeletes(std::list<T> &list)
-{ // Oh my goodness, I freakkin love templates, I'll need to redesign a few things to incorporate this functionality.
+{
 
     //auto it = list.begin();
     //std::advance(it, index);
@@ -46,36 +46,42 @@ template <typename T> void AnyDeletes(std::list<T> &list)
 
 void equipStarters()
 {
+    int currentCritter = 0;
     for(auto &member : npclist)
     {
-        //itemPtrVector IPV = randomEquipment(member.inventory);
-
-        itemPtrVector IPV = makeItems(member.inventory,10);
-        /*
-        for (auto &i : IPV.ptrs)
+        if(currentCritter == 0)
         {
-            if(i->type != 1 && i->type != 2)
-                i->toDelete = true;
+            Item item = *getGlobalItem("Baton");
+            member.inventory.push_back(item);
         }
-        AnyDeletes(member.inventory);
-        */
-
-
-            //std::cout << IPV.ptrs.size() << ", IPV. \n";
-            //fSleep(2);
-        for (auto &i : IPV.ptrs)
+        if(currentCritter == 1)
         {
-            if(i->type == 2)
-            {
-                Item bullet;
-                bullet = *getGlobalItem("5.56mm");
-                bullet.amount = 30;
-
-                i->internalitems.push_back(bullet);
-            }
+            Item item = *getGlobalItem("Sword");
+            member.inventory.push_back(item);
         }
+        if(currentCritter == 2)
+        {
+            Item item = *getGlobalItem("Gun");
+            Item bullet;
+            bullet = *getGlobalItem("5.56mm");
+            bullet.amount = 30;
+
+            item.internalitems.push_back(bullet);
+            member.inventory.push_back(item);
+        }
+
+        if(currentCritter == 3)
+        {
+            Item item = *getGlobalItem("Sniper");
+            Item bullet;
+            bullet = *getGlobalItem("5.56mm");
+            bullet.amount = 30;
+
+            item.internalitems.push_back(bullet);
+            member.inventory.push_back(item);
+        }
+        currentCritter++;
     }
-
 }
 
 void bountyTowerSetup()
