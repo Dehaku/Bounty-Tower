@@ -1898,8 +1898,299 @@ void scrapPickup(Npc &npc, std::list<Npc> &container)
     }
 }
 
+bool canSeeNpc(Npc &ori, Npc &target)
+{
+    float x1 = ori.getPos().x, y1 = ori.getPos().y, x2 = target.getPos().x, y2 = target.getPos().y;
+
+    // Bresenham's line algorithm
+    const bool steep = (fabs(y2 - y1) > fabs(x2 - x1));
+    if(steep)
+    {
+        std::swap(x1, y1);
+        std::swap(x2, y2);
+    }
+
+    if(x1 > x2)
+    {
+        std::swap(x1, x2);
+        std::swap(y1, y2);
+    }
+
+    const float dx = x2 - x1;
+    const float dy = fabs(y2 - y1);
+
+    float error = dx / 2.0f;
+    const int ystep = (y1 < y2) ? 1 : -1;
+    int y = (int)y1;
+
+    const int maxX = (int)x2;
+
+    for(int x=(int)x1; x<maxX; x++)
+    {
+        if(steep)
+        {
+            if(tiles[abs_to_index(y/GRID_SIZE)][abs_to_index(x/GRID_SIZE)][gvars::currentz].walkable)
+            {
+                effects.createCircle(y,x,1,sf::Color(0,0,255));
+
+                if(math::distance(Vec3f(y,x,gvars::currentz*GRID_SIZE),target.getPos()) <= target.size/2)
+                {
+                    std::cout << "I see's him! Y \n";
+                    return true;
+                }
+            }
+            else
+            {
+                //Ran into a wall, Cannot see further.
+                effects.createCircle(y,x,1,sf::Color(255,0,0));
+                return false;
+            }
+        }
+        else
+        {
+            if(tiles[abs_to_index(x/GRID_SIZE)][abs_to_index(y/GRID_SIZE)][gvars::currentz].walkable)
+            {
+                effects.createCircle(x,y,1,sf::Color(0,0,255));
+
+                if(math::distance(Vec3f(x,y,gvars::currentz*GRID_SIZE),target.getPos()) <= target.size/2)
+                {
+                    std::cout << "I see's him! X \n";
+                    return true;
+                }
+            }
+            else
+            {
+                //Ran into a wall, Cannot see further.
+                effects.createCircle(y,x,1,sf::Color(255,0,0));
+                return false;
+            }
+        }
+        error -= dy;
+        if(error < 0)
+        {
+            y += ystep;
+            error += dx;
+        }
+    }
+    return false;
+}
+
+bool canSeeNpc2(sf::Vector2f ori, Npc &target)
+{
+    //float x1 = ori.x, y1 = ori.y, x2 = target.getPos().x, y2 = target.getPos().y;
+    float x2 = ori.x, y2 = ori.y, x1 = target.getPos().x, y1 = target.getPos().y;
+
+    // Bresenham's line algorithm
+    const bool steep = (fabs(y2 - y1) > fabs(x2 - x1));
+    if(steep)
+    {
+        std::swap(x1, y1);
+        std::swap(x2, y2);
+    }
+
+    if(x1 > x2)
+    {
+        std::swap(x1, x2);
+        std::swap(y1, y2);
+    }
+
+    const float dx = x2 - x1;
+    const float dy = fabs(y2 - y1);
+
+    float error = dx / 2.0f;
+    const int ystep = (y1 < y2) ? 1 : -1;
+    int y = (int)y1;
+
+    const int maxX = (int)x2;
+
+    for(int x=(int)x1; x<maxX; x++)
+    {
+        if(steep)
+        {
+            if(tiles[abs_to_index(y/GRID_SIZE)][abs_to_index(x/GRID_SIZE)][gvars::currentz].walkable)
+            {
+                effects.createCircle(y,x,1,sf::Color(0,0,255));
+
+                if(math::distance(Vec3f(y,x,gvars::currentz*GRID_SIZE),target.getPos()) <= target.size/2)
+                {
+                    std::cout << "I see's him! Y \n";
+                    return true;
+                }
+            }
+            else
+            {
+                //Ran into a wall, Cannot see further.
+                std::cout << "Wallend Y \n";
+                effects.createCircle(y,x,1,sf::Color(255,0,0));
+                return false;
+            }
+        }
+        else
+        {
+            if(tiles[abs_to_index(x/GRID_SIZE)][abs_to_index(y/GRID_SIZE)][gvars::currentz].walkable)
+            {
+                effects.createCircle(x,y,1,sf::Color(0,0,255));
+
+                if(math::distance(Vec3f(x,y,gvars::currentz*GRID_SIZE),target.getPos()) <= target.size/2)
+                {
+                    std::cout << "I see's him! X \n";
+                    return true;
+                }
+            }
+            else
+            {
+                //Ran into a wall, Cannot see further.
+                std::cout << "Wallend x \n";
+                effects.createCircle(y,x,1,sf::Color(255,0,0));
+                return false;
+            }
+        }
+        error -= dy;
+        if(error < 0)
+        {
+            y += ystep;
+            error += dx;
+        }
+    }
+    return false;
+}
+
+void detectLine( float x1, float y1, float x2, float y2)
+{
+        // Bresenham's line algorithm
+        int lineAmount = 0;
+    const bool steep = (fabs(y2 - y1) > fabs(x2 - x1));
+    if(steep)
+    {
+        std::swap(x1, y1);
+        std::swap(x2, y2);
+    }
+
+    if(x1 > x2)
+    {
+        std::swap(x1, x2);
+        std::swap(y1, y2);
+    }
+
+    const float dx = x2 - x1;
+    const float dy = fabs(y2 - y1);
+
+    float error = dx / 2.0f;
+    const int ystep = (y1 < y2) ? 1 : -1;
+    int y = (int)y1;
+
+    const int maxX = (int)x2;
+
+    for(int x=(int)x1; x<maxX; x++)
+    {
+        if(steep)
+        {
+            //SetPixel(y,x, color);
+            if(tiles[abs_to_index(y/GRID_SIZE)][abs_to_index(x/GRID_SIZE)][gvars::currentz].walkable)
+                effects.createCircle(y,x,1,sf::Color(0,0,255));
+            else
+                effects.createCircle(y,x,1,sf::Color(255,0,0));
+
+
+            lineAmount++;
+
+
+
+            //effects.createCircle(y,x,1,color);
+        }
+        else
+        {
+            if(tiles[abs_to_index(x/GRID_SIZE)][abs_to_index(y/GRID_SIZE)][gvars::currentz].walkable)
+                effects.createCircle(x,y,1,sf::Color(0,0,255));
+            else
+                effects.createCircle(x,y,1,sf::Color(255,0,0));
+
+            lineAmount++;
+        }
+
+        error -= dy;
+        if(error < 0)
+        {
+            y += ystep;
+            error += dx;
+        }
+    }
+    std::cout << "cycles: " << lineAmount << std::endl;
+}
+
+void detectLineGrid( float x1, float y1, float x2, float y2)
+{
+        // Bresenham's line algorithm
+    const bool steep = (fabs(y2 - y1) > fabs(x2 - x1));
+    if(steep)
+    {
+        std::swap(x1, y1);
+        std::swap(x2, y2);
+    }
+
+    if(x1 > x2)
+    {
+        std::swap(x1, x2);
+        std::swap(y1, y2);
+    }
+
+    const float dx = x2 - x1;
+    const float dy = fabs(y2 - y1);
+
+    float error = dx / 2.0f;
+    const int ystep = (y1 < y2) ? 1 : -1;
+    int y = (int)y1;
+
+    const int maxX = (int)x2;
+
+    for(int x=(int)x1; x<maxX; x++)
+    {
+        if(steep)
+        {
+            //SetPixel(y,x, color);
+            int sqXStart = (x*GRID_SIZE-(GRID_SIZE/2))+(GRID_SIZE/2);
+            int sqYStart = y*GRID_SIZE-(GRID_SIZE/2)+(GRID_SIZE/2);
+            int sqXEnd = x*GRID_SIZE+(GRID_SIZE/2)+(GRID_SIZE/2);
+            int sqYEnd = y*GRID_SIZE+(GRID_SIZE/2)+(GRID_SIZE/2);
+
+            if(tiles[y][x][gvars::currentz].walkable)
+                effects.createSquare(sqYStart,sqXStart,sqYEnd,sqXEnd,sf::Color(0,0,255,100));
+            else
+                effects.createSquare(sqYStart,sqXStart,sqYEnd,sqXEnd,sf::Color(255,0,0,100));
+
+
+
+            //effects.createCircle(y,x,1,color);
+        }
+        else
+        {
+            int sqXStart = x*GRID_SIZE-(GRID_SIZE/2)+(GRID_SIZE/2);
+            int sqYStart = y*GRID_SIZE-(GRID_SIZE/2)+(GRID_SIZE/2);
+            int sqXEnd = x*GRID_SIZE+(GRID_SIZE/2)+(GRID_SIZE/2);
+            int sqYEnd = y*GRID_SIZE+(GRID_SIZE/2)+(GRID_SIZE/2);
+
+            if(tiles[x][y][gvars::currentz].walkable)
+                effects.createSquare(sqXStart,sqYStart,sqXEnd,sqYEnd,sf::Color(0,0,255,100));
+            else
+                effects.createSquare(sqXStart,sqYStart,sqXEnd,sqYEnd,sf::Color(255,0,0,100));
+        }
+
+        error -= dy;
+        if(error < 0)
+        {
+            y += ystep;
+            error += dx;
+        }
+    }
+}
+
+
+
 void critterBrain(Npc &npc, std::list<Npc> &container)
 {
+
+    //std::cout << "MouseSee: " << canSeeNpc2(gvars::mousePos,npc) << "/ID: " << npc.id << std::endl;
+    //detectLine(gvars::mousePos.x,gvars::mousePos.y,npc.xpos,npc.ypos);
 
     if(!npc.alive)
         return;
@@ -2596,16 +2887,27 @@ ReDesire:
                 effects.createCircle(npc.xpos,npc.ypos,meleewep->getRange(),sf::Color(0,0,255,50),2,sf::Color::Blue);
         }
         debug("1");
+
+        //We check if the target is within range of the current weapon, and if we can actually directly see them.
         bool withinRange = false;
+        bool canSee = false;
         if(rangewep != nullptr && closEnmy != nullptr)
         {
             withinRange = (math::closeish(npc.xpos,npc.ypos,closEnmy->xpos,closEnmy->ypos) <= rangewep->getRange());
+
             if(getItemType(rangewep->internalitems,3) == nullptr)
                 withinRange = false;
+            //Making sure they're in range before doing the raytrace, since it's very slow.
             if(withinRange)
+                canSee = canSeeNpc(npc,*closEnmy);
+
+            if(withinRange && canSee)
             {
+                //Making sure the weapon has the right owner for later pointing.
                 rangewep->user = &npc;
 
+
+                // Ticking the timer on the weapon, and firing once the cap is met.
                 if(rangewep->trigger())
                 {
                     std::string Status = rangewep->activate(Vec3f(closEnmy->xpos,closEnmy->ypos,closEnmy->zpos));
@@ -2633,7 +2935,7 @@ ReDesire:
             }
         }
         debug("3");
-        if(withinRange)
+        if(withinRange && canSee)
         {
             hasPath = false;
         }
@@ -5591,134 +5893,6 @@ void Line( float x1, float y1, float x2, float y2, sf::Color color )
     }
 }
 
-void detectLine( float x1, float y1, float x2, float y2)
-{
-        // Bresenham's line algorithm
-        int lineAmount = 0;
-    const bool steep = (fabs(y2 - y1) > fabs(x2 - x1));
-    if(steep)
-    {
-        std::swap(x1, y1);
-        std::swap(x2, y2);
-    }
-
-    if(x1 > x2)
-    {
-        std::swap(x1, x2);
-        std::swap(y1, y2);
-    }
-
-    const float dx = x2 - x1;
-    const float dy = fabs(y2 - y1);
-
-    float error = dx / 2.0f;
-    const int ystep = (y1 < y2) ? 1 : -1;
-    int y = (int)y1;
-
-    const int maxX = (int)x2;
-
-    for(int x=(int)x1; x<maxX; x++)
-    {
-        if(steep)
-        {
-            //SetPixel(y,x, color);
-            if(tiles[abs_to_index(y/GRID_SIZE)][abs_to_index(x/GRID_SIZE)][gvars::currentz].walkable)
-                effects.createCircle(y,x,1,sf::Color(0,0,255));
-            else
-                effects.createCircle(y,x,1,sf::Color(255,0,0));
-
-
-            lineAmount++;
-
-
-
-            //effects.createCircle(y,x,1,color);
-        }
-        else
-        {
-            if(tiles[abs_to_index(x/GRID_SIZE)][abs_to_index(y/GRID_SIZE)][gvars::currentz].walkable)
-                effects.createCircle(x,y,1,sf::Color(0,0,255));
-            else
-                effects.createCircle(x,y,1,sf::Color(255,0,0));
-
-            lineAmount++;
-        }
-
-        error -= dy;
-        if(error < 0)
-        {
-            y += ystep;
-            error += dx;
-        }
-    }
-    std::cout << "cycles: " << lineAmount << std::endl;
-}
-
-void detectLineGrid( float x1, float y1, float x2, float y2)
-{
-        // Bresenham's line algorithm
-    const bool steep = (fabs(y2 - y1) > fabs(x2 - x1));
-    if(steep)
-    {
-        std::swap(x1, y1);
-        std::swap(x2, y2);
-    }
-
-    if(x1 > x2)
-    {
-        std::swap(x1, x2);
-        std::swap(y1, y2);
-    }
-
-    const float dx = x2 - x1;
-    const float dy = fabs(y2 - y1);
-
-    float error = dx / 2.0f;
-    const int ystep = (y1 < y2) ? 1 : -1;
-    int y = (int)y1;
-
-    const int maxX = (int)x2;
-
-    for(int x=(int)x1; x<maxX; x++)
-    {
-        if(steep)
-        {
-            //SetPixel(y,x, color);
-            int sqXStart = (x*GRID_SIZE-(GRID_SIZE/2))+(GRID_SIZE/2);
-            int sqYStart = y*GRID_SIZE-(GRID_SIZE/2)+(GRID_SIZE/2);
-            int sqXEnd = x*GRID_SIZE+(GRID_SIZE/2)+(GRID_SIZE/2);
-            int sqYEnd = y*GRID_SIZE+(GRID_SIZE/2)+(GRID_SIZE/2);
-
-            if(tiles[y][x][gvars::currentz].walkable)
-                effects.createSquare(sqYStart,sqXStart,sqYEnd,sqXEnd,sf::Color(0,0,255,100));
-            else
-                effects.createSquare(sqYStart,sqXStart,sqYEnd,sqXEnd,sf::Color(255,0,0,100));
-
-
-
-            //effects.createCircle(y,x,1,color);
-        }
-        else
-        {
-            int sqXStart = x*GRID_SIZE-(GRID_SIZE/2)+(GRID_SIZE/2);
-            int sqYStart = y*GRID_SIZE-(GRID_SIZE/2)+(GRID_SIZE/2);
-            int sqXEnd = x*GRID_SIZE+(GRID_SIZE/2)+(GRID_SIZE/2);
-            int sqYEnd = y*GRID_SIZE+(GRID_SIZE/2)+(GRID_SIZE/2);
-
-            if(tiles[x][y][gvars::currentz].walkable)
-                effects.createSquare(sqXStart,sqYStart,sqXEnd,sqYEnd,sf::Color(0,0,255,100));
-            else
-                effects.createSquare(sqXStart,sqYStart,sqXEnd,sqYEnd,sf::Color(255,0,0,100));
-        }
-
-        error -= dy;
-        if(error < 0)
-        {
-            y += ystep;
-            error += dx;
-        }
-    }
-}
 
 void testAnimation()
 {

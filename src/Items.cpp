@@ -958,6 +958,15 @@ std::string Item::activate(Vec3f vPos) // Returns a string declaring the problem
     return "Failed";
 }
 
+bool Item::isReady()
+{
+    int rateCheck = activaterate;
+    if( (rateCheck + activaterategrowth) >= activateratemax )
+        return true;
+
+    return false;
+}
+
 bool Item::trigger() // Processes activation time, if activation time is ready/reset, returns true, else, returns false.
 {
     activaterate += activaterategrowth;

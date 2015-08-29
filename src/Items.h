@@ -124,6 +124,7 @@ public:
     int getRange();
     std::string activate(Vec3f vPos);
     bool trigger();
+    bool isReady();
     Item();
 };
 
