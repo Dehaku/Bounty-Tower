@@ -456,10 +456,31 @@ void drawMenus()
 
         if(menu.name == "Squaddie Menu")
         {
-            sf::Text text = createText(menu.npc->name);
-            text.setPosition(500,500);
+            Npc *npc = menu.npc;
+            sf::Text text = createText(npc->name);
+            text.setPosition(150,200);
             text.setColor(sf::Color::Black);
             window.draw(text);
+
+
+            sf::Vector2f invPos(300,200);
+            int x = 0, y = 0;
+            for(auto &item : npc->inventory)
+            {
+                sf::Vector2f drawPos(invPos.x,invPos.y+(60*y));
+
+                sf::Texture itemTex = *item.img.getTexture();
+                sf::Sprite itemSpr;
+                itemSpr.setTexture(itemTex);
+                itemSpr.setPosition(drawPos);
+
+                sf::Text itemName = createText(item.name);
+                itemName.setPosition(drawPos);
+
+                window.draw(itemSpr);
+                window.draw(itemName);
+                y++;
+            }
         }
     }
     window.setView(gvars::view1);
