@@ -391,21 +391,25 @@ Npc::Npc()
     thirstrate = 1;
     thirst = 600;
     reach = 10;
-    skills.endurance = randz(20, 80);
+
     skills.strength = randz(20, 80);
-    skills.dexterity = randz(20, 80);
-    skills.intelligence = randz(20, 80);
-    skills.wisdom = randz(20, 80);
-    skills.charisma = randz(20, 80);
     skills.perception = randz(20, 80);
+    skills.intelligence = randz(20, 80);
+    skills.charisma = randz(20, 80);
+    skills.endurance = randz(20, 80);
+    skills.dexterity = randz(20, 80);
+
+    skills.wisdom = randz(20, 80);
     skills.agility = randz(20, 80);
-    skills.endurancexp = 0;
+
     skills.strengthxp = 0;
-    skills.dexterityxp = 0;
-    skills.intelligencexp = 0;
-    skills.wisdomxp = 0;
-    skills.charismaxp = 0;
     skills.perceptionxp = 0;
+    skills.intelligencexp = 0;
+    skills.charismaxp = 0;
+    skills.endurancexp = 0;
+    skills.dexterityxp = 0;
+
+    skills.wisdomxp = 0;
     skills.agilityxp = 0;
 
     targetInfo.item = nullptr;

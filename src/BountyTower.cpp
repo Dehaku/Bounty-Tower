@@ -407,10 +407,22 @@ void towerMenu()
 
 }
 
+
+
+
+void squaddieMenu(Npc &npc)
+{
+    std::cout << "This squaddie has, Health: " << npc.health << ", items: " << npc.inventory.size() << std::endl;
+}
+
 void bountyTowerLoop()
 {
     if(bountytower::towerLoaded == "")
         towerMenu();
+    if(myTargetPtr != nullptr && inputState.key[Key::I].time == 1)
+    {
+        squaddieMenu(*myTargetPtr);
+    }
 
 
     if(gvars::tileEdit)

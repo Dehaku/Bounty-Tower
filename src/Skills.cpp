@@ -31,7 +31,7 @@ Skills::Skills()
     list.push_back(skill);
 
     skill.name = "Hamstring";
-    skill.desc = "Active - Perform an attack that immobalizes the target permanently.";
+    skill.desc = "Active - Perform an attack that immobalizes the target for ten seconds per rank.";
     list.push_back(skill);
 
     skill.name = "Charge";
@@ -42,7 +42,7 @@ Skills::Skills()
     skill.duration = 0;
 
 
-    skill.tree = "Ranged";
+    skill.tree = "Ranger";
 
     skill.name = "Ricochet";
     skill.desc = "Passive - 20% additional chance per rank for projectiles to ricochet off of hard surfaces, Overflow spills into penetration value.";
@@ -106,7 +106,7 @@ Skills::Skills()
     list.push_back(skill);
 
 
-    skill.tree = "Engineering";
+    skill.tree = "Engineer";
 
     skill.name = "Lemme help with that";
     skill.desc = "Passive - 10% chance per rank to prevent allies item durability loss and prevent weapon jamming.";
@@ -136,6 +136,29 @@ Skills::Skills()
 
     skill.name = "Turret Overdrive";
     skill.desc = "Active - Causes constructions to go into overdrive mode, dealing extra damage for one second per rank.";
+    list.push_back(skill);
+
+
+    skill.tree = "Monster";
+
+    skill.name = "Feral Weaponry";
+    skill.desc = "Active - Causes creature to go berzerk, striking rapidly with claws, fangs, tail, dealing damage based on rank.";
+    list.push_back(skill);
+
+    skill.name = "Feral Body";
+    skill.desc = "Passive - Creature gains 10% Damage Resistence per Rank";
+    list.push_back(skill);
+
+
+    skill.tree = "Paragon";
+    skill.ranksmax = 99999;
+
+    skill.name = "Perfect Health";
+    skill.desc = "Passive - Gain 10% base health per rank.";
+    list.push_back(skill);
+
+    skill.name = "True Beam";
+    skill.desc = "Active - Fires a beam that cannot be dodged, dealing (All Attribute) Damage per Rank";
     list.push_back(skill);
 
 
