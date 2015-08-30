@@ -5,6 +5,8 @@
 #include "util.h"
 #include "globalvars.h"
 
+sf::Text createText(std::string Text);
+
 class TextList
 {
 public:

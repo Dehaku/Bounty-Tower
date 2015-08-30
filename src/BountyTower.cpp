@@ -409,10 +409,60 @@ void towerMenu()
 
 
 
+class baseMenu
+{
+public:
+    bool toDelete;
+    std::string name;
+    sf::Vector2f Pos;
+    Npc *npc;
+
+    baseMenu();
+
+};
+
+baseMenu::baseMenu()
+{
+    toDelete = false;
+}
+
+std::list<baseMenu> menus;
 
 void squaddieMenu(Npc &npc)
 {
     std::cout << "This squaddie has, Health: " << npc.health << ", items: " << npc.inventory.size() << std::endl;
+    baseMenu sMenu;
+    sMenu.name = "Squaddie Menu";
+    sMenu.Pos = sf::Vector2f(RESOLUTION.x/2,RESOLUTION.y/2);
+    sMenu.npc = &npc;
+    menus.push_back(sMenu);
+}
+
+void drawMenus()
+{
+    window.setView(window.getDefaultView());
+
+    for(auto &menu : menus)
+    {
+        sf::RectangleShape Rec;
+        Rec.setOutlineColor(sf::Color::White);
+        Rec.setOutlineThickness(5);
+
+        Rec.setFillColor(sf::Color(200,200,100));
+        Rec.setSize(sf::Vector2f(RESOLUTION.x-200,RESOLUTION.y-200));
+        Rec.setOrigin(Rec.getSize().x/2,Rec.getSize().y/2);
+        Rec.setPosition(menu.Pos);
+        window.draw(Rec);
+
+        if(menu.name == "Squaddie Menu")
+        {
+            sf::Text text = createText(menu.npc->name);
+            text.setPosition(500,500);
+            text.setColor(sf::Color::Black);
+            window.draw(text);
+        }
+    }
+    window.setView(gvars::view1);
 }
 
 void bountyTowerLoop()
@@ -423,6 +473,8 @@ void bountyTowerLoop()
     {
         squaddieMenu(*myTargetPtr);
     }
+
+    drawMenus();
 
 
     if(gvars::tileEdit)

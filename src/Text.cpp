@@ -34,6 +34,19 @@ std::string randomWindowName()
     return names[randz(0, names.size() - 1)];
 }
 
+sf::Text createText(std::string Text)
+{
+    sf::Text outwardText;
+    outwardText.setString(Text);
+    outwardText.setColor(sf::Color::White);
+    outwardText.setCharacterSize(15);
+    outwardText.setFont(gvars::defaultFont);
+
+    return outwardText;
+}
+
+
+
 void TextList::setup()
 {
     sString.setColor(color);
