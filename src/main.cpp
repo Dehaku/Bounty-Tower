@@ -1982,234 +1982,80 @@ bool canSeeNpc(Npc &ori, Npc &target)
     return false;
 }
 
-bool canSeeNpc2(sf::Vector2f ori, Npc &target)
+void assaultDesire(Npc &npc, std::list<Npc> &container, Npc * closEnmy, bool &hasPath, Vec3 &endPos)
 {
-    //float x1 = ori.x, y1 = ori.y, x2 = target.getPos().x, y2 = target.getPos().y;
-    bool foundTarget = false;
-    bool foundOri = false;
-    Vec3f oriPos(ori.x,ori.y,gvars::currentz*GRID_SIZE);
-
-    float x2 = ori.x, y2 = ori.y, x1 = target.getPos().x, y1 = target.getPos().y;
-
-    // Bresenham's line algorithm
-    const bool steep = (fabs(y2 - y1) > fabs(x2 - x1));
-    if(steep)
-    {
-        std::swap(x1, y1);
-        std::swap(x2, y2);
-    }
-
-    if(x1 > x2)
-    {
-        std::swap(x1, x2);
-        std::swap(y1, y2);
-    }
-
-    const float dx = x2 - x1;
-    const float dy = fabs(y2 - y1);
-
-    float error = dx / 2.0f;
-    const int ystep = (y1 < y2) ? 1 : -1;
-    int y = (int)y1;
-
-    const int maxX = (int)x2;
-
-    for(int x=(int)x1; x<maxX; x++)
-    {
-        if(steep)
+    if(closEnmy != nullptr && npc.faction == "Towerlings")
         {
-            if(tiles[abs_to_index(y/GRID_SIZE)][abs_to_index(x/GRID_SIZE)][gvars::currentz].walkable)
-            {
-                effects.createCircle(y,x,1,sf::Color(0,0,255));
+            hasPath = true;
+            endPos = Vec3(closEnmy->xpos/GRID_SIZE,closEnmy->ypos/GRID_SIZE,closEnmy->zpos/GRID_SIZE);
+        }
+        debug("0");
+        Item * rangewep = npc.getItemType(2);
+        Item * meleewep = npc.getItemType(1);
+        if(inputState.key[Key::LAlt] && true == false)
+        {
+            //rangewep->getRange();
+            if(rangewep != nullptr)
+                effects.createCircle(npc.xpos,npc.ypos,rangewep->getRange(),sf::Color(255,0,0,50),2,sf::Color::Red);
+            if(meleewep != nullptr)
+                effects.createCircle(npc.xpos,npc.ypos,meleewep->getRange(),sf::Color(0,0,255,50),2,sf::Color::Blue);
+        }
+        debug("1");
 
-                if(math::distance(Vec3f(y,x,gvars::currentz*GRID_SIZE),target.getPos()) <= target.size/2)
-                {
-                    std::cout << "I see's him! Y \n";
-                    foundTarget = true;
-                }
-                if(math::distance(Vec3f(y,x,gvars::currentz*GRID_SIZE),oriPos) <= target.size/2) // Set target.size to ori critter in final version.
-                {
-                    std::cout << "I see's ME! Y \n";
-                    foundOri = true;
-                }
-            }
-            else
+        //We check if the target is within range of the current weapon, and if we can actually directly see them.
+        bool withinRange = false;
+        bool canSee = false;
+        if(rangewep != nullptr && closEnmy != nullptr)
+        {
+            withinRange = (math::closeish(npc.xpos,npc.ypos,closEnmy->xpos,closEnmy->ypos) <= rangewep->getRange());
+
+            if(getItemType(rangewep->internalitems,3) == nullptr)
+                withinRange = false;
+            //Making sure they're in range before doing the raytrace, since it's very slow.
+            if(withinRange)
+                canSee = canSeeNpc(npc,*closEnmy);
+
+            if(withinRange && canSee)
             {
-                //Ran into a wall, Cannot see further.
-                std::cout << "Wallend Y \n";
-                effects.createCircle(y,x,1,sf::Color(255,0,0));
-                return false;
+                //Making sure the weapon has the right owner for later pointing.
+                rangewep->user = &npc;
+
+
+                // Ticking the timer on the weapon, and firing once the cap is met.
+                if(rangewep->trigger())
+                {
+                    std::string Status = rangewep->activate(Vec3f(closEnmy->xpos,closEnmy->ypos,closEnmy->zpos));
+                    AnyDeletes(rangewep->internalitems);
+                    //if(Status != "Success")
+                    //    chatBox.addChat(npc.name + ", cannot fire " + rangewep->name + " due to :" + Status, sf::Color::Yellow);
+                }
             }
         }
-        else
+        debug("2");
+        if(meleewep != nullptr && closEnmy != nullptr)
         {
-            if(tiles[abs_to_index(x/GRID_SIZE)][abs_to_index(y/GRID_SIZE)][gvars::currentz].walkable)
+            if(!withinRange)
+                withinRange = (math::closeish(npc.xpos,npc.ypos,closEnmy->xpos,closEnmy->ypos) <= meleewep->range);
+            if(withinRange)
             {
-                effects.createCircle(x,y,1,sf::Color(0,0,255));
-
-                if(math::distance(Vec3f(x,y,gvars::currentz*GRID_SIZE),target.getPos()) <= target.size/2)
+                meleewep->user = &npc;
+                if(meleewep->trigger())
                 {
-                    std::cout << "I see's him! X \n";
-                    foundTarget = true;
-                }
-                if(math::distance(Vec3f(x,y,gvars::currentz*GRID_SIZE),oriPos) <= target.size/2) // Set target.size to ori critter in final version.
-                {
-                    std::cout << "I see's ME! Y \n";
-                    foundOri = true;
+                    std::string Status = meleewep->activate(Vec3f(closEnmy->xpos,closEnmy->ypos,closEnmy->zpos));
+                    AnyDeletes(meleewep->internalitems);
+                    //if(Status != "Success")
+                    //    chatBox.addChat(npc.name + ", cannot strike with " + meleewep->name + " due to :" + Status, sf::Color::Yellow);
                 }
             }
-            else
-            {
-                //Ran into a wall, Cannot see further.
-                std::cout << "Wallend x \n";
-                effects.createCircle(y,x,1,sf::Color(255,0,0));
-                return false;
-            }
         }
-        error -= dy;
-        if(error < 0)
+        debug("3");
+        if(withinRange && canSee)
         {
-            y += ystep;
-            error += dx;
+            hasPath = false;
         }
-    }
-
-    if(foundOri && foundTarget) // This is done due to Bresenham's line automatically using the topleft most coordinate. (Half cases start trace on target.)
-        return true;
-
-    return false;
+            //std::cout << rangewep->name << ",'s range: " << rangewep->range << std::endl;
+        debug("4");
 }
-
-void detectLine( float x1, float y1, float x2, float y2)
-{
-        // Bresenham's line algorithm
-        int lineAmount = 0;
-    const bool steep = (fabs(y2 - y1) > fabs(x2 - x1));
-    if(steep)
-    {
-        std::swap(x1, y1);
-        std::swap(x2, y2);
-    }
-
-    if(x1 > x2)
-    {
-        std::swap(x1, x2);
-        std::swap(y1, y2);
-    }
-
-    const float dx = x2 - x1;
-    const float dy = fabs(y2 - y1);
-
-    float error = dx / 2.0f;
-    const int ystep = (y1 < y2) ? 1 : -1;
-    int y = (int)y1;
-
-    const int maxX = (int)x2;
-
-    for(int x=(int)x1; x<maxX; x++)
-    {
-        if(steep)
-        {
-            //SetPixel(y,x, color);
-            if(tiles[abs_to_index(y/GRID_SIZE)][abs_to_index(x/GRID_SIZE)][gvars::currentz].walkable)
-                effects.createCircle(y,x,1,sf::Color(0,0,255));
-            else
-                effects.createCircle(y,x,1,sf::Color(255,0,0));
-
-
-            lineAmount++;
-
-
-
-            //effects.createCircle(y,x,1,color);
-        }
-        else
-        {
-            if(tiles[abs_to_index(x/GRID_SIZE)][abs_to_index(y/GRID_SIZE)][gvars::currentz].walkable)
-                effects.createCircle(x,y,1,sf::Color(0,0,255));
-            else
-                effects.createCircle(x,y,1,sf::Color(255,0,0));
-
-            lineAmount++;
-        }
-
-        error -= dy;
-        if(error < 0)
-        {
-            y += ystep;
-            error += dx;
-        }
-    }
-    std::cout << "cycles: " << lineAmount << std::endl;
-}
-
-void detectLineGrid( float x1, float y1, float x2, float y2)
-{
-        // Bresenham's line algorithm
-    const bool steep = (fabs(y2 - y1) > fabs(x2 - x1));
-    if(steep)
-    {
-        std::swap(x1, y1);
-        std::swap(x2, y2);
-    }
-
-    if(x1 > x2)
-    {
-        std::swap(x1, x2);
-        std::swap(y1, y2);
-    }
-
-    const float dx = x2 - x1;
-    const float dy = fabs(y2 - y1);
-
-    float error = dx / 2.0f;
-    const int ystep = (y1 < y2) ? 1 : -1;
-    int y = (int)y1;
-
-    const int maxX = (int)x2;
-
-    for(int x=(int)x1; x<maxX; x++)
-    {
-        if(steep)
-        {
-            //SetPixel(y,x, color);
-            int sqXStart = (x*GRID_SIZE-(GRID_SIZE/2))+(GRID_SIZE/2);
-            int sqYStart = y*GRID_SIZE-(GRID_SIZE/2)+(GRID_SIZE/2);
-            int sqXEnd = x*GRID_SIZE+(GRID_SIZE/2)+(GRID_SIZE/2);
-            int sqYEnd = y*GRID_SIZE+(GRID_SIZE/2)+(GRID_SIZE/2);
-
-            if(tiles[y][x][gvars::currentz].walkable)
-                effects.createSquare(sqYStart,sqXStart,sqYEnd,sqXEnd,sf::Color(0,0,255,100));
-            else
-                effects.createSquare(sqYStart,sqXStart,sqYEnd,sqXEnd,sf::Color(255,0,0,100));
-
-
-
-            //effects.createCircle(y,x,1,color);
-        }
-        else
-        {
-            int sqXStart = x*GRID_SIZE-(GRID_SIZE/2)+(GRID_SIZE/2);
-            int sqYStart = y*GRID_SIZE-(GRID_SIZE/2)+(GRID_SIZE/2);
-            int sqXEnd = x*GRID_SIZE+(GRID_SIZE/2)+(GRID_SIZE/2);
-            int sqYEnd = y*GRID_SIZE+(GRID_SIZE/2)+(GRID_SIZE/2);
-
-            if(tiles[x][y][gvars::currentz].walkable)
-                effects.createSquare(sqXStart,sqYStart,sqXEnd,sqYEnd,sf::Color(0,0,255,100));
-            else
-                effects.createSquare(sqXStart,sqYStart,sqXEnd,sqYEnd,sf::Color(255,0,0,100));
-        }
-
-        error -= dy;
-        if(error < 0)
-        {
-            y += ystep;
-            error += dx;
-        }
-    }
-}
-
-
 
 void critterBrain(Npc &npc, std::list<Npc> &container)
 {
@@ -2895,77 +2741,8 @@ ReDesire:
     }
     if ((*highestDesire).type == "Assault")
     {
-        if(closEnmy != nullptr && npc.faction == "Towerlings")
-        {
-            hasPath = true;
-            endPos = Vec3(closEnmy->xpos/GRID_SIZE,closEnmy->ypos/GRID_SIZE,closEnmy->zpos/GRID_SIZE);
-        }
-        debug("0");
-        Item * rangewep = npc.getItemType(2);
-        Item * meleewep = npc.getItemType(1);
-        if(inputState.key[Key::LAlt] && true == false)
-        {
-            //rangewep->getRange();
-            if(rangewep != nullptr)
-                effects.createCircle(npc.xpos,npc.ypos,rangewep->getRange(),sf::Color(255,0,0,50),2,sf::Color::Red);
-            if(meleewep != nullptr)
-                effects.createCircle(npc.xpos,npc.ypos,meleewep->getRange(),sf::Color(0,0,255,50),2,sf::Color::Blue);
-        }
-        debug("1");
+        assaultDesire(npc, container, closEnmy, hasPath, endPos);
 
-        //We check if the target is within range of the current weapon, and if we can actually directly see them.
-        bool withinRange = false;
-        bool canSee = false;
-        if(rangewep != nullptr && closEnmy != nullptr)
-        {
-            withinRange = (math::closeish(npc.xpos,npc.ypos,closEnmy->xpos,closEnmy->ypos) <= rangewep->getRange());
-
-            if(getItemType(rangewep->internalitems,3) == nullptr)
-                withinRange = false;
-            //Making sure they're in range before doing the raytrace, since it's very slow.
-            if(withinRange)
-                canSee = canSeeNpc(npc,*closEnmy);
-
-            if(withinRange && canSee)
-            {
-                //Making sure the weapon has the right owner for later pointing.
-                rangewep->user = &npc;
-
-
-                // Ticking the timer on the weapon, and firing once the cap is met.
-                if(rangewep->trigger())
-                {
-                    std::string Status = rangewep->activate(Vec3f(closEnmy->xpos,closEnmy->ypos,closEnmy->zpos));
-                    AnyDeletes(rangewep->internalitems);
-                    //if(Status != "Success")
-                    //    chatBox.addChat(npc.name + ", cannot fire " + rangewep->name + " due to :" + Status, sf::Color::Yellow);
-                }
-            }
-        }
-        debug("2");
-        if(meleewep != nullptr && closEnmy != nullptr)
-        {
-            if(!withinRange)
-                withinRange = (math::closeish(npc.xpos,npc.ypos,closEnmy->xpos,closEnmy->ypos) <= meleewep->range);
-            if(withinRange)
-            {
-                meleewep->user = &npc;
-                if(meleewep->trigger())
-                {
-                    std::string Status = meleewep->activate(Vec3f(closEnmy->xpos,closEnmy->ypos,closEnmy->zpos));
-                    AnyDeletes(meleewep->internalitems);
-                    //if(Status != "Success")
-                    //    chatBox.addChat(npc.name + ", cannot strike with " + meleewep->name + " due to :" + Status, sf::Color::Yellow);
-                }
-            }
-        }
-        debug("3");
-        if(withinRange && canSee)
-        {
-            hasPath = false;
-        }
-            //std::cout << rangewep->name << ",'s range: " << rangewep->range << std::endl;
-        debug("4");
     }
 
     debug("Checking inComplete:" + std::to_string(inComplete));
@@ -5917,6 +5694,137 @@ void Line( float x1, float y1, float x2, float y2, sf::Color color )
         }
     }
 }
+
+
+void detectLine( float x1, float y1, float x2, float y2)
+{
+        // Bresenham's line algorithm
+        int lineAmount = 0;
+    const bool steep = (fabs(y2 - y1) > fabs(x2 - x1));
+    if(steep)
+    {
+        std::swap(x1, y1);
+        std::swap(x2, y2);
+    }
+
+    if(x1 > x2)
+    {
+        std::swap(x1, x2);
+        std::swap(y1, y2);
+    }
+
+    const float dx = x2 - x1;
+    const float dy = fabs(y2 - y1);
+
+    float error = dx / 2.0f;
+    const int ystep = (y1 < y2) ? 1 : -1;
+    int y = (int)y1;
+
+    const int maxX = (int)x2;
+
+    for(int x=(int)x1; x<maxX; x++)
+    {
+        if(steep)
+        {
+            //SetPixel(y,x, color);
+            if(tiles[abs_to_index(y/GRID_SIZE)][abs_to_index(x/GRID_SIZE)][gvars::currentz].walkable)
+                effects.createCircle(y,x,1,sf::Color(0,0,255));
+            else
+                effects.createCircle(y,x,1,sf::Color(255,0,0));
+
+
+            lineAmount++;
+
+
+
+            //effects.createCircle(y,x,1,color);
+        }
+        else
+        {
+            if(tiles[abs_to_index(x/GRID_SIZE)][abs_to_index(y/GRID_SIZE)][gvars::currentz].walkable)
+                effects.createCircle(x,y,1,sf::Color(0,0,255));
+            else
+                effects.createCircle(x,y,1,sf::Color(255,0,0));
+
+            lineAmount++;
+        }
+
+        error -= dy;
+        if(error < 0)
+        {
+            y += ystep;
+            error += dx;
+        }
+    }
+    std::cout << "cycles: " << lineAmount << std::endl;
+}
+
+void detectLineGrid( float x1, float y1, float x2, float y2)
+{
+        // Bresenham's line algorithm
+    const bool steep = (fabs(y2 - y1) > fabs(x2 - x1));
+    if(steep)
+    {
+        std::swap(x1, y1);
+        std::swap(x2, y2);
+    }
+
+    if(x1 > x2)
+    {
+        std::swap(x1, x2);
+        std::swap(y1, y2);
+    }
+
+    const float dx = x2 - x1;
+    const float dy = fabs(y2 - y1);
+
+    float error = dx / 2.0f;
+    const int ystep = (y1 < y2) ? 1 : -1;
+    int y = (int)y1;
+
+    const int maxX = (int)x2;
+
+    for(int x=(int)x1; x<maxX; x++)
+    {
+        if(steep)
+        {
+            //SetPixel(y,x, color);
+            int sqXStart = (x*GRID_SIZE-(GRID_SIZE/2))+(GRID_SIZE/2);
+            int sqYStart = y*GRID_SIZE-(GRID_SIZE/2)+(GRID_SIZE/2);
+            int sqXEnd = x*GRID_SIZE+(GRID_SIZE/2)+(GRID_SIZE/2);
+            int sqYEnd = y*GRID_SIZE+(GRID_SIZE/2)+(GRID_SIZE/2);
+
+            if(tiles[y][x][gvars::currentz].walkable)
+                effects.createSquare(sqYStart,sqXStart,sqYEnd,sqXEnd,sf::Color(0,0,255,100));
+            else
+                effects.createSquare(sqYStart,sqXStart,sqYEnd,sqXEnd,sf::Color(255,0,0,100));
+
+
+
+            //effects.createCircle(y,x,1,color);
+        }
+        else
+        {
+            int sqXStart = x*GRID_SIZE-(GRID_SIZE/2)+(GRID_SIZE/2);
+            int sqYStart = y*GRID_SIZE-(GRID_SIZE/2)+(GRID_SIZE/2);
+            int sqXEnd = x*GRID_SIZE+(GRID_SIZE/2)+(GRID_SIZE/2);
+            int sqYEnd = y*GRID_SIZE+(GRID_SIZE/2)+(GRID_SIZE/2);
+
+            if(tiles[x][y][gvars::currentz].walkable)
+                effects.createSquare(sqXStart,sqYStart,sqXEnd,sqYEnd,sf::Color(0,0,255,100));
+            else
+                effects.createSquare(sqXStart,sqYStart,sqXEnd,sqYEnd,sf::Color(255,0,0,100));
+        }
+
+        error -= dy;
+        if(error < 0)
+        {
+            y += ystep;
+            error += dx;
+        }
+    }
+}
+
 
 
 void testAnimation()
