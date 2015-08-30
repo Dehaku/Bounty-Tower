@@ -1900,6 +1900,8 @@ void scrapPickup(Npc &npc, std::list<Npc> &container)
 
 bool canSeeNpc(Npc &ori, Npc &target)
 {
+    bool foundTarget = false;
+    bool foundOri = false;
     float x1 = ori.getPos().x, y1 = ori.getPos().y, x2 = target.getPos().x, y2 = target.getPos().y;
 
     // Bresenham's line algorithm
@@ -1931,12 +1933,13 @@ bool canSeeNpc(Npc &ori, Npc &target)
         {
             if(tiles[abs_to_index(y/GRID_SIZE)][abs_to_index(x/GRID_SIZE)][gvars::currentz].walkable)
             {
-                effects.createCircle(y,x,1,sf::Color(0,0,255));
-
                 if(math::distance(Vec3f(y,x,gvars::currentz*GRID_SIZE),target.getPos()) <= target.size/2)
                 {
-                    std::cout << "I see's him! Y \n";
-                    return true;
+                    foundTarget = true;
+                }
+                if(math::distance(Vec3f(y,x,gvars::currentz*GRID_SIZE),ori.getPos()) <= ori.size/2) // Set target.size to ori critter in final version.
+                {
+                    foundOri = true;
                 }
             }
             else
@@ -1950,12 +1953,13 @@ bool canSeeNpc(Npc &ori, Npc &target)
         {
             if(tiles[abs_to_index(x/GRID_SIZE)][abs_to_index(y/GRID_SIZE)][gvars::currentz].walkable)
             {
-                effects.createCircle(x,y,1,sf::Color(0,0,255));
-
                 if(math::distance(Vec3f(x,y,gvars::currentz*GRID_SIZE),target.getPos()) <= target.size/2)
                 {
-                    std::cout << "I see's him! X \n";
-                    return true;
+                    foundTarget = true;
+                }
+                if(math::distance(Vec3f(x,y,gvars::currentz*GRID_SIZE),ori.getPos()) <= ori.size/2) // Set target.size to ori critter in final version.
+                {
+                    foundOri = true;
                 }
             }
             else
@@ -1972,12 +1976,19 @@ bool canSeeNpc(Npc &ori, Npc &target)
             error += dx;
         }
     }
+    if(foundOri && foundTarget) // This is done due to Bresenham's line automatically using the topleft most coordinate. (Half cases start trace on target.)
+        return true;
+
     return false;
 }
 
 bool canSeeNpc2(sf::Vector2f ori, Npc &target)
 {
     //float x1 = ori.x, y1 = ori.y, x2 = target.getPos().x, y2 = target.getPos().y;
+    bool foundTarget = false;
+    bool foundOri = false;
+    Vec3f oriPos(ori.x,ori.y,gvars::currentz*GRID_SIZE);
+
     float x2 = ori.x, y2 = ori.y, x1 = target.getPos().x, y1 = target.getPos().y;
 
     // Bresenham's line algorithm
@@ -2014,7 +2025,12 @@ bool canSeeNpc2(sf::Vector2f ori, Npc &target)
                 if(math::distance(Vec3f(y,x,gvars::currentz*GRID_SIZE),target.getPos()) <= target.size/2)
                 {
                     std::cout << "I see's him! Y \n";
-                    return true;
+                    foundTarget = true;
+                }
+                if(math::distance(Vec3f(y,x,gvars::currentz*GRID_SIZE),oriPos) <= target.size/2) // Set target.size to ori critter in final version.
+                {
+                    std::cout << "I see's ME! Y \n";
+                    foundOri = true;
                 }
             }
             else
@@ -2034,7 +2050,12 @@ bool canSeeNpc2(sf::Vector2f ori, Npc &target)
                 if(math::distance(Vec3f(x,y,gvars::currentz*GRID_SIZE),target.getPos()) <= target.size/2)
                 {
                     std::cout << "I see's him! X \n";
-                    return true;
+                    foundTarget = true;
+                }
+                if(math::distance(Vec3f(x,y,gvars::currentz*GRID_SIZE),oriPos) <= target.size/2) // Set target.size to ori critter in final version.
+                {
+                    std::cout << "I see's ME! Y \n";
+                    foundOri = true;
                 }
             }
             else
@@ -2052,6 +2073,10 @@ bool canSeeNpc2(sf::Vector2f ori, Npc &target)
             error += dx;
         }
     }
+
+    if(foundOri && foundTarget) // This is done due to Bresenham's line automatically using the topleft most coordinate. (Half cases start trace on target.)
+        return true;
+
     return false;
 }
 
