@@ -2057,80 +2057,13 @@ void assaultDesire(Npc &npc, std::list<Npc> &container, Npc * closEnmy, bool &ha
         debug("4");
 }
 
-void critterBrain(Npc &npc, std::list<Npc> &container)
+void critterVision(Npc &npc, std::list<Npc> &container)
 {
+        const sf::Vector2f npcPos(npc.xpos, npc.ypos);
 
-    //std::cout << "MouseSee: " << canSeeNpc2(gvars::mousePos,npc) << "/ID: " << npc.id << std::endl;
-    //detectLine(gvars::mousePos.x,gvars::mousePos.y,npc.xpos,npc.ypos);
-
-    if(!npc.alive)
-        return;
-
-    npc.container = &container;
-
-
-
-    if(tiles[abs_to_index(npc.xpos/GRID_SIZE)][abs_to_index(npc.ypos/GRID_SIZE)][abs_to_index(npc.zpos/GRID_SIZE)].walkable == false)
-    {
-        //sf::Vector2f position(abs_to_index(npc.xpos/GRID_SIZE)*GRID_SIZE+10.5,abs_to_index(npc.ypos/GRID_SIZE)*GRID_SIZE+10.5);
-        sf::Vector2f position;
-        position = gridEject(sf::Vector2f(npc.xpos,npc.ypos));
-
-        sf::Vector2f npcPos(npc.xpos,npc.ypos);
-
-        sf::Vector2f Alter = position - npcPos;
-        //npc.momentum += Alter;
-        npc.xpos += Alter.x;
-        npc.ypos += Alter.y;
-    }
-
-    if(npc.faction == "The Titanium Grip")
-        scrapPickup(npc,container);
-
-    int alph = 255;
-    //npc.img.setColor(sf::Color(255, 255, 255, alph));
-    npc.img.setScale(gvars::scalex, gvars::scaley);
-    npc.img.setOrigin(npc.img.getTextureRect().width / 2,
-    npc.img.getTextureRect().height / 2);
-    if (npc.race == "Human")
-    {
-        npc.img.setScale(0.5, 0.5);
-    }
-
-
-    if(npc.name == "BTHalfCelestial")
-    {
-        if(randz(1,1000) == 1000)
-        {
-            soundmanager.playSound("AngryWallabee.ogg");
-        }
-    }
-
-
-    npc.img.setRotation(npc.angle);
-
-    int critterZ = npc.zpos/20;
-    textList.createText(npc.xpos,npc.ypos,10,sf::Color::White,"ZPos:","",npc.zpos," /","",critterZ);
-    runCritterBody(npc);
-    debug("Ending Part Loop");
-    debug("debug 1", false);
-
-    /*Simulating Hunger/Thirst, Needs to be nerfed/formulated to conditions, I.E. Attributes/Parts/Weather*/
-    if( (gvars::framesPassed % 10) == 0)
-    {/* Every ten frames, consume nutrients  */
-        npc.bloodwork("Nutrients", -1);
-        npc.bloodwork("Hydration", -1);
-    }
-
-
-    /* *BodyPart Loop* */
-    /* Critter Vision   */
-    const sf::Vector2f npcPos(npc.xpos, npc.ypos);
-    //sf::Vector2f targetPos(gvars::mousePos);
-
-    /* Running through the critters pointers to see which one is valid, Then setting it to aim at it. */
-    sf::Vector2f * targetPos = &npc.desiredViewAngle;
-    if (npc.targetInfo.item != nullptr)
+        /* Running through the critters pointers to see which one is valid, Then setting it to aim at it. */
+        sf::Vector2f * targetPos = &npc.desiredViewAngle;
+        if (npc.targetInfo.item != nullptr)
         *targetPos = sf::Vector2f(npc.targetInfo.item->xpos,npc.targetInfo.item->ypos);
     else if (npc.targetInfo.npc != nullptr)
         *targetPos = sf::Vector2f(npc.targetInfo.npc->xpos,npc.targetInfo.npc->ypos);
@@ -2243,6 +2176,78 @@ void critterBrain(Npc &npc, std::list<Npc> &container)
         effects.polygons.push_back(shape);
     }
     debug("debug 5", false);
+    }
+
+void critterBrain(Npc &npc, std::list<Npc> &container)
+{
+
+    //std::cout << "MouseSee: " << canSeeNpc2(gvars::mousePos,npc) << "/ID: " << npc.id << std::endl;
+    //detectLine(gvars::mousePos.x,gvars::mousePos.y,npc.xpos,npc.ypos);
+
+    if(!npc.alive)
+        return;
+
+    npc.container = &container;
+
+
+
+    if(tiles[abs_to_index(npc.xpos/GRID_SIZE)][abs_to_index(npc.ypos/GRID_SIZE)][abs_to_index(npc.zpos/GRID_SIZE)].walkable == false)
+    {
+        //sf::Vector2f position(abs_to_index(npc.xpos/GRID_SIZE)*GRID_SIZE+10.5,abs_to_index(npc.ypos/GRID_SIZE)*GRID_SIZE+10.5);
+        sf::Vector2f position;
+        position = gridEject(sf::Vector2f(npc.xpos,npc.ypos));
+
+        sf::Vector2f npcPos(npc.xpos,npc.ypos);
+
+        sf::Vector2f Alter = position - npcPos;
+        //npc.momentum += Alter;
+        npc.xpos += Alter.x;
+        npc.ypos += Alter.y;
+    }
+
+    if(npc.faction == "The Titanium Grip")
+        scrapPickup(npc,container);
+
+    int alph = 255;
+    //npc.img.setColor(sf::Color(255, 255, 255, alph));
+    npc.img.setScale(gvars::scalex, gvars::scaley);
+    npc.img.setOrigin(npc.img.getTextureRect().width / 2,
+    npc.img.getTextureRect().height / 2);
+    if (npc.race == "Human")
+    {
+        npc.img.setScale(0.5, 0.5);
+    }
+
+
+    if(npc.name == "BTHalfCelestial")
+    {
+        if(randz(1,1000) == 1000)
+        {
+            soundmanager.playSound("AngryWallabee.ogg");
+        }
+    }
+
+
+    npc.img.setRotation(npc.angle);
+
+    int critterZ = npc.zpos/20;
+    textList.createText(npc.xpos,npc.ypos,10,sf::Color::White,"ZPos:","",npc.zpos," /","",critterZ);
+    runCritterBody(npc);
+    debug("Ending Part Loop");
+    debug("debug 1", false);
+
+    /*Simulating Hunger/Thirst, Needs to be nerfed/formulated to conditions, I.E. Attributes/Parts/Weather*/
+    if( (gvars::framesPassed % 10) == 0)
+    {/* Every ten frames, consume nutrients  */
+        npc.bloodwork("Nutrients", -1);
+        npc.bloodwork("Hydration", -1);
+    }
+
+
+    /* *BodyPart Loop* */
+    /* Critter Vision   */
+    critterVision(npc,container);
+
     /* Critter Prioritization */
 
     std::vector<Npc*> enemyPtrs;
@@ -2298,7 +2303,8 @@ void critterBrain(Npc &npc, std::list<Npc> &container)
 
     debug("Declaring and added Desires");
     // Declaring and adding Desires
-    Desire newDesire;
+    {
+        Desire newDesire;
     { //Sustainence
         newDesire.type = "Sustainence";
         newDesire.potency = 0;
@@ -2349,6 +2355,8 @@ void critterBrain(Npc &npc, std::list<Npc> &container)
 
     }
     desires.push_back(newDesire);
+    }
+
     debug("debug 6", false);
     /*Causation to Desires*/
     // Get Critters max nutrition, then reduce it by critters nutrients in blood
@@ -2742,7 +2750,6 @@ ReDesire:
     if ((*highestDesire).type == "Assault")
     {
         assaultDesire(npc, container, closEnmy, hasPath, endPos);
-
     }
 
     debug("Checking inComplete:" + std::to_string(inComplete));
