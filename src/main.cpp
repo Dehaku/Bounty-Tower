@@ -2982,10 +2982,14 @@ void displayChat(sf::Vector2f position)
     }
     for (size_t i = chatBox.chatStorage.size(); i != chatBox.chatStorage.size()-10; i--)
     {
+        /*
         textList.createText(
             position.x,
             ((position.y - ((chatBox.chatStorage.size()) * 10))-10) + ((i-1) * 10), 10,
             chatBox.chatStorage[i-1].color, chatBox.chatStorage[i-1].line);
+        */
+        sf::Vector2f drawPos(position.x,((position.y - ((chatBox.chatStorage.size()) * 10))-10) + ((i-1) * 10));
+        textList.createText(drawPos, 10, chatBox.chatStorage[i-1].color, chatBox.chatStorage[i-1].line, window.getDefaultView());
     }
 
 
@@ -3270,7 +3274,8 @@ void drawStuffs()
     }
 
 
-    displayChat(sf::Vector2f(gvars::bottomLeft.x + 5, gvars::bottomLeft.y - 5));
+    //displayChat(sf::Vector2f(gvars::bottomLeft.x + 5, gvars::bottomLeft.y - 5));
+    displayChat(sf::Vector2f(5, RESOLUTION.y - 5));
     debug("Drew Chat");
 
     //purtyOrbitals();

@@ -18,6 +18,7 @@ public:
     int size;
     bool shadow;
     bool bold;
+    sf::View drawView;
 
     void setup();
     void drawMe();
@@ -29,6 +30,9 @@ public:
                     std::string string2 = "", float int2 = -6698,
                     std::string stringvalue3 = "", std::string string3 = "",
                     float int3 = -6698, int shadow = 1, int null3 = 0);
+
+    void createText(sf::Vector2f vPos, int sizeMe, sf::Color color,
+                    std::string stringvalue, sf::View drawView);
 
     void drawTextz();
 

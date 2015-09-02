@@ -61,6 +61,10 @@ void TextList::setup()
 
 void TextList::drawMe()
 {
+    sf::View oldView = window.getView();
+    window.setView(drawView);
+
+    setup();
     if (shadow == true)
     {
 
@@ -69,7 +73,11 @@ void TextList::drawMe()
         window.draw(sString);
     }
     setup();
+
+
     window.draw(sString);
+
+    window.setView(oldView);
 }
 
 void TextList::createText(int xpos, int ypos, int sizeMe, sf::Color color,
@@ -140,6 +148,33 @@ void TextList::createText(int xpos, int ypos, int sizeMe, sf::Color color,
     textlist.push_back(var);
 }
 
+void TextList::createText(sf::Vector2f vPos, int sizeMe, sf::Color color,
+                    std::string stringvalue, sf::View drawView)
+{
+    using namespace std;
+    string line1("");
+    stringstream convert1;
+
+    line1.append(stringvalue);
+
+    sf::Text textz(line1, font);
+    textz.setStyle(sf::Text::Bold);
+    textz.setCharacterSize(sizeMe);
+    textz.setColor(color);
+    textz.setPosition(vPos.x, vPos.y);
+
+    TextList var;
+    var.drawView = drawView;
+    var.xpos = vPos.x;
+    var.ypos = vPos.y;
+    var.color = color;
+    var.sString = textz;
+    var.size = size;
+    var.shadow = 1;
+    var.bold = bold;
+    textlist.push_back(var);
+}
+
 void TextList::drawTextz()
 {
 
@@ -164,6 +199,7 @@ void TextList::loadFont()
 TextList::TextList() : xpos{}, ypos{}, shadow{}, bold{}
 {
     size = 11;
+    drawView = gvars::view1;
 }
 
 void ChatBox::addChat(std::string text, sf::Color color)

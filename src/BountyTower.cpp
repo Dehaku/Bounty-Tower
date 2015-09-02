@@ -530,6 +530,8 @@ void bountyTowerLoop()
         std::cout << "You're on me! \n";
     }
 
+    textList.createText(sf::Vector2f(500,500),15,sf::Color::Red,"Dude, Watchout.",window.getDefaultView());
+
     if(inputState.key[Key::X].time == 1)
     { // Print Faction Names
         for(auto & fact : uniFact)
