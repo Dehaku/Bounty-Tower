@@ -448,12 +448,20 @@ void drawMenus()
 
     for(auto &menu : menus)
     {
-        effects.createSquare(100,100,RESOLUTION.x-100,RESOLUTION.y-100,sf::Color(sf::Color(200,200,100)),5,sf::Color::White,window.getDefaultView());
+        effects.createSquare(100,100,RESOLUTION.x-100,RESOLUTION.y-100,sf::Color(sf::Color(150,150,0)),5,sf::Color::White,window.getDefaultView());
         if(menu.name == "Squaddie Menu")
         {
             Npc *npc = menu.npc;
-            textList.createText(sf::Vector2f(100,100),10,sf::Color::Black,"Name: " + npc->name,window.getView());
-            //100/150 for attributes.
+            textList.createText(sf::Vector2f(105,100),15,sf::Color(100,100,100),"Name: " + npc->name,window.getView());
+            //Attributes! SPICED
+            std::string AttributeLine;
+            AttributeLine.append("Strength: " + std::to_string(npc->skills.strength) + "\n");
+            AttributeLine.append("Perception: " + std::to_string(npc->skills.perception) + "\n");
+            AttributeLine.append("Intelligence: " + std::to_string(npc->skills.intelligence) + "\n");
+            AttributeLine.append("Charisma: " + std::to_string(npc->skills.charisma) + "\n");
+            AttributeLine.append("Endurance: " + std::to_string(npc->skills.endurance) + "\n");
+            AttributeLine.append("Dexterity: " + std::to_string(npc->skills.dexterity) + "\n");
+            textList.createText(sf::Vector2f(105,150),15,sf::Color(200,200,200),AttributeLine,window.getView());
 
             sf::Vector2f invPos(RESOLUTION.x/2,110);
             int x = 0, y = 0;
