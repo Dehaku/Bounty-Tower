@@ -228,6 +228,21 @@ int createImageButton(sf::Vector2f vPos, sf::Texture &Tex, std::string text, int
     return var.id;
 }
 
+int createImageButton(sf::Vector2f vPos, const sf::Texture &Tex, std::string text, int rotation, sf::View viewTarget)
+{
+    ImageButton var;
+    var.sprite.setTexture(Tex);
+    //var.sprite.setScale(0.2,0.2);
+    var.sprite.setPosition(vPos);
+    var.sprite.setOrigin(Tex.getSize().x/2,Tex.getSize().y/2);
+    var.sprite.setRotation(var.sprite.getRotation()+rotation);
+    var.sButtonText = text;
+    var.sForwardText = text;
+    var.view = viewTarget;
+    vImageButtonList.push_back(var);
+    return var.id;
+}
+
 
 bool buttonClicked(int id)
 {

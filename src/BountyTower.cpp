@@ -440,50 +440,37 @@ void squaddieMenu(Npc &npc)
 
 void drawMenus()
 {
+    int xOffset = gvars::mousePos.x - gvars::topLeft.x;
+    int yOffset = gvars::mousePos.y - gvars::topLeft.y;
+    if(inputState.key[Key::Home])
+        textList.createText(gvars::mousePos,10,sf::Color::White,"defaultPos:" + std::to_string(xOffset) + "/" + std::to_string(yOffset));
     window.setView(window.getDefaultView());
 
     for(auto &menu : menus)
     {
-        sf::RectangleShape Rec;
-        Rec.setOutlineColor(sf::Color::White);
-        Rec.setOutlineThickness(5);
-
-        Rec.setFillColor(sf::Color(200,200,100));
-        Rec.setSize(sf::Vector2f(RESOLUTION.x-200,RESOLUTION.y-200));
-        Rec.setOrigin(Rec.getSize().x/2,Rec.getSize().y/2);
-        Rec.setPosition(menu.Pos);
-        window.draw(Rec);
-
+        effects.createSquare(100,100,RESOLUTION.x-100,RESOLUTION.y-100,sf::Color(sf::Color(200,200,100)),5,sf::Color::White,window.getDefaultView());
         if(menu.name == "Squaddie Menu")
         {
             Npc *npc = menu.npc;
-            sf::Text text = createText(npc->name);
-            text.setPosition(150,200);
-            text.setColor(sf::Color::Black);
-            window.draw(text);
+            textList.createText(sf::Vector2f(100,100),10,sf::Color::Black,"Name: " + npc->name,window.getView());
+            //100/150 for attributes.
 
-
-            sf::Vector2f invPos(300,200);
+            sf::Vector2f invPos(RESOLUTION.x/2,110);
             int x = 0, y = 0;
+            bool offSet = false;
             for(auto &item : npc->inventory)
             {
                 sf::Vector2f drawPos(invPos.x,invPos.y+(60*y));
-                sf::Texture itemTex = *item.img.getTexture();
-                //createImageButton(drawPos,itemTex,"",0,window.getDefaultView());
-                createImageButton(drawPos,itemTex,"",0);
-                /*
+                if(offSet)
+                    drawPos.x += 60;
+                createImageButton(drawPos,*item.img.getTexture(),"",0,window.getDefaultView());
+                if(offSet)
+                {
+                    drawPos.x -= 60;
+                    y++;
+                }
 
-                sf::Sprite itemSpr;
-                itemSpr.setTexture(itemTex);
-                itemSpr.setPosition(drawPos);
-
-                sf::Text itemName = createText(item.name);
-                itemName.setPosition(drawPos);
-
-                window.draw(itemSpr);
-                window.draw(itemName);
-                */
-                y++;
+                toggle(offSet);
             }
         }
     }
@@ -510,7 +497,6 @@ void bountyTowerLoop()
 
     if(bountytower::pausewaves && bountytower::towerLoaded != "")
     {
-        //sf::Vector2f vPos(gvars::centerScreen.x,gvars::centerScreen.y-(RESOLUTION.y/4));
         sf::Vector2f vPos(RESOLUTION.x/2,(RESOLUTION.y/2)-(RESOLUTION.y/4));
         int startButt = createImageButton(vPos,texturemanager.getTexture("ElevatorButton.png"),"Start the swarm!",0,window.getDefaultView());
         if(imageButtonClicked(startButt))
@@ -684,7 +670,6 @@ void bountyTowerLoop()
 
     if(bountytower::towerLoaded != "")
         textList.createText(sf::Vector2f(RESOLUTION.x/2,15),15,sf::Color::White,"Floor: " + std::to_string(gvars::currentz),window.getDefaultView());
-        //textList.createText(gvars::centerScreen.x,gvars::topLeft.y+15,15,sf::Color::White,"Floor: " + std::to_string(gvars::currentz));
 
     if(bountytower::elevatoravailable && bountytower::towerLoaded != "")
     { // Prints Elevator HUD and other such things
@@ -700,10 +685,8 @@ void bountyTowerLoop()
                 AmountRaised++;
             }
         }
-        //textList.createText(gvars::centerScreen.x,gvars::topLeft.y+70,20,sf::Color::White,"On Elevator: " + std::to_string(AmountRaised));
         textList.createText(sf::Vector2f(RESOLUTION.x/2,70),20,sf::Color::White,"On Elevator: " + std::to_string(AmountRaised),window.getDefaultView());
 
-        //sf::Vector2f vPos(gvars::centerScreen.x-25,gvars::topLeft.y+75);
         sf::Vector2f vPos((RESOLUTION.x/2)-25,75);
         int butt = createImageButton(vPos,texturemanager.getTexture("ElevatorButton.png"),"",0,window.getDefaultView());
         if(imageButtonClicked(butt))
@@ -714,15 +697,12 @@ void bountyTowerLoop()
                 bountytower::pausewaves = true;
                 gvars::currentz++;
                 elevateElevatorInhabitants();
-                soundmanager.playSound("ding.wav"); // zomfg sounds, so gud.
+                soundmanager.playSound("ding.wav");
             } else {
                 chatBox.addChat("You cannot go further up.", sf::Color::Red);
             }
         }
     }
-
-    //lmbPress();
-
 }
 
 void buildTower(std::string towerName)

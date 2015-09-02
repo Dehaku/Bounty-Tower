@@ -32,7 +32,7 @@ public:
                     float int3 = -6698, int shadow = 1, int null3 = 0);
 
     void createText(sf::Vector2f vPos, int sizeMe, sf::Color color,
-                    std::string stringvalue, sf::View drawView);
+                    std::string stringvalue, sf::View drawView = gvars::view1);
 
     void drawTextz();
 

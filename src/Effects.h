@@ -31,7 +31,7 @@ public:
     public:
         sf::Vector2f pos;
         int size;
-        bool outline;
+        int outline;
         sf::Color maincolor;
         sf::Color seccolor;
         sf::View drawView;
@@ -43,7 +43,7 @@ public:
     public:
         sf::Vector2f startPos;
         sf::Vector2f endPos;
-        bool outline;
+        int outline;
         sf::Color maincolor;
         sf::Color seccolor;
         sf::View drawView;
