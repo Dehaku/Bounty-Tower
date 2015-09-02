@@ -6,9 +6,6 @@
 #include "InputState.h"
 #include "globalvars.h"
 
-/* Need to Make
-Kamehame styled beam
-*/
 
 class Effects
 {
@@ -25,6 +22,7 @@ public:
         int outline;
         sf::Color maincolor;
         sf::Color seccolor;
+        sf::View drawView;
 
         void draw();
     };
@@ -36,6 +34,7 @@ public:
         bool outline;
         sf::Color maincolor;
         sf::Color seccolor;
+        sf::View drawView;
 
         void draw();
     };
@@ -47,6 +46,7 @@ public:
         bool outline;
         sf::Color maincolor;
         sf::Color seccolor;
+        sf::View drawView;
 
         void draw();
     };
@@ -75,7 +75,7 @@ public:
     void createLine(int sxpos, int sypos, int expos, int eypos, int size,
                     sf::Color mainColor, float outline = 0,
                     sf::Color secondaryColor = sf::Color(0, 0, 0),
-                    bool fades = false, int fadesrate = 255);
+                    sf::View drawView = gvars::view1, bool fades = false, int fadesrate = 255);
 
     void createBeam(int sxpos, int sypos, int expos, int eypos, int size,
                     sf::Color mainColor, float outline = 0,
@@ -84,11 +84,13 @@ public:
 
     void createSquare(int sxpos, int sypos, int expos, int eypos,
                       sf::Color mainColor, float outline = 0,
-                      sf::Color secondaryColor = sf::Color(0, 0, 0));
+                      sf::Color secondaryColor = sf::Color(0, 0, 0),
+                      sf::View drawView = gvars::view1);
 
     void createCircle(int xpos, int ypos, int Size, sf::Color MainColor,
                       float Outline = 0,
-                      sf::Color SecondaryColor = sf::Color(0, 0, 0));
+                      sf::Color SecondaryColor = sf::Color(0, 0, 0),
+                      sf::View drawView = gvars::view1);
 
     void drawEffects();
 };

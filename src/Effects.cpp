@@ -31,7 +31,11 @@ void Effects::Line::draw()
     rectangle.setOutlineColor(seccolor);
     rectangle.setOutlineThickness(outline);
     rectangle.setPosition(startPos.x, startPos.y);
+
+    sf::View oldView = window.getView();
+    window.setView(drawView);
     window.draw(rectangle);
+    window.setView(oldView);
 }
 
 void Effects::Circle::draw()
@@ -44,7 +48,11 @@ void Effects::Circle::draw()
     circle.setOutlineColor(seccolor);
     circle.setPosition(pos.x, pos.y);
     circle.setOrigin(size, size);
+
+    sf::View oldView = window.getView();
+    window.setView(drawView);
     window.draw(circle);
+    window.setView(oldView);
 }
 
 void Effects::Square::draw()
@@ -58,7 +66,11 @@ void Effects::Square::draw()
     rectangle.setOutlineColor(seccolor);
     rectangle.setOutlineThickness(outline);
     rectangle.setPosition(endPos.x, endPos.y);
+
+    sf::View oldView = window.getView();
+    window.setView(drawView);
     window.draw(rectangle);
+    window.setView(oldView);
 }
 
 void Effects::Beam::draw()
@@ -91,7 +103,7 @@ void Effects::Beam::draw()
 
 void Effects::createLine(int sxpos, int sypos, int expos, int eypos, int size,
                          sf::Color mainColor, float outline,
-                         sf::Color secondaryColor, bool fades, int fadesrate)
+                         sf::Color secondaryColor, sf::View drawView, bool fades, int fadesrate)
 {
     Line evar;
     evar.startPos = sf::Vector2f(sxpos, sypos);
@@ -102,6 +114,7 @@ void Effects::createLine(int sxpos, int sypos, int expos, int eypos, int size,
     evar.outline = outline;
     evar.maincolor = mainColor;
     evar.seccolor = secondaryColor;
+    evar.drawView = drawView;
     lines.push_back(evar);
 }
 
@@ -123,7 +136,7 @@ void Effects::createBeam(int sxpos, int sypos, int expos, int eypos, int size,
 
 void Effects::createSquare(int sxpos, int sypos, int expos, int eypos,
                            sf::Color mainColor, float outline,
-                           sf::Color secondaryColor)
+                           sf::Color secondaryColor, sf::View drawView)
 {
     Square evar;
     evar.startPos = sf::Vector2f(sxpos, sypos);
@@ -131,11 +144,12 @@ void Effects::createSquare(int sxpos, int sypos, int expos, int eypos,
     evar.outline = outline;
     evar.maincolor = mainColor;
     evar.seccolor = secondaryColor;
+    evar.drawView = drawView;
     squares.push_back(evar);
 }
 
 void Effects::createCircle(int xpos, int ypos, int size, sf::Color mainColor,
-                           float outline, sf::Color secondaryColor)
+                           float outline, sf::Color secondaryColor, sf::View drawView)
 {
     Circle evar;
     evar.pos = sf::Vector2f(xpos, ypos);
@@ -143,6 +157,7 @@ void Effects::createCircle(int xpos, int ypos, int size, sf::Color mainColor,
     evar.outline = outline;
     evar.maincolor = mainColor;
     evar.seccolor = secondaryColor;
+    evar.drawView = drawView;
     circles.push_back(evar);
 }
 

@@ -2962,7 +2962,7 @@ void displayChat(sf::Vector2f position)
         effects.createSquare(
             position.x - 10, position.y + 10, position.x + 500,
             (position.y - ((11) * 10)), // (position.y - ((chatBox.chatStorage.size() + 1) * 10)),
-            sf::Color(0, 0, 0, 100), 2, sf::Color::Cyan);
+            sf::Color(0, 0, 0, 100), 2, sf::Color::Cyan, window.getDefaultView());
 
     /*
     for (size_t i = 0; i != chatBox.chatStorage.size(); i++)

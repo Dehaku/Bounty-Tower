@@ -520,18 +520,6 @@ void bountyTowerLoop()
 
     cameraControls();
 
-    int BTbutton = createImageButton(sf::Vector2f(100,100),texturemanager.getTexture("ElevatorButton.png"),"",0,window.getDefaultView());
-    if(imageButtonClicked(BTbutton))
-    {
-        std::cout << "Clicked mon. \n";
-    }
-    if(imageButtonHovered(BTbutton))
-    {
-        std::cout << "You're on me! \n";
-    }
-
-    textList.createText(sf::Vector2f(500,500),15,sf::Color::Red,"Dude, Watchout.",window.getDefaultView());
-
     if(inputState.key[Key::X].time == 1)
     { // Print Faction Names
         for(auto & fact : uniFact)
@@ -701,6 +689,7 @@ void bountyTowerLoop()
     { // Prints Elevator HUD and other such things
 
         textList.createText(gvars::centerScreen.x,gvars::topLeft.y+50,20,sf::Color::Green,"Elevator is Ready!");
+        //textList.createText(RESOLUTION.x/2,50,20,sf::Color::Green,"Elevator is Ready!",window.getDefaultView());
 
         int AmountRaised = 0;
         for(auto &npc : npclist)
