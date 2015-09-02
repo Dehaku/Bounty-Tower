@@ -452,7 +452,7 @@ void drawMenus()
         if(menu.name == "Squaddie Menu")
         {
             Npc *npc = menu.npc;
-            textList.createText(sf::Vector2f(105,100),15,sf::Color(100,100,100),"Name: " + npc->name,window.getView());
+            textList.createText(sf::Vector2f(105,100),20,sf::Color(100,100,100),"Name: " + npc->name,window.getView());
             //Attributes! SPICED
             std::string AttributeLine;
             AttributeLine.append("Strength: " + std::to_string(npc->skills.strength) + "\n");
@@ -461,20 +461,25 @@ void drawMenus()
             AttributeLine.append("Charisma: " + std::to_string(npc->skills.charisma) + "\n");
             AttributeLine.append("Endurance: " + std::to_string(npc->skills.endurance) + "\n");
             AttributeLine.append("Dexterity: " + std::to_string(npc->skills.dexterity) + "\n");
-            textList.createText(sf::Vector2f(105,150),15,sf::Color(200,200,200),AttributeLine,window.getView());
+            textList.createText(sf::Vector2f(105,150),20,sf::Color::White,AttributeLine,window.getView());
 
-            sf::Vector2f invPos(RESOLUTION.x/2,110);
+            sf::Vector2f invPos(RESOLUTION.x/2,130);
+
+            textList.createText(sf::Vector2f(636,102),15,sf::Color::White,"Inventory",window.getView());
+            effects.createSquare(invPos.x-40,invPos.y-10,invPos.x+100,invPos.y+(RESOLUTION.y/2)+120,sf::Color::Transparent,2,sf::Color::Black,window.getDefaultView());
+
             int x = 0, y = 0;
             bool offSet = false;
             for(auto &item : npc->inventory)
             {
-                sf::Vector2f drawPos(invPos.x,invPos.y+(60*y));
+                sf::Vector2f drawPos(invPos.x,invPos.y+(60*y)+30);
                 if(offSet)
-                    drawPos.x += 60;
+                    drawPos.x += 62;
+                effects.createSquare(drawPos.x-30,drawPos.y-30,drawPos.x+30,drawPos.y+30,sf::Color::Black,2,sf::Color::White,window.getDefaultView());
                 createImageButton(drawPos,*item.img.getTexture(),"",0,window.getDefaultView());
                 if(offSet)
                 {
-                    drawPos.x -= 60;
+                    drawPos.x -= 62;
                     y++;
                 }
 
