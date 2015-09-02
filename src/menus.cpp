@@ -309,12 +309,16 @@ bool imageButtonHovered(int id)
 {
     for (auto &button : vImageButtonList)
     {
+        sf::View oldview = window.getView();
+        window.setView(button.view);
+        sf::Vector2i pixelPos = sf::Mouse::getPosition(window);
+        sf::Vector2f worldPos = window.mapPixelToCoords(pixelPos);
         if (button.id == id)
         {
             sf::Vector2f vPos(button.sprite.getPosition());
             sf::Vector2f vSize(button.sprite.getTexture()->getSize().x/2,button.sprite.getTexture()->getSize().y/2);
 
-            if (aabb(gvars::mousePos, vPos.x - vSize.x,
+            if (aabb(worldPos, vPos.x - vSize.x,
                      vPos.x + vSize.x,
                      vPos.y - vSize.y,
                      vPos.y + vSize.y))
@@ -324,6 +328,7 @@ bool imageButtonHovered(int id)
             }
             button.hovering = false;
         }
+        window.setView(oldview);
     }
     return false;
 }
