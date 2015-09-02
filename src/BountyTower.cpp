@@ -683,13 +683,14 @@ void bountyTowerLoop()
     }
 
     if(bountytower::towerLoaded != "")
-        textList.createText(gvars::centerScreen.x,gvars::topLeft.y+15,15,sf::Color::White,"Floor: " + std::to_string(gvars::currentz));
+        textList.createText(sf::Vector2f(RESOLUTION.x/2,15),15,sf::Color::White,"Floor: " + std::to_string(gvars::currentz),window.getDefaultView());
+        //textList.createText(gvars::centerScreen.x,gvars::topLeft.y+15,15,sf::Color::White,"Floor: " + std::to_string(gvars::currentz));
 
     if(bountytower::elevatoravailable && bountytower::towerLoaded != "")
     { // Prints Elevator HUD and other such things
 
-        textList.createText(gvars::centerScreen.x,gvars::topLeft.y+50,20,sf::Color::Green,"Elevator is Ready!");
-        //textList.createText(RESOLUTION.x/2,50,20,sf::Color::Green,"Elevator is Ready!",window.getDefaultView());
+
+        textList.createText(sf::Vector2f(RESOLUTION.x/2,50),20,sf::Color::Green,"Elevator is Ready!",window.getDefaultView());
 
         int AmountRaised = 0;
         for(auto &npc : npclist)
@@ -699,10 +700,12 @@ void bountyTowerLoop()
                 AmountRaised++;
             }
         }
-        textList.createText(gvars::centerScreen.x,gvars::topLeft.y+70,20,sf::Color::White,"On Elevator: " + std::to_string(AmountRaised));
+        //textList.createText(gvars::centerScreen.x,gvars::topLeft.y+70,20,sf::Color::White,"On Elevator: " + std::to_string(AmountRaised));
+        textList.createText(sf::Vector2f(RESOLUTION.x/2,70),20,sf::Color::White,"On Elevator: " + std::to_string(AmountRaised),window.getDefaultView());
 
-        sf::Vector2f vPos(gvars::centerScreen.x-25,gvars::topLeft.y+75);
-        int butt = createImageButton(vPos,texturemanager.getTexture("ElevatorButton.png"),"text");
+        //sf::Vector2f vPos(gvars::centerScreen.x-25,gvars::topLeft.y+75);
+        sf::Vector2f vPos((RESOLUTION.x/2)-25,75);
+        int butt = createImageButton(vPos,texturemanager.getTexture("ElevatorButton.png"),"",0,window.getDefaultView());
         if(imageButtonClicked(butt))
         {
             if (gvars::currentz < CHUNK_SIZE - 1) {
