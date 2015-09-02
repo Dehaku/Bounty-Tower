@@ -57,6 +57,7 @@ public:
     sf::Sprite sprite;
     //sf::Vector2f vPos;
     sf::Color color;
+    sf::View view;
     std::string sFunction;
     std::string sButtonText;
     std::string sForwardText;
@@ -93,6 +94,7 @@ int createSquareButton(sf::Vector2f vPos, int iSizex, int iSizey,
                        sf::Color color, std::string text = "");
 int createImageButton(sf::Vector2f vPos, sf::Texture &Tex, std::string text = "", int rotation = 0);
 int createImageButton(sf::Vector2f vPos, const sf::Texture &Tex, std::string text = "", int rotation = 0);
+int createImageButton(sf::Vector2f vPos, sf::Texture &Tex, std::string text, int rotation, sf::View viewTarget);
 
 
 bool buttonClicked(int id);

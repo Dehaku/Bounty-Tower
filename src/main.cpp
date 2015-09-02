@@ -2953,8 +2953,6 @@ void drawItems()
 
 void displayChat(sf::Vector2f position)
 {
-    sf::View view = window.getDefaultView();
-    window.setView(view);
     // restore the default view
     window.setView(window.getDefaultView());
 

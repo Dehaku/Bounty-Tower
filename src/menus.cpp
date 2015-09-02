@@ -112,44 +112,25 @@ ImageButton::ImageButton() : textSize{}
     textColor = sf::Color(175, 175, 0);
     hovering = false;
     id = gvars::glbbtn++;
+    view = gvars::view1;
 }
 
 void ImageButton::draw()
 {
-    /*
-    if (beenPressed)
+    sf::View oldview = window.getView();
+    window.setView(view);
+    //if(view != nullptr)
     {
-        effects.createSquare(vPos.x - iSizex, vPos.y - iSizey, vPos.x + iSizex,
-                             vPos.y + iSizey,
-                             sf::Color(color.r / 2, color.g / 2, color.b / 2),
-                             2, sf::Color::White);
+
     }
-    else if (aabb(gvars::mousePos, vPos.x - iSizex, vPos.x + iSizex,
-                  vPos.y - iSizey, vPos.y + iSizey))
-    {
-        effects.createSquare(vPos.x - iSizex, vPos.y - iSizey, vPos.x + iSizex,
-                             vPos.y + iSizey, color, 2, sf::Color::White);
-        if (gvars::mouseStagnation > 10 && sButtonText.length() != 0)
-        {
-            effects.createSquare(gvars::mousePos.x + 10, gvars::mousePos.y - 6,
-                                 gvars::mousePos.x + (sButtonText.length() * 7),
-                                 gvars::mousePos.y + 6, sf::Color::Black, 1,
-                                 sf::Color(175, 175, 0));
-            textList.createText(gvars::mousePos.x + 12, gvars::mousePos.y - 6,
-                                11, textColor, sButtonText);
-        }
-    }
-    else
-    {
-        effects.createSquare(vPos.x - iSizex, vPos.y - iSizey, vPos.x + iSizex,
-                             vPos.y + iSizey, color, 2, sf::Color::Black);
-    }
-    */
     window.draw(sprite);
     textList.createText(sprite.getPosition().x + 10, sprite.getPosition().y - (textSize / 2), textSize,
                         textColor, sForwardText);
 
+
+
     effects.drawEffects();
+    window.setView(oldview);
 }
 
 void Buttons::pressed()
@@ -232,6 +213,22 @@ int createImageButton(sf::Vector2f vPos, const sf::Texture &Tex, std::string tex
     return var.id;
 }
 
+int createImageButton(sf::Vector2f vPos, sf::Texture &Tex, std::string text, int rotation, sf::View viewTarget)
+{
+    ImageButton var;
+    var.sprite.setTexture(Tex);
+    //var.sprite.setScale(0.2,0.2);
+    var.sprite.setPosition(vPos);
+    var.sprite.setOrigin(Tex.getSize().x/2,Tex.getSize().y/2);
+    var.sprite.setRotation(var.sprite.getRotation()+rotation);
+    var.sButtonText = text;
+    var.sForwardText = text;
+    var.view = viewTarget;
+    vImageButtonList.push_back(var);
+    return var.id;
+}
+
+
 bool buttonClicked(int id)
 {
     for (auto &button : vButtonList)
@@ -279,12 +276,18 @@ bool imageButtonClicked(int id)
 {
     for (auto &button : vImageButtonList)
     {
+        sf::View oldview = window.getView();
+        window.setView(button.view);
+        sf::Vector2i pixelPos = sf::Mouse::getPosition(window);
+        sf::Vector2f worldPos = window.mapPixelToCoords(pixelPos);
+
         if (button.id == id)
         {
             sf::Vector2f vPos(button.sprite.getPosition());
+            //std::cout << "vPos: " << vPos.x << "/" << vPos.y << ", Difference: " << math::closeish(vPos.x,vPos.y,pixelPos.x,pixelPos.y) << std::endl;
             sf::Vector2f vSize(button.sprite.getTexture()->getSize().x/2,button.sprite.getTexture()->getSize().y/2);
 
-            if (aabb(gvars::mousePos, vPos.x - vSize.x,
+            if (aabb(worldPos, vPos.x - vSize.x,
                      vPos.x + vSize.x,
                      vPos.y - vSize.y,
                      vPos.y + vSize.y) &&
@@ -297,6 +300,7 @@ bool imageButtonClicked(int id)
                 return true;
             }
         }
+        window.setView(oldview);
     }
     return false;
 }

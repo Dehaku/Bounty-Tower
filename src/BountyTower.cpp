@@ -468,8 +468,11 @@ void drawMenus()
             for(auto &item : npc->inventory)
             {
                 sf::Vector2f drawPos(invPos.x,invPos.y+(60*y));
-
                 sf::Texture itemTex = *item.img.getTexture();
+                //createImageButton(drawPos,itemTex,"",0,window.getDefaultView());
+                createImageButton(drawPos,itemTex,"",0);
+                /*
+
                 sf::Sprite itemSpr;
                 itemSpr.setTexture(itemTex);
                 itemSpr.setPosition(drawPos);
@@ -479,6 +482,7 @@ void drawMenus()
 
                 window.draw(itemSpr);
                 window.draw(itemName);
+                */
                 y++;
             }
         }
@@ -506,8 +510,9 @@ void bountyTowerLoop()
 
     if(bountytower::pausewaves && bountytower::towerLoaded != "")
     {
-        sf::Vector2f vPos(gvars::centerScreen.x,gvars::centerScreen.y-(RESOLUTION.y/4));
-        int startButt = createImageButton(vPos,texturemanager.getTexture("ElevatorButton.png"),"Start the swarm!");
+        //sf::Vector2f vPos(gvars::centerScreen.x,gvars::centerScreen.y-(RESOLUTION.y/4));
+        sf::Vector2f vPos(RESOLUTION.x/2,(RESOLUTION.y/2)-(RESOLUTION.y/4));
+        int startButt = createImageButton(vPos,texturemanager.getTexture("ElevatorButton.png"),"Start the swarm!",0,window.getDefaultView());
         if(imageButtonClicked(startButt))
             bountytower::pausewaves = false;
     }
@@ -515,7 +520,15 @@ void bountyTowerLoop()
 
     cameraControls();
 
-
+    int BTbutton = createImageButton(sf::Vector2f(100,100),texturemanager.getTexture("ElevatorButton.png"),"",0,window.getDefaultView());
+    if(imageButtonClicked(BTbutton))
+    {
+        std::cout << "Clicked mon. \n";
+    }
+    if(imageButtonHovered(BTbutton))
+    {
+        std::cout << "You're on me! \n";
+    }
 
     if(inputState.key[Key::X].time == 1)
     { // Print Faction Names
