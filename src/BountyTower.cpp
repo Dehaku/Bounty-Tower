@@ -451,6 +451,12 @@ void drawMenus()
         effects.createSquare(100,100,RESOLUTION.x-100,RESOLUTION.y-100,sf::Color(sf::Color(150,150,0)),5,sf::Color::White,window.getDefaultView());
         if(menu.name == "Squaddie Menu")
         {
+            //Close Button
+            int exitButt = createImageButton(sf::Vector2f(RESOLUTION.x-100,100),texturemanager.getTexture("ExitButton.png"),"",0,window.getDefaultView());
+            if(imageButtonClicked(exitButt))
+                menu.toDelete = true;
+
+
             Npc *npc = menu.npc;
             textList.createText(sf::Vector2f(105,100),20,sf::Color(100,100,100),"Name: " + npc->name,window.getView());
             //Attributes! SPICED
@@ -516,6 +522,7 @@ void drawMenus()
 
 void bountyTowerLoop()
 {
+    AnyDeletes(menus);
     if(bountytower::towerLoaded == "")
         towerMenu();
     if(myTargetPtr != nullptr && inputState.key[Key::I].time == 1)
