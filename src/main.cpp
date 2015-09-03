@@ -5884,7 +5884,7 @@ public:
         int gameSeconds = ((startTime.getElapsedTime().asSeconds()));
         gameSeconds = (gameSeconds % 60);
         outPut.append("Game Time: " + std::to_string(gameHours) + "h" + std::to_string(gameMinutes) + "m" + std::to_string(gameSeconds) + "s" );
-        textList.createText(gvars::topLeft.x,gvars::topLeft.y,15,sf::Color::White,outPut);
+        textList.createText(sf::Vector2f(0,0),15,sf::Color::White,outPut,window.getDefaultView());
     }
 
 };

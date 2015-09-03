@@ -371,13 +371,7 @@ void towerMenu()
         for(auto &npc : npclist)
             npc.momentum = sf::Vector2f(0,0);
     }
-    if(imageButtonHovered(fanTowButt))
-    {
-        int butty = createImageButton(gvars::mousePos,texturemanager.getTexture("MercRogueFem.png"));
-        std::string textOut = "Tower: " + fantasyTower.name + ", (" + std::to_string(fantasyTower.difficulty) + "/" +
-                                            std::to_string(fantasyTower.minioncount) + ") , (Difficulty/Minions).";
-        textList.createText(gvars::mousePos.x,gvars::mousePos.y,15,sf::Color::Red,textOut);
-    }
+
     //Draw some info about the thing.
     {
         std::string textOut = " Tower: " + fantasyTower.name +
