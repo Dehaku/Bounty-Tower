@@ -255,7 +255,7 @@ public:
 
     void effectStats();
 
-    class Skill
+    class Attribute
     {
     public:
         int strength;
@@ -277,7 +277,7 @@ public:
 
         void Train(std::string skill, int amount = 1, int skillgain = 1);
     };
-    Skill skills;
+    Attribute attributes;
 
     class TargetInfo
     {

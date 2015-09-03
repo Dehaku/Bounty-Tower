@@ -455,12 +455,13 @@ void drawMenus()
             textList.createText(sf::Vector2f(105,100),20,sf::Color(100,100,100),"Name: " + npc->name,window.getView());
             //Attributes! SPICED
             std::string AttributeLine;
-            AttributeLine.append("Strength: " + std::to_string(npc->skills.strength) + "\n");
-            AttributeLine.append("Perception: " + std::to_string(npc->skills.perception) + "\n");
-            AttributeLine.append("Intelligence: " + std::to_string(npc->skills.intelligence) + "\n");
-            AttributeLine.append("Charisma: " + std::to_string(npc->skills.charisma) + "\n");
-            AttributeLine.append("Endurance: " + std::to_string(npc->skills.endurance) + "\n");
-            AttributeLine.append("Dexterity: " + std::to_string(npc->skills.dexterity) + "\n");
+            AttributeLine.append("S.P.I.C.E.D. \n");
+            AttributeLine.append("Strength: " + std::to_string(npc->attributes.strength) + "\n");
+            AttributeLine.append("Perception: " + std::to_string(npc->attributes.perception) + "\n");
+            AttributeLine.append("Intelligence: " + std::to_string(npc->attributes.intelligence) + "\n");
+            AttributeLine.append("Charisma: " + std::to_string(npc->attributes.charisma) + "\n");
+            AttributeLine.append("Endurance: " + std::to_string(npc->attributes.endurance) + "\n");
+            AttributeLine.append("Dexterity: " + std::to_string(npc->attributes.dexterity) + "\n");
             textList.createText(sf::Vector2f(105,150),20,sf::Color::White,AttributeLine,window.getView());
 
             sf::Vector2f invPos(RESOLUTION.x/2,130);

@@ -2570,7 +2570,7 @@ ReDesire:
                     endPos = Vec3(myPos.x/GRID_SIZE,myPos.y/GRID_SIZE,myPos.z/GRID_SIZE);
                     hasPath = false;
 
-                    npc.jobPtr->completionProgress += npc.skills.intelligence / 2;
+                    npc.jobPtr->completionProgress += npc.attributes.intelligence / 2;
 
                     for (float rot = 1; rot < 361 * (percentIs( npc.jobPtr->completionTimer,npc.jobPtr->completionProgress) / 100); rot++)
                     {
@@ -2612,7 +2612,7 @@ ReDesire:
                 if(math::closeish(npc.xpos,npc.ypos,endPos.x*GRID_SIZE,endPos.y*GRID_SIZE) <= npc.size*3)
                 {
 
-                    npc.jobPtr->completionProgress += npc.skills.intelligence / 2;
+                    npc.jobPtr->completionProgress += npc.attributes.intelligence / 2;
 
                     for (float rot = 1; rot < 361 * (percentIs( npc.jobPtr->completionTimer,npc.jobPtr->completionProgress) / 100); rot++)
                     {
@@ -2662,7 +2662,7 @@ ReDesire:
                     endPos = Vec3(myPos.x/GRID_SIZE,myPos.y/GRID_SIZE,myPos.z/GRID_SIZE);
                     hasPath = false;
 
-                    npc.jobPtr->completionProgress += npc.skills.intelligence / 2;
+                    npc.jobPtr->completionProgress += npc.attributes.intelligence / 2;
                     debug("post job completetion progress");
 
                     for (float rot = 1; rot < 361 * (percentIs( npc.jobPtr->completionTimer,npc.jobPtr->completionProgress) / 100); rot++)
@@ -2699,7 +2699,7 @@ ReDesire:
                     endPos = Vec3(myPos.x/GRID_SIZE,myPos.y/GRID_SIZE,myPos.z/GRID_SIZE);
                     hasPath = false;
 
-                    npc.jobPtr->completionProgress += npc.skills.intelligence / 2;
+                    npc.jobPtr->completionProgress += npc.attributes.intelligence / 2;
                     debug("post job completetion progress");
                     int percentage = percentIs( npc.jobPtr->completionTimer,npc.jobPtr->completionProgress);
                     textList.createText(wPos.x-10,wPos.y-20,15,sf::Color::Yellow,"%" + std::to_string(percentage));
@@ -4517,19 +4517,19 @@ void handlePhase()
                     int stre, perc, inte, charis, endu, dext, agil = 0;
 
                     stre = squady.squad.at(squady.squad.size() - 1)
-                               .skills.strength;
+                               .attributes.strength;
                     perc = squady.squad.at(squady.squad.size() - 1)
-                               .skills.perception;
+                               .attributes.perception;
                     inte = squady.squad.at(squady.squad.size() - 1)
-                               .skills.intelligence;
+                               .attributes.intelligence;
                     charis = squady.squad.at(squady.squad.size() - 1)
-                                 .skills.charisma;
+                                 .attributes.charisma;
                     endu = squady.squad.at(squady.squad.size() - 1)
-                               .skills.endurance;
+                               .attributes.endurance;
                     dext = squady.squad.at(squady.squad.size() - 1)
-                               .skills.dexterity;
+                               .attributes.dexterity;
                     agil =
-                        squady.squad.at(squady.squad.size() - 1).skills.agility;
+                        squady.squad.at(squady.squad.size() - 1).attributes.agility;
                     int leftOvers = 0;
                     if (stre >= 20)
                         leftOvers += stre - 20;
@@ -4669,7 +4669,7 @@ void handlePhase()
             //Squady.Squad.at(Squady.Aim).
 
             int spacing = 1;
-            //NPC.Skills.
+            //NPC.attributes.
 
             SquareButton var100;
             var100.color = sf::Color::Green;
@@ -4712,7 +4712,7 @@ void handlePhase()
 
             textList.createText(RESOLUTION.x / 2, 80 + (20 * spacing), 11,
                                 sf::Color::White, "Strength: ", "",
-                                squady.squad.at(squady.aim).skills.strength);
+                                squady.squad.at(squady.aim).attributes.strength);
 
             SquareButton var;
             var.color = sf::Color::Red;
@@ -4727,7 +4727,7 @@ void handlePhase()
                 if (squady.makeSquadPoints < 1000)
                 {
                     squady.makeSquadPoints += 1;
-                    squady.squad.at(squady.aim).skills.strength -= 1;
+                    squady.squad.at(squady.aim).attributes.strength -= 1;
                 }
             }
             SquareButton var2;
@@ -4743,13 +4743,13 @@ void handlePhase()
                 if (squady.makeSquadPoints > 0)
                 {
                     squady.makeSquadPoints -= 1;
-                    squady.squad.at(squady.aim).skills.strength += 1;
+                    squady.squad.at(squady.aim).attributes.strength += 1;
                 }
             }
 
             textList.createText(RESOLUTION.x / 2, 80 + (20 * spacing), 11,
                                 sf::Color::White, "Perception: ", "",
-                                squady.squad.at(squady.aim).skills.perception);
+                                squady.squad.at(squady.aim).attributes.perception);
 
             SquareButton var3;
             var3.color = sf::Color::Red;
@@ -4764,7 +4764,7 @@ void handlePhase()
                 if (squady.makeSquadPoints < 1000)
                 {
                     squady.makeSquadPoints += 1;
-                    squady.squad.at(squady.aim).skills.perception -= 1;
+                    squady.squad.at(squady.aim).attributes.perception -= 1;
                 }
             }
             SquareButton var4;
@@ -4780,14 +4780,14 @@ void handlePhase()
                 if (squady.makeSquadPoints > 0)
                 {
                     squady.makeSquadPoints -= 1;
-                    squady.squad.at(squady.aim).skills.perception += 1;
+                    squady.squad.at(squady.aim).attributes.perception += 1;
                 }
             }
 
             textList.createText(
                 RESOLUTION.x / 2, 80 + (20 * spacing), 11, sf::Color::White,
                 "Intelligence: ", "",
-                squady.squad.at(squady.aim).skills.intelligence);
+                squady.squad.at(squady.aim).attributes.intelligence);
 
             SquareButton var5;
             var5.color = sf::Color::Red;
@@ -4802,7 +4802,7 @@ void handlePhase()
                 if (squady.makeSquadPoints < 1000)
                 {
                     squady.makeSquadPoints += 1;
-                    squady.squad.at(squady.aim).skills.intelligence -= 1;
+                    squady.squad.at(squady.aim).attributes.intelligence -= 1;
                 }
             }
             SquareButton var6;
@@ -4818,13 +4818,13 @@ void handlePhase()
                 if (squady.makeSquadPoints > 0)
                 {
                     squady.makeSquadPoints -= 1;
-                    squady.squad.at(squady.aim).skills.intelligence += 1;
+                    squady.squad.at(squady.aim).attributes.intelligence += 1;
                 }
             }
 
             textList.createText(RESOLUTION.x / 2, 80 + (20 * spacing), 11,
                                 sf::Color::White, "Charisma: ", "",
-                                squady.squad.at(squady.aim).skills.charisma);
+                                squady.squad.at(squady.aim).attributes.charisma);
 
             SquareButton var7;
             var7.color = sf::Color::Red;
@@ -4839,7 +4839,7 @@ void handlePhase()
                 if (squady.makeSquadPoints < 1000)
                 {
                     squady.makeSquadPoints += 1;
-                    squady.squad.at(squady.aim).skills.charisma -= 1;
+                    squady.squad.at(squady.aim).attributes.charisma -= 1;
                 }
             }
             SquareButton var8;
@@ -4855,13 +4855,13 @@ void handlePhase()
                 if (squady.makeSquadPoints > 0)
                 {
                     squady.makeSquadPoints -= 1;
-                    squady.squad.at(squady.aim).skills.charisma += 1;
+                    squady.squad.at(squady.aim).attributes.charisma += 1;
                 }
             }
 
             textList.createText(RESOLUTION.x / 2, 80 + (20 * spacing), 11,
                                 sf::Color::White, "Endurance: ", "",
-                                squady.squad.at(squady.aim).skills.endurance);
+                                squady.squad.at(squady.aim).attributes.endurance);
 
             SquareButton var9;
             var9.color = sf::Color::Red;
@@ -4876,7 +4876,7 @@ void handlePhase()
                 if (squady.makeSquadPoints < 1000)
                 {
                     squady.makeSquadPoints += 1;
-                    squady.squad.at(squady.aim).skills.endurance -= 1;
+                    squady.squad.at(squady.aim).attributes.endurance -= 1;
                 }
             }
             SquareButton var10;
@@ -4892,13 +4892,13 @@ void handlePhase()
                 if (squady.makeSquadPoints > 0)
                 {
                     squady.makeSquadPoints -= 1;
-                    squady.squad.at(squady.aim).skills.endurance += 1;
+                    squady.squad.at(squady.aim).attributes.endurance += 1;
                 }
             }
 
             textList.createText(RESOLUTION.x / 2, 80 + (20 * spacing), 11,
                                 sf::Color::White, "Dexterity: ", "",
-                                squady.squad.at(squady.aim).skills.dexterity);
+                                squady.squad.at(squady.aim).attributes.dexterity);
 
             SquareButton var11;
             var11.color = sf::Color::Red;
@@ -4913,7 +4913,7 @@ void handlePhase()
                 if (squady.makeSquadPoints < 1000)
                 {
                     squady.makeSquadPoints += 1;
-                    squady.squad.at(squady.aim).skills.dexterity -= 1;
+                    squady.squad.at(squady.aim).attributes.dexterity -= 1;
                 }
             }
             SquareButton var12;
@@ -4929,13 +4929,13 @@ void handlePhase()
                 if (squady.makeSquadPoints > 0)
                 {
                     squady.makeSquadPoints -= 1;
-                    squady.squad.at(squady.aim).skills.dexterity += 1;
+                    squady.squad.at(squady.aim).attributes.dexterity += 1;
                 }
             }
 
             textList.createText(RESOLUTION.x / 2, 80 + (20 * spacing), 11,
                                 sf::Color::White, "Agility: ", "",
-                                squady.squad.at(squady.aim).skills.agility);
+                                squady.squad.at(squady.aim).attributes.agility);
 
             SquareButton var13;
             var13.color = sf::Color::Red;
@@ -4950,7 +4950,7 @@ void handlePhase()
                 if (squady.makeSquadPoints < 1000)
                 {
                     squady.makeSquadPoints += 1;
-                    squady.squad.at(squady.aim).skills.agility -= 1;
+                    squady.squad.at(squady.aim).attributes.agility -= 1;
                 }
             }
             SquareButton var14;
@@ -4966,7 +4966,7 @@ void handlePhase()
                 if (squady.makeSquadPoints > 0)
                 {
                     squady.makeSquadPoints -= 1;
-                    squady.squad.at(squady.aim).skills.agility += 1;
+                    squady.squad.at(squady.aim).attributes.agility += 1;
                 }
             }
 

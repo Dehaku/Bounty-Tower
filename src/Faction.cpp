@@ -233,11 +233,11 @@ void Npc::PathFinding::myReadPath(int /*pathfinderID*/, int currentX,
 
 void Npc::effectStats()
 {
-    maxhealth = skills.endurance * 0.8;
-    regenrate = skills.endurance / 10;
+    maxhealth = attributes.endurance * 0.8;
+    regenrate = attributes.endurance / 10;
 }
 
-void Npc::Skill::Train(std::string skill, int amount, int skillgain)
+void Npc::Attribute::Train(std::string skill, int amount, int skillgain)
 {
     if (skill == "agility")
     {
@@ -392,25 +392,25 @@ Npc::Npc()
     thirst = 600;
     reach = 10;
 
-    skills.strength = randz(20, 80);
-    skills.perception = randz(20, 80);
-    skills.intelligence = randz(20, 80);
-    skills.charisma = randz(20, 80);
-    skills.endurance = randz(20, 80);
-    skills.dexterity = randz(20, 80);
+    attributes.strength = randz(20, 80);
+    attributes.perception = randz(20, 80);
+    attributes.intelligence = randz(20, 80);
+    attributes.charisma = randz(20, 80);
+    attributes.endurance = randz(20, 80);
+    attributes.dexterity = randz(20, 80);
 
-    skills.wisdom = randz(20, 80);
-    skills.agility = randz(20, 80);
+    attributes.wisdom = randz(20, 80);
+    attributes.agility = randz(20, 80);
 
-    skills.strengthxp = 0;
-    skills.perceptionxp = 0;
-    skills.intelligencexp = 0;
-    skills.charismaxp = 0;
-    skills.endurancexp = 0;
-    skills.dexterityxp = 0;
+    attributes.strengthxp = 0;
+    attributes.perceptionxp = 0;
+    attributes.intelligencexp = 0;
+    attributes.charismaxp = 0;
+    attributes.endurancexp = 0;
+    attributes.dexterityxp = 0;
 
-    skills.wisdomxp = 0;
-    skills.agilityxp = 0;
+    attributes.wisdomxp = 0;
+    attributes.agilityxp = 0;
 
     targetInfo.item = nullptr;
     targetInfo.npc = nullptr;
@@ -422,10 +422,10 @@ Npc::Npc()
 
     zpos = 30*20;
 
-    maxhealth = skills.endurance * 0.8;
+    maxhealth = attributes.endurance * 0.8;
     regentimerint = 100;
     regentimer = regentimerint;
-    regenrate = skills.endurance / 10;
+    regenrate = attributes.endurance / 10;
     health = maxhealth;
     stench = 50;
     race = "Human";
@@ -519,52 +519,52 @@ Npc::Npc()
 void Npc::reCreateSkills()
 {
 
-    skills.endurance = randz(20, 80);
-    skills.strength = randz(20, 80);
-    skills.dexterity = randz(20, 80);
-    skills.intelligence = randz(20, 80);
-    skills.wisdom = randz(20, 80);
-    skills.charisma = randz(20, 80);
-    skills.perception = randz(20, 80);
-    skills.agility = randz(20, 80);
-    skills.endurancexp = 0;
-    skills.strengthxp = 0;
-    skills.dexterityxp = 0;
-    skills.intelligencexp = 0;
-    skills.wisdomxp = 0;
-    skills.charismaxp = 0;
-    skills.perceptionxp = 0;
-    skills.agilityxp = 0;
-    maxhealth = skills.endurance * 0.8;
+    attributes.endurance = randz(20, 80);
+    attributes.strength = randz(20, 80);
+    attributes.dexterity = randz(20, 80);
+    attributes.intelligence = randz(20, 80);
+    attributes.wisdom = randz(20, 80);
+    attributes.charisma = randz(20, 80);
+    attributes.perception = randz(20, 80);
+    attributes.agility = randz(20, 80);
+    attributes.endurancexp = 0;
+    attributes.strengthxp = 0;
+    attributes.dexterityxp = 0;
+    attributes.intelligencexp = 0;
+    attributes.wisdomxp = 0;
+    attributes.charismaxp = 0;
+    attributes.perceptionxp = 0;
+    attributes.agilityxp = 0;
+    maxhealth = attributes.endurance * 0.8;
     regentimerint = 100;
     regentimer = regentimerint;
-    regenrate = skills.endurance / 10;
+    regenrate = attributes.endurance / 10;
     health = maxhealth;
 }
 
 void Npc::blankSkills()
 {
 
-    skills.endurance = 20;
-    skills.strength = 20;
-    skills.dexterity = 20;
-    skills.intelligence = 20;
-    skills.wisdom = 20;
-    skills.charisma = 20;
-    skills.perception = 20;
-    skills.agility = 20;
-    skills.endurancexp = 0;
-    skills.strengthxp = 0;
-    skills.dexterityxp = 0;
-    skills.intelligencexp = 0;
-    skills.wisdomxp = 0;
-    skills.charismaxp = 0;
-    skills.perceptionxp = 0;
-    skills.agilityxp = 0;
-    maxhealth = skills.endurance * 0.8;
+    attributes.endurance = 20;
+    attributes.strength = 20;
+    attributes.dexterity = 20;
+    attributes.intelligence = 20;
+    attributes.wisdom = 20;
+    attributes.charisma = 20;
+    attributes.perception = 20;
+    attributes.agility = 20;
+    attributes.endurancexp = 0;
+    attributes.strengthxp = 0;
+    attributes.dexterityxp = 0;
+    attributes.intelligencexp = 0;
+    attributes.wisdomxp = 0;
+    attributes.charismaxp = 0;
+    attributes.perceptionxp = 0;
+    attributes.agilityxp = 0;
+    maxhealth = attributes.endurance * 0.8;
     regentimerint = 100;
     regentimer = regentimerint;
-    regenrate = skills.endurance / 10;
+    regenrate = attributes.endurance / 10;
     health = maxhealth;
 }
 
@@ -1341,7 +1341,7 @@ std::string Npc::onDeath(Npc *attacker, Item *weapon, float amount, critScore *c
 std::string Npc::takeDamage(Npc *attacker, Item *weapon, float amount, critScore *crit)
 {
 
-    int dodgeChance = (skills.dexterity/2)+(skills.agility/2);
+    int dodgeChance = (attributes.dexterity/2)+(attributes.agility/2);
     int dodgeRoll = random(0,100);
     if(dodgeRoll <= dodgeChance)
     {
@@ -1606,25 +1606,25 @@ void NpcManager::initializeCritters()
             {
                 std::cout << "2 \n";
             }
-            critter.skills.endurance =
+            critter.attributes.endurance =
                 randz(stringFindNumber(line, "[MinEnd:"),
                       stringFindNumber(line, "[MaxEnd:"));
-            critter.skills.strength = randz(stringFindNumber(line, "[MinStr:"),
+            critter.attributes.strength = randz(stringFindNumber(line, "[MinStr:"),
                                             stringFindNumber(line, "[MaxStr:"));
-            critter.skills.dexterity =
+            critter.attributes.dexterity =
                 randz(stringFindNumber(line, "[MinDex:"),
                       stringFindNumber(line, "[MaxDex:"));
-            critter.skills.intelligence =
+            critter.attributes.intelligence =
                 randz(stringFindNumber(line, "[MinInt:"),
                       stringFindNumber(line, "[MaxInt:"));
-            critter.skills.wisdom = randz(stringFindNumber(line, "[MinWis:"),
+            critter.attributes.wisdom = randz(stringFindNumber(line, "[MinWis:"),
                                           stringFindNumber(line, "[MaxWis:"));
-            critter.skills.charisma = randz(stringFindNumber(line, "[MinCha:"),
+            critter.attributes.charisma = randz(stringFindNumber(line, "[MinCha:"),
                                             stringFindNumber(line, "[MaxCha:"));
-            critter.skills.perception =
+            critter.attributes.perception =
                 randz(stringFindNumber(line, "[MinPer:"),
                       stringFindNumber(line, "[MaxPer:"));
-            critter.skills.agility = randz(stringFindNumber(line, "[MinAgi:"),
+            critter.attributes.agility = randz(stringFindNumber(line, "[MinAgi:"),
                                            stringFindNumber(line, "[MaxAgi:"));
             if (gvars::debug)
             {
@@ -1632,7 +1632,7 @@ void NpcManager::initializeCritters()
             }
             if (critter.maxhealth == -1)
             {
-                critter.maxhealth = critter.skills.endurance * 0.8;
+                critter.maxhealth = critter.attributes.endurance * 0.8;
             }
             debug("v-Adding Tags-v");
             debug(stringFindChaos(line, "{Tags:", "}"));
@@ -1677,7 +1677,7 @@ void NpcManager::initializeCritters()
             }
             critter.regentimer = critter.regentimerint;
             critter.regenrate =
-                critter.skills.endurance /
+                critter.attributes.endurance /
                 10; // TODO: Have Skill based values update in the Train() function, So that stuff like Regen doesn't fall behind.
 
             critter.breathtimer = critter.breathtimerint;
@@ -1923,25 +1923,25 @@ void saveNPC(int planet, sf::Vector2i region, Npc &critter)
              << "[race:" << critter.race << "]"
              << "[xpos:" << critter.xpos << "]"
              << "[ypos:" << critter.ypos << "]"
-             << "[strength:" << critter.skills.strength << "]"
-             << "[perception:" << critter.skills.perception << "]"
-             << "[intelligence:" << critter.skills.intelligence << "]"
-             << "[charisma:" << critter.skills.charisma << "]"
-             << "[endurance:" << critter.skills.endurance << "]"
-             << "[dexterity:" << critter.skills.dexterity << "]"
-             << "[agility:" << critter.skills.agility << "]"
+             << "[strength:" << critter.attributes.strength << "]"
+             << "[perception:" << critter.attributes.perception << "]"
+             << "[intelligence:" << critter.attributes.intelligence << "]"
+             << "[charisma:" << critter.attributes.charisma << "]"
+             << "[endurance:" << critter.attributes.endurance << "]"
+             << "[dexterity:" << critter.attributes.dexterity << "]"
+             << "[agility:" << critter.attributes.agility << "]"
              << "[health:" << critter.health << "]"
              << "[action:" << critter.action << "]"
              << "[angle:" << critter.angle << "]"
              << "[thirst:" << critter.thirst << "]"
              << "[hunger:" << critter.hunger << "]"
-             << "[strengthxp:" << critter.skills.strengthxp << "]"
-             << "[perceptionxp:" << critter.skills.perceptionxp << "]"
-             << "[intelligencexp:" << critter.skills.intelligencexp << "]"
-             << "[charismaxp:" << critter.skills.charismaxp << "]"
-             << "[endurancexp:" << critter.skills.endurancexp << "]"
-             << "[dexterityxp:" << critter.skills.dexterityxp << "]"
-             << "[agilityxp:" << critter.skills.agilityxp << "]"
+             << "[strengthxp:" << critter.attributes.strengthxp << "]"
+             << "[perceptionxp:" << critter.attributes.perceptionxp << "]"
+             << "[intelligencexp:" << critter.attributes.intelligencexp << "]"
+             << "[charismaxp:" << critter.attributes.charismaxp << "]"
+             << "[endurancexp:" << critter.attributes.endurancexp << "]"
+             << "[dexterityxp:" << critter.attributes.dexterityxp << "]"
+             << "[agilityxp:" << critter.attributes.agilityxp << "]"
              << "[cbaseid:" << critter.cbaseid << "]"
              << "[maxhealth:" << critter.maxhealth << "]"
              << "{Tags:" << critter.tags << "}"
@@ -1987,25 +1987,25 @@ void saveNPC(int planet, sf::Vector2i region, Npc &critter)
                    << "[race:" << critter.race << "]"
                    << "[xpos:" << critter.xpos << "]"
                    << "[ypos:" << critter.ypos << "]"
-                   << "[strength:" << critter.skills.strength << "]"
-                   << "[perception:" << critter.skills.perception << "]"
-                   << "[intelligence:" << critter.skills.intelligence << "]"
-                   << "[charisma:" << critter.skills.charisma << "]"
-                   << "[endurance:" << critter.skills.endurance << "]"
-                   << "[dexterity:" << critter.skills.dexterity << "]"
-                   << "[agility:" << critter.skills.agility << "]"
+                   << "[strength:" << critter.attributes.strength << "]"
+                   << "[perception:" << critter.attributes.perception << "]"
+                   << "[intelligence:" << critter.attributes.intelligence << "]"
+                   << "[charisma:" << critter.attributes.charisma << "]"
+                   << "[endurance:" << critter.attributes.endurance << "]"
+                   << "[dexterity:" << critter.attributes.dexterity << "]"
+                   << "[agility:" << critter.attributes.agility << "]"
                    << "[health:" << critter.health << "]"
                    << "[action:" << critter.action << "]"
                    << "[angle:" << critter.angle << "]"
                    << "[thirst:" << critter.thirst << "]"
                    << "[hunger:" << critter.hunger << "]"
-                   << "[strengthxp:" << critter.skills.strengthxp << "]"
-                   << "[perceptionxp:" << critter.skills.perceptionxp << "]"
-                   << "[intelligencexp:" << critter.skills.intelligencexp << "]"
-                   << "[charismaxp:" << critter.skills.charismaxp << "]"
-                   << "[endurancexp:" << critter.skills.endurancexp << "]"
-                   << "[dexterityxp:" << critter.skills.dexterityxp << "]"
-                   << "[agilityxp:" << critter.skills.agilityxp << "]"
+                   << "[strengthxp:" << critter.attributes.strengthxp << "]"
+                   << "[perceptionxp:" << critter.attributes.perceptionxp << "]"
+                   << "[intelligencexp:" << critter.attributes.intelligencexp << "]"
+                   << "[charismaxp:" << critter.attributes.charismaxp << "]"
+                   << "[endurancexp:" << critter.attributes.endurancexp << "]"
+                   << "[dexterityxp:" << critter.attributes.dexterityxp << "]"
+                   << "[agilityxp:" << critter.attributes.agilityxp << "]"
                    << "[cbaseid:" << critter.cbaseid << "]"
                    << "[maxhealth:" << critter.maxhealth << "]"
                    << "{Tags:" << critter.tags << "}"
@@ -2397,26 +2397,26 @@ std::string loadCritters(sf::Vector2i worldPos, std::string direction,
             std::cout << "Xpos: " << critter.xpos << "Ypos: " << critter.ypos
                       << std::endl;
 
-            critter.skills.strength = stringFindNumber(line, "[strength:");
-            critter.skills.perception = stringFindNumber(line, "[perception:");
-            critter.skills.intelligence =
+            critter.attributes.strength = stringFindNumber(line, "[strength:");
+            critter.attributes.perception = stringFindNumber(line, "[perception:");
+            critter.attributes.intelligence =
                 stringFindNumber(line, "[intelligence:");
-            critter.skills.charisma = stringFindNumber(line, "[charisma:");
-            critter.skills.endurance = stringFindNumber(line, "[endurance:");
-            critter.skills.dexterity = stringFindNumber(line, "[dexterity:");
-            critter.skills.agility = stringFindNumber(line, "[agility:");
+            critter.attributes.charisma = stringFindNumber(line, "[charisma:");
+            critter.attributes.endurance = stringFindNumber(line, "[endurance:");
+            critter.attributes.dexterity = stringFindNumber(line, "[dexterity:");
+            critter.attributes.agility = stringFindNumber(line, "[agility:");
 
-            critter.skills.strengthxp = stringFindNumber(line, "[strengthxp:");
-            critter.skills.perceptionxp =
+            critter.attributes.strengthxp = stringFindNumber(line, "[strengthxp:");
+            critter.attributes.perceptionxp =
                 stringFindNumber(line, "[perceptionxp:");
-            critter.skills.intelligencexp =
+            critter.attributes.intelligencexp =
                 stringFindNumber(line, "[intelligencexp:");
-            critter.skills.charismaxp = stringFindNumber(line, "[charismaxp:");
-            critter.skills.endurancexp =
+            critter.attributes.charismaxp = stringFindNumber(line, "[charismaxp:");
+            critter.attributes.endurancexp =
                 stringFindNumber(line, "[endurancexp:");
-            critter.skills.dexterityxp =
+            critter.attributes.dexterityxp =
                 stringFindNumber(line, "[dexterityxp:");
-            critter.skills.agilityxp = stringFindNumber(line, "[agilityxp:");
+            critter.attributes.agilityxp = stringFindNumber(line, "[agilityxp:");
 
             /*std::string Imagery = StringFindString(line,"[Image:");
                 std::vector<cImageHolder>::iterator i;
@@ -2871,37 +2871,37 @@ void drawSelectedCritterHUD()
         textList.createText(
                     nxpos + v, nypos + (y++ * 10), 11, sf::Color::White,
                     "Strength:", "",
-                    myTargetPtr->skills.strength, " : ", "",
-                    myTargetPtr->skills.strengthxp);
+                    myTargetPtr->attributes.strength, " : ", "",
+                    myTargetPtr->attributes.strengthxp);
         textList.createText(
                     nxpos + v, nypos + (y++ * 10), 11, sf::Color::White,
                     "Perception:", "",
-                    myTargetPtr->skills.perception, " : ", "",
-                    myTargetPtr->skills.perceptionxp);
+                    myTargetPtr->attributes.perception, " : ", "",
+                    myTargetPtr->attributes.perceptionxp);
         textList.createText(
                     nxpos + v, nypos + (y++ * 10), 11, sf::Color::White,
                     "Intelligence:", "",
-                    myTargetPtr->skills.intelligence, " : ", "",
-                    myTargetPtr->skills.intelligencexp);
+                    myTargetPtr->attributes.intelligence, " : ", "",
+                    myTargetPtr->attributes.intelligencexp);
         textList.createText(
                     nxpos + v, nypos + (y++ * 10), 11, sf::Color::White,
                     "Charisma:", "",
-                    myTargetPtr->skills.charisma, " : ", "",
-                    myTargetPtr->skills.charismaxp);
+                    myTargetPtr->attributes.charisma, " : ", "",
+                    myTargetPtr->attributes.charismaxp);
         textList.createText(
                     nxpos + v, nypos + (y++ * 10), 11, sf::Color::White,
                     "Endurance:", "",
-                    myTargetPtr->skills.endurance, " : ", "",
-                    myTargetPtr->skills.endurancexp);
+                    myTargetPtr->attributes.endurance, " : ", "",
+                    myTargetPtr->attributes.endurancexp);
         textList.createText(
                     nxpos + v, nypos + (y++ * 10), 11, sf::Color::White,
                     "Dexterity:", "",
-                    myTargetPtr->skills.dexterity, " : ", "",
-                    myTargetPtr->skills.dexterityxp);
+                    myTargetPtr->attributes.dexterity, " : ", "",
+                    myTargetPtr->attributes.dexterityxp);
         textList.createText(
                     nxpos + v, nypos + (y++ * 10), 11, sf::Color::White,
-                    "Agility:", "", myTargetPtr->skills.agility,
-                    " : ", "", myTargetPtr->skills.agilityxp);
+                    "Agility:", "", myTargetPtr->attributes.agility,
+                    " : ", "", myTargetPtr->attributes.agilityxp);
         textList.createText(nxpos + v, nypos + (y++ * 10), 11,
                                     sf::Color::White, "Tags:",
                                     myTargetPtr->tags);
