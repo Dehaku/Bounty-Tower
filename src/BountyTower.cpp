@@ -464,8 +464,8 @@ void drawMenus()
             AttributeLine.append("Dexterity: " + std::to_string(npc->attributes.dexterity) + "\n");
             textList.createText(sf::Vector2f(105,150),20,sf::Color::White,AttributeLine,window.getView());
 
+            //Inventory!
             sf::Vector2f invPos(RESOLUTION.x/2,130);
-
             textList.createText(sf::Vector2f(636,102),15,sf::Color::White,"Inventory",window.getView());
             effects.createSquare(invPos.x-40,invPos.y-10,invPos.x+100,invPos.y+(RESOLUTION.y/2)+120,sf::Color::Transparent,2,sf::Color::Black,window.getDefaultView());
 
@@ -486,6 +486,29 @@ void drawMenus()
 
                 toggle(offSet);
             }
+
+            //Skills!
+            sf::Vector2f skillPos(800,105);
+            textList.createText(skillPos,15,sf::Color::White,"Skills",window.getView());
+            y = 0;
+            std::string lastTree = "";
+            for(auto &skill : npc->skills.list)
+            {
+                //std::string outputText = skill.name + "\n" + skill.desc;
+                std::string outPut = "(" + std::to_string(skill.ranks) + "/" + std::to_string(skill.ranksmax) + ")" + skill.name;
+                sf::Vector2f drawPos(skillPos.x,skillPos.y+(y*15)+15);
+                if(skill.tree != lastTree)
+                {
+                    lastTree = skill.tree;
+                    textList.createText(drawPos,20,sf::Color::Red,skill.tree,window.getView());
+                }
+                else
+                    textList.createText(drawPos,20,sf::Color::White,outPut,window.getView());
+
+
+                y++;
+            }
+
         }
     }
     window.setView(gvars::view1);

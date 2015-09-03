@@ -74,7 +74,7 @@ public:
     Vec3f getPos();
     sf::Vector2f getPos2d();
 
-    Skills abilities;
+    Skills skills;
 
     bool attacking;
     bool firstStrike;

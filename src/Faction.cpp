@@ -392,15 +392,15 @@ Npc::Npc()
     thirst = 600;
     reach = 10;
 
-    attributes.strength = randz(20, 80);
-    attributes.perception = randz(20, 80);
-    attributes.intelligence = randz(20, 80);
-    attributes.charisma = randz(20, 80);
-    attributes.endurance = randz(20, 80);
-    attributes.dexterity = randz(20, 80);
+    attributes.strength = randz(5, 10);
+    attributes.perception = randz(5, 10);
+    attributes.intelligence = randz(5, 10);
+    attributes.charisma = randz(5, 10);
+    attributes.endurance = randz(5, 10);
+    attributes.dexterity = randz(5, 10);
 
-    attributes.wisdom = randz(20, 80);
-    attributes.agility = randz(20, 80);
+    attributes.wisdom = randz(5, 10);
+    attributes.agility = randz(5, 10);
 
     attributes.strengthxp = 0;
     attributes.perceptionxp = 0;
@@ -519,14 +519,14 @@ Npc::Npc()
 void Npc::reCreateSkills()
 {
 
-    attributes.endurance = randz(20, 80);
-    attributes.strength = randz(20, 80);
-    attributes.dexterity = randz(20, 80);
-    attributes.intelligence = randz(20, 80);
-    attributes.wisdom = randz(20, 80);
-    attributes.charisma = randz(20, 80);
-    attributes.perception = randz(20, 80);
-    attributes.agility = randz(20, 80);
+    attributes.endurance = randz(5, 10);
+    attributes.strength = randz(5, 10);
+    attributes.dexterity = randz(5, 10);
+    attributes.intelligence = randz(5, 10);
+    attributes.wisdom = randz(5, 10);
+    attributes.charisma = randz(5, 10);
+    attributes.perception = randz(5, 10);
+    attributes.agility = randz(5, 10);
     attributes.endurancexp = 0;
     attributes.strengthxp = 0;
     attributes.dexterityxp = 0;

@@ -3,6 +3,7 @@
 
 #include <string>
 #include <vector>
+#include <list>
 
 class Skill
 {
@@ -22,7 +23,7 @@ public:
 class Skills
 {
 public:
-    std::vector<Skill> list;
+    std::list<Skill> list;
     Skills();
 };
 
