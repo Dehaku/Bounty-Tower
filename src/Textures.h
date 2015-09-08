@@ -1,7 +1,10 @@
 #ifndef __IMAGES_H_INCLUDED__
 #define __IMAGES_H_INCLUDED__
 
+#include <iostream>
+
 #include <SFML/Graphics.hpp>
+#include "AnimatedSprite.hpp"
 
 class TextureHolder
 {
@@ -18,5 +21,23 @@ public:
     void init();
 };
 extern TextureManager texturemanager;
+
+class AnimationHolder
+{
+public:
+    sf::Texture texture;
+    Animation animationImage;
+    AnimatedSprite animation;
+    std::string name;
+};
+
+class AnimationManager
+{
+public:
+    std::vector<AnimationHolder> animations;
+    Animation &getAnimation(std::string input);
+    void init();
+};
+extern AnimationManager animationmanager;
 
 #endif // IMAGES_H_INCLUDED

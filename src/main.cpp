@@ -5837,6 +5837,8 @@ void testAnimation()
         detectLineGrid(mouseGrid.x,mouseGrid.y,centerGrid.x,centerGrid.y);
     }
 
+
+
 }
 
 class fpsTracker
@@ -5889,6 +5891,43 @@ public:
 
 };
 fpsTracker fpsKeeper;
+
+
+void mouseAnim()
+{
+    for(auto &Ani : animationmanager.animations)
+    {
+        if(Ani.name == "BlueGirlLeftWalk" && inputState.key[Key::Left])
+        {
+            Ani.animation.setPosition(gvars::mousePos.x,gvars::mousePos.y);
+            Ani.animation.update(sf::milliseconds(10));
+
+            window.draw(Ani.animation);
+        }
+
+        if(Ani.name == "BlueGirlRightWalk" && inputState.key[Key::Right])
+        {
+            Ani.animation.setPosition(gvars::mousePos.x,gvars::mousePos.y);
+            Ani.animation.update(sf::milliseconds(10));
+
+            window.draw(Ani.animation);
+        }
+        if(Ani.name == "BlueGirlUpWalk" && inputState.key[Key::Up])
+        {
+            Ani.animation.setPosition(gvars::mousePos.x,gvars::mousePos.y);
+            Ani.animation.update(sf::milliseconds(10));
+
+            window.draw(Ani.animation);
+        }
+        if(Ani.name == "BlueGirlDownWalk" && inputState.key[Key::Down])
+        {
+            Ani.animation.setPosition(gvars::mousePos.x,gvars::mousePos.y);
+            Ani.animation.update(sf::milliseconds(10));
+
+            window.draw(Ani.animation);
+        }
+    }
+}
 
 
 int main()
@@ -5972,24 +6011,7 @@ int main()
     animatedSprite.setPosition(sf::Vector2f(20,20));
     animatedSprite.setOrigin(10,10);
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    animationmanager.init();
 
     //while (window.isOpen())
     while (!inputState.key[Key::Escape] && window.isOpen())
@@ -6107,6 +6129,8 @@ int main()
         debug("Pre Draw Stuffs");
         hoverItemIDdisplay();
         drawStuffs();
+
+        mouseAnim();
 
         window.draw(animatedSprite);
 
