@@ -2221,8 +2221,10 @@ void critterBrain(Npc &npc, std::list<Npc> &container)
 
     npc.img.setRotation(npc.angle);
 
-    int critterZ = npc.zpos/20;
-    textList.createText(npc.xpos,npc.ypos,10,sf::Color::White,"ZPos:","",npc.zpos," /","",critterZ);
+    //int critterZ = npc.zpos/20;
+    //textList.createText(npc.xpos,npc.ypos,10,sf::Color::White,"ZPos:","",npc.zpos," /","",critterZ);
+    int critterHealth = npc.health;
+    textList.createText(npc.xpos,npc.ypos-20,10,sf::Color::White,"Health: " + std::to_string(critterHealth));
     runCritterBody(npc);
     debug("Ending Part Loop");
     debug("debug 1", false);
