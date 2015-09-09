@@ -2059,11 +2059,12 @@ void assaultDesire(Npc &npc, std::list<Npc> &container, Npc * closEnmy, bool &ha
 
 void critterVision(Npc &npc, std::list<Npc> &container)
 {
-        const sf::Vector2f npcPos(npc.xpos, npc.ypos);
+    const sf::Vector2f npcPos(npc.xpos, npc.ypos);
 
-        /* Running through the critters pointers to see which one is valid, Then setting it to aim at it. */
-        sf::Vector2f * targetPos = &npc.desiredViewAngle;
-        if (npc.targetInfo.item != nullptr)
+    /* Running through the critters pointers to see which one is valid, Then setting it to aim at it. */
+    sf::Vector2f * targetPos = &npc.desiredViewAngle;
+
+    if (npc.targetInfo.item != nullptr)
         *targetPos = sf::Vector2f(npc.targetInfo.item->xpos,npc.targetInfo.item->ypos);
     else if (npc.targetInfo.npc != nullptr)
         *targetPos = sf::Vector2f(npc.targetInfo.npc->xpos,npc.targetInfo.npc->ypos);
@@ -2072,14 +2073,15 @@ void critterVision(Npc &npc, std::list<Npc> &container)
         Vec3 tilePos(npc.targetInfo.tile->getPos());
         *targetPos = sf::Vector2f(tilePos.x,tilePos.y);
     }
-    else if (randz(1,100) == 100)
-        /* No target? Occasionally choose a nearby direction to look at. */
+    else if (randz(1,100) == 100)/* No target? Occasionally choose a nearby direction to look at. */
         *targetPos = sf::Vector2f(npc.xpos+randz(-15,15),npc.ypos+randz(-15,15));
+
     debug("debug 2", false);
+
     /*  Do the angle math to figure out which direction we need to turn */
     const float npcAngle = math::constrainAngle(npc.angle);
-    const float targetAngle =
-        math::constrainAngle(math::angleBetweenVectors(npcPos, *targetPos) - 90);
+    const float targetAngle = math::constrainAngle(math::angleBetweenVectors(npcPos, *targetPos) - 90);
+
     /*  Turn towards it's target!    */
     if (math::angleDiff(npcAngle, targetAngle) > npc.turnSpeed)
         npc.angle += npc.turnSpeed;
@@ -2091,6 +2093,7 @@ void critterVision(Npc &npc, std::list<Npc> &container)
     const int endAngle = -(npc.angle - (npc.viewangle / 2));
     const int startAngle = -(npc.angle - (-npc.viewangle / 2));
     debug("debug 3", false);
+
     /*Drawing Vision*/
     sf::ConvexShape shape;
     int pointCounter = 1;
@@ -2137,12 +2140,12 @@ void critterVision(Npc &npc, std::list<Npc> &container)
             bool failedAlign = true;
             if (npc.angle == targetAngle)
             {
+                /*
                 if (gridTrace(npcPos, *targetPos))
                 {
-                    /*effects.createLine(npc.xpos, npc.ypos, xPos, yPos, 1,
-                                       sf::Color::Cyan);  */
                     failedAlign = false;
                 }
+                */
             }
           /*  if (failedAlign)
                 effects.createLine(npc.xpos, npc.ypos, xPos, yPos, 1,
@@ -2240,11 +2243,8 @@ void critterBrain(Npc &npc, std::list<Npc> &container)
 
 
     /* *BodyPart Loop* */
-    /* Critter Vision   */
-    critterVision(npc,container);
 
     /* Critter Prioritization */
-
     std::vector<Npc*> enemyPtrs;
     Npc * closEnmy = nullptr;
     if(bountytower::towerlingassault)
@@ -2285,6 +2285,16 @@ void critterBrain(Npc &npc, std::list<Npc> &container)
         }
 
     }
+
+    if(closEnmy != nullptr)
+        npc.desiredViewAngle = closEnmy->getPos2d();
+        //npc.targetInfo.npc = closEnmy;
+
+
+    /* Critter Vision   */
+    critterVision(npc,container);
+
+
 
     critterEquip(npc,container);
 
@@ -2853,6 +2863,7 @@ ReDesire:
     debug("endCritterbrain2");
 
     critterPush(npc, container);
+    //npc.targetInfo.npc = nullptr;
 }
 
 void critterBrain(std::list<Npc> &npcs)
@@ -2973,8 +2984,6 @@ void drawNPCs()
                 if(aniType == Direction)
                 {
                     ani.animation.setPosition(npc.xpos,npc.ypos);
-
-
                     window.draw(ani.animation);
                 }
             }

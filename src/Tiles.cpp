@@ -1747,7 +1747,7 @@ bool gridTrace(sf::Vector2f Ori, sf::Vector2f Tar)
     {
         x += xIncrement;
         y += yIncrement;
-        if (tiles[abs_to_index(x / GRID_SIZE)][abs_to_index(y / GRID_SIZE)][30]
+        if (tiles[abs_to_index(x / GRID_SIZE)][abs_to_index(y / GRID_SIZE)][gvars::currentz]
                 .transparent == false)
         {
 
