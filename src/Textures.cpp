@@ -153,6 +153,7 @@ void AnimationManager::init()
         Ani.animationImage.setSpriteSheet(Ani.texture);
 
         Ani.animation.setAnimation(Ani.animationImage);
+        Ani.animation.setOrigin(16,24);
 
     }
 

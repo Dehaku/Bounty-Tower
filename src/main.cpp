@@ -2893,6 +2893,9 @@ void critterBrain(std::list<Npc> &npcs)
 
 void drawNPCs()
 {
+    for(auto &ani : animationmanager.animations)
+        ani.animation.update(sf::milliseconds(10));
+
     for (auto &npc : npclist)
     {
         if (npc.hasSpawned == true)
@@ -2927,9 +2930,60 @@ void drawNPCs()
 
 
 
-            npc.drawImg();
-            effects.createCircle(npc.xpos, npc.ypos, npc.size,
-                                 sf::Color(50, 50, 50, 50));
+            //npc.drawImg();
+
+            for(auto &ani : animationmanager.animations)
+            {
+
+                std::string aniName = ani.name;
+                if(ani.name.size() <= npc.name.size()) // To avoid going out of bounds with the string functions.
+                    continue;
+
+                aniName.erase(npc.name.size());
+                if(aniName == npc.name)
+                {
+
+                }
+                else
+                    continue;
+
+
+                if(ani.name.size() <= npc.name.size()) // To avoid going out of bounds with the string functions.
+                    continue;
+
+                std::string aniType;
+                aniType.append(ani.name,npc.name.size(),2000);
+
+                int aniAngle = npc.angle;
+                int angMod = 45-90; // To help with the odd directionals.
+                std::string Direction;
+
+                if(inbetween(-1,91,math::constrainAngle(aniAngle+angMod)))
+                    Direction = "LeftWalk";
+
+                if(inbetween(89,181,math::constrainAngle(aniAngle+angMod)))
+                    Direction = "UpWalk";
+
+                if(inbetween(-181,-89,math::constrainAngle(aniAngle+angMod)))
+                    Direction = "RightWalk";
+
+                if(inbetween(-91,1,math::constrainAngle(aniAngle+angMod)))
+                    Direction = "DownWalk";
+
+                if(aniType == Direction)
+                {
+                    ani.animation.setPosition(npc.xpos,npc.ypos);
+
+
+                    window.draw(ani.animation);
+                }
+            }
+
+            sf::Color shadow(50,50,50,50);
+            if(!npc.alive) // To simulate blood.
+                shadow.r = 255;
+
+            effects.createCircle(npc.xpos, npc.ypos, npc.size, shadow);
             }
         }
     }
