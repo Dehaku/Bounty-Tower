@@ -2099,8 +2099,8 @@ void critterVision(Npc &npc, std::list<Npc> &container)
     int pointCounter = 1;
     shape.setPointCount(pointCounter);
     shape.setPoint(0, sf::Vector2f(0, 0));
-
-    for (int rot = startAngle; rot != endAngle; rot++)
+    if(true == false) // TODO: Reenable this once BT is done, It has no purpose in BT, No stealth mechanics.
+        for (int rot = startAngle; rot != endAngle; rot++)
     {
         float xPos = npc.xpos + sinf(rot * PI / 180) * npc.viewrange;
         float yPos = npc.ypos + cosf(rot * PI / 180) * npc.viewrange;
@@ -2121,7 +2121,7 @@ void critterVision(Npc &npc, std::list<Npc> &container)
             effects.createCircle(Pos.x*20,Pos.y*20,5,sf::Color::Black);
         }
 
-
+        /* Placing the points to make the visible vision visibility visible */
         if (rot == startAngle)
         {
             pointCounter++;
@@ -2137,19 +2137,7 @@ void critterVision(Npc &npc, std::list<Npc> &container)
             shape.setPointCount(pointCounter);
             shape.setPoint(pointCounter - 1,
                            sf::Vector2f(xPos - npc.xpos, yPos - npc.ypos));
-            bool failedAlign = true;
-            if (npc.angle == targetAngle)
-            {
-                /*
-                if (gridTrace(npcPos, *targetPos))
-                {
-                    failedAlign = false;
-                }
-                */
-            }
-          /*  if (failedAlign)
-                effects.createLine(npc.xpos, npc.ypos, xPos, yPos, 1,
-                                   sf::Color::Red);  */
+
         }
         if ((rot % 10) == 0 && rot != 0)
         {
