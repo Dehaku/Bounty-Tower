@@ -1749,6 +1749,7 @@ void rightMouseButtonContextMenu()
                     if(lilguy.id == gvars::selected[i])
                     {
                         lilguy.hasPath = true;
+                        lilguy.storedPath.clear();
                         lilguy.endPos = Vec3(gvars::mousePos.x/GRID_SIZE,gvars::mousePos.y/GRID_SIZE,gvars::currentz);
                     }
 

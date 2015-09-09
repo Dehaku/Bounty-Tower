@@ -2171,7 +2171,7 @@ void critterVision(Npc &npc, std::list<Npc> &container)
 
 void critterBrain(Npc &npc, std::list<Npc> &container)
 {
-
+    bool needsNewPath = false;
     //std::cout << "MouseSee: " << canSeeNpc2(gvars::mousePos,npc) << "/ID: " << npc.id << std::endl;
     //detectLine(gvars::mousePos.x,gvars::mousePos.y,npc.xpos,npc.ypos);
 
@@ -2179,6 +2179,11 @@ void critterBrain(Npc &npc, std::list<Npc> &container)
         return;
 
     npc.container = &container;
+
+    int moveSpeed = npc.moverate;
+
+    if(inputState.key[Key::L])
+        npc.moverate = 100;
 
 
 
@@ -2784,7 +2789,9 @@ ReDesire:
     if(math::distance(npc.endPos,startPos) <= npc.size/GRID_SIZE)
         npc.hasPath = false;
 
-    if(npc.hasPath && (gvars::framesPassed % 5) == 0 && npcWalkable)
+    //if(npc.hasPath && (gvars::framesPassed % 60) == 0 && npcWalkable)
+
+    if(npc.hasPath && npc.storedPath.empty() && npcWalkable && needsNewPath == false)
     {
         bool prevWalkable = tiles[npc.endPos.x][npc.endPos.y][npc.endPos.z].walkable;
         tiles[npc.endPos.x][npc.endPos.y][npc.endPos.z].walkable = true;
@@ -2802,9 +2809,20 @@ ReDesire:
 
     if(!npc.storedPath.empty())
     {
+
         if(inputState.key[Key::LAlt])
             drawStoredPath(npc.storedPath);
         Vec3 Pos(npc.storedPath[1]->getPos());
+
+        //For facing stuffs.
+        if(npc.storedPath.size() > 3)
+        {
+            Vec3 viewPos(npc.storedPath[3]->getPos());
+            viewPos.x = viewPos.x*GRID_SIZE;
+            viewPos.y = viewPos.y*GRID_SIZE;
+            npc.desiredViewAngle = sf::Vector2f(viewPos.x,viewPos.y);
+        }
+
 
         double pathTime = (((npc.storedPath.size()*GRID_SIZE)*1.2)/npc.moverate)/30;
 
@@ -2815,6 +2833,8 @@ ReDesire:
         pathy.append(out.str()  );
 
         Vec3 endPathPos(npc.storedPath[npc.storedPath.size()-1]->getPos());
+
+
         textList.createText((endPathPos.x)*GRID_SIZE-GRID_SIZE,(endPathPos.y)*GRID_SIZE-GRID_SIZE,10,sf::Color(255,255,255), pathy );
 
         npc.dirMove(sf::Vector2f(Pos.x*GRID_SIZE+(GRID_SIZE/2),Pos.y*GRID_SIZE+(GRID_SIZE/2)));
@@ -2832,7 +2852,7 @@ ReDesire:
             }
         }
         Vec3 myPos(npc.xpos,npc.ypos,npc.zpos);
-        Vec3 posExtended(Pos.x*GRID_SIZE+(GRID_SIZE/2),Pos.y*GRID_SIZE+(GRID_SIZE/2),Pos.z*GRID_SIZE+(GRID_SIZE/2));
+        Vec3 posExtended(Pos.x*GRID_SIZE+(GRID_SIZE/2),Pos.y*GRID_SIZE+(GRID_SIZE/2),Pos.z*GRID_SIZE);
 
         if(math::distance(myPos,posExtended) <= npc.moverate)
             npc.storedPath.erase(npc.storedPath.begin() );
@@ -2852,6 +2872,7 @@ ReDesire:
 
     critterPush(npc, container);
     //npc.targetInfo.npc = nullptr;
+    npc.moverate = moveSpeed;
 }
 
 void critterBrain(std::list<Npc> &npcs)
