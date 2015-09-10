@@ -492,7 +492,19 @@ void renderSquaddieMenu(baseMenu &menu)
             textList.createText(drawPos,20,sf::Color::Red,skill.tree,window.getView());
         }
         else
+        {
             textList.createText(drawPos,20,sf::Color::White,outPut,window.getView());
+            sf::Vector2f buttonPos(drawPos.x-40,drawPos.y+10);
+            int decreaseSkillButton = createImageButton(buttonPos,texturemanager.getTexture("ArrowButton.png"),"",-90,window.getDefaultView());
+            buttonPos.x += 20;
+            int increaseSkillButton = createImageButton(buttonPos,texturemanager.getTexture("ArrowButton.png"),"",90,window.getDefaultView());
+
+            if(imageButtonClicked(decreaseSkillButton) && skill.ranks > 0)
+                skill.ranks--;
+            if(imageButtonClicked(increaseSkillButton) && skill.ranks < skill.ranksmax)
+                skill.ranks++;
+        }
+
 
 
         y++;
