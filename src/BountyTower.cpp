@@ -494,16 +494,29 @@ void renderSquaddieMenu(baseMenu &menu)
         {
             lastTree = skill.tree;
             textList.createText(drawPos,20,sf::Color::Red,skill.tree,window.getView());
+            y++;
         }
-        else
+        drawPos = sf::Vector2f(skillPos.x,skillPos.y+(y*15)+15);
+        //else
         {
-            textList.createText(drawPos,20,sf::Color::White,outPut,window.getView());
+            //textList.createText(drawPos,20,sf::Color::White,outPut,window.getView());
             sf::Vector2f buttonPos(drawPos.x-40,drawPos.y+10);
 
 
-            int decreaseSkillButton = createImageButton(buttonPos,texturemanager.getTexture("ArrowButton.png"),"",-90,window.getDefaultView());
+            int decreaseSkillButton = createImageButton(buttonPos,texturemanager.getTexture("ArrowButton.png"),"",-90,window.getView());
             buttonPos.x += 20;
-            int increaseSkillButton = createImageButton(buttonPos,texturemanager.getTexture("ArrowButton.png"),"",90,window.getDefaultView());
+            int increaseSkillButton = createImageButton(buttonPos,texturemanager.getTexture("ArrowButton.png"),"",90,window.getView());
+
+            if(imageButtonHovered(increaseSkillButton) || imageButtonHovered(decreaseSkillButton))
+            {
+                textList.createText(drawPos,20,sf::Color::Cyan,outPut,window.getView());
+                sf::Vector2f textPos(drawPos);
+                textPos.y -= 10;
+                textPos.x -= 100;
+                textList.createText(textPos,20,sf::Color::Cyan,skill.desc,window.getView());
+            }
+            else
+                textList.createText(drawPos,20,sf::Color::White,outPut,window.getView());
 
             if(imageButtonClicked(decreaseSkillButton) && skill.ranks > 0)
             {
