@@ -2758,8 +2758,8 @@ ReDesire:
     if (inComplete)
         goto ReDesire;
 
-
-    textList.createText(npc.xpos - 30, npc.ypos - 15, 10, sf::Color::Red,
+    if(inputState.key[Key::LAlt])
+        textList.createText(npc.xpos - 30, npc.ypos - 15, 10, sf::Color::Red,
                         (*highestDesire).type, ":", (*highestDesire).potency);
 
 

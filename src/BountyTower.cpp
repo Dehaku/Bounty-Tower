@@ -488,7 +488,6 @@ void renderSquaddieMenu(baseMenu &menu)
     std::string lastTree = "";
     for(auto &skill : npc->skills.list)
     {
-        //std::string outputText = skill.name + "\n" + skill.desc;
         std::string outPut = "(" + std::to_string(skill.ranks) + "/" + std::to_string(skill.ranksmax) + ")" + skill.name;
         sf::Vector2f drawPos(skillPos.x,skillPos.y+(y*15)+15);
         if(skill.tree != lastTree)

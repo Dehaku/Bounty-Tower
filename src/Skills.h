@@ -11,6 +11,8 @@ public:
     std::string name;
     std::string tree;
     std::string desc;
+    bool autouse;
+    bool active;
     int level;
     int duration;
     int cooldownint;
