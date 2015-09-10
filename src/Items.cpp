@@ -939,7 +939,18 @@ std::string Item::activate(Vec3f vPos) // Returns a string declaring the problem
         boolet.speed = 30;
         boolet.lifetime = 600;
         bullets.push_back(boolet);
-        itemptr->amount--;
+
+        int miscountRoll = randz(0,100);
+        if(miscountRoll < user->skills.getRanks("Miscounted Shot")*5)
+        {
+            std::cout << "Miscounted shot! " << miscountRoll << " vs " << user->skills.getRanks("Miscounted Shot")*5 << std::endl;
+            std::cout << "This critter possesses " << user->skills.getRanks("Miscounted Shot") << " ranks in miscounted Shot \n";
+        }
+        else
+            itemptr->amount--;
+
+
+
         //std::cout << itemptr->name << "'s amount: " << itemptr->amount << ", toDelete: " << itemptr->toDelete << std::endl;
         if(itemptr->amount <= 0)
             itemptr->toDelete = true;

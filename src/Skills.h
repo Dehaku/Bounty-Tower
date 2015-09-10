@@ -26,6 +26,7 @@ class Skills
 {
 public:
     std::list<Skill> list;
+    int getRanks(std::string skillName);
     Skills();
 };
 

@@ -1,5 +1,7 @@
 #include "Skills.h"
 
+
+
 Skills::Skills()
 {
     Skill skill;
@@ -204,4 +206,14 @@ Skills::Skills()
 
 
 
+}
+
+int Skills::getRanks(std::string skillName)
+{
+    for(auto &skill : list)
+    {
+        if(skill.name == skillName)
+            return skill.ranks;
+    }
+    return 0;
 }
