@@ -432,6 +432,74 @@ void squaddieMenu(Npc &npc)
     menus.push_back(sMenu);
 }
 
+void renderSquaddieMenu(baseMenu &menu)
+{
+    effects.createSquare(100,100,RESOLUTION.x-100,RESOLUTION.y-100,sf::Color(sf::Color(150,150,0)),5,sf::Color::White,window.getDefaultView());
+    //Close Button
+    int exitButt = createImageButton(sf::Vector2f(RESOLUTION.x-100,100),texturemanager.getTexture("ExitButton.png"),"",0,window.getDefaultView());
+    if(imageButtonClicked(exitButt))
+        menu.toDelete = true;
+
+    Npc *npc = menu.npc;
+    textList.createText(sf::Vector2f(105,100),20,sf::Color(100,100,100),"Name: " + npc->name,window.getView());
+    //Attributes! SPICED
+    std::string AttributeLine;
+    AttributeLine.append("S.P.I.C.E.D. \n");
+    AttributeLine.append("Strength: " + std::to_string(npc->attributes.strength) + "\n");
+    AttributeLine.append("Perception: " + std::to_string(npc->attributes.perception) + "\n");
+    AttributeLine.append("Intelligence: " + std::to_string(npc->attributes.intelligence) + "\n");
+    AttributeLine.append("Charisma: " + std::to_string(npc->attributes.charisma) + "\n");
+    AttributeLine.append("Endurance: " + std::to_string(npc->attributes.endurance) + "\n");
+    AttributeLine.append("Dexterity: " + std::to_string(npc->attributes.dexterity) + "\n");
+    textList.createText(sf::Vector2f(105,150),20,sf::Color::White,AttributeLine,window.getView());
+
+    //Inventory!
+    sf::Vector2f invPos(RESOLUTION.x/2,130);
+    textList.createText(sf::Vector2f(636,102),15,sf::Color::White,"Inventory",window.getView());
+    effects.createSquare(invPos.x-40,invPos.y-10,invPos.x+100,invPos.y+(RESOLUTION.y/2)+120,sf::Color::Transparent,2,sf::Color::Black,window.getDefaultView());
+
+    int x = 0, y = 0;
+    bool offSet = false;
+    for(auto &item : npc->inventory)
+    {
+        sf::Vector2f drawPos(invPos.x,invPos.y+(60*y)+30);
+        if(offSet)
+            drawPos.x += 62;
+        effects.createSquare(drawPos.x-30,drawPos.y-30,drawPos.x+30,drawPos.y+30,sf::Color::Black,2,sf::Color::White,window.getDefaultView());
+        createImageButton(drawPos,*item.img.getTexture(),"",0,window.getDefaultView());
+        if(offSet)
+        {
+            drawPos.x -= 62;
+            y++;
+        }
+
+        toggle(offSet);
+    }
+
+    //Skills!
+    sf::Vector2f skillPos(800,105);
+    textList.createText(skillPos,15,sf::Color::White,"Skills",window.getView());
+    y = 0;
+    std::string lastTree = "";
+    for(auto &skill : npc->skills.list)
+    {
+        //std::string outputText = skill.name + "\n" + skill.desc;
+        std::string outPut = "(" + std::to_string(skill.ranks) + "/" + std::to_string(skill.ranksmax) + ")" + skill.name;
+        sf::Vector2f drawPos(skillPos.x,skillPos.y+(y*15)+15);
+        if(skill.tree != lastTree)
+        {
+            lastTree = skill.tree;
+            textList.createText(drawPos,20,sf::Color::Red,skill.tree,window.getView());
+        }
+        else
+            textList.createText(drawPos,20,sf::Color::White,outPut,window.getView());
+
+
+        y++;
+    }
+
+}
+
 void drawMenus()
 {
     int xOffset = gvars::mousePos.x - gvars::topLeft.x;
@@ -442,73 +510,10 @@ void drawMenus()
 
     for(auto &menu : menus)
     {
-        effects.createSquare(100,100,RESOLUTION.x-100,RESOLUTION.y-100,sf::Color(sf::Color(150,150,0)),5,sf::Color::White,window.getDefaultView());
+
         if(menu.name == "Squaddie Menu")
         {
-            //Close Button
-            int exitButt = createImageButton(sf::Vector2f(RESOLUTION.x-100,100),texturemanager.getTexture("ExitButton.png"),"",0,window.getDefaultView());
-            if(imageButtonClicked(exitButt))
-                menu.toDelete = true;
-
-
-            Npc *npc = menu.npc;
-            textList.createText(sf::Vector2f(105,100),20,sf::Color(100,100,100),"Name: " + npc->name,window.getView());
-            //Attributes! SPICED
-            std::string AttributeLine;
-            AttributeLine.append("S.P.I.C.E.D. \n");
-            AttributeLine.append("Strength: " + std::to_string(npc->attributes.strength) + "\n");
-            AttributeLine.append("Perception: " + std::to_string(npc->attributes.perception) + "\n");
-            AttributeLine.append("Intelligence: " + std::to_string(npc->attributes.intelligence) + "\n");
-            AttributeLine.append("Charisma: " + std::to_string(npc->attributes.charisma) + "\n");
-            AttributeLine.append("Endurance: " + std::to_string(npc->attributes.endurance) + "\n");
-            AttributeLine.append("Dexterity: " + std::to_string(npc->attributes.dexterity) + "\n");
-            textList.createText(sf::Vector2f(105,150),20,sf::Color::White,AttributeLine,window.getView());
-
-            //Inventory!
-            sf::Vector2f invPos(RESOLUTION.x/2,130);
-            textList.createText(sf::Vector2f(636,102),15,sf::Color::White,"Inventory",window.getView());
-            effects.createSquare(invPos.x-40,invPos.y-10,invPos.x+100,invPos.y+(RESOLUTION.y/2)+120,sf::Color::Transparent,2,sf::Color::Black,window.getDefaultView());
-
-            int x = 0, y = 0;
-            bool offSet = false;
-            for(auto &item : npc->inventory)
-            {
-                sf::Vector2f drawPos(invPos.x,invPos.y+(60*y)+30);
-                if(offSet)
-                    drawPos.x += 62;
-                effects.createSquare(drawPos.x-30,drawPos.y-30,drawPos.x+30,drawPos.y+30,sf::Color::Black,2,sf::Color::White,window.getDefaultView());
-                createImageButton(drawPos,*item.img.getTexture(),"",0,window.getDefaultView());
-                if(offSet)
-                {
-                    drawPos.x -= 62;
-                    y++;
-                }
-
-                toggle(offSet);
-            }
-
-            //Skills!
-            sf::Vector2f skillPos(800,105);
-            textList.createText(skillPos,15,sf::Color::White,"Skills",window.getView());
-            y = 0;
-            std::string lastTree = "";
-            for(auto &skill : npc->skills.list)
-            {
-                //std::string outputText = skill.name + "\n" + skill.desc;
-                std::string outPut = "(" + std::to_string(skill.ranks) + "/" + std::to_string(skill.ranksmax) + ")" + skill.name;
-                sf::Vector2f drawPos(skillPos.x,skillPos.y+(y*15)+15);
-                if(skill.tree != lastTree)
-                {
-                    lastTree = skill.tree;
-                    textList.createText(drawPos,20,sf::Color::Red,skill.tree,window.getView());
-                }
-                else
-                    textList.createText(drawPos,20,sf::Color::White,outPut,window.getView());
-
-
-                y++;
-            }
-
+            renderSquaddieMenu(menu);
         }
     }
     window.setView(gvars::view1);
