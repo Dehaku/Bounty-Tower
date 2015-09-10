@@ -669,6 +669,8 @@ void bountyTowerLoop()
                 stairs.push_back(&tiles[x][y][gvars::currentz]);
         }
         debug("Placin Towerlings");
+
+        //I'm still not sure why I nabbed all stairs, then did another for loop just for them... but I kinda like it.
         for(auto &stair : stairs)
         {
             Npc member;

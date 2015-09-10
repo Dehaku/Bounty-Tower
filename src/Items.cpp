@@ -783,7 +783,7 @@ itemPtrVector makeItems(std::list<Item> &items, int maxamount)
         Item item;
         int globalItem = randz(0,itemmanager.globalItems.size()-1);
         item = itemmanager.globalItems[globalItem];
-        item.maxdam = randz(3,9);
+        //item.maxdam = randz(3,9);
         item.id = gvars::globalid++;
         items.push_back(item);
         IPV.ptrs.push_back(&items.back());
