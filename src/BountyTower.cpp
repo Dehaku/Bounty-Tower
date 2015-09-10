@@ -631,6 +631,7 @@ void bountyTowerLoop()
     if( (gvars::framesPassed % 5) == 0 && !bountytower::elevatoravailable)
     { // Here we scan the floor for all switches that are set to Off, If even a single one is off, then the elevator is not functional.
         bool floorComplete = true;
+        bool switchesExist = false;
         for(int x = 0; x != GRIDS; x++)
             for(int y = 0; y != GRIDS; y++)
         {
@@ -638,9 +639,11 @@ void bountyTowerLoop()
             {
                 floorComplete = false;
             }
+            if(tiles[x][y][gvars::currentz].id == 3500)
+                switchesExist = true;
         }
 
-        if(floorComplete)
+        if(floorComplete && switchesExist)
         {
             bountytower::elevatoravailable = true;
 
