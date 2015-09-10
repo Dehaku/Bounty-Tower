@@ -11,7 +11,7 @@ void hitTarget(Bullet &bullet)
                 if(i->id == t->id)
                     alreadyHit = true;
 
-            if(dist <= i->size && !alreadyHit)
+            if(dist <= i->size && !alreadyHit && i->alive)
             {
 
                 //i->modhealth(-50);

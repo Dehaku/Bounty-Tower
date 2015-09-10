@@ -936,7 +936,7 @@ std::string Item::activate(Vec3f vPos) // Returns a string declaring the problem
         //boolet.velocity = velo;
 
         //boolet.speed = math::closeish(muzzlePos.x,muzzlePos.y,vPos.x,vPos.y) / 10;
-        boolet.speed = 60;
+        boolet.speed = 30;
         boolet.lifetime = 600;
         bullets.push_back(boolet);
         itemptr->amount--;
