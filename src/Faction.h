@@ -54,6 +54,10 @@ public:
     std::list<Item> inventory;
     std::list<Item> equipped;
 
+    int level;
+    int xp;
+    int skillpoints;
+
     Npc * graspNpcLeft;
     Npc * graspNpcRight;
     Item * graspItemLeft;

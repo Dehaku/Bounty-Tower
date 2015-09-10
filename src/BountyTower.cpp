@@ -478,7 +478,12 @@ void renderSquaddieMenu(baseMenu &menu)
 
     //Skills!
     sf::Vector2f skillPos(800,105);
-    textList.createText(skillPos,15,sf::Color::White,"Skills",window.getView());
+
+    if(npc->skillpoints > 0)
+        textList.createText(skillPos,15,sf::Color::White,"Skills   SP Remaining: " + std::to_string(npc->skillpoints),window.getView());
+    else
+        textList.createText(skillPos,15,sf::Color::White,"Skills",window.getView());
+
     y = 0;
     std::string lastTree = "";
     for(auto &skill : npc->skills.list)
@@ -495,14 +500,24 @@ void renderSquaddieMenu(baseMenu &menu)
         {
             textList.createText(drawPos,20,sf::Color::White,outPut,window.getView());
             sf::Vector2f buttonPos(drawPos.x-40,drawPos.y+10);
+
+
             int decreaseSkillButton = createImageButton(buttonPos,texturemanager.getTexture("ArrowButton.png"),"",-90,window.getDefaultView());
             buttonPos.x += 20;
             int increaseSkillButton = createImageButton(buttonPos,texturemanager.getTexture("ArrowButton.png"),"",90,window.getDefaultView());
 
             if(imageButtonClicked(decreaseSkillButton) && skill.ranks > 0)
+            {
                 skill.ranks--;
-            if(imageButtonClicked(increaseSkillButton) && skill.ranks < skill.ranksmax)
+                npc->skillpoints++;
+            }
+
+            if(imageButtonClicked(increaseSkillButton) && skill.ranks < skill.ranksmax && npc->skillpoints > 0)
+            {
                 skill.ranks++;
+                npc->skillpoints--;
+            }
+
         }
 
 

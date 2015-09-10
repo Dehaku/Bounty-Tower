@@ -342,6 +342,10 @@ Npc::Npc()
 
     factionPtr = nullptr;
 
+    level = 0;
+    xp = 0;
+    skillpoints = 5;
+
     graspItemLeft = nullptr;
     graspItemRight = nullptr;
     graspNpcLeft = nullptr;
