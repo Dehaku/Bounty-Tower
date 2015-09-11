@@ -615,6 +615,7 @@ void ItemManager::initializeItems()
             item.massPlastic = stringFindNumber(line, "[MassPlastic:");
             item.massVeggy = stringFindNumber(line, "[MassVeggy:");
             item.massWater = stringFindNumber(line, "[MassWater:");
+            item.maxclip = stringFindNumber(line, "[MaxClip:");
 
             item.size = 0;
             item.size = stringFindNumber(line, "[Size:");
@@ -922,6 +923,38 @@ std::string Item::activate(Vec3f vPos) // Returns a string declaring the problem
         boolet.pos = muzzlePos;
         boolet.positions.push_back(boolet.pos);
         boolet.angle = math::angleBetweenVectors(muzzlePosV2f,vPosV2f);
+        boolet.damage = random(10,50);
+        int bulletDamage = boolet.damage;
+
+        if(user->skills.getRanks("Bronze Bullet") > 0 && itemptr->amount == maxclip)
+        { // Bronze Bullet
+            std::cout << "Bronzing Bullet: " << boolet.damage;
+            int bronzemultiplier = user->skills.getRanks("Bronze Bullet")*10;
+            boolet.damage += bulletDamage*(bronzemultiplier*0.01);
+            std::cout << " to " << boolet.damage << std::endl;
+        }
+
+        int halfclip = maxclip/2;
+        if(user->skills.getRanks("Silver Bullet") > 0 && itemptr->amount == halfclip)
+        { // Silver Bullet
+            std::cout << "Silvering Bullet: " << boolet.damage;
+            int silvermultiplier = user->skills.getRanks("Silver Bullet")*20;
+            boolet.damage += bulletDamage*(silvermultiplier*0.01);
+            std::cout << " to " << boolet.damage << std::endl;
+        }
+
+        if(user->skills.getRanks("Gold Bullet") > 0 && itemptr->amount == 1)
+        {// Gold Bullet
+            std::cout << "Golding Bullet: " << boolet.damage;
+            int goldmultiplier = user->skills.getRanks("Gold Bullet")*30;
+            boolet.damage += bulletDamage*(goldmultiplier*0.01);
+            std::cout << " to " << boolet.damage << std::endl;
+        }
+
+
+
+        //boolet.damage += user->skills.getRanks("Miscounted Shot")
+        //10%/20%/30% copper/silver/gold, first/middle/last
 
 
         boolet.targets = user->getEnemies();

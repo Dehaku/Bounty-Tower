@@ -18,6 +18,7 @@ public:
     int penetration;
     int health;
     int maxrichochet;
+    float damage;
     bool toDelete;
     bool showPrediction;
     bool showPath;

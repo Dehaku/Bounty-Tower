@@ -64,7 +64,7 @@ Skills::Skills()
     skill.active = false;
     list.push_back(skill);
 
-    skill.name = "Copper Bullet";
+    skill.name = "Bronze Bullet";
     skill.desc = "Passive - The first bullet in a magazine deals 10% extra base damage per rank, stacks with other 'Bullet' skills if the position aligns.";
     skill.active = false;
     list.push_back(skill);

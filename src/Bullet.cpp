@@ -16,7 +16,7 @@ void hitTarget(Bullet &bullet)
 
                 //i->modhealth(-50);
                 Item item;
-                std::string atkStatus = bullet.owner->dealDamage(i,nullptr,random(10,50));
+                std::string atkStatus = bullet.owner->dealDamage(i,nullptr,bullet.damage);
                 //WorkHere
                 if(atkStatus == "Hit")
                     bullet.toDelete = true;
@@ -222,6 +222,7 @@ Bullet::Bullet()
     penetration = 10;
     health = 5;
     maxrichochet = 3;
+    damage = 0;
     toDelete = false;
     showPrediction = false;
     showPath = false;
