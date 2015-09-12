@@ -18,6 +18,7 @@ Skills::Skills()
 
     skill.tree = "Melee";
 
+    /*
     skill.name = "Sunder";
     skill.desc = "Passive - 20% chance per rank to destroy an opponents held weapon, Max ranks causes the item to simply be dropped on the floor.";
     skill.active = false;
@@ -50,10 +51,12 @@ Skills::Skills()
     // Dev Note: Use a momentum movement for simplicity, prevent damage on the charger using the Charge skill state.
     list.push_back(skill);
     skill.duration = 0;
+    */
 
 
     skill.tree = "Ranger";
 
+    /*
     skill.name = "Ricochet";
     skill.desc = "Passive - 20% additional chance per rank for projectiles to ricochet off of hard surfaces, Overflow spills into penetration value.";
     skill.active = false;
@@ -63,6 +66,12 @@ Skills::Skills()
     skill.desc = "Passive - Each rank of this skill increases the penetration value of a projectile by 20%";
     skill.active = false;
     list.push_back(skill);
+
+    skill.name = "Lead Bullet";
+    skill.desc = "Passive - Each bullet has a 20% chance per rank to poison an enemy for 5% of it's max health per second for ten seconds.";
+    skill.active = false;
+    list.push_back(skill);
+    */
 
     skill.name = "Bronze Bullet";
     skill.desc = "Passive - The first bullet in a magazine deals 10% extra base damage per rank, stacks with other 'Bullet' skills if the position aligns.";
@@ -79,16 +88,12 @@ Skills::Skills()
     skill.active = false;
     list.push_back(skill);
 
-    skill.name = "Lead Bullet";
-    skill.desc = "Passive - Each bullet has a 20% chance per rank to poison an enemy for 5% of it's max health per second for ten seconds.";
-    skill.active = false;
-    list.push_back(skill);
-
     skill.name = "Miscounted Shot";
     skill.desc = "Passive - Each bullet has a 5% chance per rank to not consume any ammo.";
     skill.active = false;
     list.push_back(skill);
 
+    /*
     skill.name = "Snipe Shot";
     skill.desc = "Active - Fires a single bullet with 50% additional Range and Damage per rank, When aiming, displays a line of travel, including richochet potential and penetration.";
     skill.active = true;
@@ -105,10 +110,12 @@ Skills::Skills()
     skill.active = true;
     list.push_back(skill);
     skill.duration = 0;
+    */
 
 
     skill.tree = "Magic";
 
+    /*
     skill.name = "Mana Regen";
     skill.desc = "Passive - Gain an additional 20% mana regeneration for your devices per rank.";
     skill.active = false;
@@ -128,10 +135,12 @@ Skills::Skills()
     skill.desc = "Passive - Gain a 5% chance for magical projectiles/attacks to charm minions per rank.";
     skill.active = false;
     list.push_back(skill);
+    */
 
 
     skill.tree = "Engineer";
 
+    /*
     skill.name = "Turret Construction";
     skill.desc = "Active - Allows construction of up to total ranks of turrets.";
     skill.active = true;
@@ -175,10 +184,12 @@ Skills::Skills()
     skill.desc = "Active - Causes constructions to go into overdrive mode, dealing double damage for one second per rank.";
     skill.active = true;
     list.push_back(skill);
+    */
 
 
     skill.tree = "Monster";
 
+    /*
     skill.name = "Feral Weaponry";
     skill.desc = "Active - Causes creature to go berzerk, striking rapidly with claws, fangs, tail, dealing damage based on rank.";
     skill.active = true;
@@ -188,11 +199,13 @@ Skills::Skills()
     skill.desc = "Passive - Creature gains 10% Damage Resistence per Rank";
     skill.active = false;
     list.push_back(skill);
+    */
 
 
     skill.tree = "Paragon";
     skill.ranksmax = 99999;
 
+    /*
     skill.name = "Perfect Health";
     skill.desc = "Passive - Gain 10% base health per rank.";
     skill.active = false;
@@ -202,7 +215,7 @@ Skills::Skills()
     skill.desc = "Active - Fires a beam that cannot be dodged, dealing (All Attribute) Damage per Rank";
     skill.active = true;
     list.push_back(skill);
-
+    */
 
 
 
