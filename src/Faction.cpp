@@ -1345,12 +1345,21 @@ std::string Npc::onDeath(Npc *attacker, Item *weapon, float amount, critScore *c
 std::string Npc::takeDamage(Npc *attacker, Item *weapon, float amount, critScore *crit)
 {
 
-    int dodgeChance = (attributes.dexterity/2)+(attributes.agility/2);
+    int dodgeChance = (attributes.dexterity);
     int dodgeRoll = random(0,100);
     if(dodgeRoll <= dodgeChance)
     {
         std::cout << name << " dodged " << attacker->name << "'s attack! (" << dodgeRoll << "/" << dodgeChance << ")" << std::endl;
         return "Dodged";
+    }
+
+    if(skills.getRanks("Feral Body") > 0)
+    {
+        std::cout << "Amount: " << amount;
+        int reduction = amount*(skills.getRanks("Feral Body")*0.1);
+        amount = amount-reduction;
+        std::cout << ", reduction: " << reduction << ", amount: " << amount << std::endl;
+
     }
 
     if(modhealth(-amount) == false) // modhealth returns false on death.

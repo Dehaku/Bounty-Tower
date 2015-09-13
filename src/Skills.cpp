@@ -194,12 +194,12 @@ Skills::Skills()
     skill.desc = "Active - Causes creature to go berzerk, striking rapidly with claws, fangs, tail, dealing damage based on rank.";
     skill.active = true;
     list.push_back(skill);
-
+    */
     skill.name = "Feral Body";
     skill.desc = "Passive - Creature gains 10% Damage Resistence per Rank";
     skill.active = false;
     list.push_back(skill);
-    */
+
 
 
     skill.tree = "Paragon";
