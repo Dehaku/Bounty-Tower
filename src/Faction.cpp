@@ -1355,11 +1355,20 @@ std::string Npc::takeDamage(Npc *attacker, Item *weapon, float amount, critScore
 
     if(skills.getRanks("Feral Body") > 0)
     {
-        std::cout << "Amount: " << amount;
+        //std::cout << "Amount: " << amount;
         int reduction = amount*(skills.getRanks("Feral Body")*0.1);
         amount = amount-reduction;
-        std::cout << ", reduction: " << reduction << ", amount: " << amount << std::endl;
+        //std::cout << ", reduction: " << reduction << ", amount: " << amount << std::endl;
 
+    }
+
+    if(attacker->skills.getRanks("Knockback") > 0)
+    {
+        int ranks = attacker->skills.getRanks("Knockback");
+        sf::Vector2f AtkerPos = attacker->getPos2d();
+        sf::Vector2f VictPos = getPos2d();
+        float attackAngle = math::angleBetweenVectors(AtkerPos,VictPos);
+        sf::Vector2f finalPos = math::angleCalc(VictPos,attackAngle,amount*ranks);
     }
 
     if(modhealth(-amount) == false) // modhealth returns false on death.

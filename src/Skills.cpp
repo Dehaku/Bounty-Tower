@@ -18,6 +18,11 @@ Skills::Skills()
 
     skill.tree = "Melee";
 
+    skill.name = "Knockback";
+    skill.desc = "Passive - 5% of damage is applied as force, per rank";
+    skill.active = false;
+    list.push_back(skill);
+
     /*
     skill.name = "Sunder";
     skill.desc = "Passive - 20% chance per rank to destroy an opponents held weapon, Max ranks causes the item to simply be dropped on the floor.";
@@ -135,6 +140,13 @@ Skills::Skills()
     skill.desc = "Passive - Gain a 5% chance for magical projectiles/attacks to charm minions per rank.";
     skill.active = false;
     list.push_back(skill);
+
+    skill.name = "Elemental Atunement";
+    skill.desc = "Passive - Gain 5% elemental resistence and chance against their status effects.";
+    skill.active = false;
+    list.push_back(skill);
+
+
     */
 
 
@@ -194,6 +206,13 @@ Skills::Skills()
     skill.desc = "Active - Causes creature to go berzerk, striking rapidly with claws, fangs, tail, dealing damage based on rank.";
     skill.active = true;
     list.push_back(skill);
+
+    skill.name = "Feral Regeneration";
+    skill.desc = "Passive - Creature gains 1% (total health per rank) health regeneration.";
+    // Certain creatures will start with this at max ranks, like trolls.
+    skill.active = false;
+    list.push_back(skill);
+
     */
     skill.name = "Feral Body";
     skill.desc = "Passive - Creature gains 10% Damage Resistence per Rank";
