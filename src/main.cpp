@@ -1867,7 +1867,7 @@ void critterPush(Npc &npc, std::list<Npc> &container)
         int dist = math::distance(npc.getPos(),critters.getPos());
         if(dist <= npc.size)
         {
-            critters.momentum += sf::Vector2f( -(npc.getPos().x-critters.getPos().x), -(npc.getPos().y-critters.getPos().y) );
+            critters.momentum += sf::Vector2f( -(  (npc.getPos().x-critters.getPos().x)*0.25  ), -(  (npc.getPos().y-critters.getPos().y)*0.25  ) );
         }
     }
 }
@@ -2225,7 +2225,7 @@ void critterBrain(Npc &npc, std::list<Npc> &container)
     //textList.createText(npc.xpos,npc.ypos,10,sf::Color::White,"ZPos:","",npc.zpos," /","",critterZ);
     int critterHealth = npc.health;
     textList.createText(npc.xpos,npc.ypos-20,10,sf::Color::White,"Health: " + std::to_string(critterHealth));
-    textList.createText(npc.xpos,npc.ypos-10,10,sf::Color::White,"Mom: " + std::to_string(npc.momentum.x) + "/" + std::to_string(npc.momentum.y));
+    //textList.createText(npc.xpos,npc.ypos-10,10,sf::Color::White,"Mom: " + std::to_string(npc.momentum.x) + "/" + std::to_string(npc.momentum.y));
     runCritterBody(npc);
     debug("Ending Part Loop");
     debug("debug 1", false);

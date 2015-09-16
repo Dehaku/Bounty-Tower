@@ -640,16 +640,17 @@ void bountyTowerLoop()
 
     critterBrain(npclist);
 
+    /*
     for(auto &npc : npclist)
     {
         //if(npc.skills.getRanks("Knockback") > 0)
         {
             int amount = 30;
-            int ranks = 2;//npc.skills.getRanks("Knockback");
+            int ranks = 5;//npc.skills.getRanks("Knockback");
             sf::Vector2f AtkerPos = gvars::mousePos;
             sf::Vector2f VictPos = npc.getPos2d();
             float attackAngle = math::angleBetweenVectors(AtkerPos,VictPos);
-            sf::Vector2f finalPos = math::angleCalc(VictPos,attackAngle,(amount*ranks)*10);
+            sf::Vector2f finalPos = math::angleCalc(VictPos,attackAngle,(amount*ranks));
 
             effects.createCircle(finalPos.x,finalPos.y,10,sf::Color::Red);
 
@@ -660,6 +661,7 @@ void bountyTowerLoop()
             }
         }
     }
+    */
 
 
     if(inputState.key[Key::Space])

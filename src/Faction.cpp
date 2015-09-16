@@ -896,6 +896,9 @@ void Npc::momMove()
         xpos = oldPos.x;
         ypos = oldPos.y;
     }
+
+    //I have no idea how I figured this out, but it worked first try and seems perfect, Woohoo! I'm free!
+
     float xairPressure = gvars::airPressure;
     float yairPressure = gvars::airPressure;
 
@@ -912,9 +915,6 @@ void Npc::momMove()
     float xPercentage = xMom/average;
     float yPercentage = yMom/average;
 
-
-
-
     if(momentum.x > gvars::airPressure*xPercentage)
         momentum.x -= gvars::airPressure*xPercentage;
     else if(momentum.x < -gvars::airPressure*xPercentage)
@@ -928,9 +928,6 @@ void Npc::momMove()
         momentum.y += gvars::airPressure*yPercentage;
     else
         momentum.y = 0;
-
-    //momentum.x = math::clamp((momentum.x - gvars::airPressure), 0, 9999999);
-    //momentum.y = math::clamp((momentum.y - gvars::airPressure), 0, 9999999);
 }
 
 void Npc::moveNorth()
@@ -1401,6 +1398,10 @@ std::string Npc::takeDamage(Npc *attacker, Item *weapon, float amount, critScore
         sf::Vector2f VictPos = getPos2d();
         float attackAngle = math::angleBetweenVectors(AtkerPos,VictPos);
         sf::Vector2f finalPos = math::angleCalc(VictPos,attackAngle,amount*ranks);
+
+        sf::Vector2f compared(finalPos.x-xpos,finalPos.y-ypos);
+        momentum += compared;
+
     }
 
     if(modhealth(-amount) == false) // modhealth returns false on death.
