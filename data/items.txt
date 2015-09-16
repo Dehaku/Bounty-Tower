@@ -20,3 +20,4 @@
 [name:Rune][Pickupable:true][image:BaseRune.png][type:12][baseid:8001747][produces:false]
 [name:PDA][Pickupable:true][type:23][image:PDA.png][baseid:529529][mindam:1][maxdam:10][range:75][IsWeapon:true][activaterategrowth:2][activateratemax:30][Size:1]
 [name:Scrap][Pickupable:true][image:BTScrap.png][type:12][baseid:7772987][produces:false]
+[name:Cash][Pickupable:true][image:FaceonMoney.png][type:12][baseid:636636][produces:false]

@@ -1905,9 +1905,56 @@ void scrapPickup(Npc &npc, std::list<Npc> &container)
             if(soundRan == 4)
                 soundmanager.playSound("ScrapPickup4.ogg");
 
+            if(npc.skills.getRanks("Lucky Scavenger") > 0)
+            {
+                int scavRandom = random(1,100);
+                if(scavRandom <= npc.skills.getRanks("Lucky Scavenger")*20)
+                {
+                    int coinFlip = random(1,2);
+                    if(coinFlip == 1)
+                    {
+                        Item Cash = *getGlobalItem("Cash");
+                        Cash.name = "Cash";
+                        Cash.amount = random(10,100);
+                        Cash.xpos = npc.xpos;
+                        Cash.ypos = npc.ypos;
+                        Cash.zpos = npc.zpos;
+                        worlditems.push_back(Cash);
+                    }
+                    if(coinFlip == 2)
+                    {
+                        Item Ammo = *getGlobalItem("5.56mm");
+                        Ammo.amount = random(1,5);
+                        npc.inventory.push_back(Ammo);
+
+                    }
+                }
+            }
         }
     }
 }
+
+void cashPickup(Npc &npc, std::list<Npc> &container)
+{
+    for(auto &moneys : worlditems)
+    {
+        if(math::distance(npc.getPos(),moneys.getPos()) <= 60 && moneys.name == "Cash")
+        {
+            npc.factionPtr->credits += moneys.amount;
+            moneys.toDelete = true;
+
+            int soundRan = random(1,3);
+            if(soundRan == 1)
+                soundmanager.playSound("CashPickup1.ogg");
+            if(soundRan == 2)
+                soundmanager.playSound("CashPickup2.ogg");
+            if(soundRan == 3)
+                soundmanager.playSound("CashPickup3.ogg");
+
+        }
+    }
+}
+
 
 bool canSeeNpc(Npc &ori, Npc &target)
 {
@@ -2183,8 +2230,6 @@ void critterVision(Npc &npc, std::list<Npc> &container)
 void critterBrain(Npc &npc, std::list<Npc> &container)
 {
     bool needsNewPath = false;
-    //std::cout << "MouseSee: " << canSeeNpc2(gvars::mousePos,npc) << "/ID: " << npc.id << std::endl;
-    //detectLine(gvars::mousePos.x,gvars::mousePos.y,npc.xpos,npc.ypos);
 
     if(!npc.alive)
         return;
@@ -2214,6 +2259,8 @@ void critterBrain(Npc &npc, std::list<Npc> &container)
 
     if(npc.faction == "The Titanium Grip")
         scrapPickup(npc,container);
+    if(npc.faction == "The Titanium Grip")
+        cashPickup(npc,container);
 
     int alph = 255;
     //npc.img.setColor(sf::Color(255, 255, 255, alph));

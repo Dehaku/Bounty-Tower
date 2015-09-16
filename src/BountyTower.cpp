@@ -615,6 +615,17 @@ void bountyTowerLoop()
 
     }
 
+    if(inputState.key[Key::B].time == 1)
+    {
+        Item item = *getGlobalItem("Cash");
+        item.amount = random(10,100);
+        item.xpos = gvars::mousePos.x;
+        item.ypos = gvars::mousePos.y;
+        item.zpos = gvars::currentz*GRID_SIZE;
+        worlditems.push_back(item);
+
+    }
+
     if(inputState.key[Key::G].time == 1)
     { // Renew Menu Towers
         towers.clear();
