@@ -1894,6 +1894,17 @@ void scrapPickup(Npc &npc, std::list<Npc> &container)
                 Item item = *getGlobalItem("Scrap");
                 npc.inventory.push_back(item);
             }
+
+            int soundRan = random(1,4);
+            if(soundRan == 1)
+                soundmanager.playSound("ScrapPickup1.ogg");
+            if(soundRan == 2)
+                soundmanager.playSound("ScrapPickup2.ogg");
+            if(soundRan == 3)
+                soundmanager.playSound("ScrapPickup3.ogg");
+            if(soundRan == 4)
+                soundmanager.playSound("ScrapPickup4.ogg");
+
         }
     }
 }

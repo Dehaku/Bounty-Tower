@@ -158,6 +158,7 @@ Skills::Skills()
     skill.active = true;
     skill.autouse = false;
     list.push_back(skill);
+    */
 
     skill.name = "Lucky Scavenger";
     skill.desc = "Passive - 20% chance per rank to find money or ammo while picking up scrap.";
@@ -165,6 +166,7 @@ Skills::Skills()
     skill.autouse = true;
     list.push_back(skill);
 
+    /*
     skill.name = "Lemme help with that";
     skill.desc = "Passive - 10% chance per rank to prevent allies item durability loss and prevent weapon jamming.";
     skill.active = false;
