@@ -896,9 +896,41 @@ void Npc::momMove()
         xpos = oldPos.x;
         ypos = oldPos.y;
     }
+    float xairPressure = gvars::airPressure;
+    float yairPressure = gvars::airPressure;
 
-    momentum.x = math::clamp((momentum.x - gvars::airPressure), 0, 9999999);
-    momentum.y = math::clamp((momentum.y - gvars::airPressure), 0, 9999999);
+    float xMom = momentum.x;
+    if(xMom < 0)
+        xMom = -xMom;
+
+    float yMom = momentum.y;
+    if(yMom < 0)
+        yMom = -yMom;
+
+    float average = (yMom+xMom)/2;
+
+    float xPercentage = xMom/average;
+    float yPercentage = yMom/average;
+
+
+
+
+    if(momentum.x > gvars::airPressure*xPercentage)
+        momentum.x -= gvars::airPressure*xPercentage;
+    else if(momentum.x < -gvars::airPressure*xPercentage)
+        momentum.x += gvars::airPressure*xPercentage;
+    else
+        momentum.x = 0;
+
+    if(momentum.y > gvars::airPressure*yPercentage)
+        momentum.y -= gvars::airPressure*yPercentage;
+    else if(momentum.y < -gvars::airPressure*yPercentage)
+        momentum.y += gvars::airPressure*yPercentage;
+    else
+        momentum.y = 0;
+
+    //momentum.x = math::clamp((momentum.x - gvars::airPressure), 0, 9999999);
+    //momentum.y = math::clamp((momentum.y - gvars::airPressure), 0, 9999999);
 }
 
 void Npc::moveNorth()

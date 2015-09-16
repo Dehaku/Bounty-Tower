@@ -642,18 +642,18 @@ void bountyTowerLoop()
 
     for(auto &npc : npclist)
     {
-        if(npc.skills.getRanks("Knockback") > 0)
+        //if(npc.skills.getRanks("Knockback") > 0)
         {
             int amount = 30;
-            int ranks = npc.skills.getRanks("Knockback");
+            int ranks = 2;//npc.skills.getRanks("Knockback");
             sf::Vector2f AtkerPos = gvars::mousePos;
             sf::Vector2f VictPos = npc.getPos2d();
             float attackAngle = math::angleBetweenVectors(AtkerPos,VictPos);
-            sf::Vector2f finalPos = math::angleCalc(VictPos,attackAngle,(amount*ranks)*50 );
+            sf::Vector2f finalPos = math::angleCalc(VictPos,attackAngle,(amount*ranks)*10);
 
             effects.createCircle(finalPos.x,finalPos.y,10,sf::Color::Red);
 
-            if(inputState.lmbTime == 1)
+            if(inputState.lmbTime == 3)
             {
                 sf::Vector2f compared(finalPos.x-npc.xpos,finalPos.y-npc.ypos);
                 npc.momentum += compared;
