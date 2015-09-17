@@ -78,6 +78,8 @@ public:
     Vec3f getPos();
     sf::Vector2f getPos2d();
 
+    float getMomentumMagnitude();
+
     Skills skills;
 
     bool attacking;

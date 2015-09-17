@@ -1434,6 +1434,25 @@ std::string Npc::dealDamage(Npc *victim, Item *weapon, float amount)
         return "Miss";
 }
 
+float Npc::getMomentumMagnitude()
+{ // I doubt this is a proper magnitude function, but I needed something to roughly gauge how strong the momentum was.
+    float returns;
+    int xMom = momentum.x;
+    int yMom = momentum.y;
+    if(xMom < 0)
+        xMom = -xMom;
+    if(yMom < 0)
+        yMom = -yMom;
+
+    returns = xMom;
+
+    if(xMom < yMom)
+        returns = yMom;
+
+
+    return returns;
+}
+
 void timeTest()
 {
 

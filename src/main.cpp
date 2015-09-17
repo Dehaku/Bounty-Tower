@@ -2889,21 +2889,32 @@ ReDesire:
             npc.desiredViewAngle = sf::Vector2f(viewPos.x,viewPos.y);
         }
 
-
+        //Mostly worthless path trip time
         double pathTime = (((npc.storedPath.size()*GRID_SIZE)*1.2)/npc.moverate)/30;
-
         std::ostringstream out;
         out << std::setprecision(2) << pathTime;
-
         std::string pathy = "PathTime: ";
-        pathy.append(out.str()  );
-
+        pathy.append(out.str());
         Vec3 endPathPos(npc.storedPath[npc.storedPath.size()-1]->getPos());
-
-
         textList.createText((endPathPos.x)*GRID_SIZE-GRID_SIZE,(endPathPos.y)*GRID_SIZE-GRID_SIZE,10,sf::Color(255,255,255), pathy );
 
+
+        /*
+        //Momentum based movement, rather than Directional
+        float modAngle = math::angleBetweenVectors(sf::Vector2f((Pos.x*GRID_SIZE)+(GRID_SIZE/2),(Pos.y*GRID_SIZE)+(GRID_SIZE/2) ),npc.getPos2d());
+        sf::Vector2f momPos = math::angleCalc(npc.getPos2d(),modAngle,npc.moverate*3);
+        sf::Vector2f finalMom = npc.getPos2d();
+        finalMom -= momPos;
+        //effects.createCircle(momPos.x,momPos.y,10,sf::Color::Red);
+
+        if(npc.getMomentumMagnitude() <= npc.moverate*3)
+            npc.momentum += finalMom;
+
+        */
+
+
         npc.dirMove(sf::Vector2f(Pos.x*GRID_SIZE+(GRID_SIZE/2),Pos.y*GRID_SIZE+(GRID_SIZE/2)));
+
 
         if(Pos.z != npc.zpos)
             npc.zpos = Pos.z*GRID_SIZE;
@@ -2925,6 +2936,7 @@ ReDesire:
     }
     else if((npc.targetInfo.item != nullptr && pathCon.storedPath.size() == 1) || (npc.targetInfo.item != nullptr && pathCon.storedPath.size() == 2))
     {
+        //Why does this exist?
         debug("dir Moving");
         npc.dirMove(sf::Vector2f((*npc.targetInfo.item).xpos,
                                          (*npc.targetInfo.item).ypos));

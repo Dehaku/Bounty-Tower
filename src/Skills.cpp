@@ -210,7 +210,7 @@ Skills::Skills()
     list.push_back(skill);
     */
     skill.name = "Feral Regeneration";
-    skill.desc = "Passive - Creature gains 1% (total health per rank) health regeneration.";
+    skill.desc = "Passive - Creature gains 1% (total health per rank) health regeneration per second.";
     // Certain creatures will start with this at max ranks, like trolls.
     skill.active = false;
     list.push_back(skill);
