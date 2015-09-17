@@ -23,6 +23,11 @@ Skills::Skills()
     skill.active = false;
     list.push_back(skill);
 
+    skill.name = "Cleave";
+    skill.desc = "Active - Activate to Swing a melee weapon for 75% damage in a 90 degree arc.";
+    skill.active = true;
+    list.push_back(skill);
+
     /*
     skill.name = "Sunder";
     skill.desc = "Passive - 20% chance per rank to destroy an opponents held weapon, Max ranks causes the item to simply be dropped on the floor.";
@@ -34,10 +39,7 @@ Skills::Skills()
     skill.active = false;
     list.push_back(skill);
 
-    skill.name = "Cleave";
-    skill.desc = "Active - Activate to Swing a melee weapon for 75% damage in a 90 degree arc.";
-    skill.active = true;
-    list.push_back(skill);
+
 
     skill.name = "Onslaught";
     skill.desc = "Active - Activate to do a number of quick attacks equal to the ranks in this skill.";
@@ -98,11 +100,13 @@ Skills::Skills()
     skill.active = false;
     list.push_back(skill);
 
-    /*
     skill.name = "Snipe Shot";
     skill.desc = "Active - Fires a single bullet with 50% additional Range and Damage per rank, When aiming, displays a line of travel, including richochet potential and penetration.";
     skill.active = true;
     list.push_back(skill);
+
+    /*
+
 
     skill.name = "Short Burst";
     skill.desc = "Active - Firerate increased by 20% per rank for 3 seconds with perfect accuracy.";
@@ -152,13 +156,11 @@ Skills::Skills()
 
     skill.tree = "Engineer";
 
-    /*
     skill.name = "Turret Construction";
     skill.desc = "Active - Allows construction of up to total ranks of turrets.";
     skill.active = true;
     skill.autouse = false;
     list.push_back(skill);
-    */
 
     skill.name = "Lucky Scavenger";
     skill.desc = "Passive - 20% chance per rank to find money or ammo while picking up scrap.";

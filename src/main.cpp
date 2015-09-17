@@ -3305,8 +3305,23 @@ void drawSquadHud()
             window.draw(squadSprite);
             window.draw(squadName);
 
-        }
+            int xOffset = 0;
+            for(auto &skill : npc.skills.list)
+            {
+                if(skill.active && skill.ranks > 0)
+                {
 
+                    sf::Vector2f skillPos(spritePos.x+130+(xOffset*20),spritePos.y);
+                    int skillButt = createImageButton(skillPos,texturemanager.getTexture("ArrowButton.png"),"",0,window.getDefaultView());
+
+                    if(imageButtonHovered(skillButt))
+                    {
+                        textList.createText(skillPos,15,sf::Color::White,skill.name,window.getView());
+                    }
+                    xOffset++;
+                }
+            }
+        }
     }
 
     window.setView(gvars::view1);
@@ -3726,13 +3741,13 @@ void frames()
     {
         std::cout << "Congratulations, The game has ran for four million frames! Frame counter reset. \n";
         std::cout << "Theoretically, The game is running at 30 fps, ";
-        std::cout << "Using super computer math, That means the game has ran for at 'least' " << 4000000/30 << " Seconds! Holy shit! \n";
+        std::cout << "Using super computer math, That means the game has ran for at 'least' " << 4000000/60 << " Seconds! Holy shit! \n";
         std::cout << "Do not fear, the game will begin running again after 100 seconds, You can wait, trust me. \n";
         fSleep(100);
         gvars::framesPassed = 0;
     }
 
-    if((gvars::framesPassed % 30) == 0)
+    if((gvars::framesPassed % 60) == 0)
     {
         toggle(gvars::secondSwitch);
     }
