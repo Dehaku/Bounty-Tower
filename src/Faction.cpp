@@ -1030,6 +1030,9 @@ void Npc::sethealth(float amount)
 bool Npc::modhealth(float amount)
 {
     health += amount;
+    if(health > maxhealth)
+        health = maxhealth;
+
     if (health < 1)
     {
         health = 0;

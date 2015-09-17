@@ -2234,12 +2234,17 @@ void critterBrain(Npc &npc, std::list<Npc> &container)
     if(!npc.alive)
         return;
 
+    float hpRegen = npc.maxhealth*(npc.skills.getRanks("Feral Regeneration")*0.01);
+    if((gvars::framesPassed % 60) == 0)
+        npc.modhealth(hpRegen);
+
     npc.container = &container;
 
     int moveSpeed = npc.moverate;
 
     if(inputState.key[Key::L])
         npc.moverate = 100;
+
 
 
 
