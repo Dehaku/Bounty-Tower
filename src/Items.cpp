@@ -893,8 +893,10 @@ std::string Item::activate(Vec3f vPos) // Returns a string declaring the problem
                     Struck = true;
 
                 Skill * cleave = user->skills.getSkill("Cleave");
+                if(cleave == nullptr)
+                    continue;
 
-                if(cleave->ranks > 0 && cleave->cooldown <= 0)
+                if(cleave->ranks > 0 && cleave->cooldown <= 0 && cleave->autouse)
                 {
                     cleave->cooldown = cleave->cooldownint;
                     //createImageButton(user->getPos2d(),texturemanager.getTexture("Slash.png"),"",-user->angle);
@@ -954,7 +956,7 @@ std::string Item::activate(Vec3f vPos) // Returns a string declaring the problem
         boolet.pos = muzzlePos;
         boolet.positions.push_back(boolet.pos);
         boolet.angle = math::angleBetweenVectors(muzzlePosV2f,vPosV2f);
-        boolet.damage = random(10,50);
+        boolet.damage = random(mindam,maxdam);
         int bulletDamage = boolet.damage;
 
         if(user->skills.getRanks("Bronze Bullet") > 0 && itemptr->amount == maxclip)
@@ -1042,12 +1044,17 @@ bool Item::isReady()
     return false;
 }
 
+
 bool Item::trigger() // Processes activation time, if activation time is ready/reset, returns true, else, returns false.
 {
     activaterate += activaterategrowth;
+
     if(activaterate >= activateratemax)
     {
         activaterate -= activateratemax;
+
+
+
         // TODO: Change this to return the amount of times activaterate surpasses the max for increased spamming goodness.
         return true;
     }
