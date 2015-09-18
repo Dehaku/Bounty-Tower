@@ -2075,8 +2075,6 @@ void assaultDesire(Npc &npc, std::list<Npc> &container, Npc * closEnmy, bool &ha
             if(snipeShot != nullptr && snipeShot->ranks > 0 && snipeShot->cooldown <= 0 && snipeShot->autouse)
             { // TODO: Figure out how to not use duplicate code here... ugh.
 
-                std::cout << "It's time! \n";
-
                 withinRange = (math::closeish(npc.xpos,npc.ypos,closEnmy->xpos,closEnmy->ypos) <= rangewep->getRange()+(rangewep->getRange()*(snipeShot->ranks*0.50)));
 
                 //Checking for Ammo, else WithinRange = false.
@@ -2087,7 +2085,6 @@ void assaultDesire(Npc &npc, std::list<Npc> &container, Npc * closEnmy, bool &ha
                 if(withinRange)
                     canSee = canSeeNpc(npc,*closEnmy);
 
-                std::cout << "Range/See: " << withinRange << "/" << canSee << "\n";
                 if(withinRange && canSee)
                 {
                     //Making sure the weapon has the right owner for later pointing.
@@ -2096,7 +2093,6 @@ void assaultDesire(Npc &npc, std::list<Npc> &container, Npc * closEnmy, bool &ha
                     // Ticking the timer on the weapon, and firing once the cap is met.
                     if(rangewep->isReady())
                     {
-                        std::cout << "BANG BOOM!! \n";
                         snipeShot->cooldown = snipeShot->cooldownint;
                         rangewep->trigger();
                         int damStorage = rangewep->maxdam;
@@ -3370,12 +3366,23 @@ void drawSquadHud()
                 {
 
                     sf::Vector2f skillPos(spritePos.x+130+(xOffset*20),spritePos.y);
-                    int skillButt = createImageButton(skillPos,texturemanager.getTexture("ArrowButton.png"),"",0,window.getDefaultView());
+                    //Yes I'm multiplying it by a boolean, so what? It works perfectly here!
+                    int skillRot = 180+(180*skill.autouse);
+                    int skillButt = createImageButton(skillPos,texturemanager.getTexture("ArrowButton.png"),"",skillRot,window.getDefaultView());
                     if(skill.cooldown > 0)
                         textList.createText(skillPos,15,sf::Color::White,std::to_string(skill.cooldown/60),window.getView());
                     if(imageButtonHovered(skillButt))
                     {
                         textList.createText(skillPos,15,sf::Color::White,skill.name,window.getView());
+                        if(inputState.rmbTime == 1)
+                        {
+                            toggle(skill.autouse);
+                            if(skill.autouse)
+                                chatBox.addChat(skill.name + "'s autouse is now ON.", sf::Color::White);
+                            else
+                                chatBox.addChat(skill.name + "'s autouse is now OFF.", sf::Color::White);
+
+                        }
                     }
                     xOffset++;
                 }
