@@ -29,8 +29,37 @@ Skills::Skills()
     list.push_back(skill);
 
     /*
+
+
+
+    skill.name = "Rambo Style";
+    skill.desc = "Passive - Allows use of one large weapon in each hand, ranks reduce damage and accuracy penalties.";
+    skill.active = false;
+    list.push_back(skill);
+
+    skill.name = "Power Attack";
+    skill.desc = "Active - Melee attack deals increased damage.";
+    skill.active = true;
+    list.push_back(skill);
+
+    skill.name = "Grand Slam";
+    skill.desc = "Active - Extreme Knockback attack, Turns target into a projectile.";
+    skill.active = true;
+    list.push_back(skill);
+
+    skill.name = "Tremor";
+    skill.desc = "Active - Slams the ground, dealing damage to all nearby.";
+    skill.active = true;
+    list.push_back(skill);
+
     skill.name = "Sunder";
     skill.desc = "Passive - 20% chance per rank to destroy an opponents held weapon, Max ranks causes the item to simply be dropped on the floor.";
+    skill.active = false;
+    list.push_back(skill);
+
+    skill.name = "Shadowstep";
+    skill.desc = "Passive - While engaged in melee, teleport behind target.";
+    //Useful by itself, and with backstab. (Critters need to turn around to aim and attack, so it grants some time)
     skill.active = false;
     list.push_back(skill);
 
@@ -38,6 +67,8 @@ Skills::Skills()
     skill.desc = "Passive - Deal 20% more damge per rank when striking an opponent from the back with a melee weapon.";
     skill.active = false;
     list.push_back(skill);
+
+
 
 
 
@@ -58,6 +89,12 @@ Skills::Skills()
     // Dev Note: Use a momentum movement for simplicity, prevent damage on the charger using the Charge skill state.
     list.push_back(skill);
     skill.duration = 0;
+
+    skill.name = "Reflective Coating";
+    skill.desc = "Passive - Projectiles that strike your shield are reflected, ranks increase accuracy to reflect to enemy.";
+    skill.active = false;
+    list.push_back(skill);
+
     */
 
 
@@ -78,6 +115,17 @@ Skills::Skills()
     skill.desc = "Passive - Each bullet has a 20% chance per rank to poison an enemy for 5% of it's max health per second for ten seconds.";
     skill.active = false;
     list.push_back(skill);
+
+    skill.name = "Two Handed Luck";
+    skill.desc = "Passive - Randomly get a few seconds of no recoil while firing one weapon two handed, or two individual weapons.";
+    skill.active = false;
+    list.push_back(skill);
+
+    skill.name = "Battle Roar";
+    skill.desc = "Active - Surge of Adrenaline causes creature to have 0 recoil for the duration.";
+    skill.active = true;
+    list.push_back(skill);
+
     */
 
     skill.name = "Bronze Bullet";
@@ -119,6 +167,22 @@ Skills::Skills()
     skill.active = true;
     list.push_back(skill);
     skill.duration = 0;
+
+    skill.name = "Spray and Pray";
+    skill.desc = "Active - fires in an arc (rank) times";
+    skill.active = true;
+    list.push_back(skill);
+
+    skill.name = "Deft Hands";
+    skill.desc = "Passive - Increases reload speed and item swap speed.";
+    skill.active = false;
+    list.push_back(skill);
+
+    skill.name = "Unlucky Frag";
+    skill.desc = "Passive - Bullets have a (rank)% chance to fragment upon collision, sending short lived bullets out.";
+    skill.active = false;
+    list.push_back(skill);
+
     */
 
 
@@ -205,12 +269,11 @@ Skills::Skills()
 
     skill.tree = "Monster";
 
-    /*
     skill.name = "Feral Weaponry";
     skill.desc = "Active - Causes creature to go berzerk, striking rapidly with claws, fangs, tail, dealing damage based on rank.";
     skill.active = true;
     list.push_back(skill);
-    */
+
     skill.name = "Feral Regeneration";
     skill.desc = "Passive - Creature gains 1% (total health per rank) health regeneration per second.";
     // Certain creatures will start with this at max ranks, like trolls.
@@ -221,6 +284,36 @@ Skills::Skills()
     skill.desc = "Passive - Creature gains 10% Damage Resistence per Rank";
     skill.active = false;
     list.push_back(skill);
+
+    /*
+
+    skill.name = "Vampirism";
+    skill.desc = "Passive - Gain (Rank)% Life Steal on damage done to enemies.";
+    skill.active = false;
+    list.push_back(skill);
+
+    skill.name = "Undeath";
+    skill.desc = "Passive - Missing health percentage is added to attributes.";
+    skill.active = false;
+    list.push_back(skill);
+
+    skill.name = "Demonic Bounty";
+    skill.desc = "Passive - Kills gain temporary buffs to stats, attack speed, damage, reload speed, ect";
+    skill.active = false;
+    list.push_back(skill);
+
+    skill.name = "(Epic)Blaze of Glory";
+    skill.desc = "Active - Gain invincibility for a time, Causes a detonation once the invicibility wears off. (Ranks reduce explosive damage taken?)";
+    skill.active = true;
+    list.push_back(skill);
+
+    skill.name = "(Epic)Soulbind";
+    skill.desc = "Passive - Two squadmembers that have this ability can bind to eachother. \n" +
+	" While bound, neither can die unless BOTH do, but any excess damage is moved to the other.";
+    skill.active = false;
+    list.push_back(skill);
+
+    */
 
 
 
