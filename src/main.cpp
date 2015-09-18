@@ -2227,12 +2227,27 @@ void critterVision(Npc &npc, std::list<Npc> &container)
     debug("debug 5", false);
     }
 
+void critterSkillRefresh(Npc &npc, std::list<Npc> &container)
+{
+    for(auto &skill : npc.skills.list)
+    {
+        if(skill.active)
+        {
+            skill.cooldown--;
+            if(skill.cooldown <= 0)
+                skill.cooldown = 0;
+        }
+    }
+}
+
 void critterBrain(Npc &npc, std::list<Npc> &container)
 {
     bool needsNewPath = false;
 
     if(!npc.alive)
         return;
+
+    critterSkillRefresh(npc,container);
 
     float hpRegen = npc.maxhealth*(npc.skills.getRanks("Feral Regeneration")*0.01);
     if((gvars::framesPassed % 60) == 0)
@@ -3313,7 +3328,8 @@ void drawSquadHud()
 
                     sf::Vector2f skillPos(spritePos.x+130+(xOffset*20),spritePos.y);
                     int skillButt = createImageButton(skillPos,texturemanager.getTexture("ArrowButton.png"),"",0,window.getDefaultView());
-
+                    if(skill.cooldown > 0)
+                        textList.createText(skillPos,15,sf::Color::White,std::to_string(skill.cooldown/60),window.getView());
                     if(imageButtonHovered(skillButt))
                     {
                         textList.createText(skillPos,15,sf::Color::White,skill.name,window.getView());

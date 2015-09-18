@@ -8,12 +8,14 @@ Skills::Skills()
     skill.level = 1;
     skill.ranks = 0;
     skill.ranksmax = 5;
+    skill.durationint = 0;
     skill.duration = 0;
     skill.cost = 1;
     skill.cooldownint = 30*10;
     skill.cooldown = 0;
     skill.autouse = true;
-    skill.active = false;
+    skill.active = false; // Splits Passive skills from Active skills.
+    skill.on = false; // Means it's currently going.
 
 
     skill.tree = "Melee";

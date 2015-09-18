@@ -894,8 +894,9 @@ std::string Item::activate(Vec3f vPos) // Returns a string declaring the problem
 
                 Skill * cleave = user->skills.getSkill("Cleave");
 
-                if(user->skills.getRanks("Cleave") > 0)
+                if(cleave->ranks > 0 && cleave->cooldown <= 0)
                 {
+                    cleave->cooldown = cleave->cooldownint;
                     //createImageButton(user->getPos2d(),texturemanager.getTexture("Slash.png"),"",-user->angle);
 
                     sf::Vector2f oriPos(user->getPos2d());
@@ -919,8 +920,8 @@ std::string Item::activate(Vec3f vPos) // Returns a string declaring the problem
                         {
                             //Found someone within range! STRIKING!
                             std::cout << npcCleave.id << "; Someone was hit by the Cleave! \n";
-                            int cleaveDamage = this->maxdam*(0.75+(user->skills.getRanks("Cleave")*0.25));
-                            std::string atkStatus = user->dealDamage(&npcCleave,this,cleaveDamage);
+                            int cleaveDamage = this->maxdam*(0.75+(cleave->ranks*0.25));
+                            user->dealDamage(&npcCleave,this,cleaveDamage);
                         }
                     }
                 }

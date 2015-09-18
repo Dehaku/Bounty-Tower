@@ -13,7 +13,9 @@ public:
     std::string desc;
     bool autouse;
     bool active;
+    bool on;
     int level;
+    int durationint;
     int duration;
     int cooldownint;
     int cooldown;
