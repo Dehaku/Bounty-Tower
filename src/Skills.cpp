@@ -18,13 +18,13 @@ Skills::Skills()
 
     skill.tree = "Melee";
 
-    skill.name = "Knockback";
-    skill.desc = "Passive - 5% of damage is applied as force, per rank";
+    skill.name = "Batter Up";
+    skill.desc = "Passive - Damage*Rank is applied as force to a melee victim.";
     skill.active = false;
     list.push_back(skill);
 
     skill.name = "Cleave";
-    skill.desc = "Active - Activate to Swing a melee weapon for 75% damage in a 90 degree arc.";
+    skill.desc = "Active - Activate to Swing a melee weapon for 75% damage in a 180 degree arc, Ranks grant 25% more damage";
     skill.active = true;
     list.push_back(skill);
 
@@ -345,3 +345,14 @@ int Skills::getRanks(std::string skillName)
     }
     return 0;
 }
+
+Skill * Skills::getSkill(std::string skillName)
+{
+    for(auto &skill : list)
+    {
+        if(skill.name == skillName)
+            return &skill;
+    }
+    return nullptr;
+}
+

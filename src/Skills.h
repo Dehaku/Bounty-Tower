@@ -27,6 +27,7 @@ class Skills
 public:
     std::list<Skill> list;
     int getRanks(std::string skillName);
+    Skill * getSkill(std::string skillName);
     Skills();
 };
 

@@ -1394,9 +1394,9 @@ std::string Npc::takeDamage(Npc *attacker, Item *weapon, float amount, critScore
 
     }
 
-    if(attacker->skills.getRanks("Knockback") > 0)
+    if(attacker->skills.getRanks("Batter Up") > 0)
     {
-        int ranks = attacker->skills.getRanks("Knockback");
+        int ranks = attacker->skills.getRanks("Batter Up");
         sf::Vector2f AtkerPos = attacker->getPos2d();
         sf::Vector2f VictPos = getPos2d();
         float attackAngle = math::angleBetweenVectors(AtkerPos,VictPos);

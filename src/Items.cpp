@@ -891,12 +891,42 @@ std::string Item::activate(Vec3f vPos) // Returns a string declaring the problem
                 std::string atkStatus = user->dealDamage(&npc,this);
                 if(atkStatus == "Hit")
                     Struck = true;
+
+                Skill * cleave = user->skills.getSkill("Cleave");
+
+                if(user->skills.getRanks("Cleave") > 0)
+                {
+                    //createImageButton(user->getPos2d(),texturemanager.getTexture("Slash.png"),"",-user->angle);
+
+                    sf::Vector2f oriPos(user->getPos2d());
+                    sf::Vector2f offSet = math::angleCalc(oriPos,math::constrainAngle(user->angle+90),60);
+
+                    createImageButton(offSet,texturemanager.getTexture("Slash.png"),"",math::constrainAngle(user->angle+180) );
+
+                    for(auto &npcCleave : npclist)
+                    {
+                        //Making sure this critter isn't friendly, itself, or already been hit by the attack.
+                        if(npcCleave.faction == user->faction || npcCleave.id == user->id || npcCleave.id == npc.id)
+                            continue;
+
+                        //Figuring out if the target is within range, and within an angle.
+                        int targetAngle = math::angleBetweenVectors(oriPos,gvars::mousePos);
+                        int angleDiff = math::angleDiff(user->angle,targetAngle);
+                        angleDiff = math::constrainAngle(angleDiff-90);
+                        int dist = math::closeish(oriPos,gvars::mousePos);
+
+                        if(angleDiff < 90 && angleDiff > -90 && dist <= 120)
+                        {
+                            //Found someone within range! STRIKING!
+                            std::cout << npcCleave.id << "; Someone was hit by the Cleave! \n";
+                            int cleaveDamage = this->maxdam*(0.75+(user->skills.getRanks("Cleave")*0.25));
+                            std::string atkStatus = user->dealDamage(&npcCleave,this,cleaveDamage);
+                        }
+                    }
+                }
             }
         }
 
-
-        //createImageButton(math::angleCalc(muzzlePosV2f,rot,60),texturemanager.getTexture("BTSword.png"),"", rot+90);
-        //sf::Texture texy = ;
         createImageButton(math::angleCalc(muzzlePosV2f,rot,60),*img.getTexture(),"", rot+90);
 
         soundmanager.playSound("Swing_xxchr0nosxx_1.ogg");
