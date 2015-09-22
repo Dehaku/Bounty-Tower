@@ -899,7 +899,6 @@ std::string Item::activate(Vec3f vPos) // Returns a string declaring the problem
                 if(cleave->ranks > 0 && cleave->cooldown <= 0 && cleave->autouse)
                 {
                     cleave->cooldown = cleave->cooldownint;
-                    //createImageButton(user->getPos2d(),texturemanager.getTexture("Slash.png"),"",-user->angle);
 
                     sf::Vector2f oriPos(user->getPos2d());
                     sf::Vector2f offSet = math::angleCalc(oriPos,math::constrainAngle(user->angle+90),60);

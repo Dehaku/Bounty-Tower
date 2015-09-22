@@ -570,27 +570,6 @@ void bountyTowerLoop()
 
     drawMenus();
 
-    for(auto &npc : npclist)
-    {
-        if(npc.skills.getRanks("Cleave") > 0)
-        {
-            sf::Vector2f oriPos(npc.getPos2d());
-            sf::Vector2f offSet = math::angleCalc(oriPos,math::constrainAngle(npc.angle+90),60);
-
-            createImageButton(offSet,texturemanager.getTexture("Slash.png"),"",math::constrainAngle(npc.angle+180) );
-
-            int targetAngle = math::angleBetweenVectors(oriPos,gvars::mousePos);
-            int angleDiff = math::angleDiff(npc.angle,targetAngle);
-            angleDiff = math::constrainAngle(angleDiff-90);
-            int dist = math::closeish(oriPos,gvars::mousePos);
-
-            if(angleDiff < 90 && angleDiff > -90 && dist <= 120)
-                effects.createCircle(gvars::mousePos.x,gvars::mousePos.y,10,sf::Color::Red);
-            else
-                effects.createCircle(gvars::mousePos.x,gvars::mousePos.y,10,sf::Color::Blue);
-
-        }
-    }
 
     if(gvars::tileEdit)
     {
