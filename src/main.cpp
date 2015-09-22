@@ -99,11 +99,13 @@ struct skillKeepInfo
     std::string skillName;
     sf::Vector2f usePos;
     bool toDelete;
+    bool legal;
     int age;
     skillKeepInfo()
     {
         user = nullptr;
         toDelete = false;
+        legal = false;
         age = 0;
     }
 };
@@ -120,10 +122,6 @@ void skillKeepLoop()
         sKI.usePos = gvars::mousePos;
 
         effects.createCircle(sKI.usePos.x,sKI.usePos.y,10,sf::Color::Cyan);
-        if(sKI.skillName == "Snipe Shot")
-        {
-            effects.createLine(sKI.user->xpos,sKI.user->ypos,sKI.usePos.x,sKI.usePos.y,1,sf::Color::Cyan);
-        }
     }
     AnyDeletes(skillKeeps);
 }
@@ -2182,31 +2180,42 @@ void assaultDesire(Npc &npc, std::list<Npc> &container, Npc * closEnmy, bool &ha
             {
 
                 skillKeepInfo * sKI;
-            sKI = getSkillKeep();
-            if(sKI != nullptr && sKI->user->id == npc.id && sKI->skillName == "Snipe Shot")
-            {
-                effects.createCircle(sKI->usePos.x,sKI->usePos.y,15,sf::Color::Red);
-
-
-                rangewep->user = &npc;
-
-                // Firing once the weapon is ready, and the user clicks with the skill.
-                if(rangewep->isReady() && inputState.lmbTime == 1)
+                sKI = getSkillKeep();
+                if(sKI != nullptr && sKI->user->id == npc.id && sKI->skillName == "Snipe Shot")
                 {
-                    snipeShot->cooldown = snipeShot->cooldownint;
-                    rangewep->trigger();
-                    int damStorage = rangewep->maxdam;
-                    rangewep->maxdam = rangewep->maxdam+(rangewep->maxdam*(snipeShot->ranks*0.50));
-                    std::string Status = rangewep->activate(Vec3f(sKI->usePos.x,sKI->usePos.y,gvars::currentz));
-                    rangewep->maxdam = damStorage;
-                    AnyDeletes(rangewep->internalitems);
+
+                    rangewep->user = &npc;
+
+                    withinRange = (math::closeish(npc.xpos,npc.ypos,sKI->usePos.x,sKI->usePos.y) <= rangewep->getRange()+(rangewep->getRange()*(snipeShot->ranks*0.50)));
+
+
+
+                    //Checking for Ammo, else WithinRange = false.
+                    if(getItemType(rangewep->internalitems,3) == nullptr)
+                        withinRange = false;
+
+                    if(withinRange)
+                    {
+                        effects.createLine(sKI->user->xpos,sKI->user->ypos,sKI->usePos.x,sKI->usePos.y,1,sf::Color::Cyan);
+                        effects.createCircle(sKI->usePos.x,sKI->usePos.y,15,sf::Color::Cyan);
+                    }
+                    else
+                        effects.createCircle(sKI->usePos.x,sKI->usePos.y,15,sf::Color::Red);
+
+
+                    // Firing once the weapon is ready, and the user clicks with the skill.
+                    if(rangewep->isReady() && inputState.lmbTime == 1 && withinRange)
+                    {
+                        snipeShot->cooldown = snipeShot->cooldownint;
+                        rangewep->trigger();
+                        int damStorage = rangewep->maxdam;
+                        rangewep->maxdam = rangewep->maxdam+(rangewep->maxdam*(snipeShot->ranks*0.50));
+                        std::string Status = rangewep->activate(Vec3f(sKI->usePos.x,sKI->usePos.y,gvars::currentz));
+                        rangewep->maxdam = damStorage;
+                        AnyDeletes(rangewep->internalitems);
+                    }
                 }
             }
-
-            }
-
-
-
         }
 
         debug("2");
