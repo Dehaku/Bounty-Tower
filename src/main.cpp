@@ -2176,7 +2176,7 @@ void assaultDesire(Npc &npc, std::list<Npc> &container, Npc * closEnmy, bool &ha
         if(rangewep != nullptr)
         {// Here we do ranged weapon active skills.
             Skill * snipeShot = npc.skills.getSkill("Snipe Shot");
-            if(snipeShot != nullptr && snipeShot->ranks > 0 && snipeShot->cooldown <= 0 && snipeShot->autouse)
+            if(snipeShot != nullptr && snipeShot->ranks > 0 && snipeShot->cooldown <= 0)
             {
 
                 skillKeepInfo * sKI;
