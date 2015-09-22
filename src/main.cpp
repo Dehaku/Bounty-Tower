@@ -93,6 +93,51 @@ template <typename T> void AnyDeletes(std::list<T> &list)
 }
 
 
+struct skillKeepInfo
+{
+    Npc * user;
+    std::string skillName;
+    sf::Vector2f usePos;
+    bool toDelete;
+    int age;
+    skillKeepInfo()
+    {
+        user = nullptr;
+        toDelete = false;
+        age = 0;
+    }
+};
+std::vector<skillKeepInfo> skillKeeps;
+
+void skillKeepLoop()
+{
+    for(auto &sKI : skillKeeps)
+    {
+        if(inputState.rmb)
+            sKI.toDelete = true;
+
+        sKI.age++;
+        sKI.usePos = gvars::mousePos;
+
+        effects.createCircle(sKI.usePos.x,sKI.usePos.y,10,sf::Color::Cyan);
+        if(sKI.skillName == "Snipe Shot")
+        {
+            effects.createLine(sKI.user->xpos,sKI.user->ypos,sKI.usePos.x,sKI.usePos.y,1,sf::Color::Cyan);
+        }
+    }
+    AnyDeletes(skillKeeps);
+}
+
+skillKeepInfo * getSkillKeep()
+{
+    for(auto &sKI : skillKeeps)
+    {
+        return &sKI;
+    }
+    return nullptr;
+}
+
+
 const int worldSizeX = 32;
 const int worldSizeY = 32;
 const int worldSizeZ = 3;
@@ -2090,7 +2135,7 @@ void assaultDesire(Npc &npc, std::list<Npc> &container, Npc * closEnmy, bool &ha
                     //Making sure the weapon has the right owner for later pointing.
                     rangewep->user = &npc;
 
-                    // Ticking the timer on the weapon, and firing once the cap is met.
+                    // Firing once the weapon is ready.
                     if(rangewep->isReady())
                     {
                         snipeShot->cooldown = snipeShot->cooldownint;
@@ -2103,6 +2148,7 @@ void assaultDesire(Npc &npc, std::list<Npc> &container, Npc * closEnmy, bool &ha
                     }
                 }
                 withinRange = false;
+
             }
 
             withinRange = (math::closeish(npc.xpos,npc.ypos,closEnmy->xpos,closEnmy->ypos) <= rangewep->getRange());
@@ -2128,7 +2174,43 @@ void assaultDesire(Npc &npc, std::list<Npc> &container, Npc * closEnmy, bool &ha
                 }
             }
         }
+
+        if(rangewep != nullptr)
+        {// Here we do ranged weapon active skills.
+            Skill * snipeShot = npc.skills.getSkill("Snipe Shot");
+            if(snipeShot != nullptr && snipeShot->ranks > 0 && snipeShot->cooldown <= 0 && snipeShot->autouse)
+            {
+
+                skillKeepInfo * sKI;
+            sKI = getSkillKeep();
+            if(sKI != nullptr && sKI->user->id == npc.id && sKI->skillName == "Snipe Shot")
+            {
+                effects.createCircle(sKI->usePos.x,sKI->usePos.y,15,sf::Color::Red);
+
+
+                rangewep->user = &npc;
+
+                // Firing once the weapon is ready, and the user clicks with the skill.
+                if(rangewep->isReady() && inputState.lmbTime == 1)
+                {
+                    snipeShot->cooldown = snipeShot->cooldownint;
+                    rangewep->trigger();
+                    int damStorage = rangewep->maxdam;
+                    rangewep->maxdam = rangewep->maxdam+(rangewep->maxdam*(snipeShot->ranks*0.50));
+                    std::string Status = rangewep->activate(Vec3f(sKI->usePos.x,sKI->usePos.y,gvars::currentz));
+                    rangewep->maxdam = damStorage;
+                    AnyDeletes(rangewep->internalitems);
+                }
+            }
+
+            }
+
+
+
+        }
+
         debug("2");
+
         if(meleewep != nullptr && closEnmy != nullptr)
         {
             if(!withinRange)
@@ -2145,7 +2227,9 @@ void assaultDesire(Npc &npc, std::list<Npc> &container, Npc * closEnmy, bool &ha
                 }
             }
         }
+
         debug("3");
+
         if(withinRange && canSee)
         {
             hasPath = false;
@@ -3268,6 +3352,49 @@ void hoverItemHUD()
     window.setView(gvars::view1);
 }
 
+
+
+void drawHudSkills(Npc &npc, sf::Vector2f spritePos)
+{
+    skillKeepLoop();
+    int xOffset = 0;
+    for(auto &skill : npc.skills.list)
+    {
+        if(skill.active && skill.ranks > 0)
+        {
+            sf::Vector2f skillPos(spritePos.x+130+(xOffset*20),spritePos.y);
+            //Yes I'm multiplying it by a boolean, so what? It works perfectly here!
+            int skillRot = 180+(180*skill.autouse);
+            int skillButt = createImageButton(skillPos,texturemanager.getTexture("ArrowButton.png"),"",skillRot,window.getDefaultView());
+            if(skill.cooldown > 0)
+                textList.createText(skillPos,15,sf::Color::White,std::to_string(skill.cooldown/60),window.getView());
+
+            if(imageButtonClicked(skillButt) && skill.cooldown <= 0)
+            {
+                skillKeepInfo sKI;
+                sKI.user = &npc;
+                sKI.skillName = skill.name;
+
+                skillKeeps.push_back(sKI);
+            }
+
+            if(imageButtonHovered(skillButt))
+            {
+                textList.createText(skillPos,15,sf::Color::White,skill.name,window.getView());
+                if(inputState.rmbTime == 1)
+                {
+                    toggle(skill.autouse);
+                    if(skill.autouse)
+                        chatBox.addChat(skill.name + "'s autouse is now ON.", sf::Color::White);
+                    else
+                        chatBox.addChat(skill.name + "'s autouse is now OFF.", sf::Color::White);
+                }
+            }
+            xOffset++;
+        }
+    }
+}
+
 void drawSquadHud()
 {
     window.setView(window.getDefaultView());
@@ -3359,34 +3486,7 @@ void drawSquadHud()
             window.draw(squadSprite);
             window.draw(squadName);
 
-            int xOffset = 0;
-            for(auto &skill : npc.skills.list)
-            {
-                if(skill.active && skill.ranks > 0)
-                {
-
-                    sf::Vector2f skillPos(spritePos.x+130+(xOffset*20),spritePos.y);
-                    //Yes I'm multiplying it by a boolean, so what? It works perfectly here!
-                    int skillRot = 180+(180*skill.autouse);
-                    int skillButt = createImageButton(skillPos,texturemanager.getTexture("ArrowButton.png"),"",skillRot,window.getDefaultView());
-                    if(skill.cooldown > 0)
-                        textList.createText(skillPos,15,sf::Color::White,std::to_string(skill.cooldown/60),window.getView());
-                    if(imageButtonHovered(skillButt))
-                    {
-                        textList.createText(skillPos,15,sf::Color::White,skill.name,window.getView());
-                        if(inputState.rmbTime == 1)
-                        {
-                            toggle(skill.autouse);
-                            if(skill.autouse)
-                                chatBox.addChat(skill.name + "'s autouse is now ON.", sf::Color::White);
-                            else
-                                chatBox.addChat(skill.name + "'s autouse is now OFF.", sf::Color::White);
-
-                        }
-                    }
-                    xOffset++;
-                }
-            }
+            drawHudSkills(npc,spritePos);
         }
     }
 
