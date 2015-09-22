@@ -2202,6 +2202,11 @@ void assaultDesire(Npc &npc, std::list<Npc> &container, Npc * closEnmy, bool &ha
                     else
                         effects.createCircle(sKI->usePos.x,sKI->usePos.y,15,sf::Color::Red);
 
+                    //Do bullet prediction for the player to see the skill in action.
+                    {
+                        //Maybe not.
+                    }
+
 
                     // Firing once the weapon is ready, and the user clicks with the skill.
                     if(rangewep->isReady() && inputState.lmbTime == 1 && withinRange)
@@ -4187,67 +4192,7 @@ void handleEvents()
         }
 }
 
-void predictBullet(Bullet bullet)
-{
-    std::vector<Vec3f> predictions = bullet.positions;
-    Vec3f predPos = bullet.pos;
-    double predAngle = bullet.angle;
-    for(int z = 0; z != bullet.lifetime; z++)
-    {
-        for(int i = 0; i != bullet.speed; i++)
-        {
-            sf::Vector2f newPos = math::angleCalc(sf::Vector2f(predPos.x,predPos.y),predAngle,1);
-            predPos = Vec3f(newPos.x,newPos.y,predPos.z);
 
-
-            if(aabb(predPos.x,predPos.y,GRID_SIZE,GRID_SIZE*95,GRID_SIZE,GRID_SIZE*95))
-                if(!tiles[abs_to_index(predPos.x/GRID_SIZE)][abs_to_index(predPos.y/GRID_SIZE)][abs_to_index(predPos.z/GRID_SIZE)].walkable)
-            {
-                Vec3f tempPos(predictions[predictions.size()-1]);
-                Vec3f secondVelo(tempPos.x - predPos.x, tempPos.y - predPos.y, tempPos.z - predPos.z);
-                Vec3f secondPos(tempPos.x + secondVelo.x, tempPos.y + secondVelo.y);
-
-                Vec3f tempVelocity(predPos.x - secondPos.x, predPos.y - secondPos.y, predPos.z - secondPos.z);
-
-                std::string Face = tileFace(predPos.x,predPos.y,predPos.z,GRID_SIZE,tiles);
-                if(Face == "UP" || Face == "DOWN")
-                    tempVelocity.y = -tempVelocity.y;
-                else if(Face == "LEFT" || Face == "RIGHT")
-                    tempVelocity.x = -tempVelocity.x;
-
-                tempPos.x += tempVelocity.x;
-                tempPos.y += tempVelocity.y;
-                tempPos.z += tempVelocity.z;
-
-                predAngle = math::constrainAngle(math::angleBetweenVectors(newPos,sf::Vector2f(tempPos.x,tempPos.y)));
-                predictions.push_back(predPos);
-            }
-        }
-        if(z == bullet.lifetime-1)
-            predictions.push_back(predPos);
-    }
-
-    for(int i = 0; i != predictions.size(); i++)
-    {
-        if(i == 0)
-        {
-            sf::Vector2f startPos(predictions[i].x,predictions[i].y);
-            effects.createLine(startPos.x,startPos.y,bullet.pos.x,bullet.pos.y,1,sf::Color::Cyan);
-        }
-        else if(i == predictions.size()-1)
-        {
-            sf::Vector2f startPos(predictions[i].x,predictions[i].y);
-            sf::Vector2f endPos(predictions[i-1].x,predictions[i-1].y);
-            effects.createLine(startPos.x,startPos.y,endPos.x,endPos.y,1,sf::Color::Red);
-        }
-        else
-        {
-            sf::Vector2f startPos(predictions[i].x,predictions[i].y);
-            sf::Vector2f endPos(predictions[i-1].x,predictions[i-1].y);
-            effects.createLine(startPos.x,startPos.y,endPos.x,endPos.y,1,sf::Color::Cyan);
-        }
-    }
-}
 
 float Magnitude(Vec3f v1)
 {

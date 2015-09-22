@@ -33,6 +33,8 @@ public:
 };
 extern std::vector<Bullet> bullets;
 
+void predictBullet(Bullet bullet);
+
 void removeBullets();
 
 #endif // BULLET_H_INCLUDED
