@@ -92,6 +92,8 @@ public:
                       sf::Color SecondaryColor = sf::Color(0, 0, 0),
                       sf::View drawView = gvars::view1);
 
+    void createCone(sf::Vector2f vPos, int angle, int angleRadius, int depth, sf::Color color);
+
     void drawEffects();
 };
 extern Effects effects;

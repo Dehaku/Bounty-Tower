@@ -161,6 +161,67 @@ void Effects::createCircle(int xpos, int ypos, int size, sf::Color mainColor,
     circles.push_back(evar);
 }
 
+void Effects::createCone(sf::Vector2f vPos, int angle, int angleRadius, int depth, sf::Color color)
+{
+
+    const int endAngle = -(angle - (angleRadius / 2));
+    const int startAngle = -(angle - (-angleRadius / 2));
+
+    /*Drawing Vision*/
+    sf::ConvexShape shape;
+    int pointCounter = 1;
+    shape.setPointCount(pointCounter);
+    shape.setPoint(0, sf::Vector2f(0, 0));
+    for (int rot = startAngle; rot != endAngle; rot++)
+    {
+        float xPos = vPos.x + sinf(rot * PI / 180) * depth;
+        float yPos = vPos.y + cosf(rot * PI / 180) * depth;
+
+
+        /* Placing the points to make the visible vision visibility visible */
+        if (rot == startAngle)
+        {
+            pointCounter++;
+            shape.setPointCount(pointCounter);
+            shape.setPoint(pointCounter - 1,
+                           sf::Vector2f(xPos - vPos.x, yPos - vPos.y));
+        }
+
+        int CenterPoint = (startAngle + endAngle) / 2;
+        if (rot == CenterPoint)
+        {
+            pointCounter++;
+            shape.setPointCount(pointCounter);
+            shape.setPoint(pointCounter - 1,
+                           sf::Vector2f(xPos - vPos.x, yPos - vPos.y));
+
+        }
+        if ((rot % 10) == 0 && rot != 0)
+        {
+            pointCounter++;
+            shape.setPointCount(pointCounter);
+            shape.setPoint(pointCounter - 1,
+                           sf::Vector2f(xPos - vPos.x, yPos - vPos.y));
+        }
+        if (rot == endAngle - 1)
+        {
+            pointCounter++;
+            shape.setPointCount(pointCounter);
+            shape.setPoint(pointCounter - 1,
+                           sf::Vector2f(xPos - vPos.x, yPos - vPos.y));
+        }
+    }
+
+    //sf::Color filling(color);
+    //filling.a = (50);
+    shape.setFillColor(color);
+    shape.setOutlineColor(color);
+    shape.setOutlineThickness(1);
+    shape.setPosition(vPos);
+    effects.polygons.push_back(shape);
+
+}
+
 void Effects::drawEffects()
 {
     {

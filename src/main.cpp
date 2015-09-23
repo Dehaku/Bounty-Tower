@@ -2243,8 +2243,7 @@ void assaultDesire(Npc &npc, std::list<Npc> &container, Npc * closEnmy, bool &ha
         }
 
         if(meleewep != nullptr)
-        {// Here we do ranged weapon active skills.
-
+        {// Here we do melee weapon active skills.
 
             Skill * cleave = npc.skills.getSkill("Cleave");
 
@@ -2257,53 +2256,42 @@ void assaultDesire(Npc &npc, std::list<Npc> &container, Npc * closEnmy, bool &ha
                 {
                     npc.desiredViewAngle = gvars::mousePos;
 
-                    /*
-                    int leftCleave = math::angleCalc(npc.getPos2d(),npc.angle-90,120);
-                    int rightCleave = math::angleCalc(npc.getPos2d(),npc.angle+90,120);
-
-                    effects.createLine();
-                    */
-
+                    //Giving a cleave preview of sorts.
+                    sf::Color coloryo(sf::Color::Cyan);
+                    coloryo.a = 50;
+                    effects.createCone(npc.getPos2d(), npc.angle, 180, 120, coloryo);
 
                     if(inputState.lmbTime == 1)
                     {
-
                         cleave->cooldown = cleave->cooldownint;
 
-                sf::Vector2f oriPos(npc.getPos2d());
-                sf::Vector2f offSet = math::angleCalc(oriPos,math::constrainAngle(npc.angle+90),60);
+                        sf::Vector2f oriPos(npc.getPos2d());
+                        sf::Vector2f offSet = math::angleCalc(oriPos,math::constrainAngle(npc.angle+90),60);
 
-                createImageButton(offSet,texturemanager.getTexture("Slash.png"),"",math::constrainAngle(npc.angle+180) );
+                        createImageButton(offSet,texturemanager.getTexture("Slash.png"),"",math::constrainAngle(npc.angle+180) );
 
-                for(auto &npcCleave : npclist)
-                {
-                    //Making sure this critter isn't friendly, itself, or already been hit by the attack.
-                    if(npcCleave.faction == npc.faction || npcCleave.id == npc.id || npcCleave.id == npc.id)
-                        continue;
+                        for(auto &npcCleave : npclist)
+                        {
+                            //Making sure this critter isn't friendly, itself, or already been hit by the attack.
+                            if(npcCleave.faction == npc.faction || npcCleave.id == npc.id || npcCleave.id == npc.id)
+                                continue;
 
-                    //Figuring out if the target is within range, and within an angle.
-                    int targetAngle = math::angleBetweenVectors(oriPos,gvars::mousePos);
-                    int angleDiff = math::angleDiff(npc.angle,targetAngle);
-                    angleDiff = math::constrainAngle(angleDiff-90);
-                    int dist = math::closeish(oriPos,gvars::mousePos);
+                            //Figuring out if the target is within range, and within an angle.
+                            int targetAngle = math::angleBetweenVectors(oriPos,gvars::mousePos);
+                            int angleDiff = math::angleDiff(npc.angle,targetAngle);
+                            angleDiff = math::constrainAngle(angleDiff-90);
+                            int dist = math::closeish(oriPos,gvars::mousePos);
 
-                    if(angleDiff < 90 && angleDiff > -90 && dist <= 120)
-                    {
-                        //Found someone within range! STRIKING!
-                        std::cout << npcCleave.id << "; Someone was hit by the Cleave! \n";
-                        int cleaveDamage = meleewep->maxdam*(0.75+(cleave->ranks*0.25));
-                        npc.dealDamage(&npcCleave,meleewep,cleaveDamage);
+                            if(angleDiff < 90 && angleDiff > -90 && dist <= 120)
+                            {
+                                //Found someone within range! STRIKING!
+                                std::cout << npcCleave.id << "; Someone was hit by the Cleave! \n";
+                                int cleaveDamage = meleewep->maxdam*(0.75+(cleave->ranks*0.25));
+                                npc.dealDamage(&npcCleave,meleewep,cleaveDamage);
+                            }
+                        }
                     }
                 }
-
-                    }
-
-
-
-                }
-
-
-
             }
         }
 
@@ -2316,6 +2304,7 @@ void assaultDesire(Npc &npc, std::list<Npc> &container, Npc * closEnmy, bool &ha
             //std::cout << rangewep->name << ",'s range: " << rangewep->range << std::endl;
         debug("4");
 }
+
 
 void critterVision(Npc &npc, std::list<Npc> &container)
 {
@@ -6186,6 +6175,7 @@ void testAnimation()
         sf::Vector2f centerGrid(abs_to_index(gvars::centerScreen.x/GRID_SIZE),abs_to_index(gvars::centerScreen.y/GRID_SIZE));
         detectLineGrid(mouseGrid.x,mouseGrid.y,centerGrid.x,centerGrid.y);
     }
+
 
 
 }
