@@ -58,6 +58,10 @@ public:
     int xp;
     int skillpoints;
 
+    Item * getLeftHandItem();
+    Item * getRightHandItem();
+    Item * getItemTypeInHands(int type);
+
     Npc * graspNpcLeft;
     Npc * graspNpcRight;
     Item * graspItemLeft;

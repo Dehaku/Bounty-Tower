@@ -6333,6 +6333,24 @@ fpsTracker fpsKeeper;
 
 void mouseAnim()
 {
+    if(inputState.key[Key::I].time == 1)
+    {
+        std::cout << "========= \n";
+        for(auto &npc : npclist)
+    {
+        std::string leftHand;
+        std::string rightHand;
+        if(npc.getLeftHandItem() != nullptr)
+            leftHand = npc.getLeftHandItem()->name;
+        if(npc.getRightHandItem() != nullptr)
+            rightHand = npc.getRightHandItem()->name;
+
+        std::cout << npc.id << ": " << leftHand << "/" << rightHand << std::endl;
+    }
+        std::cout << "========= \n";
+    }
+
+
     /*
     for(auto &Ani : animationmanager.animations)
     {
