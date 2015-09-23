@@ -34,6 +34,8 @@ public:
 
     Npc *user;
 
+    void remove();
+
     int range;
     int age;
     int weight;

@@ -2469,7 +2469,9 @@ void buildTurret(Npc &npc, std::list<Npc> &container)
             else
                 textList.createText(sf::Vector2f(sKI->usePos.x,sKI->usePos.y+10),15,sf::Color::Red,std::to_string(scrapCost) + " Scrap Required");
 
-            if(tiles[abs_to_index(sKI->usePos.x/GRID_SIZE)][abs_to_index(sKI->usePos.y/GRID_SIZE)][gvars::currentz].walkable)
+
+
+            if(isInBounds(sKI->usePos) && tiles[abs_to_index(sKI->usePos.x/GRID_SIZE)][abs_to_index(sKI->usePos.y/GRID_SIZE)][gvars::currentz].walkable)
                 tileBuildable = true;
 
             if(buildDist <= 120 && tileBuildable && enoughScrap)
@@ -2493,23 +2495,7 @@ void buildTurret(Npc &npc, std::list<Npc> &container)
                 {
                     scrapPtr->amount -= scrapCost;
                     if(scrapPtr->amount <= 0)
-                    {
-                        //TODO: Make a .delete() function that sets toDelete and checks for the slot, to free it up.
-                        /*
-                        scrapPtr->toDelete = true;
-                        if(scrapPtr->slotted)
-                        {
-                            for(int i = 0; i != 20; i++)
-                            {
-                                if(npc.invSlots[i]->id == scrapPtr->id)
-                                    npc.invSlots[i] = nullptr;
-                            }
-                        }
-                        */
-                    }
-
-
-
+                        scrapPtr->remove();
                 }
 
 
@@ -2532,6 +2518,12 @@ void buildTurret(Npc &npc, std::list<Npc> &container)
     }
 }
 
+void assignItemsUser(Npc &npc, std::list<Npc> &container)
+{
+    for(auto &item : npc.inventory)
+        item.user = &npc;
+}
+
 void critterBrain(Npc &npc, std::list<Npc> &container)
 {
     bool needsNewPath = false;
@@ -2539,7 +2531,11 @@ void critterBrain(Npc &npc, std::list<Npc> &container)
     if(!npc.alive)
         return;
 
+    assignItemsUser(npc, container);
+
     critterSkillRefresh(npc,container);
+
+
 
     float hpRegen = npc.maxhealth*(npc.skills.getRanks("Feral Regeneration")*0.01);
     if((gvars::framesPassed % 60) == 0)

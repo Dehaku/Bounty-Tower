@@ -1060,6 +1060,25 @@ bool Item::trigger() // Processes activation time, if activation time is ready/r
     return false;
 }
 
+void Item::remove()
+{
+    debug("Item::remove() called. \n");
+    if(user != nullptr)
+    {
+        debug("user valid \n");
+        for(int i = 0; i != 20; i++)
+        {
+            debug(std::to_string(i) + " slot is iterated \n");
+            if(user->invSlots[i] != nullptr && user->invSlots[i]->id == id)
+            {
+                debug("We gotta match! " + user->invSlots[i]->name + "/" + name);
+                user->invSlots[i] = nullptr;
+                toDelete = true;
+                return;
+            }
+        }
+    }
+}
 
 
 
