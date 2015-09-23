@@ -1843,6 +1843,76 @@ void critterEquip(Npc &npc, std::list<Npc> &container)
         }
     }
 
+    //Making sure there's a weapon in our hands.
+    bool weaponEquipped = false;
+    if(npc.getItemTypeInHands(1) != nullptr || npc.getItemTypeInHands(2) != nullptr)
+        weaponEquipped = true;
+
+
+
+    if(!weaponEquipped && inputState.key[Key::E].time == 1)
+    {//No weapon in our hands? Let's see if we have one in our inventory.
+        Item * weapon;
+        for(int i = 0; i != 20; i++)
+        {
+
+            if(npc.invSlots[i] != nullptr && (npc.invSlots[i]->type == 1 || npc.invSlots[i]->type == 2))
+            {// Found one, Let's put it in our hands.
+                weapon = npc.invSlots[i];
+                Item * leftHandItem = npc.getLeftHandItem();
+                Item * rightHandItem = npc.getRightHandItem();
+
+                if(leftHandItem != nullptr)
+                { // Is there something in our hand? Let's move it to the back of our inventory.
+                    for(int t = 1; t != 20; t++)
+                    {//Opinions are split on whether the item should go in the off hand, or the inventory.
+                        if(npc.invSlots[t] == nullptr)
+                        {// Found our empty slot! If no empty slot is found, do nothing.
+                            if(t == 1 && leftHandItem->size == 1)
+                            {//If it's our offhand, and the item is small enough, it can go in.
+                                npc.invSlots[t] = npc.invSlots[0];
+                                npc.invSlots[0] = nullptr;
+                            }
+                            else if(t != 1)
+                            {// If it's not our offhand, the size doesn't matter, for now. TODO: Make items take up their size in slots.
+                                npc.invSlots[t] = npc.invSlots[0];
+                                npc.invSlots[0] = nullptr;
+                            }
+                        }
+                    }
+                }
+
+                if(weapon->size == 2)
+                {
+                    if(rightHandItem != nullptr)
+                    {//Gotta make room for the large weapon.
+                        for(int t = 2; t != 20; t++)
+                        {//Starting late, No point in checking hands.
+                            if(npc.invSlots[t] == nullptr)
+                            {// Found our empty slot! If no empty slot is found, do nothing.
+                                npc.invSlots[t] = npc.invSlots[1];
+                                npc.invSlots[1] = nullptr;
+                            }
+                        }
+                    }
+                    if(leftHandItem == nullptr && rightHandItem == nullptr)
+                    {//Both empty? We're in business!
+                        npc.invSlots[0] = weapon;
+                        npc.invSlots[1] = weapon;
+                    }
+                }
+
+                if(weapon->size == 1)
+                {//One handed weapon.
+                    if(leftHandItem == nullptr)
+                    {//This hand should be empty now, If not, do nothing.
+                        npc.invSlots[i] = nullptr;
+                        npc.invSlots[0] = weapon;
+                    }
+                }
+            }
+        }
+    }
 
     /*
 
