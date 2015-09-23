@@ -2447,15 +2447,32 @@ void buildTurret(Npc &npc, std::list<Npc> &container)
 
 
 
+            int scrapCost = 30;
             int buildDist = math::closeish(npc.getPos2d(),sKI->usePos);
             bool canBuild = false;
             bool tileBuildable = false;
+            bool enoughScrap = false;
+            Item * scrapPtr = nullptr;
+
+            for(auto &item : npc.inventory)
+            {
+                if(item.name == "Scrap" && item.amount >= scrapCost)
+                {
+                    enoughScrap = true;
+                    scrapPtr = &item;
+                }
+
+            }
+
+            if(enoughScrap)
+                textList.createText(sf::Vector2f(sKI->usePos.x,sKI->usePos.y+10),15,sf::Color::Cyan,std::to_string(scrapCost) + " Scrap Required");
+            else
+                textList.createText(sf::Vector2f(sKI->usePos.x,sKI->usePos.y+10),15,sf::Color::Red,std::to_string(scrapCost) + " Scrap Required");
 
             if(tiles[abs_to_index(sKI->usePos.x/GRID_SIZE)][abs_to_index(sKI->usePos.y/GRID_SIZE)][gvars::currentz].walkable)
                 tileBuildable = true;
 
-
-            if(buildDist <= 120 && tileBuildable)
+            if(buildDist <= 120 && tileBuildable && enoughScrap)
             {
                 canBuild = true;
                 effects.createSquare(sX,sY,eX,eY,sf::Color::Transparent,1,sf::Color::Cyan);
@@ -2471,6 +2488,30 @@ void buildTurret(Npc &npc, std::list<Npc> &container)
             if(inputState.lmbTime == 1 && canBuild)
             {
                 turretSkill->cooldown = turretSkill->cooldownint;
+
+                if(scrapPtr != nullptr)
+                {
+                    scrapPtr->amount -= scrapCost;
+                    if(scrapPtr->amount <= 0)
+                    {
+                        //TODO: Make a .delete() function that sets toDelete and checks for the slot, to free it up.
+                        /*
+                        scrapPtr->toDelete = true;
+                        if(scrapPtr->slotted)
+                        {
+                            for(int i = 0; i != 20; i++)
+                            {
+                                if(npc.invSlots[i]->id == scrapPtr->id)
+                                    npc.invSlots[i] = nullptr;
+                            }
+                        }
+                        */
+                    }
+
+
+
+                }
+
 
                 Npc turret = *getGlobalCritter("BTTurret");
                 turret.xpos = sX+(GRID_SIZE/2);
