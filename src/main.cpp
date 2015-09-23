@@ -1897,6 +1897,7 @@ void critterEquip(Npc &npc, std::list<Npc> &container)
                     }
                     if(leftHandItem == nullptr && rightHandItem == nullptr)
                     {//Both empty? We're in business!
+                        npc.invSlots[i] = nullptr;
                         npc.invSlots[0] = weapon;
                         npc.invSlots[1] = weapon;
                     }
