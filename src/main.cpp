@@ -2090,10 +2090,11 @@ void assaultDesire(Npc &npc, std::list<Npc> &container, Npc * closEnmy, bool &ha
     }
     debug("0");
 
-    Item * rangewep = npc.getItemType(2);
+    //Item * rangewep = npc.getItemType(2);
+    Item * rangewep = npc.getItemTypeInHands(2);
     if(rangewep != nullptr && rangewep->isReady() == false)
         rangewep->trigger();
-    Item * meleewep = npc.getItemType(1);
+    Item * meleewep = npc.getItemTypeInHands(1);
     if(meleewep != nullptr && meleewep->isReady() == false)
         meleewep->trigger();
 
