@@ -1814,41 +1814,37 @@ void critterEquip(Npc &npc, std::list<Npc> &container)
 
 
     for (int i = 0; i != 20; i++)
-    {
+    { // Slotting unslotted items, and assigning their user as current NPC.
         if(npc.invSlots[i] == nullptr)
         {
             for (auto &item : npc.inventory)
             {
-                //std::cout << item.name << ", " << item.slotted << ": ";
                 if(item.slotted == false)
                 {
                     std::cout << "Putting" << item.name << " in mem: " << npc.invSlots[i] << "/";
                     npc.invSlots[i] = &item;
                     npc.invSlots[i]->slotted = true;
+                    npc.invSlots[i]->user = &npc;
                     std::cout << npc.invSlots[i] << std::endl;
                     break;
-                    //std::cout << npc.invSlots[i]->name << npc.invSlots[i]->slotted;
                 }
-                //std::cout << std::endl;
             }
         }
-
     }
+
+
     if(inputState.key[Key::I].time == 1 && inputState.key[Key::LShift])
-    {
+    { // Printing all critters inventories into console in their respective slots.
         std::cout << npc.name << "'s inventory; \n";
         for (int i = 0; i != 20; i++)
         {
-            //std::cout << i << ", " << (npc.invSlots[i] != nullptr) << std::endl;
             if(npc.invSlots[i] != nullptr)
-            {
-                //std::cout << "...que? \n";
                 std::cout << i << ": " << npc.invSlots[i]->name << std::endl;
-            }
-
         }
     }
 
+
+    /*
 
     if(npc.graspItemLeft == nullptr && npc.graspNpcLeft == nullptr)
     {
@@ -1889,6 +1885,8 @@ void critterEquip(Npc &npc, std::list<Npc> &container)
             }
         }
     }
+
+    */
 
 
 
@@ -2461,7 +2459,6 @@ void buildTurret(Npc &npc, std::list<Npc> &container)
                     enoughScrap = true;
                     scrapPtr = &item;
                 }
-
             }
 
             if(enoughScrap)
@@ -2531,7 +2528,7 @@ void critterBrain(Npc &npc, std::list<Npc> &container)
     if(!npc.alive)
         return;
 
-    assignItemsUser(npc, container);
+    //assignItemsUser(npc, container);
 
     critterSkillRefresh(npc,container);
 
@@ -6336,6 +6333,7 @@ fpsTracker fpsKeeper;
 
 void mouseAnim()
 {
+    /*
     for(auto &Ani : animationmanager.animations)
     {
         if(Ani.name == "BlueGirlLeftWalk" && inputState.key[Key::Left])
@@ -6368,6 +6366,8 @@ void mouseAnim()
             window.draw(Ani.animation);
         }
     }
+
+    */
 }
 
 

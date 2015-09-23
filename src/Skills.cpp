@@ -235,6 +235,12 @@ Skills::Skills()
     list.push_back(skill);
 
     /*
+    skill.name = "Ammo Construction";
+    skill.desc = "Active - Allows construction of ammo for scrap. ";
+    skill.active = true;
+    skill.autouse = false;
+    list.push_back(skill);
+
     skill.name = "Lemme help with that";
     skill.desc = "Passive - 10% chance per rank to prevent allies item durability loss and prevent weapon jamming.";
     skill.active = false;
@@ -271,10 +277,12 @@ Skills::Skills()
 
     skill.tree = "Monster";
 
+    /*
     skill.name = "Feral Weaponry";
     skill.desc = "Active - Causes creature to go berzerk, striking rapidly with claws, fangs, tail, dealing damage based on rank.";
     skill.active = true;
     list.push_back(skill);
+    */
 
     skill.name = "Feral Regeneration";
     skill.desc = "Passive - Creature gains 1% (total health per rank) health regeneration per second.";

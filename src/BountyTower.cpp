@@ -559,6 +559,13 @@ void drawMenus()
     window.setView(gvars::view1);
 }
 
+void equipmentStuffs()
+{
+    //TODO: Make critters actually use their left/right hand slots.
+    //TODO: Allow critters to drop and pickup equipment from the ground/eachother.
+    //TODO: Make critters reload their weapons/Make guns actually care about their clipsizes and such.
+}
+
 void bountyTowerLoop()
 {
     AnyDeletes(menus);
@@ -566,6 +573,7 @@ void bountyTowerLoop()
         towerMenu();
     if(myTargetPtr != nullptr && inputState.key[Key::I].time == 1)
     {
+        //TODO: Added a check of isSquaddie to prevent turrets from being modified/skilled.
         squaddieMenu(*myTargetPtr);
     }
 
