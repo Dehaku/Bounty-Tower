@@ -1448,9 +1448,9 @@ Item * Npc::getRightHandItem()
 
 Item * Npc::getItemTypeInHands(int type)
 {
-    if(getLeftHandItem()->type == type)
+    if(getLeftHandItem() != nullptr && getLeftHandItem()->type == type)
         return getLeftHandItem();
-    else if(getRightHandItem()->type == type)
+    else if(getRightHandItem() != nullptr && getRightHandItem()->type == type)
         return getRightHandItem();
 
     return nullptr;

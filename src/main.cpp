@@ -2534,9 +2534,13 @@ void critterBrain(Npc &npc, std::list<Npc> &container)
 
 
 
-    float hpRegen = npc.maxhealth*(npc.skills.getRanks("Feral Regeneration")*0.01);
+
     if((gvars::framesPassed % 60) == 0)
+    {
+        float hpRegen = npc.maxhealth*(npc.skills.getRanks("Feral Regeneration")*0.01);
         npc.modhealth(hpRegen);
+    }
+
 
     npc.container = &container;
 
@@ -6346,8 +6350,16 @@ void mouseAnim()
             rightHand = npc.getRightHandItem()->name;
 
         std::cout << npc.id << ": " << leftHand << "/" << rightHand << std::endl;
+
+        Item * gun = npc.getItemTypeInHands(2);
+        if(gun != nullptr)
+            std::cout << npc.id << " has a gun!" << gun->id << " \n";
+
     }
         std::cout << "========= \n";
+
+
+
     }
 
 
