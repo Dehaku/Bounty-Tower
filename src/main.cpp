@@ -2091,22 +2091,23 @@ void assaultDesire(Npc &npc, std::list<Npc> &container, Npc * closEnmy, bool &ha
         endPos = Vec3(closEnmy->xpos/GRID_SIZE,closEnmy->ypos/GRID_SIZE,closEnmy->zpos/GRID_SIZE);
     }
     debug("0");
-        Item * rangewep = npc.getItemType(2);
-        if(rangewep != nullptr && rangewep->isReady() == false)
-            rangewep->trigger();
-        Item * meleewep = npc.getItemType(1);
-        if(meleewep != nullptr && meleewep->isReady() == false)
-            meleewep->trigger();
 
-        if(inputState.key[Key::LAlt] && myTargetPtr != nullptr && npc.id == myTargetPtr->id)
-        {
+    Item * rangewep = npc.getItemType(2);
+    if(rangewep != nullptr && rangewep->isReady() == false)
+        rangewep->trigger();
+    Item * meleewep = npc.getItemType(1);
+    if(meleewep != nullptr && meleewep->isReady() == false)
+        meleewep->trigger();
 
-            //rangewep->getRange();
-            if(rangewep != nullptr)
-                effects.createCircle(npc.xpos,npc.ypos,rangewep->getRange(),sf::Color(255,0,0,50),2,sf::Color::Red);
-            if(meleewep != nullptr)
-                effects.createCircle(npc.xpos,npc.ypos,meleewep->getRange(),sf::Color(0,0,255,50),2,sf::Color::Blue);
-        }
+    if(inputState.key[Key::LAlt] && myTargetPtr != nullptr && npc.id == myTargetPtr->id)
+    {
+
+        //rangewep->getRange();
+        if(rangewep != nullptr)
+            effects.createCircle(npc.xpos,npc.ypos,rangewep->getRange(),sf::Color(255,0,0,50),2,sf::Color::Red);
+        if(meleewep != nullptr)
+            effects.createCircle(npc.xpos,npc.ypos,meleewep->getRange(),sf::Color(0,0,255,50),2,sf::Color::Blue);
+    }
         debug("1");
 
         //We check if the target is within range of the current weapon, and if we can actually directly see them.
@@ -2456,6 +2457,12 @@ void buildTurret(Npc &npc, std::list<Npc> &container)
                 turret.zpos = npc.zpos;
                 turret.faction = npc.faction;
                 turret.factionPtr = npc.factionPtr;
+
+                Item gun = *getGlobalItem("Gun");
+                Item ammo = *getGlobalItem("5.56mm");
+                ammo.amount = 100;
+                gun.internalitems.push_back(ammo);
+                turret.inventory.push_back(gun);
 
                 npclist.push_back(turret);
             }
