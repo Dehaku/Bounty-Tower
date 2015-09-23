@@ -340,6 +340,8 @@ Npc::Npc()
     hasJob = false;
     jobPtr = nullptr;
 
+    isSquaddie = false;
+
     factionPtr = nullptr;
 
     level = 0;

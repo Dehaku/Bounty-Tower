@@ -174,6 +174,7 @@ public:
     short imgendy;
     bool isPlayer;
     bool isNPC;
+    bool isSquaddie;
     bool hasSpawned;
     bool needsFood;
     bool allowedFood;

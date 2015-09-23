@@ -3515,7 +3515,7 @@ void drawSquadHud()
     for(auto &npc : npclist)
     {
 
-        if(npc.faction == "The Titanium Grip")
+        if(npc.faction == "The Titanium Grip" && npc.isSquaddie)
         {
 
             sf::Vector2f spritePos(60,100+(ydrawPos*60));
