@@ -98,6 +98,7 @@ struct skillKeepInfo
     Npc * user;
     std::string skillName;
     sf::Vector2f usePos;
+    sf::Vector2f heldPos;
     bool toDelete;
     bool legal;
     int age;
@@ -122,6 +123,7 @@ void skillKeepLoop()
         sKI.usePos = gvars::mousePos;
 
         effects.createCircle(sKI.usePos.x,sKI.usePos.y,10,sf::Color::Cyan);
+        textList.createText(sKI.usePos,15,sf::Color::White,sKI.skillName);
     }
     AnyDeletes(skillKeeps);
 }
@@ -1905,10 +1907,8 @@ void critterPush(Npc &npc, std::list<Npc> &container)
 {
     for(auto &critters : container)
     {
-        //Vec3f critterPos(critters.xpos,critters.ypos,critters.zpos);
-        //Vec3f myPos(critters.xpos,critters.ypos,critters.zpos);
         int dist = math::distance(npc.getPos(),critters.getPos());
-        if(dist <= npc.size)
+        if(dist <= npc.size && npc.id != critters.id && critters.canmove)
         {
             critters.momentum += sf::Vector2f( -(  (npc.getPos().x-critters.getPos().x)*0.25  ), -(  (npc.getPos().y-critters.getPos().y)*0.25  ) );
         }
@@ -2262,7 +2262,7 @@ void assaultDesire(Npc &npc, std::list<Npc> &container, Npc * closEnmy, bool &ha
                     effects.createCone(npc.getPos2d(), npc.angle, 180, 120, coloryo);
 
                     if(inputState.lmbTime == 1)
-                    {
+                    { //TODO: Make it so you drag, applying heldPos to sKI, The held position is where the critter will stand, the released position is where it will strike.
                         cleave->cooldown = cleave->cooldownint;
 
                         sf::Vector2f oriPos(npc.getPos2d());
@@ -2273,7 +2273,7 @@ void assaultDesire(Npc &npc, std::list<Npc> &container, Npc * closEnmy, bool &ha
                         for(auto &npcCleave : npclist)
                         {
                             //Making sure this critter isn't friendly, itself, or already been hit by the attack.
-                            if(npcCleave.faction == npc.faction || npcCleave.id == npc.id || npcCleave.id == npc.id)
+                            if(npcCleave.faction == npc.faction || npcCleave.id == npc.id)
                                 continue;
 
                             //Figuring out if the target is within range, and within an angle.
@@ -2304,7 +2304,6 @@ void assaultDesire(Npc &npc, std::list<Npc> &container, Npc * closEnmy, bool &ha
             //std::cout << rangewep->name << ",'s range: " << rangewep->range << std::endl;
         debug("4");
 }
-
 
 void critterVision(Npc &npc, std::list<Npc> &container)
 {
@@ -2431,6 +2430,39 @@ void critterSkillRefresh(Npc &npc, std::list<Npc> &container)
     }
 }
 
+void buildTurret(Npc &npc, std::list<Npc> &container)
+{
+    skillKeepInfo * sKI;
+    sKI = getSkillKeep();
+    if(sKI != nullptr && sKI->user->id == npc.id && sKI->skillName == "Turret Construction")
+    {
+        Skill * turretSkill = npc.skills.getSkill("Turret Construction");
+        if(turretSkill != nullptr && turretSkill->ranks > 0 && turretSkill->cooldown <= 0)
+        {
+            int sX = (abs_to_index(sKI->usePos.x/GRID_SIZE)*GRID_SIZE);
+            int sY = (abs_to_index(sKI->usePos.y/GRID_SIZE)*GRID_SIZE);
+            int eX = (abs_to_index(sKI->usePos.x/GRID_SIZE)*GRID_SIZE)+(GRID_SIZE);
+            int eY = (abs_to_index(sKI->usePos.y/GRID_SIZE)*GRID_SIZE)+(GRID_SIZE);
+
+            effects.createSquare(sX,sY,eX,eY,sf::Color::Transparent,1,sf::Color::Cyan);
+
+            if(inputState.lmbTime == 1)
+            {
+                turretSkill->cooldown = turretSkill->cooldownint;
+
+                Npc turret = *getGlobalCritter("BTTurret");
+                turret.xpos = sX+(GRID_SIZE/2);
+                turret.ypos = sY+(GRID_SIZE/2);
+                turret.zpos = npc.zpos;
+                turret.faction = npc.faction;
+                turret.factionPtr = npc.factionPtr;
+
+                npclist.push_back(turret);
+            }
+        }
+    }
+}
+
 void critterBrain(Npc &npc, std::list<Npc> &container)
 {
     bool needsNewPath = false;
@@ -2451,7 +2483,7 @@ void critterBrain(Npc &npc, std::list<Npc> &container)
     if(inputState.key[Key::L])
         npc.moverate = 100;
 
-
+    buildTurret(npc,container);
 
 
     if(tiles[abs_to_index(npc.xpos/GRID_SIZE)][abs_to_index(npc.ypos/GRID_SIZE)][abs_to_index(npc.zpos/GRID_SIZE)].walkable == false)
@@ -3234,8 +3266,8 @@ void drawNPCs()
 
 
 
-            //npc.drawImg();
 
+            bool hasAnim = false;
             for(auto &ani : animationmanager.animations)
             {
 
@@ -3254,6 +3286,8 @@ void drawNPCs()
 
                 if(ani.name.size() <= npc.name.size()) // To avoid going out of bounds with the string functions.
                     continue;
+
+                hasAnim = true;
 
                 std::string aniType;
                 aniType.append(ani.name,npc.name.size(),2000);
@@ -3280,6 +3314,9 @@ void drawNPCs()
                     window.draw(ani.animation);
                 }
             }
+
+            if(!hasAnim)
+                npc.drawImg();
 
             sf::Color shadow(50,50,50,50);
             if(!npc.alive) // To simulate blood.
