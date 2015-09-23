@@ -2445,9 +2445,30 @@ void buildTurret(Npc &npc, std::list<Npc> &container)
             int eX = (abs_to_index(sKI->usePos.x/GRID_SIZE)*GRID_SIZE)+(GRID_SIZE);
             int eY = (abs_to_index(sKI->usePos.y/GRID_SIZE)*GRID_SIZE)+(GRID_SIZE);
 
-            effects.createSquare(sX,sY,eX,eY,sf::Color::Transparent,1,sf::Color::Cyan);
 
-            if(inputState.lmbTime == 1)
+
+            int buildDist = math::closeish(npc.getPos2d(),sKI->usePos);
+            bool canBuild = false;
+            bool tileBuildable = false;
+
+            if(tiles[abs_to_index(sKI->usePos.x/GRID_SIZE)][abs_to_index(sKI->usePos.y/GRID_SIZE)][gvars::currentz].walkable)
+                tileBuildable = true;
+
+
+            if(buildDist <= 120 && tileBuildable)
+            {
+                canBuild = true;
+                effects.createSquare(sX,sY,eX,eY,sf::Color::Transparent,1,sf::Color::Cyan);
+                effects.createCircle(npc.xpos,npc.ypos,120,sf::Color::Transparent,1,sf::Color::Cyan);
+            }
+            else
+            {
+                effects.createSquare(sX,sY,eX,eY,sf::Color::Transparent,1,sf::Color::Red);
+                effects.createCircle(npc.xpos,npc.ypos,120,sf::Color::Transparent,1,sf::Color::Red);
+            }
+
+
+            if(inputState.lmbTime == 1 && canBuild)
             {
                 turretSkill->cooldown = turretSkill->cooldownint;
 
