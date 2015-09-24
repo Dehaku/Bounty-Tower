@@ -2203,41 +2203,20 @@ void checkAmmo(Npc &npc, std::list<Npc> &container, Item * rangewep)
                 //Defining how much ammo needs to be put into the weapon.
                 int ammoMissingFromClip = rangewep->maxclip;
                 ammoMissingFromClip -= currentAmmo->amount;
+                int loadAmount = currentAmmo->amount;
 
                 if(newAmmo->amount > ammoMissingFromClip)
-                {//We have too much ammo, so it's not a simple job to jam it all in.
+                {//We have too much ammo, So we simply set loadAmount to max, reduce newAmount by ammoMissing.
                     newAmmo->amount -= ammoMissingFromClip;
-                    if(sameAmmo)
-                    {
-                        currentAmmo->amount = rangewep->maxclip;
-                        return;
-                    }
-                    else
-                    {
-                        Item loadingAmmo = *newAmmo;
-                        loadingAmmo.amount = ammoMissingFromClip;
-                        rangewep->internalitems.push_back(loadingAmmo);
-                        return;
-                    }
-
+                    loadAmount = rangewep->maxclip;
                 }
                 else
-                {//Not enough ammo to go over the cap, we can cheese this one then.
-                    if(sameAmmo)
-                    {
-                        currentAmmo->amount += newAmmo->amount;
-                        newAmmo->remove();
-                        return;
-                    }
-                    else
-                    {
-                        Item loadingAmmo = *newAmmo;
-                        //loadingAmmo.amount = ammoMissingFromClip;
-                        rangewep->internalitems.push_back(*newAmmo);
-                        newAmmo->remove();
-                        return;
-                    }
+                {//Not enough ammo to go over the cap, We'll add it up, then delete the empty ammo.
+                    loadAmount += newAmmo->amount;
+                    newAmmo->remove();
                 }
+                currentAmmo->amount = loadAmount;
+                return;
 
             }
             else
