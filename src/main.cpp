@@ -2161,6 +2161,7 @@ void checkAmmo(Npc &npc, std::list<Npc> &container, Item * rangewep)
 {
     bool weaponEmpty = false;
     bool needsReload = false;
+    bool isFull = false;
 
     bool hasSpareAmmo = false;
 
@@ -2173,7 +2174,7 @@ void checkAmmo(Npc &npc, std::list<Npc> &container, Item * rangewep)
     if(weaponEmpty)
         needsReload = true;
 
-    if(inputState.key[Key::E].time == 1)
+    if(inputState.key[Key::R].time == 1)
         needsReload = true;
 
     //Check if we have some ammo in our inventory to reload with!
@@ -2185,8 +2186,13 @@ void checkAmmo(Npc &npc, std::list<Npc> &container, Item * rangewep)
     if(!ammoVector.ptrs.empty())
         hasSpareAmmo = true;
 
+    //Making sure the weapon isn't full, No point in reloading then.
+    if(!weaponEmpty)
+        if(currentAmmo->amount >= rangewep->maxclip)
+            isFull = true;
 
-    if(needsReload && hasSpareAmmo)
+
+    if(needsReload && hasSpareAmmo && !isFull)
     {//Conditions are right, Let's reload!
 
         //for(int i = 0; i != ammoVector.ptrs.size(); i++)
@@ -2216,6 +2222,7 @@ void checkAmmo(Npc &npc, std::list<Npc> &container, Item * rangewep)
                     newAmmo->remove();
                 }
                 currentAmmo->amount = loadAmount;
+                soundmanager.playSound("Reload.ogg");
                 return;
 
             }
@@ -2239,6 +2246,7 @@ void checkAmmo(Npc &npc, std::list<Npc> &container, Item * rangewep)
 
                 loadingAmmo.amount = loadAmount;
                 rangewep->internalitems.push_back(loadingAmmo);
+                soundmanager.playSound("Reload.ogg");
                 return;
 
             }
@@ -3817,6 +3825,7 @@ void drawHudSkills(Npc &npc, sf::Vector2f spritePos)
 
             if(imageButtonHovered(skillButt))
             {
+                gvars::hovering = true;
                 textList.createText(skillPos,15,sf::Color::White,skill.name,window.getView());
 
                 textList.createText(sf::Vector2f(skillPos.x,skillPos.y+20),15,sf::Color::White,skill.desc,window.getView());
@@ -6624,8 +6633,6 @@ void mouseAnim()
     }
         std::cout << "========= \n";
 
-
-
     }
 
 
@@ -6829,14 +6836,8 @@ int main()
             currentAnimation = &walkingAnimationDown;
         }
 
-        //std::cout << "frametime: " << timer.asSeconds() << std::endl;
-
-
-
-
-
         gvars::hovering = false;
-        if (inputState.key[Key::R] && !network::chatting)
+        if (inputState.key[Key::RControl] && inputState.key[Key::R] && !network::chatting)
         {
             toggle(gvars::debug);
             fSleep(0.5);
@@ -6862,12 +6863,14 @@ int main()
         acquireSelectedNPCs();
         selectedNPCprocess();
 
-        lmbPress();
+
         debug("Pre Draw Stuffs");
         hoverItemIDdisplay();
         drawStuffs();
 
         mouseAnim();
+
+        lmbPress();
 
         window.draw(animatedSprite);
 
