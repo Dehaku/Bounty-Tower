@@ -2157,6 +2157,118 @@ bool canSeeNpc(Npc &ori, Npc &target)
     return false;
 }
 
+void checkAmmo(Npc &npc, std::list<Npc> &container, Item * rangewep)
+{
+    bool weaponEmpty = false;
+    bool needsReload = false;
+
+    bool hasSpareAmmo = false;
+
+    //Checking if there's any ammo at all.
+    Item * currentAmmo = getItemType(rangewep->internalitems,3);
+    if(currentAmmo == nullptr)
+        weaponEmpty = true;
+
+    //If there's no ammo, Definitely needs to be reloaded, This extra step is for when a manual reload order is issued with ammo still in the gun.
+    if(weaponEmpty)
+        needsReload = true;
+
+    if(inputState.key[Key::E].time == 1)
+        needsReload = true;
+
+    //Check if we have some ammo in our inventory to reload with!
+    itemPtrVector ammoVector;
+    for(auto &item : npc.inventory)
+        if(item.type == 3)
+            ammoVector.ptrs.push_back(&item);
+
+    if(!ammoVector.ptrs.empty())
+        hasSpareAmmo = true;
+
+
+    if(needsReload && hasSpareAmmo)
+    {//Conditions are right, Let's reload!
+
+        //for(int i = 0; i != ammoVector.ptrs.size(); i++)
+        for(auto &newAmmo : ammoVector.ptrs)
+        {
+            if(currentAmmo != nullptr)
+            {//We already have ammo! Let's deal with this first.
+
+                //First we check if the already existing ammo in the gun is the same as the new one...
+                bool sameAmmo = (currentAmmo->name == newAmmo->name);
+                if(!sameAmmo)
+                    continue;
+
+                //Defining how much ammo needs to be put into the weapon.
+                int ammoMissingFromClip = rangewep->maxclip;
+                ammoMissingFromClip -= currentAmmo->amount;
+
+                if(newAmmo->amount > ammoMissingFromClip)
+                {//We have too much ammo, so it's not a simple job to jam it all in.
+                    newAmmo->amount -= ammoMissingFromClip;
+                    if(sameAmmo)
+                    {
+                        currentAmmo->amount = rangewep->maxclip;
+                        return;
+                    }
+                    else
+                    {
+                        Item loadingAmmo = *newAmmo;
+                        loadingAmmo.amount = ammoMissingFromClip;
+                        rangewep->internalitems.push_back(loadingAmmo);
+                        return;
+                    }
+
+                }
+                else
+                {//Not enough ammo to go over the cap, we can cheese this one then.
+                    if(sameAmmo)
+                    {
+                        currentAmmo->amount += newAmmo->amount;
+                        newAmmo->remove();
+                        return;
+                    }
+                    else
+                    {
+                        Item loadingAmmo = *newAmmo;
+                        //loadingAmmo.amount = ammoMissingFromClip;
+                        rangewep->internalitems.push_back(*newAmmo);
+                        newAmmo->remove();
+                        return;
+                    }
+                }
+
+            }
+            else
+            {//Gun's empty! This should be easy.
+                int ammoMissingFromClip = rangewep->maxclip;
+
+                Item loadingAmmo = *newAmmo;
+                int loadAmount = 0;
+
+                if(newAmmo->amount > ammoMissingFromClip)
+                {//Too much ammo? fill loadAmount, drain from newAmmo!
+                    loadAmount = ammoMissingFromClip;
+                    newAmmo->amount -= ammoMissingFromClip;
+                }
+                else
+                {// Less than too much? loadAmount is newAmmo, then delete newAmmo! It's empty now!
+                    loadAmount = newAmmo->amount;
+                    newAmmo->remove();
+                }
+
+                loadingAmmo.amount = loadAmount;
+                rangewep->internalitems.push_back(loadingAmmo);
+                return;
+
+            }
+        }
+    }
+
+
+}
+
 void assaultDesire(Npc &npc, std::list<Npc> &container, Npc * closEnmy, bool &hasPath, Vec3 &endPos)
 {
     if(closEnmy != nullptr && npc.faction == "Towerlings")
@@ -2173,6 +2285,9 @@ void assaultDesire(Npc &npc, std::list<Npc> &container, Npc * closEnmy, bool &ha
     Item * meleewep = npc.getItemTypeInHands(1);
     if(meleewep != nullptr && meleewep->isReady() == false)
         meleewep->trigger();
+
+    if(rangewep != nullptr)
+        checkAmmo(npc,container,rangewep);
 
     if(inputState.key[Key::LAlt] && myTargetPtr != nullptr && npc.id == myTargetPtr->id)
     {
@@ -6453,7 +6568,34 @@ void testAnimation()
         detectLineGrid(mouseGrid.x,mouseGrid.y,centerGrid.x,centerGrid.y);
     }
 
+    if(inputState.key[Key::Quote].time == 1 && myTargetPtr != nullptr)
+    {
+        Item ammo = *getGlobalItem("5.56mm AP");
+        ammo.amount = 2;
+        myTargetPtr->inventory.push_back(ammo);
+    }
 
+    if(inputState.key[Key::M].time == 1 && myTargetPtr != nullptr)
+    {
+        for(auto item : myTargetPtr->inventory)
+        {
+            for(auto internItem : item.internalitems)
+            {
+                if(internItem.type == 3)
+                {
+                    internItem.remove();
+
+                    break;
+                }
+            }
+            AnyDeletes(item.internalitems);
+            if(item.type == 3)
+            {
+                item.remove();
+                break;
+            }
+        }
+    }
 
 }
 
