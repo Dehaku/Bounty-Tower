@@ -1895,9 +1895,14 @@ void critterEquip(Npc &npc, std::list<Npc> &container)
                             }
                         }
                     }
-                    if(leftHandItem == nullptr && rightHandItem == nullptr)
+                    if(npc.getLeftHandItem() == nullptr && npc.getRightHandItem() == nullptr)
                     {//Both empty? We're in business!
+
+                        if(i != 19 && npc.invSlots[i+1] != nullptr && npc.invSlots[i+1]->id == npc.invSlots[i]->id)
+                            npc.invSlots[i+1] = nullptr;
+
                         npc.invSlots[i] = nullptr;
+
                         npc.invSlots[0] = weapon;
                         npc.invSlots[1] = weapon;
                     }
@@ -1905,7 +1910,7 @@ void critterEquip(Npc &npc, std::list<Npc> &container)
 
                 if(weapon->size == 1)
                 {//One handed weapon.
-                    if(leftHandItem == nullptr)
+                    if(npc.getLeftHandItem() == nullptr)
                     {//This hand should be empty now, If not, do nothing.
                         npc.invSlots[i] = nullptr;
                         npc.invSlots[0] = weapon;
@@ -3562,32 +3567,72 @@ void hoverItemHUD()
     if(myTargetPtr != nullptr && bountytower::bountytower)
         for (int i = 0; i != 20; i++)
     {
+        bool isSecondSlot = false;
+        if(myTargetPtr->invSlots[i] != nullptr && myTargetPtr->invSlots[i]->size > 1)
+        {
+            if(i > 0 && myTargetPtr->invSlots[i-1] != nullptr && myTargetPtr->invSlots[i-1]->id == myTargetPtr->invSlots[i]->id)
+                isSecondSlot = true;
+        }
+
 
         sf::Vector2f vPos(gvars::slotPos[i]);
-        //sf::Vector2f rPos(gvars::topLeft.x + gvars::slotPos[i].x, gvars::topLeft.y + gvars::slotPos[i].y);
+        bool allowPlace = true;
+
         if(math::closeish(pixelPos,vPos) <= 20)
         {
             gvars::hovering = true;
+
+            if(!isSecondSlot)
+                effects.createCircle(vPos.x,vPos.y,10,sf::Color(255,255,255,100),0,sf::Color::White,window.getDefaultView());
+            else
+                effects.createCircle(vPos.x,vPos.y,10,sf::Color(255,0,0,200),0,sf::Color::White,window.getDefaultView());
+
+
+            if(mouseItem != nullptr && mouseItem->size > 1 && i != 19)
+            {
+                sf::Vector2f vPos1(gvars::slotPos[i+1]);
+                if(myTargetPtr->invSlots[i+1] != nullptr || i == 1 || i == 19)
+                {
+                    effects.createCircle(vPos1.x,vPos1.y,10,sf::Color(255,0,0,200),0,sf::Color::White,window.getDefaultView());
+                    allowPlace = false;
+                }
+                else
+                {
+                    effects.createCircle(vPos1.x,vPos1.y,10,sf::Color(255,255,255,100),0,sf::Color::White,window.getDefaultView());
+                    allowPlace = true;
+                }
+            }
         }
 
-        if(inputState.lmbTime == 1 && math::closeish(pixelPos,vPos) <= 20)
+        if(inputState.lmbTime == 1 && math::closeish(pixelPos,vPos) <= 20 && !isSecondSlot)
         {
-            //std::cout << "Success! on: " << i << std::endl;
-
-
 
             if(mouseItem == nullptr && myTargetPtr->invSlots[i] != nullptr)
             {
-                //std::cout << "Clicked on " << myTargetPtr->invSlots[i]->name << std::endl;
                 mouseItem = myTargetPtr->invSlots[i];
+                if(mouseItem->size > 1)
+                {
+                    if(myTargetPtr->invSlots[i+1] != nullptr && myTargetPtr->invSlots[i+1]->id == myTargetPtr->invSlots[i]->id)
+                        myTargetPtr->invSlots[i+1] = nullptr;
+                }
+
                 myTargetPtr->invSlots[i] = nullptr;
             }
             else if(mouseItem != nullptr)
             {
                 if(myTargetPtr->invSlots[i] == nullptr)
                 {
-                    myTargetPtr->invSlots[i] = mouseItem;
-                    mouseItem = nullptr;
+                    if(mouseItem->size > 1 && allowPlace)
+                    {
+                        myTargetPtr->invSlots[i] = mouseItem;
+                        myTargetPtr->invSlots[i+1] = mouseItem;
+                        mouseItem = nullptr;
+                    }
+                    else if(allowPlace)
+                    {
+                        myTargetPtr->invSlots[i] = mouseItem;
+                        mouseItem = nullptr;
+                    }
                 }
             }
         }
