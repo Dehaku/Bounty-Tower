@@ -615,7 +615,7 @@ void bountyTowerLoop()
     }
 
     if(inputState.key[Key::V].time == 1)
-    {
+    { // Spawn Scrap
         Item item = *getGlobalItem("Scrap");
         item.xpos = gvars::mousePos.x;
         item.ypos = gvars::mousePos.y;
@@ -625,7 +625,7 @@ void bountyTowerLoop()
     }
 
     if(inputState.key[Key::B].time == 1)
-    {
+    { // Spawn Cash
         Item item = *getGlobalItem("Cash");
         item.amount = random(10,100);
         item.xpos = gvars::mousePos.x;
@@ -634,6 +634,17 @@ void bountyTowerLoop()
         worlditems.push_back(item);
 
     }
+
+    if(inputState.key[Key::N].time == 1)
+    { // Spawn Ammo
+        Item item = *getGlobalItem("5.56mm");
+        item.amount = random(5,10);
+        item.xpos = gvars::mousePos.x;
+        item.ypos = gvars::mousePos.y;
+        item.zpos = gvars::currentz*GRID_SIZE;
+        worlditems.push_back(item);
+    }
+
 
     if(inputState.key[Key::G].time == 1)
     { // Renew Menu Towers

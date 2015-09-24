@@ -3043,17 +3043,12 @@ void drawSelectedCritterHUD()
 
     if(myTargetPtr != nullptr && bountytower::bountytower)
     {
-        sf::View view = window.getDefaultView();
-        //view.zoom(0.5f);
-        window.setView(view);
-
         // restore the default view
         window.setView(window.getDefaultView());
 
         sf::Sprite CIH;
         sf::Texture Tex;
         sf::Vector2u TexSize = texturemanager.getTexture("CritterInventoryHud.png").getSize();
-        //CIH.setOrigin(TexSize.x/2,TexSize.y/2);
         CIH.setTexture(texturemanager.getTexture("CritterInventoryHud.png"));
         CIH.setPosition(0,0);
 
@@ -3086,6 +3081,9 @@ void drawSelectedCritterHUD()
                     outPut.append(": " + std::to_string(amount));
 
                 window.draw(drawText(uPos,outPut));
+
+
+
             }
         }
 

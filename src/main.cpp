@@ -2598,6 +2598,60 @@ void assignItemsUser(Npc &npc, std::list<Npc> &container)
         item.user = &npc;
 }
 
+void craftAmmo(Npc &npc, std::list<Npc> &container)
+{
+    skillKeepInfo * sKI;
+    sKI = getSkillKeep();
+    if(sKI != nullptr && sKI->user->id == npc.id && sKI->skillName == "Ammo Construction")
+    {
+        Skill * ammoSkill = npc.skills.getSkill("Ammo Construction");
+        if(ammoSkill != nullptr && ammoSkill->ranks > 0 && ammoSkill->cooldown <= 0)
+        {
+
+            int scrapCost = 30;
+            bool enoughScrap = false;
+            Item * scrapPtr = nullptr;
+
+            for(auto &item : npc.inventory)
+            {
+                if(item.name == "Scrap" && item.amount >= scrapCost)
+                {
+                    enoughScrap = true;
+                    scrapPtr = &item;
+                }
+            }
+
+            if(enoughScrap)
+                textList.createText(sf::Vector2f(sKI->usePos.x,sKI->usePos.y+10),15,sf::Color::Cyan,std::to_string(scrapCost) + " Scrap Required");
+            else
+                textList.createText(sf::Vector2f(sKI->usePos.x,sKI->usePos.y+10),15,sf::Color::Red,std::to_string(scrapCost) + " Scrap Required");
+
+            if(enoughScrap)
+            {
+                ammoSkill->cooldown = ammoSkill->cooldownint;
+
+                if(scrapPtr != nullptr)
+                {
+                    scrapPtr->amount -= scrapCost;
+                    if(scrapPtr->amount <= 0)
+                        scrapPtr->remove();
+                }
+
+                Item ammo = *getGlobalItem("5.56mm");
+                ammo.amount = 5*ammoSkill->ranks;
+                npc.inventory.push_back(ammo);
+                sKI->toDelete = true;
+            }
+        }
+    }
+}
+
+void activeSkills(Npc &npc, std::list<Npc> &container)
+{
+    buildTurret(npc,container);
+    craftAmmo(npc,container);
+}
+
 void critterBrain(Npc &npc, std::list<Npc> &container)
 {
     bool needsNewPath = false;
@@ -2626,7 +2680,8 @@ void critterBrain(Npc &npc, std::list<Npc> &container)
     if(inputState.key[Key::L])
         npc.moverate = 100;
 
-    buildTurret(npc,container);
+
+    activeSkills(npc,container);
 
 
     if(tiles[abs_to_index(npc.xpos/GRID_SIZE)][abs_to_index(npc.ypos/GRID_SIZE)][abs_to_index(npc.zpos/GRID_SIZE)].walkable == false)
@@ -3669,6 +3724,8 @@ void drawHudSkills(Npc &npc, sf::Vector2f spritePos)
             if(imageButtonHovered(skillButt))
             {
                 textList.createText(skillPos,15,sf::Color::White,skill.name,window.getView());
+
+                textList.createText(sf::Vector2f(skillPos.x,skillPos.y+20),15,sf::Color::White,skill.desc,window.getView());
                 if(inputState.rmbTime == 1)
                 {
                     toggle(skill.autouse);

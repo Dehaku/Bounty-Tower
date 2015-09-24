@@ -234,12 +234,14 @@ Skills::Skills()
     skill.autouse = true;
     list.push_back(skill);
 
-    /*
     skill.name = "Ammo Construction";
-    skill.desc = "Active - Allows construction of ammo for scrap. ";
+    skill.desc = "Active - Produces 5 ammo per rank for 30 scrap. ";
     skill.active = true;
     skill.autouse = false;
     list.push_back(skill);
+
+    /*
+
 
     skill.name = "Lemme help with that";
     skill.desc = "Passive - 10% chance per rank to prevent allies item durability loss and prevent weapon jamming.";
