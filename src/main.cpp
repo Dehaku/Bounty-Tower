@@ -6547,35 +6547,6 @@ void testAnimation()
         detectLineGrid(mouseGrid.x,mouseGrid.y,centerGrid.x,centerGrid.y);
     }
 
-    if(inputState.key[Key::Quote].time == 1 && myTargetPtr != nullptr)
-    {
-        Item ammo = *getGlobalItem("5.56mm AP");
-        ammo.amount = 2;
-        myTargetPtr->inventory.push_back(ammo);
-    }
-
-    if(inputState.key[Key::M].time == 1 && myTargetPtr != nullptr)
-    {
-        for(auto item : myTargetPtr->inventory)
-        {
-            for(auto internItem : item.internalitems)
-            {
-                if(internItem.type == 3)
-                {
-                    internItem.remove();
-
-                    break;
-                }
-            }
-            AnyDeletes(item.internalitems);
-            if(item.type == 3)
-            {
-                item.remove();
-                break;
-            }
-        }
-    }
-
 }
 
 class fpsTracker

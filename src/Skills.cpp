@@ -153,9 +153,7 @@ Skills::Skills()
     skill.name = "Snipe Shot";
     skill.desc = "Active - Fires a single bullet with 50% additional Range and Damage per rank, When aiming, displays a line of travel, including richochet potential and penetration.";
     skill.active = true;
-    skill.cooldownint = 0;
     list.push_back(skill);
-    skill.cooldownint = 300;
 
     /*
 
