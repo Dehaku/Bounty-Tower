@@ -3743,20 +3743,19 @@ void hoverItemHUD()
     //std::cout << "pixelPos: " << pixelPos.x << ":" << pixelPos.y << std::endl;
 
     sf::Sprite SP;
-    //sf::Vector2u TexySize = myTargetPtr->invSlots[i]->img.getTexture()->getSize();
     SP.setTexture(texturemanager.getTexture("Food.png"));
 
     SP.setPosition(pixelPos);
     //SP.setOrigin(TexySize.x/2,TexySize.y/2);
     window.draw(SP);
 
-    if(myTargetPtr != nullptr && bountytower::bountytower)
+    if(!selectedNPCs.empty() && bountytower::bountytower)
         for (int i = 0; i != 20; i++)
     {
         bool isSecondSlot = false;
-        if(myTargetPtr->invSlots[i] != nullptr && myTargetPtr->invSlots[i]->size > 1)
+        if(selectedNPCs[0]->invSlots[i] != nullptr && selectedNPCs[0]->invSlots[i]->size > 1)
         {
-            if(i > 0 && myTargetPtr->invSlots[i-1] != nullptr && myTargetPtr->invSlots[i-1]->id == myTargetPtr->invSlots[i]->id)
+            if(i > 0 && selectedNPCs[0]->invSlots[i-1] != nullptr && selectedNPCs[0]->invSlots[i-1]->id == selectedNPCs[0]->invSlots[i]->id)
                 isSecondSlot = true;
         }
 
@@ -3777,7 +3776,7 @@ void hoverItemHUD()
             if(mouseItem != nullptr && mouseItem->size > 1 && i != 19)
             {
                 sf::Vector2f vPos1(gvars::slotPos[i+1]);
-                if(myTargetPtr->invSlots[i+1] != nullptr || i == 1 || i == 19)
+                if(selectedNPCs[0]->invSlots[i+1] != nullptr || i == 1 || i == 19)
                 {
                     effects.createCircle(vPos1.x,vPos1.y,10,sf::Color(255,0,0,200),0,sf::Color::White,window.getDefaultView());
                     allowPlace = false;
@@ -3793,30 +3792,30 @@ void hoverItemHUD()
         if(inputState.lmbTime == 1 && math::closeish(pixelPos,vPos) <= 20 && !isSecondSlot)
         {
 
-            if(mouseItem == nullptr && myTargetPtr->invSlots[i] != nullptr)
+            if(mouseItem == nullptr && selectedNPCs[0]->invSlots[i] != nullptr)
             {
-                mouseItem = myTargetPtr->invSlots[i];
+                mouseItem = selectedNPCs[0]->invSlots[i];
                 if(mouseItem->size > 1)
                 {
-                    if(myTargetPtr->invSlots[i+1] != nullptr && myTargetPtr->invSlots[i+1]->id == myTargetPtr->invSlots[i]->id)
-                        myTargetPtr->invSlots[i+1] = nullptr;
+                    if(selectedNPCs[0]->invSlots[i+1] != nullptr && selectedNPCs[0]->invSlots[i+1]->id == selectedNPCs[0]->invSlots[i]->id)
+                        selectedNPCs[0]->invSlots[i+1] = nullptr;
                 }
 
-                myTargetPtr->invSlots[i] = nullptr;
+                selectedNPCs[0]->invSlots[i] = nullptr;
             }
             else if(mouseItem != nullptr)
             {
-                if(myTargetPtr->invSlots[i] == nullptr)
+                if(selectedNPCs[0]->invSlots[i] == nullptr)
                 {
                     if(mouseItem->size > 1 && allowPlace)
                     {
-                        myTargetPtr->invSlots[i] = mouseItem;
-                        myTargetPtr->invSlots[i+1] = mouseItem;
+                        selectedNPCs[0]->invSlots[i] = mouseItem;
+                        selectedNPCs[0]->invSlots[i+1] = mouseItem;
                         mouseItem = nullptr;
                     }
                     else if(allowPlace)
                     {
-                        myTargetPtr->invSlots[i] = mouseItem;
+                        selectedNPCs[0]->invSlots[i] = mouseItem;
                         mouseItem = nullptr;
                     }
                 }

@@ -671,7 +671,11 @@ void menuPopUp()
                     return;
                 }
             }
-            if (i == 3 && myTargetPtr != nullptr && tiles[vPos.x][vPos.y][vPos.z].state == "Off")
+
+
+
+            sf::Vector2f boundCheck(vPos.x*GRID_SIZE,vPos.y*GRID_SIZE);
+            if (i == 3 && myTargetPtr != nullptr && isInBounds(boundCheck) && tiles[vPos.x][vPos.y][vPos.z].state == "Off")
             {
                 effects.createLine(
                     gCtrl.menuPos.x, (gCtrl.menuPos.y + (iY * 13)) + 13,
