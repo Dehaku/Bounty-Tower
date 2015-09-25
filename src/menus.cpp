@@ -1735,13 +1735,14 @@ void rightMouseButtonContextMenu()
             menuPopUp();
             return;
         }
+
         int mouseX = gvars::mousePos.x/GRID_SIZE;
         int mouseY = gvars::mousePos.y/GRID_SIZE;
+        bool inBounds = aabb(mouseX,mouseY,0,GRIDS-1,0,GRIDS-1);
+        bool isWalkable = tiles[mouseX][mouseY][gvars::currentz].walkable;
+        bool isSwitch = tiles[mouseX][mouseY][gvars::currentz].id == 3500;
 
-
-
-        if(aabb(mouseX,mouseY,0,GRIDS-1,0,GRIDS-1)
-           && tiles[mouseX][mouseY][gvars::currentz].walkable)
+        if(inBounds && isWalkable && !isSwitch)
         {
             for(auto &lilguy : selectedNPCs)
             {
