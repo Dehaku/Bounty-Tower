@@ -2276,7 +2276,7 @@ void assaultDesire(Npc &npc, std::list<Npc> &container, Npc * closEnmy, bool &ha
     if(rangewep != nullptr)
         checkAmmo(npc,container,rangewep);
 
-    if(inputState.key[Key::LAlt] && myTargetPtr != nullptr && npc.id == myTargetPtr->id)
+    if(inputState.key[Key::LAlt] && !selectedNPCs.empty() && npc.id == selectedNPCs[0]->id)
     {
 
         //rangewep->getRange();
@@ -2582,7 +2582,7 @@ void critterVision(Npc &npc, std::list<Npc> &container)
     }
 
     debug("debug 4", false);
-    if(myTargetPtr != nullptr && myTargetPtr->id == npc.id)
+    if(!selectedNPCs.empty() && selectedNPCs[0]->id == npc.id)
     {
         sf::Color filling(sf::Color::Yellow);
         filling.a = (50);
@@ -2756,23 +2756,23 @@ void activeSkills(Npc &npc, std::list<Npc> &container)
 
 void critterPickUp()
 {
-    if(myTargetPtr != nullptr)
+    if(!selectedNPCs.empty())
     {//Making sure we have someone selected.
         for(auto &item : worlditems)
         {//Running through the worlds items.
 
-            int critterDist = math::distance(myTargetPtr->getPos(),Vec3f(item.xpos,item.ypos,item.zpos));
+            int critterDist = math::distance(selectedNPCs[0]->getPos(),Vec3f(item.xpos,item.ypos,item.zpos));
             int mouseDist = math::closeish(gvars::mousePos,sf::Vector2f(item.xpos,item.ypos));
             if(critterDist <= 120 && mouseDist <= 10)
             {//Arbitrary number, but good enough distance for picking up.
                 effects.createCircle(item.xpos,item.ypos,10,sf::Color(0,255,255,100));
                 textList.createText(item.xpos,item.ypos+15,15,sf::Color::White,"RMB: Pickup " + item.name);
-                if(myTargetPtr->inventory.size() < 20 && inputState.rmbTime == 1)
+                if(selectedNPCs[0]->inventory.size() < 20 && inputState.rmbTime == 1)
                 {//Making sure we have room.
                     item.xpos = 0;
                     item.ypos = 0;
                     item.zpos = 0;
-                    myTargetPtr->inventory.push_back(item);
+                    selectedNPCs[0]->inventory.push_back(item);
                     item.toDelete = true;
                     AnyDeletes(worlditems);
                 }
@@ -4986,9 +4986,9 @@ void handlePhase()
                                     sf::Color::Red, "ID: ", "", Variable, ", Pos (" + std::to_string(Pos.x) + "/" + std::to_string(Pos.y) + "/" + std::to_string(Pos.z) + ")");
             }
 
-            if(myTargetPtr != nullptr)
+            if(!selectedNPCs.empty())
             {
-                effects.createCircle(myTargetPtr->xpos,myTargetPtr->ypos,30,sf::Color(255,255,255,100));
+                effects.createCircle(selectedNPCs[0]->xpos,selectedNPCs[0]->ypos,30,sf::Color(255,255,255,100));
             }
 
             if(inputState.key[Key::Space].time == 1)
