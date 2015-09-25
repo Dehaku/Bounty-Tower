@@ -1710,7 +1710,7 @@ void rightMouseButtonContextMenu()
         {
             if (math::closeish(gvars::mousePos.x, gvars::mousePos.y,
                                i.xpos,
-                               i.ypos) <= i.size)
+                               i.ypos) <= i.size && !bountytower::bountytower)
             {
                 gCtrl.menuType = "CritterRMB";
                 menuPopUp();
@@ -1723,7 +1723,7 @@ void rightMouseButtonContextMenu()
         for (auto &worlditem : worlditems)
         {
             if (math::closeish(gvars::mousePos.x, gvars::mousePos.y,
-                               (worlditem).xpos, (worlditem).ypos) <= 10)
+                               (worlditem).xpos, (worlditem).ypos) <= 10 && !bountytower::bountytower)
             {
                 gCtrl.menuType = "ItemRMB";
                 gCtrl.menuPtrCon.pVecItem.push_back(&(worlditem));

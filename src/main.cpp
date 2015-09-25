@@ -2754,6 +2754,33 @@ void activeSkills(Npc &npc, std::list<Npc> &container)
     craftAmmo(npc,container);
 }
 
+void critterPickUp()
+{
+    if(myTargetPtr != nullptr)
+    {//Making sure we have someone selected.
+        for(auto &item : worlditems)
+        {//Running through the worlds items.
+
+            int critterDist = math::distance(myTargetPtr->getPos(),Vec3f(item.xpos,item.ypos,item.zpos));
+            int mouseDist = math::closeish(gvars::mousePos,sf::Vector2f(item.xpos,item.ypos));
+            if(critterDist <= 120 && mouseDist <= 10)
+            {//Arbitrary number, but good enough distance for picking up.
+                effects.createCircle(item.xpos,item.ypos,10,sf::Color(0,255,255,100));
+                if(myTargetPtr->inventory.size() < 20 && inputState.rmbTime == 1)
+                {//Making sure we have room.
+                    item.xpos = 0;
+                    item.ypos = 0;
+                    item.zpos = 0;
+                    myTargetPtr->inventory.push_back(item);
+                    item.toDelete = true;
+                    AnyDeletes(worlditems);
+                }
+                return;
+            }
+        }
+    }
+}
+
 void critterBrain(Npc &npc, std::list<Npc> &container)
 {
     bool needsNewPath = false;
@@ -2764,7 +2791,6 @@ void critterBrain(Npc &npc, std::list<Npc> &container)
     //assignItemsUser(npc, container);
 
     critterSkillRefresh(npc,container);
-
 
 
 
@@ -3493,37 +3519,13 @@ ReDesire:
 
 void critterBrain(std::list<Npc> &npcs)
 {
-    /*
-    //Vec3 startPos(35,35,30);
-    //Vec3 endPos(46, 46, 30);
-
-    Vec3 startPos(48,44,29);
-    Vec3 endPos(44, 44, 29);
-
-    if(inputState.key[Key::K].time > 1)
-        endPos = Vec3(50,50,30);
-    if(inputState.key[Key::L].time > 1)
-        endPos = Vec3(50,50,29);
-    //Vec3 endPos(gvars::mousePos.x/20, gvars::mousePos.y/20, gvars::currentz);
-
-    int result = pathCon.makePath(startPos, endPos);
-    pathCon.drawStoredPathRainbow();
-    pathCon.storedPath.clear();
-    pathCon.storedRPath.clear();
-    std::cout << result << ", Is the test. \n";
-
-    */
-
-
-    {
-        sf::Lock lock(mutex::npcList);
+    sf::Lock lock(mutex::npcList);
 
     for (auto &npc : npcs)
     {
         critterBrain(npc, npcs);
     }
-
-    }
+    critterPickUp();
 
 }
 

@@ -297,7 +297,13 @@ Skills::Skills()
     skill.active = false;
     list.push_back(skill);
 
+
     /*
+
+    skill.name = "Incite Rage";
+    skill.desc = "Active - Causes enemies within an AoE to use twice the ammo, but gaining 30% additional damage, for 2 seconds per rank.";
+    skill.active = false;
+    list.push_back(skill);
 
     skill.name = "Vampirism";
     skill.desc = "Passive - Gain (Rank)% Life Steal on damage done to enemies.";
