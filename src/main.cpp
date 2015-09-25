@@ -4221,54 +4221,6 @@ void buildMicroPatherTest()
     grid[worldSizeX - 1][worldSizeY - 1][worldSizeZ - 1].type = 0;
 }
 
-void acquireSelectedNPCs()
-{
-    if (inputState.lmbTime == 0 &&
-        gvars::heldClickPos != sf::Vector2f(-1, -1))
-    {
-        bool foundAny = false;
-        sf::Vector2f S = gvars::heldClickPos;
-        sf::Vector2f E = gvars::mousePos;
-        sf::Lock lock(mutex::npcList);
-        for (auto &i : npclist)
-        {
-            if (inbetween(S.x, E.x, i.xpos) == true)
-            {
-                if (inbetween(S.y, E.y, i.ypos) == true)
-                {
-                    if(i.alive)
-                    {
-                        std::cout << i.name << std::endl;
-                        gvars::selected.push_back(i.id);
-                        foundAny = true;
-                    }
-
-                }
-            }
-        }
-        if (foundAny == false)
-            gvars::selected.clear();
-    }
-
-    if (inputState.lmbTime > 1)
-    {
-        if (gvars::heldClickPos == sf::Vector2f(-1, -1))
-            gvars::heldClickPos = gvars::mousePos;
-        effects.createSquare(gvars::heldClickPos.x,gvars::heldClickPos.y, gvars::mousePos.x,gvars::mousePos.y,sf::Color(0, 0, 0, 0),5,sf::Color(0, 255, 255));
-        for (auto &npc : npclist)
-        {
-
-            if(npc.alive && aabb(npc.getPos2d(),gvars::heldClickPos.x,gvars::mousePos.x,gvars::heldClickPos.y,gvars::mousePos.y))
-            {
-                createImageButton(npc.getPos2d(),texturemanager.getTexture("SelectionCircle.png"));
-            }
-        }
-
-    }
-    else
-        gvars::heldClickPos = sf::Vector2f(-1, -1);
-}
-
 void testProcess()
 {
                 /*
@@ -4663,6 +4615,55 @@ float Magnitude(Vec3f v1)
 	return sqrt(pow(v1.x, 2) + pow(v1.y, 2) + pow(v1.z, 2)); //return the magnitude (pythagoras)
 }
 
+
+void acquireSelectedNPCs()
+{
+    if (inputState.lmbTime == 0 &&
+        gvars::heldClickPos != sf::Vector2f(-1, -1))
+    {
+        bool foundAny = false;
+        sf::Vector2f S = gvars::heldClickPos;
+        sf::Vector2f E = gvars::mousePos;
+        sf::Lock lock(mutex::npcList);
+        for (auto &i : npclist)
+        {
+            if (inbetween(S.x, E.x, i.xpos) == true)
+            {
+                if (inbetween(S.y, E.y, i.ypos) == true)
+                {
+                    if(i.alive)
+                    {
+                        std::cout << i.name << std::endl;
+                        //gvars::selected.push_back(i.id);
+                        selectedNPCs.push_back(&i);
+                        foundAny = true;
+                    }
+
+                }
+            }
+        }
+    }
+
+    if (inputState.lmbTime > 1)
+    {
+        if (gvars::heldClickPos == sf::Vector2f(-1, -1))
+            gvars::heldClickPos = gvars::mousePos;
+        effects.createSquare(gvars::heldClickPos.x,gvars::heldClickPos.y, gvars::mousePos.x,gvars::mousePos.y,sf::Color(0, 0, 0, 0),5,sf::Color(0, 255, 255));
+        for (auto &npc : npclist)
+        {
+
+            if(npc.alive && aabb(npc.getPos2d(),gvars::heldClickPos.x,gvars::mousePos.x,gvars::heldClickPos.y,gvars::mousePos.y))
+            {
+                createImageButton(npc.getPos2d(),texturemanager.getTexture("SelectionCircle.png"));
+            }
+        }
+
+    }
+    else
+        gvars::heldClickPos = sf::Vector2f(-1, -1);
+}
+
+
 void lmbPress()
 {
     hoverItemHUD();
@@ -4670,6 +4671,7 @@ void lmbPress()
     debug("Pre Mouse Based Functions");
     if (inputState.lmb && gvars::hovering == false)
     {
+        selectedNPCs.clear();
         myTargetPtr = nullptr;
         gvars::myTarget = -1;
         gvars::myTargetid = -1;
@@ -4687,6 +4689,8 @@ void lmbPress()
                 {
                     gvars::myTarget = tfunz;
                     myTargetPtr = &elem;
+                    selectedNPCs.push_back(&elem);
+
                     foundOne = true;
                 }
             }

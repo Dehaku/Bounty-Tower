@@ -129,7 +129,6 @@ sf::View view1(CENTER, HALF_SIZE);
 float airPressure = 2;
 sf::Vector2f mousePos;
 int mouseStagnation = 0;
-std::vector<int> selected;
 float gCtimescale = 1;
 int myTarget = -1;
 int myTargetid = -1;

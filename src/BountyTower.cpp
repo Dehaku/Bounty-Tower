@@ -566,6 +566,7 @@ void equipmentStuffs()
     //TODO: Make critters reload their weapons/Make guns actually care about their clipsizes and such.
 }
 
+
 void bountyTowerLoop()
 {
     AnyDeletes(menus);
@@ -573,7 +574,7 @@ void bountyTowerLoop()
         towerMenu();
     if(myTargetPtr != nullptr && inputState.key[Key::I].time == 1)
     {
-        //TODO: Added a check of isSquaddie to prevent turrets from being modified/skilled.
+        //TODO: Add a check of isSquaddie to prevent turrets from being modified/skilled.
         squaddieMenu(*myTargetPtr);
     }
 

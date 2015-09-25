@@ -30,6 +30,7 @@ extern sf::RenderWindow window;
 
 
 Npc * myTargetPtr = nullptr;
+std::vector<Npc*> selectedNPCs;
 
 Npc * mouseNPC = nullptr;
 
@@ -2836,6 +2837,7 @@ Npc *getCritter(int id)
 
 void selectedNPCprocess()
 {
+    /*
     for (size_t i = 0; i != gvars::selected.size(); i++)
     {
         Npc var;
@@ -2847,25 +2849,33 @@ void selectedNPCprocess()
         createImageButton(Pos,texturemanager.getTexture("SelectionCircle.png"),"",gvars::constantRotation);
 
     }
-    if (gvars::selected.size() > 0 && bountytower::bountytower == false)
+    */
+
+    for(auto &selected : selectedNPCs)
     {
+        sf::Vector2f Pos = selected->getPos2d();
+        effects.createCircle(Pos.x, Pos.y, 5,
+                                sf::Color(0, 255, 255, 100));
+
+        createImageButton(Pos,texturemanager.getTexture("SelectionCircle.png"),"",gvars::constantRotation);
+
+    }
+
+
+    if (bountytower::bountytower == false)
+    {
+        int mouseX = abs_to_index(gvars::mousePos.x / GRID_SIZE);
+        int mouseY = abs_to_index(gvars::mousePos.y / GRID_SIZE);
+
         if (inputState.rmb &&
-            tiles[abs_to_index(gvars::mousePos.x / GRID_SIZE)]
-                    [abs_to_index(gvars::mousePos.y / GRID_SIZE)][gvars::currentz].id !=
-                1010)
+            tiles[mouseX][mouseY][gvars::currentz].id != 1010)
         {
             sf::Lock lock(mutex::npcList);
-            for (size_t i = 0; i != gvars::selected.size(); i++)
+
+            for(auto &selected : selectedNPCs)
             {
-                for (auto &t : npclist)
-                {
-                    if (t.id == gvars::selected[i])
-                    {
-                        t.targetPos =
-                            sf::Vector2f(gvars::mousePos);
-                        t.action = "Orders";
-                    }
-                }
+                selected->targetPos = sf::Vector2f(gvars::mousePos);
+                selected->action = "Orders";
             }
         }
     }

@@ -29,7 +29,6 @@ extern sf::View view1;
 extern float airPressure;
 extern sf::Vector2f mousePos;
 extern int mouseStagnation;
-extern std::vector<int> selected;
 extern float gCtimescale;
 extern int myTarget;
 extern int myTargetid;

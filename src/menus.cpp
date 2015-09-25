@@ -1739,21 +1739,14 @@ void rightMouseButtonContextMenu()
 
 
 
-        if(gvars::selected.size() != 0 && aabb(mouseX,mouseY,0,GRIDS-1,0,GRIDS-1)
+        if(aabb(mouseX,mouseY,0,GRIDS-1,0,GRIDS-1)
            && tiles[mouseX][mouseY][gvars::currentz].walkable)
         {
-            for(auto &lilguy : npclist)
+            for(auto &lilguy : selectedNPCs)
             {
-                for(int i = 0; i != gvars::selected.size(); i++)
-                {
-                    if(lilguy.id == gvars::selected[i])
-                    {
-                        lilguy.hasPath = true;
-                        lilguy.storedPath.clear();
-                        lilguy.endPos = Vec3(gvars::mousePos.x/GRID_SIZE,gvars::mousePos.y/GRID_SIZE,gvars::currentz);
-                    }
-
-                }
+                lilguy->hasPath = true;
+                lilguy->storedPath.clear();
+                lilguy->endPos = Vec3(gvars::mousePos.x/GRID_SIZE,gvars::mousePos.y/GRID_SIZE,gvars::currentz);
             }
             return;
         }
