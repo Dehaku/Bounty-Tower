@@ -2837,19 +2837,6 @@ Npc *getCritter(int id)
 
 void selectedNPCprocess()
 {
-    /*
-    for (size_t i = 0; i != gvars::selected.size(); i++)
-    {
-        Npc var;
-        var = *getCritter(gvars::selected[i]);
-        sf::Vector2f Pos = sf::Vector2f(var.xpos, var.ypos);
-        effects.createCircle(Pos.x, Pos.y, 5,
-                                sf::Color(0, 255, 255, 100));
-
-        createImageButton(Pos,texturemanager.getTexture("SelectionCircle.png"),"",gvars::constantRotation);
-
-    }
-    */
 
     for(auto &selected : selectedNPCs)
     {
@@ -2913,14 +2900,15 @@ void drawInventory(sf::Vector2f vPos, std::list<Item> &inventory)
 
 void drawSelectedCritterHUD()
 {
-    if (gvars::myTarget != -1 && myTargetPtr != nullptr)
+    //if (gvars::myTarget != -1 && myTargetPtr != nullptr)
+    if (!selectedNPCs.empty())
     {
-        gvars::myTargetid = myTargetPtr->id;
+        //gvars::myTargetid = selectedNPCs[0]->id;
         int nxpos = gvars::topLeft.x+5;
         int nypos = gvars::topLeft.y + (RESOLUTION.y / 2);
 
         textList.createText(nxpos+5,nypos-20-13,10,sf::Color::Cyan,"<Inventory>");
-        drawInventory(sf::Vector2f(nxpos,nypos), myTargetPtr->inventory);
+        drawInventory(sf::Vector2f(nxpos,nypos), selectedNPCs[0]->inventory);
 
 
 
@@ -2929,49 +2917,49 @@ void drawSelectedCritterHUD()
                                      sf::Color(0, 0, 0, 100));
 
         textList.createText(nxpos, nypos, 11, sf::Color::Red, "Health:",
-                                    "", myTargetPtr->health, "",
-                                    "(", myTargetPtr->maxhealth,
+                                    "", selectedNPCs[0]->health, "",
+                                    "(", selectedNPCs[0]->maxhealth,
                                     ")", "", -6698, 1, 0);
 
         textList.createText(nxpos, nypos + 10, 11, BROWN, "Hunger:", "",
-                                    myTargetPtr->hunger, "", "",
+                                    selectedNPCs[0]->hunger, "", "",
                                     -6698, "", "", -6698, 1, 0);
         textList.createText(nxpos, nypos + 20, 11, sf::Color::Cyan,
                                     "Thirst:", "",
-                                    myTargetPtr->thirst, "", "",
+                                    selectedNPCs[0]->thirst, "", "",
                                     -6698, "", "", -6698, 1, 0);
 
         std::string textOut;
-        if(myTargetPtr->factionPtr != nullptr)
-                    textOut = "Name:" + myTargetPtr->name + ", Faction: " + myTargetPtr->factionPtr->name;
+        if(selectedNPCs[0]->factionPtr != nullptr)
+                    textOut = "Name:" + selectedNPCs[0]->name + ", Faction: " + selectedNPCs[0]->factionPtr->name;
         else
-                    textOut = "Name:" + myTargetPtr->name + ", Faction: None";
+                    textOut = "Name:" + selectedNPCs[0]->name + ", Faction: None";
 
         textList.createText(nxpos, nypos + 30, 11, sf::Color::White, textOut);
 
         textList.createText(nxpos, nypos + 30, 11, sf::Color::White,
-                                    "Name:", myTargetPtr->name);
+                                    "Name:", selectedNPCs[0]->name);
         textList.createText(nxpos, nypos + 40, 11, sf::Color::White,
-                                    "Id:", "", myTargetPtr->id,
+                                    "Id:", "", selectedNPCs[0]->id,
                                     "", "", -6698, "", "", -6698, 1, 0);
-        if (myTargetPtr->needsPath == false)
+        if (selectedNPCs[0]->needsPath == false)
         {
             textList.createText(nxpos, nypos + 50, 11, sf::Color::Red,
                                         "Action:",
-                                        myTargetPtr->action);
+                                        selectedNPCs[0]->action);
         }
         else
         {
             textList.createText(nxpos, nypos + 50, 11, sf::Color::Blue,
                                         "Action:",
-                                        myTargetPtr->action);
+                                        selectedNPCs[0]->action);
         }
         textList.createText(
                     nxpos, nypos + 60, 11, sf::Color::Red, "Target:",
-                    myTargetPtr->target,
-                    myTargetPtr->targetPos.x, ":", "",
-                    myTargetPtr->targetPos.y, " Angle:", "",
-                    myTargetPtr->angle);
+                    selectedNPCs[0]->target,
+                    selectedNPCs[0]->targetPos.x, ":", "",
+                    selectedNPCs[0]->targetPos.y, " Angle:", "",
+                    selectedNPCs[0]->angle);
 
         effects.createSquare(nxpos, nypos + 70, nxpos + 130,
                                      nypos + 150, sf::Color(0, 0, 0, 200));
@@ -2980,49 +2968,49 @@ void drawSelectedCritterHUD()
         textList.createText(
                     nxpos + v, nypos + (y++ * 10), 11, sf::Color::White,
                     "Strength:", "",
-                    myTargetPtr->attributes.strength, " : ", "",
-                    myTargetPtr->attributes.strengthxp);
+                    selectedNPCs[0]->attributes.strength, " : ", "",
+                    selectedNPCs[0]->attributes.strengthxp);
         textList.createText(
                     nxpos + v, nypos + (y++ * 10), 11, sf::Color::White,
                     "Perception:", "",
-                    myTargetPtr->attributes.perception, " : ", "",
-                    myTargetPtr->attributes.perceptionxp);
+                    selectedNPCs[0]->attributes.perception, " : ", "",
+                    selectedNPCs[0]->attributes.perceptionxp);
         textList.createText(
                     nxpos + v, nypos + (y++ * 10), 11, sf::Color::White,
                     "Intelligence:", "",
-                    myTargetPtr->attributes.intelligence, " : ", "",
-                    myTargetPtr->attributes.intelligencexp);
+                    selectedNPCs[0]->attributes.intelligence, " : ", "",
+                    selectedNPCs[0]->attributes.intelligencexp);
         textList.createText(
                     nxpos + v, nypos + (y++ * 10), 11, sf::Color::White,
                     "Charisma:", "",
-                    myTargetPtr->attributes.charisma, " : ", "",
-                    myTargetPtr->attributes.charismaxp);
+                    selectedNPCs[0]->attributes.charisma, " : ", "",
+                    selectedNPCs[0]->attributes.charismaxp);
         textList.createText(
                     nxpos + v, nypos + (y++ * 10), 11, sf::Color::White,
                     "Endurance:", "",
-                    myTargetPtr->attributes.endurance, " : ", "",
-                    myTargetPtr->attributes.endurancexp);
+                    selectedNPCs[0]->attributes.endurance, " : ", "",
+                    selectedNPCs[0]->attributes.endurancexp);
         textList.createText(
                     nxpos + v, nypos + (y++ * 10), 11, sf::Color::White,
                     "Dexterity:", "",
-                    myTargetPtr->attributes.dexterity, " : ", "",
-                    myTargetPtr->attributes.dexterityxp);
+                    selectedNPCs[0]->attributes.dexterity, " : ", "",
+                    selectedNPCs[0]->attributes.dexterityxp);
         textList.createText(
                     nxpos + v, nypos + (y++ * 10), 11, sf::Color::White,
-                    "Agility:", "", myTargetPtr->attributes.agility,
-                    " : ", "", myTargetPtr->attributes.agilityxp);
+                    "Agility:", "", selectedNPCs[0]->attributes.agility,
+                    " : ", "", selectedNPCs[0]->attributes.agilityxp);
         textList.createText(nxpos + v, nypos + (y++ * 10), 11,
                                     sf::Color::White, "Tags:",
-                                    myTargetPtr->tags);
+                                    selectedNPCs[0]->tags);
 
-        if (myTargetPtr->inventory.size() != 0 ||
-                    myTargetPtr->bloodcontent != "")
+        if (selectedNPCs[0]->inventory.size() != 0 ||
+                    selectedNPCs[0]->bloodcontent != "")
         {
             effects.createSquare(nxpos, nypos, nxpos + 230, nypos + 70,
                                          sf::Color(0, 0, 0, 100));
             int yv = nypos;
             for (auto const &item :
-                         myTargetPtr->inventory)
+                         selectedNPCs[0]->inventory)
             { // Listing all the current items from this critters inventory.
                 if (item.insidePart.size() == 0)
                 {
@@ -3034,7 +3022,7 @@ void drawSelectedCritterHUD()
             }
 
             for (auto const &item :
-                         myTargetPtr->inventory)
+                         selectedNPCs[0]->inventory)
             { // Listing all items from 'inside' the critter.
                 if (item.insidePart.size() != 0)
                 {
@@ -3047,11 +3035,12 @@ void drawSelectedCritterHUD()
             }
             textList.createText(
                         nxpos + 85, yv, 11, sf::Color(255, 150, 150),
-                        "Blood: " + myTargetPtr->bloodcontent);
+                        "Blood: " + selectedNPCs[0]->bloodcontent);
         }
     }
 
-    if(myTargetPtr != nullptr && bountytower::bountytower)
+    //if(myTargetPtr != nullptr && bountytower::bountytower)
+    if(!selectedNPCs.empty() && bountytower::bountytower)
     {
         // restore the default view
         window.setView(window.getDefaultView());
@@ -3071,22 +3060,22 @@ void drawSelectedCritterHUD()
             sf::Vector2f vPos = gvars::slotPos[i];
 
 
-            if(myTargetPtr->invSlots[i] != nullptr)
+            if(selectedNPCs[0]->invSlots[i] != nullptr)
             {
-                if(myTargetPtr->invSlots[i]->img.getTexture() == nullptr)
+                if(selectedNPCs[0]->invSlots[i]->img.getTexture() == nullptr)
                 {
                     std::cout << "Breaking on Item GetTexture() of slot:" << i << std::endl;
                     break;
                 }
 
                 sf::Sprite SP;
-                SP.setTexture(*myTargetPtr->invSlots[i]->img.getTexture());
+                SP.setTexture(*selectedNPCs[0]->invSlots[i]->img.getTexture());
                 SP.setPosition(vPos);
                 SP.setOrigin(SP.getTexture()->getSize().x/2,SP.getTexture()->getSize().y/2);
                 window.draw(SP);
                 sf::Vector2f uPos(vPos.x-20,vPos.y+20);
-                int amount = myTargetPtr->invSlots[i]->amount;
-                std::string outPut = myTargetPtr->invSlots[i]->name;
+                int amount = selectedNPCs[0]->invSlots[i]->amount;
+                std::string outPut = selectedNPCs[0]->invSlots[i]->name;
                 if(amount > 1)
                     outPut.append(": " + std::to_string(amount));
 

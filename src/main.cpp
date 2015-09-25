@@ -4692,6 +4692,7 @@ void lmbPress()
                     selectedNPCs.push_back(&elem);
 
                     foundOne = true;
+                    return;
                 }
             }
         }
