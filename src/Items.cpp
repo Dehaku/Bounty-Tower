@@ -1062,6 +1062,7 @@ bool Item::trigger() // Processes activation time, if activation time is ready/r
 
 void Item::remove()
 {
+    toDelete = true;
     debug("Item::remove() called. \n");
     if(user != nullptr)
     {
@@ -1073,7 +1074,6 @@ void Item::remove()
             {
                 debug("We gotta match! " + user->invSlots[i]->name + "/" + name);
                 user->invSlots[i] = nullptr;
-                toDelete = true;
                 return;
             }
         }

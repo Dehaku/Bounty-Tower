@@ -2766,6 +2766,7 @@ void critterPickUp()
             if(critterDist <= 120 && mouseDist <= 10)
             {//Arbitrary number, but good enough distance for picking up.
                 effects.createCircle(item.xpos,item.ypos,10,sf::Color(0,255,255,100));
+                textList.createText(item.xpos,item.ypos+15,15,sf::Color::White,"RMB: Pickup " + item.name);
                 if(myTargetPtr->inventory.size() < 20 && inputState.rmbTime == 1)
                 {//Making sure we have room.
                     item.xpos = 0;
@@ -2788,7 +2789,7 @@ void critterBrain(Npc &npc, std::list<Npc> &container)
     if(!npc.alive)
         return;
 
-    //assignItemsUser(npc, container);
+    assignItemsUser(npc, container);
 
     critterSkillRefresh(npc,container);
 
@@ -3708,6 +3709,32 @@ void displayMouseItem()
     }
 }
 
+void dropItem()
+{
+    if(mouseItem != nullptr)
+    {
+        if(math::closeish(gvars::mousePos,mouseItem->user->getPos2d()) <= 60)
+        {
+            sf::Vector2f vPos(gvars::mousePos.x,gvars::mousePos.y+15);
+            textList.createText(vPos,15,sf::Color::White,"RMB: drop " + mouseItem->name,gvars::view1);
+
+            if(inputState.rmbTime == 1)
+            {
+                mouseItem->xpos = gvars::mousePos.x;
+                mouseItem->ypos = gvars::mousePos.y;
+                mouseItem->zpos = mouseItem->user->zpos;
+                mouseItem->slotted = false;
+
+                worlditems.push_back(*mouseItem);
+                mouseItem->remove();
+                AnyDeletes(mouseItem->user->inventory);
+                mouseItem = nullptr;
+
+            }
+        }
+    }
+}
+
 void hoverItemHUD()
 {
     window.setView(window.getDefaultView());
@@ -3797,6 +3824,7 @@ void hoverItemHUD()
         }
     }
     window.setView(gvars::view1);
+    dropItem();
 }
 
 
