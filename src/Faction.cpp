@@ -29,7 +29,6 @@ extern sf::RenderWindow window;
 
 
 
-Npc * myTargetPtr = nullptr;
 std::vector<Npc*> selectedNPCs;
 
 Npc * mouseNPC = nullptr;
@@ -2900,10 +2899,8 @@ void drawInventory(sf::Vector2f vPos, std::list<Item> &inventory)
 
 void drawSelectedCritterHUD()
 {
-    //if (gvars::myTarget != -1 && myTargetPtr != nullptr)
     if (!selectedNPCs.empty())
     {
-        //gvars::myTargetid = selectedNPCs[0]->id;
         int nxpos = gvars::topLeft.x+5;
         int nypos = gvars::topLeft.y + (RESOLUTION.y / 2);
 
@@ -3039,7 +3036,6 @@ void drawSelectedCritterHUD()
         }
     }
 
-    //if(myTargetPtr != nullptr && bountytower::bountytower)
     if(!selectedNPCs.empty() && bountytower::bountytower)
     {
         // restore the default view

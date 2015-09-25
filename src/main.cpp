@@ -1522,7 +1522,7 @@ bool gridposTrace(int xa, int ya, int xb, int yb, int id, sf::Vector2f target)
         if (tiles[abs_to_index(x / GRID_SIZE)][abs_to_index(y / GRID_SIZE)][30]
                 .id == 1010)
         {
-            if (inputState.key[Key::Period] && id == gvars::myTargetid)
+            if (inputState.key[Key::Period] && !selectedNPCs.empty() && id == selectedNPCs[0]->id)
             {
                 effects.createLine(x, y, xa, ya, 1, sf::Color::Blue);
             }
@@ -1537,7 +1537,7 @@ bool gridposTrace(int xa, int ya, int xb, int yb, int id, sf::Vector2f target)
         {
             return true;
         } // Returns true and stops searching.
-        if (inputState.key[Key::Period] && id == gvars::myTargetid)
+        if (inputState.key[Key::Period] && !selectedNPCs.empty() && id == selectedNPCs[0]->id)
         {
             effects.createLine(x, y, xa, ya, 1, sf::Color::Blue);
         }
@@ -4671,14 +4671,9 @@ void lmbPress()
     if (inputState.lmb && gvars::hovering == false)
     {
         selectedNPCs.clear();
-        myTargetPtr = nullptr;
-        gvars::myTarget = -1;
-        gvars::myTargetid = -1;
-        int tfunz = -1;
         sf::Lock lock(mutex::npcList);
         for (auto &elem : npclist)
         {
-            tfunz++;
             if (inputState.lmb == true)
             {
                 int dist = math::closeish(gvars::mousePos.x,
@@ -4686,8 +4681,6 @@ void lmbPress()
                                             elem.xpos, elem.ypos);
                 if (dist <= GRID_SIZE/2)
                 {
-                    gvars::myTarget = tfunz;
-                    myTargetPtr = &elem;
                     selectedNPCs.push_back(&elem);
 
                     foundOne = true;
@@ -4949,7 +4942,7 @@ void handlePhase()
             cameraControls();
 
 
-            if (gvars::myTarget == -1)
+            if (selectedNPCs.empty())
             {
                 gvars::following = false;
             }
@@ -4960,8 +4953,10 @@ void handlePhase()
             if (gvars::following)
             {
                 sf::Lock lock(mutex::npcList);
-                gvars::view1.setCenter(myTargetPtr->xpos,
-                                       myTargetPtr->ypos);
+
+                if(!selectedNPCs.empty())
+                    gvars::view1.setCenter(selectedNPCs[0]->xpos,
+                                       selectedNPCs[0]->ypos);
             }
 
             effects.createSquare(

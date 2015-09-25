@@ -572,10 +572,10 @@ void bountyTowerLoop()
     AnyDeletes(menus);
     if(bountytower::towerLoaded == "")
         towerMenu();
-    if(myTargetPtr != nullptr && inputState.key[Key::I].time == 1)
+    if(!selectedNPCs.empty() && inputState.key[Key::I].time == 1)
     {
         //TODO: Add a check of isSquaddie to prevent turrets from being modified/skilled.
-        squaddieMenu(*myTargetPtr);
+        squaddieMenu(*selectedNPCs[0]);
     }
 
     drawMenus();

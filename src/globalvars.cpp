@@ -130,8 +130,6 @@ float airPressure = 2;
 sf::Vector2f mousePos;
 int mouseStagnation = 0;
 float gCtimescale = 1;
-int myTarget = -1;
-int myTargetid = -1;
 float cameraZoom = 1;
 int currentx = 50;
 int currenty = 50;

@@ -30,8 +30,6 @@ extern float airPressure;
 extern sf::Vector2f mousePos;
 extern int mouseStagnation;
 extern float gCtimescale;
-extern int myTarget;
-extern int myTargetid;
 extern float cameraZoom;
 extern int currentx;
 extern int currenty;

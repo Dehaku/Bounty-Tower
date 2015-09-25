@@ -364,7 +364,6 @@ public:
 };
 
 
-extern Npc * myTargetPtr;
 extern std::vector<Npc*> selectedNPCs;
 
 void setTestage();

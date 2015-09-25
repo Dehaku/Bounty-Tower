@@ -630,7 +630,7 @@ void menuPopUp()
                     return;
                 }
             }
-            if (i == 2 && myTargetPtr != nullptr)
+            if (i == 2 && !selectedNPCs.empty())
             {
 
                 //Effectz.CreateLine(GC.MenuPos.x,(GC.MenuPos.y+(iY*13))+8,GC.MenuPos.x+90,(GC.MenuPos.y+(iY*13))+8,3,Black,1,Yellow);
@@ -656,17 +656,17 @@ void menuPopUp()
                     job.workPos.y = gCtrl.menuPos.y;
                     job.workPos.z = gvars::currentz*GRID_SIZE;
 
-                    if(myTargetPtr->jobPtr != nullptr)
+                    if(selectedNPCs[0]->jobPtr != nullptr)
                     {
-                        myTargetPtr->jobPtr->pWorker = nullptr;
-                        myTargetPtr->jobPtr = nullptr;
+                        selectedNPCs[0]->jobPtr->pWorker = nullptr;
+                        selectedNPCs[0]->jobPtr = nullptr;
                     }
 
-                    job.pWorker = myTargetPtr;
-                    int jobListSize = myTargetPtr->factionPtr->jobList.size();
+                    job.pWorker = selectedNPCs[0];
+                    int jobListSize = selectedNPCs[0]->factionPtr->jobList.size();
 
-                    myTargetPtr->factionPtr->jobList.push_back(job);
-                    myTargetPtr->jobPtr = &listAt(myTargetPtr->factionPtr->jobList,jobListSize);
+                    selectedNPCs[0]->factionPtr->jobList.push_back(job);
+                    selectedNPCs[0]->jobPtr = &listAt(selectedNPCs[0]->factionPtr->jobList,jobListSize);
 
                     return;
                 }
@@ -675,7 +675,7 @@ void menuPopUp()
 
 
             sf::Vector2f boundCheck(vPos.x*GRID_SIZE,vPos.y*GRID_SIZE);
-            if (i == 3 && myTargetPtr != nullptr && isInBounds(boundCheck) && tiles[vPos.x][vPos.y][vPos.z].state == "Off")
+            if (i == 3 && !selectedNPCs.empty() && isInBounds(boundCheck) && tiles[vPos.x][vPos.y][vPos.z].state == "Off")
             {
                 effects.createLine(
                     gCtrl.menuPos.x, (gCtrl.menuPos.y + (iY * 13)) + 13,
@@ -700,17 +700,17 @@ void menuPopUp()
                     job.workPos.z = gvars::currentz*GRID_SIZE;
                     job.completionTimer = 600*30;
 
-                    if(myTargetPtr->jobPtr != nullptr)
+                    if(selectedNPCs[0]->jobPtr != nullptr)
                     {
-                        myTargetPtr->jobPtr->pWorker = nullptr;
-                        myTargetPtr->jobPtr = nullptr;
+                        selectedNPCs[0]->jobPtr->pWorker = nullptr;
+                        selectedNPCs[0]->jobPtr = nullptr;
                     }
 
-                    job.pWorker = myTargetPtr;
-                    int jobListSize = myTargetPtr->factionPtr->jobList.size();
+                    job.pWorker = selectedNPCs[0];
+                    int jobListSize = selectedNPCs[0]->factionPtr->jobList.size();
 
-                    myTargetPtr->factionPtr->jobList.push_back(job);
-                    myTargetPtr->jobPtr = &listAt(myTargetPtr->factionPtr->jobList,jobListSize);
+                    selectedNPCs[0]->factionPtr->jobList.push_back(job);
+                    selectedNPCs[0]->jobPtr = &listAt(selectedNPCs[0]->factionPtr->jobList,jobListSize);
 
                     return;
                 }
@@ -1541,13 +1541,10 @@ void menuPopUp()
                             {
                                 sf::Lock lock(mutex::npcList);
                                 //for (auto &i : npclist)
-                                //listAt(npclist, gvars::myTargetid)
-
-                                //listAt(npclist, gvars::myTargetid)
-                                myTargetPtr->action = "Pickup";
-                                myTargetPtr->target = item->name;
-                                myTargetPtr->targetId = item->id;
-                                myTargetPtr->targetPos =
+                                selectedNPCs[0]->action = "Pickup";
+                                selectedNPCs[0]->target = item->name;
+                                selectedNPCs[0]->targetId = item->id;
+                                selectedNPCs[0]->targetPos =
                                     sf::Vector2f(item->xpos, item->ypos);
                                 gCtrl.menuPos = sf::Vector2f(-10000, -10000);
                                 gCtrl.menuType = "NULL";
@@ -1563,7 +1560,7 @@ void menuPopUp()
             iY++;
         }
 
-        if (gvars::myTarget == -1 && gCtrl.menuType == "CritterContext")
+        if (selectedNPCs.empty() && gCtrl.menuType == "CritterContext")
         {
             gCtrl.menuPos = sf::Vector2f(-10000, -10000);
             gCtrl.menuType = "NULL";
