@@ -713,7 +713,46 @@ public:
             int nz = z + dz[i];
 
             int pass = Passable(nx, ny, nz);
-            if (pass > 0)
+            bool notCorner = true;
+            if(pass > 0)
+            {
+                if(i == 1)
+                {
+                    //1 up left, 3 up right, 6 down left, 8 down right
+                    if(Passable(x-1,y,z) > 0 && Passable(x,y-1,z) > 0){}
+                    else
+                        notCorner = false;
+
+                }
+                if(i == 3)
+                {
+                    //1 up left, 3 up right, 6 down left, 8 down right
+                    if(Passable(x+1,y,z) > 0 && Passable(x,y-1,z) > 0){}
+                    else
+                        notCorner = false;
+
+                }
+                if(i == 6)
+                {
+                    //1 up left, 3 up right, 6 down left, 8 down right
+                    if(Passable(x-1,y,z) > 0 && Passable(x,y+1,z) > 0){}
+                    else
+                        notCorner = false;
+
+                }
+                if(i == 8)
+                {
+                    //1 up left, 3 up right, 6 down left, 8 down right
+                    if(Passable(x+1,y,z) > 0 && Passable(x,y+1,z) > 0){}
+                    else
+                        notCorner = false;
+
+                }
+            }
+
+
+
+            if (pass > 0 && notCorner)
             {
                 if (pass == 4)
                 {
