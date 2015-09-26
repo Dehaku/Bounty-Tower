@@ -750,7 +750,8 @@ public:
                 }
             }
 
-
+            if(i == 0 || i == 1) // Z-levels are not needed on BT.
+                pass = 0;
 
             if (pass > 0 && notCorner)
             {
