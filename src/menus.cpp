@@ -1706,18 +1706,17 @@ void rightMouseButtonContextMenu()
 
         {
             sf::Lock lock(mutex::npcList);
-            //for (size_t i = 0; i != npclist.size(); i++)
             for (auto &i : npclist)
-        {
-            if (math::closeish(gvars::mousePos.x, gvars::mousePos.y,
+            {
+                if (math::closeish(gvars::mousePos.x, gvars::mousePos.y,
                                i.xpos,
                                i.ypos) <= i.size && !bountytower::bountytower)
-            {
-                gCtrl.menuType = "CritterRMB";
-                menuPopUp();
-                return;
+                {
+                    gCtrl.menuType = "CritterRMB";
+                    menuPopUp();
+                    return;
+                }
             }
-        }
         }
 
 
