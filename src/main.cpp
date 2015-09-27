@@ -6738,6 +6738,40 @@ void mouseAnim()
 }
 
 
+void pauseMenu()
+{
+    if(inputState.key[Key::P].time == 2)
+    {
+        bool gamePaused = true;
+
+        window.setView(window.getDefaultView());
+
+        sf::Vector2f tSize(RESOLUTION.x/2-100,RESOLUTION.y/2);
+        textList.createText(tSize,20,sf::Color::White,"Game Paused, Press P to resume.",window.getDefaultView());
+        textList.drawTextz();
+        window.display();
+
+        while(gamePaused)
+        {
+
+            sf::Event event;
+            while (window.pollEvent(event))
+            {
+                std::cout << "event: " << event.type << std::endl;
+                if (event.type == sf::Event::TextEntered)
+                {
+                    std::cout << "Key Pressed: " << event.text.unicode << std::endl;
+                    if (event.text.unicode == 112)//20?)
+                    {
+                        gamePaused = false;
+                    }
+                }
+            }
+        window.setView(gvars::view1);
+        }
+    }
+}
+
 int main()
 {
     //srand(clock());
@@ -6824,6 +6858,7 @@ int main()
     //while (window.isOpen())
     while (!inputState.key[Key::Escape] && window.isOpen())
     {
+        pauseMenu();
         testAnimation();
         if(inputState.key[Key::Escape])
         {
