@@ -26,7 +26,8 @@ void bountyTowerLoop();
 
 void buildTower(std::string towerName);
 
-int getLivingTowerlingMinionCount();
+int getLivingFactionMemberCount(std::string faction);
+int getFactionMemberCount(std::string faction);
 
 class Tower
 {

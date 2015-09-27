@@ -559,13 +559,22 @@ void drawMenus()
     window.setView(gvars::view1);
 }
 
-int getLivingTowerlingMinionCount()
+int getLivingFactionMemberCount(std::string faction)
 {
     int livingCount = 0;
     for(auto &npc : npclist)
-        if(npc.faction == "Towerlings" && npc.alive)
+        if(npc.faction == faction && npc.alive)
             livingCount++;
     return livingCount;
+}
+
+int getFactionMemberCount(std::string faction)
+{
+    int Count = 0;
+    for(auto &npc : npclist)
+        if(npc.faction == faction)
+            Count++;
+    return Count;
 }
 
 void bountyTowerLoop()
@@ -758,7 +767,7 @@ void bountyTowerLoop()
 
     }
 
-    if( (gvars::framesPassed % 300) == 0 && getLivingTowerlingMinionCount() < 20 && !bountytower::pausewaves)
+    if( (gvars::framesPassed % 300) == 0 && getLivingFactionMemberCount("Towerling") < 20 && getFactionMemberCount("Towerling") < 50 && !bountytower::pausewaves)
     { // This looks for stairs, then spawns critters from them every 300 frames until a certain cap is met.
         debug("Gettin Stairs");
         std::vector<Tile*> stairs;

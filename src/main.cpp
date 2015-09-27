@@ -4017,7 +4017,7 @@ void drawEnemyCounterHud()
 
     sf::Text enemyCounter;
     {
-        int counter = getLivingTowerlingMinionCount();
+        int counter = getLivingFactionMemberCount("Towerling");
         if(counter > 0)
             enemyCounter.setString("Enemies Remaining: " + std::to_string(counter));
         enemyCounter.setColor(sf::Color::White);
@@ -6740,7 +6740,7 @@ void mouseAnim()
 
 void pauseMenu()
 {
-    if(inputState.key[Key::P].time == 2)
+    if(inputState.key[Key::P].time == 1)
     {
         bool gamePaused = true;
 
