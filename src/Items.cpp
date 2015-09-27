@@ -512,6 +512,7 @@ Item::Item()
       tillrot{}, prodrate{}, prodratetimer{}, timerdecon{}, liquidContainMax{},
       objectContainMax{}, containAmount{}
 {
+    firstPickup = true;
     toDelete = false;
     targetPos = sf::Vector2f(-1, -1);
     id = gvars::globalid++;

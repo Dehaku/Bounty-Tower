@@ -2033,7 +2033,7 @@ void scrapPickup(Npc &npc, std::list<Npc> &container)
 {
     for(auto &scraps : worlditems)
     {
-        if(math::distance(npc.getPos(),scraps.getPos()) <= 60 && scraps.name == "Scrap")
+        if(math::distance(npc.getPos(),scraps.getPos()) <= 60 && scraps.name == "Scrap" && scraps.firstPickup)
         {
             bool scrapExists = false;
             for(auto &myItems : npc.inventory)
@@ -2041,7 +2041,7 @@ void scrapPickup(Npc &npc, std::list<Npc> &container)
                 if(myItems.name == "Scrap")
                 {
                     scrapExists = true;
-                    myItems.amount++;
+                    myItems.amount += scraps.amount;
                     scraps.toDelete = true;
                     break;
                 }
@@ -2049,6 +2049,7 @@ void scrapPickup(Npc &npc, std::list<Npc> &container)
             if(!scrapExists)
             {
                 Item item = *getGlobalItem("Scrap");
+                item.firstPickup = false;
                 npc.inventory.push_back(item);
             }
 
@@ -2062,7 +2063,7 @@ void scrapPickup(Npc &npc, std::list<Npc> &container)
             if(soundRan == 4)
                 soundmanager.playSound("ScrapPickup4.ogg");
 
-            if(npc.skills.getRanks("Lucky Scavenger") > 0)
+            if(scraps.firstPickup && npc.skills.getRanks("Lucky Scavenger") > 0)
             {
                 int scavRandom = random(1,100);
                 if(scavRandom <= npc.skills.getRanks("Lucky Scavenger")*20)
@@ -4215,6 +4216,8 @@ Item *getGlobalItem(std::string strtype)
             {
                 std::cout << "Found" << strtype << " \n";
             }
+            elem.id = gvars::globalid++;
+
             return &elem;
         }
     }

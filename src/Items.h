@@ -16,6 +16,7 @@ public:
     std::list<Item> internalitems;
     bool toDelete;
     bool pickupable;
+    bool firstPickup;
     bool slotted;
     sf::Sprite img;
     int id;
