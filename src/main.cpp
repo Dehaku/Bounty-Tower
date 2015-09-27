@@ -4017,12 +4017,7 @@ void drawEnemyCounterHud()
 
     sf::Text enemyCounter;
     {
-        int counter = 0;
-        for(auto &npc : npclist)
-        {
-            if(npc.faction == "Towerlings")
-                counter++;
-        }
+        int counter = getLivingTowerlingMinionCount();
         if(counter > 0)
             enemyCounter.setString("Enemies Remaining: " + std::to_string(counter));
         enemyCounter.setColor(sf::Color::White);

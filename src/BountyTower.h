@@ -26,6 +26,8 @@ void bountyTowerLoop();
 
 void buildTower(std::string towerName);
 
+int getLivingTowerlingMinionCount();
+
 class Tower
 {
 public:
