@@ -845,7 +845,7 @@ PathingController pathCon;
 
 
 void drawStoredPath(std::vector<Tile *> storedPath)
-    {
+{
         Vec3 oldPos;
         bool firstRun = true;
 
@@ -864,7 +864,7 @@ void drawStoredPath(std::vector<Tile *> storedPath)
             oldPos = pathPos;
             firstRun = false;
         }
-    }
+}
 
 
 //-- Prototypes

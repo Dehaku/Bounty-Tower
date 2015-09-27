@@ -559,13 +559,6 @@ void drawMenus()
     window.setView(gvars::view1);
 }
 
-void equipmentStuffs()
-{
-    //TODO: Make critters actually use their left/right hand slots.
-    //TODO: Allow critters to drop and pickup equipment from the ground/eachother.
-    //TODO: Make critters reload their weapons/Make guns actually care about their clipsizes and such.
-}
-
 
 void bountyTowerLoop()
 {
