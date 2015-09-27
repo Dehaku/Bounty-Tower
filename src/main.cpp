@@ -3781,14 +3781,6 @@ void hoverItemHUD()
     window.setView(window.getDefaultView());
     sf::Vector2i pixelPosi = sf::Mouse::getPosition(window);
     sf::Vector2f pixelPos(pixelPosi.x,pixelPosi.y);
-    //std::cout << "pixelPos: " << pixelPos.x << ":" << pixelPos.y << std::endl;
-
-    sf::Sprite SP;
-    SP.setTexture(texturemanager.getTexture("Food.png"));
-
-    SP.setPosition(pixelPos);
-    //SP.setOrigin(TexySize.x/2,TexySize.y/2);
-    window.draw(SP);
 
     if(!selectedNPCs.empty() && bountytower::bountytower)
         for (int i = 0; i != 20; i++)
