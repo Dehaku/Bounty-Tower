@@ -433,8 +433,52 @@ void squaddieMenu(Npc &npc)
     menus.push_back(sMenu);
 }
 
+int nextLevelXpRequired(int level)
+{
+    int baseXpPerLevel = 100;
+    float xpPerLevelMultiplier = 0.4;
+    int returns = 100;
+    for(int i = 0; i != level; i++)
+    {
+        //returns += baseXpPerLevel*(i*xpPerLevelMultiplier);
+        returns += returns*(xpPerLevelMultiplier);
+
+    }
+
+    return returns;
+}
+
+int totalLevelXp(int level)
+{
+    int returns = 0;
+    for(int i = 0; i != level; i++)
+    {
+        returns += nextLevelXpRequired(i);
+    }
+    return returns;
+}
+
+
+
 void renderSquaddieMenu(baseMenu &menu)
 {
+    int holder = 0;
+    if(inputState.key[Key::Comma].time == 1)
+    {
+        for(int i = 1; i != 30; i++)
+    {
+
+        int theXP = nextLevelXpRequired(i);
+        holder += theXP;
+        //std::cout << "Level " << i << ": " << theXP << "xp, " << holder << " \n";
+
+        std::cout << "New Level " << i << ": " << totalLevelXp(i) << "xp \n";
+    }
+
+    std::cout << "Level 15: " << nextLevelXpRequired(15);
+    }
+
+
     effects.createSquare(100,100,RESOLUTION.x-100,RESOLUTION.y-100,sf::Color(sf::Color(150,150,0)),5,sf::Color::White,window.getDefaultView());
     //Close Button
     int exitButt = createImageButton(sf::Vector2f(RESOLUTION.x-100,100),texturemanager.getTexture("ExitButton.png"),"",0,window.getDefaultView());
@@ -443,6 +487,13 @@ void renderSquaddieMenu(baseMenu &menu)
 
     Npc *npc = menu.npc;
     textList.createText(sf::Vector2f(105,100),20,sf::Color(100,100,100),"Name: " + npc->name,window.getView());
+
+    //XP and Level!
+    std::string LevelXpLine = "Level: " + std::to_string(npc->level) + "\n";
+    LevelXpLine.append("XP: " + std::to_string(npc->xp));
+    LevelXpLine.append(", (Next Level: " + std::to_string(nextLevelXpRequired(npc->level)) + ")");
+    textList.createText(sf::Vector2f(105,115),20,sf::Color::White,LevelXpLine,window.getView());
+
     //Attributes! SPICED
     std::string AttributeLine;
     AttributeLine.append("S.P.I.C.E.D. \n");
@@ -453,6 +504,9 @@ void renderSquaddieMenu(baseMenu &menu)
     AttributeLine.append("Endurance: " + std::to_string(npc->attributes.endurance) + "\n");
     AttributeLine.append("Dexterity: " + std::to_string(npc->attributes.dexterity) + "\n");
     textList.createText(sf::Vector2f(105,150),20,sf::Color::White,AttributeLine,window.getView());
+
+
+
 
     //Inventory!
     sf::Vector2f invPos(RESOLUTION.x/2,130);
