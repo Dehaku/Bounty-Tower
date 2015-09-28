@@ -14,7 +14,7 @@
 [name:5.56mm LR][Pickupable:true][type:3][image:Food.png][baseid:5715721][mindam:100][maxdam:200][range:450]
 [name:5.56mm I][Pickupable:true][type:3][image:Food.png][baseid:5715722][mindam:150][maxdam:250][range:250]
 [name:5.56mm AP][Pickupable:true][type:3][image:Food.png][baseid:5715723][mindam:50][maxdam:300][range:250]
-[name:Missile][Pickupable:true][type:3][image:Sword.png][baseid:5413812][mindam:50][maxdam:100][range:200]
+[name:Missile][Pickupable:true][type:8][image:Sword.png][baseid:5413812][mindam:50][maxdam:100][range:200]
 [name:Wood][Pickupable:true][image:Plank.png][type:12][baseid:7871787][produces:false]
 [name:Rock][Pickupable:true][image:Rock.png][type:12][baseid:7971787][produces:false]
 [name:Rune][Pickupable:true][image:BaseRune.png][type:12][baseid:8001747][produces:false]

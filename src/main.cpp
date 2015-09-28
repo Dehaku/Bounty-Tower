@@ -6660,6 +6660,7 @@ fpsTracker fpsKeeper;
 
 void mouseAnim()
 {
+
     if(inputState.key[Key::X].time == 1)
     {
         std::vector<Item> items = itemmanager.getAllofType(2);

@@ -67,8 +67,8 @@ void equipStarters()
             bullet = *getGlobalItem("5.56mm");
             bullet.amount = 30;
 
-            item.internalitems.push_back(bullet);
             member.inventory.push_back(item);
+            member.inventory.push_back(bullet);
         }
 
         if(currentCritter == 3)
@@ -78,8 +78,8 @@ void equipStarters()
             bullet = *getGlobalItem("5.56mm");
             bullet.amount = 30;
 
-            item.internalitems.push_back(bullet);
             member.inventory.push_back(item);
+            member.inventory.push_back(bullet);
         }
         currentCritter++;
     }
@@ -783,6 +783,11 @@ void bountyTowerLoop()
 
     if( (gvars::framesPassed % 300) == 0 && getLivingFactionMemberCount("Towerlings") < 20 && getFactionMemberCount("Towerlings") < 50 && !bountytower::pausewaves)
     { // This looks for stairs, then spawns critters from them every 300 frames until a certain cap is met.
+        //Preemptively acquiring item lists here, instead of doing it once per critter.
+        std::vector<Item> ammoV = itemmanager.getAllofType(3);
+        std::vector<Item> rangedweps = itemmanager.getAllofType(2);
+        std::vector<Item> meleeweps = itemmanager.getAllofType(1);
+
         debug("Gettin Stairs");
         std::vector<Tile*> stairs;
         for(int x = 0; x != GRIDS; x++)
@@ -804,30 +809,37 @@ void bountyTowerLoop()
             debug("Y");
             member.factionPtr = &listAt(uniFact,2);
             debug("Z");
-            //member.xpos = ((GRIDS*GRID_SIZE)/2)+randz(-20,20);
-            //member.ypos = ((GRIDS*GRID_SIZE)-100)+randz(-20,20);
-            member.xpos = stair->pos.x*GRID_SIZE+(GRID_SIZE/2); //((GRIDS*GRID_SIZE)/2)+randz(-20,20);
+            member.xpos = stair->pos.x*GRID_SIZE+(GRID_SIZE/2);
             member.ypos = stair->pos.y*GRID_SIZE+(GRID_SIZE/2);
             member.zpos = (gvars::currentz*GRID_SIZE);
             member.id = gvars::globalid++;
 
-            itemPtrVector IPV = randomEquipment(member.inventory);
+            int randomEquipRoll = random(1,100);
+            int gunChance = 30;
+            if(randomEquipRoll <= gunChance)
+            {//Gun me!
+                int ranGun = random(0,rangedweps.size()-1);
+                Item gun = rangedweps[ranGun];
+                gun.id = gvars::globalid++;
+                member.inventory.push_back(gun);
 
-            //std::cout << IPV.ptrs.size() << ", IPV. \n";
-            //fSleep(2);
-            for (auto &i : IPV.ptrs)
-            {
-                if(i->type == 2)
-                {
-                    Item bullet;
-                    bullet = *getGlobalItem("5.56mm");
-                    bullet.amount = 30;
+                int ranAmmo = random(0,ammoV.size()-1);
+                Item ammo = ammoV[ranAmmo];
+                ammo.id = gvars::globalid++;
+                ammo.amount = random(5,30);
+                member.inventory.push_back(ammo);
 
-                    i->internalitems.push_back(bullet);
-                }
             }
 
+            //Melee Me!
+            int ranMelee = random(0,meleeweps.size()-1);
+            Item melee = meleeweps[ranMelee];
+            melee.id = gvars::globalid++;
+            member.inventory.push_back(melee);
+
+            std::cout << "Member: " << member.id;
             printItems(member.inventory);
+            std::cout << "\n \n";
 
             npclist.push_back(member);
         }
