@@ -698,7 +698,7 @@ void menuPopUp()
                     job.workPos.x = gCtrl.menuPos.x;
                     job.workPos.y = gCtrl.menuPos.y;
                     job.workPos.z = gvars::currentz*GRID_SIZE;
-                    job.completionTimer = 600*30;
+                    job.completionTimer = 300*30;
 
                     if(selectedNPCs[0]->jobPtr != nullptr)
                     {

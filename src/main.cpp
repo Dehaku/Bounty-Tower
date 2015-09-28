@@ -3374,7 +3374,7 @@ ReDesire:
                     endPos = Vec3(myPos.x/GRID_SIZE,myPos.y/GRID_SIZE,myPos.z/GRID_SIZE);
                     hasPath = false;
 
-                    npc.jobPtr->completionProgress += npc.attributes.intelligence / 2;
+                    npc.jobPtr->completionProgress += npc.attributes.intelligence;
                     debug("post job completetion progress");
                     int percentage = percentIs( npc.jobPtr->completionTimer,npc.jobPtr->completionProgress);
                     textList.createText(wPos.x-10,wPos.y-20,15,sf::Color::Yellow,"%" + std::to_string(percentage));

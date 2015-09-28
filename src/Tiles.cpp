@@ -721,6 +721,9 @@ void drawTile(int xpos, int ypos, sf::Texture &image)
 
 void drawNewTiles()
 {
+
+    //TODO: When Optimization is needed, simply start i and t at the beginning of the view, rather than checking up to the view.
+    // Same can be done for the 'end' of i and t's loops.
     for (int i = 0; i != GRIDS; i++)
     {
         for (int t = 0; t != GRIDS; t++)
@@ -761,6 +764,7 @@ void drawNewTiles()
                 }
                 else
                     window.draw(tiles[i][t][gvars::currentz].img);
+
                 if(tiles[i][t][gvars::currentz].id == 2100)
                 {
                     sf::Vector2f vPos(i*GRID_SIZE+GRID_SIZE/2,t*GRID_SIZE+GRID_SIZE/2);
