@@ -14,6 +14,12 @@ const int GRID_SIZE = 60;
 const int TILE_PIXELS = 20;
 const sf::Color BROWN(100, 100, 0, 255);
 
+struct Desire
+{
+    std::string type;
+    float potency;
+};
+
 struct Vec3
 {
     int x;

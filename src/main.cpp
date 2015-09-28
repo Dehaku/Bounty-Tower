@@ -2823,334 +2823,9 @@ void critterPickUp()
     }
 }
 
-void critterBrain(Npc &npc, std::list<Npc> &container)
+void workDesire(Npc &npc, std::list<Npc> &container, Vec3 &endPos, bool &hasPath, bool &inComplete, Desire * highestDesire )
 {
-    bool needsNewPath = false;
-
-    if(!npc.alive)
-        return;
-
-    assignItemsUser(npc, container);
-
-    critterSkillRefresh(npc,container);
-
-
-
-    if((gvars::framesPassed % 60) == 0)
-    {
-        float hpRegen = npc.maxhealth*(npc.skills.getRanks("Feral Regeneration")*0.01);
-        npc.modhealth(hpRegen);
-    }
-
-
-    npc.container = &container;
-
-    int moveSpeed = npc.moverate;
-
-    if(inputState.key[Key::L])
-        npc.moverate = 100;
-
-
-    activeSkills(npc,container);
-
-
-    if(tiles[abs_to_index(npc.xpos/GRID_SIZE)][abs_to_index(npc.ypos/GRID_SIZE)][abs_to_index(npc.zpos/GRID_SIZE)].walkable == false)
-    {
-        //sf::Vector2f position(abs_to_index(npc.xpos/GRID_SIZE)*GRID_SIZE+10.5,abs_to_index(npc.ypos/GRID_SIZE)*GRID_SIZE+10.5);
-        sf::Vector2f position;
-        position = gridEject(sf::Vector2f(npc.xpos,npc.ypos));
-
-        sf::Vector2f npcPos(npc.xpos,npc.ypos);
-
-        sf::Vector2f Alter = position - npcPos;
-        //npc.momentum += Alter;
-        npc.xpos += Alter.x;
-        npc.ypos += Alter.y;
-    }
-
-    if(npc.faction == "The Titanium Grip")
-        scrapPickup(npc,container);
-    if(npc.faction == "The Titanium Grip")
-        cashPickup(npc,container);
-
-    int alph = 255;
-    //npc.img.setColor(sf::Color(255, 255, 255, alph));
-    npc.img.setScale(gvars::scalex, gvars::scaley);
-    npc.img.setOrigin(npc.img.getTextureRect().width / 2,
-    npc.img.getTextureRect().height / 2);
-    if (npc.race == "Human")
-    {
-        npc.img.setScale(0.5, 0.5);
-    }
-
-
-    if(npc.name == "BTHalfCelestial" && randz(1,1000) == 1000)
-        soundmanager.playSound("AngryWallabee.ogg");
-
-
-    npc.img.setRotation(npc.angle);
-
-    //int critterZ = npc.zpos/20;
-    //textList.createText(npc.xpos,npc.ypos,10,sf::Color::White,"ZPos:","",npc.zpos," /","",critterZ);
-    int critterHealth = npc.health;
-    textList.createText(npc.xpos,npc.ypos-20,10,sf::Color::White,"Health: " + std::to_string(critterHealth));
-    //textList.createText(npc.xpos,npc.ypos-10,10,sf::Color::White,"Mom: " + std::to_string(npc.momentum.x) + "/" + std::to_string(npc.momentum.y));
-    runCritterBody(npc);
-    debug("Ending Part Loop");
-    debug("debug 1", false);
-
-    /*Simulating Hunger/Thirst, Needs to be nerfed/formulated to conditions, I.E. Attributes/Parts/Weather*/
-    if( (gvars::framesPassed % 10) == 0)
-    {/* Every ten frames, consume nutrients  */
-        npc.bloodwork("Nutrients", -1);
-        npc.bloodwork("Hydration", -1);
-    }
-
-
-    /* *BodyPart Loop* */
-
-    /* Critter Prioritization */
-    std::vector<Npc*> enemyPtrs;
-    Npc * closEnmy = nullptr;
-    if(bountytower::towerlingassault)
-    {
-        for (auto &enemys : container)
-        {
-            if( enemys.factionPtr != nullptr && npc.factionPtr != nullptr && enemys.faction != npc.faction)
-            {
-                for (auto &i : npc.factionPtr->factRelations)
-                {
-                    if(enemys.faction == i.faction && i.appeal < 1000 && enemys.alive)
-                    {
-                        //std::cout << "ZE ENEMY HAS BEEN SPOTTED AT " << enemys.xpos << "/" << enemys.ypos << std::endl;
-                        enemyPtrs.push_back(&enemys);
-                    }
-                }
-            }
-        }
-        for (auto &enemy : enemyPtrs)
-        {
-            //effects.createLine(npc.xpos,npc.ypos,enemy->xpos,enemy->ypos,2,sf::Color::Yellow);
-            if(closEnmy == nullptr)
-                closEnmy = enemy;
-            else if(math::closeish(npc.xpos,npc.ypos,enemy->xpos,enemy->ypos) <
-                    math::closeish(npc.xpos,npc.ypos,closEnmy->xpos,closEnmy->ypos)
-                    )
-            {
-                closEnmy = enemy;
-            }
-
-        }
-
-        if(closEnmy != nullptr && inputState.key[Key::LAlt] && true == false)
-        {
-            effects.createLine(npc.xpos,npc.ypos,closEnmy->xpos,closEnmy->ypos,4,sf::Color::Red);
-            //hasPath = true;
-            //endPos = Vec3(closEnmy->xpos/GRID_SIZE,closEnmy->ypos/GRID_SIZE,closEnmy->zpos/GRID_SIZE);
-        }
-
-    }
-
-    if(closEnmy != nullptr)
-        npc.desiredViewAngle = closEnmy->getPos2d();
-        //npc.targetInfo.npc = closEnmy;
-
-
-    /* Critter Vision   */
-    critterVision(npc,container);
-
-
-
-    critterEquip(npc,container);
-
-    // Method Two, Struct Desires
-    struct Desire
-    {
-        std::string type;
-        float potency;
-    };
-    std::vector<Desire> desires;
-
-    debug("Declaring and added Desires");
-    // Declaring and adding Desires
-    {
-        Desire newDesire;
-    { //Sustainence
-        newDesire.type = "Sustainence";
-        newDesire.potency = 0;
-    }
-    desires.push_back(newDesire);
-    { //Apathy
-        newDesire.type = "Apathy";
-        newDesire.potency = 100;
-    }
-    desires.push_back(newDesire);
-    { //SelfDefense
-        newDesire.type = "SelfDefense";
-        newDesire.potency = 0;
-    }
-    desires.push_back(newDesire);
-    { //Social
-        newDesire.type = "Social";
-        newDesire.potency = 0;
-    }
-    desires.push_back(newDesire);
-    { //Work
-        newDesire.type = "Work";
-        newDesire.potency = 0;
-
-        if(npc.factionPtr != nullptr && npc.factionPtr->jobList.size() != 0)
-        {
-            for (auto &jobs : npc.factionPtr->jobList)
-            {
-                if(jobs.pWorker == nullptr)
-                {
-                    newDesire.potency = 50+500;
-                    break;
-                }
-            }
-            if(npc.jobPtr != nullptr)
-                newDesire.potency += 750;
-        }
-
-    }
-    desires.push_back(newDesire);
-    { //Assault
-        newDesire.type = "Assault";
-        newDesire.potency = 0;
-        //if(bountytower::towerlingassault && npc.faction == "Towerlings")
-            newDesire.potency = 700;
-
-
-
-    }
-    desires.push_back(newDesire);
-    }
-
-    debug("debug 6", false);
-    /*Causation to Desires*/
-    // Get Critters max nutrition, then reduce it by critters nutrients in blood
-    float nutrients = npc.maxhunger - npc.bloodwork("Nutrients", 0);
-    float hydration = npc.maxthirst - npc.bloodwork("Hydration", 0);
-
-    for (auto &des : desires)
-    {
-        if (npc.name != "Mini Turret" && des.type == "Sustainence" && GRID_SIZE == 20)
-            des.potency += hydration + nutrients;
-        if (des.type == "SelfDefense")
-        {
-            // This line makes the game freeze
-            des.potency = 10000;
-        }
-    }
-
-    debug("debug 7", false);
-    // Finding the highest Desire
-    bool inComplete;
-    Desire *highestDesire = nullptr;
-    bool firstIter = true;
-
-ReDesire:
-    inComplete = false;
-    debug("Finding highest desire");
-    for (auto &i : desires)
-    {
-        if (firstIter)
-        {
-            highestDesire = &i;
-            firstIter = false;
-        }
-        if (i.potency > (*highestDesire).potency)
-            highestDesire = &i;
-    }
-
-    if (highestDesire == nullptr)
-    {
-        throw std::runtime_error("critterBrain: Something went wrong!");
-    }
-
-    debug("debug 8", false);
-    // Acting on Highest Desire
-
-    Vec3 startPos(npc.xpos/GRID_SIZE,npc.ypos/GRID_SIZE,npc.zpos/GRID_SIZE);
-    Vec3 endPos;
-
-    bool hasPath = false;
-
-
-    debug("Acting on highest Desire:" + (*highestDesire).type);
-    if ((*highestDesire).type == "Apathy")
-    {// TODO: Add blublublub
-
-    }
-    if ((*highestDesire).type == "SelfDefense")
-    {
-        (*highestDesire).potency = 0;
-        inComplete = true;
-    }
-    if ((*highestDesire).type == "Sustainence")
-    {
-        bool inInv = false;
-        for (auto &inv : npc.inventory)
-            if (inv.massFlesh > 0)
-            {
-                //npc.Target.item = &Inv;
-                inInv = true;
-                break;
-            }
-        if (inInv == false)
-        {
-            for (auto &lclItms : worlditems)
-            {
-                if (npc.targetInfo.item == nullptr && lclItms.massFlesh > 0 &&
-                    lclItms.user == nullptr)
-                {
-                    npc.targetInfo.item =
-                        &lclItms; // Is this creating a copy? The Behavior in testing still makes multiple critters target the same item.
-                    lclItms.user = &npc;
-                }
-                else if (lclItms.massFlesh > 0 && lclItms.user == nullptr)
-                {
-
-                    float CurrentItem = math::closeish(
-                        npc.xpos, npc.ypos, (*npc.targetInfo.item).xpos,
-                        (*npc.targetInfo.item).ypos);
-                    float NewItem = math::closeish(npc.xpos, npc.ypos,
-                                                   lclItms.xpos, lclItms.ypos);
-                    if (NewItem < CurrentItem)
-                    {
-                        (*npc.targetInfo.item).user = nullptr;
-                        npc.targetInfo.item = &lclItms;
-                        (*npc.targetInfo.item).user = &npc;
-                    }
-                }
-            }
-            if (npc.targetInfo.item != nullptr)
-            {
-                Vec3 ItemPos((*npc.targetInfo.item).xpos,(*npc.targetInfo.item).ypos,(*npc.targetInfo.item).zpos);
-                Vec3 myPos(npc.xpos,npc.ypos,npc.zpos);
-                endPos = Vec3(npc.targetInfo.item->xpos/GRID_SIZE, npc.targetInfo.item->ypos/GRID_SIZE, npc.targetInfo.item->zpos/GRID_SIZE);
-                hasPath = true;
-
-                //if (math::closeish(npc.xpos, npc.ypos, ItemPos.x, ItemPos.y) <= npc.size * 3)
-                if(math::distance(myPos,ItemPos) <= npc.size*3 && myPos.z/GRID_SIZE == ItemPos.z/GRID_SIZE)
-                {
-                    Item *tar = npc.targetInfo.item;
-                    npc.targetInfo.item = nullptr;
-                    (*tar).user = nullptr;
-                    npc.inventory.push_back((*tar));
-                    (*tar).toDelete = true;
-                }
-            }
-        }
-
-        if (npc.targetInfo.item != nullptr && inInv == false)
-        {
-        }
-    }
-    if ((*highestDesire).type == "Work")
-    {
-        if(npc.jobPtr == nullptr)
+    if(npc.jobPtr == nullptr)
         {
             for(auto &jobs : npc.factionPtr->jobList)
             {
@@ -3416,11 +3091,335 @@ ReDesire:
             }
 
         }
-    }
-    if ((*highestDesire).type == "Assault")
+
+}
+
+void critterBrain(Npc &npc, std::list<Npc> &container)
+{
+    bool needsNewPath = false;
+
+    if(!npc.alive)
+        return;
+
+    assignItemsUser(npc, container);
+
+    critterSkillRefresh(npc,container);
+
+
+
+    if((gvars::framesPassed % 60) == 0)
     {
-        assaultDesire(npc, container, closEnmy, hasPath, endPos);
+        float hpRegen = npc.maxhealth*(npc.skills.getRanks("Feral Regeneration")*0.01);
+        npc.modhealth(hpRegen);
     }
+
+
+    npc.container = &container;
+
+    int moveSpeed = npc.moverate;
+
+    if(inputState.key[Key::L])
+        npc.moverate = 100;
+
+
+    activeSkills(npc,container);
+
+
+    if(tiles[abs_to_index(npc.xpos/GRID_SIZE)][abs_to_index(npc.ypos/GRID_SIZE)][abs_to_index(npc.zpos/GRID_SIZE)].walkable == false)
+    {
+        //sf::Vector2f position(abs_to_index(npc.xpos/GRID_SIZE)*GRID_SIZE+10.5,abs_to_index(npc.ypos/GRID_SIZE)*GRID_SIZE+10.5);
+        sf::Vector2f position;
+        position = gridEject(sf::Vector2f(npc.xpos,npc.ypos));
+
+        sf::Vector2f npcPos(npc.xpos,npc.ypos);
+
+        sf::Vector2f Alter = position - npcPos;
+        //npc.momentum += Alter;
+        npc.xpos += Alter.x;
+        npc.ypos += Alter.y;
+    }
+
+    if(npc.faction == "The Titanium Grip")
+        scrapPickup(npc,container);
+    if(npc.faction == "The Titanium Grip")
+        cashPickup(npc,container);
+
+    int alph = 255;
+    //npc.img.setColor(sf::Color(255, 255, 255, alph));
+    npc.img.setScale(gvars::scalex, gvars::scaley);
+    npc.img.setOrigin(npc.img.getTextureRect().width / 2,
+    npc.img.getTextureRect().height / 2);
+    if (npc.race == "Human")
+    {
+        npc.img.setScale(0.5, 0.5);
+    }
+
+
+    if(npc.name == "BTHalfCelestial" && randz(1,1000) == 1000)
+        soundmanager.playSound("AngryWallabee.ogg");
+
+
+    npc.img.setRotation(npc.angle);
+
+    //int critterZ = npc.zpos/20;
+    //textList.createText(npc.xpos,npc.ypos,10,sf::Color::White,"ZPos:","",npc.zpos," /","",critterZ);
+    int critterHealth = npc.health;
+    textList.createText(npc.xpos,npc.ypos-20,10,sf::Color::White,"Health: " + std::to_string(critterHealth));
+    //textList.createText(npc.xpos,npc.ypos-10,10,sf::Color::White,"Mom: " + std::to_string(npc.momentum.x) + "/" + std::to_string(npc.momentum.y));
+    runCritterBody(npc);
+    debug("Ending Part Loop");
+    debug("debug 1", false);
+
+    /*Simulating Hunger/Thirst, Needs to be nerfed/formulated to conditions, I.E. Attributes/Parts/Weather*/
+    if( (gvars::framesPassed % 10) == 0)
+    {/* Every ten frames, consume nutrients  */
+        npc.bloodwork("Nutrients", -1);
+        npc.bloodwork("Hydration", -1);
+    }
+
+
+    /* *BodyPart Loop* */
+
+    /* Critter Prioritization */
+    std::vector<Npc*> enemyPtrs;
+    Npc * closEnmy = nullptr;
+    if(bountytower::towerlingassault)
+    {
+        for (auto &enemys : container)
+        {
+            if( enemys.factionPtr != nullptr && npc.factionPtr != nullptr && enemys.faction != npc.faction)
+            {
+                for (auto &i : npc.factionPtr->factRelations)
+                {
+                    if(enemys.faction == i.faction && i.appeal < 1000 && enemys.alive)
+                    {
+                        //std::cout << "ZE ENEMY HAS BEEN SPOTTED AT " << enemys.xpos << "/" << enemys.ypos << std::endl;
+                        enemyPtrs.push_back(&enemys);
+                    }
+                }
+            }
+        }
+        for (auto &enemy : enemyPtrs)
+        {
+            //effects.createLine(npc.xpos,npc.ypos,enemy->xpos,enemy->ypos,2,sf::Color::Yellow);
+            if(closEnmy == nullptr)
+                closEnmy = enemy;
+            else if(math::closeish(npc.xpos,npc.ypos,enemy->xpos,enemy->ypos) <
+                    math::closeish(npc.xpos,npc.ypos,closEnmy->xpos,closEnmy->ypos)
+                    )
+            {
+                closEnmy = enemy;
+            }
+
+        }
+
+        if(closEnmy != nullptr && inputState.key[Key::LAlt] && true == false)
+        {
+            effects.createLine(npc.xpos,npc.ypos,closEnmy->xpos,closEnmy->ypos,4,sf::Color::Red);
+            //hasPath = true;
+            //endPos = Vec3(closEnmy->xpos/GRID_SIZE,closEnmy->ypos/GRID_SIZE,closEnmy->zpos/GRID_SIZE);
+        }
+
+    }
+
+    if(closEnmy != nullptr)
+        npc.desiredViewAngle = closEnmy->getPos2d();
+        //npc.targetInfo.npc = closEnmy;
+
+
+    /* Critter Vision   */
+    critterVision(npc,container);
+
+
+
+    critterEquip(npc,container);
+
+    // Method Two, Struct Desires
+    std::vector<Desire> desires;
+
+    debug("Declaring and added Desires");
+    // Declaring and adding Desires
+    {
+        Desire newDesire;
+    { //Sustainence
+        newDesire.type = "Sustainence";
+        newDesire.potency = 0;
+    }
+    desires.push_back(newDesire);
+    { //Apathy
+        newDesire.type = "Apathy";
+        newDesire.potency = 100;
+    }
+    desires.push_back(newDesire);
+    { //SelfDefense
+        newDesire.type = "SelfDefense";
+        newDesire.potency = 0;
+    }
+    desires.push_back(newDesire);
+    { //Social
+        newDesire.type = "Social";
+        newDesire.potency = 0;
+    }
+    desires.push_back(newDesire);
+    { //Work
+        newDesire.type = "Work";
+        newDesire.potency = 0;
+
+        if(npc.factionPtr != nullptr && npc.factionPtr->jobList.size() != 0)
+        {
+            for (auto &jobs : npc.factionPtr->jobList)
+            {
+                if(jobs.pWorker == nullptr)
+                {
+                    newDesire.potency = 50+500;
+                    break;
+                }
+            }
+            if(npc.jobPtr != nullptr)
+                newDesire.potency += 750;
+        }
+
+    }
+    desires.push_back(newDesire);
+    { //Assault
+        newDesire.type = "Assault";
+        newDesire.potency = 0;
+        //if(bountytower::towerlingassault && npc.faction == "Towerlings")
+            newDesire.potency = 700;
+
+
+
+    }
+    desires.push_back(newDesire);
+    }
+
+    debug("debug 6", false);
+    /*Causation to Desires*/
+    // Get Critters max nutrition, then reduce it by critters nutrients in blood
+    float nutrients = npc.maxhunger - npc.bloodwork("Nutrients", 0);
+    float hydration = npc.maxthirst - npc.bloodwork("Hydration", 0);
+
+    for (auto &des : desires)
+    {
+        if (npc.name != "Mini Turret" && des.type == "Sustainence" && GRID_SIZE == 20)
+            des.potency += hydration + nutrients;
+        if (des.type == "SelfDefense")
+        {
+            // This line makes the game freeze
+            des.potency = 10000;
+        }
+    }
+
+    debug("debug 7", false);
+    // Finding the highest Desire
+    bool inComplete;
+    Desire *highestDesire = nullptr;
+    bool firstIter = true;
+
+ReDesire:
+    inComplete = false;
+    debug("Finding highest desire");
+    for (auto &i : desires)
+    {
+        if (firstIter)
+        {
+            highestDesire = &i;
+            firstIter = false;
+        }
+        if (i.potency > (*highestDesire).potency)
+            highestDesire = &i;
+    }
+
+    if (highestDesire == nullptr)
+    {
+        throw std::runtime_error("critterBrain: Something went wrong!");
+    }
+
+    debug("debug 8", false);
+    // Acting on Highest Desire
+
+    Vec3 startPos(npc.xpos/GRID_SIZE,npc.ypos/GRID_SIZE,npc.zpos/GRID_SIZE);
+    Vec3 endPos;
+
+    bool hasPath = false;
+
+
+    debug("Acting on highest Desire:" + (*highestDesire).type);
+    if ((*highestDesire).type == "Apathy")
+    {// TODO: Add blublublub
+
+    }
+    if ((*highestDesire).type == "SelfDefense")
+    {
+        (*highestDesire).potency = 0;
+        inComplete = true;
+    }
+    if ((*highestDesire).type == "Sustainence")
+    {
+        bool inInv = false;
+        for (auto &inv : npc.inventory)
+            if (inv.massFlesh > 0)
+            {
+                //npc.Target.item = &Inv;
+                inInv = true;
+                break;
+            }
+        if (inInv == false)
+        {
+            for (auto &lclItms : worlditems)
+            {
+                if (npc.targetInfo.item == nullptr && lclItms.massFlesh > 0 &&
+                    lclItms.user == nullptr)
+                {
+                    npc.targetInfo.item =
+                        &lclItms; // Is this creating a copy? The Behavior in testing still makes multiple critters target the same item.
+                    lclItms.user = &npc;
+                }
+                else if (lclItms.massFlesh > 0 && lclItms.user == nullptr)
+                {
+
+                    float CurrentItem = math::closeish(
+                        npc.xpos, npc.ypos, (*npc.targetInfo.item).xpos,
+                        (*npc.targetInfo.item).ypos);
+                    float NewItem = math::closeish(npc.xpos, npc.ypos,
+                                                   lclItms.xpos, lclItms.ypos);
+                    if (NewItem < CurrentItem)
+                    {
+                        (*npc.targetInfo.item).user = nullptr;
+                        npc.targetInfo.item = &lclItms;
+                        (*npc.targetInfo.item).user = &npc;
+                    }
+                }
+            }
+            if (npc.targetInfo.item != nullptr)
+            {
+                Vec3 ItemPos((*npc.targetInfo.item).xpos,(*npc.targetInfo.item).ypos,(*npc.targetInfo.item).zpos);
+                Vec3 myPos(npc.xpos,npc.ypos,npc.zpos);
+                endPos = Vec3(npc.targetInfo.item->xpos/GRID_SIZE, npc.targetInfo.item->ypos/GRID_SIZE, npc.targetInfo.item->zpos/GRID_SIZE);
+                hasPath = true;
+
+                //if (math::closeish(npc.xpos, npc.ypos, ItemPos.x, ItemPos.y) <= npc.size * 3)
+                if(math::distance(myPos,ItemPos) <= npc.size*3 && myPos.z/GRID_SIZE == ItemPos.z/GRID_SIZE)
+                {
+                    Item *tar = npc.targetInfo.item;
+                    npc.targetInfo.item = nullptr;
+                    (*tar).user = nullptr;
+                    npc.inventory.push_back((*tar));
+                    (*tar).toDelete = true;
+                }
+            }
+        }
+
+        if (npc.targetInfo.item != nullptr && inInv == false)
+        {
+        }
+    }
+    if ((*highestDesire).type == "Work")
+        workDesire(npc,container,endPos,hasPath,inComplete,highestDesire);
+
+    if ((*highestDesire).type == "Assault")
+        assaultDesire(npc, container, closEnmy, hasPath, endPos);
+
 
     debug("Checking inComplete:" + std::to_string(inComplete));
     // Incase the highest desire isn't completable, Go through again for the next highest desire.
