@@ -3042,6 +3042,7 @@ void workDesire(Npc &npc, std::list<Npc> &container, Vec3 &endPos, bool &hasPath
             {
                 endPos = Vec3(npc.jobPtr->workPos.x/GRID_SIZE,npc.jobPtr->workPos.y/GRID_SIZE,npc.jobPtr->workPos.z/GRID_SIZE);
                 hasPath = true;
+                Tile *workTile = &tiles[abs_to_index(wPos.x / GRID_SIZE)][abs_to_index(wPos.y / GRID_SIZE)][abs_to_index(wPos.z / GRID_SIZE)];
 
                 if(math::distance(myPos,wPos) <= npc.size*3 && myPos.z/GRID_SIZE == wPos.z/GRID_SIZE)
                 {
@@ -3049,16 +3050,17 @@ void workDesire(Npc &npc, std::list<Npc> &container, Vec3 &endPos, bool &hasPath
                     endPos = Vec3(myPos.x/GRID_SIZE,myPos.y/GRID_SIZE,myPos.z/GRID_SIZE);
                     hasPath = false;
 
-                    npc.jobPtr->completionProgress += npc.attributes.intelligence;
+                    //npc.jobPtr->completionProgress += npc.attributes.intelligence;
+                    workTile->workProgress += npc.attributes.intelligence;
                     debug("post job completetion progress");
-                    int percentage = percentIs( npc.jobPtr->completionTimer,npc.jobPtr->completionProgress);
+                    int percentage = percentIs( npc.jobPtr->completionTimer,workTile->workProgress);
                     textList.createText(wPos.x-10,wPos.y-20,15,sf::Color::Yellow,"%" + std::to_string(percentage));
 
-                    if (npc.jobPtr->completionProgress >= npc.jobPtr->completionTimer)
+                    if (workTile->workProgress >= npc.jobPtr->completionTimer)
                     {
                         debug("Job complete!");
 
-                        tiles[abs_to_index(wPos.x / GRID_SIZE)][abs_to_index(wPos.y / GRID_SIZE)][abs_to_index(wPos.z / GRID_SIZE)].state = "On";
+                        workTile->state = "On";
 
                         npc.jobPtr->toDelete = true;
                         npc.jobPtr = nullptr;

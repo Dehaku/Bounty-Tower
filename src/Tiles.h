@@ -52,6 +52,7 @@ public:
     sf::Sprite img;
     sf::Color worldColor;
     std::string state;
+    float workProgress;
 
     std::vector<Liquid> liquids;
 

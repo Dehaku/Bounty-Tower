@@ -1542,6 +1542,7 @@ Tile::Tile() : id{}
     goesDown = false;
     teleporter = false;
     telePos = Vec3(-1,-1,-1);
+    workProgress = 0;
 }
 
 XTile::XTile() : id{}, img{nullptr}
