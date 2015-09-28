@@ -4006,23 +4006,11 @@ void drawSquadHud()
 
 void drawEnemyCounterHud()
 {
-    window.setView(window.getDefaultView());
-    int ydrawPos = 0;
-
-    sf::Text enemyCounter;
-    {
-        int counter = getLivingFactionMemberCount("Towerling");
-        if(counter > 0)
-            enemyCounter.setString("Enemies Remaining: " + std::to_string(counter));
-        enemyCounter.setColor(sf::Color::White);
-        enemyCounter.setPosition(RESOLUTION.x/1.5,50);
-        enemyCounter.setCharacterSize(15);
-        enemyCounter.setFont(gvars::defaultFont);
-    }
-
-    window.draw(enemyCounter);
-
-    window.setView(gvars::view1);
+    int counter = getLivingFactionMemberCount("Towerlings");
+    sf::Vector2f vPos(RESOLUTION.x/1.5,50);
+    std::string outPut = "Enemies Remaining: " + std::to_string(counter);
+    if(counter > 0)
+        textList.createText(vPos,15,sf::Color::White,outPut,window.getDefaultView());
 }
 
 

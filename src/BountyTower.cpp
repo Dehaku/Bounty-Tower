@@ -737,20 +737,26 @@ void bountyTowerLoop()
         chatBox.addChat(outPut,sf::Color::Red);
     }
 
+
+
+
     if( (gvars::framesPassed % 5) == 0 && !bountytower::elevatoravailable)
     { // Here we scan the floor for all switches that are set to Off, If even a single one is off, then the elevator is not functional.
         bool floorComplete = true;
         bool switchesExist = false;
+        int remainingSwitches = 0;
         for(int x = 0; x != GRIDS; x++)
             for(int y = 0; y != GRIDS; y++)
         {
             if(tiles[x][y][gvars::currentz].id == 3500 && tiles[x][y][gvars::currentz].state == "Off")
             {
                 floorComplete = false;
+                remainingSwitches++;
             }
             if(tiles[x][y][gvars::currentz].id == 3500)
                 switchesExist = true;
         }
+        bountytower::switchesRemain = remainingSwitches;
 
         if(floorComplete && switchesExist)
         {
@@ -765,9 +771,17 @@ void bountyTowerLoop()
         }
 
 
+
+
     }
 
-    if( (gvars::framesPassed % 300) == 0 && getLivingFactionMemberCount("Towerling") < 20 && getFactionMemberCount("Towerling") < 50 && !bountytower::pausewaves)
+    if(bountytower::switchesRemain > 0)
+    {
+        sf::Vector2f vPos(RESOLUTION.x/1.5,30);
+        textList.createText(vPos,15,sf::Color::White,"Remaining Elevator Components: " + std::to_string(bountytower::switchesRemain),window.getDefaultView());
+    }
+
+    if( (gvars::framesPassed % 300) == 0 && getLivingFactionMemberCount("Towerlings") < 20 && getFactionMemberCount("Towerlings") < 50 && !bountytower::pausewaves)
     { // This looks for stairs, then spawns critters from them every 300 frames until a certain cap is met.
         debug("Gettin Stairs");
         std::vector<Tile*> stairs;
@@ -823,6 +837,8 @@ void bountyTowerLoop()
     if(bountytower::towerLoaded != "")
         textList.createText(sf::Vector2f(RESOLUTION.x/2,15),15,sf::Color::White,"Floor: " + std::to_string(gvars::currentz),window.getDefaultView());
 
+
+
     if(bountytower::elevatoravailable && bountytower::towerLoaded != "")
     { // Prints Elevator HUD and other such things
 
@@ -855,6 +871,7 @@ void bountyTowerLoop()
             }
         }
     }
+
 }
 
 void buildTower(std::string towerName)
@@ -965,4 +982,5 @@ namespace bountytower
     bool bountytower = true;
     bool pausewaves = true;
     std::string towerLoaded = "";
+    int switchesRemain = 0;
 }
