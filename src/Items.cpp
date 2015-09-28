@@ -675,6 +675,16 @@ void ItemManager::initializeItems()
     }
 }
 
+std::vector<Item> ItemManager::getAllofType(int type)
+{
+    std::vector<Item> returns;
+    for(auto &items : globalItems)
+        if(items.type == type)
+            returns.push_back(items);
+
+    return returns;
+}
+
 void offloadItems()
 {
     for (auto &worlditem : worlditems)

@@ -142,6 +142,7 @@ class ItemManager
 public:
     std::vector<Item> globalItems;
     std::vector<Item> addedItems;
+    std::vector<Item> getAllofType(int type);
 
     void addItems();
     void initializeItems();
