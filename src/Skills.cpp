@@ -242,6 +242,10 @@ Skills::Skills()
 
     /*
 
+    skill.name = "Logistics Expert";
+    skill.desc = "Passive - Immensely increases the rate at which this critter works on switches";
+    skill.active = false;
+    list.push_back(skill);
 
     skill.name = "Lemme help with that";
     skill.desc = "Passive - 10% chance per rank to prevent allies item durability loss and prevent weapon jamming.";

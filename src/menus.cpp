@@ -692,25 +692,29 @@ void menuPopUp()
                     inputState.key[Key::Num4].time == 1)
                 {
 
+
+
                     Job job;
                     job.name = "FlipSelectedSwitch";
                     job.type = "FlipSwitch";
                     job.workPos.x = gCtrl.menuPos.x;
                     job.workPos.y = gCtrl.menuPos.y;
                     job.workPos.z = gvars::currentz*GRID_SIZE;
-                    job.completionTimer = 300*30;
-
-                    if(selectedNPCs[0]->jobPtr != nullptr)
+                    job.completionTimer = 600*30;
+                    for(auto &selected : selectedNPCs)
                     {
-                        selectedNPCs[0]->jobPtr->pWorker = nullptr;
-                        selectedNPCs[0]->jobPtr = nullptr;
+                        if(selected->jobPtr != nullptr)
+                        {
+                            selected->jobPtr->pWorker = nullptr;
+                            selected->jobPtr = nullptr;
+                        }
+
+                        job.pWorker = selected;
+                        int jobListSize = selected->factionPtr->jobList.size();
+
+                        selected->factionPtr->jobList.push_back(job);
+                        selected->jobPtr = &listAt(selected->factionPtr->jobList,jobListSize);
                     }
-
-                    job.pWorker = selectedNPCs[0];
-                    int jobListSize = selectedNPCs[0]->factionPtr->jobList.size();
-
-                    selectedNPCs[0]->factionPtr->jobList.push_back(job);
-                    selectedNPCs[0]->jobPtr = &listAt(selectedNPCs[0]->factionPtr->jobList,jobListSize);
 
                     return;
                 }
