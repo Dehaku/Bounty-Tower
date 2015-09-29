@@ -694,6 +694,7 @@ void menuPopUp()
 
 
 
+
                     Job job;
                     job.name = "FlipSelectedSwitch";
                     job.type = "FlipSwitch";
@@ -1745,7 +1746,7 @@ void rightMouseButtonContextMenu()
         bool isWalkable = tiles[mouseX][mouseY][gvars::currentz].walkable;
         bool isSwitch = tiles[mouseX][mouseY][gvars::currentz].id == 3500;
 
-        if(inBounds && isWalkable && !isSwitch)
+        if(inBounds && isWalkable)
         {
             for(auto &lilguy : selectedNPCs)
             {

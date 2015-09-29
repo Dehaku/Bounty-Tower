@@ -2826,25 +2826,20 @@ void critterPickUp()
 void workDesire(Npc &npc, std::list<Npc> &container, Vec3 &endPos, bool &hasPath, bool &inComplete, Desire * highestDesire )
 {
     if(npc.jobPtr == nullptr)
+    {
+        for(auto &jobs : npc.factionPtr->jobList)
         {
-            for(auto &jobs : npc.factionPtr->jobList)
-            {
-                if(jobs.pWorker != nullptr)
-                {
-                    continue;
-                }
-                else if(jobs.toDelete)
-                {
-                    continue;
-                }
-                std::cout << npc.name << ", workin " << jobs.name << "/" << jobs.type << std::endl;
-                jobs.pWorker = &npc;
-                npc.jobPtr = &jobs;
-                break;
-            }
+            if(jobs.pWorker != nullptr || jobs.toDelete)
+                continue;
+
+            std::cout << npc.name << ", workin " << jobs.name << "/" << jobs.type << std::endl;
+            jobs.pWorker = &npc;
+            npc.jobPtr = &jobs;
+            break;
         }
-        else
-        {
+    }
+    else
+    {
             debug("I have a job, Now if only my programmer did.");
             Vec3 wPos(npc.jobPtr->workPos);
             Vec3 myPos(npc.xpos,npc.ypos,npc.zpos);
@@ -3096,6 +3091,29 @@ void workDesire(Npc &npc, std::list<Npc> &container, Vec3 &endPos, bool &hasPath
 
 }
 
+void workSwitch(Npc &npc, std::list<Npc> &container)
+{
+    if(!isInBounds(npc.getPos2d()))
+        return;
+    int xTile = abs_to_index(npc.xpos/GRID_SIZE);
+    int yTile = abs_to_index(npc.ypos/GRID_SIZE);
+    int zTile = abs_to_index(npc.zpos/GRID_SIZE);
+    Tile *standTile = &tiles[xTile][yTile][zTile];
+    if(standTile->state == "Off")
+    {
+        standTile->workProgress += npc.attributes.intelligence;
+        if(standTile->workProgress >= standTile->workGoal)
+        {
+            standTile->state = "On";
+        }
+        int percentage = percentIs(standTile->workGoal,standTile->workProgress);
+        textList.createText(xTile*GRID_SIZE+10,yTile*GRID_SIZE+10,15,sf::Color::Yellow,"%" + std::to_string(percentage));
+    }
+
+
+
+}
+
 void critterBrain(Npc &npc, std::list<Npc> &container)
 {
     bool needsNewPath = false;
@@ -3125,6 +3143,7 @@ void critterBrain(Npc &npc, std::list<Npc> &container)
 
 
     activeSkills(npc,container);
+    workSwitch(npc,container);
 
 
     if(tiles[abs_to_index(npc.xpos/GRID_SIZE)][abs_to_index(npc.ypos/GRID_SIZE)][abs_to_index(npc.zpos/GRID_SIZE)].walkable == false)
@@ -3273,6 +3292,7 @@ void critterBrain(Npc &npc, std::list<Npc> &container)
             {
                 if(jobs.pWorker == nullptr)
                 {
+                    //newDesire.potency = 2+700;
                     newDesire.potency = 50+500;
                     break;
                 }

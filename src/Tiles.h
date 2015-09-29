@@ -53,6 +53,7 @@ public:
     sf::Color worldColor;
     std::string state;
     float workProgress;
+    int workGoal;
 
     std::vector<Liquid> liquids;
 

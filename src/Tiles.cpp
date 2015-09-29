@@ -1543,6 +1543,7 @@ Tile::Tile() : id{}
     teleporter = false;
     telePos = Vec3(-1,-1,-1);
     workProgress = 0;
+    workGoal = 100*60;
 }
 
 XTile::XTile() : id{}, img{nullptr}
