@@ -44,6 +44,13 @@ struct Vec3f
         y = Second;
         z = Third;
     }
+    Vec3f(Vec3 altVec)
+    {
+        x = altVec.x;
+        y = altVec.y;
+        z = altVec.z;
+    }
+
 };
 
 #endif // __DEFS_H_INCLUDED__

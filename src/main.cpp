@@ -3478,18 +3478,16 @@ ReDesire:
             npc.storedPath.push_back(i);
         pathCon.storedPath.clear();
     }
-
-    if(math::distance(npc.endPos,startPos) <= npc.size/GRID_SIZE)
+    Vec3 npcEndPosGrid = Vec3(npc.endPos.x/GRID_SIZE,npc.endPos.y/GRID_SIZE,npc.endPos.z/GRID_SIZE);
+    if(math::distance(npcEndPosGrid,startPos) <= npc.size/GRID_SIZE)
         npc.hasPath = false;
-
-    //if(npc.hasPath && (gvars::framesPassed % 60) == 0 && npcWalkable)
 
     if(npc.hasPath && npc.storedPath.empty() && npcWalkable && needsNewPath == false)
     {
-        bool prevWalkable = tiles[npc.endPos.x][npc.endPos.y][npc.endPos.z].walkable;
-        tiles[npc.endPos.x][npc.endPos.y][npc.endPos.z].walkable = true;
-        int result = pathCon.makePath(startPos, npc.endPos);
-        tiles[npc.endPos.x][npc.endPos.y][npc.endPos.z].walkable = prevWalkable;
+        bool prevWalkable = tiles[npcEndPosGrid.x][npcEndPosGrid.y][npcEndPosGrid.z].walkable;
+        tiles[npcEndPosGrid.x][npcEndPosGrid.y][npcEndPosGrid.z].walkable = true;
+        int result = pathCon.makePath(startPos, npcEndPosGrid);
+        tiles[npcEndPosGrid.x][npcEndPosGrid.y][npcEndPosGrid.z].walkable = prevWalkable;
         npc.storedPath.clear();
         for(auto &i : pathCon.storedPath)
             npc.storedPath.push_back(i);
@@ -3560,13 +3558,16 @@ ReDesire:
 
         if(math::distance(myPos,posExtended) <= npc.moverate)
             npc.storedPath.erase(npc.storedPath.begin() );
+
     }
-    else if((npc.targetInfo.item != nullptr && pathCon.storedPath.size() == 1) || (npc.targetInfo.item != nullptr && pathCon.storedPath.size() == 2))
+    else if(npc.storedPath.empty() && math::distance(npc.getPos(),Vec3f(npc.endPos) ) > 5 && npc.endPos.x != 0)
     {
-        //Why does this exist?
-        debug("dir Moving");
-        npc.dirMove(sf::Vector2f((*npc.targetInfo.item).xpos,
-                                         (*npc.targetInfo.item).ypos));
+        npc.dirMove(sf::Vector2f(npc.endPos.x,npc.endPos.y));
+
+    }
+    else if(math::distance(npc.getPos(),Vec3f(npc.endPos) ) < 5)
+    {
+        npc.endPos.x = 0;
     }
 
     debug("Removing stuffs");
