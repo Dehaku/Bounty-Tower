@@ -688,6 +688,20 @@ int getFloorFactionMemberCount(int floor, std::string faction)
     return Count;
 }
 
+std::list<Npc> leftBehind;
+
+void nextFloorTransition()
+{
+    for(auto &npc : npclist)
+    {
+        if(!npc.alive || gvars::currentz != abs_to_index(npc.zpos/GRID_SIZE))
+        {
+            leftBehind.push_back(npc);
+            npc.toDelete = true;
+        }
+    }
+}
+
 void bountyTowerLoop()
 {
     AnyDeletes(menus);
@@ -990,6 +1004,7 @@ void bountyTowerLoop()
                 gvars::currentz++;
                 elevateElevatorInhabitants();
                 soundmanager.playSound("ding.wav");
+                nextFloorTransition();
             } else {
                 chatBox.addChat("You cannot go further up.", sf::Color::Red);
             }
