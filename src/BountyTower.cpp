@@ -694,7 +694,8 @@ void nextFloorTransition()
 {
     for(auto &npc : npclist)
     {
-        if(!npc.alive || gvars::currentz != abs_to_index(npc.zpos/GRID_SIZE))
+        //!npc.alive
+        if(gvars::currentz != abs_to_index(npc.zpos/GRID_SIZE))
         {
             leftBehind.push_back(npc);
             npc.toDelete = true;
