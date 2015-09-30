@@ -1629,6 +1629,7 @@ void menuPopUp()
                 }
 
                 bountytower::towerLoaded = "FantasyModern";
+                bountytower::currentTower = &towers[i];
                 buildTower("FantasyModern");
                 loadMap(636,0,0,50,50);
 

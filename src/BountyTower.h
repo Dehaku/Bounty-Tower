@@ -61,6 +61,7 @@ namespace bountytower
     extern bool bountytower;
     extern bool pausewaves;
     extern std::string towerLoaded;
+    extern Tower * currentTower;
     extern int switchesRemain;
 }
 

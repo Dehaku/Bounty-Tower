@@ -85,6 +85,22 @@ void equipStarters()
     }
 }
 
+void setupTowers()
+{
+    //Build the modern fantasy tower.
+    Tower fantasyTower;
+    {
+        fantasyTower.bountyPay = 2000;
+        fantasyTower.bountyTarget = "Trifecta";
+        fantasyTower.floors = 5;
+        fantasyTower.difficulty = 10;
+        fantasyTower.minioncount = 100;
+        fantasyTower.name = "FantasyModern";
+        fantasyTower.tex = &texturemanager.getTexture("FantasyModern.png");
+    }
+    towers.push_back(fantasyTower);
+}
+
 void bountyTowerSetup()
 {
     assignSlotPos();
@@ -95,6 +111,7 @@ void bountyTowerSetup()
     gvars::currentx = 32;
     gvars::currenty = 18;
     gvars::currentz = 1;
+    /*
     {
         int Amt = randz(5,30);
         for(int i = 0; i != Amt; i++)
@@ -103,6 +120,7 @@ void bountyTowerSetup()
             towers.push_back(tower);
         }
     }
+    */
 
     Faction * FactPtr;
 
@@ -129,6 +147,7 @@ void bountyTowerSetup()
     factR.faction = "The Titanium Grip";
     FactPtr->factRelations.push_back(factR);
 
+    setupTowers();
 
     //gCtrl.menuType = "BTTowers";
     //menuPopUp();
@@ -331,6 +350,8 @@ void debugTileMode()
 
 }
 
+
+
 void towerMenu()
 {
     //Lock camera in a reasonable position.
@@ -342,26 +363,55 @@ void towerMenu()
     int xMinus = xPart/2;
     int yMinus = yPart/2;
 
-    //Build the modern fantasy tower.
-    Tower fantasyTower;
-    {
-        fantasyTower.bountyPay = 2000;
-        fantasyTower.bountyTarget = "Trifecta";
-        fantasyTower.floors = 5;
-        fantasyTower.difficulty = 10;
-        fantasyTower.minioncount = 100;
-        fantasyTower.name = "FantasyModern";
-        fantasyTower.tex = &texturemanager.getTexture("FantasyModern.png");
+    std::vector<sf::Vector2f> towerPos;
+    {// Inserting all the positions
+        sf::Vector2f vInsert;
+        vInsert = sf::Vector2f((-xMinus)+xPart,(-yMinus)+yPart);
+        towerPos.push_back(vInsert);
+        vInsert = sf::Vector2f((-xMinus)+xPart*2,(-yMinus)+yPart);
+        towerPos.push_back(vInsert);
+        vInsert = sf::Vector2f((-xMinus)+xPart*3,(-yMinus)+yPart);
+        towerPos.push_back(vInsert);
+        vInsert = sf::Vector2f((-xMinus)+xPart*4,(-yMinus)+yPart);
+        towerPos.push_back(vInsert);
+        vInsert = sf::Vector2f((-xMinus)+xPart*5,(-yMinus)+yPart);
+        towerPos.push_back(vInsert);
+
+        vInsert = sf::Vector2f((-xMinus)+xPart,(-yMinus)+yPart*2);
+        towerPos.push_back(vInsert);
+        vInsert = sf::Vector2f((-xMinus)+xPart*2,(-yMinus)+yPart*2);
+        towerPos.push_back(vInsert);
+        vInsert = sf::Vector2f((-xMinus)+xPart*3,(-yMinus)+yPart*2);
+        towerPos.push_back(vInsert);
+        vInsert = sf::Vector2f((-xMinus)+xPart*4,(-yMinus)+yPart*2);
+        towerPos.push_back(vInsert);
+        vInsert = sf::Vector2f((-xMinus)+xPart*5,(-yMinus)+yPart*2);
+        towerPos.push_back(vInsert);
+
+        vInsert = sf::Vector2f((-xMinus)+xPart,(-yMinus)+yPart*3);
+        towerPos.push_back(vInsert);
+        vInsert = sf::Vector2f((-xMinus)+xPart*2,(-yMinus)+yPart*3);
+        towerPos.push_back(vInsert);
+        vInsert = sf::Vector2f((-xMinus)+xPart*3,(-yMinus)+yPart*3);
+        towerPos.push_back(vInsert);
+        vInsert = sf::Vector2f((-xMinus)+xPart*4,(-yMinus)+yPart*3);
+        towerPos.push_back(vInsert);
+        vInsert = sf::Vector2f((-xMinus)+xPart*5,(-yMinus)+yPart*3);
+        towerPos.push_back(vInsert);
+
     }
+
+
     //Place a button for the tower.
-    sf::Vector2f vPos((-xMinus)+xPart,(-yMinus)+yPart);
-    int fanTowButt = createImageButton(vPos,*fantasyTower.tex);
+    //sf::Vector2f vPos((-xMinus)+xPart,(-yMinus)+yPart);
+    int fanTowButt = createImageButton(towerPos[0],*towers[0].tex);
     if(imageButtonClicked(fanTowButt))
     {
 
 
-        bountytower::towerLoaded = fantasyTower.name;
-        buildTower(fantasyTower.name);
+        bountytower::towerLoaded = towers[0].name;
+        bountytower::currentTower = &towers[0];
+        buildTower(towers[0].name);
 
         loadMap(636,0,0,50,50);
 
@@ -375,10 +425,10 @@ void towerMenu()
 
     //Draw some info about the thing.
     {
-        std::string textOut = " Tower: " + fantasyTower.name +
-        "\n Minions: " + std::to_string(fantasyTower.minioncount) +
-        "\n Difficulty: " + std::to_string(fantasyTower.difficulty);
-        textList.createText(vPos.x+50,vPos.y-25,15,sf::Color::Red,textOut);
+        std::string textOut = " Tower: " + towers[0].name +
+        "\n Minions: " + std::to_string(towers[0].minioncount) +
+        "\n Difficulty: " + std::to_string(towers[0].difficulty);
+        textList.createText(towerPos[0].x+50,towerPos[0].y-25,15,sf::Color::Red,textOut);
     }
 
     effects.createCircle((-xMinus)+xPart,(-yMinus)+yPart,50,gvars::cycleBlue);
@@ -865,6 +915,7 @@ void bountyTowerLoop()
             member.ypos = stair->pos.y*GRID_SIZE+(GRID_SIZE/2);
             member.zpos = (gvars::currentz*GRID_SIZE);
             member.id = gvars::globalid++;
+            member.level = getFloorDifficulty(gvars::currentz,bountytower::currentTower->floors,bountytower::currentTower->difficulty);
 
             int randomEquipRoll = random(1,100);
             int gunChance = 30;
@@ -1046,5 +1097,6 @@ namespace bountytower
     bool bountytower = true;
     bool pausewaves = true;
     std::string towerLoaded = "";
+    Tower * currentTower = nullptr;
     int switchesRemain = 0;
 }
