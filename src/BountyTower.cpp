@@ -679,6 +679,15 @@ int getFactionMemberCount(std::string faction)
     return Count;
 }
 
+int getFloorFactionMemberCount(int floor, std::string faction)
+{
+    int Count = 0;
+    for(auto &npc : npclist)
+        if(abs_to_index(npc.zpos/GRID_SIZE) == floor && npc.faction == faction)
+            Count++;
+    return Count;
+}
+
 void bountyTowerLoop()
 {
     AnyDeletes(menus);
@@ -883,7 +892,7 @@ void bountyTowerLoop()
         textList.createText(vPos,15,sf::Color::White,"Remaining Elevator Components: " + std::to_string(bountytower::switchesRemain),window.getDefaultView());
     }
 
-    if( (gvars::framesPassed % 300) == 0 && getLivingFactionMemberCount("Towerlings") < 20 && getFactionMemberCount("Towerlings") < 50 && !bountytower::pausewaves)
+    if( (gvars::framesPassed % 300) == 0 && getLivingFactionMemberCount("Towerlings") < 20 && getFloorFactionMemberCount(gvars::currentz,"Towerlings") < 50 && !bountytower::pausewaves)
     { // This looks for stairs, then spawns critters from them every 300 frames until a certain cap is met.
         //Preemptively acquiring item lists here, instead of doing it once per critter.
         std::vector<Item> ammoV = itemmanager.getAllofType(3);
