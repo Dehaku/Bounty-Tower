@@ -103,6 +103,11 @@ Skills::Skills()
     skill.tree = "Ranger";
 
     /*
+    skill.name = "Offensive Reloading";
+    skill.desc = "Passive - When reloading, you flick the mag/shell at nearby enemies to stun them, AoE causing stun. Ranks increase range and duration of stun.";
+    skill.active = false;
+    list.push_back(skill);
+
     skill.name = "Ricochet";
     skill.desc = "Passive - 20% additional chance per rank for projectiles to ricochet off of hard surfaces, Overflow spills into penetration value.";
     skill.active = false;
@@ -277,8 +282,38 @@ Skills::Skills()
 
     /*
 
+    skill.name = "Shield Generator Construction";
+    skill.desc = "Active - Allows construction of a placable shield generator, The shield takes the damage of those inside it's protection. Shield Health: [Rank*1000]";
+    skill.active = true;
+    skill.autouse = false;
+    list.push_back(skill);
+
     skill.name = "Switch Bot Construction";
     skill.desc = "Active - Allows construction of a cheap little bot that can be slapped onto a switch to work on it for you.";
+    skill.active = true;
+    skill.autouse = false;
+    list.push_back(skill);
+
+    skill.name = "Drone: Medi-Bot";
+    skill.desc = "Active - Builds a small hovering bot that heals allies.";
+    skill.active = true;
+    skill.autouse = false;
+    list.push_back(skill);
+
+    skill.name = "Drone: Merc-Bot";
+    skill.desc = "Active - Builds a small hovering bot that has a random weapon based on rank, assaults enemies.";
+    skill.active = true;
+    skill.autouse = false;
+    list.push_back(skill);
+
+    skill.name = "Drone: Mach-Helper";
+    skill.desc = "Active - Builds a small hovering bot that speeds around, picking up equipment, Ranks increase speed and inventory slots.";
+    skill.active = true;
+    skill.autouse = false;
+    list.push_back(skill);
+
+    skill.name = "Barricade Construction";
+    skill.desc = "Active - Builds a fortification to block enemy fire/progression, Ranks add spikes and other lethal bits";
     skill.active = true;
     skill.autouse = false;
     list.push_back(skill);

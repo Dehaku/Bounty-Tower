@@ -90,7 +90,7 @@ public:
     bool hasCell;
     bool useCell;
     bool isMagic;
-    bool stacks;
+    int stackSize;
     bool rotten;
     bool isLiquidContainer;
     bool isObjectContainer;

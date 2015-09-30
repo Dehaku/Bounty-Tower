@@ -1306,6 +1306,23 @@ void Npc::addItem(const std::string &itemname, int amount)
     }
 }
 
+void Npc::addItem(Item &item)
+{
+    for(auto &inv : inventory)
+    {
+        std::cout << inv.name << "vs" << item.name;
+        std::cout << ": " << (inv.amount+item.amount) << "vs" << inv.stackSize;
+        if(inv.name == item.name && (inv.amount+item.amount) <= inv.stackSize)
+        {
+            inv.amount += item.amount;
+            return;
+        }
+    }
+
+    inventory.push_back(item);
+    return;
+}
+
 void Npc::printConsoleInfo()
 {
     using namespace std;
@@ -1442,6 +1459,8 @@ std::string Npc::dealDamage(Npc *victim, Item *weapon, float amount)
     else
         return "Miss";
 }
+
+//void Npc::
 
 Item * Npc::getLeftHandItem()
 {

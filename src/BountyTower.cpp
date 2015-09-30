@@ -93,7 +93,7 @@ void setupTowers()
         fantasyTower.bountyPay = 2000;
         fantasyTower.bountyTarget = "Trifecta";
         fantasyTower.floors = 5;
-        fantasyTower.difficulty = 10;
+        fantasyTower.difficulty = 5;
         fantasyTower.minioncount = 100;
         fantasyTower.name = "FantasyModern";
         fantasyTower.tex = &texturemanager.getTexture("FantasyModern.png");

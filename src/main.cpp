@@ -2081,9 +2081,23 @@ void scrapPickup(Npc &npc, std::list<Npc> &container)
                     }
                     if(coinFlip == 2)
                     {
+
                         Item Ammo = *getGlobalItem("5.56mm");
                         Ammo.amount = random(1,5);
-                        npc.inventory.push_back(Ammo);
+                        npc.addItem(Ammo);
+
+                        /*
+                        bool newAmmo = true;
+                        for(auto &inv : npc.inventory)
+                            if(inv.name == Ammo.name)
+                            {
+                                inv.amount += Ammo.amount;
+                                newAmmo = false;
+                            }
+
+                        if(newAmmo)
+                            npc.inventory.push_back(Ammo);
+                            */
 
                     }
                 }

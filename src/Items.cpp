@@ -550,7 +550,8 @@ Item::Item()
     cellcost = 0;
 
     isMagic = false;
-    stacks = false;
+    stackSize = 1;
+    //stacks = false;
 
     // 0 = none/melee, 6 = small bullet, 7 = large bullet
     ammotype = 0;
@@ -562,7 +563,7 @@ Item::Item()
     hasCell = false;
     useCell = false;
     isMagic = false;
-    stacks = false;
+    stackSize = 1;
     rotten = false;
     isLiquidContainer = false;
     isObjectContainer = false;
@@ -606,6 +607,13 @@ void ItemManager::initializeItems()
             item.name = "Debuggery";
             item.name = stringFindString(line, "[name:");
 
+            int stackSize = stringFindNumber(line, "[stackSize:");
+            std::cout << item.name << ", " << stackSize << std::endl;
+            if(stackSize == 0)
+                item.stackSize = 1;
+            else
+                item.stackSize = stackSize;
+
             item.hungervalue = stringFindNumber(line, "[hungervalue:");
             item.thirstvalue = stringFindNumber(line, "[thirstvalue:");
 
@@ -630,6 +638,7 @@ void ItemManager::initializeItems()
             item.produce = stringFindString(line, "[produce:");
             item.mindam = stringFindNumber(line, "[mindam:");
             item.maxdam = stringFindNumber(line, "[maxdam:");
+
             item.range = stringFindNumber(line, "[range:");
             item.activaterate = 0 ; //stringFindNumber(line, "[range:");
             item.activaterategrowth = stringFindNumber(line, "[activaterategrowth:");
