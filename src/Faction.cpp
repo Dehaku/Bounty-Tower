@@ -1468,7 +1468,6 @@ std::string Npc::dealDamage(Npc *victim, Item *weapon, float amount)
         return "Miss";
 }
 
-//void Npc::
 
 Item * Npc::getLeftHandItem()
 {
