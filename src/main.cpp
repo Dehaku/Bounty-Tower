@@ -3114,6 +3114,23 @@ void workSwitch(Npc &npc, std::list<Npc> &container)
 
 }
 
+void critterLevelUp(Npc &npc, std::list<Npc> &container)
+{
+    if(inputState.key[Key::Q].time == 1)
+        npc.xp += 50;
+
+    if(inputState.key[Key::Q].time == 1 && inputState.key[Key::LShift])
+        npc.xp += 5000;
+
+    if(npc.xp >= nextLevelXpRequired(npc.level))
+    {
+        npc.xp = npc.xp-nextLevelXpRequired(npc.level);
+        npc.level++;
+        npc.skillpoints += 5;
+        chatBox.addChat(npc.name + "has leveled up to " + std::to_string(npc.level) + "!", sf::Color::White);
+    }
+}
+
 void critterBrain(Npc &npc, std::list<Npc> &container)
 {
     bool needsNewPath = false;
@@ -3124,6 +3141,8 @@ void critterBrain(Npc &npc, std::list<Npc> &container)
     assignItemsUser(npc, container);
 
     critterSkillRefresh(npc,container);
+
+    critterLevelUp(npc,container);
 
 
 

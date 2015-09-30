@@ -242,6 +242,12 @@ Skills::Skills()
 
     /*
 
+    skill.name = "Switch Bot Construction";
+    skill.desc = "Active - Allows construction of a cheap little bot that can be slapped onto a switch to work on it for you.";
+    skill.active = true;
+    skill.autouse = false;
+    list.push_back(skill);
+
     skill.name = "Logistics Expert";
     skill.desc = "Passive - Immensely increases the rate at which this critter works on switches";
     skill.active = false;

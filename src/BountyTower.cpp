@@ -462,21 +462,16 @@ int totalLevelXp(int level)
 
 void renderSquaddieMenu(baseMenu &menu)
 {
-    int holder = 0;
+
     if(inputState.key[Key::Comma].time == 1)
     {
-        for(int i = 1; i != 30; i++)
-    {
-
-        int theXP = nextLevelXpRequired(i);
-        holder += theXP;
-        //std::cout << "Level " << i << ": " << theXP << "xp, " << holder << " \n";
-
-        std::cout << "New Level " << i << ": " << totalLevelXp(i) << "xp \n";
+        for(int i = 0; i != 101; i++)
+        {
+            std::cout << "New Level " << i << ": " << nextLevelXpRequired(i) << "xp \n";
+        }
+        std::cout << "Level 15: " << nextLevelXpRequired(15);
     }
 
-    std::cout << "Level 15: " << nextLevelXpRequired(15);
-    }
 
 
     effects.createSquare(100,100,RESOLUTION.x-100,RESOLUTION.y-100,sf::Color(sf::Color(150,150,0)),5,sf::Color::White,window.getDefaultView());

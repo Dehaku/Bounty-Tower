@@ -26,6 +26,10 @@ void bountyTowerLoop();
 
 void buildTower(std::string towerName);
 
+
+int totalLevelXp(int level);
+int nextLevelXpRequired(int level);
+
 int getLivingFactionMemberCount(std::string faction);
 int getFactionMemberCount(std::string faction);
 
