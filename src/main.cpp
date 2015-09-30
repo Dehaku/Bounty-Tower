@@ -3468,26 +3468,36 @@ ReDesire:
     bool npcWalkable = tiles[abs(npc.xpos/GRID_SIZE)][abs(npc.ypos/GRID_SIZE)][abs(npc.zpos/GRID_SIZE)].walkable;
     debug("pro debug 1", false);
 
-    if(hasPath && (gvars::framesPassed % 5) == 0 && npcWalkable)
+
+    Vec3 npcEndPosGrid = Vec3(npc.endPos.x/GRID_SIZE,npc.endPos.y/GRID_SIZE,npc.endPos.z/GRID_SIZE);
+    if( (hasPath || npc.hasPath) && (gvars::framesPassed % 5) == 0 && npcWalkable)
     //if(hasPath && npcWalkable)
     {
+        Vec3 pathPos;
+        bool prevWalkable;
+        if(hasPath)
+            pathPos = endPos;
+        if(npc.hasPath)
+            pathPos = npcEndPosGrid;
+
         debug("hasPath");
-        bool prevWalkable = tiles[endPos.x][endPos.y][endPos.z].walkable;
-        tiles[endPos.x][endPos.y][endPos.z].walkable = true;
+        prevWalkable = tiles[pathPos.x][pathPos.y][pathPos.z].walkable;
+        tiles[pathPos.x][pathPos.y][pathPos.z].walkable = true;
         debug("hasPath");
-        int result = pathCon.makePath(startPos, endPos);
+        int result = pathCon.makePath(startPos, pathPos);
         //std::cout << "path result: " << result << std::endl;
         debug("hasPath");
-        tiles[endPos.x][endPos.y][endPos.z].walkable = prevWalkable;
+        tiles[pathPos.x][pathPos.y][pathPos.z].walkable = prevWalkable;
         npc.storedPath.clear();
         for(auto &i : pathCon.storedPath)
             npc.storedPath.push_back(i);
         pathCon.storedPath.clear();
     }
-    Vec3 npcEndPosGrid = Vec3(npc.endPos.x/GRID_SIZE,npc.endPos.y/GRID_SIZE,npc.endPos.z/GRID_SIZE);
+
     if(math::distance(npcEndPosGrid,startPos) <= npc.size/GRID_SIZE)
         npc.hasPath = false;
 
+    /*
     if(npc.hasPath && npc.storedPath.empty() && npcWalkable && needsNewPath == false)
     {
         bool prevWalkable = tiles[npcEndPosGrid.x][npcEndPosGrid.y][npcEndPosGrid.z].walkable;
@@ -3499,6 +3509,7 @@ ReDesire:
             npc.storedPath.push_back(i);
         pathCon.storedPath.clear();
     }
+    */
 
     if(hasPath == false && npc.hasPath == false)
         npc.storedPath.clear();
@@ -3530,18 +3541,6 @@ ReDesire:
         textList.createText((endPathPos.x)*GRID_SIZE-GRID_SIZE,(endPathPos.y)*GRID_SIZE-GRID_SIZE,10,sf::Color(255,255,255), pathy );
 
 
-        /*
-        //Momentum based movement, rather than Directional
-        float modAngle = math::angleBetweenVectors(sf::Vector2f((Pos.x*GRID_SIZE)+(GRID_SIZE/2),(Pos.y*GRID_SIZE)+(GRID_SIZE/2) ),npc.getPos2d());
-        sf::Vector2f momPos = math::angleCalc(npc.getPos2d(),modAngle,npc.moverate*3);
-        sf::Vector2f finalMom = npc.getPos2d();
-        finalMom -= momPos;
-        //effects.createCircle(momPos.x,momPos.y,10,sf::Color::Red);
-
-        if(npc.getMomentumMagnitude() <= npc.moverate*3)
-            npc.momentum += finalMom;
-
-        */
 
 
         npc.dirMove(sf::Vector2f(Pos.x*GRID_SIZE+(GRID_SIZE/2),Pos.y*GRID_SIZE+(GRID_SIZE/2)));
