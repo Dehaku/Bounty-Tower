@@ -1349,8 +1349,18 @@ double critDamage(float damage, critScore crit)
 
 std::string Npc::onDeath(Npc *attacker, Item *weapon, float amount, critScore *crit)
 {
-    chatBox.addChat(name + " has died",sf::Color::White);
+    if(faction == "The Titanium Grip")
+        chatBox.addChat(name + " has died",sf::Color::White);
     alive = false;
+    if(attacker != nullptr)
+    {
+        for(auto &npc : *attacker->container)
+        {
+            if(npc.faction == attacker->faction)
+                npc.xp += level*10;
+        }
+    }
+
     if(faction == "Towerlings")
     {
 
