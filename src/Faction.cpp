@@ -1310,22 +1310,20 @@ void Npc::addItem(Item &item)
 {
     for(auto &inv : inventory)
     {
-        std::cout << inv.name << "vs" << item.name;
-        std::cout << ": " << (inv.amount+item.amount) << "vs" << inv.stackSize;
         if(inv.name == item.name)
         {
             if((inv.amount+item.amount) <= inv.stackSize)
             {
                 inv.amount += item.amount;
+                item.toDelete = true;
+                return;
             }
-            else
+            else if(inv.amount != inv.stackSize)
             {
                 int stackDiff = inv.stackSize-inv.amount;
                 inv.amount += stackDiff;
                 item.amount -= stackDiff;
-                inventory.push_back(item);
             }
-            return;
         }
     }
     if(item.amount > 0)

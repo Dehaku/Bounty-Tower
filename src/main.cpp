@@ -2035,38 +2035,6 @@ void scrapPickup(Npc &npc, std::list<Npc> &container)
     {
         if(math::distance(npc.getPos(),scraps.getPos()) <= 60 && scraps.name == "Scrap" && scraps.firstPickup)
         {
-            /*
-            bool scrapExists = false;
-            for(auto &myItems : npc.inventory)
-            {
-                if(myItems.name == "Scrap")
-                {
-                    scrapExists = true;
-                    myItems.amount += scraps.amount;
-                    scraps.toDelete = true;
-                    break;
-                }
-            }
-            if(!scrapExists)
-            {
-                Item item = *getGlobalItem("Scrap");
-                item.firstPickup = false;
-                npc.inventory.push_back(item);
-            }
-            */
-            npc.addItem(scraps);
-            scraps.toDelete = true;
-
-            int soundRan = random(1,4);
-            if(soundRan == 1)
-                soundmanager.playSound("ScrapPickup1.ogg");
-            if(soundRan == 2)
-                soundmanager.playSound("ScrapPickup2.ogg");
-            if(soundRan == 3)
-                soundmanager.playSound("ScrapPickup3.ogg");
-            if(soundRan == 4)
-                soundmanager.playSound("ScrapPickup4.ogg");
-
             if(scraps.firstPickup && npc.skills.getRanks("Lucky Scavenger") > 0)
             {
                 int scavRandom = random(1,100);
@@ -2085,27 +2053,28 @@ void scrapPickup(Npc &npc, std::list<Npc> &container)
                     }
                     if(coinFlip == 2)
                     {
-
                         Item Ammo = *getGlobalItem("5.56mm");
                         Ammo.amount = random(1,5);
                         npc.addItem(Ammo);
-
-                        /*
-                        bool newAmmo = true;
-                        for(auto &inv : npc.inventory)
-                            if(inv.name == Ammo.name)
-                            {
-                                inv.amount += Ammo.amount;
-                                newAmmo = false;
-                            }
-
-                        if(newAmmo)
-                            npc.inventory.push_back(Ammo);
-                            */
-
                     }
                 }
             }
+
+            scraps.firstPickup = false;
+            npc.addItem(scraps);
+            scraps.toDelete = true;
+
+            int soundRan = random(1,4);
+            if(soundRan == 1)
+                soundmanager.playSound("ScrapPickup1.ogg");
+            if(soundRan == 2)
+                soundmanager.playSound("ScrapPickup2.ogg");
+            if(soundRan == 3)
+                soundmanager.playSound("ScrapPickup3.ogg");
+            if(soundRan == 4)
+                soundmanager.playSound("ScrapPickup4.ogg");
+
+
         }
     }
 }
