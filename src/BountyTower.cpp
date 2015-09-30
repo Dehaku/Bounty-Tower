@@ -458,7 +458,10 @@ int totalLevelXp(int level)
     return returns;
 }
 
-
+int getFloorDifficulty(float currentFloor, float towerFloors, float towerDifficulty)
+{
+    return (towerDifficulty/2)+((currentFloor/towerFloors*towerDifficulty)/2);
+}
 
 void renderSquaddieMenu(baseMenu &menu)
 {

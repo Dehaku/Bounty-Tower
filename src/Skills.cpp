@@ -196,6 +196,11 @@ Skills::Skills()
     skill.active = false;
     list.push_back(skill);
 
+    skill.name = "Mana Surge";
+    skill.desc = "Active - For [Rank*2] seconds, Spells cost no mana.";
+    skill.active = true;
+    list.push_back(skill);
+
     skill.name = "Explosive Conjuration";
     skill.desc = "Passive - Gain a 10% chance for magical projectiles/attacks to explode per rank.";
     skill.active = false;
@@ -214,6 +219,36 @@ Skills::Skills()
     skill.name = "Elemental Atunement";
     skill.desc = "Passive - Gain 5% elemental resistence and chance against their status effects.";
     skill.active = false;
+    list.push_back(skill);
+
+    skill.name = "Elemental Basics";
+    skill.desc = "Passive - 10% per skill rank to apply elemental effect to enemies.";
+    skill.active = false;
+    list.push_back(skill);
+
+    skill.name = "Elemental Mastery";
+    skill.desc = "Passive - 20% Additional Elemental Damage + 10% per skill rank to apply elemental effect to enemies. (Stacks with previous)";
+    skill.active = false;
+    list.push_back(skill);
+
+    skill.name = "Metamagic: Bouncing Spell";
+    skill.desc = "Active - Spells richochet [Rank] times for [Rank*5] Seconds";
+    skill.active = true;
+    list.push_back(skill);
+
+    skill.name = "Metamagic: Piercing Spell";
+    skill.desc = "Active - Spells penetrate [Rank] enemies for [Rank*5] Seconds";
+    skill.active = true;
+    list.push_back(skill);
+
+    skill.name = "Metamagic: Enhance Spell";
+    skill.desc = "Active - For [Rank*2] seconds, Spells have double effects.";
+    skill.active = true;
+    list.push_back(skill);
+
+    skill.name = "Metamagic: MultiSpell";
+    skill.desc = "Active - For [Rank*2] seconds, Spells have a one second cooldown.";
+    skill.active = true;
     list.push_back(skill);
 
 

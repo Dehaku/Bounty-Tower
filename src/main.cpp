@@ -3127,7 +3127,7 @@ void critterLevelUp(Npc &npc, std::list<Npc> &container)
         npc.xp = npc.xp-nextLevelXpRequired(npc.level);
         npc.level++;
         npc.skillpoints += 5;
-        chatBox.addChat(npc.name + "has leveled up to " + std::to_string(npc.level) + "!", sf::Color::White);
+        chatBox.addChat(npc.name + " has leveled up to " + std::to_string(npc.level) + "!", sf::Color::White);
     }
 }
 
@@ -6815,6 +6815,17 @@ void pauseMenu()
     }
 }
 
+
+
+void onStart()
+{
+    int towerDiff = 10;
+    int towerFloors = 5;
+    int currentFloor = 4;
+    std::cout << "currentFloor/towerFloors/towerDiff: " << currentFloor << "/" << towerFloors << "/" << towerDiff << std::endl;
+    std::cout << "Floor Difficulty: " << getFloorDifficulty(currentFloor,towerFloors,towerDiff) << std::endl;
+}
+
 int main()
 {
     //srand(clock());
@@ -6897,6 +6908,8 @@ int main()
     animatedSprite.setOrigin(10,10);
 
     animationmanager.init();
+
+    onStart();
 
     //while (window.isOpen())
     while (!inputState.key[Key::Escape] && window.isOpen())
