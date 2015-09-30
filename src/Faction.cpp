@@ -1312,14 +1312,24 @@ void Npc::addItem(Item &item)
     {
         std::cout << inv.name << "vs" << item.name;
         std::cout << ": " << (inv.amount+item.amount) << "vs" << inv.stackSize;
-        if(inv.name == item.name && (inv.amount+item.amount) <= inv.stackSize)
+        if(inv.name == item.name)
         {
-            inv.amount += item.amount;
+            if((inv.amount+item.amount) <= inv.stackSize)
+            {
+                inv.amount += item.amount;
+            }
+            else
+            {
+                int stackDiff = inv.stackSize-inv.amount;
+                inv.amount += stackDiff;
+                item.amount -= stackDiff;
+                inventory.push_back(item);
+            }
             return;
         }
     }
-
-    inventory.push_back(item);
+    if(item.amount > 0)
+        inventory.push_back(item);
     return;
 }
 
@@ -2901,9 +2911,9 @@ void drawInventory(sf::Vector2f vPos, std::list<Item> &inventory)
         int itemCount = 0;
         for(auto &i : inventory)
         {
-            i.img.setPosition(vPos.x+(20*itemCount)+5,vPos.y);
+            //i.img.setPosition(vPos.x+(20*itemCount)+5,vPos.y);
             //effects.createCircle(vPos.x+(20*itemCount),vPos.y,20,gvars::cycleGreen);
-            i.drawImg();
+            //i.drawImg();
             int butt = createImageButton(sf::Vector2f(vPos.x+(20*itemCount)+10,vPos.y-10),
                               texturemanager.getTexture(i.name + ".png")  //(i.img.getTexture())
                               ,i.name);

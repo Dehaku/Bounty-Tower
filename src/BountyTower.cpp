@@ -733,8 +733,8 @@ void bountyTowerLoop()
         item.xpos = gvars::mousePos.x;
         item.ypos = gvars::mousePos.y;
         item.zpos = gvars::currentz*GRID_SIZE;
+        item.amount = random(3,8);
         worlditems.push_back(item);
-
     }
 
     if(inputState.key[Key::B].time == 1)

@@ -2035,6 +2035,7 @@ void scrapPickup(Npc &npc, std::list<Npc> &container)
     {
         if(math::distance(npc.getPos(),scraps.getPos()) <= 60 && scraps.name == "Scrap" && scraps.firstPickup)
         {
+            /*
             bool scrapExists = false;
             for(auto &myItems : npc.inventory)
             {
@@ -2052,6 +2053,9 @@ void scrapPickup(Npc &npc, std::list<Npc> &container)
                 item.firstPickup = false;
                 npc.inventory.push_back(item);
             }
+            */
+            npc.addItem(scraps);
+            scraps.toDelete = true;
 
             int soundRan = random(1,4);
             if(soundRan == 1)
