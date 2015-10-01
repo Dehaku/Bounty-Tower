@@ -4033,7 +4033,14 @@ void drawSquadHud()
 
             sf::Text squadName;
             {
-                squadName.setString(npc.name);
+                std::string nameThing;
+                for(int i = 0; i != Squaddies.size(); i++)
+                    if(Squaddies[i]->id == npc.id)
+                        nameThing.append(std::to_string(i+1) + ": ");
+
+                nameThing.append(npc.name);
+                squadName.setString(nameThing);
+
                 squadName.setColor(sf::Color::White);
                 squadName.setPosition(45,130+(ydrawPos*60)-60);
                 squadName.setCharacterSize(10);
@@ -4051,7 +4058,7 @@ void drawSquadHud()
             window.draw(squadHealth);
             window.draw(squadHealthNum);
 
-            window.draw(squadSprite);
+            //window.draw(squadSprite);
             window.draw(squadName);
 
             drawHudSkills(npc,spritePos);

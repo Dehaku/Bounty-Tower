@@ -44,6 +44,8 @@ template <typename T> void AnyDeletes(std::list<T> &list)
     //return;
 }
 
+std::vector<Npc*> Squaddies;
+
 void equipStarters()
 {
     int currentCritter = 0;
@@ -55,11 +57,13 @@ void equipStarters()
         {
             Item item = *getGlobalItem("Baton");
             member.inventory.push_back(item);
+            Squaddies.push_back(&member);
         }
         if(currentCritter == 1)
         {
             Item item = *getGlobalItem("Sword");
             member.inventory.push_back(item);
+            Squaddies.push_back(&member);
         }
         if(currentCritter == 2)
         {
@@ -70,6 +74,7 @@ void equipStarters()
 
             member.inventory.push_back(item);
             member.inventory.push_back(bullet);
+            Squaddies.push_back(&member);
         }
 
         if(currentCritter == 3)
@@ -81,6 +86,7 @@ void equipStarters()
 
             member.inventory.push_back(item);
             member.inventory.push_back(bullet);
+            Squaddies.push_back(&member);
         }
         currentCritter++;
     }
@@ -704,8 +710,41 @@ void nextFloorTransition()
     }
 }
 
+
+
+void hotkeySquaddieSelect()
+{
+    if(inputState.key[Key::Num1] && Squaddies.size() > 0)
+    {
+        selectedNPCs.clear();
+        selectedNPCs.push_back(Squaddies[0]);
+    }
+    if(inputState.key[Key::Num2] && Squaddies.size() > 1)
+    {
+        selectedNPCs.clear();
+        selectedNPCs.push_back(Squaddies[1]);
+    }
+    if(inputState.key[Key::Num3] && Squaddies.size() > 2)
+    {
+        selectedNPCs.clear();
+        selectedNPCs.push_back(Squaddies[2]);
+    }
+    if(inputState.key[Key::Num4] && Squaddies.size() > 3)
+    {
+        selectedNPCs.clear();
+        selectedNPCs.push_back(Squaddies[3]);
+    }
+    if(inputState.key[Key::Tilde])
+    {
+        for(auto &squaddie : Squaddies)
+            selectedNPCs.push_back(squaddie);
+    }
+}
+
 void bountyTowerLoop()
 {
+    hotkeySquaddieSelect();
+
     AnyDeletes(menus);
     if(bountytower::towerLoaded == "")
         towerMenu();
@@ -714,6 +753,8 @@ void bountyTowerLoop()
         //TODO: Add a check of isSquaddie to prevent turrets from being modified/skilled.
         squaddieMenu(*selectedNPCs[0]);
     }
+
+
 
     drawMenus();
 

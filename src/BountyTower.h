@@ -20,6 +20,7 @@ extern void lmbPress();
 extern void critterBrain(Npc &npc, std::list<Npc> &container);
 extern void critterBrain(std::list<Npc> &npcs);
 
+extern std::vector<Npc*> Squaddies;
 
 void bountyTowerSetup();
 void bountyTowerLoop();
