@@ -3118,6 +3118,111 @@ void critterLevelUp(Npc &npc, std::list<Npc> &container)
     }
 }
 
+void critterPathFind(Npc &npc, std::list<Npc> &container)
+{
+    Vec3 startPos(npc.xpos/GRID_SIZE,npc.ypos/GRID_SIZE,npc.zpos/GRID_SIZE);
+
+    //Finding out if we're on a walkable tile or not, The pather can't handle starting in a non-walkable tile.
+    bool npcWalkable = tiles[abs_to_index(npc.xpos/GRID_SIZE)][abs_to_index(npc.ypos/GRID_SIZE)][abs_to_index(npc.zpos/GRID_SIZE)].walkable;
+
+    debug("pro debug 1", false);
+
+    //Quick conversion for grid-usage.
+    Vec3 npcEndPosGrid = Vec3(npc.endPos.x/GRID_SIZE,npc.endPos.y/GRID_SIZE,npc.endPos.z/GRID_SIZE);
+
+    if( (npc.hasPath) && (gvars::framesPassed % 5) == 0 && npcWalkable)
+    {//If we have a path, and if we're able to walk, With a frame checker for performance.
+        Vec3 pathPos;
+        bool prevWalkable;
+        if(npc.hasPath)
+            pathPos = npcEndPosGrid;
+
+        //Setting the tile to be walkable for the pathfinder, for jobs/orders that involve a wall.
+        prevWalkable = tiles[pathPos.x][pathPos.y][pathPos.z].walkable;
+        tiles[pathPos.x][pathPos.y][pathPos.z].walkable = true;
+
+        //Acquiring the path.
+        int result = pathCon.makePath(startPos, pathPos);
+
+        //Setting the target tile to it's original walkable state.
+        tiles[pathPos.x][pathPos.y][pathPos.z].walkable = prevWalkable;
+
+        //Clearing the old path, and inserting the new one for storage.
+        npc.storedPath.clear();
+        for(auto &i : pathCon.storedPath)
+            npc.storedPath.push_back(i);
+        //Cleaning the pather's storage for next use.
+        pathCon.storedPath.clear();
+    }
+
+    //If we're close enough, we don't need any more paths.
+    if(math::distance(npcEndPosGrid,startPos) <= npc.size/GRID_SIZE)
+        npc.hasPath = false;
+
+
+    //Wiping our path if we're close enough.
+    if(npc.hasPath == false)
+        npc.storedPath.clear();
+
+    debug("post hasPath");
+
+    if(!npc.storedPath.empty())
+    {//We have a path! Let's do things with it.
+
+        if(inputState.key[Key::LAlt]) // Quick visual of the path.
+            drawStoredPath(npc.storedPath);
+
+        //Getting the position of the NEXT tile in our path, since we're on the current one.
+        Vec3 Pos(npc.storedPath[1]->getPos());
+
+
+        if(npc.storedPath.size() > 3)
+        {//If our path is long enough, Let's have the critter look in the direction their walking.
+            Vec3 viewPos(npc.storedPath[3]->getPos());
+            viewPos.x = viewPos.x*GRID_SIZE;
+            viewPos.y = viewPos.y*GRID_SIZE;
+            npc.desiredViewAngle = sf::Vector2f(viewPos.x,viewPos.y);
+        }
+
+        //Displaying an inaccurate path trip time
+        double pathTime = (((npc.storedPath.size()*GRID_SIZE)*1.2)/npc.moverate)/30;
+        std::ostringstream out;
+        out << std::setprecision(2) << pathTime;
+        std::string pathy = "PathTime: ";
+        pathy.append(out.str());
+        Vec3 endPathPos(npc.storedPath[npc.storedPath.size()-1]->getPos());
+        textList.createText((endPathPos.x)*GRID_SIZE-GRID_SIZE,(endPathPos.y)*GRID_SIZE-GRID_SIZE,10,sf::Color(255,255,255), pathy );
+
+        //Moving to the next position in our path!
+        npc.dirMove(sf::Vector2f(Pos.x*GRID_SIZE+(GRID_SIZE/2),Pos.y*GRID_SIZE+(GRID_SIZE/2)));
+
+        //We simply teleport through the Z-axis of our paths.
+        if(Pos.z != npc.zpos)
+            npc.zpos = Pos.z*GRID_SIZE;
+
+        if(npc.storedPath.size() >= 2)
+        {//Pathing through Teleporters!
+            if(npc.storedPath[0]->teleporter && npc.storedPath[1]->teleporter)
+            {
+                npc.xpos = npc.storedPath[0]->telePos.x*GRID_SIZE;
+                npc.ypos = npc.storedPath[0]->telePos.y*GRID_SIZE;
+                npc.zpos = npc.storedPath[0]->telePos.z*GRID_SIZE;
+            }
+        }
+
+        //Since we're storing our path, we need to delete the nodes we get close to, so we can keep moving.
+        Vec3 posExtended(Pos.x*GRID_SIZE+(GRID_SIZE/2),Pos.y*GRID_SIZE+(GRID_SIZE/2),Pos.z*GRID_SIZE);
+        if(math::distance(npc.getPos(),posExtended) <= npc.moverate)
+            npc.storedPath.erase(npc.storedPath.begin());
+
+    }
+    else if(npc.storedPath.empty() && math::distance(npc.getPos(),Vec3f(npc.endPos) ) > 5 && npc.endPos.x != 0) // This allows the critter to go to the exact commanded position. (Within 5 pixels)
+        npc.dirMove(sf::Vector2f(npc.endPos.x,npc.endPos.y));
+    else if(math::distance(npc.getPos(),Vec3f(npc.endPos) ) < 5) // This tells the critter to get rid of their position order once they achieve it.
+        npc.endPos.x = 0;
+
+}
+
 void critterBrain(Npc &npc, std::list<Npc> &container)
 {
     bool needsNewPath = false;
@@ -3366,7 +3471,7 @@ ReDesire:
     debug("debug 8", false);
     // Acting on Highest Desire
 
-    Vec3 startPos(npc.xpos/GRID_SIZE,npc.ypos/GRID_SIZE,npc.zpos/GRID_SIZE);
+
 
 
     debug("Acting on highest Desire:" + (*highestDesire).type);
@@ -3462,107 +3567,9 @@ ReDesire:
     //Applying momentum movement to critter
     npc.momMove();
 
-    /* Begin of Critter Pathfinding */
-    //Finding out if we're on a walkable tile or not, The pather can't handle starting in a non-walkable tile.
-    bool npcWalkable = tiles[abs_to_index(npc.xpos/GRID_SIZE)][abs_to_index(npc.ypos/GRID_SIZE)][abs_to_index(npc.zpos/GRID_SIZE)].walkable;
+    //Checking and Acquiring path for movement
+    critterPathFind(npc,container);
 
-    debug("pro debug 1", false);
-
-    //Quick conversion for grid-usage.
-    Vec3 npcEndPosGrid = Vec3(npc.endPos.x/GRID_SIZE,npc.endPos.y/GRID_SIZE,npc.endPos.z/GRID_SIZE);
-
-    if( (npc.hasPath) && (gvars::framesPassed % 5) == 0 && npcWalkable)
-    {//If we have a path, and if we're able to walk, With a frame checker for performance.
-        Vec3 pathPos;
-        bool prevWalkable;
-        if(npc.hasPath)
-            pathPos = npcEndPosGrid;
-
-        //Setting the tile to be walkable for the pathfinder, for jobs/orders that involve a wall.
-        prevWalkable = tiles[pathPos.x][pathPos.y][pathPos.z].walkable;
-        tiles[pathPos.x][pathPos.y][pathPos.z].walkable = true;
-
-        //Acquiring the path.
-        int result = pathCon.makePath(startPos, pathPos);
-
-        //Setting the target tile to it's original walkable state.
-        tiles[pathPos.x][pathPos.y][pathPos.z].walkable = prevWalkable;
-
-        //Clearing the old path, and inserting the new one for storage.
-        npc.storedPath.clear();
-        for(auto &i : pathCon.storedPath)
-            npc.storedPath.push_back(i);
-        //Cleaning the pather's storage for next use.
-        pathCon.storedPath.clear();
-    }
-
-    //If we're close enough, we don't need any more paths.
-    if(math::distance(npcEndPosGrid,startPos) <= npc.size/GRID_SIZE)
-        npc.hasPath = false;
-
-
-    //Wiping our path if we're close enough.
-    if(npc.hasPath == false)
-        npc.storedPath.clear();
-
-    debug("post hasPath");
-
-    if(!npc.storedPath.empty())
-    {//We have a path! Let's do things with it.
-
-        if(inputState.key[Key::LAlt]) // Quick visual of the path.
-            drawStoredPath(npc.storedPath);
-
-        //Getting the position of the NEXT tile in our path, since we're on the current one.
-        Vec3 Pos(npc.storedPath[1]->getPos());
-
-
-        if(npc.storedPath.size() > 3)
-        {//If our path is long enough, Let's have the critter look in the direction their walking.
-            Vec3 viewPos(npc.storedPath[3]->getPos());
-            viewPos.x = viewPos.x*GRID_SIZE;
-            viewPos.y = viewPos.y*GRID_SIZE;
-            npc.desiredViewAngle = sf::Vector2f(viewPos.x,viewPos.y);
-        }
-
-        //Displaying an inaccurate path trip time
-        double pathTime = (((npc.storedPath.size()*GRID_SIZE)*1.2)/npc.moverate)/30;
-        std::ostringstream out;
-        out << std::setprecision(2) << pathTime;
-        std::string pathy = "PathTime: ";
-        pathy.append(out.str());
-        Vec3 endPathPos(npc.storedPath[npc.storedPath.size()-1]->getPos());
-        textList.createText((endPathPos.x)*GRID_SIZE-GRID_SIZE,(endPathPos.y)*GRID_SIZE-GRID_SIZE,10,sf::Color(255,255,255), pathy );
-
-        //Moving to the next position in our path!
-        npc.dirMove(sf::Vector2f(Pos.x*GRID_SIZE+(GRID_SIZE/2),Pos.y*GRID_SIZE+(GRID_SIZE/2)));
-
-        //We simply teleport through the Z-axis of our paths.
-        if(Pos.z != npc.zpos)
-            npc.zpos = Pos.z*GRID_SIZE;
-
-        if(npc.storedPath.size() >= 2)
-        {//Pathing through Teleporters!
-            if(npc.storedPath[0]->teleporter && npc.storedPath[1]->teleporter)
-            {
-                npc.xpos = npc.storedPath[0]->telePos.x*GRID_SIZE;
-                npc.ypos = npc.storedPath[0]->telePos.y*GRID_SIZE;
-                npc.zpos = npc.storedPath[0]->telePos.z*GRID_SIZE;
-            }
-        }
-
-        //Since we're storing our path, we need to delete the nodes we get close to, so we can keep moving.
-        Vec3 posExtended(Pos.x*GRID_SIZE+(GRID_SIZE/2),Pos.y*GRID_SIZE+(GRID_SIZE/2),Pos.z*GRID_SIZE);
-        if(math::distance(npc.getPos(),posExtended) <= npc.moverate)
-            npc.storedPath.erase(npc.storedPath.begin());
-
-    }
-    else if(npc.storedPath.empty() && math::distance(npc.getPos(),Vec3f(npc.endPos) ) > 5 && npc.endPos.x != 0) // This allows the critter to go to the exact commanded position. (Within 5 pixels)
-        npc.dirMove(sf::Vector2f(npc.endPos.x,npc.endPos.y));
-    else if(math::distance(npc.getPos(),Vec3f(npc.endPos) ) < 5) // This tells the critter to get rid of their position order once they achieve it.
-        npc.endPos.x = 0;
-
-    /* End of Critter Pathfinding  */
 
 
 
