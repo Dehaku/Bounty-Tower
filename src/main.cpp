@@ -3462,16 +3462,18 @@ ReDesire:
 
     /* End of Critter Prioritization */
     npc.momMove();
+
+
+
     debug(npc.name + ", mhmm.", false);
     debug("debug 9", false);
     debug("(" + std::to_string(npc.xpos) + "/" + std::to_string(npc.ypos) + "/" + std::to_string(npc.zpos) + ")");
-    bool npcWalkable = tiles[abs(npc.xpos/GRID_SIZE)][abs(npc.ypos/GRID_SIZE)][abs(npc.zpos/GRID_SIZE)].walkable;
+    bool npcWalkable = tiles[abs_to_index(npc.xpos/GRID_SIZE)][abs_to_index(npc.ypos/GRID_SIZE)][abs_to_index(npc.zpos/GRID_SIZE)].walkable;
     debug("pro debug 1", false);
 
 
     Vec3 npcEndPosGrid = Vec3(npc.endPos.x/GRID_SIZE,npc.endPos.y/GRID_SIZE,npc.endPos.z/GRID_SIZE);
     if( (hasPath || npc.hasPath) && (gvars::framesPassed % 5) == 0 && npcWalkable)
-    //if(hasPath && npcWalkable)
     {
         Vec3 pathPos;
         bool prevWalkable;
@@ -3489,6 +3491,7 @@ ReDesire:
         debug("hasPath");
         tiles[pathPos.x][pathPos.y][pathPos.z].walkable = prevWalkable;
         npc.storedPath.clear();
+
         for(auto &i : pathCon.storedPath)
             npc.storedPath.push_back(i);
         pathCon.storedPath.clear();
@@ -3497,19 +3500,7 @@ ReDesire:
     if(math::distance(npcEndPosGrid,startPos) <= npc.size/GRID_SIZE)
         npc.hasPath = false;
 
-    /*
-    if(npc.hasPath && npc.storedPath.empty() && npcWalkable && needsNewPath == false)
-    {
-        bool prevWalkable = tiles[npcEndPosGrid.x][npcEndPosGrid.y][npcEndPosGrid.z].walkable;
-        tiles[npcEndPosGrid.x][npcEndPosGrid.y][npcEndPosGrid.z].walkable = true;
-        int result = pathCon.makePath(startPos, npcEndPosGrid);
-        tiles[npcEndPosGrid.x][npcEndPosGrid.y][npcEndPosGrid.z].walkable = prevWalkable;
-        npc.storedPath.clear();
-        for(auto &i : pathCon.storedPath)
-            npc.storedPath.push_back(i);
-        pathCon.storedPath.clear();
-    }
-    */
+
 
     if(hasPath == false && npc.hasPath == false)
         npc.storedPath.clear();
@@ -3574,6 +3565,10 @@ ReDesire:
     {
         npc.endPos.x = 0;
     }
+
+
+
+
 
     debug("Removing stuffs");
     if(npc.factionPtr != nullptr)
