@@ -49,6 +49,7 @@ void equipStarters()
     int currentCritter = 0;
     for(auto &member : npclist)
     {
+        member.name = generateName();
         member.isSquaddie = true;
         if(currentCritter == 0)
         {

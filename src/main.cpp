@@ -3312,7 +3312,10 @@ void critterBrain(Npc &npc, std::list<Npc> &container)
     //int critterZ = npc.zpos/20;
     //textList.createText(npc.xpos,npc.ypos,10,sf::Color::White,"ZPos:","",npc.zpos," /","",critterZ);
     int critterHealth = npc.health;
-    textList.createText(npc.xpos,npc.ypos-20,10,sf::Color::White,"Health: " + std::to_string(critterHealth));
+
+
+    textList.createText(npc.xpos-50,npc.ypos-50,10,sf::Color::White,npc.name);
+    textList.createText(npc.xpos-50,npc.ypos-40,10,sf::Color::White,"Health: " + std::to_string(critterHealth));
     //textList.createText(npc.xpos,npc.ypos-10,10,sf::Color::White,"Mom: " + std::to_string(npc.momentum.x) + "/" + std::to_string(npc.momentum.y));
     runCritterBody(npc);
     debug("Ending Part Loop");
@@ -3653,11 +3656,11 @@ void drawNPCs()
             {
 
                 std::string aniName = ani.name;
-                if(ani.name.size() <= npc.name.size()) // To avoid going out of bounds with the string functions.
+                if(ani.name.size() <= npc.race.size()) // To avoid going out of bounds with the string functions.
                     continue;
 
-                aniName.erase(npc.name.size());
-                if(aniName == npc.name)
+                aniName.erase(npc.race.size());
+                if(aniName == npc.race)
                 {
 
                 }
@@ -3665,13 +3668,13 @@ void drawNPCs()
                     continue;
 
 
-                if(ani.name.size() <= npc.name.size()) // To avoid going out of bounds with the string functions.
+                if(ani.name.size() <= npc.race.size()) // To avoid going out of bounds with the string functions.
                     continue;
 
                 hasAnim = true;
 
                 std::string aniType;
-                aniType.append(ani.name,npc.name.size(),2000);
+                aniType.append(ani.name,npc.race.size(),2000);
 
                 int aniAngle = npc.angle;
                 int angMod = 45-90; // To help with the odd directionals.
