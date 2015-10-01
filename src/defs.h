@@ -31,7 +31,24 @@ struct Vec3
         y = Second;
         z = Third;
     }
-};
+
+    operator == (Vec3 a)
+    {
+      if(a.x == x && a.y == y && a.z == z)
+         return true;
+      else
+         return false;
+    }
+
+    operator != (Vec3 a)
+    {
+      if(a.x != x || a.y != y || a.z != z)
+         return true;
+      else
+         return false;
+    }
+
+    };
 
 struct Vec3f
 {

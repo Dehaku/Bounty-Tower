@@ -78,6 +78,7 @@ public:
 
     bool needsPath;
     bool hasPath;
+    Vec3 pathGrid;
     Vec3 endPos;
     Vec3 startPos;
     Vec3f getPos();

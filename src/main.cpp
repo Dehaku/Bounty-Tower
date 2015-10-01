@@ -3133,19 +3133,32 @@ void critterPathFind(Npc &npc, std::list<Npc> &container)
         npc.hasPath = true;
     */
 
-    if( (npc.needsPath) && (gvars::framesPassed % 5) == 0 && npcWalkable)
-    {//If we have a path, and if we're able to walk, With a frame checker for performance.
-        Vec3 pathPos;
-        bool prevWalkable;
-        //if(npc.hasPath)
-        pathPos = npcEndPosGrid;
+    bool newPathNeeded = false;
+    if(npcEndPosGrid != npc.pathGrid)
+        newPathNeeded = true;
+
+    if(npc.needsPath && newPathNeeded && npcWalkable)
+    {//If we need a path, and if we're able to walk, Let's get one!
+
+        Vec3 pathPos = npcEndPosGrid;
 
         //Setting the tile to be walkable for the pathfinder, for jobs/orders that involve a wall.
-        prevWalkable = tiles[pathPos.x][pathPos.y][pathPos.z].walkable;
+        bool prevWalkable = tiles[pathPos.x][pathPos.y][pathPos.z].walkable;
         tiles[pathPos.x][pathPos.y][pathPos.z].walkable = true;
 
         //Acquiring the path.
         int result = pathCon.makePath(startPos, pathPos);
+        if(!pathCon.storedPath.empty())
+        {
+            npc.hasPath = true;
+            npc.pathGrid = pathPos;
+        }
+        else
+        {
+            npc.hasPath = false;
+            npc.pathGrid = Vec3();
+        }
+
 
         //Setting the target tile to it's original walkable state.
         tiles[pathPos.x][pathPos.y][pathPos.z].walkable = prevWalkable;
