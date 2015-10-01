@@ -1398,7 +1398,6 @@ std::string Npc::onDeath(Npc *attacker, Item *weapon, float amount, critScore *c
             int scrapAmount = random(0,5);
             for(int i = 0; i != scrapAmount; i++)
             {
-                std::cout << " 2 \n";
                 Item scrap = *getGlobalItem("Scrap");
                 scrap.xpos = xpos+random(0,30);
                 scrap.ypos = ypos+random(0,30);

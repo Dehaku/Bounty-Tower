@@ -2800,7 +2800,7 @@ void critterPickUp()
                     item.xpos = 0;
                     item.ypos = 0;
                     item.zpos = 0;
-                    selectedNPCs[0]->inventory.push_back(item);
+                    selectedNPCs[0]->addItem(item);
                     item.toDelete = true;
                     AnyDeletes(worlditems);
                 }
