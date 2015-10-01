@@ -3314,8 +3314,8 @@ void critterBrain(Npc &npc, std::list<Npc> &container)
     int critterHealth = npc.health;
 
 
-    textList.createText(npc.xpos-50,npc.ypos-50,10,sf::Color::White,npc.name);
-    textList.createText(npc.xpos-50,npc.ypos-40,10,sf::Color::White,"Health: " + std::to_string(critterHealth));
+    textList.createText(npc.xpos-30,npc.ypos-50,10,sf::Color::White,npc.name);
+    textList.createText(npc.xpos-30,npc.ypos-40,10,sf::Color::White,"Health: " + std::to_string(critterHealth));
     //textList.createText(npc.xpos,npc.ypos-10,10,sf::Color::White,"Mom: " + std::to_string(npc.momentum.x) + "/" + std::to_string(npc.momentum.y));
     runCritterBody(npc);
     debug("Ending Part Loop");
@@ -3986,6 +3986,13 @@ void drawSquadHud()
                 rectangle.setFillColor(sf::Color(0,0,0,100));
                 rectangle.setOutlineColor(sf::Color::Cyan);
                 rectangle.setOutlineThickness(1);
+
+                //Showing on the hud that we got this guy selected.
+                if(!selectedNPCs.empty())
+                    for(auto &selected : selectedNPCs)
+                        if(npc.id == selected->id)
+                            rectangle.setOutlineThickness(5);
+
             }
 
 
