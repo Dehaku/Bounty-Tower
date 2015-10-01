@@ -1751,7 +1751,7 @@ void rightMouseButtonContextMenu()
         {
             for(auto &lilguy : selectedNPCs)
             {
-                lilguy->hasPath = true;
+                lilguy->needsPath = true;
                 lilguy->storedPath.clear();
                 //lilguy->endPos = Vec3(gvars::mousePos.x/GRID_SIZE,gvars::mousePos.y/GRID_SIZE,gvars::currentz);
                 lilguy->endPos = Vec3(gvars::mousePos.x,gvars::mousePos.y,gvars::currentz*GRID_SIZE);

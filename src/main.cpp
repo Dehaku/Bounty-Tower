@@ -3125,17 +3125,20 @@ void critterPathFind(Npc &npc, std::list<Npc> &container)
     //Finding out if we're on a walkable tile or not, The pather can't handle starting in a non-walkable tile.
     bool npcWalkable = tiles[abs_to_index(npc.xpos/GRID_SIZE)][abs_to_index(npc.ypos/GRID_SIZE)][abs_to_index(npc.zpos/GRID_SIZE)].walkable;
 
-    debug("pro debug 1", false);
-
     //Quick conversion for grid-usage.
     Vec3 npcEndPosGrid = Vec3(npc.endPos.x/GRID_SIZE,npc.endPos.y/GRID_SIZE,npc.endPos.z/GRID_SIZE);
 
-    if( (npc.hasPath) && (gvars::framesPassed % 5) == 0 && npcWalkable)
+    /*
+    if(npc.needsPath)
+        npc.hasPath = true;
+    */
+
+    if( (npc.needsPath) && (gvars::framesPassed % 5) == 0 && npcWalkable)
     {//If we have a path, and if we're able to walk, With a frame checker for performance.
         Vec3 pathPos;
         bool prevWalkable;
-        if(npc.hasPath)
-            pathPos = npcEndPosGrid;
+        //if(npc.hasPath)
+        pathPos = npcEndPosGrid;
 
         //Setting the tile to be walkable for the pathfinder, for jobs/orders that involve a wall.
         prevWalkable = tiles[pathPos.x][pathPos.y][pathPos.z].walkable;
@@ -3157,11 +3160,11 @@ void critterPathFind(Npc &npc, std::list<Npc> &container)
 
     //If we're close enough, we don't need any more paths.
     if(math::distance(npcEndPosGrid,startPos) <= npc.size/GRID_SIZE)
-        npc.hasPath = false;
+        npc.needsPath = false;
 
 
     //Wiping our path if we're close enough.
-    if(npc.hasPath == false)
+    if(npc.needsPath == false)
         npc.storedPath.clear();
 
     debug("post hasPath");
@@ -3225,7 +3228,6 @@ void critterPathFind(Npc &npc, std::list<Npc> &container)
 
 void critterBrain(Npc &npc, std::list<Npc> &container)
 {
-    bool needsNewPath = false;
 
     if(!npc.alive)
         return;
@@ -3361,8 +3363,6 @@ void critterBrain(Npc &npc, std::list<Npc> &container)
 
     /* Critter Vision   */
     critterVision(npc,container);
-
-
 
     critterEquip(npc,container);
 
@@ -3526,7 +3526,7 @@ ReDesire:
                 Vec3 ItemPos((*npc.targetInfo.item).xpos,(*npc.targetInfo.item).ypos,(*npc.targetInfo.item).zpos);
                 Vec3 myPos(npc.xpos,npc.ypos,npc.zpos);
                 npc.endPos = Vec3(npc.targetInfo.item->xpos, npc.targetInfo.item->ypos, npc.targetInfo.item->zpos);
-                npc.hasPath = true;
+                npc.needsPath = true;
 
                 //if (math::closeish(npc.xpos, npc.ypos, ItemPos.x, ItemPos.y) <= npc.size * 3)
                 if(math::distance(myPos,ItemPos) <= npc.size*3 && myPos.z/GRID_SIZE == ItemPos.z/GRID_SIZE)
@@ -3545,10 +3545,10 @@ ReDesire:
         }
     }
     if ((*highestDesire).type == "Work")
-        workDesire(npc,container,npc.endPos,npc.hasPath,inComplete,highestDesire);
+        workDesire(npc,container,npc.endPos,npc.needsPath,inComplete,highestDesire);
 
     if ((*highestDesire).type == "Assault")
-        assaultDesire(npc, container, closEnmy, npc.hasPath, npc.endPos);
+        assaultDesire(npc, container, closEnmy, npc.needsPath, npc.endPos);
 
 
     debug("Checking inComplete:" + std::to_string(inComplete));
@@ -3570,9 +3570,6 @@ ReDesire:
     //Checking and Acquiring path for movement
     critterPathFind(npc,container);
 
-
-
-
     debug("Removing stuffs");
     if(npc.factionPtr != nullptr)
         removeJobs(npc.factionPtr->jobList);
@@ -3580,7 +3577,8 @@ ReDesire:
     debug("endCritterbrain2");
 
     critterPush(npc, container);
-    //npc.targetInfo.npc = nullptr;
+
+    //Setting our movespeed back to normal from Debug speedster hax.
     npc.moverate = moveSpeed;
 }
 
