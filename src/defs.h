@@ -68,6 +68,22 @@ struct Vec3f
         z = altVec.z;
     }
 
+    operator == (Vec3f a)
+    {
+      if(a.x == x && a.y == y && a.z == z)
+         return true;
+      else
+         return false;
+    }
+
+    operator != (Vec3f a)
+    {
+      if(a.x != x || a.y != y || a.z != z)
+         return true;
+      else
+         return false;
+    }
+
 };
 
 #endif // __DEFS_H_INCLUDED__
