@@ -18,6 +18,7 @@ public:
     bool pickupable;
     bool firstPickup;
     bool slotted;
+    Item **currentSlot;
     sf::Sprite img;
     int id;
     int cbaseid;

@@ -1864,6 +1864,7 @@ void critterEquip(Npc &npc, std::list<Npc> &container)
                     std::cout << "Putting" << item.name << " in mem: " << npc.invSlots[i] << "/";
                     npc.invSlots[i] = &item;
                     npc.invSlots[i]->slotted = true;
+                    npc.invSlots[i]->currentSlot = &npc.invSlots[i];
                     npc.invSlots[i]->user = &npc;
                     std::cout << npc.invSlots[i] << std::endl;
                     break;
@@ -3814,6 +3815,10 @@ void dropItem()
 
 void hoverItemHUD()
 {
+    if(mouseItem != nullptr)
+        if(selectedNPCs.empty() || selectedNPCs[0]->id != mouseItem->user->id)
+            mouseItem = nullptr;
+
     window.setView(window.getDefaultView());
     sf::Vector2i pixelPosi = sf::Mouse::getPosition(window);
     sf::Vector2f pixelPos(pixelPosi.x,pixelPosi.y);
@@ -3864,13 +3869,16 @@ void hoverItemHUD()
             if(mouseItem == nullptr && selectedNPCs[0]->invSlots[i] != nullptr)
             {
                 mouseItem = selectedNPCs[0]->invSlots[i];
+
+                /*
                 if(mouseItem->size > 1)
                 {
                     if(selectedNPCs[0]->invSlots[i+1] != nullptr && selectedNPCs[0]->invSlots[i+1]->id == selectedNPCs[0]->invSlots[i]->id)
                         selectedNPCs[0]->invSlots[i+1] = nullptr;
                 }
-
                 selectedNPCs[0]->invSlots[i] = nullptr;
+                */
+
             }
             else if(mouseItem != nullptr)
             {
@@ -3878,13 +3886,17 @@ void hoverItemHUD()
                 {
                     if(mouseItem->size > 1 && allowPlace)
                     {
+                        (*mouseItem->currentSlot) = nullptr;
                         selectedNPCs[0]->invSlots[i] = mouseItem;
-                        selectedNPCs[0]->invSlots[i+1] = mouseItem;
+                        //selectedNPCs[0]->invSlots[i+1] = mouseItem;
+                        mouseItem->currentSlot = &selectedNPCs[0]->invSlots[i];
                         mouseItem = nullptr;
                     }
                     else if(allowPlace)
                     {
+                        (*mouseItem->currentSlot) = nullptr;
                         selectedNPCs[0]->invSlots[i] = mouseItem;
+                        mouseItem->currentSlot = &selectedNPCs[0]->invSlots[i];
                         mouseItem = nullptr;
                     }
                 }
