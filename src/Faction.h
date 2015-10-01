@@ -76,6 +76,7 @@ public:
     Faction *factionPtr;
     std::string faction;
 
+    bool needsPath;
     bool hasPath;
     Vec3 endPos;
     Vec3 startPos;
@@ -95,7 +96,6 @@ public:
     sf::Vector2f shootPos;
     sf::Vector2f desiredViewAngle;
     bool prone;
-    bool needsPath;
     bool toDelete;
 
     bool hasJob;

@@ -2289,7 +2289,7 @@ void assaultDesire(Npc &npc, std::list<Npc> &container, Npc * closEnmy, bool &ha
     if(closEnmy != nullptr && npc.faction == "Towerlings")
     {
         hasPath = true;
-        endPos = Vec3(closEnmy->xpos/GRID_SIZE,closEnmy->ypos/GRID_SIZE,closEnmy->zpos/GRID_SIZE);
+        endPos = Vec3(closEnmy->xpos,closEnmy->ypos,closEnmy->zpos);
     }
     debug("0");
 
@@ -3367,9 +3367,6 @@ ReDesire:
     // Acting on Highest Desire
 
     Vec3 startPos(npc.xpos/GRID_SIZE,npc.ypos/GRID_SIZE,npc.zpos/GRID_SIZE);
-    Vec3 endPos;
-
-    bool hasPath = false;
 
 
     debug("Acting on highest Desire:" + (*highestDesire).type);
@@ -3423,8 +3420,8 @@ ReDesire:
             {
                 Vec3 ItemPos((*npc.targetInfo.item).xpos,(*npc.targetInfo.item).ypos,(*npc.targetInfo.item).zpos);
                 Vec3 myPos(npc.xpos,npc.ypos,npc.zpos);
-                endPos = Vec3(npc.targetInfo.item->xpos/GRID_SIZE, npc.targetInfo.item->ypos/GRID_SIZE, npc.targetInfo.item->zpos/GRID_SIZE);
-                hasPath = true;
+                npc.endPos = Vec3(npc.targetInfo.item->xpos, npc.targetInfo.item->ypos, npc.targetInfo.item->zpos);
+                npc.hasPath = true;
 
                 //if (math::closeish(npc.xpos, npc.ypos, ItemPos.x, ItemPos.y) <= npc.size * 3)
                 if(math::distance(myPos,ItemPos) <= npc.size*3 && myPos.z/GRID_SIZE == ItemPos.z/GRID_SIZE)
@@ -3443,10 +3440,10 @@ ReDesire:
         }
     }
     if ((*highestDesire).type == "Work")
-        workDesire(npc,container,endPos,hasPath,inComplete,highestDesire);
+        workDesire(npc,container,npc.endPos,npc.hasPath,inComplete,highestDesire);
 
     if ((*highestDesire).type == "Assault")
-        assaultDesire(npc, container, closEnmy, hasPath, endPos);
+        assaultDesire(npc, container, closEnmy, npc.hasPath, npc.endPos);
 
 
     debug("Checking inComplete:" + std::to_string(inComplete));
@@ -3474,16 +3471,12 @@ ReDesire:
     //Quick conversion for grid-usage.
     Vec3 npcEndPosGrid = Vec3(npc.endPos.x/GRID_SIZE,npc.endPos.y/GRID_SIZE,npc.endPos.z/GRID_SIZE);
 
-    if( (hasPath || npc.hasPath) && (gvars::framesPassed % 5) == 0 && npcWalkable)
+    if( (npc.hasPath) && (gvars::framesPassed % 5) == 0 && npcWalkable)
     {//If we have a path, and if we're able to walk, With a frame checker for performance.
         Vec3 pathPos;
         bool prevWalkable;
-        if(hasPath)
-            pathPos = endPos;
         if(npc.hasPath)
             pathPos = npcEndPosGrid;
-
-        debug("hasPath");
 
         //Setting the tile to be walkable for the pathfinder, for jobs/orders that involve a wall.
         prevWalkable = tiles[pathPos.x][pathPos.y][pathPos.z].walkable;
@@ -3509,7 +3502,7 @@ ReDesire:
 
 
     //Wiping our path if we're close enough.
-    if(hasPath == false && npc.hasPath == false)
+    if(npc.hasPath == false)
         npc.storedPath.clear();
 
     debug("post hasPath");
@@ -3569,7 +3562,7 @@ ReDesire:
     else if(math::distance(npc.getPos(),Vec3f(npc.endPos) ) < 5) // This tells the critter to get rid of their position order once they achieve it.
         npc.endPos.x = 0;
 
-
+    /* End of Critter Pathfinding  */
 
 
 
