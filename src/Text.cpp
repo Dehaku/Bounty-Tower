@@ -190,7 +190,8 @@ void TextList::drawTextz()
 
 void TextList::loadFont()
 {
-    if (!font.loadFromFile("data/fonts/sansation.ttf"))
+    //if (!font.loadFromFile("data/fonts/sansation.ttf"))
+    if (!font.loadFromFile("data/fonts/Xolonium-Regular.otf"))
     {
         throw std::runtime_error("Failed to load font!");
     }
