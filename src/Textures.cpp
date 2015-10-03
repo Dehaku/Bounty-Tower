@@ -73,6 +73,9 @@ Animation &AnimationManager::getAnimation(std::string input)
 
 void AnimationManager::init()
 {
+    int xDim = 60;
+    int yDim = 60;
+
 
     using namespace std;
     string dir = string("./data/gfx");
@@ -84,41 +87,38 @@ void AnimationManager::init()
         string ending(file);
         if (file != "." && file != "..")
         {
-            int pos = file.find("SpriteList");
+            int pos = file.find("SpriteSheet");
             if(pos != file.npos)
             {
                 cout << file << endl;
                 std::string outPut;
-                std::string filter = "SpriteList";
+                std::string filter = "SpriteSheet";
                 outPut.append(file,pos+filter.size(),file.size()-4);
                 outPut.erase(outPut.size()-4);
                 cout << outPut << endl;
 
                 line.append(ending);
 
-                AnimationHolder AniL;
-                AniL.texture.loadFromFile(line);
+                AnimationHolder AniD;
+                AniD.texture.loadFromFile(line);
 
-                AniL.name = outPut;
-                AniL.name.append("LeftWalk");
-                AniL.animationImage.addFrame(sf::IntRect( 0, 48, 32, 48));
-                AniL.animationImage.addFrame(sf::IntRect(96, 48, 32, 48));
-                AniL.animationImage.addFrame(sf::IntRect( 0, 48, 32, 48));
-                AniL.animationImage.addFrame(sf::IntRect(32, 48, 32, 48));
-
-                animationmanager.animations.push_back(AniL);
-
+                AniD.name = outPut;
+                AniD.name.append("DownWalk");
+                AniD.animationImage.addFrame(sf::IntRect( 0, 0, 60, 60));
+                AniD.animationImage.addFrame(sf::IntRect(60, 0, 60, 60));
+                AniD.animationImage.addFrame(sf::IntRect( 0, 0, 60, 60));
+                AniD.animationImage.addFrame(sf::IntRect(120, 0, 60, 60));
+                animationmanager.animations.push_back(AniD);
 
                 AnimationHolder AniR;
                 AniR.texture.loadFromFile(line);
 
                 AniR.name = outPut;
                 AniR.name.append("RightWalk");
-                AniR.animationImage.addFrame(sf::IntRect( 0, 48+48, 32, 48));
-                AniR.animationImage.addFrame(sf::IntRect(96, 48+48, 32, 48));
-                AniR.animationImage.addFrame(sf::IntRect( 0, 48+48, 32, 48));
-                AniR.animationImage.addFrame(sf::IntRect(32, 48+48, 32, 48));
-
+                AniR.animationImage.addFrame(sf::IntRect( 0, 60, 60, 60));
+                AniR.animationImage.addFrame(sf::IntRect(60, 60, 60, 60));
+                AniR.animationImage.addFrame(sf::IntRect( 0, 60, 60, 60));
+                AniR.animationImage.addFrame(sf::IntRect(120, 60, 60, 60));
                 animationmanager.animations.push_back(AniR);
 
                 AnimationHolder AniU;
@@ -126,24 +126,25 @@ void AnimationManager::init()
 
                 AniU.name = outPut;
                 AniU.name.append("UpWalk");
-                AniU.animationImage.addFrame(sf::IntRect( 0, 48+48+48, 32, 48));
-                AniU.animationImage.addFrame(sf::IntRect(96, 48+48+48, 32, 48));
-                AniU.animationImage.addFrame(sf::IntRect( 0, 48+48+48, 32, 48));
-                AniU.animationImage.addFrame(sf::IntRect(32, 48+48+48, 32, 48));
-
+                AniU.animationImage.addFrame(sf::IntRect( 0, 120, 60, 60));
+                AniU.animationImage.addFrame(sf::IntRect(60, 120, 60, 60));
+                AniU.animationImage.addFrame(sf::IntRect( 0, 120, 60, 60));
+                AniU.animationImage.addFrame(sf::IntRect(120, 120, 60, 60));
                 animationmanager.animations.push_back(AniU);
 
-                AnimationHolder AniD;
-                AniD.texture.loadFromFile(line);
 
-                AniD.name = outPut;
-                AniD.name.append("DownWalk");
-                AniD.animationImage.addFrame(sf::IntRect( 0, 0, 32, 48));
-                AniD.animationImage.addFrame(sf::IntRect(96, 0, 32, 48));
-                AniD.animationImage.addFrame(sf::IntRect( 0, 0, 32, 48));
-                AniD.animationImage.addFrame(sf::IntRect(32, 0, 32, 48));
+                AnimationHolder AniL;
+                AniL.texture.loadFromFile(line);
 
-                animationmanager.animations.push_back(AniD);
+                AniL.name = outPut;
+                AniL.name.append("LeftWalk");
+                AniL.animationImage.addFrame(sf::IntRect( 0, 60, 60, 60));
+                AniL.animationImage.addFrame(sf::IntRect(60, 60, 60, 60));
+                AniL.animationImage.addFrame(sf::IntRect( 0, 60, 60, 60));
+                AniL.animationImage.addFrame(sf::IntRect(120, 60, 60, 60));
+                animationmanager.animations.push_back(AniL);
+                //AnimatedSprite.
+
             }
         }
     }
@@ -152,8 +153,12 @@ void AnimationManager::init()
     {
         Ani.animationImage.setSpriteSheet(Ani.texture);
 
+        if(Ani.name.find("LeftWalk") != Ani.name.npos)
+            Ani.animation.scale(-1,1);
+
+
         Ani.animation.setAnimation(Ani.animationImage);
-        Ani.animation.setOrigin(16,24);
+        Ani.animation.setOrigin(30,30);
 
     }
 
