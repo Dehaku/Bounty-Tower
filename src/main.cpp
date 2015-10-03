@@ -6861,6 +6861,7 @@ int main()
 
 
     texturemanager.init();
+    animationmanager.init();
 
     itemmanager.initializeItems();
     npcmanager.initializeCritters();
@@ -6877,65 +6878,8 @@ int main()
     soundmanager.playSound("Startup.wav");
     newItemstuffs();
 
-    // http://en.sfml-dev.org/forums/index.php?topic=10281.0
-    Animation walkingAnimationDown;
-    sf::Texture texture;
-    if (!texture.loadFromFile("data/gfx/SpriteSheet.png"))
-    {
-        std::cout << "Failed to load player spritesheet!" << std::endl;
-        return 1;
-    }
-    // set up the animations for all four directions (set spritesheet and push frames)
-    walkingAnimationDown.setSpriteSheet(texture);
-    walkingAnimationDown.addFrame(sf::IntRect(32, 0, 32, 32));
-    walkingAnimationDown.addFrame(sf::IntRect(64, 0, 32, 32));
-    walkingAnimationDown.addFrame(sf::IntRect(32, 0, 32, 32));
-    walkingAnimationDown.addFrame(sf::IntRect( 0, 0, 32, 32));
-
-
-
-    Animation walkingAnimationLeft;
-    walkingAnimationLeft.setSpriteSheet(texture);
-    walkingAnimationLeft.addFrame(sf::IntRect(32, 32, 32, 32));
-    walkingAnimationLeft.addFrame(sf::IntRect(64, 32, 32, 32));
-    walkingAnimationLeft.addFrame(sf::IntRect(32, 32, 32, 32));
-    walkingAnimationLeft.addFrame(sf::IntRect( 0, 32, 32, 32));
-
-    Animation walkingAnimationRight;
-    walkingAnimationRight.setSpriteSheet(texture);
-    walkingAnimationRight.addFrame(sf::IntRect(32, 64, 32, 32));
-    walkingAnimationRight.addFrame(sf::IntRect(64, 64, 32, 32));
-    walkingAnimationRight.addFrame(sf::IntRect(32, 64, 32, 32));
-    walkingAnimationRight.addFrame(sf::IntRect( 0, 64, 32, 32));
-
-    Animation walkingAnimationUp;
-    walkingAnimationUp.setSpriteSheet(texture);
-    walkingAnimationUp.addFrame(sf::IntRect(32, 96, 32, 32));
-    walkingAnimationUp.addFrame(sf::IntRect(64, 96, 32, 32));
-    walkingAnimationUp.addFrame(sf::IntRect(32, 96, 32, 32));
-    walkingAnimationUp.addFrame(sf::IntRect( 0, 96, 32, 32));
-
-    Animation shootingAnimationUp;
-    shootingAnimationUp.setSpriteSheet(texturemanager.getTexture("EnergySheet.png"));
-    shootingAnimationUp.addFrame(sf::IntRect(32, 0, 32, 32));
-    shootingAnimationUp.addFrame(sf::IntRect(64, 0, 32, 32));
-    shootingAnimationUp.addFrame(sf::IntRect(32, 0, 32, 32));
-    shootingAnimationUp.addFrame(sf::IntRect( 0, 0, 32, 32));
-
-
-
-    Animation* currentAnimation = &walkingAnimationDown;
-
-    // set up AnimatedSprite
-    AnimatedSprite animatedSprite(sf::seconds(0.2), true, false);
-    animatedSprite.setPosition(sf::Vector2f(20,20));
-    animatedSprite.setOrigin(10,10);
-
-    animationmanager.init();
-
     onStart();
 
-    //while (window.isOpen())
     while (!inputState.key[Key::Escape] && window.isOpen())
     {
         pauseMenu();
@@ -6946,88 +6890,10 @@ int main()
         }
         fpsKeeper.calcFPS();
 
-
-
-
-
-
-
-
-        if(inputState.key[Key::I])
-            currentAnimation = &walkingAnimationUp;
-
-        if(inputState.key[Key::U])
-            currentAnimation = &shootingAnimationUp;
-
-        if(inputState.key[Key::J])
-            currentAnimation = &walkingAnimationLeft;
-
-        if(inputState.key[Key::L])
-            currentAnimation = &walkingAnimationRight;
-
-        if(inputState.key[Key::K])
-            currentAnimation = &walkingAnimationDown;
-
-
-        animatedSprite.play(*currentAnimation);
-
-        if(inputState.key[Key::Space])
-            animatedSprite.update(sf::milliseconds(50));
-        else if(inputState.key[Key::Space] && inputState.key[Key::LShift])
-            animatedSprite.update(sf::milliseconds(500));
-        else if(inputState.key[Key::LControl])
-            animatedSprite.update(sf::milliseconds(2));
-        else
-            animatedSprite.update(sf::milliseconds(10));
-
-        int  aniAngle = math::angleBetweenVectors(gvars::mousePos,sf::Vector2f(20,20));
-
-        textList.createText(0+20,60+20,10,sf::Color::White,"Angle:"+std::to_string(aniAngle));
-        int angMod = 45; // To help with the odd directionals.
-        if(inbetween(0,90,math::constrainAngle(aniAngle+angMod)))
-        {
-            //std::cout << "Left \n";
-            if(math::closeish(gvars::mousePos,sf::Vector2f(20,20)) <= 100)
-                effects.createLine(gvars::mousePos.x,gvars::mousePos.y,20,20,1,sf::Color::Red);
-            currentAnimation = &walkingAnimationLeft;
-            //animatedSprite.setRotation(math::constrainAngle(aniAngle+angMod)-45);
-        }
-        if(inbetween(90,180,math::constrainAngle(aniAngle+angMod)))
-        {
-            //std::cout << "Up \n";
-            if(math::closeish(gvars::mousePos,sf::Vector2f(20,20)) <= 100)
-                effects.createLine(gvars::mousePos.x,gvars::mousePos.y,20,20,1,sf::Color::Yellow);
-            currentAnimation = &walkingAnimationUp;
-            //animatedSprite.setRotation(math::constrainAngle(aniAngle+angMod)-45-90);
-        }
-        if(inbetween(-180,-90,math::constrainAngle(aniAngle+angMod)))
-        {
-            //std::cout << "Right \n";
-            if(math::closeish(gvars::mousePos,sf::Vector2f(20,20)) <= 100)
-                effects.createLine(gvars::mousePos.x,gvars::mousePos.y,20,20,1,sf::Color::Blue);
-            currentAnimation = &walkingAnimationRight;
-        }
-        if(inbetween(-90,0,math::constrainAngle(aniAngle+angMod)))
-        {
-            //std::cout << "Down \n";
-            if(math::closeish(gvars::mousePos,sf::Vector2f(20,20)) <= 100)
-                effects.createLine(gvars::mousePos.x,gvars::mousePos.y,20,20,1,sf::Color::Green);
-            currentAnimation = &walkingAnimationDown;
-        }
-
         gvars::hovering = false;
-        if (inputState.key[Key::RControl] && inputState.key[Key::R] && !network::chatting)
-        {
+        if (inputState.key[Key::RControl] && inputState.key[Key::R].time == 1 && !network::chatting)
             toggle(gvars::debug);
-            fSleep(0.5);
-        }
 
-        if(inputState.key[Key::U])
-        {
-            soundmanager.playSound("Startup.wav");
-        }
-
-        //std::cout << "soundstuffs: " << soundmanager.playSounds.size() << std::endl;
 
         frames();
         scaleImages();
@@ -7050,8 +6916,6 @@ int main()
         mouseAnim();
 
         lmbPress();
-
-        window.draw(animatedSprite);
 
         window.display();
         window.clear();

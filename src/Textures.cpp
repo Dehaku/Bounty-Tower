@@ -73,6 +73,8 @@ Animation &AnimationManager::getAnimation(std::string input)
 
 void AnimationManager::init()
 {
+    // http://en.sfml-dev.org/forums/index.php?topic=10281.0
+
     int xDim = 60;
     int yDim = 60;
 
