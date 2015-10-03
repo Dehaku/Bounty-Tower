@@ -6655,21 +6655,6 @@ void detectLineGrid( float x1, float y1, float x2, float y2)
     }
 }
 
-
-
-void testAnimation()
-{
-    if(inputState.key[Key::Z])
-    {
-        detectLine(gvars::mousePos.x,gvars::mousePos.y,gvars::centerScreen.x,gvars::centerScreen.y);
-
-        sf::Vector2f mouseGrid(abs_to_index(gvars::mousePos.x/GRID_SIZE),abs_to_index(gvars::mousePos.y/GRID_SIZE));
-        sf::Vector2f centerGrid(abs_to_index(gvars::centerScreen.x/GRID_SIZE),abs_to_index(gvars::centerScreen.y/GRID_SIZE));
-        detectLineGrid(mouseGrid.x,mouseGrid.y,centerGrid.x,centerGrid.y);
-    }
-
-}
-
 class fpsTracker
 {
 public:
@@ -6721,90 +6706,6 @@ public:
 };
 fpsTracker fpsKeeper;
 
-
-void mouseAnim()
-{
-
-    if(inputState.key[Key::X].time == 1)
-    {
-        std::vector<Item> items = itemmanager.getAllofType(2);
-        for(auto &i : items)
-        {
-            std::cout << "Item: " << i.name << ", maxdam: " << i.maxdam << std::endl;
-        }
-    }
-
-    if(inputState.key[Key::C].time == 1)
-    {
-        std::vector<Item> items = itemmanager.getAllofType(1);
-        for(auto &i : items)
-        {
-            std::cout << "Item: " << i.name << ", maxdam: " << i.maxdam << std::endl;
-        }
-    }
-
-    if(inputState.key[Key::I].time == 1)
-    {
-        std::cout << "========= \n";
-        for(auto &npc : npclist)
-    {
-        std::string leftHand;
-        std::string rightHand;
-        if(npc.getLeftHandItem() != nullptr)
-            leftHand = npc.getLeftHandItem()->name;
-        if(npc.getRightHandItem() != nullptr)
-            rightHand = npc.getRightHandItem()->name;
-
-        std::cout << npc.id << ": " << leftHand << "/" << rightHand << std::endl;
-
-        Item * gun = npc.getItemTypeInHands(2);
-        if(gun != nullptr)
-            std::cout << npc.id << " has a gun!" << gun->id << " \n";
-
-    }
-        std::cout << "========= \n";
-
-    }
-
-
-    /*
-    for(auto &Ani : animationmanager.animations)
-    {
-        if(Ani.name == "BlueGirlLeftWalk" && inputState.key[Key::Left])
-        {
-            Ani.animation.setPosition(gvars::mousePos.x,gvars::mousePos.y);
-            Ani.animation.update(sf::milliseconds(10));
-
-            window.draw(Ani.animation);
-        }
-
-        if(Ani.name == "BlueGirlRightWalk" && inputState.key[Key::Right])
-        {
-            Ani.animation.setPosition(gvars::mousePos.x,gvars::mousePos.y);
-            Ani.animation.update(sf::milliseconds(10));
-
-            window.draw(Ani.animation);
-        }
-        if(Ani.name == "BlueGirlUpWalk" && inputState.key[Key::Up])
-        {
-            Ani.animation.setPosition(gvars::mousePos.x,gvars::mousePos.y);
-            Ani.animation.update(sf::milliseconds(10));
-
-            window.draw(Ani.animation);
-        }
-        if(Ani.name == "BlueGirlDownWalk" && inputState.key[Key::Down])
-        {
-            Ani.animation.setPosition(gvars::mousePos.x,gvars::mousePos.y);
-            Ani.animation.update(sf::milliseconds(10));
-
-            window.draw(Ani.animation);
-        }
-    }
-
-    */
-}
-
-
 void pauseMenu()
 {
     if(inputState.key[Key::P].time == 1)
@@ -6838,8 +6739,6 @@ void pauseMenu()
         }
     }
 }
-
-
 
 void onStart()
 {
@@ -6883,11 +6782,8 @@ int main()
     while (!inputState.key[Key::Escape] && window.isOpen())
     {
         pauseMenu();
-        testAnimation();
         if(inputState.key[Key::Escape])
-        {
             window.close();
-        }
         fpsKeeper.calcFPS();
 
         gvars::hovering = false;
@@ -6912,8 +6808,6 @@ int main()
         debug("Pre Draw Stuffs");
         hoverItemIDdisplay();
         drawStuffs();
-
-        mouseAnim();
 
         lmbPress();
 
