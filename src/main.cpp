@@ -3658,24 +3658,21 @@ void drawNPCs()
             }
 
             int aniAngle = npc.angle;
-                int angMod = 45-90; // To help with the odd directionals.
+            int angMod = 45-90; // To help with the odd directionals.
 
             std::string Direction;
-
-                if(inbetween(-1,91,math::constrainAngle(aniAngle+angMod)))
-                    Direction = "LeftWalk";
-
-                if(inbetween(89,181,math::constrainAngle(aniAngle+angMod)))
-                    Direction = "UpWalk";
-
-                if(inbetween(-181,-89,math::constrainAngle(aniAngle+angMod)))
-                    Direction = "RightWalk";
-
-                if(inbetween(-91,1,math::constrainAngle(aniAngle+angMod)))
-                    Direction = "DownWalk";
+            if(inbetween(-1,91,math::constrainAngle(aniAngle+angMod)))
+                Direction = "LeftWalk";
+            if(inbetween(89,181,math::constrainAngle(aniAngle+angMod)))
+                Direction = "UpWalk";
+            if(inbetween(-181,-89,math::constrainAngle(aniAngle+angMod)))
+                Direction = "RightWalk";
+            if(inbetween(-91,1,math::constrainAngle(aniAngle+angMod)))
+                Direction = "DownWalk";
 
 
-            bool hasAnim = false;
+            //bool hasAnim = false;
+            /*
             for(auto &ani : animationmanager.animations)
             {
 
@@ -3704,22 +3701,22 @@ void drawNPCs()
                     break;
                 }
             }
+            */
 
-
-            if(inputState.key[Key::I])
-                for(auto &ani : animationmanager.animations)
+            for(auto &ani : animationmanager.animations)
             {
                 bool drawMe = false;
                 if(ani.name.find(Direction) != ani.name.npos)
                 {
-                    if(ani.name.find("BootsLeather") != ani.name.npos)
+                    if(ani.name.find(npc.race) != ani.name.npos)
                         drawMe = true;
-                    if(ani.name.find("GlovesLeather") != ani.name.npos)
+                    else if(ani.name.find("BootsLeather") != ani.name.npos)
                         drawMe = true;
-                    if(ani.name.find("HatBasic") != ani.name.npos)
+                    else if(ani.name.find("GlovesLeather") != ani.name.npos)
+                        drawMe = true;
+                    else if(ani.name.find("HatBasic") != ani.name.npos)
                         drawMe = true;
                 }
-
                 if(drawMe)
                 {
                     ani.animation.setPosition(npc.xpos,npc.ypos);
@@ -3727,8 +3724,10 @@ void drawNPCs()
                 }
             }
 
+            /*
             if(!hasAnim)
                 npc.drawImg();
+            */
 
             sf::Color shadow(50,50,50,50);
             if(!npc.alive) // To simulate blood.
