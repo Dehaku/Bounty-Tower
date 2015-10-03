@@ -3613,6 +3613,15 @@ void critterBrain(std::list<Npc> &npcs)
 
 void drawNPCs()
 {
+    if(inputState.key[Key::I].time == 1)
+    {
+        for(auto &ani : animationmanager.animations)
+        {
+            std::cout << ani.name << std::endl;
+        }
+    }
+
+
     for(auto &ani : animationmanager.animations)
         ani.animation.update(sf::milliseconds(10));
 
@@ -3648,37 +3657,10 @@ void drawNPCs()
                 effects.drawEffects();
             }
 
-
-
-
-            bool hasAnim = false;
-            for(auto &ani : animationmanager.animations)
-            {
-
-                std::string aniName = ani.name;
-                if(ani.name.size() <= npc.race.size()) // To avoid going out of bounds with the string functions.
-                    continue;
-
-                aniName.erase(npc.race.size());
-                if(aniName == npc.race)
-                {
-
-                }
-                else
-                    continue;
-
-
-                if(ani.name.size() <= npc.race.size()) // To avoid going out of bounds with the string functions.
-                    continue;
-
-                hasAnim = true;
-
-                std::string aniType;
-                aniType.append(ani.name,npc.race.size(),2000);
-
-                int aniAngle = npc.angle;
+            int aniAngle = npc.angle;
                 int angMod = 45-90; // To help with the odd directionals.
-                std::string Direction;
+
+            std::string Direction;
 
                 if(inbetween(-1,91,math::constrainAngle(aniAngle+angMod)))
                     Direction = "LeftWalk";
@@ -3692,7 +3674,53 @@ void drawNPCs()
                 if(inbetween(-91,1,math::constrainAngle(aniAngle+angMod)))
                     Direction = "DownWalk";
 
+
+            bool hasAnim = false;
+            for(auto &ani : animationmanager.animations)
+            {
+
+                std::string aniName = ani.name;
+                if(ani.name.size() <= npc.race.size()) // To avoid going out of bounds with the string functions.
+                    continue;
+
+                aniName.erase(npc.race.size());
+                if(aniName != npc.race)
+                    continue;
+
+                if(ani.name.size() <= npc.race.size()) // To avoid going out of bounds with the string functions.
+                    continue;
+
+                hasAnim = true;
+
+                std::string aniType;
+                aniType.append(ani.name,npc.race.size(),2000);
+
+
+
                 if(aniType == Direction)
+                {
+                    ani.animation.setPosition(npc.xpos,npc.ypos);
+                    window.draw(ani.animation);
+                    break;
+                }
+            }
+
+
+            if(inputState.key[Key::I])
+                for(auto &ani : animationmanager.animations)
+            {
+                bool drawMe = false;
+                if(ani.name.find(Direction) != ani.name.npos)
+                {
+                    if(ani.name.find("BootsLeather") != ani.name.npos)
+                        drawMe = true;
+                    if(ani.name.find("GlovesLeather") != ani.name.npos)
+                        drawMe = true;
+                    if(ani.name.find("HatBasic") != ani.name.npos)
+                        drawMe = true;
+                }
+
+                if(drawMe)
                 {
                     ani.animation.setPosition(npc.xpos,npc.ypos);
                     window.draw(ani.animation);
