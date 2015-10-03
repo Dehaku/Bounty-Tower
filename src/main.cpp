@@ -6687,12 +6687,15 @@ class fpsTracker
 public:
     int framesPassed;
     float framesPerSecond;
+    int highestFrameTimePerSecond;
 
     sf::Clock startTime;
     sf::Clock fpsTimerLive;
     sf::Clock fpsTimer;
+    sf::Clock frameClock;
 
     sf::Time framesPassedTime;
+    sf::Time frameTime;
 
     fpsTracker()
     {
@@ -6704,6 +6707,11 @@ public:
 
     void calcFPS()
     {
+        int timeBetweenFrames = frameTime.asMicroseconds();
+        frameTime = frameClock.restart();
+        if(highestFrameTimePerSecond < timeBetweenFrames)
+            highestFrameTimePerSecond = timeBetweenFrames;
+
         framesPassed++;
 
         float estimatedFPS = -1;
@@ -6713,6 +6721,7 @@ public:
 
         if(fpsTimer.getElapsedTime().asMilliseconds() >= 1000)
         {
+            highestFrameTimePerSecond = 0;
             framesPerSecond = framesPassed;
             framesPassed = 0;
             framesPassedTime = fpsTimer.restart();
@@ -6720,7 +6729,8 @@ public:
 
         //std::cout << "FPS(Live/Second/TenSecond): " << estimatedFPS << "/" << framesPerSecond << std::endl;
         int floatConv1 = estimatedFPS, floatConv2 = framesPerSecond;
-        std::string outPut = "FPS(" + std::to_string(floatConv1) + "/" + std::to_string(floatConv2) + ") \n";
+        std::string outPut = "FPS(" + std::to_string(floatConv1) + "/" + std::to_string(floatConv2) + "), ("
+            + std::to_string(timeBetweenFrames) + "/" + std::to_string(highestFrameTimePerSecond) + ") \n";
         int gameHours = startTime.getElapsedTime().asSeconds()/60/60;
         int gameMinutes = startTime.getElapsedTime().asSeconds()/60;
         gameMinutes = (gameMinutes % 60);
@@ -6735,6 +6745,8 @@ fpsTracker fpsKeeper;
 
 void pauseMenu()
 {
+
+
     if(inputState.key[Key::P].time == 1)
     {
         bool gamePaused = true;
