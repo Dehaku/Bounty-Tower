@@ -833,6 +833,30 @@ void bountyTowerLoop()
     }
 
 
+    if(inputState.key[Key::T].time == 1)
+    {
+        Npc boss = *getGlobalCritter("BTRockkid");
+        boss.xpos = gvars::mousePos.x;
+        boss.ypos = gvars::mousePos.y;
+        boss.zpos = gvars::currentz*GRID_SIZE;
+
+        boss.id = gvars::globalid++;
+        boss.level = 10;
+        boss.health = 10000;
+
+        boss.faction = "Towerlings";
+        boss.factionPtr = &listAt(uniFact,2);
+
+        Item weaponry = *getGlobalItem("Gun");
+        Item ammo = *getGlobalItem("5.56mm");
+        ammo.amount = 10000;
+        weaponry.internalitems.push_back(ammo);
+
+        boss.inventory.push_back(weaponry);
+
+        npclist.push_back(boss);
+    }
+
 
     drawMenus();
 
