@@ -3081,6 +3081,9 @@ void workDesire(Npc &npc, std::list<Npc> &container, Vec3 &endPos, bool &hasPath
 
 void workSwitch(Npc &npc, std::list<Npc> &container)
 {
+    if(npc.faction != "The Titanium Grip")
+        return;
+
     if(!isInBounds(npc.getPos2d()))
         return;
     int xTile = abs_to_index(npc.xpos/GRID_SIZE);
