@@ -3233,6 +3233,8 @@ void critterPathFind(Npc &npc, std::list<Npc> &container)
             npc.storedPath.erase(npc.storedPath.begin());
 
     }
+
+
     else if(npc.storedPath.empty() && math::distance(npc.getPos(),Vec3f(npc.endPos) ) > 5 && npc.endPos.x != 0) // This allows the critter to go to the exact commanded position. (Within 5 pixels)
         npc.dirMove(sf::Vector2f(npc.endPos.x,npc.endPos.y));
     else if(math::distance(npc.getPos(),Vec3f(npc.endPos) ) < 5) // This tells the critter to get rid of their position order once they achieve it.
