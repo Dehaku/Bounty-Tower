@@ -158,6 +158,10 @@ void AnimationManager::init()
         if(Ani.name.find("LeftWalk") != Ani.name.npos)
             Ani.animation.scale(-1,1);
 
+        if(Ani.name.find("Noirves") != Ani.name.npos)
+            Ani.animation.scale(0.75,0.75);
+
+
 
         Ani.animation.setAnimation(Ani.animationImage);
         Ani.animation.setOrigin(30,30);

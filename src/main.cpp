@@ -3706,16 +3706,26 @@ void drawNPCs()
             for(auto &ani : animationmanager.animations)
             {
                 bool drawMe = false;
+                bool allowedHat = false;
+                if(npc.isSquaddie)
+                    allowedHat = true;
+                else if(npc.tags.find("[WearsHat:1]") != npc.tags.npos)
+                    allowedHat = true;
+
                 if(ani.name.find(Direction) != ani.name.npos)
                 {
                     if(ani.name.find(npc.race) != ani.name.npos)
                         drawMe = true;
-                    else if(ani.name.find("BootsLeather") != ani.name.npos)
-                        drawMe = true;
-                    else if(ani.name.find("GlovesLeather") != ani.name.npos)
-                        drawMe = true;
-                    else if(ani.name.find("HatBasic") != ani.name.npos)
-                        drawMe = true;
+                    if(ani.name.find("HatBasic") != ani.name.npos)
+                        if(npc.isSquaddie || npc.tags.find("[WearsHat:1]") != npc.tags.npos)
+                            drawMe = true;
+                    if(ani.name.find("BootsLeather") != ani.name.npos)
+                        if(npc.tags.find("[WearsBoots:1]") != npc.tags.npos)
+                            drawMe = true;
+                    if(ani.name.find("GlovesLeather") != ani.name.npos)
+                        if(npc.tags.find("[WearsGloves:1]") != npc.tags.npos)
+                            drawMe = true;
+
                 }
                 if(drawMe)
                 {

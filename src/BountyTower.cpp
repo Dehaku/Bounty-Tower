@@ -53,6 +53,12 @@ void equipStarters()
     {
         member.name = generateName();
         member.isSquaddie = true;
+
+        if(random(1,2) == 1)
+            member.tags.append("[WearsBoots:1]");
+        if(random(1,2) == 1)
+            member.tags.append("[WearsGloves:1]");
+
         if(currentCritter == 0)
         {
             Item item = *getGlobalItem("Baton");
@@ -741,6 +747,78 @@ void hotkeySquaddieSelect()
     }
 }
 
+void spawnEnemies()
+{
+    //Preemptively acquiring item lists here, instead of doing it once per critter.
+    std::vector<Item> ammoV = itemmanager.getAllofType(3);
+    std::vector<Item> rangedweps = itemmanager.getAllofType(2);
+    std::vector<Item> meleeweps = itemmanager.getAllofType(1);
+
+    debug("Gettin Stairs");
+    std::vector<Tile*> stairs;
+    for(int x = 0; x != GRIDS; x++)
+        for(int y = 0; y != GRIDS; y++)
+    {
+        if(tiles[x][y][gvars::currentz].id == 2031)
+            stairs.push_back(&tiles[x][y][gvars::currentz]);
+    }
+    debug("Placin Towerlings");
+
+    //I'm still not sure why I nabbed all stairs, then did another for loop just for them... but I kinda like it.
+    for(auto &stair : stairs)
+    {
+        Npc member;
+        debug("V");
+        member = *getGlobalCritter("BTHalfCelestial");
+        debug("X");
+        member.faction = "Towerlings";
+        debug("Y");
+        member.factionPtr = &listAt(uniFact,2);
+        debug("Z");
+        member.xpos = stair->pos.x*GRID_SIZE+(GRID_SIZE/2);
+        member.ypos = stair->pos.y*GRID_SIZE+(GRID_SIZE/2);
+        member.zpos = (gvars::currentz*GRID_SIZE);
+        member.id = gvars::globalid++;
+        member.level = getFloorDifficulty(gvars::currentz,bountytower::currentTower->floors,bountytower::currentTower->difficulty);
+
+        int randomEquipRoll = random(1,100);
+        int gunChance = 30;
+        if(randomEquipRoll <= gunChance)
+        {//Gun me!
+            int ranGun = random(0,rangedweps.size()-1);
+            Item gun = rangedweps[ranGun];
+            gun.id = gvars::globalid++;
+            member.inventory.push_back(gun);
+
+            int ranAmmo = random(0,ammoV.size()-1);
+            Item ammo = ammoV[ranAmmo];
+            ammo.id = gvars::globalid++;
+            ammo.amount = random(5,30);
+            member.inventory.push_back(ammo);
+            member.tags.append("[WearsHat:1]");
+
+        }
+
+        if(random(1,5) == 1)
+            member.tags.append("[WearsBoots:1]");
+        if(random(1,5) == 1)
+            member.tags.append("[WearsGloves:1]");
+
+        //Melee Me!
+        int ranMelee = random(0,meleeweps.size()-1);
+        Item melee = meleeweps[ranMelee];
+        melee.id = gvars::globalid++;
+        member.inventory.push_back(melee);
+
+        std::cout << "Member: " << member.id;
+        printItems(member.inventory);
+        std::cout << "\n \n";
+
+        npclist.push_back(member);
+    }
+    debug("Done placin Towerlings");
+}
+
 void bountyTowerLoop()
 {
     hotkeySquaddieSelect();
@@ -951,68 +1029,7 @@ void bountyTowerLoop()
 
     if( (gvars::framesPassed % 300) == 0 && getLivingFactionMemberCount("Towerlings") < 20 && getFloorFactionMemberCount(gvars::currentz,"Towerlings") < 50 && !bountytower::pausewaves)
     { // This looks for stairs, then spawns critters from them every 300 frames until a certain cap is met.
-        //Preemptively acquiring item lists here, instead of doing it once per critter.
-        std::vector<Item> ammoV = itemmanager.getAllofType(3);
-        std::vector<Item> rangedweps = itemmanager.getAllofType(2);
-        std::vector<Item> meleeweps = itemmanager.getAllofType(1);
-
-        debug("Gettin Stairs");
-        std::vector<Tile*> stairs;
-        for(int x = 0; x != GRIDS; x++)
-            for(int y = 0; y != GRIDS; y++)
-        {
-            if(tiles[x][y][gvars::currentz].id == 2031)
-                stairs.push_back(&tiles[x][y][gvars::currentz]);
-        }
-        debug("Placin Towerlings");
-
-        //I'm still not sure why I nabbed all stairs, then did another for loop just for them... but I kinda like it.
-        for(auto &stair : stairs)
-        {
-            Npc member;
-            debug("V");
-            member = *getGlobalCritter("BTHalfCelestial");
-            debug("X");
-            member.faction = "Towerlings";
-            debug("Y");
-            member.factionPtr = &listAt(uniFact,2);
-            debug("Z");
-            member.xpos = stair->pos.x*GRID_SIZE+(GRID_SIZE/2);
-            member.ypos = stair->pos.y*GRID_SIZE+(GRID_SIZE/2);
-            member.zpos = (gvars::currentz*GRID_SIZE);
-            member.id = gvars::globalid++;
-            member.level = getFloorDifficulty(gvars::currentz,bountytower::currentTower->floors,bountytower::currentTower->difficulty);
-
-            int randomEquipRoll = random(1,100);
-            int gunChance = 30;
-            if(randomEquipRoll <= gunChance)
-            {//Gun me!
-                int ranGun = random(0,rangedweps.size()-1);
-                Item gun = rangedweps[ranGun];
-                gun.id = gvars::globalid++;
-                member.inventory.push_back(gun);
-
-                int ranAmmo = random(0,ammoV.size()-1);
-                Item ammo = ammoV[ranAmmo];
-                ammo.id = gvars::globalid++;
-                ammo.amount = random(5,30);
-                member.inventory.push_back(ammo);
-
-            }
-
-            //Melee Me!
-            int ranMelee = random(0,meleeweps.size()-1);
-            Item melee = meleeweps[ranMelee];
-            melee.id = gvars::globalid++;
-            member.inventory.push_back(melee);
-
-            std::cout << "Member: " << member.id;
-            printItems(member.inventory);
-            std::cout << "\n \n";
-
-            npclist.push_back(member);
-        }
-        debug("Done placin Towerlings");
+        spawnEnemies();
     }
 
     if(bountytower::towerLoaded != "")
