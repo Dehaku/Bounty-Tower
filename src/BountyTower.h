@@ -27,6 +27,8 @@ void bountyTowerLoop();
 
 void buildTower(std::string towerName);
 
+void towerVictory();
+
 
 int totalLevelXp(int level);
 int nextLevelXpRequired(int level);
@@ -64,6 +66,7 @@ namespace bountytower
     extern std::string towerLoaded;
     extern Tower * currentTower;
     extern int switchesRemain;
+    extern bool towerVictory;
 }
 
 extern std::vector<Tower> towers;

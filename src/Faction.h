@@ -496,5 +496,7 @@ void drawSelectedCritterHUD();
 void runCritterBody(Npc &npc);
 Faction * addFaction(std::string name);
 void addMembers(int amount, std::string faction);
+void drawNPCs(std::list<Npc> &container);
+
 
 #endif // FACTION_H_INCLUDED

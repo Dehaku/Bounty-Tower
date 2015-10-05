@@ -871,12 +871,84 @@ void spawnEnemies()
 void towerVictory()
 {
     effects.createSquare(0,0,RESOLUTION.x,RESOLUTION.y,sf::Color(0,0,0,100),0,sf::Color::Transparent,window.getDefaultView());
-    sf::Vector2f centerScreen(RESOLUTION.x/2,RESOLUTION.y/2);
-    textList.createText(centerScreen,30,sf::Color::Yellow,"$ Bounty Killed! $ \n $ Time to collect! $",window.getDefaultView());
+    sf::Vector2f textPos(RESOLUTION.x/2,50);
+    textList.createText(textPos,30,sf::Color::Yellow,"$ Bounty Killed! $ \n $ Time to collect! $",window.getDefaultView());
+    textPos.y += 30;
+    textList.createText(textPos,30,sf::Color::White,"The people who got in your way.",window.getDefaultView());
+
+    int xSlot = 0;
+    int ySlot = 0;
+    int xCapacity = (gvars::centerScreen.x - gvars::topLeft.x);
+    for(auto &npc : leftBehind)
+    {
+        if(xSlot > (((xCapacity * 2) - 120) / (GRID_SIZE)*2) )
+        {
+            xSlot = 0;
+            ySlot++;
+        }
+
+        npc.xpos = (gvars::centerScreen.x - xCapacity) + 60 + (30*xSlot);
+
+        int ySet = gvars::topLeft.y + 120;
+        npc.ypos = ySet + (60*ySlot);
+
+        xSlot++;
+    }
+    drawNPCs(leftBehind);
+}
+
+void deadDrawTest()
+{
+    int xSlot = 0;
+    int ySlot = 0;
+
+    int xCapacity = (gvars::centerScreen.x - gvars::topLeft.x);
+
+    for(int i = 0; i != 50; i++)
+    {
+        if(xSlot > (((xCapacity * 2) - 120) / GRID_SIZE) )
+        {
+            xSlot = 0;
+            ySlot++;
+        }
+        int xposition = (gvars::centerScreen.x - xCapacity) + 60 + (60*xSlot);
+        //npc.xpos = gvars::topLeft.x + (60*xSlot);
+
+        int ySet = (gvars::topLeft.y + gvars::bottomLeft.y) / 2;
+        int yposition = ySet + (60*ySlot);
+        //npc.ypos = ySet + (60*ySlot);
+
+        //npc.drawImg();
+        effects.createCircle(xposition,yposition,30,sf::Color::White);
+
+        xSlot++;
+    }
 }
 
 void bossLoop()
 {
+
+    if(inputState.key[Key::F] && true == false)
+    {
+        for(int i = 0; i != 10; i++)
+        {
+            Npc corpse = *getGlobalCritter("BTHalfCelestial");
+            corpse.alive = random(0,1);
+
+            if(random(1,5) == 1)
+                corpse.tags.append("[WearsBoots:1]");
+            if(random(1,5) == 1)
+                corpse.tags.append("[WearsGloves:1]");
+
+
+            leftBehind.push_back(corpse);
+        }
+
+        bountytower::towerVictory = true; //towerVictory();//deadDrawTest();
+    }
+
+
+
     int bossesDead = 0;
     int bosses = 0;
     for(auto &npc : npclist)
@@ -889,9 +961,7 @@ void bossLoop()
         }
     }
     if(bossesDead > 0 && bossesDead == bosses)
-    {
-        towerVictory();
-    }
+        bountytower::towerVictory = true;
 }
 
 void bountyTowerLoop()
@@ -1285,4 +1355,5 @@ namespace bountytower
     std::string towerLoaded = "";
     Tower * currentTower = nullptr;
     int switchesRemain = 0;
+    bool towerVictory = false;
 }

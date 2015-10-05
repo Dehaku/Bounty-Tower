@@ -3451,6 +3451,115 @@ void runCritterBody(Npc &npc)
     }
 }
 
+void drawNPCs(std::list<Npc> &container)
+{
+    if(inputState.key[Key::I].time == 1)
+    {
+        for(auto &ani : animationmanager.animations)
+        {
+            std::cout << ani.name << std::endl;
+        }
+    }
+
+
+    for(auto &ani : animationmanager.animations)
+        ani.animation.update(sf::milliseconds(10));
+
+    for (auto &npc : container)
+    {
+        if (npc.hasSpawned == true)
+        {
+            int CritterZ = npc.zpos/GRID_SIZE;
+            bool withinField = aabb(npc.xpos,npc.ypos,gvars::topLeft.x,gvars::topRight.x,gvars::topLeft.y,gvars::bottomRight.y);
+            if(bountytower::towerVictory || withinField && CritterZ == gvars::currentz)
+            {
+
+                if (npc.name == "Azabul")
+            {
+                sf::Vector2f ta1 = npc.tentArm1;
+                sf::Vector2f ta2 = npc.tentArm2;
+                sf::Vector2f te1 = npc.tentEnd1;
+                sf::Vector2f te2 = npc.tentEnd2;
+
+                effects.createLine(npc.xpos, npc.ypos, ta1.x + npc.xpos,
+                                   ta1.y + npc.ypos, 2, sf::Color(0, 200, 200),
+                                   1, sf::Color(0, 255, 255));
+                effects.createLine(npc.xpos, npc.ypos, ta2.x + npc.xpos,
+                                   ta2.y + npc.ypos, 2, sf::Color(0, 200, 200),
+                                   1, sf::Color(0, 255, 255));
+                effects.createLine(
+                    ta1.x + npc.xpos, ta1.y + npc.ypos,
+                    te1.x + ta1.x + npc.xpos, te1.y + ta1.y + npc.ypos, 2,
+                    sf::Color(0, 200, 200), 1, sf::Color(0, 255, 255));
+                effects.createLine(
+                    ta2.x + npc.xpos, ta2.y + npc.ypos,
+                    te2.x + ta2.x + npc.xpos, te2.y + ta2.y + npc.ypos, 2,
+                    sf::Color(0, 200, 200), 1, sf::Color(0, 255, 255));
+                effects.drawEffects();
+            }
+
+            int aniAngle = npc.angle;
+            int angMod = 45-90; // To help with the odd directionals.
+
+            std::string Direction;
+            if(inbetween(-1,91,math::constrainAngle(aniAngle+angMod)))
+                Direction = "LeftWalk";
+            if(inbetween(89,181,math::constrainAngle(aniAngle+angMod)))
+                Direction = "UpWalk";
+            if(inbetween(-181,-89,math::constrainAngle(aniAngle+angMod)))
+                Direction = "RightWalk";
+            if(inbetween(-91,1,math::constrainAngle(aniAngle+angMod)))
+                Direction = "DownWalk";
+
+
+
+            for(auto &ani : animationmanager.animations)
+            {
+                bool drawMe = false;
+                bool allowedHat = false;
+                if(npc.isSquaddie)
+                    allowedHat = true;
+                else if(npc.tags.find("[WearsHat:1]") != npc.tags.npos)
+                    allowedHat = true;
+
+                if(ani.name.find(Direction) != ani.name.npos)
+                {
+                    if(ani.name.find(npc.race) != ani.name.npos)
+                        drawMe = true;
+                    if(ani.name.find("HatBasic") != ani.name.npos)
+                        if(npc.isSquaddie || npc.tags.find("[WearsHat:1]") != npc.tags.npos)
+                            drawMe = true;
+                    if(ani.name.find("BootsLeather") != ani.name.npos)
+                        if(npc.tags.find("[WearsBoots:1]") != npc.tags.npos)
+                            drawMe = true;
+                    if(ani.name.find("GlovesLeather") != ani.name.npos)
+                        if(npc.tags.find("[WearsGloves:1]") != npc.tags.npos)
+                            drawMe = true;
+
+                }
+                if(drawMe)
+                {
+                    ani.animation.setPosition(npc.xpos,npc.ypos);
+                    window.draw(ani.animation);
+                }
+            }
+
+            /*
+            if(!hasAnim)
+                npc.drawImg();
+            */
+
+            sf::Color shadow(50,50,50,50);
+            if(!npc.alive) // To simulate blood.
+                shadow.r = 255;
+
+            effects.createCircle(npc.xpos, npc.ypos, npc.size, shadow);
+            }
+        }
+    }
+    debug("Done drawing NPCs");
+}
+
 
 void setTestage()
 {
