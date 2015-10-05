@@ -88,6 +88,7 @@ public:
     void BTstairs();
     void BTelevatordoor();
     void BTelevator();
+    void BTbossrug();
     void BTswitch();
     void setTilebyID(int ID);
     void teleportPad(Vec3 teleportPosition);

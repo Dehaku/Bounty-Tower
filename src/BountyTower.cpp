@@ -358,6 +358,10 @@ void debugTileMode()
     if(imageButtonClicked(elevatordoorButt))
         debugTileKeeper.useTile.BTelevatordoor();
 
+    int bossrugButt = createImageButton(sf::Vector2f(menuEdgeL+30+60+60+60,menuEdgeU+30+60+60+60),texturemanager.getTexture("BTRug.png"));
+    if(imageButtonClicked(bossrugButt))
+        debugTileKeeper.useTile.BTbossrug();
+
 
 
 
@@ -703,6 +707,47 @@ int getFloorFactionMemberCount(int floor, std::string faction)
 
 std::list<Npc> leftBehind;
 
+void spawnBoss()
+{
+    Npc boss = *getGlobalCritter("BTRockkid");
+
+    bool posSet = false;
+
+    for(int x = 0; x != GRIDS; x++)
+        for(int y = 0; y != GRIDS; y++)
+            if(tiles[x][y][gvars::currentz].id == 3250 && !posSet)
+    {
+        posSet = true;
+
+        boss.xpos = x*GRID_SIZE;
+        boss.ypos = y*GRID_SIZE;
+        boss.zpos = gvars::currentz*GRID_SIZE;
+
+        if(tiles[x+1][y][gvars::currentz].id == 3250)
+            boss.xpos += GRID_SIZE/2;
+        if(tiles[x][y+1][gvars::currentz].id == 3250)
+            boss.ypos += GRID_SIZE/2;
+    }
+
+    boss.id = gvars::globalid++;
+    boss.level = 10;
+    boss.health = 10000;
+
+    boss.faction = "Towerlings";
+    boss.factionPtr = &listAt(uniFact,2);
+
+    Item weaponry = *getGlobalItem("Gun");
+    Item ammo = *getGlobalItem("5.56mm");
+    ammo.amount = 10000;
+    weaponry.internalitems.push_back(ammo);
+
+    boss.inventory.push_back(weaponry);
+
+    boss.skills.getSkill("Feral Body")->ranks = 2;
+
+    npclist.push_back(boss);
+}
+
 void nextFloorTransition()
 {
     for(auto &npc : npclist)
@@ -714,6 +759,9 @@ void nextFloorTransition()
             npc.toDelete = true;
         }
     }
+
+    if(gvars::currentz == bountytower::currentTower->floors)
+        spawnBoss();
 }
 
 
@@ -847,12 +895,14 @@ void bountyTowerLoop()
         boss.faction = "Towerlings";
         boss.factionPtr = &listAt(uniFact,2);
 
-        Item weaponry = *getGlobalItem("Gun");
+        Item weaponry = *getGlobalItem("5mmCannon");
         Item ammo = *getGlobalItem("5.56mm");
         ammo.amount = 10000;
         weaponry.internalitems.push_back(ammo);
 
         boss.inventory.push_back(weaponry);
+
+        boss.skills.getSkill("Feral Body")->ranks = 2;
 
         npclist.push_back(boss);
     }

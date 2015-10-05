@@ -1442,6 +1442,14 @@ void Tile::BTelevator()
     //img.setColor(sf::Color(50,50,50));
 }
 
+void Tile::BTbossrug()
+{ // 3250
+    id = 3250;
+    worldColor = sf::Color(150, 0, 0);
+    img.setTexture(texturemanager.getTexture("BTRug.png"));
+    transparent = true;
+    walkable = true;
+}
 
 void Tile::BTlava()
 { // 2337
@@ -1521,6 +1529,8 @@ void Tile::setTilebyID(int ID)
         BTelevatordoor();
     else if(ID == 3202)
         BTelevator();
+    else if(ID == 3250)
+        BTbossrug();
     else if(ID == 3500)
         BTswitch();
     else if(ID == 2700)
