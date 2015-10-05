@@ -3245,6 +3245,20 @@ void critterPathFind(Npc &npc, std::list<Npc> &container)
 
 }
 
+void critterWallCheck(Npc &npc, std::list<Npc> &container)
+{
+    if(tiles[abs_to_index(npc.xpos/GRID_SIZE)][abs_to_index(npc.ypos/GRID_SIZE)][abs_to_index(npc.zpos/GRID_SIZE)].walkable == false)
+    {
+        sf::Vector2f position = gridEject(sf::Vector2f(npc.xpos,npc.ypos));
+
+        sf::Vector2f Alter = position - npc.getPos2d();
+        npc.xpos += Alter.x;
+        npc.ypos += Alter.y;
+
+        npc.momentum = sf::Vector2f();
+    }
+}
+
 void critterBrain(Npc &npc, std::list<Npc> &container)
 {
 
@@ -3278,19 +3292,9 @@ void critterBrain(Npc &npc, std::list<Npc> &container)
     workSwitch(npc,container);
 
 
-    if(tiles[abs_to_index(npc.xpos/GRID_SIZE)][abs_to_index(npc.ypos/GRID_SIZE)][abs_to_index(npc.zpos/GRID_SIZE)].walkable == false)
-    {
-        //sf::Vector2f position(abs_to_index(npc.xpos/GRID_SIZE)*GRID_SIZE+10.5,abs_to_index(npc.ypos/GRID_SIZE)*GRID_SIZE+10.5);
-        sf::Vector2f position;
-        position = gridEject(sf::Vector2f(npc.xpos,npc.ypos));
+    critterWallCheck(npc,container);
 
-        sf::Vector2f npcPos(npc.xpos,npc.ypos);
 
-        sf::Vector2f Alter = position - npcPos;
-        //npc.momentum += Alter;
-        npc.xpos += Alter.x;
-        npc.ypos += Alter.y;
-    }
 
     if(npc.faction == "The Titanium Grip")
         scrapPickup(npc,container);
