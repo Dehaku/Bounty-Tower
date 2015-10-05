@@ -180,6 +180,7 @@ public:
     bool isPlayer;
     bool isNPC;
     bool isSquaddie;
+    bool isBoss;
     bool hasSpawned;
     bool needsFood;
     bool allowedFood;

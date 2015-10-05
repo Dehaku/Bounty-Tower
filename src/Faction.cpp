@@ -341,6 +341,7 @@ Npc::Npc()
     jobPtr = nullptr;
 
     isSquaddie = false;
+    isBoss = false;
 
     factionPtr = nullptr;
 

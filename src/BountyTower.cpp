@@ -711,8 +711,9 @@ void spawnBoss()
 {
     Npc boss = *getGlobalCritter("BTRockkid");
 
-    bool posSet = false;
+    boss.isBoss = true;
 
+    bool posSet = false;
     for(int x = 0; x != GRIDS; x++)
         for(int y = 0; y != GRIDS; y++)
             if(tiles[x][y][gvars::currentz].id == 3250 && !posSet)
@@ -867,9 +868,36 @@ void spawnEnemies()
     debug("Done placin Towerlings");
 }
 
+void towerVictory()
+{
+    effects.createSquare(0,0,RESOLUTION.x,RESOLUTION.y,sf::Color(0,0,0,100),0,sf::Color::Transparent,window.getDefaultView());
+    sf::Vector2f centerScreen(RESOLUTION.x/2,RESOLUTION.y/2);
+    textList.createText(centerScreen,30,sf::Color::Yellow,"$ Bounty Killed! $ \n $ Time to collect! $",window.getDefaultView());
+}
+
+void bossLoop()
+{
+    int bossesDead = 0;
+    int bosses = 0;
+    for(auto &npc : npclist)
+    {
+        if(npc.isBoss)
+        {
+            bosses++;
+            if(!npc.alive)
+                bossesDead++;
+        }
+    }
+    if(bossesDead > 0 && bossesDead == bosses)
+    {
+        towerVictory();
+    }
+}
+
 void bountyTowerLoop()
 {
     hotkeySquaddieSelect();
+    bossLoop();
 
     AnyDeletes(menus);
     if(bountytower::towerLoaded == "")
