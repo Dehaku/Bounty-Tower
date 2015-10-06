@@ -66,7 +66,7 @@ void equipStarters()
             item = *getGlobalItem("Shotgun");
             member.inventory.push_back(item);
 
-            item = *getGlobalItem("Shotgun Spread");
+            item = *getGlobalItem("Shotgun - Spread");
             item.amount = 30;
             member.inventory.push_back(item);
 
@@ -82,7 +82,7 @@ void equipStarters()
         {
             Item item = *getGlobalItem("Gun");
             Item bullet;
-            bullet = *getGlobalItem("5.56mm");
+            bullet = *getGlobalItem("Bullet - Standard");
             bullet.amount = 30;
 
             member.inventory.push_back(item);
@@ -94,7 +94,7 @@ void equipStarters()
         {
             Item item = *getGlobalItem("Sniper");
             Item bullet;
-            bullet = *getGlobalItem("5.56mm");
+            bullet = *getGlobalItem("Bullet - Standard");
             bullet.amount = 30;
 
             member.inventory.push_back(item);
@@ -745,7 +745,7 @@ void spawnBoss()
     boss.factionPtr = &listAt(uniFact,2);
 
     Item weaponry = *getGlobalItem("Gun");
-    Item ammo = *getGlobalItem("5.56mm");
+    Item ammo = *getGlobalItem("Bullet - Standard");
     ammo.amount = 10000;
     weaponry.internalitems.push_back(ammo);
 
@@ -1001,7 +1001,7 @@ void bountyTowerLoop()
         boss.factionPtr = &listAt(uniFact,2);
 
         Item weaponry = *getGlobalItem("5mmCannon");
-        Item ammo = *getGlobalItem("5.56mm");
+        Item ammo = *getGlobalItem("Bullet - Standard");
         ammo.amount = 10000;
         weaponry.internalitems.push_back(ammo);
 
@@ -1073,7 +1073,7 @@ void bountyTowerLoop()
 
     if(inputState.key[Key::N].time == 1)
     { // Spawn Ammo
-        Item item = *getGlobalItem("5.56mm");
+        Item item = *getGlobalItem("Bullet - Standard");
         item.amount = random(5,10);
         item.xpos = gvars::mousePos.x;
         item.ypos = gvars::mousePos.y;

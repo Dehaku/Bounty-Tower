@@ -2054,7 +2054,7 @@ void scrapPickup(Npc &npc, std::list<Npc> &container)
                     }
                     if(coinFlip == 2)
                     {
-                        Item Ammo = *getGlobalItem("5.56mm");
+                        Item Ammo = *getGlobalItem("Bullet - Standard");
                         Ammo.amount = random(1,5);
                         npc.addItem(Ammo);
                     }
@@ -2712,7 +2712,7 @@ void buildTurret(Npc &npc, std::list<Npc> &container)
                 turret.factionPtr = npc.factionPtr;
 
                 Item gun = *getGlobalItem("Gun");
-                Item ammo = *getGlobalItem("5.56mm");
+                Item ammo = *getGlobalItem("Bullet - Standard");
                 ammo.amount = 100;
                 gun.internalitems.push_back(ammo);
                 turret.inventory.push_back(gun);
@@ -2768,7 +2768,7 @@ void craftAmmo(Npc &npc, std::list<Npc> &container)
                         scrapPtr->remove();
                 }
 
-                Item ammo = *getGlobalItem("5.56mm");
+                Item ammo = *getGlobalItem("Bullet - Standard");
                 ammo.amount = 5*ammoSkill->ranks;
                 npc.inventory.push_back(ammo);
                 sKI->toDelete = true;
