@@ -2503,8 +2503,8 @@ void assaultDesire(Npc &npc, std::list<Npc> &container, Npc * closEnmy, bool &ha
         }
 
         debug("3");
-
-        if(withinRange && canSee)
+        //If the Squaddie check isn't there, Your squaddies will try to walk through walls if an enemy is in range.
+        if(withinRange && canSee && !npc.isSquaddie)
         {
             hasPath = false;
         }
