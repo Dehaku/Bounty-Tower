@@ -3454,6 +3454,33 @@ void runCritterBody(Npc &npc)
     }
 }
 
+void drawEquippedItems(Npc &npc)
+{
+    if(npc.invSlots[0] != nullptr)
+    {
+        sf::Vector2f drawPos = math::angleCalc(npc.getPos2d(),npc.angle,35);
+
+
+        sf::Sprite itemSprite = npc.invSlots[0]->img;
+        itemSprite.setPosition(drawPos);
+        itemSprite.setRotation(npc.angle+180);
+
+        window.draw(itemSprite);
+    }
+
+    if(npc.invSlots[1] != nullptr)
+    {
+        sf::Vector2f drawPos = math::angleCalc(npc.getPos2d(),npc.angle+180,35);
+
+
+        sf::Sprite itemSprite = npc.invSlots[1]->img;
+        itemSprite.setPosition(drawPos);
+        itemSprite.setRotation(npc.angle+180);
+
+        window.draw(itemSprite);
+    }
+}
+
 void drawNPCs(std::list<Npc> &container)
 {
     if(inputState.key[Key::I].time == 1)
@@ -3476,6 +3503,9 @@ void drawNPCs(std::list<Npc> &container)
             bool withinField = aabb(npc.xpos,npc.ypos,gvars::topLeft.x,gvars::topRight.x,gvars::topLeft.y,gvars::bottomRight.y);
             if(bountytower::towerVictory || withinField && CritterZ == gvars::currentz)
             {
+                if(npc.alive)
+                    drawEquippedItems(npc);
+
 
                 if (npc.name == "Azabul")
             {
