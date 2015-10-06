@@ -1040,7 +1040,7 @@ bool Npc::modhealth(float amount)
     if (health < 1)
     {
         health = 0;
-        alive = false;
+        //alive = false;
         img.setColor(sf::Color(255,0,0,100));
         return false;
     }
@@ -1376,6 +1376,9 @@ double critDamage(float damage, critScore crit)
 
 std::string Npc::onDeath(Npc *attacker, Item *weapon, float amount, critScore *crit)
 {
+    if(!alive)
+        return "";
+
     if(faction == "The Titanium Grip")
         chatBox.addChat(name + " has died",sf::Color::White);
     alive = false;
