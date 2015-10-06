@@ -102,7 +102,7 @@ void equipStarters()
         {
             Item item = *getGlobalItem("Sniper");
             Item bullet;
-            bullet = *getGlobalItem("Bullet - Standard");
+            bullet = *getGlobalItem("Bullet - Armor Piercing");
             bullet.amount = 30;
 
             member.inventory.push_back(item);

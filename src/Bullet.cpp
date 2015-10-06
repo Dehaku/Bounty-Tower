@@ -19,7 +19,12 @@ void hitTarget(Bullet &bullet)
                 std::string atkStatus = bullet.owner->dealDamage(i,nullptr,bullet.damage);
                 //WorkHere
                 if(atkStatus == "Hit")
-                    bullet.toDelete = true;
+                {
+                    bullet.penetration--;
+                    if(bullet.penetration < 0)
+                        bullet.toDelete = true;
+                }
+
 
                 bullet.targetsHit.ptrs.push_back(i);
             }
