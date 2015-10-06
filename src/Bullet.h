@@ -19,6 +19,7 @@ public:
     int health;
     int maxrichochet;
     float damage;
+    int radius;
     bool toDelete;
     bool showPrediction;
     bool showPath;

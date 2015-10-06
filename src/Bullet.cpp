@@ -29,50 +29,51 @@ void hitTarget(Bullet &bullet)
 void richochetCheck(Bullet &bullet)
 {
     sf::Vector2f newPos = math::angleCalc(sf::Vector2f(bullet.pos.x,bullet.pos.y),bullet.angle,1);
-        bullet.pos = Vec3f(newPos.x,newPos.y,bullet.pos.z);
-        //effects.createCircle(pos.x,pos.y,3,sf::Color(150,150,150),1,sf::Color(0,0,0));
+    bullet.pos = Vec3f(newPos.x,newPos.y,bullet.pos.z);
+    //effects.createCircle(pos.x,pos.y,3,sf::Color(150,150,150),1,sf::Color(0,0,0));
 
-        if(aabb(bullet.pos.x,bullet.pos.y,GRID_SIZE,GRID_SIZE*95,GRID_SIZE,GRID_SIZE*95) &&
-           !tiles[abs_to_index(bullet.pos.x/GRID_SIZE)][abs_to_index(bullet.pos.y/GRID_SIZE)][abs_to_index(bullet.pos.z/GRID_SIZE)].walkable)
-        {
-            Vec3f tempPos(bullet.positions[bullet.positions.size()-1]);
-            Vec3f secondVelo(tempPos.x - bullet.pos.x, tempPos.y - bullet.pos.y, tempPos.z - bullet.pos.z);
-            Vec3f secondPos(tempPos.x + secondVelo.x, tempPos.y + secondVelo.y);
+    sf::Vector2f bulletPos(bullet.pos.x,bullet.pos.y);
+    bool isWall = tiles[abs_to_index(bullet.pos.x/GRID_SIZE)][abs_to_index(bullet.pos.y/GRID_SIZE)][abs_to_index(bullet.pos.z/GRID_SIZE)].walkable;
+    if(isInBounds(bulletPos) && !isWall)
+    {
+        Vec3f tempPos(bullet.positions[bullet.positions.size()-1]);
+        Vec3f secondVelo(tempPos.x - bullet.pos.x, tempPos.y - bullet.pos.y, tempPos.z - bullet.pos.z);
+        Vec3f secondPos(tempPos.x + secondVelo.x, tempPos.y + secondVelo.y);
 
-            Vec3f tempVelocity(bullet.pos.x - secondPos.x, bullet.pos.y - secondPos.y, bullet.pos.z - secondPos.z);
+        Vec3f tempVelocity(bullet.pos.x - secondPos.x, bullet.pos.y - secondPos.y, bullet.pos.z - secondPos.z);
 
-            std::string Face = tileFace(bullet.pos.x,bullet.pos.y,bullet.pos.z,GRID_SIZE,tiles);
-            if(Face == "UP" || Face == "DOWN")
-                tempVelocity.y = -tempVelocity.y;
-            else if(Face == "LEFT" || Face == "RIGHT")
-                tempVelocity.x = -tempVelocity.x;
+        std::string Face = tileFace(bullet.pos.x,bullet.pos.y,bullet.pos.z,GRID_SIZE,tiles);
+        if(Face == "UP" || Face == "DOWN")
+            tempVelocity.y = -tempVelocity.y;
+        else if(Face == "LEFT" || Face == "RIGHT")
+            tempVelocity.x = -tempVelocity.x;
 
-            //std::cout << "Face: " << Face << std::endl;
+        //std::cout << "Face: " << Face << std::endl;
 
-            tempPos.x += tempVelocity.x;
-            tempPos.y += tempVelocity.y;
-            tempPos.z += tempVelocity.z;
+        tempPos.x += tempVelocity.x;
+        tempPos.y += tempVelocity.y;
+        tempPos.z += tempVelocity.z;
 
-            bullet.angle = math::constrainAngle(math::angleBetweenVectors(newPos,sf::Vector2f(tempPos.x,tempPos.y)));
-            bullet.positions.push_back(bullet.pos);
+        bullet.angle = math::constrainAngle(math::angleBetweenVectors(newPos,sf::Vector2f(tempPos.x,tempPos.y)));
+        bullet.positions.push_back(bullet.pos);
 
-            int ranNum = randz(1,4);
-            if(ranNum == 1)
-                soundmanager.playSound("ricochet_cedarstudios_1.ogg");
-            if(ranNum == 2)
-                soundmanager.playSound("ricochet_cedarstudios_2.ogg");
-            if(ranNum == 3)
-                soundmanager.playSound("ricochet_cedarstudios_3.ogg");
-            if(ranNum == 4)
-                soundmanager.playSound("ricochet_cedarstudios_4.ogg");
+        int ranNum = randz(1,4);
+        if(ranNum == 1)
+            soundmanager.playSound("ricochet_cedarstudios_1.ogg");
+        if(ranNum == 2)
+            soundmanager.playSound("ricochet_cedarstudios_2.ogg");
+        if(ranNum == 3)
+            soundmanager.playSound("ricochet_cedarstudios_3.ogg");
+        if(ranNum == 4)
+            soundmanager.playSound("ricochet_cedarstudios_4.ogg");
 
-            bullet.targetsHit.ptrs.clear();
+        bullet.targetsHit.ptrs.clear();
 
-            bullet.maxrichochet--;
-            if(bullet.maxrichochet <= 0)
-                bullet.toDelete = true;
+        bullet.maxrichochet--;
+        if(bullet.maxrichochet < 0)
+            bullet.toDelete = true;
 
-        }
+    }
 }
 
 void Bullet::moveBullet()
@@ -223,6 +224,7 @@ Bullet::Bullet()
     health = 5;
     maxrichochet = 3;
     damage = 0;
+    radius = 0;
     toDelete = false;
     showPrediction = false;
     showPath = false;

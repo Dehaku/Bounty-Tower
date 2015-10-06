@@ -76,6 +76,14 @@ void equipStarters()
         {
             Item item = *getGlobalItem("Sword");
             member.inventory.push_back(item);
+
+            item = *getGlobalItem("RocketLauncher");
+            member.inventory.push_back(item);
+
+            item = *getGlobalItem("Missile");
+            item.amount = 30;
+            member.inventory.push_back(item);
+
             Squaddies.push_back(&member);
         }
         if(currentCritter == 2)

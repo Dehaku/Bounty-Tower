@@ -39,6 +39,9 @@ public:
     void remove();
 
     int range;
+    int radius;
+    int penetration;
+    int richochets;
     int age;
     int weight;
     int value;

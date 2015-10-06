@@ -526,6 +526,9 @@ Item::Item()
 
     projectiles = 0;
     spread = 0;
+    radius = 0;
+    penetration = 0;
+    richochets = 0;
 
     // This may be a little confusing, This is so the item can stay
     // inside without being ejected because one function doesn't need it.
@@ -622,6 +625,9 @@ void ItemManager::initializeItems()
 
             item.spread = stringFindNumber(line, "[Spread:");
             item.projectiles = stringFindNumber(line, "[Projectiles:");
+            item.radius = stringFindNumber(line, "[radius:");
+            item.penetration = stringFindNumber(line, "[penetration:");
+            item.richochets = stringFindNumber(line, "[richochets:");
 
             item.massGlass = stringFindNumber(line, "[MassGlass:");
             item.massFlesh = stringFindNumber(line, "[MassFlesh:");
@@ -981,6 +987,10 @@ std::string Item::activate(Vec3f vPos) // Returns a string declaring the problem
         boolet.pos = muzzlePos;
         boolet.positions.push_back(boolet.pos);
         boolet.angle = math::angleBetweenVectors(muzzlePosV2f,vPosV2f);
+
+        boolet.radius = itemptr->radius;
+        boolet.maxrichochet = itemptr->richochets;
+        boolet.penetration = itemptr->penetration;
 
 
 
