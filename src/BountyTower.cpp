@@ -63,6 +63,13 @@ void equipStarters()
         {
             Item item = *getGlobalItem("Baton");
             member.inventory.push_back(item);
+            item = *getGlobalItem("Shotgun");
+            member.inventory.push_back(item);
+
+            item = *getGlobalItem("Shotgun Spread");
+            item.amount = 30;
+            member.inventory.push_back(item);
+
             Squaddies.push_back(&member);
         }
         if(currentCritter == 1)

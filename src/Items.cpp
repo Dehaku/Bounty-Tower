@@ -524,6 +524,9 @@ Item::Item()
     age = 0;
     amount = 1;
 
+    projectiles = 0;
+    spread = 0;
+
     // This may be a little confusing, This is so the item can stay
     // inside without being ejected because one function doesn't need it.
     hasInternalUse = 0;
@@ -616,6 +619,9 @@ void ItemManager::initializeItems()
 
             item.hungervalue = stringFindNumber(line, "[hungervalue:");
             item.thirstvalue = stringFindNumber(line, "[thirstvalue:");
+
+            item.spread = stringFindNumber(line, "[Spread:");
+            item.projectiles = stringFindNumber(line, "[Projectiles:");
 
             item.massGlass = stringFindNumber(line, "[MassGlass:");
             item.massFlesh = stringFindNumber(line, "[MassFlesh:");
@@ -975,6 +981,9 @@ std::string Item::activate(Vec3f vPos) // Returns a string declaring the problem
         boolet.pos = muzzlePos;
         boolet.positions.push_back(boolet.pos);
         boolet.angle = math::angleBetweenVectors(muzzlePosV2f,vPosV2f);
+
+
+
         boolet.damage = random(mindam,maxdam);
         int bulletDamage = boolet.damage;
 
@@ -1023,7 +1032,19 @@ std::string Item::activate(Vec3f vPos) // Returns a string declaring the problem
         //boolet.speed = math::closeish(muzzlePos.x,muzzlePos.y,vPos.x,vPos.y) / 10;
         boolet.speed = 30;
         boolet.lifetime = 600;
-        bullets.push_back(boolet);
+
+        for(int i = 0; i != itemptr->projectiles; i++)
+        {
+
+            if(randz(0,1) == 1)
+                boolet.angle += randz(0,spread);
+            else
+                boolet.angle -= randz(0,spread);
+
+            bullets.push_back(boolet);
+        }
+
+
 
         int miscountRoll = randz(0,100);
         if(miscountRoll < user->skills.getRanks("Miscounted Shot")*5)

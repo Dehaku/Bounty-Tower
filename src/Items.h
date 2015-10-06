@@ -59,6 +59,10 @@ public:
     float activaterate;
     float activaterategrowth;
     float activateratemax;
+
+    int projectiles;
+    int spread;
+
     // 0 = none, 1 = melee weapon, 2 = ranged weapon,
     // 3 = thrown weapon, 4 = food, 5 = water, 6 = cell, 7 = Ore,
     // 8 = Digging Tool, 9 = Cutting Tool, 10 = Fishing Tool,
