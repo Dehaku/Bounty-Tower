@@ -7,7 +7,7 @@
 [name:Baton][Pickupable:true][type:1][image:Clubbing.png][baseid:5575512][mindam:5][maxdam:30][range:40][IsWeapon:true][activaterategrowth:2][activateratemax:30][Size:1]
 [name:Gun][Pickupable:true][Spread:5][type:2][MaxClip:30][image:Gun.png][baseid:5715712][mindam:5][maxdam:30][range:100][IsWeapon:true][activaterategrowth:2][activateratemax:30][Size:1]
 [name:Sniper][Pickupable:true][type:2][Spread:1][MaxClip:5][image:BoltBeam.png][baseid:9715702][mindam:30][maxdam:200][range:500][IsWeapon:true][activaterategrowth:1][activateratemax:50][Size:2]
-[name:5mmCannon][Pickupable:true][Spread:5][type:2][MaxClip:200][image:5mmCannon.png][baseid:5572192][mindam:1][maxdam:20][range:50][IsWeapon:true][activaterategrowth:10][activateratemax:30][Size:2]
+[name:Minigun][Pickupable:true][Spread:5][type:2][MaxClip:200][image:Minigun.png][baseid:5572192][mindam:1][maxdam:20][range:50][IsWeapon:true][activaterategrowth:10][activateratemax:30][Size:2]
 [name:Shotgun][Pickupable:true][Spread:15][type:2][MaxClip:8][image:Shotty.png][baseid:5872792][mindam:10][maxdam:20][range:150][IsWeapon:true][activaterategrowth:1][activateratemax:30][Size:2]
 [name:DeathCannon][Pickupable:true][type:2][Spread:1][MaxClip:1][image:DeathCannon.png][baseid:5872122][mindam:100][maxdam:200][range:1000][IsWeapon:true][activaterategrowth:1][activateratemax:200][Size:2]
 [name:Bullet - Standard][stackSize:30][Projectiles:1][Pickupable:true][type:3][image:Food.png][baseid:5715720][mindam:100][maxdam:200][range:250]

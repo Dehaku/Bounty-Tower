@@ -1000,7 +1000,7 @@ void bountyTowerLoop()
         boss.faction = "Towerlings";
         boss.factionPtr = &listAt(uniFact,2);
 
-        Item weaponry = *getGlobalItem("5mmCannon");
+        Item weaponry = *getGlobalItem("Minigun");
         Item ammo = *getGlobalItem("Bullet - Standard");
         ammo.amount = 10000;
         weaponry.internalitems.push_back(ammo);
