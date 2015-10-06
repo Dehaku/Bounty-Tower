@@ -81,7 +81,8 @@ void equipStarters()
             member.inventory.push_back(item);
 
             item = *getGlobalItem("Missile");
-            item.amount = 30;
+            item.amount = 5;
+            member.inventory.push_back(item);
             member.inventory.push_back(item);
 
             Squaddies.push_back(&member);

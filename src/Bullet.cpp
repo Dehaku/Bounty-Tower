@@ -1,38 +1,38 @@
 #include "Bullet.h"
 
-void hitTarget(Bullet &bullet)
+std::string hitTarget(Bullet &bullet)
 {
+    bool hitSomething = false;
     for(auto &i : bullet.targets.ptrs)
+    {
+        int dist = math::closeish(bullet.pos.x,bullet.pos.y,i->xpos,i->ypos);
+        bool alreadyHit = false;
+        for(auto &t : bullet.targetsHit.ptrs)
+            if(i->id == t->id)
+                alreadyHit = true;
+
+        if(dist <= i->size/2 && !alreadyHit && i->alive)
         {
-            //i->img.setTexture(texturemanager.getTexture("Error.png"));
-            int dist = math::closeish(bullet.pos.x,bullet.pos.y,i->xpos,i->ypos);
-            bool alreadyHit = false;
-            for(auto &t : bullet.targetsHit.ptrs)
-                if(i->id == t->id)
-                    alreadyHit = true;
-
-            if(dist <= i->size/2 && !alreadyHit && i->alive)
+            Item item;
+            std::string atkStatus = bullet.owner->dealDamage(i,nullptr,bullet.damage);
+            if(atkStatus == "Hit")
             {
-
-                //i->modhealth(-50);
-                Item item;
-                std::string atkStatus = bullet.owner->dealDamage(i,nullptr,bullet.damage);
-                //WorkHere
-                if(atkStatus == "Hit")
-                {
-                    bullet.penetration--;
-                    if(bullet.penetration < 0)
-                        bullet.toDelete = true;
-                }
-
-
-                bullet.targetsHit.ptrs.push_back(i);
+                hitSomething = true;
+                bullet.penetration--;
+                if(bullet.penetration < 0)
+                    bullet.toDelete = true;
             }
+            bullet.targetsHit.ptrs.push_back(i);
         }
+    }
+    if(hitSomething)
+        return "Hit";
+    return "";
 }
 
-void richochetCheck(Bullet &bullet)
+std::string richochetCheck(Bullet &bullet)
 {
+    bool hitSomething = false;
     sf::Vector2f newPos = math::angleCalc(sf::Vector2f(bullet.pos.x,bullet.pos.y),bullet.angle,1);
     bullet.pos = Vec3f(newPos.x,newPos.y,bullet.pos.z);
     //effects.createCircle(pos.x,pos.y,3,sf::Color(150,150,150),1,sf::Color(0,0,0));
@@ -78,6 +78,21 @@ void richochetCheck(Bullet &bullet)
         if(bullet.maxrichochet < 0)
             bullet.toDelete = true;
 
+        hitSomething = true;
+
+    }
+    if(hitSomething)
+        return "Hit";
+    return "";
+}
+
+void Detonate(Bullet &bullet)
+{
+    for(auto &i : bullet.targets.ptrs)
+    {
+        int distance = math::distance(i->getPos(),bullet.pos);
+        if(distance <= bullet.radius)
+            chatBox.addChat(i->name + " was hit by an explosion!",sf::Color::Red);
     }
 }
 
@@ -157,15 +172,23 @@ void Bullet::moveBullet()
     int newAngle = angle;
     createImageButton(sf::Vector2f(pos.x,pos.y),texturemanager.getTexture("RocketBulletv2.png"),"",newAngle+90);
 
+    bool hitSomething = false;
     for(int i = 0; i != speed; i++)
     {
-        richochetCheck(*this);
+        if(richochetCheck(*this) != "")
+            hitSomething = true;
 
-        hitTarget(*this);
-
+        if(hitTarget(*this) != "")
+            hitSomething = true;
 
         //int dist = math::closeish()
         //if(math)
+    }
+
+    if(hitSomething && radius > 0)
+    {
+        std::cout << "Detonating! \n";
+        Detonate(*this);
     }
 
     if(showPrediction)
