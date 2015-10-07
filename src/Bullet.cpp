@@ -92,7 +92,11 @@ void Detonate(Bullet &bullet)
     {
         int distance = math::distance(i->getPos(),bullet.pos);
         if(distance <= bullet.radius)
+        {
             chatBox.addChat(i->name + " was hit by an explosion!",sf::Color::Red);
+            std::string atkStatus = bullet.owner->dealDamage(i,nullptr,bullet.damage);
+        }
+
     }
 }
 
