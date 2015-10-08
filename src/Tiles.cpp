@@ -767,7 +767,7 @@ void drawNewTiles()
                     //m_shader.setParameter("sceneTex", *tiles[i][t][gvars::currentz].img.getTexture());
 
                     //window.draw(tiles[i][t][gvars::currentz].img);
-                    window.draw(tiles[i][t][gvars::currentz].img,&m_shader);
+                    window.draw(tiles[i][t][gvars::currentz].img,&shadermanager.shockwaveShader);
                 }
 
 

@@ -6682,13 +6682,6 @@ void onStart()
 
 int main()
 {
-    if (!m_shader.loadFromFile("data/shaders/Shockwave.vert","data/shaders/Shockwave.frag"))
-    {
-        std::cout << "Shader failed to laod, It didn't work. \n";
-        return 0;
-    }
-
-
     //srand(clock());
     srand(time(NULL));
 
@@ -6699,6 +6692,7 @@ int main()
 
     texturemanager.init();
     animationmanager.init();
+    shadermanager.setupShockwaveShader();
 
     itemmanager.initializeItems();
     npcmanager.initializeCritters();
@@ -6719,7 +6713,10 @@ int main()
 
     while (!inputState.key[Key::Escape] && window.isOpen())
     {
-        shaderStuff(fpsKeeper.startTime.getElapsedTime().asSeconds());
+        shadermanager.shaderLoop();
+
+        if(inputState.lmbTime == 1)
+            shadermanager.setShockwave(gvars::mousePos);
 
         pauseMenu();
         if(inputState.key[Key::Escape])

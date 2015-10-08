@@ -4,9 +4,27 @@
 #include <SFML/Graphics.hpp>
 #include "globalvars.h"
 
-extern sf::Shader m_shader;
+class ShaderManager
+{
+public:
+    sf::Shader shockwaveShader;
 
-void shaderStuff(float time);
+    float shockTime;
+
+    void shaderLoop();
+
+    void setupShockwaveShader();
+
+    shadermanager();
+
+    void setShockwave(sf::Vector2f vPos);
+
+
+};
+extern ShaderManager shadermanager;
+
+
+
 
 
 #endif // SHADERS_H_INCLUDED
