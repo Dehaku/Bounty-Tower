@@ -88,6 +88,8 @@ std::string richochetCheck(Bullet &bullet)
 
 void Detonate(Bullet &bullet)
 {
+    sf::Vector2f bulletPos(bullet.pos.x,bullet.pos.y);
+    shadermanager.setShockwave(bulletPos);
     for(auto &i : bullet.targets.ptrs)
     {
         int distance = math::distance(i->getPos(),bullet.pos);
