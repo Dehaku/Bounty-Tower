@@ -7,6 +7,7 @@
 
 #include "defs.h"
 
+extern sf::Shader m_shader;
 
 const int GRIDS = 96;
 

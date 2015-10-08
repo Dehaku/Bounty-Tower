@@ -9,17 +9,26 @@ uniform vec3 in_ShockParams;
 
 uniform float in_WindowWidth;
 uniform float in_WindowHeight;
+uniform vec2 position;
 
 varying vec2 var_TexCoord;
+varying vec4 verpos;
 
 void main()
 {
   vec2 uv = var_TexCoord;
-  vec2 texCoord = uv;
+  float verX = verpos.x / in_WindowWidth;
+  float verY = verpos.y / in_WindowHeight;
+  vec2 offset = uv;
+  offset.x = offset.x;
+  offset.y = offset.y;
+  vec2 texCoord = offset;
   float x = in_Center.x / float(in_WindowWidth);
   float y = in_Center.y / float(in_WindowHeight);
+  x -= verX;
+  y -= verY;
   //float y = (float(in_WindowHeight) - in_Center.y) / float(in_WindowHeight);
-  float distance = distance(uv, vec2(x, y));
+  float distance = distance(vec2(verX,verY), vec2(x, y));
 
   if ( (distance <= (in_Time + in_ShockParams.z)) &&
        (distance >= (in_Time - in_ShockParams.z)) )
@@ -28,8 +37,10 @@ void main()
     float powDiff = 1.0 - pow(abs(diff * in_ShockParams.x),
                                 in_ShockParams.y);
     float diffTime = diff * powDiff;
-    vec2 diffUV = normalize(uv - in_Center);
-    texCoord = uv + (diffUV * diffTime);
+	vec2 exper = in_Center - verpos;
+	
+    vec2 diffUV = normalize(offset - exper); // in_Center);
+    texCoord = offset + (diffUV * diffTime);
   }
 
   gl_FragColor = texture2D(in_Texture, texCoord);
