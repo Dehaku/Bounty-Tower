@@ -124,7 +124,7 @@ void skillKeepLoop()
         sKI.age++;
         sKI.usePos = gvars::mousePos;
 
-        effects.createCircle(sKI.usePos.x,sKI.usePos.y,10,sf::Color::Cyan);
+        shapes.createCircle(sKI.usePos.x,sKI.usePos.y,10,sf::Color::Cyan);
         textList.createText(sKI.usePos,15,sf::Color::White,sKI.skillName);
     }
     AnyDeletes(skillKeeps);
@@ -263,7 +263,7 @@ public:
                 pathColor.b = 255;
 
             if (k != 0)
-                effects.createLine((oldPos.x + 1) * GRID_SIZE - GRID_SIZE/2,
+                shapes.createLine((oldPos.x + 1) * GRID_SIZE - GRID_SIZE/2,
                                    (oldPos.y + 1) * GRID_SIZE - GRID_SIZE/2,
                                    (pathPos.x + 1) * GRID_SIZE - GRID_SIZE/2,
                                    (pathPos.y + 1) * GRID_SIZE - GRID_SIZE/2, 5, pathColor);
@@ -290,7 +290,7 @@ public:
                 pathColor.b = 255;
 
             if (!firstRun)
-                effects.createLine((oldPos.x + 1) * GRID_SIZE - GRID_SIZE/2,
+                shapes.createLine((oldPos.x + 1) * GRID_SIZE - GRID_SIZE/2,
                                    (oldPos.y + 1) * GRID_SIZE - GRID_SIZE/2,
                                    (pathPos.x + 1) * GRID_SIZE - GRID_SIZE/2,
                                    (pathPos.y + 1) * GRID_SIZE - GRID_SIZE/2, 5, pathColor);
@@ -557,7 +557,7 @@ public:
                 pathColor.b = 255;
 
             if (k != 0)
-                effects.createLine((oldPos.x + 1) * GRID_SIZE - GRID_SIZE/2,
+                shapes.createLine((oldPos.x + 1) * GRID_SIZE - GRID_SIZE/2,
                                    (oldPos.y + 1) * GRID_SIZE - GRID_SIZE/2,
                                    (pathPos.x + 1) * GRID_SIZE - GRID_SIZE/2,
                                    (pathPos.y + 1) * GRID_SIZE - GRID_SIZE/2, 5, pathColor);
@@ -578,7 +578,7 @@ public:
             sf::Color pathColor(255, 255, 255, 100);
 
             if (!firstRun)
-                effects.createLine((oldPos.x + 1) * GRID_SIZE - (GRID_SIZE/2),
+                shapes.createLine((oldPos.x + 1) * GRID_SIZE - (GRID_SIZE/2),
                                    (oldPos.y + 1) * GRID_SIZE - (GRID_SIZE/2),
                                    (pathPos.x + 1) * GRID_SIZE - (GRID_SIZE/2),
                                    (pathPos.y + 1) * GRID_SIZE - (GRID_SIZE/2), 5, pathColor);
@@ -602,7 +602,7 @@ public:
 
 
             if (!firstRun)
-                effects.createLine((oldPos.x + 1) * 20 - 10,
+                shapes.createLine((oldPos.x + 1) * 20 - 10,
                                    (oldPos.y + 1) * 20 - 10,
                                    (pathPos.x + 1) * 20 - 10,
                                    (pathPos.y + 1) * 20 - 10, 5, pathColor);
@@ -858,7 +858,7 @@ void drawStoredPath(std::vector<Tile *> storedPath)
             sf::Color pathColor(255, 255, 255, 100);
 
             if (!firstRun)
-                effects.createLine((oldPos.x + 1) * GRID_SIZE - (GRID_SIZE/2),
+                shapes.createLine((oldPos.x + 1) * GRID_SIZE - (GRID_SIZE/2),
                                    (oldPos.y + 1) * GRID_SIZE - (GRID_SIZE/2),
                                    (pathPos.x + 1) * GRID_SIZE - (GRID_SIZE/2),
                                    (pathPos.y + 1) * GRID_SIZE - (GRID_SIZE/2), 5, pathColor);
@@ -1026,7 +1026,7 @@ public:
                 pathColor.b = 255;
 
             if (k != 0)
-                effects.createLine((oldPos.x + 1) * 20 - 10,
+                shapes.createLine((oldPos.x + 1) * 20 - 10,
                                    (oldPos.y + 1) * 20 - 10,
                                    (pathPos.x + 1) * 20 - 10,
                                    (pathPos.y + 1) * 20 - 10, 5, pathColor);
@@ -1047,7 +1047,7 @@ public:
             sf::Color pathColor(255, 255, 255, 100);
 
             if (!firstRun)
-                effects.createLine((oldPos.x + 1) * 20 - 10,
+                shapes.createLine((oldPos.x + 1) * 20 - 10,
                                    (oldPos.y + 1) * 20 - 10,
                                    (pathPos.x + 1) * 20 - 10,
                                    (pathPos.y + 1) * 20 - 10, 5, pathColor);
@@ -1131,11 +1131,11 @@ public:
                 int EndX = 200+(i.regionX*ReSi) + (x+1)*TiSi;
                 int EndY = 200+(i.regionY*ReSi) + (y+1)*TiSi;
                 if(z == 0 && !i.tiles[x][y][z].walkable)
-                    effects.createSquare(StartX+4,StartY+4,EndX-4,EndY-4,sf::Color::Transparent,1,sf::Color::Red);
+                    shapes.createSquare(StartX+4,StartY+4,EndX-4,EndY-4,sf::Color::Transparent,1,sf::Color::Red);
                 if(z == 1 && !i.tiles[x][y][z].walkable)
-                    effects.createSquare(StartX+2,StartY+2,EndX-2,EndY-2,sf::Color::Transparent,1,sf::Color::Green);
+                    shapes.createSquare(StartX+2,StartY+2,EndX-2,EndY-2,sf::Color::Transparent,1,sf::Color::Green);
                 if(z == 2 && !i.tiles[x][y][z].walkable)
-                    effects.createSquare(StartX,StartY,EndX,EndY,sf::Color::Transparent,1,sf::Color::Blue);
+                    shapes.createSquare(StartX,StartY,EndX,EndY,sf::Color::Transparent,1,sf::Color::Blue);
             }
         }
     }
@@ -1479,7 +1479,7 @@ std::vector<int> nngTrace(int xa, int ya, int xb, int yb, int id,
         y += yIncrement;
         if (inputState.key[Key::G])
         {
-            effects.createCircle(x, y, 1, sf::Color::Blue);
+            shapes.createCircle(x, y, 1, sf::Color::Blue);
         }
         int count = 0;
 
@@ -1535,7 +1535,7 @@ std::vector<int> nngTrace(int xa, int ya, int xb, int yb, int id,
 
         if (inputState.key[Key::Period])
         {
-            effects.createCircle(x, y, 1, sf::Color::White);
+            shapes.createCircle(x, y, 1, sf::Color::White);
         }
     }
     if (vectorID.size() == 0)
@@ -1566,7 +1566,7 @@ bool gridposTrace(int xa, int ya, int xb, int yb, int id, sf::Vector2f target)
         {
             if (inputState.key[Key::Period] && !selectedNPCs.empty() && id == selectedNPCs[0]->id)
             {
-                effects.createLine(x, y, xa, ya, 1, sf::Color::Blue);
+                shapes.createLine(x, y, xa, ya, 1, sf::Color::Blue);
             }
             //std::cout << "Shoulda Broke. " << std::endl;
             break;
@@ -1581,7 +1581,7 @@ bool gridposTrace(int xa, int ya, int xb, int yb, int id, sf::Vector2f target)
         } // Returns true and stops searching.
         if (inputState.key[Key::Period] && !selectedNPCs.empty() && id == selectedNPCs[0]->id)
         {
-            effects.createLine(x, y, xa, ya, 1, sf::Color::Blue);
+            shapes.createLine(x, y, xa, ya, 1, sf::Color::Blue);
         }
     }
     return false; // Returns false if the target was never found.
@@ -1625,7 +1625,7 @@ std::vector<int> npcTrace(int xa, int ya, int xb, int yb, int id,
 
         if (inputState.key[Key::H])
         {
-            effects.createCircle(x, y, 1, sf::Color::White);
+            shapes.createCircle(x, y, 1, sf::Color::White);
         }
     }
     if (vectorID.size() == 0)
@@ -1794,7 +1794,7 @@ entityvectorpointercontainer entityTrace(Vec3 Ori, Vec3 Tar) /* TODO: Improve th
 
             if (inputState.key[Key::Quote])
             {
-                effects.createLine(x, y, Ori.x, Ori.y, 1, sf::Color::Cyan);
+                shapes.createLine(x, y, Ori.x, Ori.y, 1, sf::Color::Cyan);
             }
             break;
 
@@ -1817,7 +1817,7 @@ entityvectorpointercontainer entityTrace(Vec3 Ori, Vec3 Tar) /* TODO: Improve th
 
         if (inputState.key[Key::Quote])
         {
-            effects.createLine(x, y, Ori.x, Ori.y, 1, sf::Color::Blue);
+            shapes.createLine(x, y, Ori.x, Ori.y, 1, sf::Color::Blue);
         }
         sf::Vector2f pos(abs_to_index(x / GRID_SIZE),
                          abs_to_index(y / GRID_SIZE));
@@ -2151,7 +2151,7 @@ bool canSeeNpc(Npc &ori, Npc &target)
             else
             {
                 //Ran into a wall, Cannot see further.
-                effects.createCircle(y,x,1,sf::Color(255,0,0));
+                shapes.createCircle(y,x,1,sf::Color(255,0,0));
                 return false;
             }
         }
@@ -2171,7 +2171,7 @@ bool canSeeNpc(Npc &ori, Npc &target)
             else
             {
                 //Ran into a wall, Cannot see further.
-                effects.createCircle(y,x,1,sf::Color(255,0,0));
+                shapes.createCircle(y,x,1,sf::Color(255,0,0));
                 return false;
             }
         }
@@ -2312,9 +2312,9 @@ void assaultDesire(Npc &npc, std::list<Npc> &container, Npc * closEnmy, bool &ha
 
         //rangewep->getRange();
         if(rangewep != nullptr)
-            effects.createCircle(npc.xpos,npc.ypos,rangewep->getRange(),sf::Color(255,0,0,50),2,sf::Color::Red);
+            shapes.createCircle(npc.xpos,npc.ypos,rangewep->getRange(),sf::Color(255,0,0,50),2,sf::Color::Red);
         if(meleewep != nullptr)
-            effects.createCircle(npc.xpos,npc.ypos,meleewep->getRange(),sf::Color(0,0,255,50),2,sf::Color::Blue);
+            shapes.createCircle(npc.xpos,npc.ypos,meleewep->getRange(),sf::Color(0,0,255,50),2,sf::Color::Blue);
     }
         debug("1");
 
@@ -2405,11 +2405,11 @@ void assaultDesire(Npc &npc, std::list<Npc> &container, Npc * closEnmy, bool &ha
 
                     if(withinRange)
                     {
-                        effects.createLine(sKI->user->xpos,sKI->user->ypos,sKI->usePos.x,sKI->usePos.y,1,sf::Color::Cyan);
-                        effects.createCircle(sKI->usePos.x,sKI->usePos.y,15,sf::Color::Cyan);
+                        shapes.createLine(sKI->user->xpos,sKI->user->ypos,sKI->usePos.x,sKI->usePos.y,1,sf::Color::Cyan);
+                        shapes.createCircle(sKI->usePos.x,sKI->usePos.y,15,sf::Color::Cyan);
                     }
                     else
-                        effects.createCircle(sKI->usePos.x,sKI->usePos.y,15,sf::Color::Red);
+                        shapes.createCircle(sKI->usePos.x,sKI->usePos.y,15,sf::Color::Red);
 
                     //Do bullet prediction for the player to see the skill in action.
                     {
@@ -2570,12 +2570,12 @@ void critterVision(Npc &npc, std::list<Npc> &container)
 
         for (auto &i : EVPC.items)
         {
-            effects.createCircle(i->xpos,i->ypos,5,sf::Color::Black);
+            shapes.createCircle(i->xpos,i->ypos,5,sf::Color::Black);
         }
         for (auto &i : EVPC.tiles)
         {
             Vec3 Pos = i->getPos();
-            effects.createCircle(Pos.x*20,Pos.y*20,5,sf::Color::Black);
+            shapes.createCircle(Pos.x*20,Pos.y*20,5,sf::Color::Black);
         }
 
         /* Placing the points to make the visible vision visibility visible */
@@ -2684,13 +2684,13 @@ void buildTurret(Npc &npc, std::list<Npc> &container)
             if(buildDist <= 120 && tileBuildable && enoughScrap)
             {
                 canBuild = true;
-                effects.createSquare(sX,sY,eX,eY,sf::Color::Transparent,1,sf::Color::Cyan);
-                effects.createCircle(npc.xpos,npc.ypos,120,sf::Color::Transparent,1,sf::Color::Cyan);
+                shapes.createSquare(sX,sY,eX,eY,sf::Color::Transparent,1,sf::Color::Cyan);
+                shapes.createCircle(npc.xpos,npc.ypos,120,sf::Color::Transparent,1,sf::Color::Cyan);
             }
             else
             {
-                effects.createSquare(sX,sY,eX,eY,sf::Color::Transparent,1,sf::Color::Red);
-                effects.createCircle(npc.xpos,npc.ypos,120,sf::Color::Transparent,1,sf::Color::Red);
+                shapes.createSquare(sX,sY,eX,eY,sf::Color::Transparent,1,sf::Color::Red);
+                shapes.createCircle(npc.xpos,npc.ypos,120,sf::Color::Transparent,1,sf::Color::Red);
             }
 
 
@@ -2796,7 +2796,7 @@ void critterPickUp()
             int mouseDist = math::closeish(gvars::mousePos,sf::Vector2f(item.xpos,item.ypos));
             if(critterDist <= 120 && mouseDist <= 10)
             {//Arbitrary number, but good enough distance for picking up.
-                effects.createCircle(item.xpos,item.ypos,10,sf::Color(0,255,255,100));
+                shapes.createCircle(item.xpos,item.ypos,10,sf::Color(0,255,255,100));
                 textList.createText(item.xpos,item.ypos+15,15,sf::Color::White,"RMB: Pickup " + item.name);
                 if(selectedNPCs[0]->inventory.size() < 20 && inputState.rmbTime == 1)
                 {//Making sure we have room.
@@ -2913,7 +2913,7 @@ void workDesire(Npc &npc, std::list<Npc> &container, Vec3 &endPos, bool &hasPath
                         float xPos = wPos.x + sin(rot * PI / 180) * 10;
                         float yPos = wPos.y + cos(rot * PI / 180) * 10;
 
-                        effects.createLine( wPos.x, wPos.y, xPos, yPos, 1, sf::Color(150, 150, 150, 150));
+                        shapes.createLine( wPos.x, wPos.y, xPos, yPos, 1, sf::Color(150, 150, 150, 150));
                     }
 
                     if (npc.jobPtr->completionProgress >= npc.jobPtr->completionTimer)
@@ -2955,7 +2955,7 @@ void workDesire(Npc &npc, std::list<Npc> &container, Vec3 &endPos, bool &hasPath
                         float xPos = itemPtr->xpos + sin(rot * PI / 180) * 10;
                         float yPos = itemPtr->ypos + cos(rot * PI / 180) * 10;
 
-                        effects.createLine( itemPtr->xpos, itemPtr->ypos, xPos, yPos, 1, sf::Color(150, 150, 150, 150));
+                        shapes.createLine( itemPtr->xpos, itemPtr->ypos, xPos, yPos, 1, sf::Color(150, 150, 150, 150));
                     }
 
                     if (npc.jobPtr->completionProgress >= npc.jobPtr->completionTimer)
@@ -3006,7 +3006,7 @@ void workDesire(Npc &npc, std::list<Npc> &container, Vec3 &endPos, bool &hasPath
                         float xPos = wPos.x + sin(rot * PI / 180) * 10;
                         float yPos = wPos.y + cos(rot * PI / 180) * 10;
 
-                        effects.createLine( wPos.x, wPos.y, xPos, yPos, 1, sf::Color(150, 150, 150, 150));
+                        shapes.createLine( wPos.x, wPos.y, xPos, yPos, 1, sf::Color(150, 150, 150, 150));
                     }
                     debug("post line drawing");
 
@@ -3188,6 +3188,30 @@ void critterPathFind(Npc &npc, std::list<Npc> &container)
 
     debug("post hasPath");
 
+    if(inputState.rmb)
+        {
+            Shape shape;
+            shape.shape = shape.Line;
+            shape.duration = 30;
+            shape.startPos = sf::Vector2f(500,500);
+            shape.endPos = gvars::mousePos + sf::Vector2f(500,500);
+
+            shape.size = 30;
+
+
+            //shape.maincolor = sf::Color::Red;
+            shape.maincolor = sf::Color::White;
+            shape.texture = &texturemanager.getTexture("BTGrass.png");
+            //shape.outline = 3;
+            //shape.seccolor = sf::Color::Red;
+
+
+            //shape.drawView = gvars::view1;
+            shapes.shapes.push_back(shape);
+
+            shapes.createLine(gvars::mousePos.x, gvars::mousePos.y, gvars::mousePos.x + 200, gvars::mousePos.y + 200, 5, sf::Color::Green);
+        }
+
     if(!npc.storedPath.empty())
     {//We have a path! Let's do things with it.
 
@@ -3363,7 +3387,7 @@ void critterBrain(Npc &npc, std::list<Npc> &container)
         }
         for (auto &enemy : enemyPtrs)
         {
-            //effects.createLine(npc.xpos,npc.ypos,enemy->xpos,enemy->ypos,2,sf::Color::Yellow);
+            //shapes.createLine(npc.xpos,npc.ypos,enemy->xpos,enemy->ypos,2,sf::Color::Yellow);
             if(closEnmy == nullptr)
                 closEnmy = enemy;
             else if(math::closeish(npc.xpos,npc.ypos,enemy->xpos,enemy->ypos) <
@@ -3377,7 +3401,7 @@ void critterBrain(Npc &npc, std::list<Npc> &container)
 
         if(closEnmy != nullptr && inputState.key[Key::LAlt] && true == false)
         {
-            effects.createLine(npc.xpos,npc.ypos,closEnmy->xpos,closEnmy->ypos,4,sf::Color::Red);
+            shapes.createLine(npc.xpos,npc.ypos,closEnmy->xpos,closEnmy->ypos,4,sf::Color::Red);
             //hasPath = true;
             //endPos = Vec3(closEnmy->xpos/GRID_SIZE,closEnmy->ypos/GRID_SIZE,closEnmy->zpos/GRID_SIZE);
         }
@@ -3643,12 +3667,13 @@ void displayChat(sf::Vector2f position)
     window.setView(window.getDefaultView());
 
 
-
+    //sf::View * view = &window.getView();
+    //view = window.getView();
     if (gCtrl.phase != "MainMenu")
-        effects.createSquare(
+        shapes.createSquare(
             position.x - 10, position.y + 10, position.x + 500,
             (position.y - ((11) * 10)), // (position.y - ((chatBox.chatStorage.size() + 1) * 10)),
-            sf::Color(0, 0, 0, 100), 2, sf::Color::Cyan, window.getDefaultView());
+            sf::Color(0, 0, 0, 100), 2, sf::Color::Cyan, window.getView());
 
     /*
     for (size_t i = 0; i != chatBox.chatStorage.size(); i++)
@@ -3754,9 +3779,9 @@ void hoverItemHUD()
             gvars::hovering = true;
 
             if(!isSecondSlot)
-                effects.createCircle(vPos.x,vPos.y,10,sf::Color(255,255,255,100),0,sf::Color::White,window.getDefaultView());
+                shapes.createCircle(vPos.x,vPos.y,10,sf::Color(255,255,255,100),0,sf::Color::White,window.getDefaultView());
             else
-                effects.createCircle(vPos.x,vPos.y,10,sf::Color(255,0,0,200),0,sf::Color::White,window.getDefaultView());
+                shapes.createCircle(vPos.x,vPos.y,10,sf::Color(255,0,0,200),0,sf::Color::White,window.getDefaultView());
 
 
             if(mouseItem != nullptr && mouseItem->size > 1 && i != 19)
@@ -3764,12 +3789,12 @@ void hoverItemHUD()
                 sf::Vector2f vPos1(gvars::slotPos[i+1]);
                 if(selectedNPCs[0]->invSlots[i+1] != nullptr || i == 1 || i == 19)
                 {
-                    effects.createCircle(vPos1.x,vPos1.y,10,sf::Color(255,0,0,200),0,sf::Color::White,window.getDefaultView());
+                    shapes.createCircle(vPos1.x,vPos1.y,10,sf::Color(255,0,0,200),0,sf::Color::White,window.getDefaultView());
                     allowPlace = false;
                 }
                 else
                 {
-                    effects.createCircle(vPos1.x,vPos1.y,10,sf::Color(255,255,255,100),0,sf::Color::White,window.getDefaultView());
+                    shapes.createCircle(vPos1.x,vPos1.y,10,sf::Color(255,255,255,100),0,sf::Color::White,window.getDefaultView());
                     allowPlace = true;
                 }
             }
@@ -3993,7 +4018,7 @@ void drawStuffs()
     //textList.createText(15,30,10,sf::Color::White,"Internal Port: " + std::to_string(network::mainPort+23));
 
     //sf::Vector2f correction = gridEject(gvars::mousePos);
-    //effects.createCircle(correction.x,correction.y,5,sf::Color::Red);
+    //shapes.createCircle(correction.x,correction.y,5,sf::Color::Red);
 
     for(int i = 0; i != peers.connected.size(); i++)
     {
@@ -4022,7 +4047,7 @@ void drawStuffs()
 
             if(math::closeish(x*20,y*20,gvars::mousePos.x,gvars::mousePos.y) <= 100)
             {
-                effects.createSquare(x*20,y*20,(x+1)*20,(y+1)*20,liqClr);
+                shapes.createSquare(x*20,y*20,(x+1)*20,(y+1)*20,liqClr);
                 liqClr.a = 255;
                 textList.createText(x*20+10,y*20+10,10,liqClr,std::to_string(liqAmt));
             }
@@ -4647,7 +4672,7 @@ void acquireSelectedNPCs()
     {
         if (gvars::heldClickPos == sf::Vector2f(-1, -1))
             gvars::heldClickPos = gvars::mousePos;
-        effects.createSquare(gvars::heldClickPos.x,gvars::heldClickPos.y, gvars::mousePos.x,gvars::mousePos.y,sf::Color(0, 0, 0, 0),5,sf::Color(0, 255, 255));
+        shapes.createSquare(gvars::heldClickPos.x,gvars::heldClickPos.y, gvars::mousePos.x,gvars::mousePos.y,sf::Color(0, 0, 0, 0),5,sf::Color(0, 255, 255));
         for (auto &npc : npclist)
         {
 
@@ -4698,7 +4723,7 @@ void bulletTests()
     /*
     if(inputState.lmbTime > 2)
             {
-                effects.createLine(gvars::heldClickPos.x,gvars::heldClickPos.y,gvars::mousePos.x,gvars::mousePos.y,3,sf::Color::Yellow);
+                shapes.createLine(gvars::heldClickPos.x,gvars::heldClickPos.y,gvars::mousePos.x,gvars::mousePos.y,3,sf::Color::Yellow);
 
                 std::string outputText = "Speed: " + std::to_string(math::closeish(gvars::heldClickPos.x,gvars::heldClickPos.y,gvars::mousePos.x,gvars::mousePos.y) / 10);
                 //Vec3f velo((gvars::heldClickPos.x - gvars::mousePos.x)/10,(gvars::heldClickPos.y - gvars::mousePos.y)/10 );
@@ -4778,7 +4803,7 @@ void handlePhase()
                             wallColor = sf::Color(255, 0, 255);
 
                         if (grid[x][y][z].type == 1 || grid[x][y][z].type == 10)
-                            effects.createSquare(x * 20, y * 20, (x + 1) * 20,
+                            shapes.createSquare(x * 20, y * 20, (x + 1) * 20,
                                                  (y + 1) * 20, wallColor);
                     }
             /* Adding a second loop to make sure the yellow squares are on top of the display, Temporary only. */
@@ -4787,7 +4812,7 @@ void handlePhase()
                     for (int z = 0; z != worldSizeZ; z++)
                     {
                         if (grid[x][y][z].type == 2)
-                            effects.createSquare(
+                            shapes.createSquare(
                                 (x * 20) + 2, (y * 20) + 2, ((x + 1) * 20) - 2,
                                 ((y + 1) * 20) - 2, sf::Color::Yellow, 4,
                                 sf::Color::White);
@@ -4896,9 +4921,9 @@ void handlePhase()
                 {
                     //textList.createText(x*TILE_PIXELS,y*TILE_PIXELS,10,sf::Color::Red,std::to_string(tiles[x][y][gvars::currentz].walkable));
                     if(tiles[x][y][gvars::currentz].walkable)
-                        effects.createSquare(x*TILE_PIXELS,y*TILE_PIXELS,x*TILE_PIXELS+TILE_PIXELS,y*TILE_PIXELS+TILE_PIXELS,sf::Color(255,255,0,100));
+                        shapes.createSquare(x*TILE_PIXELS,y*TILE_PIXELS,x*TILE_PIXELS+TILE_PIXELS,y*TILE_PIXELS+TILE_PIXELS,sf::Color(255,255,0,100));
                     else
-                        effects.createSquare(x*TILE_PIXELS,y*TILE_PIXELS,x*TILE_PIXELS+TILE_PIXELS,y*TILE_PIXELS+TILE_PIXELS,sf::Color(255,0,0,100));
+                        shapes.createSquare(x*TILE_PIXELS,y*TILE_PIXELS,x*TILE_PIXELS+TILE_PIXELS,y*TILE_PIXELS+TILE_PIXELS,sf::Color(255,0,0,100));
                 }
             }
             if (inputState.rmbTime == 1 && inputState.key[Key::LShift])
@@ -4959,11 +4984,11 @@ void handlePhase()
                                        selectedNPCs[0]->ypos);
             }
 
-            effects.createSquare(
+            shapes.createSquare(
                 32 * 20, 32 * 20, 64 * 20, 64 * 20, sf::Color(0, 0, 0, 0), 1,
                 sf::Color::
                     Cyan); // These two are the chunk borders, Debug stuffs so you can see where the loading boundries are. (As if you needed 'em, Damn thing lags a bit, Should thread each loading bit soon.)
-            effects.createSquare(
+            shapes.createSquare(
                 0 * 20, 0 * 20, 32 * 20, 32 * 20, sf::Color(0, 0, 0, 0), 1,
                 sf::Color::
                     Red); // This one reachs from 0 to 32 only because it draws from the left, not the center.
@@ -4982,7 +5007,7 @@ void handlePhase()
 
             if(!selectedNPCs.empty())
             {
-                effects.createCircle(selectedNPCs[0]->xpos,selectedNPCs[0]->ypos,30,sf::Color(255,255,255,100));
+                shapes.createCircle(selectedNPCs[0]->xpos,selectedNPCs[0]->ypos,30,sf::Color(255,255,255,100));
             }
 
             if(inputState.key[Key::Space].time == 1)
@@ -5779,7 +5804,7 @@ void handlePhase()
 
             gCtrl.worldLoop();
 
-            effects.createSquare(gvars::topLeft.x, gvars::topLeft.y,
+            shapes.createSquare(gvars::topLeft.x, gvars::topLeft.y,
                                  gvars::topLeft.x + 300, gvars::topLeft.y + 150,
                                  sf::Color(0, 0, 0, 100));
 
@@ -5859,7 +5884,7 @@ void handlePhase()
             int xMouse(gvars::mousePos.x / 20);
             int yMouse(gvars::mousePos.y / 20);
             sf::Vector2f pos(xMouse, yMouse);
-            effects.createSquare(pos.x * 20, pos.y * 20, (pos.x * 20) + 20,
+            shapes.createSquare(pos.x * 20, pos.y * 20, (pos.x * 20) + 20,
                                  (pos.y * 20) + 20, sf::Color(0, 0, 0, 0), 2,
                                  sf::Color(0, 200, 200, 255));
 
@@ -6192,7 +6217,7 @@ void drawBeams()
             color += atr.color;
         }
 
-        effects.createLine(beam.startPos.x,beam.startPos.y,beam.endPos.x,beam.endPos.y,3,color);
+        shapes.createLine(beam.startPos.x,beam.startPos.y,beam.endPos.x,beam.endPos.y,3,color);
         int angle = beam.angle;
         textList.createText(beam.startPos.x,beam.startPos.y,10,color,std::to_string(angle));
         textList.createText(beam.endPos.x,beam.endPos.y,10,color,std::to_string(angle));
@@ -6295,7 +6320,7 @@ void beamTestLoop()
                         if(trail[i].x == othertrail[t].x && trail[i].y == othertrail[t].y)
                         {
                             sf::Color color = beam.getColor() + otherbeam.getColor();
-                            effects.createCircle(trail[i].x,trail[i].y,10,color);
+                            shapes.createCircle(trail[i].x,trail[i].y,10,color);
 
                             //int angle = beam.angle + otherbeam.angle;
                             //int angle = math::constrainAngle( (beam.angle + otherbeam.angle) / 2);
@@ -6305,10 +6330,10 @@ void beamTestLoop()
                             textList.createText(trail[i].x,trail[i].y,10,color,std::to_string(angle));
                             sf::Vector2f xxPos(trail[i].x,trail[i].y);
                             sf::Vector2f vPos = math::angleCalc(xxPos,math::constrainAngle(angle),100);
-                            effects.createCircle(vPos.x,vPos.y,10,color);
+                            shapes.createCircle(vPos.x,vPos.y,10,color);
                             std::string outPut = std::to_string(beam.id) + ": a: " + std::to_string(angle);
                             textList.createText(vPos.x,vPos.y,10,color,outPut);
-                            effects.createLine(trail[i].x,trail[i].y,vPos.x,vPos.y,3,color);
+                            shapes.createLine(trail[i].x,trail[i].y,vPos.x,vPos.y,3,color);
 
                             if(inputState.key[Key::Z])
                             {
@@ -6430,11 +6455,11 @@ void Line( float x1, float y1, float x2, float y2, sf::Color color )
         if(steep)
         {
             //SetPixel(y,x, color);
-            effects.createCircle(y,x,1,color);
+            shapes.createCircle(y,x,1,color);
         }
         else
         {
-            effects.createCircle(x,y,1,color);
+            shapes.createCircle(x,y,1,color);
         }
 
         error -= dy;
@@ -6479,23 +6504,23 @@ void detectLine( float x1, float y1, float x2, float y2)
         {
             //SetPixel(y,x, color);
             if(tiles[abs_to_index(y/GRID_SIZE)][abs_to_index(x/GRID_SIZE)][gvars::currentz].walkable)
-                effects.createCircle(y,x,1,sf::Color(0,0,255));
+                shapes.createCircle(y,x,1,sf::Color(0,0,255));
             else
-                effects.createCircle(y,x,1,sf::Color(255,0,0));
+                shapes.createCircle(y,x,1,sf::Color(255,0,0));
 
 
             lineAmount++;
 
 
 
-            //effects.createCircle(y,x,1,color);
+            //shapes.createCircle(y,x,1,color);
         }
         else
         {
             if(tiles[abs_to_index(x/GRID_SIZE)][abs_to_index(y/GRID_SIZE)][gvars::currentz].walkable)
-                effects.createCircle(x,y,1,sf::Color(0,0,255));
+                shapes.createCircle(x,y,1,sf::Color(0,0,255));
             else
-                effects.createCircle(x,y,1,sf::Color(255,0,0));
+                shapes.createCircle(x,y,1,sf::Color(255,0,0));
 
             lineAmount++;
         }
@@ -6546,13 +6571,13 @@ void detectLineGrid( float x1, float y1, float x2, float y2)
             int sqYEnd = y*GRID_SIZE+(GRID_SIZE/2)+(GRID_SIZE/2);
 
             if(tiles[y][x][gvars::currentz].walkable)
-                effects.createSquare(sqYStart,sqXStart,sqYEnd,sqXEnd,sf::Color(0,0,255,100));
+                shapes.createSquare(sqYStart,sqXStart,sqYEnd,sqXEnd,sf::Color(0,0,255,100));
             else
-                effects.createSquare(sqYStart,sqXStart,sqYEnd,sqXEnd,sf::Color(255,0,0,100));
+                shapes.createSquare(sqYStart,sqXStart,sqYEnd,sqXEnd,sf::Color(255,0,0,100));
 
 
 
-            //effects.createCircle(y,x,1,color);
+            //shapes.createCircle(y,x,1,color);
         }
         else
         {
@@ -6562,9 +6587,9 @@ void detectLineGrid( float x1, float y1, float x2, float y2)
             int sqYEnd = y*GRID_SIZE+(GRID_SIZE/2)+(GRID_SIZE/2);
 
             if(tiles[x][y][gvars::currentz].walkable)
-                effects.createSquare(sqXStart,sqYStart,sqXEnd,sqYEnd,sf::Color(0,0,255,100));
+                shapes.createSquare(sqXStart,sqYStart,sqXEnd,sqYEnd,sf::Color(0,0,255,100));
             else
-                effects.createSquare(sqXStart,sqYStart,sqXEnd,sqYEnd,sf::Color(255,0,0,100));
+                shapes.createSquare(sqXStart,sqYStart,sqXEnd,sqYEnd,sf::Color(255,0,0,100));
         }
 
         error -= dy;
@@ -6724,27 +6749,7 @@ int main()
             shadermanager.setShockwave(gvars::mousePos);
 
 
-        if(inputState.rmb)
-        {
-            Shape shape;
-            shape.shape = shape.Line;
-            shape.duration = 30;
-            shape.startPos = gvars::mousePos;
-            shape.endPos = gvars::mousePos + sf::Vector2f(50,50);
 
-            shape.size = 30;
-            shape.toDelete = false;
-
-            //shape.maincolor = sf::Color::Red;
-            shape.maincolor = sf::Color::White;
-            shape.texture = &texturemanager.getTexture("BTGrass.png");
-            //shape.outline = 3;
-            //shape.seccolor = sf::Color::Red;
-
-
-
-            shapes.shapes.push_back(shape);
-        }
 
         pauseMenu();
         if(inputState.key[Key::Escape])

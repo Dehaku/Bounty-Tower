@@ -40,6 +40,21 @@ public:
 class Shapes
 {
 public:
+    void createLine(int sxpos, int sypos, int expos, int eypos, int size,
+                    sf::Color mainColor, float outline = 0,
+                    sf::Color secondaryColor = sf::Color(0, 0, 0),
+                    sf::View drawView = gvars::view1);
+
+    void createSquare(int sxpos, int sypos, int expos, int eypos,
+                      sf::Color mainColor, float outline = 0,
+                      sf::Color secondaryColor = sf::Color(0, 0, 0),
+                      sf::View drawView = gvars::view1);
+
+    void createCircle(int xpos, int ypos, int Size, sf::Color MainColor,
+                      float Outline = 0,
+                      sf::Color SecondaryColor = sf::Color(0, 0, 0),
+                      sf::View drawView = gvars::view1);
+
     std::vector<Shape> shapes;
 
     void drawShapes();
