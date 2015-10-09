@@ -648,7 +648,7 @@ void drawWorldTiles()
                 window.draw(worldMap[i][t].img);
                 if (worldMap[i][t].infected > 0)
                 {
-                    effects.createSquare(
+                    shapes.createSquare(
                         (i * 20) + 1, (t * 20) + 1, ((i * 20) + 20) - 1,
                         ((t * 20) + 20) - 1, sf::Color(0, 0, 0, 0), 1,
                         sf::Color(
@@ -665,7 +665,7 @@ void drawWorldTiles()
                             prim.a = prim.a / 1.3;
                             sf::Color seco = z.secondaryColor;
                             seco.a = seco.a / 1.3;
-                            effects.createSquare(
+                            shapes.createSquare(
                                 (i * 20) + 1, (t * 20) + 1, ((i * 20) + 20) - 1,
                                 ((t * 20) + 20) - 1, prim, 10, seco);
                         }
@@ -1775,7 +1775,7 @@ bool gridTrace(sf::Vector2f Ori, sf::Vector2f Tar)
 
             if (inputState.key[Key::Quote])
             {
-                effects.createLine(x, y, Ori.x, Ori.y, 1, sf::Color::Cyan);
+                shapes.createLine(x, y, Ori.x, Ori.y, 1, sf::Color::Cyan);
             }
             //std::cout << "Shoulda Broke. " << std::endl;
             break;
@@ -1793,7 +1793,7 @@ bool gridTrace(sf::Vector2f Ori, sf::Vector2f Tar)
 
         if (inputState.key[Key::Quote])
         {
-            effects.createLine(x, y, Ori.x, Ori.y, 1, sf::Color::Blue);
+            shapes.createLine(x, y, Ori.x, Ori.y, 1, sf::Color::Blue);
         }
     }
     return false; // Returns false if the target was never found.

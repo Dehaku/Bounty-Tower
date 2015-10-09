@@ -31,7 +31,7 @@ void Button::draw()
     if (beenPressed == true)
     {
         //Effectz.CreateCircle(vPos.x,vPos.y,iSize,sf::Color(Color.r/2,Color.g/2,Color.b/2),2,White);
-        effects.createSquare(vPos.x - iSize, vPos.y - (iSize / 1.5),
+        shapes.createSquare(vPos.x - iSize, vPos.y - (iSize / 1.5),
                              vPos.x + iSize, vPos.y + (iSize / 1.5),
                              sf::Color(color.r / 2, color.g / 2, color.b / 2),
                              2, sf::Color::White);
@@ -40,20 +40,20 @@ void Button::draw()
                             vPos.y) < iSize)
     {
         //Effectz.CreateCircle(vPos.x,vPos.y,iSize,Color,2,White);
-        effects.createSquare(vPos.x - iSize, vPos.y - (iSize / 1.5),
+        shapes.createSquare(vPos.x - iSize, vPos.y - (iSize / 1.5),
                              vPos.x + iSize, vPos.y + (iSize / 1.5), color, 2,
                              sf::Color::White);
     }
     else
     {
         //Effectz.CreateCircle(vPos.x,vPos.y,iSize,Color,1,Black);
-        effects.createSquare(vPos.x - iSize, vPos.y - (iSize / 1.5),
+        shapes.createSquare(vPos.x - iSize, vPos.y - (iSize / 1.5),
                              vPos.x + iSize, vPos.y + (iSize / 1.5), color, 2,
                              sf::Color::Black);
     }
     textList.createText(vPos.x + 10, vPos.y - (textSize / 2), textSize,
                         textColor, sForwardText);
-    effects.drawEffects();
+    //shapes.drawEffects();
 }
 
 Button::Button() : iSize{}, textSize{}
@@ -67,7 +67,7 @@ void SquareButton::draw()
     if (beenPressed == true)
     {
         //Effectz.CreateCircle(vPos.x,vPos.y,iSize,sf::Color(Color.r/2,Color.g/2,Color.b/2),2,White);
-        effects.createSquare(vPos.x - iSizex, vPos.y - iSizey, vPos.x + iSizex,
+        shapes.createSquare(vPos.x - iSizex, vPos.y - iSizey, vPos.x + iSizex,
                              vPos.y + iSizey,
                              sf::Color(color.r / 2, color.g / 2, color.b / 2),
                              2, sf::Color::White);
@@ -76,11 +76,11 @@ void SquareButton::draw()
                   vPos.y - iSizey, vPos.y + iSizey))
     {
         //Effectz.CreateCircle(vPos.x,vPos.y,iSize,Color,2,White);
-        effects.createSquare(vPos.x - iSizex, vPos.y - iSizey, vPos.x + iSizex,
+        shapes.createSquare(vPos.x - iSizex, vPos.y - iSizey, vPos.x + iSizex,
                              vPos.y + iSizey, color, 2, sf::Color::White);
         if (gvars::mouseStagnation > 10 && sButtonText.length() != 0)
         {
-            effects.createSquare(gvars::mousePos.x + 10, gvars::mousePos.y - 6,
+            shapes.createSquare(gvars::mousePos.x + 10, gvars::mousePos.y - 6,
                                  gvars::mousePos.x + (sButtonText.length() * 7),
                                  gvars::mousePos.y + 6, sf::Color::Black, 1,
                                  sf::Color(175, 175, 0));
@@ -91,12 +91,12 @@ void SquareButton::draw()
     else
     {
         //Effectz.CreateCircle(vPos.x,vPos.y,iSize,Color,1,Black);
-        effects.createSquare(vPos.x - iSizex, vPos.y - iSizey, vPos.x + iSizex,
+        shapes.createSquare(vPos.x - iSizex, vPos.y - iSizey, vPos.x + iSizex,
                              vPos.y + iSizey, color, 2, sf::Color::Black);
     }
     textList.createText(vPos.x + 10, vPos.y - (textSize / 2), textSize,
                         textColor, sForwardText);
-    effects.drawEffects();
+    //shapes.drawEffects();
 }
 
 SquareButton::SquareButton() : iSizex{}, iSizey{}, textSize{}
@@ -129,7 +129,7 @@ void ImageButton::draw()
 
 
 
-    effects.drawEffects();
+    shapes.drawShapes();
     window.setView(oldview);
 }
 
@@ -376,7 +376,7 @@ void menuPopUp()
         int options = 8;
         gCtrl.menuEndPos = sf::Vector2f(gCtrl.menuPos.x + 150,
                                         (gCtrl.menuPos.y + (options * 13)) + 5);
-        effects.createSquare(gCtrl.menuPos.x, gCtrl.menuPos.y,
+        shapes.createSquare(gCtrl.menuPos.x, gCtrl.menuPos.y,
                              gCtrl.menuEndPos.x, gCtrl.menuEndPos.y,
                              sf::Color::Black, 2, sf::Color::Cyan);
         int iY = 0;
@@ -391,7 +391,7 @@ void menuPopUp()
 
             if (i == 0)
             {
-                effects.createLine(
+                shapes.createLine(
                     gCtrl.menuPos.x, (gCtrl.menuPos.y + (iY * 13)) + 13,
                     gCtrl.menuPos.x + 90, (gCtrl.menuPos.y + (iY * 13)) + 13, 1,
                     sf::Color::Cyan);
@@ -405,11 +405,11 @@ void menuPopUp()
                 if (squareButtonClicked(butt) ||
                     inputState.key[Key::Num1].time == 1)
                 {
-                    effects.createSquare(gCtrl.menuPos.x - 10,
+                    shapes.createSquare(gCtrl.menuPos.x - 10,
                                          gCtrl.menuPos.y - 2,
                                          gCtrl.menuPos.x + 10,
                                          gCtrl.menuPos.y + 2, sf::Color::Black);
-                    effects.createSquare(
+                    shapes.createSquare(
                         gCtrl.menuPos.x - 2, gCtrl.menuPos.y - 10,
                         gCtrl.menuPos.x + 2, gCtrl.menuPos.y + 10,
                         sf::Color::Black);
@@ -437,7 +437,7 @@ void menuPopUp()
         int options = 8;
         gCtrl.menuEndPos = sf::Vector2f(gCtrl.menuPos.x + 150,
                                         (gCtrl.menuPos.y + (options * 13)) + 5);
-        effects.createSquare(gCtrl.menuPos.x, gCtrl.menuPos.y,
+        shapes.createSquare(gCtrl.menuPos.x, gCtrl.menuPos.y,
                              gCtrl.menuEndPos.x, gCtrl.menuEndPos.y,
                              sf::Color::Black, 2, sf::Color::Cyan);
         int iY = 0;
@@ -452,7 +452,7 @@ void menuPopUp()
 
             if (i == 0)
             {
-                effects.createLine(
+                shapes.createLine(
                     gCtrl.menuPos.x, (gCtrl.menuPos.y + (iY * 13)) + 13,
                     gCtrl.menuPos.x + 90, (gCtrl.menuPos.y + (iY * 13)) + 13, 1,
                     sf::Color::Cyan);
@@ -472,7 +472,7 @@ void menuPopUp()
 
             if (i == 1)
             {
-                effects.createLine(
+                shapes.createLine(
                     gCtrl.menuPos.x, (gCtrl.menuPos.y + (iY * 13)) + 13,
                     gCtrl.menuPos.x + 90, (gCtrl.menuPos.y + (iY * 13)) + 13, 1,
                     sf::Color::Cyan);
@@ -501,7 +501,7 @@ void menuPopUp()
         int options = 8;
         gCtrl.menuEndPos = sf::Vector2f(gCtrl.menuPos.x + 150,
                                         (gCtrl.menuPos.y + (options * 13)) + 5);
-        effects.createSquare(gCtrl.menuPos.x, gCtrl.menuPos.y,
+        shapes.createSquare(gCtrl.menuPos.x, gCtrl.menuPos.y,
                              gCtrl.menuEndPos.x, gCtrl.menuEndPos.y,
                              sf::Color::Black, 2, sf::Color::Cyan);
         int iY = 0;
@@ -516,7 +516,7 @@ void menuPopUp()
 
             if (i == 0)
             {
-                effects.createLine(
+                shapes.createLine(
                     gCtrl.menuPos.x, (gCtrl.menuPos.y + (iY * 13)) + 13,
                     gCtrl.menuPos.x + 90, (gCtrl.menuPos.y + (iY * 13)) + 13, 1,
                     sf::Color::Cyan);
@@ -536,7 +536,7 @@ void menuPopUp()
 
             if (i == 1)
             {
-                effects.createLine(
+                shapes.createLine(
                     gCtrl.menuPos.x, (gCtrl.menuPos.y + (iY * 13)) + 13,
                     gCtrl.menuPos.x + 90, (gCtrl.menuPos.y + (iY * 13)) + 13, 1,
                     sf::Color::Cyan);
@@ -565,7 +565,7 @@ void menuPopUp()
         int options = 8;
         gCtrl.menuEndPos = sf::Vector2f(gCtrl.menuPos.x + 150,
                                         (gCtrl.menuPos.y + (options * 13)) + 5);
-        effects.createSquare(gCtrl.menuPos.x, gCtrl.menuPos.y,
+        shapes.createSquare(gCtrl.menuPos.x, gCtrl.menuPos.y,
                              gCtrl.menuEndPos.x, gCtrl.menuEndPos.y,
                              sf::Color::Black, 2, sf::Color::Cyan);
 
@@ -585,7 +585,7 @@ void menuPopUp()
             {
 
                 //Effectz.CreateLine(GC.MenuPos.x,(GC.MenuPos.y+(iY*13))+8,GC.MenuPos.x+90,(GC.MenuPos.y+(iY*13))+8,3,Black,1,Yellow);
-                effects.createLine(
+                shapes.createLine(
                     gCtrl.menuPos.x, (gCtrl.menuPos.y + (iY * 13)) + 13,
                     gCtrl.menuPos.x + 90, (gCtrl.menuPos.y + (iY * 13)) + 13, 1,
                     sf::Color::Cyan);
@@ -609,7 +609,7 @@ void menuPopUp()
             {
 
                 //Effectz.CreateLine(GC.MenuPos.x,(GC.MenuPos.y+(iY*13))+8,GC.MenuPos.x+90,(GC.MenuPos.y+(iY*13))+8,3,Black,1,Yellow);
-                effects.createLine(
+                shapes.createLine(
                     gCtrl.menuPos.x, (gCtrl.menuPos.y + (iY * 13)) + 13,
                     gCtrl.menuPos.x + 90, (gCtrl.menuPos.y + (iY * 13)) + 13, 1,
                     sf::Color::Cyan);
@@ -634,7 +634,7 @@ void menuPopUp()
             {
 
                 //Effectz.CreateLine(GC.MenuPos.x,(GC.MenuPos.y+(iY*13))+8,GC.MenuPos.x+90,(GC.MenuPos.y+(iY*13))+8,3,Black,1,Yellow);
-                effects.createLine(
+                shapes.createLine(
                     gCtrl.menuPos.x, (gCtrl.menuPos.y + (iY * 13)) + 13,
                     gCtrl.menuPos.x + 90, (gCtrl.menuPos.y + (iY * 13)) + 13, 1,
                     sf::Color::Cyan);
@@ -677,7 +677,7 @@ void menuPopUp()
             sf::Vector2f boundCheck(vPos.x*GRID_SIZE,vPos.y*GRID_SIZE);
             if (i == 3 && !selectedNPCs.empty() && isInBounds(boundCheck) && tiles[vPos.x][vPos.y][vPos.z].state == "Off")
             {
-                effects.createLine(
+                shapes.createLine(
                     gCtrl.menuPos.x, (gCtrl.menuPos.y + (iY * 13)) + 13,
                     gCtrl.menuPos.x + 90, (gCtrl.menuPos.y + (iY * 13)) + 13, 1,
                     sf::Color::Cyan);
@@ -724,7 +724,7 @@ void menuPopUp()
             if (i == 7)
             {
                 //Effectz.CreateLine(GC.MenuPos.x,(GC.MenuPos.y+(iY*13))+8,GC.MenuPos.x+90,(GC.MenuPos.y+(iY*13))+8,3,Black,1,Yellow);
-                effects.createLine(
+                shapes.createLine(
                     gCtrl.menuPos.x, (gCtrl.menuPos.y + (iY * 13)) + 13,
                     gCtrl.menuPos.x + 90, (gCtrl.menuPos.y + (iY * 13)) + 13, 1,
                     sf::Color::Cyan);
@@ -750,7 +750,7 @@ void menuPopUp()
             {
 
                 //Effectz.CreateLine(GC.MenuPos.x,(GC.MenuPos.y+(iY*13))+8,GC.MenuPos.x+90,(GC.MenuPos.y+(iY*13))+8,3,Black,1,Yellow);
-                effects.createLine(
+                shapes.createLine(
                     gCtrl.menuPos.x, (gCtrl.menuPos.y + (iY * 13)) + 13,
                     gCtrl.menuPos.x + 90, (gCtrl.menuPos.y + (iY * 13)) + 13, 1,
                     sf::Color::Cyan);
@@ -788,7 +788,7 @@ void menuPopUp()
         int options = 8;
         gCtrl.menuEndPos = sf::Vector2f(gCtrl.menuPos.x + 150,
                                         (gCtrl.menuPos.y + (options * 13)) + 5);
-        effects.createSquare(gCtrl.menuPos.x, gCtrl.menuPos.y,
+        shapes.createSquare(gCtrl.menuPos.x, gCtrl.menuPos.y,
                              gCtrl.menuEndPos.x, gCtrl.menuEndPos.y,
                              sf::Color::Black, 2, sf::Color::Cyan);
         int iY = 0;
@@ -803,7 +803,7 @@ void menuPopUp()
 
             if (i == 0)
             {
-                effects.createLine(
+                shapes.createLine(
                     gCtrl.menuPos.x, (gCtrl.menuPos.y + (iY * 13)) + 13,
                     gCtrl.menuPos.x + 90, (gCtrl.menuPos.y + (iY * 13)) + 13, 1,
                     sf::Color::Cyan);
@@ -846,7 +846,7 @@ void menuPopUp()
 
             if (i == 1)
             {
-                effects.createLine(
+                shapes.createLine(
                     gCtrl.menuPos.x, (gCtrl.menuPos.y + (iY * 13)) + 13,
                     gCtrl.menuPos.x + 90, (gCtrl.menuPos.y + (iY * 13)) + 13, 1,
                     sf::Color::Cyan);
@@ -897,7 +897,7 @@ void menuPopUp()
         int options = 8;
         gCtrl.menuEndPos = sf::Vector2f(gCtrl.menuPos.x + 150,
                                         (gCtrl.menuPos.y + (options * 13)) + 5);
-        effects.createSquare(gCtrl.menuPos.x, gCtrl.menuPos.y,
+        shapes.createSquare(gCtrl.menuPos.x, gCtrl.menuPos.y,
                              gCtrl.menuEndPos.x, gCtrl.menuEndPos.y,
                              sf::Color::Black, 2, sf::Color::Cyan);
         int iY = 0;
@@ -910,7 +910,7 @@ void menuPopUp()
         for (size_t i = 0; i != gCtrl.menuPtrCon.pVecItem.size(); i++)
         {
 
-            effects.createLine(
+            shapes.createLine(
                 gCtrl.menuPos.x, (gCtrl.menuPos.y + (iY * 13)) + 13,
                 gCtrl.menuPos.x + 90, (gCtrl.menuPos.y + (iY * 13)) + 13, 1,
                 sf::Color::Cyan);
@@ -932,7 +932,7 @@ void menuPopUp()
 
             if (/*i == -1*/ false) // `i` can't be -1
             {
-                effects.createLine(
+                shapes.createLine(
                     gCtrl.menuPos.x, (gCtrl.menuPos.y + (iY * 13)) + 13,
                     gCtrl.menuPos.x + 90, (gCtrl.menuPos.y + (iY * 13)) + 13, 1,
                     sf::Color::Cyan);
@@ -964,7 +964,7 @@ void menuPopUp()
         int options = 1;
         gCtrl.menuEndPos = sf::Vector2f(gCtrl.menuPos.x + 150,
                                         (gCtrl.menuPos.y + (options * 13)) + 5);
-        effects.createSquare(gCtrl.menuPos.x, gCtrl.menuPos.y,
+        shapes.createSquare(gCtrl.menuPos.x, gCtrl.menuPos.y,
                              gCtrl.menuEndPos.x, gCtrl.menuEndPos.y,
                              sf::Color::Black, 2, sf::Color::Cyan);
         int iY = 0;
@@ -982,7 +982,7 @@ void menuPopUp()
 
                 if (worldMap[abs_to_index(gCtrl.menuPos.x / 20)]
                             [abs_to_index(gCtrl.menuPos.y / 20)].id == 0)
-                    effects.createLine(
+                    shapes.createLine(
                         gCtrl.menuPos.x, (gCtrl.menuPos.y + (iY * 13)) + 13,
                         gCtrl.menuPos.x + 90,
                         (gCtrl.menuPos.y + (iY * 13)) + 13, 1, sf::Color::Cyan);
@@ -1062,7 +1062,7 @@ void menuPopUp()
         int options = 10;
         gCtrl.menuEndPos = sf::Vector2f(gCtrl.menuPos.x + 150,
                                         (gCtrl.menuPos.y + (options * 13)) + 5);
-        effects.createSquare(gCtrl.menuPos.x, gCtrl.menuPos.y,
+        shapes.createSquare(gCtrl.menuPos.x, gCtrl.menuPos.y,
                              gCtrl.menuEndPos.x, gCtrl.menuEndPos.y,
                              sf::Color::Black, 2, sf::Color::Cyan);
         int iY = 0;
@@ -1077,7 +1077,7 @@ void menuPopUp()
 
             if (i == 0)
             {
-                effects.createLine(
+                shapes.createLine(
                     gCtrl.menuPos.x, (gCtrl.menuPos.y + (iY * 13)) + 13,
                     gCtrl.menuPos.x + 90, (gCtrl.menuPos.y + (iY * 13)) + 13, 1,
                     sf::Color::Cyan);
@@ -1101,7 +1101,7 @@ void menuPopUp()
             }
             if (i == 1)
             { // Missile Strike
-                effects.createLine(
+                shapes.createLine(
                     gCtrl.menuPos.x, (gCtrl.menuPos.y + (iY * 13)) + 13,
                     gCtrl.menuPos.x + 90, (gCtrl.menuPos.y + (iY * 13)) + 13, 1,
                     sf::Color::Cyan);
@@ -1116,11 +1116,11 @@ void menuPopUp()
                     inputState.key[Key::Num2].time == 1)
                 {
 
-                    effects.createSquare(gCtrl.menuPos.x - 10,
+                    shapes.createSquare(gCtrl.menuPos.x - 10,
                                          gCtrl.menuPos.y - 2,
                                          gCtrl.menuPos.x + 10,
                                          gCtrl.menuPos.y + 2, sf::Color::Black);
-                    effects.createSquare(
+                    shapes.createSquare(
                         gCtrl.menuPos.x - 2, gCtrl.menuPos.y - 10,
                         gCtrl.menuPos.x + 2, gCtrl.menuPos.y + 10,
                         sf::Color::Black);
@@ -1144,7 +1144,7 @@ void menuPopUp()
             { // Shift wall/stone
 
                 //Effectz.CreateLine(GC.MenuPos.x,(GC.MenuPos.y+(iY*13))+8,GC.MenuPos.x+90,(GC.MenuPos.y+(iY*13))+8,3,Black,1,Yellow);
-                effects.createLine(
+                shapes.createLine(
                     gCtrl.menuPos.x, (gCtrl.menuPos.y + (iY * 13)) + 13,
                     gCtrl.menuPos.x + 90, (gCtrl.menuPos.y + (iY * 13)) + 13, 1,
                     sf::Color::Cyan);
@@ -1190,7 +1190,7 @@ void menuPopUp()
             { // Spawn zombie horde
 
                 //Effectz.CreateLine(GC.MenuPos.x,(GC.MenuPos.y+(iY*13))+8,GC.MenuPos.x+90,(GC.MenuPos.y+(iY*13))+8,3,Black,1,Yellow);
-                effects.createLine(
+                shapes.createLine(
                     gCtrl.menuPos.x, (gCtrl.menuPos.y + (iY * 13)) + 13,
                     gCtrl.menuPos.x + 90, (gCtrl.menuPos.y + (iY * 13)) + 13, 1,
                     sf::Color::Cyan);
@@ -1217,7 +1217,7 @@ void menuPopUp()
 
             if (i == 4)
             { // Print NPC console info
-                effects.createLine(
+                shapes.createLine(
                     gCtrl.menuPos.x, (gCtrl.menuPos.y + (iY * 13)) + 13,
                     gCtrl.menuPos.x + 90, (gCtrl.menuPos.y + (iY * 13)) + 13, 1,
                     sf::Color::Cyan);
@@ -1252,7 +1252,7 @@ void menuPopUp()
 
             if (i == 5)
             { // Print bloodcontents
-                effects.createLine(
+                shapes.createLine(
                     gCtrl.menuPos.x, (gCtrl.menuPos.y + (iY * 13)) + 13,
                     gCtrl.menuPos.x + 90, (gCtrl.menuPos.y + (iY * 13)) + 13, 1,
                     sf::Color::Cyan);
@@ -1282,7 +1282,7 @@ void menuPopUp()
 
             if (i == 6)
             { // Give everyone zombification
-                effects.createLine(
+                shapes.createLine(
                     gCtrl.menuPos.x, (gCtrl.menuPos.y + (iY * 13)) + 13,
                     gCtrl.menuPos.x + 90, (gCtrl.menuPos.y + (iY * 13)) + 13, 1,
                     sf::Color::Cyan);
@@ -1313,7 +1313,7 @@ void menuPopUp()
 
             if (i == 7)
             { // Delete all critters and items
-                effects.createLine(
+                shapes.createLine(
                     gCtrl.menuPos.x, (gCtrl.menuPos.y + (iY * 13)) + 13,
                     gCtrl.menuPos.x + 90, (gCtrl.menuPos.y + (iY * 13)) + 13, 1,
                     sf::Color::Cyan);
@@ -1345,7 +1345,7 @@ void menuPopUp()
             { // Starve all critters
 
                 //Effectz.CreateLine(GC.MenuPos.x,(GC.MenuPos.y+(iY*13))+8,GC.MenuPos.x+90,(GC.MenuPos.y+(iY*13))+8,3,Black,1,Yellow);
-                effects.createLine(
+                shapes.createLine(
                     gCtrl.menuPos.x, (gCtrl.menuPos.y + (iY * 13)) + 13,
                     gCtrl.menuPos.x + 90, (gCtrl.menuPos.y + (iY * 13)) + 13, 1,
                     sf::Color::Cyan);
@@ -1370,7 +1370,7 @@ void menuPopUp()
             { // Arena
 
                 //Effectz.CreateLine(GC.MenuPos.x,(GC.MenuPos.y+(iY*13))+8,GC.MenuPos.x+90,(GC.MenuPos.y+(iY*13))+8,3,Black,1,Yellow);
-                effects.createLine(
+                shapes.createLine(
                     gCtrl.menuPos.x, (gCtrl.menuPos.y + (iY * 13)) + 13,
                     gCtrl.menuPos.x + 90, (gCtrl.menuPos.y + (iY * 13)) + 13, 1,
                     sf::Color::Cyan);
@@ -1421,13 +1421,13 @@ void menuPopUp()
         gCtrl.menuEndPos = sf::Vector2f(
             gCtrl.menuPos.x + 100,
             (gCtrl.menuPos.y + (itemmanager.globalItems.size() * 10)) + 5);
-        effects.createSquare(gCtrl.menuPos.x, gCtrl.menuPos.y,
+        shapes.createSquare(gCtrl.menuPos.x, gCtrl.menuPos.y,
                              gCtrl.menuEndPos.x, gCtrl.menuEndPos.y,
                              sf::Color::White);
         int iY = 0;
         for (auto &elem : itemmanager.globalItems)
         {
-            effects.createLine(
+            shapes.createLine(
                 gCtrl.menuPos.x, (gCtrl.menuPos.y + (iY * 11)) + 8,
                 gCtrl.menuPos.x + 90, (gCtrl.menuPos.y + (iY * 11)) + 8, 3,
                 sf::Color::Black, 1, sf::Color::Yellow);
@@ -1451,13 +1451,13 @@ void menuPopUp()
         gCtrl.menuEndPos = sf::Vector2f(
             gCtrl.menuPos.x + 100,
             (gCtrl.menuPos.y + (npcmanager.globalCritter.size() * 10)) + 5);
-        effects.createSquare(gCtrl.menuPos.x, gCtrl.menuPos.y,
+        shapes.createSquare(gCtrl.menuPos.x, gCtrl.menuPos.y,
                              gCtrl.menuEndPos.x, gCtrl.menuEndPos.y,
                              sf::Color::White);
         int iY = 0;
         for (auto &elem : npcmanager.globalCritter)
         {
-            effects.createLine(
+            shapes.createLine(
                 gCtrl.menuPos.x, (gCtrl.menuPos.y + (iY * 11)) + 8,
                 gCtrl.menuPos.x + 90, (gCtrl.menuPos.y + (iY * 11)) + 8, 3,
                 sf::Color::Black, 1, sf::Color::Yellow);
@@ -1482,7 +1482,7 @@ void menuPopUp()
         int options = 2;
         gCtrl.menuEndPos = sf::Vector2f(gCtrl.menuPos.x + 100,
                                         (gCtrl.menuPos.y + (options * 10)) + 5);
-        effects.createSquare(gCtrl.menuPos.x, gCtrl.menuPos.y,
+        shapes.createSquare(gCtrl.menuPos.x, gCtrl.menuPos.y,
                              gCtrl.menuEndPos.x, gCtrl.menuEndPos.y,
                              sf::Color::White);
         int iY = 0;
@@ -1492,7 +1492,7 @@ void menuPopUp()
             if (i == 0)
             {
 
-                effects.createLine(
+                shapes.createLine(
                     gCtrl.menuPos.x, (gCtrl.menuPos.y + (iY * 11)) + 8,
                     gCtrl.menuPos.x + 90, (gCtrl.menuPos.y + (iY * 11)) + 8, 3,
                     sf::Color::Black, 1, sf::Color::Yellow);
@@ -1521,7 +1521,7 @@ void menuPopUp()
             if (i == 1)
             {
 
-                effects.createLine(
+                shapes.createLine(
                     gCtrl.menuPos.x, (gCtrl.menuPos.y + (iY * 11)) + 8,
                     gCtrl.menuPos.x + 90, (gCtrl.menuPos.y + (iY * 11)) + 8, 3,
                     sf::Color::Black, 1, sf::Color::Yellow);
@@ -1583,7 +1583,7 @@ void menuPopUp()
         //gCtrl.menuEndPos = sf::Vector2f(RESOLUTION.x-lowerBound.x,RESOLUTION.y-lowerBound.y);
         gCtrl.menuEndPos = gvars::bottomRight;
 
-        effects.createSquare(gCtrl.menuPos.x, gCtrl.menuPos.y,
+        shapes.createSquare(gCtrl.menuPos.x, gCtrl.menuPos.y,
                              gCtrl.menuEndPos.x, gCtrl.menuEndPos.y,
                              sf::Color::Black, 2, sf::Color::Cyan);
         int iY = 0;
@@ -1662,7 +1662,7 @@ void menuPopUp()
         int options = 10;
         gCtrl.menuEndPos = sf::Vector2f(gCtrl.menuPos.x + 150,
                                         (gCtrl.menuPos.y + (options * 13)) + 5);
-        effects.createSquare(gCtrl.menuPos.x, gCtrl.menuPos.y,
+        shapes.createSquare(gCtrl.menuPos.x, gCtrl.menuPos.y,
                              gCtrl.menuEndPos.x, gCtrl.menuEndPos.y,
                              sf::Color::Black, 2, sf::Color::Cyan);
         int iY = 0;
@@ -1677,7 +1677,7 @@ void menuPopUp()
 
             if (i == 0)
             {
-                effects.createLine(
+                shapes.createLine(
                     gCtrl.menuPos.x, (gCtrl.menuPos.y + (iY * 13)) + 13,
                     gCtrl.menuPos.x + 90, (gCtrl.menuPos.y + (iY * 13)) + 13, 1,
                     sf::Color::Cyan);

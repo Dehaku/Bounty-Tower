@@ -35,7 +35,7 @@ std::string richochetCheck(Bullet &bullet)
     bool hitSomething = false;
     sf::Vector2f newPos = math::angleCalc(sf::Vector2f(bullet.pos.x,bullet.pos.y),bullet.angle,1);
     bullet.pos = Vec3f(newPos.x,newPos.y,bullet.pos.z);
-    //effects.createCircle(pos.x,pos.y,3,sf::Color(150,150,150),1,sf::Color(0,0,0));
+    //shapes.createCircle(pos.x,pos.y,3,sf::Color(150,150,150),1,sf::Color(0,0,0));
 
     sf::Vector2f bulletPos(bullet.pos.x,bullet.pos.y);
     bool isWall = tiles[abs_to_index(bullet.pos.x/GRID_SIZE)][abs_to_index(bullet.pos.y/GRID_SIZE)][abs_to_index(bullet.pos.z/GRID_SIZE)].walkable;
@@ -91,14 +91,18 @@ void Detonate(Bullet &bullet)
     sf::Vector2f bulletPos(bullet.pos.x,bullet.pos.y);
     shadermanager.setShockwave(bulletPos);
 
-    EffectStorer effect("Circle",15,bulletPos);
-    effect.size = 120;
-    effect.maincolor = sf::Color::Red;
-    effect.fades = true;
-    effectsStorage.push_back(effect);
-    effect.duration = 20;
-    effect.size = 60;
-    effectsStorage.push_back(effect);
+    Shape shape;
+    shape.shape = shape.Circle;
+    shape.duration = 15;
+    shape.startPos = bulletPos;
+    shape.size = 120;
+    shape.maincolor = sf::Color::Red;
+    shape.fades = true;
+    shapes.shapes.push_back(shape);
+    shape.duration = 20;
+    shape.size = 60;
+    shapes.shapes.push_back(shape);
+
 
     for(auto &i : bullet.targets.ptrs)
     {
@@ -163,7 +167,7 @@ void Bullet::moveBullet()
         //sf::Vector2f newPos = math::angleCalc(sf::Vector2f(pos.x,pos.y),angle,1);
         sf::Vector2f newPos = sf::Vector2f(pos.x + velocity.x, pos.y + velocity.y);//math::angleCalc(sf::Vector2f(pos.x,pos.y),angle,1);
         pos = Vec3f(newPos.x,newPos.y,pos.z);
-        effects.createCircle(pos.x,pos.y,3,sf::Color(150,150,150),1,sf::Color(0,0,0));
+        shapes.createCircle(pos.x,pos.y,3,sf::Color(150,150,150),1,sf::Color(0,0,0));
 
         if(aabb(pos.x,pos.y,GRID_SIZE,GRID_SIZE*95,GRID_SIZE,GRID_SIZE*95) &&
            !tiles[abs_to_index(pos.x/GRID_SIZE)][abs_to_index(pos.y/GRID_SIZE)][abs_to_index(pos.z/GRID_SIZE)].walkable)
@@ -184,7 +188,7 @@ void Bullet::moveBullet()
         }
     }
 
-    //effects.createCircle(pos.x,pos.y,3,sf::Color(150,150,150),1,sf::Color(0,0,0));
+    //shapes.createCircle(pos.x,pos.y,3,sf::Color(150,150,150),1,sf::Color(0,0,0));
     int newAngle = angle;
     createImageButton(sf::Vector2f(pos.x,pos.y),texturemanager.getTexture("RocketBulletv2.png"),"",newAngle+90);
 
@@ -213,19 +217,19 @@ void Bullet::moveBullet()
         if(i == 0)
         {
             sf::Vector2f startPos(predictions[i].x,predictions[i].y);
-            //effects.createLine(startPos.x,startPos.y,pos.x,pos.y,1,sf::Color::Cyan);
+            //shapes.createLine(startPos.x,startPos.y,pos.x,pos.y,1,sf::Color::Cyan);
         }
         else if(i == predictions.size()-1)
         {
             sf::Vector2f startPos(predictions[i].x,predictions[i].y);
             sf::Vector2f endPos(predictions[i-1].x,predictions[i-1].y);
-            effects.createLine(startPos.x,startPos.y,endPos.x,endPos.y,1,sf::Color::Red);
+            shapes.createLine(startPos.x,startPos.y,endPos.x,endPos.y,1,sf::Color::Red);
         }
         else
         {
             sf::Vector2f startPos(predictions[i].x,predictions[i].y);
             sf::Vector2f endPos(predictions[i-1].x,predictions[i-1].y);
-            effects.createLine(startPos.x,startPos.y,endPos.x,endPos.y,1,sf::Color::Cyan);
+            shapes.createLine(startPos.x,startPos.y,endPos.x,endPos.y,1,sf::Color::Cyan);
         }
     }
 
@@ -235,13 +239,13 @@ void Bullet::moveBullet()
         if(i == positions.size()-1)
         {
             sf::Vector2f startPos(positions[i].x,positions[i].y);
-            effects.createLine(startPos.x,startPos.y,pos.x,pos.y,1,sf::Color(150,150,150));
+            shapes.createLine(startPos.x,startPos.y,pos.x,pos.y,1,sf::Color(150,150,150));
         }
         else
         {
             sf::Vector2f startPos(positions[i].x,positions[i].y);
             sf::Vector2f endPos(positions[i+1].x,positions[i+1].y);
-            effects.createLine(startPos.x,startPos.y,endPos.x,endPos.y,1,sf::Color(150,150,150));
+            shapes.createLine(startPos.x,startPos.y,endPos.x,endPos.y,1,sf::Color(150,150,150));
         }
     }
 
@@ -323,19 +327,19 @@ void predictBullet(Bullet bullet)
         if(i == 0)
         {
             sf::Vector2f startPos(predictions[i].x,predictions[i].y);
-            effects.createLine(startPos.x,startPos.y,bullet.pos.x,bullet.pos.y,1,sf::Color::Cyan);
+            shapes.createLine(startPos.x,startPos.y,bullet.pos.x,bullet.pos.y,1,sf::Color::Cyan);
         }
         else if(i == predictions.size()-1)
         {
             sf::Vector2f startPos(predictions[i].x,predictions[i].y);
             sf::Vector2f endPos(predictions[i-1].x,predictions[i-1].y);
-            effects.createLine(startPos.x,startPos.y,endPos.x,endPos.y,1,sf::Color::Red);
+            shapes.createLine(startPos.x,startPos.y,endPos.x,endPos.y,1,sf::Color::Red);
         }
         else
         {
             sf::Vector2f startPos(predictions[i].x,predictions[i].y);
             sf::Vector2f endPos(predictions[i-1].x,predictions[i-1].y);
-            effects.createLine(startPos.x,startPos.y,endPos.x,endPos.y,1,sf::Color::Cyan);
+            shapes.createLine(startPos.x,startPos.y,endPos.x,endPos.y,1,sf::Color::Cyan);
         }
     }
 }

@@ -4116,12 +4116,9 @@ void drawStuffs()
 
     drawBeams();
 
-    drawStoredEffects();
-    AnyDeletes(effectsStorage);
-
     shapes.drawShapes();
     AnyDeletes(shapes.shapes);
-    effects.drawEffects();
+    //effects.drawEffects();
     debug("Drew Effects");
 
     if(gvars::transitionLock && gCtrl.phase == "Local")

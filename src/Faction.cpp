@@ -91,7 +91,7 @@ std::set<int> Npc::melee(int /*min*/, int /*max*/, int range,
         xxx = xpos + cosf(degrees * PI / 180) * range;
         yyy = ypos + sinf(degrees * PI / 180) * range;
         degrees += 1;
-        effects.createLine(xpos, ypos, xxx, yyy, 2, sf::Color::Blue);
+        shapes.createLine(xpos, ypos, xxx, yyy, 2, sf::Color::Blue);
         tar = npcTrace(xpos, ypos, xxx, yyy, id, std::set<int>());
     }
     std::list<Item>::iterator inv;
@@ -1994,7 +1994,7 @@ std::set<int> npcTrace(int xa, int ya, int xb, int yb, int id,
         y += yIncrement;
         if (inputState.key[Key::G])
         {
-            effects.createCircle(x, y, 1, sf::Color::Blue);
+            shapes.createCircle(x, y, 1, sf::Color::Blue);
         }
 
         // Merely doing this so I can reuse the same code, but for items, Hehe.
@@ -2578,7 +2578,7 @@ std::string loadCritters(sf::Vector2i worldPos, std::string direction,
 
 void boom(int xpos, int ypos, int damage, int size)
 {
-    effects.createCircle(xpos, ypos, size, sf::Color(255, 0, 0, 150), 0,
+    shapes.createCircle(xpos, ypos, size, sf::Color(255, 0, 0, 150), 0,
                          sf::Color(0, 0, 0));
     std::vector<Npc>::iterator me;
     sf::Lock lock(mutex::npcList);
@@ -2605,7 +2605,7 @@ void squadHud()
             if (i.name != "debug")
             {
 
-                effects.createSquare(
+                shapes.createSquare(
                     gvars::topLeft.x + (20), gvars::topLeft.y + (20 * iterNum),
                     gvars::topLeft.x + 20 + (20),
                     gvars::topLeft.y + 20 + (20 * iterNum), sf::Color::Black);
@@ -2878,7 +2878,7 @@ void selectedNPCprocess()
     for(auto &selected : selectedNPCs)
     {
         sf::Vector2f Pos = selected->getPos2d();
-        effects.createCircle(Pos.x, Pos.y, 5,
+        shapes.createCircle(Pos.x, Pos.y, 5,
                                 sf::Color(0, 255, 255, 100));
 
         createImageButton(Pos,texturemanager.getTexture("SelectionCircle.png"),"",gvars::constantRotation);
@@ -2908,12 +2908,12 @@ void selectedNPCprocess()
 
 void drawInventory(sf::Vector2f vPos, std::list<Item> &inventory)
 {
-    effects.createSquare(vPos.x,vPos.y,vPos.x+(20*inventory.size()),vPos.y-20,sf::Color(0,0,0),2,sf::Color::Cyan);
+    shapes.createSquare(vPos.x,vPos.y,vPos.x+(20*inventory.size()),vPos.y-20,sf::Color(0,0,0),2,sf::Color::Cyan);
         int itemCount = 0;
         for(auto &i : inventory)
         {
             //i.img.setPosition(vPos.x+(20*itemCount)+5,vPos.y);
-            //effects.createCircle(vPos.x+(20*itemCount),vPos.y,20,gvars::cycleGreen);
+            //shapes.createCircle(vPos.x+(20*itemCount),vPos.y,20,gvars::cycleGreen);
             //i.drawImg();
             int butt = createImageButton(sf::Vector2f(vPos.x+(20*itemCount)+10,vPos.y-10),
                               texturemanager.getTexture(i.name + ".png")  //(i.img.getTexture())
@@ -2948,7 +2948,7 @@ void drawSelectedCritterHUD()
 
 
 
-        effects.createSquare(nxpos, nypos, nxpos + 65, nypos + 70,
+        shapes.createSquare(nxpos, nypos, nxpos + 65, nypos + 70,
                                      sf::Color(0, 0, 0, 100));
 
         textList.createText(nxpos, nypos, 11, sf::Color::Red, "Health:",
@@ -2996,7 +2996,7 @@ void drawSelectedCritterHUD()
                     selectedNPCs[0]->targetPos.y, " Angle:", "",
                     selectedNPCs[0]->angle);
 
-        effects.createSquare(nxpos, nypos + 70, nxpos + 130,
+        shapes.createSquare(nxpos, nypos + 70, nxpos + 130,
                                      nypos + 150, sf::Color(0, 0, 0, 200));
         int y = 7;
         int v = 1;
@@ -3041,7 +3041,7 @@ void drawSelectedCritterHUD()
         if (selectedNPCs[0]->inventory.size() != 0 ||
                     selectedNPCs[0]->bloodcontent != "")
         {
-            effects.createSquare(nxpos, nypos, nxpos + 230, nypos + 70,
+            shapes.createSquare(nxpos, nypos, nxpos + 230, nypos + 70,
                                          sf::Color(0, 0, 0, 100));
             int yv = nypos;
             for (auto const &item :
@@ -3514,21 +3514,21 @@ void drawNPCs(std::list<Npc> &container)
                 sf::Vector2f te1 = npc.tentEnd1;
                 sf::Vector2f te2 = npc.tentEnd2;
 
-                effects.createLine(npc.xpos, npc.ypos, ta1.x + npc.xpos,
+                shapes.createLine(npc.xpos, npc.ypos, ta1.x + npc.xpos,
                                    ta1.y + npc.ypos, 2, sf::Color(0, 200, 200),
                                    1, sf::Color(0, 255, 255));
-                effects.createLine(npc.xpos, npc.ypos, ta2.x + npc.xpos,
+                shapes.createLine(npc.xpos, npc.ypos, ta2.x + npc.xpos,
                                    ta2.y + npc.ypos, 2, sf::Color(0, 200, 200),
                                    1, sf::Color(0, 255, 255));
-                effects.createLine(
+                shapes.createLine(
                     ta1.x + npc.xpos, ta1.y + npc.ypos,
                     te1.x + ta1.x + npc.xpos, te1.y + ta1.y + npc.ypos, 2,
                     sf::Color(0, 200, 200), 1, sf::Color(0, 255, 255));
-                effects.createLine(
+                shapes.createLine(
                     ta2.x + npc.xpos, ta2.y + npc.ypos,
                     te2.x + ta2.x + npc.xpos, te2.y + ta2.y + npc.ypos, 2,
                     sf::Color(0, 200, 200), 1, sf::Color(0, 255, 255));
-                effects.drawEffects();
+                //shapes.drawEffects();
             }
 
             int aniAngle = npc.angle;
@@ -3586,7 +3586,7 @@ void drawNPCs(std::list<Npc> &container)
             if(!npc.alive) // To simulate blood.
                 shadow.r = 255;
 
-            effects.createCircle(npc.xpos, npc.ypos, npc.size, shadow);
+            shapes.createCircle(npc.xpos, npc.ypos, npc.size, shadow);
             }
         }
     }
