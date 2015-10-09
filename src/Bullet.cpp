@@ -96,11 +96,13 @@ void Detonate(Bullet &bullet)
     shape.duration = 15;
     shape.startPos = bulletPos;
     shape.size = 120;
-    shape.maincolor = sf::Color::Red;
+    shape.maincolor = sf::Color::White;
     shape.fades = true;
+    shape.texture = &texturemanager.getTexture("Explosion2.png");
     shapes.shapes.push_back(shape);
-    shape.duration = 20;
+    shape.duration = 30;
     shape.size = 60;
+    shape.texture = &texturemanager.getTexture("Explosion1.png");
     shapes.shapes.push_back(shape);
 
 

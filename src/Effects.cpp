@@ -228,6 +228,14 @@ void Shapes::drawShapes()
             circle.setOutlineColor(shape.seccolor);
             circle.setPosition(shape.startPos.x, shape.startPos.y);
             circle.setOrigin(shape.size, shape.size);
+
+            if(shape.fades)
+            {
+                int alpha = 10 * shape.duration;
+                shape.maincolor.a = math::clamp(alpha,0,255);
+                shape.seccolor.a = shape.maincolor.a;
+            }
+
             if(shape.texture != nullptr)
                 circle.setTexture(shape.texture);
 
@@ -251,6 +259,14 @@ void Shapes::drawShapes()
             rectangle.setOutlineColor(shape.seccolor);
             rectangle.setOutlineThickness(shape.outline);
             rectangle.setPosition(shape.startPos.x, shape.startPos.y);
+
+            if(shape.fades)
+            {
+                int alpha = 10 * shape.duration;
+                shape.maincolor.a = math::clamp(alpha,0,255);
+                shape.seccolor.a = shape.maincolor.a;
+            }
+
             if(shape.texture != nullptr)
                 rectangle.setTexture(shape.texture);
 

@@ -6723,7 +6723,7 @@ int main()
             shadermanager.setShockwave(gvars::mousePos);
 
 
-        if(inputState.rmb)
+        if(inputState.rmb && inputState.key[Key::LShift])
         {
 
             sf::View * view;
