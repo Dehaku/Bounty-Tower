@@ -56,6 +56,9 @@ public:
                       sf::View * drawView = &gvars::view1);
 
     std::vector<Shape> shapes;
+    std::vector<sf::ConvexShape> polygons;
+
+    void createCone(sf::Vector2f vPos, int angle, int angleRadius, int depth, sf::Color color);
 
     void drawShapes();
 };

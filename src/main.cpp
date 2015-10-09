@@ -2467,7 +2467,7 @@ void assaultDesire(Npc &npc, std::list<Npc> &container, Npc * closEnmy, bool &ha
                     //Giving a cleave preview of sorts.
                     sf::Color coloryo(sf::Color::Cyan);
                     coloryo.a = 50;
-                    effects.createCone(npc.getPos2d(), npc.angle, 180, 120, coloryo);
+                    shapes.createCone(npc.getPos2d(), npc.angle, 180, 120, coloryo);
 
                     if(inputState.lmbTime == 1)
                     { //TODO: Make it so you drag, applying heldPos to sKI, The held position is where the critter will stand, the released position is where it will strike.
@@ -2620,7 +2620,7 @@ void critterVision(Npc &npc, std::list<Npc> &container)
         shape.setOutlineColor(sf::Color::Yellow);
         shape.setOutlineThickness(1);
         shape.setPosition(npcPos);
-        effects.polygons.push_back(shape);
+        shapes.polygons.push_back(shape);
     }
     debug("debug 5", false);
     }
@@ -6746,9 +6746,6 @@ int main()
             shape.texture = &texturemanager.getTexture("BTGrass.png");
             //shape.outline = 3;
             //shape.seccolor = sf::Color::Red;
-
-
-
 
             shape.drawView = &gvars::view1;
 

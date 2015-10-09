@@ -482,6 +482,66 @@ void Shapes::createCircle(int xpos, int ypos, int size, sf::Color mainColor,
     shapes.push_back(evar);
 }
 
+void Shapes::createCone(sf::Vector2f vPos, int angle, int angleRadius, int depth, sf::Color color)
+{
+
+    const int endAngle = -(angle - (angleRadius / 2));
+    const int startAngle = -(angle - (-angleRadius / 2));
+
+    /*Drawing Vision*/
+    sf::ConvexShape cone;
+    int pointCounter = 1;
+    cone.setPointCount(pointCounter);
+    cone.setPoint(0, sf::Vector2f(0, 0));
+    for (int rot = startAngle; rot != endAngle; rot++)
+    {
+        float xPos = vPos.x + sinf(rot * PI / 180) * depth;
+        float yPos = vPos.y + cosf(rot * PI / 180) * depth;
+
+
+        /* Placing the points to make the visible vision visibility visible */
+        if (rot == startAngle)
+        {
+            pointCounter++;
+            cone.setPointCount(pointCounter);
+            cone.setPoint(pointCounter - 1,
+                           sf::Vector2f(xPos - vPos.x, yPos - vPos.y));
+        }
+
+        int CenterPoint = (startAngle + endAngle) / 2;
+        if (rot == CenterPoint)
+        {
+            pointCounter++;
+            cone.setPointCount(pointCounter);
+            cone.setPoint(pointCounter - 1,
+                           sf::Vector2f(xPos - vPos.x, yPos - vPos.y));
+
+        }
+        if ((rot % 10) == 0 && rot != 0)
+        {
+            pointCounter++;
+            cone.setPointCount(pointCounter);
+            cone.setPoint(pointCounter - 1,
+                           sf::Vector2f(xPos - vPos.x, yPos - vPos.y));
+        }
+        if (rot == endAngle - 1)
+        {
+            pointCounter++;
+            cone.setPointCount(pointCounter);
+            cone.setPoint(pointCounter - 1,
+                           sf::Vector2f(xPos - vPos.x, yPos - vPos.y));
+        }
+    }
+
+    //sf::Color filling(color);
+    //filling.a = (50);
+    cone.setFillColor(color);
+    cone.setOutlineColor(color);
+    cone.setOutlineThickness(1);
+    cone.setPosition(vPos);
+    polygons.push_back(cone);
+
+}
 
 Shapes shapes;
 
@@ -550,6 +610,11 @@ void Shapes::drawShapes()
         if(shape.duration <= 0)
             shape.toDelete = true;
     }
+    for (auto &elem : polygons)
+    {
+        window.draw(elem);
+    }
+    polygons.clear();
 }
 
 std::vector<Orb> Orbs;

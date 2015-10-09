@@ -227,7 +227,7 @@ void debugTileMode()
 {
     int menuEdgeL = gvars::centerScreen.x+300;
     int menuEdgeU = gvars::topLeft.y;
-    effects.createSquare(menuEdgeL,gvars::topLeft.y,gvars::topRight.x,gvars::bottomLeft.y,sf::Color::Black);
+    shapes.createSquare(menuEdgeL,gvars::topLeft.y,gvars::topRight.x,gvars::bottomLeft.y,sf::Color::Black);
     int mouseX = gvars::mousePos.x/GRID_SIZE;
     int mouseY = gvars::mousePos.y/GRID_SIZE;
 
@@ -252,7 +252,7 @@ void debugTileMode()
     {
         if(tiles[x][y][gvars::currentz].walkable)
         {
-            effects.createSquare(x*GRID_SIZE,y*GRID_SIZE,(x+1)*GRID_SIZE,(y+1)*GRID_SIZE,sf::Color(0,255,255,100));
+            shapes.createSquare(x*GRID_SIZE,y*GRID_SIZE,(x+1)*GRID_SIZE,(y+1)*GRID_SIZE,sf::Color(0,255,255,100));
         }
     }
 
@@ -464,23 +464,23 @@ void towerMenu()
         textList.createText(towerPos[0].x+50,towerPos[0].y-25,15,sf::Color::Red,textOut);
     }
 
-    effects.createCircle((-xMinus)+xPart,(-yMinus)+yPart,50,gvars::cycleBlue);
-    effects.createCircle((-xMinus)+xPart*2,(-yMinus)+yPart,50,gvars::cycleBlue);
-    effects.createCircle((-xMinus)+xPart*3,(-yMinus)+yPart,50,gvars::cycleBlue);
-    effects.createCircle((-xMinus)+xPart*4,(-yMinus)+yPart,50,gvars::cycleBlue);
-    effects.createCircle((-xMinus)+xPart*5,(-yMinus)+yPart,50,gvars::cycleRed);
+    shapes.createCircle((-xMinus)+xPart,(-yMinus)+yPart,50,gvars::cycleBlue);
+    shapes.createCircle((-xMinus)+xPart*2,(-yMinus)+yPart,50,gvars::cycleBlue);
+    shapes.createCircle((-xMinus)+xPart*3,(-yMinus)+yPart,50,gvars::cycleBlue);
+    shapes.createCircle((-xMinus)+xPart*4,(-yMinus)+yPart,50,gvars::cycleBlue);
+    shapes.createCircle((-xMinus)+xPart*5,(-yMinus)+yPart,50,gvars::cycleRed);
 
-    effects.createCircle((-xMinus)+xPart,(-yMinus)+yPart*2,50,gvars::cycleBlue);
-    effects.createCircle((-xMinus)+xPart*2,(-yMinus)+yPart*2,50,gvars::cycleBlue);
-    effects.createCircle((-xMinus)+xPart*3,(-yMinus)+yPart*2,50,gvars::cycleBlue);
-    effects.createCircle((-xMinus)+xPart*4,(-yMinus)+yPart*2,50,gvars::cycleBlue);
-    effects.createCircle((-xMinus)+xPart*5,(-yMinus)+yPart*2,50,gvars::cycleRed);
+    shapes.createCircle((-xMinus)+xPart,(-yMinus)+yPart*2,50,gvars::cycleBlue);
+    shapes.createCircle((-xMinus)+xPart*2,(-yMinus)+yPart*2,50,gvars::cycleBlue);
+    shapes.createCircle((-xMinus)+xPart*3,(-yMinus)+yPart*2,50,gvars::cycleBlue);
+    shapes.createCircle((-xMinus)+xPart*4,(-yMinus)+yPart*2,50,gvars::cycleBlue);
+    shapes.createCircle((-xMinus)+xPart*5,(-yMinus)+yPart*2,50,gvars::cycleRed);
 
-    effects.createCircle((-xMinus)+xPart,(-yMinus)+yPart*3,50,gvars::cycleBlue);
-    effects.createCircle((-xMinus)+xPart*2,(-yMinus)+yPart*3,50,gvars::cycleBlue);
-    effects.createCircle((-xMinus)+xPart*3,(-yMinus)+yPart*3,50,gvars::cycleBlue);
-    effects.createCircle((-xMinus)+xPart*4,(-yMinus)+yPart*3,50,gvars::cycleBlue);
-    effects.createCircle((-xMinus)+xPart*5,(-yMinus)+yPart*3,50,gvars::cycleRed);
+    shapes.createCircle((-xMinus)+xPart,(-yMinus)+yPart*3,50,gvars::cycleBlue);
+    shapes.createCircle((-xMinus)+xPart*2,(-yMinus)+yPart*3,50,gvars::cycleBlue);
+    shapes.createCircle((-xMinus)+xPart*3,(-yMinus)+yPart*3,50,gvars::cycleBlue);
+    shapes.createCircle((-xMinus)+xPart*4,(-yMinus)+yPart*3,50,gvars::cycleBlue);
+    shapes.createCircle((-xMinus)+xPart*5,(-yMinus)+yPart*3,50,gvars::cycleRed);
 
 
 }
@@ -560,7 +560,7 @@ void renderSquaddieMenu(baseMenu &menu)
 
 
 
-    effects.createSquare(100,100,RESOLUTION.x-100,RESOLUTION.y-100,sf::Color(sf::Color(150,150,0)),5,sf::Color::White,window.getDefaultView());
+    shapes.createSquare(100,100,RESOLUTION.x-100,RESOLUTION.y-100,sf::Color(sf::Color(150,150,0)),5,sf::Color::White,&gvars::hudView);
     //Close Button
     int exitButt = createImageButton(sf::Vector2f(RESOLUTION.x-100,100),texturemanager.getTexture("ExitButton.png"),"",0,window.getDefaultView());
     if(imageButtonClicked(exitButt))
@@ -592,7 +592,7 @@ void renderSquaddieMenu(baseMenu &menu)
     //Inventory!
     sf::Vector2f invPos(RESOLUTION.x/2,130);
     textList.createText(sf::Vector2f(636,102),15,sf::Color::White,"Inventory",window.getView());
-    effects.createSquare(invPos.x-40,invPos.y-10,invPos.x+100,invPos.y+(RESOLUTION.y/2)+120,sf::Color::Transparent,2,sf::Color::Black,window.getDefaultView());
+    shapes.createSquare(invPos.x-40,invPos.y-10,invPos.x+100,invPos.y+(RESOLUTION.y/2)+120,sf::Color::Transparent,2,sf::Color::Black,&gvars::hudView);
 
     int x = 0, y = 0;
     bool offSet = false;
@@ -601,7 +601,7 @@ void renderSquaddieMenu(baseMenu &menu)
         sf::Vector2f drawPos(invPos.x,invPos.y+(60*y)+30);
         if(offSet)
             drawPos.x += 62;
-        effects.createSquare(drawPos.x-30,drawPos.y-30,drawPos.x+30,drawPos.y+30,sf::Color::Black,2,sf::Color::White,window.getDefaultView());
+        shapes.createSquare(drawPos.x-30,drawPos.y-30,drawPos.x+30,drawPos.y+30,sf::Color::Black,2,sf::Color::White,&gvars::hudView);
         createImageButton(drawPos,*item.img.getTexture(),"",0,window.getDefaultView());
         if(offSet)
         {
@@ -886,7 +886,7 @@ void spawnEnemies()
 
 void towerVictory()
 {
-    effects.createSquare(0,0,RESOLUTION.x,RESOLUTION.y,sf::Color(0,0,0,100),0,sf::Color::Transparent,window.getDefaultView());
+    shapes.createSquare(0,0,RESOLUTION.x,RESOLUTION.y,sf::Color(0,0,0,100),0,sf::Color::Transparent,&gvars::hudView);
     sf::Vector2f textPos(RESOLUTION.x/2,50);
     textList.createText(textPos,30,sf::Color::Yellow,"$ Bounty Killed! $ \n $ Time to collect! $",window.getDefaultView());
     textPos.y += 30;
@@ -935,7 +935,7 @@ void deadDrawTest()
         //npc.ypos = ySet + (60*ySlot);
 
         //npc.drawImg();
-        effects.createCircle(xposition,yposition,30,sf::Color::White);
+        shapes.createCircle(xposition,yposition,30,sf::Color::White);
 
         xSlot++;
     }
@@ -1128,7 +1128,7 @@ void bountyTowerLoop()
             float attackAngle = math::angleBetweenVectors(AtkerPos,VictPos);
             sf::Vector2f finalPos = math::angleCalc(VictPos,attackAngle,(amount*ranks));
 
-            effects.createCircle(finalPos.x,finalPos.y,10,sf::Color::Red);
+            shapes.createCircle(finalPos.x,finalPos.y,10,sf::Color::Red);
 
             if(inputState.lmbTime == 3)
             {
