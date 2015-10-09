@@ -321,6 +321,18 @@ void Orb::drawOrb(int totalOrbs = 1)
 
 std::vector<EffectStorer> effectsStorage;
 
+EffectStorer::EffectStorer()
+{
+    size = 0;
+    outline = 0;
+    maincolor = sf::Color::Transparent;
+    seccolor = sf::Color::Transparent;
+    drawView = window.getView();
+
+    duration = 1;
+    toDelete = false;
+}
+
 void drawStoredEffects()
 {
     for(auto &effect : effectsStorage)
@@ -336,7 +348,29 @@ void drawStoredEffects()
             evar.drawView = effect.drawView;
             effects.circles.push_back(evar);
         }
-
+        else if(effect.effect == "Square")
+        {
+            Effects::Square evar;
+            evar.startPos = effect.startPos;
+            evar.endPos = effect.endPos;
+            evar.outline = effect.outline;
+            evar.maincolor = effect.maincolor;
+            evar.seccolor = effect.seccolor;
+            evar.drawView = effect.drawView;
+            effects.squares.push_back(evar);
+        }
+        else if(effect.effect == "Line")
+        {
+            Effects::Line evar;
+            evar.startPos = effect.startPos;
+            evar.endPos = effect.endPos;
+            evar.size = effect.size;
+            evar.outline = effect.outline;
+            evar.maincolor = effect.maincolor;
+            evar.seccolor = effect.seccolor;
+            evar.drawView = effect.drawView;
+            effects.lines.push_back(evar);
+        }
 
         effect.duration--;
         if(effect.duration <= 0)

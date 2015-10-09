@@ -131,6 +131,8 @@ public:
     int duration;
     std::string effect;
     bool toDelete;
+
+    EffectStorer();
 };
 
 void drawStoredEffects();
