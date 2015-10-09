@@ -6733,8 +6733,11 @@ int main()
             shape.endPos = gvars::mousePos + sf::Vector2f(50,50);
 
             shape.size = 30;
+            shape.toDelete = false;
 
-            shape.maincolor = sf::Color::Red;
+            //shape.maincolor = sf::Color::Red;
+            shape.maincolor = sf::Color::White;
+            shape.texture = &texturemanager.getTexture("BTGrass.png");
             //shape.outline = 3;
             //shape.seccolor = sf::Color::Red;
 

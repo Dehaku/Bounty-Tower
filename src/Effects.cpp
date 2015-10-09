@@ -429,9 +429,11 @@ Shape::Shape()
     seccolor = sf::Color::Transparent;
     drawView = window.getView();
 
-    //fades = false;
-    //duration = 1;
-    //toDelete = false;
+    texture = nullptr;
+
+    fades = false;
+    duration = 0;
+    toDelete = false;
 }
 
 Shapes shapes;
@@ -451,6 +453,8 @@ void Shapes::drawShapes()
             rectangle.setOutlineColor(shape.seccolor);
             rectangle.setOutlineThickness(shape.outline);
             rectangle.setPosition(shape.endPos.x, shape.endPos.y);
+            if(shape.texture != nullptr)
+                rectangle.setTexture(shape.texture);
 
             window.draw(rectangle);
         }
@@ -463,6 +467,8 @@ void Shapes::drawShapes()
             circle.setOutlineColor(shape.seccolor);
             circle.setPosition(shape.startPos.x, shape.startPos.y);
             circle.setOrigin(shape.size, shape.size);
+            if(shape.texture != nullptr)
+                circle.setTexture(shape.texture);
 
             window.draw(circle);
         }
@@ -484,6 +490,8 @@ void Shapes::drawShapes()
             rectangle.setOutlineColor(shape.seccolor);
             rectangle.setOutlineThickness(shape.outline);
             rectangle.setPosition(shape.startPos.x, shape.startPos.y);
+            if(shape.texture != nullptr)
+                rectangle.setTexture(shape.texture);
 
             window.draw(rectangle);
         }

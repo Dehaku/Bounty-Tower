@@ -19,6 +19,7 @@ public:
     };
 
     int shape;
+    sf::Texture * texture;
 
     sf::Vector2f startPos;
     sf::Vector2f endPos;
