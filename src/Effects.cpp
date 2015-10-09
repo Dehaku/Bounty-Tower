@@ -329,7 +329,24 @@ EffectStorer::EffectStorer()
     seccolor = sf::Color::Transparent;
     drawView = window.getView();
 
+    fades = false;
     duration = 1;
+    toDelete = false;
+}
+
+EffectStorer::EffectStorer(std::string Effect, int Duration, sf::Vector2f StartPos)
+{
+    effect = Effect;
+    duration = Duration;
+    startPos = StartPos;
+
+    size = 0;
+    outline = 0;
+    maincolor = sf::Color::Transparent;
+    seccolor = sf::Color::Transparent;
+    drawView = window.getView();
+
+    fades = false;
     toDelete = false;
 }
 
@@ -346,6 +363,13 @@ void drawStoredEffects()
             evar.maincolor = effect.maincolor;
             evar.seccolor = effect.seccolor;
             evar.drawView = effect.drawView;
+
+            if(effect.fades)
+            {
+                int alpha = 255/effect.duration;
+                evar.maincolor.a = 255-alpha;
+            }
+
             effects.circles.push_back(evar);
         }
         else if(effect.effect == "Square")

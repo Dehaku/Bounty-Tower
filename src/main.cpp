@@ -6721,22 +6721,6 @@ int main()
         if(inputState.lmbTime == 1 && inputState.key[Key::LShift])
             shadermanager.setShockwave(gvars::mousePos);
 
-        if(inputState.rmb)
-        {
-            EffectStorer EffStor;
-            EffStor.duration = 30;
-            EffStor.startPos = gvars::mousePos;
-            EffStor.endPos = gvars::mousePos + sf::Vector2f(50,50);
-            EffStor.size = 30;
-            EffStor.effect = "Line";
-            EffStor.maincolor = sf::Color::Red;
-            //EffStor.seccolor = sf::Color::Red;
-            //EffStor.outline = 2;
-            //effects.createLine(EffStor.startPos.x,EffStor.startPos.y,EffStor.endPos.x,EffStor.endPos.y,30,sf::Color::Red);
-
-
-            effectsStorage.push_back(EffStor);
-        }
 
         pauseMenu();
         if(inputState.key[Key::Escape])

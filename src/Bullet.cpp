@@ -90,6 +90,12 @@ void Detonate(Bullet &bullet)
 {
     sf::Vector2f bulletPos(bullet.pos.x,bullet.pos.y);
     shadermanager.setShockwave(bulletPos);
+
+    EffectStorer effect("Circle",15,bulletPos);
+    effect.size = 60;
+    effect.maincolor = sf::Color::Red;
+    effectsStorage.push_back(effect);
+
     for(auto &i : bullet.targets.ptrs)
     {
         int distance = math::distance(i->getPos(),bullet.pos);

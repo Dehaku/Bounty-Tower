@@ -124,15 +124,18 @@ public:
     sf::Vector2f endPos;
     int size;
     int outline;
+    bool fades;
     sf::Color maincolor;
     sf::Color seccolor;
     sf::View drawView;
 
     int duration;
+    int durationRemainder;
     std::string effect;
     bool toDelete;
 
     EffectStorer();
+    EffectStorer(std::string Effect, int Duration, sf::Vector2f StartPos);
 };
 
 void drawStoredEffects();
