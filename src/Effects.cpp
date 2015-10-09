@@ -428,7 +428,7 @@ Shape::Shape()
     maincolor = sf::Color::Transparent;
     seccolor = sf::Color::Transparent;
     //drawView = window.getView();
-    drawView = gvars::view1;
+    drawView = &gvars::view1;
 
     texture = nullptr;
 
@@ -439,7 +439,7 @@ Shape::Shape()
 
 void Shapes::createLine(int sxpos, int sypos, int expos, int eypos, int size,
                          sf::Color mainColor, float outline,
-                         sf::Color secondaryColor, sf::View drawView)
+                         sf::Color secondaryColor, sf::View * drawView)
 {
     Shape evar;
     evar.shape = Shape::Line;
@@ -450,13 +450,12 @@ void Shapes::createLine(int sxpos, int sypos, int expos, int eypos, int size,
     evar.maincolor = mainColor;
     evar.seccolor = secondaryColor;
     evar.drawView = drawView;
-    evar.duration = 30;
     shapes.push_back(evar);
 }
 
 void Shapes::createSquare(int sxpos, int sypos, int expos, int eypos,
                            sf::Color mainColor, float outline,
-                           sf::Color secondaryColor, sf::View drawView)
+                           sf::Color secondaryColor, sf::View * drawView)
 {
     Shape evar;
     evar.shape = Shape::Square;
@@ -470,7 +469,7 @@ void Shapes::createSquare(int sxpos, int sypos, int expos, int eypos,
 }
 
 void Shapes::createCircle(int xpos, int ypos, int size, sf::Color mainColor,
-                           float outline, sf::Color secondaryColor, sf::View drawView)
+                           float outline, sf::Color secondaryColor, sf::View * drawView)
 {
     Shape evar;
     evar.shape = Shape::Circle;
@@ -493,7 +492,7 @@ void Shapes::drawShapes()
     for(auto &shape : shapes)
     {
         sf::View oldView = window.getView();
-        window.setView(shape.drawView);
+        window.setView(*shape.drawView);
 
         if(shape.shape == shape.Square)
         {

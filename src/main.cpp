@@ -3648,7 +3648,7 @@ void displayChat(sf::Vector2f position)
         shapes.createSquare(
             position.x - 10, position.y + 10, position.x + 500,
             (position.y - ((11) * 10)), // (position.y - ((chatBox.chatStorage.size() + 1) * 10)),
-            sf::Color(0, 0, 0, 100), 2, sf::Color::Cyan, window.getView());
+            sf::Color(0, 0, 0, 100), 2, sf::Color::Cyan, &gvars::hudView);
 
     /*
     for (size_t i = 0; i != chatBox.chatStorage.size(); i++)
@@ -3754,9 +3754,9 @@ void hoverItemHUD()
             gvars::hovering = true;
 
             if(!isSecondSlot)
-                shapes.createCircle(vPos.x,vPos.y,10,sf::Color(255,255,255,100),0,sf::Color::White,gvars::hudView);
+                shapes.createCircle(vPos.x,vPos.y,10,sf::Color(255,255,255,100),0,sf::Color::White,&gvars::hudView);
             else
-                shapes.createCircle(vPos.x,vPos.y,10,sf::Color(255,0,0,200),0,sf::Color::White,gvars::hudView);
+                shapes.createCircle(vPos.x,vPos.y,10,sf::Color(255,0,0,200),0,sf::Color::White,&gvars::hudView);
 
 
             if(mouseItem != nullptr && mouseItem->size > 1 && i != 19)
@@ -3764,12 +3764,12 @@ void hoverItemHUD()
                 sf::Vector2f vPos1(gvars::slotPos[i+1]);
                 if(selectedNPCs[0]->invSlots[i+1] != nullptr || i == 1 || i == 19)
                 {
-                    shapes.createCircle(vPos1.x,vPos1.y,10,sf::Color(255,0,0,200),0,sf::Color::White,gvars::hudView);
+                    shapes.createCircle(vPos1.x,vPos1.y,10,sf::Color(255,0,0,200),0,sf::Color::White,&gvars::hudView);
                     allowPlace = false;
                 }
                 else
                 {
-                    shapes.createCircle(vPos1.x,vPos1.y,10,sf::Color(255,255,255,100),0,sf::Color::White,gvars::hudView);
+                    shapes.createCircle(vPos1.x,vPos1.y,10,sf::Color(255,255,255,100),0,sf::Color::White,&gvars::hudView);
                     allowPlace = true;
                 }
             }
@@ -6749,10 +6749,8 @@ int main()
 
 
 
-            if(inputState.key[Key::Space])
-                shape.drawView = window.getDefaultView();
-            else
-                shape.drawView = gvars::hudView;
+
+            shape.drawView = &gvars::view1;
 
             shapes.shapes.push_back(shape);
 
