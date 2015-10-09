@@ -366,8 +366,9 @@ void drawStoredEffects()
 
             if(effect.fades)
             {
-                int alpha = 255/effect.duration;
-                evar.maincolor.a = 255-alpha;
+                int alpha = 10 * effect.duration;
+                evar.maincolor.a = math::clamp(alpha,0,255);
+                evar.seccolor.a = evar.maincolor.a;
             }
 
             effects.circles.push_back(evar);
@@ -381,6 +382,14 @@ void drawStoredEffects()
             evar.maincolor = effect.maincolor;
             evar.seccolor = effect.seccolor;
             evar.drawView = effect.drawView;
+
+            if(effect.fades)
+            {
+                int alpha = 10 * effect.duration;
+                evar.maincolor.a = math::clamp(alpha,0,255);
+                evar.seccolor.a = evar.maincolor.a;
+            }
+
             effects.squares.push_back(evar);
         }
         else if(effect.effect == "Line")
@@ -393,6 +402,14 @@ void drawStoredEffects()
             evar.maincolor = effect.maincolor;
             evar.seccolor = effect.seccolor;
             evar.drawView = effect.drawView;
+
+            if(effect.fades)
+            {
+                int alpha = 10 * effect.duration;
+                evar.maincolor.a = math::clamp(alpha,0,255);
+                evar.seccolor.a = evar.maincolor.a;
+            }
+
             effects.lines.push_back(evar);
         }
 

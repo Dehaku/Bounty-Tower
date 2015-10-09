@@ -130,7 +130,6 @@ public:
     sf::View drawView;
 
     int duration;
-    int durationRemainder;
     std::string effect;
     bool toDelete;
 

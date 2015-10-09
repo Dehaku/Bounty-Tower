@@ -92,8 +92,12 @@ void Detonate(Bullet &bullet)
     shadermanager.setShockwave(bulletPos);
 
     EffectStorer effect("Circle",15,bulletPos);
-    effect.size = 60;
+    effect.size = 120;
     effect.maincolor = sf::Color::Red;
+    effect.fades = true;
+    effectsStorage.push_back(effect);
+    effect.duration = 20;
+    effect.size = 60;
     effectsStorage.push_back(effect);
 
     for(auto &i : bullet.targets.ptrs)
