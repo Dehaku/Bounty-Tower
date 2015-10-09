@@ -7,6 +7,44 @@
 #include "globalvars.h"
 
 
+class Shape
+{
+public:
+
+    enum
+    {
+        Circle,
+        Square,
+        Line
+    };
+
+    int shape;
+
+    sf::Vector2f startPos;
+    sf::Vector2f endPos;
+    int size;
+    int outline;
+    sf::Color maincolor;
+    sf::Color seccolor;
+    sf::View drawView;
+
+
+    int duration;
+    bool fades;
+    bool toDelete;
+
+    Shape();
+};
+
+class Shapes
+{
+public:
+    std::vector<Shape> shapes;
+
+    void drawShapes();
+};
+extern Shapes shapes;
+
 class Effects
 {
 public:

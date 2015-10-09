@@ -3573,7 +3573,7 @@ void drawNPCs(std::list<Npc> &container)
                 if(drawMe)
                 {
                     ani.animation.setPosition(npc.xpos,npc.ypos);
-                    window.draw(ani.animation);
+                    window.draw(ani.animation, &shadermanager.shockwaveShader);
                 }
             }
 

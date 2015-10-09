@@ -420,6 +420,80 @@ void drawStoredEffects()
 }
 
 
+Shape::Shape()
+{
+    shape = Circle;
+    size = 0;
+    outline = 0;
+    maincolor = sf::Color::Transparent;
+    seccolor = sf::Color::Transparent;
+    drawView = window.getView();
+
+    //fades = false;
+    //duration = 1;
+    //toDelete = false;
+}
+
+Shapes shapes;
+
+void Shapes::drawShapes()
+{
+    for(auto &shape : shapes)
+    {
+        sf::View oldView = window.getView();
+        window.setView(shape.drawView);
+
+        if(shape.shape == shape.Square)
+        {
+            sf::RectangleShape rectangle;
+            rectangle.setSize( shape.startPos - shape.endPos);
+            rectangle.setFillColor(shape.maincolor);
+            rectangle.setOutlineColor(shape.seccolor);
+            rectangle.setOutlineThickness(shape.outline);
+            rectangle.setPosition(shape.endPos.x, shape.endPos.y);
+
+            window.draw(rectangle);
+        }
+        else if(shape.shape == shape.Circle)
+        {
+            sf::CircleShape circle;
+            circle.setRadius(shape.size);
+            circle.setFillColor(shape.maincolor);
+            circle.setOutlineThickness(shape.outline);
+            circle.setOutlineColor(shape.seccolor);
+            circle.setPosition(shape.startPos.x, shape.startPos.y);
+            circle.setOrigin(shape.size, shape.size);
+
+            window.draw(circle);
+        }
+        else if(shape.shape == shape.Line)
+        {
+            sf::RectangleShape rectangle;
+
+            int length =
+                sqrt(pow((shape.endPos.x - shape.startPos.x), 2) + pow((shape.endPos.y - shape.startPos.y), 2));
+            rectangle.setSize(sf::Vector2f(length, shape.size));
+
+            float angle =
+                57.3065f * atan2(shape.endPos.y - shape.startPos.y, shape.endPos.x - shape.startPos.x);
+            rectangle.setRotation(angle);
+
+            rectangle.setOrigin(0, shape.size / 2);
+
+            rectangle.setFillColor(shape.maincolor);
+            rectangle.setOutlineColor(shape.seccolor);
+            rectangle.setOutlineThickness(shape.outline);
+            rectangle.setPosition(shape.startPos.x, shape.startPos.y);
+
+            window.draw(rectangle);
+        }
+
+        window.setView(oldView);
+        shape.duration--;
+        if(shape.duration <= 0)
+            shape.toDelete = true;
+    }
+}
 
 std::vector<Orb> Orbs;
 

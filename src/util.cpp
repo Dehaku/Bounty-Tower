@@ -67,16 +67,13 @@ int random(int minValue, int maxValue)
 
 bool aabb(int pointx, int pointy, int left, int right, int up, int down)
 {
-    // Point(100,100), Up 80, Down 120, Left, 80, Right 120
-    sf::Vector2f point(pointx, pointy);
-    if (point.x >= left && point.x <= right && point.y >= up && point.y <= down)
+    if (pointx >= left && pointx <= right && pointy >= up && pointy <= down)
         return true;
     return false;
 }
 
 bool aabb(sf::Vector2f point, int left, int right, int up, int down)
 {
-
     if (point.x >= left && point.x <= right && point.y >= up && point.y <= down)
         return true;
     return false;
@@ -84,7 +81,6 @@ bool aabb(sf::Vector2f point, int left, int right, int up, int down)
 
 bool aabb(sf::Vector2i point, int left, int right, int up, int down)
 {
-
     if (point.x >= left && point.x <= right && point.y >= up && point.y <= down)
         return true;
     return false;

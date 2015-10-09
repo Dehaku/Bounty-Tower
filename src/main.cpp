@@ -4119,6 +4119,8 @@ void drawStuffs()
     drawStoredEffects();
     AnyDeletes(effectsStorage);
 
+    shapes.drawShapes();
+    AnyDeletes(shapes.shapes);
     effects.drawEffects();
     debug("Drew Effects");
 
@@ -6721,6 +6723,25 @@ int main()
         if(inputState.lmbTime == 1 && inputState.key[Key::LShift])
             shadermanager.setShockwave(gvars::mousePos);
 
+
+        if(inputState.rmb)
+        {
+            Shape shape;
+            shape.shape = shape.Line;
+            shape.duration = 30;
+            shape.startPos = gvars::mousePos;
+            shape.endPos = gvars::mousePos + sf::Vector2f(50,50);
+
+            shape.size = 30;
+
+            shape.maincolor = sf::Color::Red;
+            //shape.outline = 3;
+            //shape.seccolor = sf::Color::Red;
+
+
+
+            shapes.shapes.push_back(shape);
+        }
 
         pauseMenu();
         if(inputState.key[Key::Escape])
