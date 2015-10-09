@@ -848,24 +848,23 @@ PathingController pathCon;
 
 void drawStoredPath(std::vector<Tile *> storedPath)
 {
-        Vec3 oldPos;
-        bool firstRun = true;
+    Vec3 oldPos;
+    bool firstRun = true;
 
-        for (auto &i : storedPath)
-        {
-            Vec3 pathPos;
-            pathPos = Vec3(i->getPos());
-            sf::Color pathColor(255, 255, 255, 100);
+    for (auto &i : storedPath)
+    {
+        Vec3 pathPos = Vec3(i->getPos());
+        sf::Color pathColor(255, 255, 255, 100);
 
-            if (!firstRun)
-                shapes.createLine((oldPos.x + 1) * GRID_SIZE - (GRID_SIZE/2),
-                                   (oldPos.y + 1) * GRID_SIZE - (GRID_SIZE/2),
-                                   (pathPos.x + 1) * GRID_SIZE - (GRID_SIZE/2),
-                                   (pathPos.y + 1) * GRID_SIZE - (GRID_SIZE/2), 5, pathColor);
+        if (!firstRun)
+            shapes.createLine((oldPos.x + 1) * GRID_SIZE - (GRID_SIZE/2),
+                                (oldPos.y + 1) * GRID_SIZE - (GRID_SIZE/2),
+                                (pathPos.x + 1) * GRID_SIZE - (GRID_SIZE/2),
+                                (pathPos.y + 1) * GRID_SIZE - (GRID_SIZE/2), 5, pathColor);
 
-            oldPos = pathPos;
-            firstRun = false;
-        }
+        oldPos = pathPos;
+        firstRun = false;
+    }
 }
 
 
@@ -3188,30 +3187,6 @@ void critterPathFind(Npc &npc, std::list<Npc> &container)
 
     debug("post hasPath");
 
-    if(inputState.rmb)
-        {
-            Shape shape;
-            shape.shape = shape.Line;
-            shape.duration = 30;
-            shape.startPos = sf::Vector2f(500,500);
-            shape.endPos = gvars::mousePos + sf::Vector2f(500,500);
-
-            shape.size = 30;
-
-
-            //shape.maincolor = sf::Color::Red;
-            shape.maincolor = sf::Color::White;
-            shape.texture = &texturemanager.getTexture("BTGrass.png");
-            //shape.outline = 3;
-            //shape.seccolor = sf::Color::Red;
-
-
-            //shape.drawView = gvars::view1;
-            shapes.shapes.push_back(shape);
-
-            shapes.createLine(gvars::mousePos.x, gvars::mousePos.y, gvars::mousePos.x + 200, gvars::mousePos.y + 200, 5, sf::Color::Green);
-        }
-
     if(!npc.storedPath.empty())
     {//We have a path! Let's do things with it.
 
@@ -3664,7 +3639,7 @@ void drawItems()
 void displayChat(sf::Vector2f position)
 {
     // restore the default view
-    window.setView(window.getDefaultView());
+    window.setView(gvars::hudView);
 
 
     //sf::View * view = &window.getView();
@@ -3694,7 +3669,7 @@ void displayChat(sf::Vector2f position)
     for (size_t i = chatBox.chatStorage.size(); i != chatBox.chatStorage.size()-10; i--)
     {
         sf::Vector2f drawPos(position.x,((position.y - ((chatBox.chatStorage.size()) * 10))-10) + ((i-1) * 10));
-        textList.createText(drawPos, 10, chatBox.chatStorage[i-1].color, chatBox.chatStorage[i-1].line, window.getDefaultView());
+        textList.createText(drawPos, 10, chatBox.chatStorage[i-1].color, chatBox.chatStorage[i-1].line, gvars::hudView);
     }
 
 
@@ -3756,7 +3731,7 @@ void hoverItemHUD()
         if(selectedNPCs.empty() || selectedNPCs[0]->id != mouseItem->user->id)
             mouseItem = nullptr;
 
-    window.setView(window.getDefaultView());
+    window.setView(gvars::hudView);
     sf::Vector2i pixelPosi = sf::Mouse::getPosition(window);
     sf::Vector2f pixelPos(pixelPosi.x,pixelPosi.y);
 
@@ -3779,9 +3754,9 @@ void hoverItemHUD()
             gvars::hovering = true;
 
             if(!isSecondSlot)
-                shapes.createCircle(vPos.x,vPos.y,10,sf::Color(255,255,255,100),0,sf::Color::White,window.getDefaultView());
+                shapes.createCircle(vPos.x,vPos.y,10,sf::Color(255,255,255,100),0,sf::Color::White,gvars::hudView);
             else
-                shapes.createCircle(vPos.x,vPos.y,10,sf::Color(255,0,0,200),0,sf::Color::White,window.getDefaultView());
+                shapes.createCircle(vPos.x,vPos.y,10,sf::Color(255,0,0,200),0,sf::Color::White,gvars::hudView);
 
 
             if(mouseItem != nullptr && mouseItem->size > 1 && i != 19)
@@ -3789,12 +3764,12 @@ void hoverItemHUD()
                 sf::Vector2f vPos1(gvars::slotPos[i+1]);
                 if(selectedNPCs[0]->invSlots[i+1] != nullptr || i == 1 || i == 19)
                 {
-                    shapes.createCircle(vPos1.x,vPos1.y,10,sf::Color(255,0,0,200),0,sf::Color::White,window.getDefaultView());
+                    shapes.createCircle(vPos1.x,vPos1.y,10,sf::Color(255,0,0,200),0,sf::Color::White,gvars::hudView);
                     allowPlace = false;
                 }
                 else
                 {
-                    shapes.createCircle(vPos1.x,vPos1.y,10,sf::Color(255,255,255,100),0,sf::Color::White,window.getDefaultView());
+                    shapes.createCircle(vPos1.x,vPos1.y,10,sf::Color(255,255,255,100),0,sf::Color::White,gvars::hudView);
                     allowPlace = true;
                 }
             }
@@ -3857,7 +3832,7 @@ void drawHudSkills(Npc &npc, sf::Vector2f spritePos)
             sf::Vector2f skillPos(spritePos.x+130+(xOffset*20),spritePos.y);
             //Yes I'm multiplying it by a boolean, so what? It works perfectly here!
             int skillRot = 180+(180*skill.autouse);
-            int skillButt = createImageButton(skillPos,texturemanager.getTexture("ArrowButton.png"),"",skillRot,window.getDefaultView());
+            int skillButt = createImageButton(skillPos,texturemanager.getTexture("ArrowButton.png"),"",skillRot,gvars::hudView);
             if(skill.cooldown > 0)
                 textList.createText(skillPos,15,sf::Color::White,std::to_string(skill.cooldown/60),window.getView());
 
@@ -3892,7 +3867,7 @@ void drawHudSkills(Npc &npc, sf::Vector2f spritePos)
 
 void drawSquadHud()
 {
-    window.setView(window.getDefaultView());
+    window.setView(gvars::hudView);
     int ydrawPos = 0;
 
     for(auto &npc : npclist)
@@ -4008,7 +3983,7 @@ void drawEnemyCounterHud()
     sf::Vector2f vPos(RESOLUTION.x/1.5,50);
     std::string outPut = "Enemies Remaining: " + std::to_string(counter);
     if(counter > 0)
-        textList.createText(vPos,15,sf::Color::White,outPut,window.getDefaultView());
+        textList.createText(vPos,15,sf::Color::White,outPut,gvars::hudView);
 }
 
 
@@ -6656,7 +6631,7 @@ public:
         int gameSeconds = ((startTime.getElapsedTime().asSeconds()));
         gameSeconds = (gameSeconds % 60);
         outPut.append("Game Time: " + std::to_string(gameHours) + "h" + std::to_string(gameMinutes) + "m" + std::to_string(gameSeconds) + "s" );
-        textList.createText(sf::Vector2f(0,0),15,sf::Color::White,outPut,window.getDefaultView());
+        textList.createText(sf::Vector2f(0,0),15,sf::Color::White,outPut,gvars::hudView);
     }
 
 };
@@ -6670,10 +6645,10 @@ void pauseMenu()
     {
         bool gamePaused = true;
 
-        window.setView(window.getDefaultView());
+        window.setView(gvars::hudView);
 
         sf::Vector2f tSize(RESOLUTION.x/2-100,RESOLUTION.y/2);
-        textList.createText(tSize,20,sf::Color::White,"Game Paused, Press P to resume.",window.getDefaultView());
+        textList.createText(tSize,20,sf::Color::White,"Game Paused, Press P to resume.",gvars::hudView);
         textList.drawTextz();
         window.display();
 
@@ -6700,6 +6675,8 @@ void pauseMenu()
 
 void onStart()
 {
+    gvars::hudView = window.getDefaultView();
+
     int towerDiff = 10;
     int towerFloors = 5;
     int currentFloor = 4;
@@ -6749,7 +6726,38 @@ int main()
             shadermanager.setShockwave(gvars::mousePos);
 
 
+        if(inputState.rmb)
+        {
 
+            sf::View * view;
+            view = &gvars::view1;
+
+            Shape shape;
+            shape.shape = shape.Line;
+            shape.duration = 30;
+            shape.startPos = sf::Vector2f(500,500);
+            shape.endPos = gvars::mousePos + sf::Vector2f(500,500);
+
+            shape.size = 30;
+
+
+            //shape.maincolor = sf::Color::Red;
+            shape.maincolor = sf::Color::White;
+            shape.texture = &texturemanager.getTexture("BTGrass.png");
+            //shape.outline = 3;
+            //shape.seccolor = sf::Color::Red;
+
+
+
+            if(inputState.key[Key::Space])
+                shape.drawView = window.getDefaultView();
+            else
+                shape.drawView = gvars::hudView;
+
+            shapes.shapes.push_back(shape);
+
+            shapes.createLine(gvars::mousePos.x, gvars::mousePos.y, gvars::mousePos.x + 200, gvars::mousePos.y + 200, 5, sf::Color::Green);
+        }
 
         pauseMenu();
         if(inputState.key[Key::Escape])

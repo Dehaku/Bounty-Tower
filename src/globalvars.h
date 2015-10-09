@@ -25,6 +25,7 @@ extern unsigned int framesPassed;
 extern bool debug;
 extern bool inFocus;
 extern bool drawStuffsDone;
+extern sf::View hudView;
 extern sf::View view1;
 extern float airPressure;
 extern sf::Vector2f mousePos;
