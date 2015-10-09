@@ -319,6 +319,31 @@ void Orb::drawOrb(int totalOrbs = 1)
     }
 
 
+std::vector<EffectStorer> effectsStorage;
+
+void drawStoredEffects()
+{
+    for(auto &effect : effectsStorage)
+    {
+        if(effect.effect == "Circle")
+        {
+            Effects::Circle evar;
+            evar.pos = effect.startPos;
+            evar.size = effect.size;
+            evar.outline = effect.outline;
+            evar.maincolor = effect.maincolor;
+            evar.seccolor = effect.seccolor;
+            evar.drawView = effect.drawView;
+            effects.circles.push_back(evar);
+        }
+
+
+        effect.duration--;
+        if(effect.duration <= 0)
+            effect.toDelete = true;
+    }
+}
+
 
 
 std::vector<Orb> Orbs;

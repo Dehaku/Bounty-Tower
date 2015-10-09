@@ -4116,6 +4116,9 @@ void drawStuffs()
 
     drawBeams();
 
+    drawStoredEffects();
+    AnyDeletes(effectsStorage);
+
     effects.drawEffects();
     debug("Drew Effects");
 
@@ -6715,8 +6718,24 @@ int main()
     {
         shadermanager.shaderLoop();
 
-        if(inputState.lmbTime == 1)
+        if(inputState.lmbTime == 1 && inputState.key[Key::LShift])
             shadermanager.setShockwave(gvars::mousePos);
+
+        if(inputState.rmb)
+        {
+            EffectStorer EffStor;
+            EffStor.duration = 30;
+            EffStor.startPos = gvars::mousePos;
+            EffStor.size = 30;
+            EffStor.effect = "Circle";
+            EffStor.toDelete = false;
+            EffStor.maincolor = sf::Color::Red;
+            EffStor.outline = 0;
+            EffStor.drawView = window.getView();
+
+
+            effectsStorage.push_back(EffStor);
+        }
 
         pauseMenu();
         if(inputState.key[Key::Escape])

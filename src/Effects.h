@@ -72,6 +72,7 @@ public:
     std::vector<Square> squares;
     std::vector<sf::ConvexShape> polygons;
 
+
     void createLine(int sxpos, int sypos, int expos, int eypos, int size,
                     sf::Color mainColor, float outline = 0,
                     sf::Color secondaryColor = sf::Color(0, 0, 0),
@@ -114,6 +115,27 @@ public:
     Orb();
 };
 extern std::vector<Orb> Orbs;
+
+
+class EffectStorer
+{
+public:
+    sf::Vector2f startPos;
+    sf::Vector2f endPos;
+    int size;
+    int outline;
+    sf::Color maincolor;
+    sf::Color seccolor;
+    sf::View drawView;
+
+    int duration;
+    std::string effect;
+    bool toDelete;
+};
+
+void drawStoredEffects();
+
+extern std::vector<EffectStorer> effectsStorage;
 
 void purtyOrbitals();
 
