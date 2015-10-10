@@ -32,6 +32,6 @@ void ShaderManager::setupShaders()
 {
     if (!shockwaveShader.loadFromFile("data/shaders/Shockwave.vert","data/shaders/Shockwave.frag"))
         return;
-    if (!lazorShader.loadFromFile("data/shaders/edge.frag",sf::Shader::Fragment))
+    if (!lazorShader.loadFromFile("data/shaders/glow.frag",sf::Shader::Fragment))
         return;
 }

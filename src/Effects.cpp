@@ -270,6 +270,7 @@ void Shapes::drawShapes()
             if(shape.texture != nullptr)
                 rectangle.setTexture(shape.texture);
 
+            //window.draw(rectangle, &shadermanager.lazorShader);
             window.draw(rectangle);
         }
 

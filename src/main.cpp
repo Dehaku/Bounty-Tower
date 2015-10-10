@@ -3335,7 +3335,7 @@ void critterBrain(Npc &npc, std::list<Npc> &container)
 
     critterLevelUp(npc,container);
 
-    if(inputState.lmb && npc.tags.find("[MagicBeam:1]") != npc.tags.npos)
+    if(inputState.key[Key::LShift] && inputState.lmb && npc.tags.find("[MagicBeam:1]") != npc.tags.npos)
     {
         npc.desiredViewAngle = gvars::mousePos;
 
@@ -3347,6 +3347,7 @@ void critterBrain(Npc &npc, std::list<Npc> &container)
         shape.outline = 3;
         shape.startPos = npc.getPos2d() + sf::Vector2f(randz(-2,2),randz(-2,2));
         shape.endPos = gvars::mousePos + sf::Vector2f(randz(-2,2),randz(-2,2));
+        shape.texture = &texturemanager.getTexture("BTGrass.png");
 
         shapes.shapes.push_back(shape);
 
@@ -3358,18 +3359,20 @@ void critterBrain(Npc &npc, std::list<Npc> &container)
         shape.outline = 6;
         shapes.shapes.push_back(shape);
 
-        /*
+
         //shadermanager.lazorShader.setParameter("edge_threshold", 0.7);
         //shadermanager.lazorShader.setParameter("texture", texturemanager.getTexture("Main.png"));
-        shadermanager.lazorShader.setParameter("blur_radius", 0.01);
+        //shadermanager.lazorShader.setParameter("blur_radius", 0.01);
         //shadermanager.lazorShader.setParameter("pixelHeight", 0.5);
-        //shadermanager.lazorShader.setParameter("referenceTex", texturemanager.getTexture("BTGrass.png"));
+        //shadermanager.lazorShader.setParameter("tex0", texturemanager.getTexture("BTGrass.png"));
+
 
         sf::Sprite spriteThing;
         spriteThing.setTexture(texturemanager.getTexture("BTGrass.png"));
         spriteThing.setPosition(gvars::mousePos);
         window.draw(spriteThing, &shadermanager.lazorShader);
-        */
+
+
 
     }
 
