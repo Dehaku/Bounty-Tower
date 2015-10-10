@@ -6,7 +6,7 @@ ShaderManager shadermanager;
 void ShaderManager::shaderLoop()
 {
     shockTime += 0.05;
-    //shockPower -= 0.5;
+    shockPower -= 0.5;
     if(shockPower < 0)
         shockPower = 0;
     if(shockThickness < shockTime)
@@ -37,6 +37,8 @@ void ShaderManager::setShockwave(sf::Vector2f vPos)
     shockwaveShader.setParameter("in_ShockParams", 20.0f, 0.8f, 0.15f);
     shockPower = 20;
     shockThickness = 0.15;
+    shockPowerDropRate = 0.5;
+    shockThicknessDropRate = 0.005;
 }
 
 void ShaderManager::setupShaders()

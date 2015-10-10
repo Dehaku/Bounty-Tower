@@ -12,7 +12,9 @@ public:
 
     float shockTime;
     float shockPower;
+    float shockPowerDropRate;
     float shockThickness;
+    float shockThicknessDropRate;
 
     void shaderLoop();
 
