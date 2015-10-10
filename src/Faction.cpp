@@ -900,6 +900,11 @@ void Npc::momMove()
         xpos = oldPos.x;
         ypos = oldPos.y;
     }
+    if(!tiles[abs_to_index(xpos/GRID_SIZE)][abs_to_index(ypos/GRID_SIZE)][abs_to_index(zpos/GRID_SIZE)].walkable)
+    {
+        xpos = oldPos.x;
+        ypos = oldPos.y;
+    }
 
     //I have no idea how I figured this out, but it worked first try and seems perfect, Woohoo! I'm free!
 

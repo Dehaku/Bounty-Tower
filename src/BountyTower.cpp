@@ -87,6 +87,8 @@ void equipStarters()
             member.inventory.push_back(item);
             member.inventory.push_back(item);
 
+            member.tags.append("[MagicBeam:1]");
+
             Squaddies.push_back(&member);
         }
         if(currentCritter == 2)

@@ -3337,18 +3337,36 @@ void critterBrain(Npc &npc, std::list<Npc> &container)
 
     if(inputState.key[Key::LShift] && inputState.lmb && npc.tags.find("[MagicBeam:1]") != npc.tags.npos)
     {
+        int beamAngle = math::angleBetweenVectors(npc.getPos2d(),gvars::mousePos);
+        sf::Vector2f endBeam = math::angleCalc(gvars::mousePos,beamAngle,100);
+
         npc.desiredViewAngle = gvars::mousePos;
 
         Shape shape;
         shape.shape = shape.Line;
         shape.maincolor = sf::Color::White;
         shape.seccolor = gvars::cycleRed;
+        shape.startPos = npc.getPos2d() + sf::Vector2f(randz(-2,2),randz(-2,2));
+        shape.endPos = endBeam + sf::Vector2f(randz(-2,2),randz(-2,2));
+        //shape.texture = &texturemanager.getTexture("BTGrass.png");
+
+        int oldAlpha = shape.seccolor.a;
+        if( (gvars::framesPassed % 30) == 0)
+        {
+            shape.seccolor.a = 50;
+            shape.duration = 15;
+            shape.outline = 10;
+            shapes.shapes.push_back(shape);
+
+            shape.outline = 7;
+            shape.seccolor.a = 150;
+            shapes.shapes.push_back(shape);
+        }
+
+        shape.duration = 0;
         shape.size = 2;
         shape.outline = 3;
-        shape.startPos = npc.getPos2d() + sf::Vector2f(randz(-2,2),randz(-2,2));
-        shape.endPos = gvars::mousePos + sf::Vector2f(randz(-2,2),randz(-2,2));
-        shape.texture = &texturemanager.getTexture("BTGrass.png");
-
+        shape.seccolor.a = oldAlpha;
         shapes.shapes.push_back(shape);
 
         shape.shape = shape.Circle;
@@ -6330,9 +6348,9 @@ void beamTestLoop()
         beams.clear();
         {
             Beam beam;
-        beam.startPos = sf::Vector2f(25,200);
-        //beam.endPos = sf::Vector2f(100,100);
-        beam.endPos = gvars::mousePos;
+            beam.startPos = sf::Vector2f(25,200);
+            //beam.endPos = sf::Vector2f(100,100);
+            beam.endPos = gvars::mousePos;
         //beam.startPos = sf::Vector2f(100,100);
         //beam.endPos = sf::Vector2f(25,25);
         beam.angle = math::angleBetweenVectors(beam.startPos,beam.endPos);
