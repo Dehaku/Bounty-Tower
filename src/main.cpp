@@ -2366,6 +2366,12 @@ void assaultDesire(Npc &npc, std::list<Npc> &container, Npc * closEnmy, bool &ha
     if(meleewep != nullptr && meleewep->isReady() == false)
         meleewep->trigger();
 
+    Item * pda = npc.getItemTypeInHands(23);
+    if(pda != nullptr && pda->isReady() == false)
+        pda->trigger();
+
+
+
     if(rangewep != nullptr)
         checkAmmo(npc,container,rangewep);
 
@@ -2377,12 +2383,39 @@ void assaultDesire(Npc &npc, std::list<Npc> &container, Npc * closEnmy, bool &ha
             shapes.createCircle(npc.xpos,npc.ypos,rangewep->getRange(),sf::Color(255,0,0,50),2,sf::Color::Red);
         if(meleewep != nullptr)
             shapes.createCircle(npc.xpos,npc.ypos,meleewep->getRange(),sf::Color(0,0,255,50),2,sf::Color::Blue);
+        if(pda != nullptr)
+            shapes.createCircle(npc.xpos,npc.ypos,pda->getRange(),sf::Color(0,255,0,50),2,sf::Color::Green);
     }
         debug("1");
 
         //We check if the target is within range of the current weapon, and if we can actually directly see them.
         bool withinRange = false;
         bool canSee = false;
+
+        if(pda != nullptr && closEnmy != nullptr)
+        {
+            withinRange = (math::closeish(npc.xpos,npc.ypos,closEnmy->xpos,closEnmy->ypos) <= pda->getRange());
+
+            //Making sure they're in range before doing the raytrace, since it's very slow.
+            if(withinRange && canSee == false)
+                canSee = canSeeNpc(npc,*closEnmy);
+
+            if(withinRange && canSee)
+            {
+                //Making sure the weapon has the right owner for later pointing.
+                pda->user = &npc;
+                // Ticking the timer on the weapon, and firing once the cap is met.
+                if(pda->isReady())
+                {
+                    pda->trigger();
+                    std::string Status = pda->activate(Vec3f(closEnmy->xpos,closEnmy->ypos,closEnmy->zpos));
+                }
+            }
+        }
+
+
+
+
         if(rangewep != nullptr && closEnmy != nullptr)
         {
             Skill * snipeShot = npc.skills.getSkill("Snipe Shot");
@@ -3335,64 +3368,6 @@ void critterBrain(Npc &npc, std::list<Npc> &container)
 
     critterLevelUp(npc,container);
 
-    if(inputState.key[Key::LShift] && inputState.lmb && npc.tags.find("[MagicBeam:1]") != npc.tags.npos)
-    {
-        int beamAngle = math::angleBetweenVectors(npc.getPos2d(),gvars::mousePos);
-        sf::Vector2f endBeam = math::angleCalc(gvars::mousePos,beamAngle,100);
-
-        npc.desiredViewAngle = gvars::mousePos;
-
-        Shape shape;
-        shape.shape = shape.Line;
-        shape.maincolor = sf::Color::White;
-        shape.seccolor = gvars::cycleRed;
-        shape.startPos = npc.getPos2d() + sf::Vector2f(randz(-2,2),randz(-2,2));
-        shape.endPos = endBeam + sf::Vector2f(randz(-2,2),randz(-2,2));
-        //shape.texture = &texturemanager.getTexture("BTGrass.png");
-
-        int oldAlpha = shape.seccolor.a;
-        if( (gvars::framesPassed % 30) == 0)
-        {
-            shape.seccolor.a = 50;
-            shape.duration = 15;
-            shape.outline = 10;
-            shapes.shapes.push_back(shape);
-
-            shape.outline = 7;
-            shape.seccolor.a = 150;
-            shapes.shapes.push_back(shape);
-        }
-
-        shape.duration = 0;
-        shape.size = 2;
-        shape.outline = 3;
-        shape.seccolor.a = oldAlpha;
-        shapes.shapes.push_back(shape);
-
-        shape.shape = shape.Circle;
-        shapes.shapes.push_back(shape);
-
-        shape.startPos = shape.endPos;
-        shape.size = 10;
-        shape.outline = 6;
-        shapes.shapes.push_back(shape);
-
-
-        //shadermanager.lazorShader.setParameter("edge_threshold", 0.7);
-        //shadermanager.lazorShader.setParameter("texture", texturemanager.getTexture("Main.png"));
-        //shadermanager.lazorShader.setParameter("blur_radius", 0.01);
-        //shadermanager.lazorShader.setParameter("pixelHeight", 0.5);
-        //shadermanager.lazorShader.setParameter("tex0", texturemanager.getTexture("BTGrass.png"));
-
-
-        sf::Sprite spriteThing;
-        spriteThing.setTexture(texturemanager.getTexture("BTGrass.png"));
-        spriteThing.setPosition(gvars::mousePos);
-        window.draw(spriteThing, &shadermanager.lazorShader);
-
-
-
-    }
 
     if((gvars::framesPassed % 60) == 0)
     {

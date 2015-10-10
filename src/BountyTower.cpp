@@ -61,16 +61,16 @@ void equipStarters()
 
         if(currentCritter == 0)
         {
-            Item item = *getGlobalItem("Baton");
+            Item item = *getGlobalItem("PDA");
             member.inventory.push_back(item);
             item = *getGlobalItem("Shotgun");
-            member.inventory.push_back(item);
+            //member.inventory.push_back(item);
 
             item = *getGlobalItem("Shotgun - Spread");
             item.amount = 30;
-            member.inventory.push_back(item);
+            //member.inventory.push_back(item);
 
-            member.tags.append("[MagicBeam:1]");
+            //member.tags.append("[MagicBeam:1]");
 
             Squaddies.push_back(&member);
         }
@@ -87,7 +87,7 @@ void equipStarters()
             member.inventory.push_back(item);
             member.inventory.push_back(item);
 
-            member.tags.append("[MagicBeam:1]");
+            //member.tags.append("[MagicBeam:1]");
 
             Squaddies.push_back(&member);
         }

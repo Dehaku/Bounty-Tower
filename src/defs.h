@@ -32,6 +32,11 @@ struct Vec3
         z = Third;
     }
 
+    sf::Vector2f twoD()
+    {
+        return sf::Vector2f(x,y);
+    }
+
     operator == (Vec3 a)
     {
       if(a.x == x && a.y == y && a.z == z)
@@ -66,6 +71,11 @@ struct Vec3f
         x = altVec.x;
         y = altVec.y;
         z = altVec.z;
+    }
+
+    sf::Vector2f twoD()
+    {
+        return sf::Vector2f(x,y);
     }
 
     operator == (Vec3f a)

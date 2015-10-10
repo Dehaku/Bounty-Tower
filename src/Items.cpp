@@ -892,10 +892,12 @@ itemPtrVector randomEquipment(std::list<Item> &inventory)
 
 std::string Item::activate(Vec3f vPos) // Returns a string declaring the problem.
 {
-    if(type == 1)
-    {
-        if(user == nullptr)
+    if(user == nullptr)
             return "No Owner";
+
+    if(type == 1)
+    { // Melee weapons
+
 
         Vec3f muzzlePos(user->xpos,user->ypos,user->zpos);
         sf::Vector2f muzzlePosV2f(muzzlePos.x,muzzlePos.y);
@@ -969,9 +971,7 @@ std::string Item::activate(Vec3f vPos) // Returns a string declaring the problem
     }
 
     if(type == 2)
-    {
-        if(user == nullptr)
-            return "No Owner";
+    { // Ranged weapons
 
         Item * itemptr = getItemType(internalitems,3);
         if(itemptr == nullptr || itemptr->amount <= 0)
@@ -1082,6 +1082,62 @@ std::string Item::activate(Vec3f vPos) // Returns a string declaring the problem
             soundmanager.playSound("m16_lensflare_4.ogg");
         return "Success";
     }
+
+    if(type == 23)
+    { // PDA Spells
+        activaterate = activateratemax;
+
+        user->desiredViewAngle = gvars::mousePos;
+
+        Shape shape;
+        shape.shape = shape.Line;
+        shape.maincolor = sf::Color::White;
+        shape.seccolor = gvars::cycleRed;
+        shape.startPos = user->getPos2d() + sf::Vector2f(randz(-2,2),randz(-2,2));
+        shape.endPos = vPos.twoD() + sf::Vector2f(randz(-2,2),randz(-2,2));
+
+        int oldAlpha = shape.seccolor.a;
+        if( (gvars::framesPassed % 30) == 0)
+        {
+            shape.seccolor.a = 50;
+            shape.duration = 15;
+            shape.outline = 10;
+            shapes.shapes.push_back(shape);
+
+            shape.outline = 7;
+            shape.seccolor.a = 150;
+            shapes.shapes.push_back(shape);
+        }
+
+        shape.duration = 0;
+        shape.size = 2;
+        shape.outline = 3;
+        shape.seccolor.a = oldAlpha;
+        shapes.shapes.push_back(shape);
+
+        shape.shape = shape.Circle;
+        shapes.shapes.push_back(shape);
+
+        shape.startPos = shape.endPos;
+        shape.size = 10;
+        shape.outline = 6;
+        shapes.shapes.push_back(shape);
+
+        npcPtrVector nPV = user->getEnemies();
+        for(auto &npc : nPV.ptrs)
+        {
+            int dist = math::distance(npc->getPos(),vPos);
+            if(dist <= 20)
+                user->dealDamage(npc,this,69);
+        }
+
+        /*
+        Item * itemptr = getItemType(internalitems,3);
+        if(itemptr == nullptr || itemptr->amount <= 0)
+            return "No Ammo";
+        */
+    }
+
     return "Failed";
 }
 
