@@ -5,6 +5,7 @@
 #include "math.h"
 #include "InputState.h"
 #include "globalvars.h"
+#include "Shaders.h"
 
 
 class Shape

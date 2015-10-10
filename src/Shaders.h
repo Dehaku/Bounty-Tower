@@ -8,12 +8,13 @@ class ShaderManager
 {
 public:
     sf::Shader shockwaveShader;
+    sf::Shader lazorShader;
 
     float shockTime;
 
     void shaderLoop();
 
-    void setupShockwaveShader();
+    void setupShaders();
 
     shadermanager();
 

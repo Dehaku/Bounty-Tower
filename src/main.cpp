@@ -95,6 +95,69 @@ template <typename T> void AnyDeletes(std::list<T> &list)
 
 
 
+class fpsTracker
+{
+public:
+    int framesPassed;
+    float framesPerSecond;
+    int highestFrameTimePerSecond;
+
+    sf::Clock startTime;
+    sf::Clock fpsTimerLive;
+    sf::Clock fpsTimer;
+    sf::Clock frameClock;
+
+    sf::Time framesPassedTime;
+    sf::Time frameTime;
+
+    fpsTracker()
+    {
+        startTime.restart();
+        framesPassed = 0;
+        framesPerSecond = 0;
+        framesPassedTime = fpsTimer.restart();
+    }
+
+    void calcFPS()
+    {
+        int timeBetweenFrames = frameTime.asMicroseconds();
+        frameTime = frameClock.restart();
+        if(highestFrameTimePerSecond < timeBetweenFrames)
+            highestFrameTimePerSecond = timeBetweenFrames;
+
+        framesPassed++;
+
+        float estimatedFPS = -1;
+        if(fpsTimerLive.getElapsedTime().asMilliseconds() != 0)
+            estimatedFPS = 1000/fpsTimerLive.getElapsedTime().asMilliseconds();
+        fpsTimerLive.restart();
+
+        if(fpsTimer.getElapsedTime().asMilliseconds() >= 1000)
+        {
+            highestFrameTimePerSecond = 0;
+            framesPerSecond = framesPassed;
+            framesPassed = 0;
+            framesPassedTime = fpsTimer.restart();
+        }
+
+        //std::cout << "FPS(Live/Second/TenSecond): " << estimatedFPS << "/" << framesPerSecond << std::endl;
+        int floatConv1 = estimatedFPS, floatConv2 = framesPerSecond;
+        std::string outPut = "FPS(" + std::to_string(floatConv1) + "/" + std::to_string(floatConv2) + "), ("
+            + std::to_string(timeBetweenFrames) + "/" + std::to_string(highestFrameTimePerSecond) + ") \n";
+        int gameHours = startTime.getElapsedTime().asSeconds()/60/60;
+        int gameMinutes = startTime.getElapsedTime().asSeconds()/60;
+        gameMinutes = (gameMinutes % 60);
+        int gameSeconds = ((startTime.getElapsedTime().asSeconds()));
+        gameSeconds = (gameSeconds % 60);
+        outPut.append("Game Time: " + std::to_string(gameHours) + "h" + std::to_string(gameMinutes) + "m" + std::to_string(gameSeconds) + "s" );
+        textList.createText(sf::Vector2f(0,0),15,sf::Color::White,outPut,gvars::hudView);
+    }
+
+};
+fpsTracker fpsKeeper;
+
+
+
 struct skillKeepInfo
 {
     Npc * user;
@@ -3272,7 +3335,43 @@ void critterBrain(Npc &npc, std::list<Npc> &container)
 
     critterLevelUp(npc,container);
 
+    if(inputState.lmb && npc.tags.find("[MagicBeam:1]") != npc.tags.npos)
+    {
+        npc.desiredViewAngle = gvars::mousePos;
 
+        Shape shape;
+        shape.shape = shape.Line;
+        shape.maincolor = sf::Color::White;
+        shape.seccolor = gvars::cycleRed;
+        shape.size = 2;
+        shape.outline = 3;
+        shape.startPos = npc.getPos2d() + sf::Vector2f(randz(-2,2),randz(-2,2));
+        shape.endPos = gvars::mousePos + sf::Vector2f(randz(-2,2),randz(-2,2));
+
+        shapes.shapes.push_back(shape);
+
+        shape.shape = shape.Circle;
+        shapes.shapes.push_back(shape);
+
+        shape.startPos = shape.endPos;
+        shape.size = 10;
+        shape.outline = 6;
+        shapes.shapes.push_back(shape);
+
+        /*
+        //shadermanager.lazorShader.setParameter("edge_threshold", 0.7);
+        //shadermanager.lazorShader.setParameter("texture", texturemanager.getTexture("Main.png"));
+        shadermanager.lazorShader.setParameter("blur_radius", 0.01);
+        //shadermanager.lazorShader.setParameter("pixelHeight", 0.5);
+        //shadermanager.lazorShader.setParameter("referenceTex", texturemanager.getTexture("BTGrass.png"));
+
+        sf::Sprite spriteThing;
+        spriteThing.setTexture(texturemanager.getTexture("BTGrass.png"));
+        spriteThing.setPosition(gvars::mousePos);
+        window.draw(spriteThing, &shadermanager.lazorShader);
+        */
+
+    }
 
     if((gvars::framesPassed % 60) == 0)
     {
@@ -6573,67 +6672,6 @@ void detectLineGrid( float x1, float y1, float x2, float y2)
     }
 }
 
-class fpsTracker
-{
-public:
-    int framesPassed;
-    float framesPerSecond;
-    int highestFrameTimePerSecond;
-
-    sf::Clock startTime;
-    sf::Clock fpsTimerLive;
-    sf::Clock fpsTimer;
-    sf::Clock frameClock;
-
-    sf::Time framesPassedTime;
-    sf::Time frameTime;
-
-    fpsTracker()
-    {
-        startTime.restart();
-        framesPassed = 0;
-        framesPerSecond = 0;
-        framesPassedTime = fpsTimer.restart();
-    }
-
-    void calcFPS()
-    {
-        int timeBetweenFrames = frameTime.asMicroseconds();
-        frameTime = frameClock.restart();
-        if(highestFrameTimePerSecond < timeBetweenFrames)
-            highestFrameTimePerSecond = timeBetweenFrames;
-
-        framesPassed++;
-
-        float estimatedFPS = -1;
-        if(fpsTimerLive.getElapsedTime().asMilliseconds() != 0)
-            estimatedFPS = 1000/fpsTimerLive.getElapsedTime().asMilliseconds();
-        fpsTimerLive.restart();
-
-        if(fpsTimer.getElapsedTime().asMilliseconds() >= 1000)
-        {
-            highestFrameTimePerSecond = 0;
-            framesPerSecond = framesPassed;
-            framesPassed = 0;
-            framesPassedTime = fpsTimer.restart();
-        }
-
-        //std::cout << "FPS(Live/Second/TenSecond): " << estimatedFPS << "/" << framesPerSecond << std::endl;
-        int floatConv1 = estimatedFPS, floatConv2 = framesPerSecond;
-        std::string outPut = "FPS(" + std::to_string(floatConv1) + "/" + std::to_string(floatConv2) + "), ("
-            + std::to_string(timeBetweenFrames) + "/" + std::to_string(highestFrameTimePerSecond) + ") \n";
-        int gameHours = startTime.getElapsedTime().asSeconds()/60/60;
-        int gameMinutes = startTime.getElapsedTime().asSeconds()/60;
-        gameMinutes = (gameMinutes % 60);
-        int gameSeconds = ((startTime.getElapsedTime().asSeconds()));
-        gameSeconds = (gameSeconds % 60);
-        outPut.append("Game Time: " + std::to_string(gameHours) + "h" + std::to_string(gameMinutes) + "m" + std::to_string(gameSeconds) + "s" );
-        textList.createText(sf::Vector2f(0,0),15,sf::Color::White,outPut,gvars::hudView);
-    }
-
-};
-fpsTracker fpsKeeper;
-
 void pauseMenu()
 {
 
@@ -6696,7 +6734,7 @@ int main()
 
     texturemanager.init();
     animationmanager.init();
-    shadermanager.setupShockwaveShader();
+    shadermanager.setupShaders();
 
     itemmanager.initializeItems();
     npcmanager.initializeCritters();
