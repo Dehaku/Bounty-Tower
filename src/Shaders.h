@@ -11,6 +11,8 @@ public:
     sf::Shader lazorShader;
 
     float shockTime;
+    float shockPower;
+    float shockThickness;
 
     void shaderLoop();
 
