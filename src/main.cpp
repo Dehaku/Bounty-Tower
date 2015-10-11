@@ -1445,8 +1445,6 @@ std::vector<int> npcTrace(int xa, int ya, int xb, int yb, int id,
     throw std::runtime_error("npcTrace: couldn't return a value");
 }
 
-
-
 int getNpcVectorId(int id)
 {
     sf::Lock lock(mutex::npcList);
@@ -1461,10 +1459,6 @@ int getNpcVectorId(int id)
     }
     return -1;
 }
-
-
-
-
 
 entityvectorpointercontainer entityTrace(Vec3 Ori, Vec3 Tar) /* TODO: Improve this to use Z axis as well, or find new formula that can. THERE ARE NONE, GRAAAAH*/
 { // Looking in a straight line for a specific spot, Walls block vision.
@@ -1523,12 +1517,6 @@ entityvectorpointercontainer entityTrace(Vec3 Ori, Vec3 Tar) /* TODO: Improve th
     }
     return EVPC;
 }
-
-
-
-
-
-
 
 void assaultDesire(Npc &npc, std::list<Npc> &container, Npc * closEnmy, bool &hasPath, Vec3 &endPos)
 {
@@ -1790,312 +1778,6 @@ void assaultDesire(Npc &npc, std::list<Npc> &container, Npc * closEnmy, bool &ha
         debug("4");
 }
 
-
-
-void assignItemsUser(Npc &npc, std::list<Npc> &container)
-{
-    for(auto &item : npc.inventory)
-        item.user = &npc;
-}
-
-
-
-void workDesire(Npc &npc, std::list<Npc> &container, Vec3 &endPos, bool &hasPath, bool &inComplete, Desire * highestDesire )
-{
-    if(npc.jobPtr == nullptr)
-    {
-        for(auto &jobs : npc.factionPtr->jobList)
-        {
-            if(jobs.pWorker != nullptr || jobs.toDelete)
-                continue;
-
-            std::cout << npc.name << ", workin " << jobs.name << "/" << jobs.type << std::endl;
-            jobs.pWorker = &npc;
-            npc.jobPtr = &jobs;
-            break;
-        }
-    }
-    else
-    {
-            debug("I have a job, Now if only my programmer did.");
-            Vec3 wPos(npc.jobPtr->workPos);
-            Vec3 myPos(npc.xpos,npc.ypos,npc.zpos);
-            if(npc.jobPtr != nullptr && npc.jobPtr->type == "Build")
-            {
-                debug("I have build job.");
-                std::string desiredItem = "Wood";
-                debug("Checking for material");
-                Item * material = npc.hasItem(desiredItem);
-
-                debug("Material checked");
-                if(material == nullptr)
-                {
-                    for (auto &item : worlditems)
-                    {
-                        if(item.name == desiredItem)
-                        {
-                            if(npc.targetInfo.item == nullptr && item.user == nullptr)
-                            {
-                                npc.targetInfo.item = &item;
-                                item.user = &npc;
-                            }
-
-                            else if(npc.targetInfo.item != nullptr)
-                            {
-                                sf::Vector2f myItemPos(npc.targetInfo.item->xpos,npc.targetInfo.item->ypos);
-                                if(math::closeish(npc.xpos,npc.ypos,item.xpos,item.ypos) <= math::closeish(npc.xpos,npc.ypos,myItemPos.x,myItemPos.y)
-                                   && item.user == nullptr)
-                                {
-                                    npc.targetInfo.item->user = nullptr;
-                                    npc.targetInfo.item = &item;
-                                    item.user = &npc;
-                                }
-
-                            }
-                        }
-                    }
-                    Item * item = npc.targetInfo.item;
-                    if(item != nullptr)
-                    {
-                        endPos = Vec3(npc.targetInfo.item->xpos/GRID_SIZE, npc.targetInfo.item->ypos/GRID_SIZE, npc.targetInfo.item->zpos/GRID_SIZE);
-                        hasPath = true;
-                        if(math::closeish(npc.xpos,npc.ypos,item->xpos,item->ypos) <= npc.size*2)
-                        {
-                            item->user = nullptr;
-                            npc.inventory.push_back(*item);
-                            item->toDelete = true;
-                            npc.targetInfo.item = nullptr;
-                        }
-                    }
-
-                }
-                debug("Checking if any desiredItem exists");
-                if(material == nullptr && npc.targetInfo.item == nullptr)
-                {
-                    debug("It doesn't");
-                    inComplete = true;
-                    npc.jobPtr->errorReason = "No " + desiredItem + " located. \n";
-                    (*highestDesire).potency = 0;
-                }
-                else
-                    npc.jobPtr->errorReason = "";
-
-                if(material != nullptr)
-                {
-                    endPos = Vec3(npc.jobPtr->workPos.x/GRID_SIZE,npc.jobPtr->workPos.y/GRID_SIZE, npc.jobPtr->workPos.z/GRID_SIZE);
-                    hasPath = true;
-                }
-
-                if(math::distance(myPos,wPos) <= npc.size*3 && myPos.z/GRID_SIZE == wPos.z/GRID_SIZE && material != nullptr)
-                {
-                    debug("Close to workPos and has material.");
-                    endPos = Vec3(myPos.x/GRID_SIZE,myPos.y/GRID_SIZE,myPos.z/GRID_SIZE);
-                    hasPath = false;
-
-                    npc.jobPtr->completionProgress += npc.attributes.intelligence / 2;
-
-                    for (float rot = 1; rot < 361 * (percentIs( npc.jobPtr->completionTimer,npc.jobPtr->completionProgress) / 100); rot++)
-                    {
-
-                        float xPos = wPos.x + sin(rot * PI / 180) * 10;
-                        float yPos = wPos.y + cos(rot * PI / 180) * 10;
-
-                        shapes.createLine( wPos.x, wPos.y, xPos, yPos, 1, sf::Color(150, 150, 150, 150));
-                    }
-
-                    if (npc.jobPtr->completionProgress >= npc.jobPtr->completionTimer)
-                    {
-                        tiles[abs_to_index(wPos.x / GRID_SIZE)][abs_to_index(wPos.y / GRID_SIZE)][abs_to_index(wPos.z / GRID_SIZE)].wall();
-                        material->toDelete = true;
-                        npc.jobPtr->toDelete = true;
-                        npc.jobPtr->pWorker->hasJob = false;/* Oops... this amuses me. */
-                        npc.jobPtr = nullptr;
-
-                        if(network::connectedServer != "")
-                        {
-                            sf::Packet pack;
-                            pack << ident.tilesUpdate;
-                            pack << gvars::currentregionx << gvars::currentregiony;
-                            pack << std::abs(wPos.x / GRID_SIZE) << std::abs(wPos.y / GRID_SIZE) << std::abs(wPos.z / GRID_SIZE);
-                            pack << tiles[abs_to_index(wPos.x / GRID_SIZE)][abs_to_index(wPos.y / GRID_SIZE)][abs_to_index(wPos.z / GRID_SIZE)].id;
-                            cliSocket.send(pack);
-                        }
-
-                    }
-
-                }
-            }
-            else if(npc.jobPtr != nullptr && npc.jobPtr->type == "Chop" && npc.jobPtr->pItem != nullptr)
-            {
-                Item * itemPtr = npc.jobPtr->pItem;
-                endPos = Vec3(abs_to_index(itemPtr->xpos/GRID_SIZE),abs_to_index(itemPtr->ypos/GRID_SIZE),abs_to_index(itemPtr->zpos/GRID_SIZE));
-                hasPath = true;
-
-                if(math::closeish(npc.xpos,npc.ypos,endPos.x*GRID_SIZE,endPos.y*GRID_SIZE) <= npc.size*3)
-                {
-
-                    npc.jobPtr->completionProgress += npc.attributes.intelligence / 2;
-
-                    for (float rot = 1; rot < 361 * (percentIs( npc.jobPtr->completionTimer,npc.jobPtr->completionProgress) / 100); rot++)
-                    {
-
-                        float xPos = itemPtr->xpos + sin(rot * PI / 180) * 10;
-                        float yPos = itemPtr->ypos + cos(rot * PI / 180) * 10;
-
-                        shapes.createLine( itemPtr->xpos, itemPtr->ypos, xPos, yPos, 1, sf::Color(150, 150, 150, 150));
-                    }
-
-                    if (npc.jobPtr->completionProgress >= npc.jobPtr->completionTimer)
-                    {
-
-                        itemPtr->toDelete = true;
-                        for(int Woody = 0; Woody != 5; Woody++)
-                            spawnItem("Wood",itemPtr->xpos+randz(-3,3),itemPtr->ypos+randz(-3,3),itemPtr->zpos);
-                        npc.jobPtr->toDelete = true;
-                        npc.jobPtr = nullptr;
-                    }
-                }
-
-            }
-            else if(npc.jobPtr != nullptr && npc.jobPtr->type == "PickUp" && npc.jobPtr->pItem != nullptr)
-            {
-                Item * itemPtr = npc.jobPtr->pItem;
-                endPos = Vec3(abs_to_index(itemPtr->xpos/GRID_SIZE),abs_to_index(itemPtr->ypos/GRID_SIZE),abs_to_index(itemPtr->zpos/GRID_SIZE));
-                hasPath = true;
-
-                //if(math::closeish(npc.xpos,npc.ypos,endPos.x*20,endPos.y*20) <= npc.size*3)
-                if(math::distance(myPos,wPos) <= npc.size*3 && myPos.z/GRID_SIZE == wPos.z/GRID_SIZE)
-                {
-                    itemPtr->user = nullptr;
-                    npc.inventory.push_back(*itemPtr);
-                    itemPtr->toDelete = true;
-                    npc.jobPtr->toDelete = true;
-                    npc.jobPtr = nullptr;
-                }
-            }
-            else if(npc.jobPtr != nullptr && npc.jobPtr->type == "Dig")
-            {
-                endPos = Vec3(npc.jobPtr->workPos.x/GRID_SIZE,npc.jobPtr->workPos.y/GRID_SIZE,npc.jobPtr->workPos.z/GRID_SIZE);
-                hasPath = true;
-
-                if(math::distance(myPos,wPos) <= npc.size*3 && myPos.z/GRID_SIZE == wPos.z/GRID_SIZE)
-                {
-                    debug("Close to workPos");
-                    endPos = Vec3(myPos.x/GRID_SIZE,myPos.y/GRID_SIZE,myPos.z/GRID_SIZE);
-                    hasPath = false;
-
-                    npc.jobPtr->completionProgress += npc.attributes.intelligence / 2;
-                    debug("post job completetion progress");
-
-                    for (float rot = 1; rot < 361 * (percentIs( npc.jobPtr->completionTimer,npc.jobPtr->completionProgress) / 100); rot++)
-                    {
-
-                        float xPos = wPos.x + sin(rot * PI / 180) * 10;
-                        float yPos = wPos.y + cos(rot * PI / 180) * 10;
-
-                        shapes.createLine( wPos.x, wPos.y, xPos, yPos, 1, sf::Color(150, 150, 150, 150));
-                    }
-                    debug("post line drawing");
-
-                    if (npc.jobPtr->completionProgress >= npc.jobPtr->completionTimer)
-                    {
-                        debug("Job complete!");
-
-                        tiles[abs_to_index(wPos.x / GRID_SIZE)][abs_to_index(wPos.y / GRID_SIZE)][abs_to_index(wPos.z / GRID_SIZE)].stone();
-                        for(int Stoney = 0; Stoney != 5; Stoney++)
-                            spawnItem("Rock",wPos.x+randz(-3,3),wPos.y+randz(-3,3),wPos.z);
-
-                        npc.jobPtr->toDelete = true;
-                        npc.jobPtr = nullptr;
-                    }
-                }
-            }
-            else if(npc.jobPtr != nullptr && npc.jobPtr->type == "FlipSwitch")
-            {
-                endPos = Vec3(npc.jobPtr->workPos.x/GRID_SIZE,npc.jobPtr->workPos.y/GRID_SIZE,npc.jobPtr->workPos.z/GRID_SIZE);
-                hasPath = true;
-                Tile *workTile = &tiles[abs_to_index(wPos.x / GRID_SIZE)][abs_to_index(wPos.y / GRID_SIZE)][abs_to_index(wPos.z / GRID_SIZE)];
-
-                if(math::distance(myPos,wPos) <= npc.size*3 && myPos.z/GRID_SIZE == wPos.z/GRID_SIZE)
-                {
-                    debug("Close to workPos");
-                    endPos = Vec3(myPos.x/GRID_SIZE,myPos.y/GRID_SIZE,myPos.z/GRID_SIZE);
-                    hasPath = false;
-
-                    //npc.jobPtr->completionProgress += npc.attributes.intelligence;
-                    workTile->workProgress += npc.attributes.intelligence;
-                    debug("post job completetion progress");
-                    int percentage = percentIs( npc.jobPtr->completionTimer,workTile->workProgress);
-                    textList.createText(wPos.x-10,wPos.y-20,15,sf::Color::Yellow,"%" + std::to_string(percentage));
-
-                    if (workTile->workProgress >= npc.jobPtr->completionTimer)
-                    {
-                        debug("Job complete!");
-
-                        workTile->state = "On";
-
-                        npc.jobPtr->toDelete = true;
-                        npc.jobPtr = nullptr;
-                    }
-                }
-            }
-            else if(npc.jobPtr != nullptr && npc.jobPtr->type == "Move")
-            {
-                endPos = Vec3(wPos.x/GRID_SIZE,wPos.y/GRID_SIZE,wPos.z/GRID_SIZE);
-                hasPath = true;
-
-                if(math::distance(myPos,wPos) <= npc.size*2 && myPos.z/GRID_SIZE == wPos.z/GRID_SIZE
-                   && npc.storedPath.empty())
-                {
-
-                    npc.dirMove(sf::Vector2f(wPos.x,wPos.y));
-                }
-
-                if(math::distance(myPos,wPos) <= npc.moverate && myPos.z/GRID_SIZE == wPos.z/GRID_SIZE)
-                {
-                    hasPath = false;
-
-                    npc.xpos = wPos.x;
-                    npc.ypos = wPos.y;
-                    npc.zpos = wPos.z;
-
-                    npc.jobPtr->toDelete = true;
-                    npc.jobPtr = nullptr;
-                }
-            }
-
-        }
-
-}
-
-void workSwitch(Npc &npc, std::list<Npc> &container)
-{
-    if(npc.faction != "The Titanium Grip")
-        return;
-
-    if(!isInBounds(npc.getPos2d()))
-        return;
-    int xTile = abs_to_index(npc.xpos/GRID_SIZE);
-    int yTile = abs_to_index(npc.ypos/GRID_SIZE);
-    int zTile = abs_to_index(npc.zpos/GRID_SIZE);
-    Tile *standTile = &tiles[xTile][yTile][zTile];
-    if(standTile->state == "Off")
-    {
-        standTile->workProgress += npc.attributes.intelligence;
-        if(standTile->workProgress >= standTile->workGoal)
-        {
-            standTile->state = "On";
-        }
-        int percentage = percentIs(standTile->workGoal,standTile->workProgress);
-        textList.createText(xTile*GRID_SIZE+10,yTile*GRID_SIZE+10,15,sf::Color::Yellow,"%" + std::to_string(percentage));
-    }
-
-
-
-}
-
-
-
 void critterPathFind(Npc &npc, std::list<Npc> &container)
 {
     Vec3 startPos(npc.xpos/GRID_SIZE,npc.ypos/GRID_SIZE,npc.zpos/GRID_SIZE);
@@ -2218,7 +1900,6 @@ void critterPathFind(Npc &npc, std::list<Npc> &container)
         npc.endPos.x = 0;
 
 }
-
 
 void critterBrain(Npc &npc, std::list<Npc> &container)
 {
@@ -3189,9 +2870,6 @@ void testProcess()
                 */
 }
 
-
-
-
 sf::Thread TcpServerThread(&runTcpServer, network::mainPort);
 sf::Thread TcpClientThread(&runTcpClient, network::mainPort+23);
 
@@ -3303,44 +2981,6 @@ void frames()
     {
         toggle(gvars::secondSwitch);
     }
-}
-
-struct whereInTile
-{
-    std::string xAxis;
-    std::string yAxis;
-};
-
-whereInTile whereAmI(int xpos, int ypos, int size)
-{
-    int whereX = (xpos % size);
-    int whereY = (ypos % size);
-    whereInTile returns;
-    if(whereX < (size/2))
-    {
-        returns.xAxis = "Left";
-    }
-    else if(whereX > (size/2))
-    {
-        returns.xAxis = "Right";
-    }
-    else
-        returns.xAxis = "Center";
-
-    if(whereY < (size/2))
-    {
-        returns.yAxis = "Up";
-    }
-    else if(whereY > (size/2))
-    {
-        returns.yAxis = "Down";
-    }
-    else
-        returns.yAxis = "Center";
-
-
-
-    return returns;
 }
 
 void genericLoop()
@@ -3564,13 +3204,10 @@ void handleEvents()
         }
 }
 
-
-
 float Magnitude(Vec3f v1)
 {
 	return sqrt(pow(v1.x, 2) + pow(v1.y, 2) + pow(v1.z, 2)); //return the magnitude (pythagoras)
 }
-
 
 void acquireSelectedNPCs()
 {
@@ -3649,70 +3286,6 @@ void lmbPress()
     debug("Post Mouse Based Functions");
 }
 
-
-void bulletTests()
-{
-    /*
-    if(inputState.lmbTime > 2)
-            {
-                shapes.createLine(gvars::heldClickPos.x,gvars::heldClickPos.y,gvars::mousePos.x,gvars::mousePos.y,3,sf::Color::Yellow);
-
-                std::string outputText = "Speed: " + std::to_string(math::closeish(gvars::heldClickPos.x,gvars::heldClickPos.y,gvars::mousePos.x,gvars::mousePos.y) / 10);
-                //Vec3f velo((gvars::heldClickPos.x - gvars::mousePos.x)/10,(gvars::heldClickPos.y - gvars::mousePos.y)/10 );
-
-                //std::string outputText = "Magnitude: " + std::to_string(Magnitude(velo));
-
-                textList.createText(gvars::mousePos.x,gvars::mousePos.y,10,sf::Color::Yellow,outputText);
-
-                Bullet boolet;
-                boolet.pos = Vec3f(gvars::mousePos.x,gvars::mousePos.y,gvars::currentz*GRID_SIZE);
-                boolet.positions.push_back(boolet.pos);
-                boolet.angle = math::angleBetweenVectors(gvars::heldClickPos,gvars::mousePos);
-                boolet.speed = math::closeish(gvars::heldClickPos.x,gvars::heldClickPos.y,gvars::mousePos.x,gvars::mousePos.y) / 10;
-                boolet.lifetime = 600;
-
-
-                predictBullet(boolet);
-            }
-            if(!inputState.lmb && gvars::heldClickPos != sf::Vector2f(-1,-1) || inputState.key[Key::D] && gvars::heldClickPos != sf::Vector2f(-1,-1))
-            {
-                Bullet boolet;
-                boolet.pos = Vec3f(gvars::heldClickPos.x,gvars::heldClickPos.y,gvars::currentz*GRID_SIZE);
-                boolet.positions.push_back(boolet.pos);
-                boolet.angle = math::angleBetweenVectors(gvars::heldClickPos,gvars::mousePos);
-                Vec3f velo((gvars::heldClickPos.x - gvars::mousePos.x)/10,(gvars::heldClickPos.y - gvars::mousePos.y)/10 );
-                boolet.velocity = velo;
-
-
-                boolet.speed = math::closeish(gvars::heldClickPos.x,gvars::heldClickPos.y,gvars::mousePos.x,gvars::mousePos.y) / 10;
-                //boolet.speed = 0;
-                boolet.lifetime = 60;
-                //boolet.showPath = true;
-                //boolet.showPrediction = true;
-                bullets.push_back(boolet);
-                int ranNum = randz(1,4);
-        if(ranNum == 1)
-            soundmanager.playSound("m16_lensflare_1.ogg");
-        if(ranNum == 2)
-            soundmanager.playSound("m16_lensflare_2.ogg");
-        if(ranNum == 3)
-            soundmanager.playSound("m16_lensflare_3.ogg");
-        if(ranNum == 4)
-            soundmanager.playSound("m16_lensflare_4.ogg");
-                if(inputState.key[Key::LShift])
-                {
-                    for(int i = 0; i != 360; i++)
-                    {
-                        boolet.angle = i;
-                        boolet.speed = 1;
-                        boolet.lifetime = 600;
-                        bullets.push_back(boolet);
-                    }
-                }
-            }
-*/
-}
-
 void handlePhase()
 {
 
@@ -3779,7 +3352,6 @@ void handlePhase()
 
         if(gCtrl.phase == "Lobby")
         {
-            bulletTests();
             bountyTowerLoop();
 
         }
@@ -3787,7 +3359,6 @@ void handlePhase()
         if (gCtrl.phase == "Local")
         { //=======================================================*Local*============================================================================
 
-            bulletTests();
 
             attractNPCs(gvars::mousePos);
 
@@ -5035,35 +4606,6 @@ void handlePhase()
 
 }
 
-void scaleImages()
-{
-
-    /*
-    if (inputState.key[Key::Numpad7] && !network::chatting)
-        {
-            gvars::scalex += 0.1;
-            fSleep(0.1);
-        }
-        if (inputState.key[Key::Numpad8] && !network::chatting)
-        {
-            gvars::scaley += 0.1;
-            fSleep(0.1);
-        }
-        if (inputState.key[Key::Numpad4] && !network::chatting)
-        {
-            gvars::scalex -= 0.1;
-            fSleep(0.1);
-        }
-        if (inputState.key[Key::Numpad5] && !network::chatting)
-        {
-            gvars::scaley -= 0.1;
-            fSleep(0.1);
-        }
-        */
-
-}
-
-
 void cleanMenu()
 {
     if (gCtrl.menuEndPos == sf::Vector2f(-10000, -10000))
@@ -5660,7 +5202,6 @@ int main()
 
 
         frames();
-        scaleImages();
         handleEvents();
 
         genericLoop();

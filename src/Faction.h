@@ -47,6 +47,7 @@ struct entityvectorpointercontainer
 };
 
 bool canSeeNpc(Npc &ori, Npc &target);
+void assignItemsUser(Npc &npc, std::list<Npc> &container);
 
 void critterEquip(Npc &npc, std::list<Npc> &container);
 void critterPush(Npc &npc, std::list<Npc> &container);
@@ -65,6 +66,9 @@ void checkAmmo(Npc &npc, std::list<Npc> &container, Item * rangewep);
 void buildTurret(Npc &npc, std::list<Npc> &container);
 void craftAmmo(Npc &npc, std::list<Npc> &container);
 void activeSkills(Npc &npc, std::list<Npc> &container);
+
+void workDesire(Npc &npc, std::list<Npc> &container, Vec3 &endPos, bool &hasPath, bool &inComplete, Desire * highestDesire );
+void workSwitch(Npc &npc, std::list<Npc> &container);
 
 class Npc;
 std::set<int> npcTrace(int xa, int ya, int xb, int yb, int id,
