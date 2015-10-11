@@ -40,6 +40,10 @@ void skillKeepLoop();
 skillKeepInfo * getSkillKeep();
 
 void critterEquip(Npc &npc, std::list<Npc> &container);
+void critterPush(Npc &npc, std::list<Npc> &container);
+
+void scrapPickup(Npc &npc, std::list<Npc> &container);
+void cashPickup(Npc &npc, std::list<Npc> &container);
 
 class Npc;
 std::set<int> npcTrace(int xa, int ya, int xb, int yb, int id,
