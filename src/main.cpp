@@ -893,7 +893,6 @@ void drawStoredPath(std::vector<Tile *> storedPath)
 //
 
 void drawStuffs();
-int getItemVectorId(int id);
 
 std::string getClipboardText()
 {
@@ -1261,65 +1260,6 @@ UniverseTiles UnyTiles;
 
 
 
-
-void unpointItems(std::list<Item> &items)
-{
-
-    //for(int i = 0; i != Items.size(); i++)
-    for (auto i = items.begin(); i != items.begin(); i++)
-    {
-        if ((*i).toDelete)
-        {
-            /*
-
-
-            std::cout << "JobList size: " << uniFact[0].jobList.size()
-                      << std::endl;
-
-            for (size_t t = 0; t != uniFact[0].jobList.size(); t++)
-            {
-                std::cout << "Job Point: " << &uniFact[0].jobList[t].pItem
-                          << "/" << uniFact[0].jobList[t].pItem
-                          << ", Item Point: " << &(*i) << "/" << &(*i)
-                          << std::endl;
-                fSleep(1);
-
-                if (uniFact[0].jobList[t].pItem != nullptr &&
-                    (&(*i)) != nullptr)
-                {
-
-                    std::cout << "ID! ";
-                    try
-                    {
-                        std::cout << uniFact[0].jobList[t].pItem->id;
-                    }
-                    catch (std::exception &e)
-                    {
-                        std::cout << "Something went wrong in in here\n";
-                    }
-                    std::cout << uniFact[0].jobList[t].pItem->id;
-                    std::cout << " ; ";
-                    int id1 = uniFact[0].jobList[t].pItem->id;
-                    std::cout << "ID 2! ";
-                    std::cout << (*i).id;
-                    std::cout << " ; ";
-                    int id2 = (*i).id;
-                    std::cout << "ID's: " << id1 << ":" << id2 << std::endl;
-
-                    if (id1 ==
-                        id2) //if(UniFact[0].JobList[t].pItem != NULL && &(*i) != NULL && UniFact[0].JobList[t].pItem == &(*i)) //if(ID1 == ID2)
-                    {
-                        std::cout << "Match! \n";
-                        uniFact[0].jobList[t].pItem = nullptr;
-                        //fSleep(1);
-                    }
-                }
-            }
-            */
-        }
-    }
-}
-
 bool removeItem(int id)
 {
     int tempInt = 0;
@@ -1656,19 +1596,7 @@ std::vector<int> npcTrace(int xa, int ya, int xb, int yb, int id,
     throw std::runtime_error("npcTrace: couldn't return a value");
 }
 
-int getItemVectorId(int id)
-{
-    int index = 0;
-    for (auto const &item : worlditems)
-    {
-        if (item.id == id)
-        {
-            return index;
-        }
-        index++;
-    }
-    return -1;
-}
+
 
 int getNpcVectorId(int id)
 {
@@ -5261,7 +5189,6 @@ void handlePhase()
 
                 offloadItems();
 
-                unpointItems(worlditems);
                 removeItems(worlditems);
                 initializeTilePositions();
             }
@@ -6783,7 +6710,6 @@ int main()
         AnyDeletes(soundmanager.playSounds);
 
         removeNPCs(npclist, mutex::npcList);
-        unpointItems(worlditems);
         removeItems(worlditems);
         soundmanager.cleanSounds();
         cleanMenu();
