@@ -19,28 +19,7 @@ template <typename T> T &listAt(std::list<T> &list, size_t index)
     return *it;
 }
 
-template <typename T> void AnyDeletes(std::list<T> &list)
-{
-    bool done = false;
-    while (done == false)
-    {
-        bool yet = false;
-        for (auto it = list.begin(); it != list.end(); ++it)
-        {
-            //std::cout << it->name << ",'s toDelete: " << it->toDelete << std::endl;
-            if (it->toDelete)
-            {
-                list.erase(it);
-                yet = true;
-                break;
-            }
-        }
-        if (yet == false)
-        {
-            done = true;
-        }
-    }
-}
+
 
 
 

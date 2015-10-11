@@ -20,6 +20,29 @@ template <typename T> void con(T arg, bool endLine = true)
     }
 }
 
+template <typename T> void AnyDeletes(std::list<T> &list)
+{
+    bool done = false;
+    while (done == false)
+    {
+        bool yet = false;
+        for (auto it = list.begin(); it != list.end(); ++it)
+        {
+            //std::cout << it->name << ",'s toDelete: " << it->toDelete << std::endl;
+            if (it->toDelete)
+            {
+                list.erase(it);
+                yet = true;
+                break;
+            }
+        }
+        if (yet == false)
+        {
+            done = true;
+        }
+    }
+}
+
 bool booleanize(int num);
 bool inbetween(float first, float second, float number);
 int randz(int minValue, int maxValue);
