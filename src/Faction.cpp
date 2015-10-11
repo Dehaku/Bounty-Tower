@@ -27,11 +27,43 @@ std::list<Faction> uniFact;
 NpcManager npcmanager;
 extern sf::RenderWindow window;
 
-
-
 std::vector<Npc*> selectedNPCs;
 
-Npc * mouseNPC = nullptr;
+
+skillKeepInfo::skillKeepInfo()
+    {
+        user = nullptr;
+        toDelete = false;
+        legal = false;
+        age = 0;
+    }
+
+std::vector<skillKeepInfo> skillKeeps;
+
+void skillKeepLoop()
+{
+    for(auto &sKI : skillKeeps)
+    {
+        if(inputState.rmb)
+            sKI.toDelete = true;
+
+        sKI.age++;
+        sKI.usePos = gvars::mousePos;
+
+        shapes.createCircle(sKI.usePos.x,sKI.usePos.y,10,sf::Color::Cyan);
+        textList.createText(sKI.usePos,15,sf::Color::White,sKI.skillName);
+    }
+}
+
+skillKeepInfo * getSkillKeep()
+{
+    for(auto &sKI : skillKeeps)
+    {
+        return &sKI;
+    }
+    return nullptr;
+}
+
 
 void Npc::BodyDefinition::bodyPartFind(std::string part, int amount)
 {

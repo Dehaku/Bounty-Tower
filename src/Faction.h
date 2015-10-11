@@ -21,7 +21,24 @@
 class Faction;
 
 extern Faction *conFact;
-extern Npc * mouseNPC;
+
+
+struct skillKeepInfo
+{
+    Npc * user;
+    std::string skillName;
+    sf::Vector2f usePos;
+    sf::Vector2f heldPos;
+    bool toDelete;
+    bool legal;
+    int age;
+    skillKeepInfo();
+};
+extern std::vector<skillKeepInfo> skillKeeps;
+
+void skillKeepLoop();
+skillKeepInfo * getSkillKeep();
+
 
 class Npc;
 std::set<int> npcTrace(int xa, int ya, int xb, int yb, int id,

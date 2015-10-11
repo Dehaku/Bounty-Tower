@@ -1087,7 +1087,7 @@ std::string Item::activate(Vec3f vPos) // Returns a string declaring the problem
     { // PDA Spells
         activaterate = activateratemax;
 
-        user->desiredViewAngle = gvars::mousePos;
+        //user->desiredViewAngle = gvars::mousePos;
 
         Shape shape;
         shape.shape = shape.Line;

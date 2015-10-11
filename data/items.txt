@@ -21,6 +21,6 @@
 [name:Wood][stackSize:99][Pickupable:true][image:Plank.png][type:12][baseid:7871787][produces:false]
 [name:Rock][stackSize:99][Pickupable:true][image:Rock.png][type:12][baseid:7971787][produces:false]
 [name:Rune][Pickupable:true][image:BaseRune.png][type:12][baseid:8001747][produces:false]
-[name:PDA][Pickupable:true][type:23][image:PDA.png][baseid:529529][mindam:1][maxdam:10][range:200][IsWeapon:true][activaterategrowth:2][activateratemax:30][Size:1]
+[name:PDA][Pickupable:true][type:23][image:PDA.png][baseid:529529][mindam:1][maxdam:5][range:200][IsWeapon:true][activaterategrowth:2][activateratemax:30][Size:1]
 [name:Scrap][stackSize:30][Pickupable:true][image:BTScrap.png][type:12][baseid:7772987][produces:false]
 [name:Cash][Pickupable:true][image:FaceonMoney.png][type:12][baseid:636636][produces:false]

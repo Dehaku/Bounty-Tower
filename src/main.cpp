@@ -158,49 +158,7 @@ fpsTracker fpsKeeper;
 
 
 
-struct skillKeepInfo
-{
-    Npc * user;
-    std::string skillName;
-    sf::Vector2f usePos;
-    sf::Vector2f heldPos;
-    bool toDelete;
-    bool legal;
-    int age;
-    skillKeepInfo()
-    {
-        user = nullptr;
-        toDelete = false;
-        legal = false;
-        age = 0;
-    }
-};
-std::vector<skillKeepInfo> skillKeeps;
 
-void skillKeepLoop()
-{
-    for(auto &sKI : skillKeeps)
-    {
-        if(inputState.rmb)
-            sKI.toDelete = true;
-
-        sKI.age++;
-        sKI.usePos = gvars::mousePos;
-
-        shapes.createCircle(sKI.usePos.x,sKI.usePos.y,10,sf::Color::Cyan);
-        textList.createText(sKI.usePos,15,sf::Color::White,sKI.skillName);
-    }
-    AnyDeletes(skillKeeps);
-}
-
-skillKeepInfo * getSkillKeep()
-{
-    for(auto &sKI : skillKeeps)
-    {
-        return &sKI;
-    }
-    return nullptr;
-}
 
 
 const int worldSizeX = 32;
@@ -3919,6 +3877,7 @@ void hoverItemHUD()
 void drawHudSkills(Npc &npc, sf::Vector2f spritePos)
 {
     skillKeepLoop();
+    AnyDeletes(skillKeeps);
     int xOffset = 0;
     for(auto &skill : npc.skills.list)
     {
