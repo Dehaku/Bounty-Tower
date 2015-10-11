@@ -1791,91 +1791,6 @@ void assaultDesire(Npc &npc, std::list<Npc> &container, Npc * closEnmy, bool &ha
 }
 
 
-void buildTurret(Npc &npc, std::list<Npc> &container)
-{
-    skillKeepInfo * sKI;
-    sKI = getSkillKeep();
-    if(sKI != nullptr && sKI->user->id == npc.id && sKI->skillName == "Turret Construction")
-    {
-        Skill * turretSkill = npc.skills.getSkill("Turret Construction");
-        if(turretSkill != nullptr && turretSkill->ranks > 0 && turretSkill->cooldown <= 0)
-        {
-            int sX = (abs_to_index(sKI->usePos.x/GRID_SIZE)*GRID_SIZE);
-            int sY = (abs_to_index(sKI->usePos.y/GRID_SIZE)*GRID_SIZE);
-            int eX = (abs_to_index(sKI->usePos.x/GRID_SIZE)*GRID_SIZE)+(GRID_SIZE);
-            int eY = (abs_to_index(sKI->usePos.y/GRID_SIZE)*GRID_SIZE)+(GRID_SIZE);
-
-
-
-            int scrapCost = 30;
-            int buildDist = math::closeish(npc.getPos2d(),sKI->usePos);
-            bool canBuild = false;
-            bool tileBuildable = false;
-            bool enoughScrap = false;
-            Item * scrapPtr = nullptr;
-
-            for(auto &item : npc.inventory)
-            {
-                if(item.name == "Scrap" && item.amount >= scrapCost)
-                {
-                    enoughScrap = true;
-                    scrapPtr = &item;
-                }
-            }
-
-            if(enoughScrap)
-                textList.createText(sf::Vector2f(sKI->usePos.x,sKI->usePos.y+10),15,sf::Color::Cyan,std::to_string(scrapCost) + " Scrap Required");
-            else
-                textList.createText(sf::Vector2f(sKI->usePos.x,sKI->usePos.y+10),15,sf::Color::Red,std::to_string(scrapCost) + " Scrap Required");
-
-
-
-            if(isInBounds(sKI->usePos) && tiles[abs_to_index(sKI->usePos.x/GRID_SIZE)][abs_to_index(sKI->usePos.y/GRID_SIZE)][gvars::currentz].walkable)
-                tileBuildable = true;
-
-            if(buildDist <= 120 && tileBuildable && enoughScrap)
-            {
-                canBuild = true;
-                shapes.createSquare(sX,sY,eX,eY,sf::Color::Transparent,1,sf::Color::Cyan);
-                shapes.createCircle(npc.xpos,npc.ypos,120,sf::Color::Transparent,1,sf::Color::Cyan);
-            }
-            else
-            {
-                shapes.createSquare(sX,sY,eX,eY,sf::Color::Transparent,1,sf::Color::Red);
-                shapes.createCircle(npc.xpos,npc.ypos,120,sf::Color::Transparent,1,sf::Color::Red);
-            }
-
-
-            if(inputState.lmbTime == 1 && canBuild)
-            {
-                turretSkill->cooldown = turretSkill->cooldownint;
-
-                if(scrapPtr != nullptr)
-                {
-                    scrapPtr->amount -= scrapCost;
-                    if(scrapPtr->amount <= 0)
-                        scrapPtr->remove();
-                }
-
-
-                Npc turret = *getGlobalCritter("BTTurret");
-                turret.xpos = sX+(GRID_SIZE/2);
-                turret.ypos = sY+(GRID_SIZE/2);
-                turret.zpos = npc.zpos;
-                turret.faction = npc.faction;
-                turret.factionPtr = npc.factionPtr;
-
-                Item gun = *getGlobalItem("Gun");
-                Item ammo = *getGlobalItem("Bullet - Standard");
-                ammo.amount = 100;
-                gun.internalitems.push_back(ammo);
-                turret.inventory.push_back(gun);
-
-                npclist.push_back(turret);
-            }
-        }
-    }
-}
 
 void assignItemsUser(Npc &npc, std::list<Npc> &container)
 {
@@ -1883,87 +1798,7 @@ void assignItemsUser(Npc &npc, std::list<Npc> &container)
         item.user = &npc;
 }
 
-void craftAmmo(Npc &npc, std::list<Npc> &container)
-{
-    skillKeepInfo * sKI;
-    sKI = getSkillKeep();
-    if(sKI != nullptr && sKI->user->id == npc.id && sKI->skillName == "Ammo Construction")
-    {
-        Skill * ammoSkill = npc.skills.getSkill("Ammo Construction");
-        if(ammoSkill != nullptr && ammoSkill->ranks > 0 && ammoSkill->cooldown <= 0)
-        {
 
-            int scrapCost = 30;
-            bool enoughScrap = false;
-            Item * scrapPtr = nullptr;
-
-            for(auto &item : npc.inventory)
-            {
-                if(item.name == "Scrap" && item.amount >= scrapCost)
-                {
-                    enoughScrap = true;
-                    scrapPtr = &item;
-                }
-            }
-
-            if(enoughScrap)
-                textList.createText(sf::Vector2f(sKI->usePos.x,sKI->usePos.y+10),15,sf::Color::Cyan,std::to_string(scrapCost) + " Scrap Required");
-            else
-                textList.createText(sf::Vector2f(sKI->usePos.x,sKI->usePos.y+10),15,sf::Color::Red,std::to_string(scrapCost) + " Scrap Required");
-
-            if(enoughScrap)
-            {
-                ammoSkill->cooldown = ammoSkill->cooldownint;
-
-                if(scrapPtr != nullptr)
-                {
-                    scrapPtr->amount -= scrapCost;
-                    if(scrapPtr->amount <= 0)
-                        scrapPtr->remove();
-                }
-
-                Item ammo = *getGlobalItem("Bullet - Standard");
-                ammo.amount = 5*ammoSkill->ranks;
-                npc.inventory.push_back(ammo);
-                sKI->toDelete = true;
-            }
-        }
-    }
-}
-
-void activeSkills(Npc &npc, std::list<Npc> &container)
-{
-    buildTurret(npc,container);
-    craftAmmo(npc,container);
-}
-
-void critterPickUp()
-{
-    if(!selectedNPCs.empty())
-    {//Making sure we have someone selected.
-        for(auto &item : worlditems)
-        {//Running through the worlds items.
-
-            int critterDist = math::distance(selectedNPCs[0]->getPos(),Vec3f(item.xpos,item.ypos,item.zpos));
-            int mouseDist = math::closeish(gvars::mousePos,sf::Vector2f(item.xpos,item.ypos));
-            if(critterDist <= 120 && mouseDist <= 10)
-            {//Arbitrary number, but good enough distance for picking up.
-                shapes.createCircle(item.xpos,item.ypos,10,sf::Color(0,255,255,100));
-                textList.createText(item.xpos,item.ypos+15,15,sf::Color::White,"RMB: Pickup " + item.name);
-                if(selectedNPCs[0]->inventory.size() < 20 && inputState.rmbTime == 1)
-                {//Making sure we have room.
-                    item.xpos = 0;
-                    item.ypos = 0;
-                    item.zpos = 0;
-                    selectedNPCs[0]->addItem(item);
-                    item.toDelete = true;
-                    AnyDeletes(worlditems);
-                }
-                return;
-            }
-        }
-    }
-}
 
 void workDesire(Npc &npc, std::list<Npc> &container, Vec3 &endPos, bool &hasPath, bool &inComplete, Desire * highestDesire )
 {
@@ -2259,22 +2094,7 @@ void workSwitch(Npc &npc, std::list<Npc> &container)
 
 }
 
-void critterLevelUp(Npc &npc, std::list<Npc> &container)
-{
-    if(inputState.key[Key::Q].time == 1)
-        npc.xp += 50;
 
-    if(inputState.key[Key::Q].time == 1 && inputState.key[Key::LShift])
-        npc.xp += 5000;
-
-    if(npc.xp >= nextLevelXpRequired(npc.level))
-    {
-        npc.xp = npc.xp-nextLevelXpRequired(npc.level);
-        npc.level++;
-        npc.skillpoints += 5;
-        chatBox.addChat(npc.name + " has leveled up to " + std::to_string(npc.level) + "!", sf::Color::White);
-    }
-}
 
 void critterPathFind(Npc &npc, std::list<Npc> &container)
 {
@@ -2399,19 +2219,6 @@ void critterPathFind(Npc &npc, std::list<Npc> &container)
 
 }
 
-void critterWallCheck(Npc &npc, std::list<Npc> &container)
-{
-    if(tiles[abs_to_index(npc.xpos/GRID_SIZE)][abs_to_index(npc.ypos/GRID_SIZE)][abs_to_index(npc.zpos/GRID_SIZE)].walkable == false)
-    {
-        sf::Vector2f position = gridEject(sf::Vector2f(npc.xpos,npc.ypos));
-
-        sf::Vector2f Alter = position - npc.getPos2d();
-        npc.xpos += Alter.x;
-        npc.ypos += Alter.y;
-
-        npc.momentum = sf::Vector2f();
-    }
-}
 
 void critterBrain(Npc &npc, std::list<Npc> &container)
 {

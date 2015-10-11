@@ -50,14 +50,21 @@ bool canSeeNpc(Npc &ori, Npc &target);
 
 void critterEquip(Npc &npc, std::list<Npc> &container);
 void critterPush(Npc &npc, std::list<Npc> &container);
-
 void critterVision(Npc &npc, std::list<Npc> &container);
 void critterSkillRefresh(Npc &npc, std::list<Npc> &container);
 
+
 void scrapPickup(Npc &npc, std::list<Npc> &container);
 void cashPickup(Npc &npc, std::list<Npc> &container);
+void critterPickUp();
+void critterWallCheck(Npc &npc, std::list<Npc> &container);
+void critterLevelUp(Npc &npc, std::list<Npc> &container);
 
 void checkAmmo(Npc &npc, std::list<Npc> &container, Item * rangewep);
+
+void buildTurret(Npc &npc, std::list<Npc> &container);
+void craftAmmo(Npc &npc, std::list<Npc> &container);
+void activeSkills(Npc &npc, std::list<Npc> &container);
 
 class Npc;
 std::set<int> npcTrace(int xa, int ya, int xb, int yb, int id,
