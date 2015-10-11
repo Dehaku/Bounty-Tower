@@ -39,11 +39,25 @@ extern std::vector<skillKeepInfo> skillKeeps;
 void skillKeepLoop();
 skillKeepInfo * getSkillKeep();
 
+struct entityvectorpointercontainer
+{
+    std::set<Item*> items;
+    std::set<Npc*> npcs;
+    std::set<Tile*> tiles;
+};
+
+bool canSeeNpc(Npc &ori, Npc &target);
+
 void critterEquip(Npc &npc, std::list<Npc> &container);
 void critterPush(Npc &npc, std::list<Npc> &container);
 
+void critterVision(Npc &npc, std::list<Npc> &container);
+void critterSkillRefresh(Npc &npc, std::list<Npc> &container);
+
 void scrapPickup(Npc &npc, std::list<Npc> &container);
 void cashPickup(Npc &npc, std::list<Npc> &container);
+
+void checkAmmo(Npc &npc, std::list<Npc> &container, Item * rangewep);
 
 class Npc;
 std::set<int> npcTrace(int xa, int ya, int xb, int yb, int id,
