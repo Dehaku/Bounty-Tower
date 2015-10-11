@@ -7,13 +7,6 @@
 #include <string>
 
 
-template <typename T> T &listAt(std::list<T> &list, size_t index)
-{
-    auto it = list.begin();
-    std::advance(it, index);
-    return *it;
-}
-
 namespace network
 {
     int mainPort = 23636;

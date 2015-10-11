@@ -19,13 +19,6 @@ MenuPointerContainer menuPtrCon;
 
 using std::abs;
 
-template <typename T> T &listAt(std::list<T> &list, size_t index)
-{
-    auto it = list.begin();
-    std::advance(it, index);
-    return *it;
-}
-
 void Button::draw()
 {
     if (beenPressed == true)

@@ -12,17 +12,6 @@
 #include <iostream>
 
 
-template <typename T> T &listAt(std::list<T> &list, size_t index)
-{
-    auto it = list.begin();
-    std::advance(it, index);
-    return *it;
-}
-
-
-
-
-
 Faction *conFact;
 std::list<Npc> npclist;
 MakeSquad squady;

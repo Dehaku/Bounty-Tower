@@ -6,6 +6,7 @@
 #include <set>
 #include <chrono>
 #include <iostream>
+#include <list>
 
 #include <SFML/System.hpp>
 
@@ -42,6 +43,37 @@ template <typename T> void AnyDeletes(std::list<T> &list)
         }
     }
 }
+
+template <typename T> void AnyDeletes(std::vector<T> &list)
+{
+    bool done = false;
+    while (done == false)
+    {
+        bool yet = false;
+        for (auto it = list.begin(); it != list.end(); ++it)
+        {
+            if (it->toDelete)
+            {
+                list.erase(it);
+                yet = true;
+                break;
+            }
+        }
+        if (yet == false)
+        {
+            done = true;
+        }
+    }
+}
+
+template <typename T> T &listAt(std::list<T> &list, size_t index)
+{
+    auto it = list.begin();
+    std::advance(it, index);
+    return *it;
+}
+
+
 
 bool booleanize(int num);
 bool inbetween(float first, float second, float number);
