@@ -97,6 +97,7 @@ void bountyTowerSetup()
 {
     assignSlotPos();
     gCtrl.phase = "Lobby";
+    gCtrl.phase = "BTMain Menu";
     window.setFramerateLimit(60); // 0 is unlimited
     //UnyTiles.makeTest();
     window.setView(gvars::view1);
@@ -943,13 +944,26 @@ void bossLoop()
         bountytower::towerVictory = true;
 }
 
+void bountyTowerMainMenu()
+{
+    int startBut = createImageButton(sf::Vector2f(RESOLUTION.x/2,RESOLUTION.y/2),texturemanager.getTexture("Fortune Fortress Title.png"));
+    textList.createText(gvars::mousePos,10,sf::Color::White,"Click to begin!");
+
+    if(imageButtonClicked(startBut))
+        gCtrl.phase = "Tower Selection";
+
+}
+
 void bountyTowerLoop()
 {
     hotkeySquaddieSelect();
     bossLoop();
 
     AnyDeletes(menus);
-    if(bountytower::towerLoaded == "")
+    if(gCtrl.phase == "BTMain Menu")
+        bountyTowerMainMenu();
+
+    if(bountytower::towerLoaded == "" && gCtrl.phase == "Tower Selection")
         towerMenu();
     if(!selectedNPCs.empty() && inputState.key[Key::I].time == 1)
     {
@@ -1109,10 +1123,6 @@ void bountyTowerLoop()
         npc.dirMove(gvars::mousePos);
     }
 
-    if(gCtrl.phase == "Lobby")
-    {
-
-    }
 
 
 

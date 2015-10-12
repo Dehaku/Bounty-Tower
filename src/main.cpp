@@ -41,11 +41,6 @@ using std::abs;
 
 void drawBeams();
 
-
-
-
-
-
 class fpsTracker
 {
 public:
@@ -106,11 +101,6 @@ public:
 
 };
 fpsTracker fpsKeeper;
-
-
-
-
-
 
 const int worldSizeX = 32;
 const int worldSizeY = 32;
@@ -3239,6 +3229,9 @@ void lmbPress()
 
 void handlePhase()
 {
+        if(bountytower::bountytower)
+            bountyTowerLoop();
+
 
         if (gCtrl.phase == "MicroPatherTest")
         {
@@ -3301,11 +3294,7 @@ void handlePhase()
             }
         }
 
-        if(gCtrl.phase == "Lobby")
-        {
-            bountyTowerLoop();
 
-        }
 
         if (gCtrl.phase == "Local")
         { //=======================================================*Local*============================================================================
