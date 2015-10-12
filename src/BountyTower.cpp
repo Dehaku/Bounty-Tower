@@ -5,6 +5,14 @@
 
 std::vector<Npc*> Squaddies;
 
+void setupSquadHotKeySelection()
+{
+    Squaddies.clear();
+    for(auto &npc : npclist)
+        if(npc.faction == "The Titanium Grip")
+            Squaddies.push_back(&npc);
+}
+
 void equipStarters()
 {
     int currentCritter = 0;
@@ -31,7 +39,6 @@ void equipStarters()
 
             //member.tags.append("[MagicBeam:1]");
 
-            Squaddies.push_back(&member);
         }
         if(currentCritter == 1)
         {
@@ -48,7 +55,6 @@ void equipStarters()
 
             //member.tags.append("[MagicBeam:1]");
 
-            Squaddies.push_back(&member);
         }
         if(currentCritter == 2)
         {
@@ -59,7 +65,6 @@ void equipStarters()
 
             member.inventory.push_back(item);
             member.inventory.push_back(bullet);
-            Squaddies.push_back(&member);
         }
 
         if(currentCritter == 3)
@@ -71,10 +76,11 @@ void equipStarters()
 
             member.inventory.push_back(item);
             member.inventory.push_back(bullet);
-            Squaddies.push_back(&member);
         }
         currentCritter++;
     }
+
+    setupSquadHotKeySelection();
 }
 
 void setupTowers()
@@ -1226,6 +1232,8 @@ void bountyTowerLoop()
                 elevateElevatorInhabitants();
                 soundmanager.playSound("ding.wav");
                 nextFloorTransition();
+                AnyDeletes(npclist);
+                setupSquadHotKeySelection();
             } else {
                 chatBox.addChat("You cannot go further up.", sf::Color::Red);
             }
