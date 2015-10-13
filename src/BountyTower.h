@@ -43,6 +43,7 @@ class Tower
 public:
     sf::Texture *tex;
     std::string name;
+    int mapID; // For loading from the maps.
     int difficulty;
     int minioncount;
     std::string bountyTarget;

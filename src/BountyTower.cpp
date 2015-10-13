@@ -21,6 +21,8 @@ void equipStarters()
         member.name = generateName();
         member.isSquaddie = true;
 
+        member.ypos = 4040;
+
         if(random(1,2) == 1)
             member.tags.append("[WearsBoots:1]");
         if(random(1,2) == 1)
@@ -90,6 +92,7 @@ void setupTowers()
     //Build the Tavern.
     Tower theTavern;
     {
+        theTavern.mapID = 23;
         theTavern.bountyPay = 14628;
         theTavern.bountyTarget = "The Keep";
         theTavern.floors = 1;
@@ -103,6 +106,7 @@ void setupTowers()
     //Build the modern fantasy tower.
     Tower fantasyTower;
     {
+        fantasyTower.mapID = 636;
         fantasyTower.bountyPay = 2000;
         fantasyTower.bountyTarget = "Trifecta";
         fantasyTower.floors = 5;
@@ -267,7 +271,7 @@ void debugTileMode()
     { // Saves map
         if(inputState.key[Key::O].time == 30)
         {
-            std::string outPut = "Hold for another ten seconds to save the current map layout, This cannot be undone. \n";
+            std::string outPut = "(23)Hold for another ten seconds to save the current map layout, This cannot be undone. \n";
             std::cout << outPut;
             std::cout << outPut;
             std::cout << outPut;
@@ -278,7 +282,7 @@ void debugTileMode()
         }
         if(inputState.key[Key::O].time == 300)
         {
-            saveMap(636,0,0,50,50);
+            saveMap(23,0,0,50,50);
             soundmanager.playSound("Startup.wav");
             std::string outPut = "The current map has been saved! \n";
             std::cout << outPut;
@@ -429,9 +433,9 @@ void towerMenu()
 
         bountytower::towerLoaded = towers[1].name;
         bountytower::currentTower = &towers[1];
-        buildTower(towers[1].name);
+        //buildTower(towers[1].name);
 
-        loadMap(636,0,0,50,50);
+        loadMap(towers[1].mapID,0,0,50,50);
 
         int xview = (96*60)/20;
         gvars::currentx = xview/2;
@@ -971,7 +975,23 @@ void bountyTowerMainMenu()
     textList.createText(gvars::mousePos,10,sf::Color::White,"Click to begin!");
 
     if(imageButtonClicked(startBut))
-        gCtrl.phase = "Tower Selection";
+    {
+        bountytower::towerLoaded = towers[0].name;
+        bountytower::currentTower = &towers[0];
+        //buildTower(towers[1].name);
+
+        loadMap(towers[0].mapID,0,0,50,50);
+
+        int xview = (96*60)/20;
+        gvars::currentx = xview/2;
+        gvars::currenty = xview/1.4;
+
+        for(auto &npc : npclist)
+            npc.momentum = sf::Vector2f(0,0);
+
+        gCtrl.phase = "Lobby";
+    }
+        //gCtrl.phase = "Tower Selection";
 
 }
 
