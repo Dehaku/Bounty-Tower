@@ -85,6 +85,21 @@ void equipStarters()
 
 void setupTowers()
 {
+
+
+    //Build the Tavern.
+    Tower theTavern;
+    {
+        theTavern.bountyPay = 14628;
+        theTavern.bountyTarget = "The Keep";
+        theTavern.floors = 1;
+        theTavern.difficulty = 636;
+        theTavern.minioncount = 23;
+        theTavern.name = "The Tavern";
+        theTavern.tex = &texturemanager.getTexture("FantasyModern.png");
+    }
+    towers.push_back(theTavern);
+
     //Build the modern fantasy tower.
     Tower fantasyTower;
     {
@@ -407,14 +422,14 @@ void towerMenu()
 
     //Place a button for the tower.
     //sf::Vector2f vPos((-xMinus)+xPart,(-yMinus)+yPart);
-    int fanTowButt = createImageButton(towerPos[0],*towers[0].tex);
+    int fanTowButt = createImageButton(towerPos[0],*towers[1].tex);
     if(imageButtonClicked(fanTowButt))
     {
 
 
-        bountytower::towerLoaded = towers[0].name;
-        bountytower::currentTower = &towers[0];
-        buildTower(towers[0].name);
+        bountytower::towerLoaded = towers[1].name;
+        bountytower::currentTower = &towers[1];
+        buildTower(towers[1].name);
 
         loadMap(636,0,0,50,50);
 
@@ -428,9 +443,9 @@ void towerMenu()
 
     //Draw some info about the thing.
     {
-        std::string textOut = " Tower: " + towers[0].name +
-        "\n Minions: " + std::to_string(towers[0].minioncount) +
-        "\n Difficulty: " + std::to_string(towers[0].difficulty);
+        std::string textOut = " Tower: " + towers[1].name +
+        "\n Minions: " + std::to_string(towers[1].minioncount) +
+        "\n Difficulty: " + std::to_string(towers[1].difficulty);
         textList.createText(towerPos[0].x+50,towerPos[0].y-25,15,sf::Color::Red,textOut);
     }
 
