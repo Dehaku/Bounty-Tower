@@ -428,13 +428,14 @@ void towerMenu()
 
         bountytower::towerLoaded = towers[1].name;
         bountytower::currentTower = &towers[1];
+        gCtrl.phase = "Lobby";
         //buildTower(towers[1].name);
 
         loadMap(towers[1].mapID,0,0,50,50);
 
         int xview = (96*60)/20;
         gvars::currentx = xview/2;
-        gvars::currenty = xview;
+        gvars::currenty = xview/1.4;
 
         for(auto &npc : npclist)
             npc.momentum = sf::Vector2f(0,0);
@@ -447,6 +448,8 @@ void towerMenu()
         "\n Difficulty: " + std::to_string(towers[1].difficulty);
         textList.createText(towerPos[0].x+50,towerPos[0].y-25,15,sf::Color::Red,textOut);
     }
+
+    shapes.createSquare(-60,-60,RESOLUTION.x+60,RESOLUTION.y+60,sf::Color::Black);
 
     shapes.createCircle((-xMinus)+xPart,(-yMinus)+yPart,50,gvars::cycleBlue);
     shapes.createCircle((-xMinus)+xPart*2,(-yMinus)+yPart,50,gvars::cycleBlue);
@@ -990,16 +993,33 @@ void bountyTowerMainMenu()
 
 }
 
+void tavernButtons()
+{
+    int towerButt = createImageButton(sf::Vector2f(43*GRID_SIZE,67*GRID_SIZE),texturemanager.getTexture("yellowBook.png"));
+    int towerButt2 = createImageButton(sf::Vector2f(53*GRID_SIZE,67*GRID_SIZE),texturemanager.getTexture("yellowBook.png"));
+
+    if(imageButtonHovered(towerButt) || imageButtonHovered(towerButt2))
+        textList.createText(gvars::mousePos,15,sf::Color::Yellow,"Click to progress to bounty menus!");
+
+    if(imageButtonClicked(towerButt) || imageButtonClicked(towerButt2))
+    {
+        gCtrl.phase = "Tower Selection";
+    }
+}
+
 void bountyTowerLoop()
 {
     hotkeySquaddieSelect();
     bossLoop();
 
+    if(bountytower::currentTower != nullptr && bountytower::currentTower->name == "The Tavern")
+        tavernButtons();
+
     AnyDeletes(menus);
     if(gCtrl.phase == "BTMain Menu")
         bountyTowerMainMenu();
 
-    if(bountytower::towerLoaded == "" && gCtrl.phase == "Tower Selection")
+    if(gCtrl.phase == "Tower Selection")
         towerMenu();
     if(!selectedNPCs.empty() && inputState.key[Key::I].time == 1)
     {
