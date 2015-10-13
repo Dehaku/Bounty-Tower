@@ -38,9 +38,6 @@ void equipStarters()
             item = *getGlobalItem("Shotgun - Spread");
             item.amount = 30;
             //member.inventory.push_back(item);
-
-            //member.tags.append("[MagicBeam:1]");
-
         }
         if(currentCritter == 1)
         {
@@ -54,8 +51,6 @@ void equipStarters()
             item.amount = 5;
             member.inventory.push_back(item);
             member.inventory.push_back(item);
-
-            //member.tags.append("[MagicBeam:1]");
 
         }
         if(currentCritter == 2)
