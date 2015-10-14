@@ -509,6 +509,28 @@ void squaddieMenu(Npc &npc)
     menus.push_back(sMenu);
 }
 
+void merchantMenu()
+{
+    for(auto menu : menus)
+        if(menu.name == "Merchant Menu")
+            return;
+    baseMenu sMenu;
+    sMenu.name = "Merchant Menu";
+    sMenu.Pos = sf::Vector2f(RESOLUTION.x/2,RESOLUTION.y/2);
+    menus.push_back(sMenu);
+}
+
+void recruiterMenu()
+{
+    for(auto menu : menus)
+        if(menu.name == "Recruitment Menu")
+            return;
+    baseMenu sMenu;
+    sMenu.name = "Recruitment Menu";
+    sMenu.Pos = sf::Vector2f(RESOLUTION.x/2,RESOLUTION.y/2);
+    menus.push_back(sMenu);
+}
+
 int nextLevelXpRequired(int level)
 {
     int baseXpPerLevel = 100;
@@ -668,6 +690,16 @@ void renderSquaddieMenu(baseMenu &menu)
 
 }
 
+void renderMerchantMenu(baseMenu &menu)
+{
+    shapes.createSquare(100,100,RESOLUTION.x-100,RESOLUTION.y-100,sf::Color(sf::Color(150,150,0)),5,sf::Color::White,&gvars::hudView);
+    //Close Button
+    int exitButt = createImageButton(sf::Vector2f(RESOLUTION.x-100,100),texturemanager.getTexture("ExitButton.png"),"",0,window.getDefaultView());
+    if(imageButtonClicked(exitButt))
+        menu.toDelete = true;
+}
+
+
 void drawMenus()
 {
     int xOffset = gvars::mousePos.x - gvars::topLeft.x;
@@ -680,11 +712,14 @@ void drawMenus()
     {
 
         if(menu.name == "Squaddie Menu")
-        {
             renderSquaddieMenu(menu);
-        }
+        if(menu.name == "Merchant Menu")
+            renderMerchantMenu(menu);
+
     }
     window.setView(gvars::view1);
+
+    std::cout << "Menus: " << menus.size() << std::endl;
 }
 
 int getLivingFactionMemberCount(std::string faction)
@@ -1056,18 +1091,18 @@ void NPCbuttons()
             int dealerButt = createImageButton(npc.getPos2d(),texturemanager.getTexture("SelectionCircle.png"));
             if(imageButtonHovered(dealerButt))
                 textList.createText(gvars::mousePos,15,sf::Color::Yellow,"Wanna see my gear? \n(Left Mouse Button) \n*Not Implimented*");
-            /*if(imageButtonClicked(dealerButt))
-                gCtrl.phase = "Tower Selection";
-                */
+            if(imageButtonClicked(dealerButt))
+                merchantMenu();
+
         }
         else if(npc.tags.find("[Recruiter:1]") != npc.tags.npos)
         {
             int dealerButt = createImageButton(npc.getPos2d(),texturemanager.getTexture("SelectionCircle.png"));
             if(imageButtonHovered(dealerButt))
                 textList.createText(gvars::mousePos,15,sf::Color::Yellow,"Looking for some fresh meat? \n(Left Mouse Button) \n*Not Implimented*");
-            /*if(imageButtonClicked(dealerButt))
-                gCtrl.phase = "Tower Selection";
-                */
+            if(imageButtonClicked(dealerButt))
+                recruiterMenu();
+
         }
     }
 }
