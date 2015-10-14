@@ -987,6 +987,17 @@ void bountyTowerMainMenu()
         for(auto &npc : npclist)
             npc.momentum = sf::Vector2f(0,0);
 
+        Npc barKeep = *getGlobalCritter("BTHuman");
+        barKeep.name = "The Tender";
+        barKeep.id = gvars::globalid++;
+        barKeep.xpos = 2790;
+        barKeep.ypos = 3090;
+        barKeep.zpos = 60;
+        barKeep.tags.append("[WearsHat:1]");
+
+
+        npclist.push_back(barKeep);
+
         gCtrl.phase = "Lobby";
     }
         //gCtrl.phase = "Tower Selection";
@@ -1011,6 +1022,13 @@ void bountyTowerLoop()
 {
     hotkeySquaddieSelect();
     bossLoop();
+
+    if(inputState.key[Key::LControl].time > 10)
+    { // Display current mouse position.
+        std::string outPut = "MousePos: " + std::to_string(gvars::mousePos.x) + "/" + std::to_string(gvars::mousePos.y) + "/" + std::to_string(gvars::currentz*GRID_SIZE);
+        textList.createText(gvars::mousePos,10,sf::Color::White,outPut);
+    }
+
 
     if(bountytower::currentTower != nullptr && bountytower::currentTower->name == "The Tavern")
         tavernButtons();
