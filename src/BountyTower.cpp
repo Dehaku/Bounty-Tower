@@ -438,7 +438,13 @@ void towerMenu()
         gvars::currenty = xview/1.4;
 
         for(auto &npc : npclist)
+        {
+            if(npc.faction != "The Titanium Grip")
+                npc.toDelete = true;
+
             npc.momentum = sf::Vector2f(0,0);
+        }
+
     }
 
     //Draw some info about the thing.
