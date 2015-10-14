@@ -1195,12 +1195,14 @@ void bountyTowerLoop()
         debugTileMode();
     }
 
-    if(bountytower::pausewaves && bountytower::towerLoaded != "")
+    if(bountytower::pausewaves && bountytower::towerLoaded != "" && bountytower::towerLoaded != "The Tavern")
     {
         sf::Vector2f vPos(RESOLUTION.x/2,(RESOLUTION.y/2)-(RESOLUTION.y/4));
         int startButt = createImageButton(vPos,texturemanager.getTexture("ElevatorButton.png"),"Start the swarm!",0,window.getDefaultView());
         if(imageButtonClicked(startButt))
             bountytower::pausewaves = false;
+        if(imageButtonHovered(startButt))
+            textList.createText(vPos,15,sf::Color::Yellow,"Click to start the waves!",gvars::hudView);
     }
 
 
