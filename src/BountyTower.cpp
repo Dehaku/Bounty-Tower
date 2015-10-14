@@ -705,21 +705,27 @@ void renderMerchantMenu(baseMenu &menu)
     int yOffset = 0;
     for(auto item : itemmanager.globalItems)
     {
-        int posX = 150+(xOffset*60);
+        int posX = 150+(xOffset*300);
         int posY = 150+(yOffset*60);;
         shapes.createSquare(posX-30,posY-30,posX+30,posY+30,sf::Color::Black,0,sf::Color::Cyan, &gvars::hudView);
 
         sf::Vector2f vPos(posX,posY);
         int itemButt = createImageButton(vPos,*item.img.getTexture(),"",0,gvars::hudView);
+        vPos.y -= 30;
+        vPos.x += 30;
+        textList.createText(vPos,15,sf::Color::White,item.name,gvars::hudView);
+        vPos.y += 10;
+        textList.createText(vPos,15,sf::Color::White,"$" + str(item.value),gvars::hudView);
+
 
         if(imageButtonHovered(itemButt))
             textList.createText(gvars::mousePos,15,sf::Color::White,item.name);
 
-        xOffset++;
-        if(xOffset > 15)
+        yOffset++;
+        if(yOffset > 7)
         {
-            xOffset = 0;
-            yOffset++;
+            yOffset = 0;
+            xOffset++;
         }
     }
 }

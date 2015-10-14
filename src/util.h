@@ -11,6 +11,8 @@
 #include <SFML/System.hpp>
 
 void fSleep(float time);
+std::string str(int num);
+std::string str(float num);
 
 template <typename T> void con(T arg, bool endLine = true)
 {

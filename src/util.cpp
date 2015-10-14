@@ -1,6 +1,14 @@
 
 #include "util.h"
 
+std::string str(int num)
+{
+    return std::to_string(num);
+}
+std::string str(float num)
+{
+    return std::to_string(num);
+}
 
 void fSleep(float time)
 {
