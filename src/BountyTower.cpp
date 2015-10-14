@@ -987,16 +987,31 @@ void bountyTowerMainMenu()
         for(auto &npc : npclist)
             npc.momentum = sf::Vector2f(0,0);
 
-        Npc barKeep = *getGlobalCritter("BTHuman");
-        barKeep.name = "The Tender";
-        barKeep.id = gvars::globalid++;
-        barKeep.xpos = 2790;
-        barKeep.ypos = 3090;
-        barKeep.zpos = 60;
-        barKeep.tags.append("[WearsHat:1]");
+        Npc barPatron = *getGlobalCritter("BTHuman");
+        barPatron.name = "The Tender";
+        barPatron.id = gvars::globalid++;
+        barPatron.xpos = 2790;
+        barPatron.ypos = 3090;
+        barPatron.zpos = 60;
+        barPatron.tags.append("[WearsHat:1]");
 
+        //Saving the tags so each patron can provide different services.
+        std::string backupTags = barPatron.tags;
+        barPatron.tags.append("[BountyProvider:1]");
 
-        npclist.push_back(barKeep);
+        npclist.push_back(barPatron);
+        barPatron.name = "The Dealer";
+        barPatron.xpos = 2160;
+        barPatron.ypos = 2970;
+        barPatron.tags = backupTags;
+        barPatron.tags.append("[WeaponDealer:1]");
+        npclist.push_back(barPatron);
+        barPatron.name = "The Recruiter";
+        barPatron.xpos = 3600;
+        barPatron.ypos = 2970;
+        barPatron.tags = backupTags;
+        barPatron.tags.append("[Recruiter:1]");
+        npclist.push_back(barPatron);
 
         gCtrl.phase = "Lobby";
     }
@@ -1018,10 +1033,44 @@ void tavernButtons()
     }
 }
 
+void NPCbuttons()
+{
+    for(auto &npc : npclist)
+    {
+        if(npc.tags.find("[BountyProvider:1]") != npc.tags.npos)
+        {
+            int bountyButt = createImageButton(npc.getPos2d(),texturemanager.getTexture("SelectionCircle.png"));
+            if(imageButtonHovered(bountyButt))
+                textList.createText(gvars::mousePos,15,sf::Color::Yellow,"Ready to go bounty hunting? \n(Left Mouse Button)");
+            if(imageButtonClicked(bountyButt))
+                gCtrl.phase = "Tower Selection";
+        }
+        else if(npc.tags.find("[WeaponDealer:1]") != npc.tags.npos)
+        {
+            int dealerButt = createImageButton(npc.getPos2d(),texturemanager.getTexture("SelectionCircle.png"));
+            if(imageButtonHovered(dealerButt))
+                textList.createText(gvars::mousePos,15,sf::Color::Yellow,"Wanna see my gear? \n(Left Mouse Button) \n*Not Implimented*");
+            /*if(imageButtonClicked(dealerButt))
+                gCtrl.phase = "Tower Selection";
+                */
+        }
+        else if(npc.tags.find("[Recruiter:1]") != npc.tags.npos)
+        {
+            int dealerButt = createImageButton(npc.getPos2d(),texturemanager.getTexture("SelectionCircle.png"));
+            if(imageButtonHovered(dealerButt))
+                textList.createText(gvars::mousePos,15,sf::Color::Yellow,"Looking for some fresh meat? \n(Left Mouse Button) \n*Not Implimented*");
+            /*if(imageButtonClicked(dealerButt))
+                gCtrl.phase = "Tower Selection";
+                */
+        }
+    }
+}
+
 void bountyTowerLoop()
 {
     hotkeySquaddieSelect();
     bossLoop();
+    NPCbuttons();
 
     if(inputState.key[Key::LControl].time > 10)
     { // Display current mouse position.
