@@ -613,6 +613,10 @@ void ItemManager::initializeItems()
             item.name = "Debuggery";
             item.name = stringFindString(line, "[name:");
 
+            item.value = stringFindNumber(line, "[value:");
+            if(item.value == 0)
+                item.value = 30;
+
             int stackSize = stringFindNumber(line, "[stackSize:");
             //std::cout << item.name << ", " << stackSize << std::endl;
             if(stackSize == 0)
@@ -628,6 +632,7 @@ void ItemManager::initializeItems()
             item.radius = stringFindNumber(line, "[radius:");
             item.penetration = stringFindNumber(line, "[penetration:");
             item.richochets = stringFindNumber(line, "[richochets:");
+
 
             item.massGlass = stringFindNumber(line, "[MassGlass:");
             item.massFlesh = stringFindNumber(line, "[MassFlesh:");

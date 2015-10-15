@@ -1136,6 +1136,27 @@ void NPCbuttons()
     }
 }
 
+void displayCash()
+{
+    std::string cashLine = "$";
+
+    Faction * factionPtr = nullptr;
+    for(auto &faction : uniFact)
+        if(faction.name == "The Titanium Grip")
+            factionPtr = &faction;
+
+    int cashAmount = factionPtr->credits;
+
+    cashLine.append( str(cashAmount) );
+    int offSet = cashLine.size()*17;
+    sf::Vector2f vPos( (RESOLUTION.x-offSet)-20,0);
+
+    textList.createText(vPos,20,sf::Color::Yellow,cashLine,gvars::hudView);
+
+    if(inputState.key[Key::T].time == 1 || inputState.key[Key::T].time > 60)
+        factionPtr->credits += 50;
+}
+
 void bountyTowerLoop()
 {
     hotkeySquaddieSelect();
@@ -1391,7 +1412,7 @@ void bountyTowerLoop()
     if(bountytower::towerLoaded != "")
         textList.createText(sf::Vector2f(RESOLUTION.x/2,15),15,sf::Color::White,"Floor: " + std::to_string(gvars::currentz),window.getDefaultView());
 
-
+    displayCash();
 
     if(bountytower::elevatoravailable && bountytower::towerLoaded != "")
     { // Prints Elevator HUD and other such things

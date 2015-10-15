@@ -169,7 +169,7 @@ void TextList::createText(sf::Vector2f vPos, int sizeMe, sf::Color color,
     var.ypos = vPos.y;
     var.color = color;
     var.sString = textz;
-    var.size = size;
+    var.size = sizeMe;
     var.shadow = 1;
     var.bold = bold;
     textlist.push_back(var);
