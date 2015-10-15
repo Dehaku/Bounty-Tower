@@ -594,7 +594,7 @@ void renderSquaddieMenu(baseMenu &menu)
     std::string LevelXpLine = "Level: " + std::to_string(npc->level) + "\n";
     LevelXpLine.append("XP: " + std::to_string(npc->xp));
     LevelXpLine.append(", (Next Level: " + std::to_string(nextLevelXpRequired(npc->level)) + ")");
-    textList.createText(sf::Vector2f(105,115),20,sf::Color::White,LevelXpLine,window.getView());
+    textList.createText(sf::Vector2f(105,120),20,sf::Color::White,LevelXpLine,window.getView());
 
     //Attributes! SPICED
     std::string AttributeLine;
@@ -605,7 +605,7 @@ void renderSquaddieMenu(baseMenu &menu)
     AttributeLine.append("Charisma: " + std::to_string(npc->attributes.charisma) + "\n");
     AttributeLine.append("Endurance: " + std::to_string(npc->attributes.endurance) + "\n");
     AttributeLine.append("Dexterity: " + std::to_string(npc->attributes.dexterity) + "\n");
-    textList.createText(sf::Vector2f(105,150),20,sf::Color::White,AttributeLine,window.getView());
+    textList.createText(sf::Vector2f(105,170),20,sf::Color::White,AttributeLine,window.getView());
 
 
 
@@ -669,8 +669,8 @@ void renderSquaddieMenu(baseMenu &menu)
                 textList.createText(drawPos,20,sf::Color::Cyan,outPut,window.getView());
                 sf::Vector2f textPos(drawPos);
                 textPos.y -= 10;
-                textPos.x -= 100;
-                textList.createText(textPos,20,sf::Color::Cyan,skill.desc,window.getView());
+                textPos.x -= 500;
+                textList.createText(textPos,10,sf::Color::Cyan,skill.desc,window.getView());
             }
             else
                 textList.createText(drawPos,20,sf::Color::White,outPut,window.getView());
