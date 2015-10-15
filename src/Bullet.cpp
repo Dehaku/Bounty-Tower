@@ -38,7 +38,11 @@ std::string richochetCheck(Bullet &bullet)
     //shapes.createCircle(pos.x,pos.y,3,sf::Color(150,150,150),1,sf::Color(0,0,0));
 
     sf::Vector2f bulletPos(bullet.pos.x,bullet.pos.y);
-    bool isWall = tiles[abs_to_index(bullet.pos.x/GRID_SIZE)][abs_to_index(bullet.pos.y/GRID_SIZE)][abs_to_index(bullet.pos.z/GRID_SIZE)].walkable;
+
+    bool isWall = false;
+    if(isInBounds(sf::Vector2f(bullet.pos.x,bullet.pos.y) ))
+        isWall = tiles[abs_to_index(bullet.pos.x/GRID_SIZE)][abs_to_index(bullet.pos.y/GRID_SIZE)][abs_to_index(bullet.pos.z/GRID_SIZE)].walkable;
+
     if(isInBounds(bulletPos) && !isWall)
     {
         Vec3f tempPos(bullet.positions[bullet.positions.size()-1]);
