@@ -486,6 +486,7 @@ public:
     bool toDelete;
     std::string name;
     sf::Vector2f Pos;
+    Vec3f makePos;
     Npc *npc;
 
     baseMenu();
@@ -512,7 +513,7 @@ void squaddieMenu(Npc &npc)
     menus.push_back(sMenu);
 }
 
-void merchantMenu()
+void merchantMenu(Vec3f creationPos)
 {
     for(auto menu : menus)
         if(menu.name == "Merchant Menu")
@@ -520,6 +521,7 @@ void merchantMenu()
     baseMenu sMenu;
     sMenu.name = "Merchant Menu";
     sMenu.Pos = sf::Vector2f(RESOLUTION.x/2,RESOLUTION.y/2);
+    sMenu.makePos = creationPos;
     menus.push_back(sMenu);
 }
 
@@ -717,9 +719,37 @@ void renderMerchantMenu(baseMenu &menu)
         vPos.y += 10;
         textList.createText(vPos,15,sf::Color::White,"$" + str(item.value),gvars::hudView);
 
-
         if(imageButtonHovered(itemButt))
             textList.createText(gvars::mousePos,15,sf::Color::White,item.name);
+
+        if(imageButtonClicked(itemButt))
+        {
+            if(conFact->credits < item.value)
+                chatBox.addChat("You do not have enough cash for"+item.name+"!", sf::Color::White);
+            else
+            {
+                conFact->credits -= item.value;
+                Item soldItem = item;
+                soldItem.id = gvars::globalid++;
+                soldItem.xpos = menu.makePos.x+(randz(-30,30));
+                soldItem.ypos = menu.makePos.y+30;
+                soldItem.zpos = menu.makePos.z;
+                soldItem.amount = soldItem.stackSize;
+
+                worlditems.push_back(soldItem);
+                int soundRan = random(1,3);
+                if(soundRan == 1)
+                    soundmanager.playSound("CashPickup1.ogg");
+                if(soundRan == 2)
+                    soundmanager.playSound("CashPickup2.ogg");
+                if(soundRan == 3)
+                    soundmanager.playSound("CashPickup3.ogg");
+
+                chatBox.addChat("You purchased a "+item.name+" for "+str(item.value)+"!", sf::Color::White);
+            }
+        }
+
+
 
         yOffset++;
         if(yOffset > 7)
@@ -1121,7 +1151,7 @@ void NPCbuttons()
             if(imageButtonHovered(dealerButt))
                 textList.createText(gvars::mousePos,15,sf::Color::Yellow,"Wanna see my gear? \n(Left Mouse Button) \n*Not Implimented*");
             if(imageButtonClicked(dealerButt))
-                merchantMenu();
+                merchantMenu(npc.getPos());
 
         }
         else if(npc.tags.find("[Recruiter:1]") != npc.tags.npos)
@@ -1139,13 +1169,7 @@ void NPCbuttons()
 void displayCash()
 {
     std::string cashLine = "$";
-
-    Faction * factionPtr = nullptr;
-    for(auto &faction : uniFact)
-        if(faction.name == "The Titanium Grip")
-            factionPtr = &faction;
-
-    int cashAmount = factionPtr->credits;
+    int cashAmount = conFact->credits;
 
     cashLine.append( str(cashAmount) );
     int offSet = cashLine.size()*17;
@@ -1153,8 +1177,8 @@ void displayCash()
 
     textList.createText(vPos,20,sf::Color::Yellow,cashLine,gvars::hudView);
 
-    if(inputState.key[Key::T].time == 1 || inputState.key[Key::T].time > 60)
-        factionPtr->credits += 50;
+    if(inputState.key[Key::End].time == 1 || inputState.key[Key::End].time > 60)
+        conFact->credits += 50;
 }
 
 void bountyTowerLoop()
