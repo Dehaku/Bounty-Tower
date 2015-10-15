@@ -804,6 +804,7 @@ void renderRecruiterMenu(baseMenu &menu)
                 soldNpc.zpos = menu.makePos.z;
                 soldNpc.factionPtr = conFact;
                 soldNpc.faction = conFact->name;
+                soldNpc.name = generateName();
 
                 npclist.push_back(soldNpc);
                 int soundRan = random(1,3);
