@@ -3982,7 +3982,7 @@ void drawInventory(sf::Vector2f vPos, std::list<Item> &inventory)
 
 void drawSelectedCritterHUD()
 {
-    if (!selectedNPCs.empty())
+    if (!selectedNPCs.empty() && !bountytower::bountytower)
     {
         int nxpos = gvars::topLeft.x+5;
         int nypos = gvars::topLeft.y + (RESOLUTION.y / 2);

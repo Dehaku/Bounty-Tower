@@ -2630,8 +2630,8 @@ void drawStuffs()
 
     {
         sf::Lock lock(mutex::npcList);
-        if(!bountytower::bountytower)
-            drawSelectedCritterHUD();
+
+        drawSelectedCritterHUD();
         drawNPCs(npclist);
     }
 
