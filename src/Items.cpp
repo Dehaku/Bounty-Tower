@@ -615,7 +615,7 @@ void ItemManager::initializeItems()
 
             item.value = stringFindNumber(line, "[value:");
             if(item.value == 0)
-                item.value = 30;
+                item.value = -1;
 
             int stackSize = stringFindNumber(line, "[stackSize:");
             //std::cout << item.name << ", " << stackSize << std::endl;

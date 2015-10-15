@@ -105,6 +105,8 @@ public:
     int xp;
     int skillpoints;
 
+    bool recruitable;
+
     Item * getLeftHandItem();
     Item * getRightHandItem();
     Item * getItemTypeInHands(int type);

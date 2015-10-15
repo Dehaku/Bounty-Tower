@@ -708,6 +708,8 @@ void renderMerchantMenu(baseMenu &menu)
     int yOffset = 0;
     for(auto item : itemmanager.globalItems)
     {
+        if(item.value == -1)
+            continue;
         int posX = 150+(xOffset*300);
         int posY = 150+(yOffset*60);;
         shapes.createSquare(posX-30,posY-30,posX+30,posY+30,sf::Color::Black,0,sf::Color::Cyan, &gvars::hudView);
@@ -773,6 +775,8 @@ void renderRecruiterMenu(baseMenu &menu)
     int yOffset = 0;
     for(auto npc : npcmanager.globalCritter)
     {
+        if(!npc.recruitable)
+            continue;
         int critterCost = 100;
         int posX = 150+(xOffset*300);
         int posY = 150+(yOffset*60);;

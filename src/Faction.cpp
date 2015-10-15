@@ -1385,6 +1385,8 @@ Npc::Npc()
     xp = 0;
     skillpoints = 5;
 
+    recruitable = false;
+
     graspItemLeft = nullptr;
     graspItemRight = nullptr;
     graspNpcLeft = nullptr;
@@ -2770,6 +2772,8 @@ void NpcManager::initializeCritters()
             critter.breathtimerint = stringFindNumber(line, "[BreathTimerInt:");
             critter.hungertimerint = stringFindNumber(line, "[HungerTimerInt:");
             critter.thirsttimerint = stringFindNumber(line, "[ThirstTimerInt:");
+
+            critter.recruitable = stringFindNumber(line, "[Recruitable:");
 
             critter.moverateint = stringFindNumber(line, "[MoveSpeed:");
             critter.turnSpeed = stringFindNumber(line, "[TurnSpeed:");
