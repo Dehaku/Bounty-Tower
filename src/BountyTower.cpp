@@ -151,7 +151,7 @@ void bountyTowerSetup()
 
     conFact->factRelations.push_back(factR);
 
-    addMembers(4,"The Titanium Grip");
+    addMembers(1,"The Titanium Grip");
     equipStarters();
 
 
@@ -811,6 +811,8 @@ void renderRecruiterMenu(baseMenu &menu)
                 soldNpc.factionPtr = conFact;
                 soldNpc.faction = conFact->name;
                 soldNpc.name = generateName();
+                soldNpc.tags.append("[WearsHat:1]");
+                soldNpc.isSquaddie = true;
 
                 npclist.push_back(soldNpc);
                 int soundRan = random(1,3);
@@ -822,6 +824,7 @@ void renderRecruiterMenu(baseMenu &menu)
                     soundmanager.playSound("CashPickup3.ogg");
 
                 chatBox.addChat("You purchased a "+npc.name+" for "+str(critterCost)+"!", sf::Color::White);
+                setupSquadHotKeySelection();
             }
         }
 
