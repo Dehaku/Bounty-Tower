@@ -796,7 +796,9 @@ void renderRecruiterMenu(baseMenu &menu)
 
         if(imageButtonClicked(npcButt))
         {
-            if(conFact->credits < critterCost)
+            if(Squaddies.size() >= 4)
+                chatBox.addChat("You already have a full squad!", sf::Color::White);
+            else if(conFact->credits < critterCost)
                 chatBox.addChat("You do not have enough cash for "+npc.name+"!", sf::Color::White);
             else
             {
@@ -1224,7 +1226,7 @@ void NPCbuttons()
         {
             int dealerButt = createImageButton(npc.getPos2d(),texturemanager.getTexture("SelectionCircle.png"));
             if(imageButtonHovered(dealerButt))
-                textList.createText(gvars::mousePos,15,sf::Color::Yellow,"Wanna see my gear? \n(Left Mouse Button) \n*Not Implimented*");
+                textList.createText(gvars::mousePos,15,sf::Color::Yellow,"Wanna see my gear? \n(Left Mouse Button)");
             if(imageButtonClicked(dealerButt))
                 merchantMenu(npc.getPos());
 
@@ -1233,7 +1235,7 @@ void NPCbuttons()
         {
             int dealerButt = createImageButton(npc.getPos2d(),texturemanager.getTexture("SelectionCircle.png"));
             if(imageButtonHovered(dealerButt))
-                textList.createText(gvars::mousePos,15,sf::Color::Yellow,"Looking for some fresh meat? \n(Left Mouse Button) \n*Not Implimented*");
+                textList.createText(gvars::mousePos,15,sf::Color::Yellow,"Looking for some fresh meat? \n(Left Mouse Button)");
             if(imageButtonClicked(dealerButt))
                 recruiterMenu(npc.getPos());
 
