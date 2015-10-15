@@ -525,7 +525,7 @@ void merchantMenu(Vec3f creationPos)
     menus.push_back(sMenu);
 }
 
-void recruiterMenu()
+void recruiterMenu(Vec3f creationPos)
 {
     for(auto menu : menus)
         if(menu.name == "Recruitment Menu")
@@ -533,6 +533,7 @@ void recruiterMenu()
     baseMenu sMenu;
     sMenu.name = "Recruitment Menu";
     sMenu.Pos = sf::Vector2f(RESOLUTION.x/2,RESOLUTION.y/2);
+    sMenu.makePos = creationPos;
     menus.push_back(sMenu);
 }
 
@@ -725,7 +726,7 @@ void renderMerchantMenu(baseMenu &menu)
         if(imageButtonClicked(itemButt))
         {
             if(conFact->credits < item.value)
-                chatBox.addChat("You do not have enough cash for"+item.name+"!", sf::Color::White);
+                chatBox.addChat("You do not have enough cash for "+item.name+"!", sf::Color::White);
             else
             {
                 conFact->credits -= item.value;
@@ -760,6 +761,73 @@ void renderMerchantMenu(baseMenu &menu)
     }
 }
 
+void renderRecruiterMenu(baseMenu &menu)
+{
+    shapes.createSquare(100,100,RESOLUTION.x-100,RESOLUTION.y-100,sf::Color(sf::Color(150,150,0)),5,sf::Color::White,&gvars::hudView);
+    //Close Button
+    int exitButt = createImageButton(sf::Vector2f(RESOLUTION.x-100,100),texturemanager.getTexture("ExitButton.png"),"",0,window.getDefaultView());
+    if(imageButtonClicked(exitButt))
+        menu.toDelete = true;
+
+    int xOffset = 0;
+    int yOffset = 0;
+    for(auto npc : npcmanager.globalCritter)
+    {
+        int critterCost = 100;
+        int posX = 150+(xOffset*300);
+        int posY = 150+(yOffset*60);;
+        shapes.createSquare(posX-30,posY-30,posX+30,posY+30,sf::Color::Black,0,sf::Color::Cyan, &gvars::hudView);
+
+        sf::Vector2f vPos(posX,posY);
+        int npcButt = createImageButton(vPos,*npc.img.getTexture(),"",0,gvars::hudView);
+        // hehe... npc butt.
+        vPos.y -= 30;
+        vPos.x += 30;
+        textList.createText(vPos,15,sf::Color::White,npc.name,gvars::hudView);
+        vPos.y += 10;
+        textList.createText(vPos,15,sf::Color::White,"$" + critterCost,gvars::hudView);
+
+        if(imageButtonHovered(npcButt))
+            textList.createText(gvars::mousePos,15,sf::Color::White,npc.name);
+
+        if(imageButtonClicked(npcButt))
+        {
+            if(conFact->credits < critterCost)
+                chatBox.addChat("You do not have enough cash for "+npc.name+"!", sf::Color::White);
+            else
+            {
+                conFact->credits -= critterCost;
+                Npc soldNpc = npc;
+                soldNpc.id = gvars::globalid++;
+                soldNpc.xpos = menu.makePos.x+(randz(-30,30));
+                soldNpc.ypos = menu.makePos.y+30;
+                soldNpc.zpos = menu.makePos.z;
+                soldNpc.factionPtr = conFact;
+                soldNpc.faction = conFact->name;
+
+                npclist.push_back(soldNpc);
+                int soundRan = random(1,3);
+                if(soundRan == 1)
+                    soundmanager.playSound("CashPickup1.ogg");
+                if(soundRan == 2)
+                    soundmanager.playSound("CashPickup2.ogg");
+                if(soundRan == 3)
+                    soundmanager.playSound("CashPickup3.ogg");
+
+                chatBox.addChat("You purchased a "+npc.name+" for "+str(critterCost)+"!", sf::Color::White);
+            }
+        }
+
+
+
+        yOffset++;
+        if(yOffset > 7)
+        {
+            yOffset = 0;
+            xOffset++;
+        }
+    }
+}
 
 void drawMenus()
 {
@@ -776,6 +844,8 @@ void drawMenus()
             renderSquaddieMenu(menu);
         if(menu.name == "Merchant Menu")
             renderMerchantMenu(menu);
+        if(menu.name == "Recruitment Menu")
+            renderRecruiterMenu(menu);
 
     }
     window.setView(gvars::view1);
@@ -1160,7 +1230,7 @@ void NPCbuttons()
             if(imageButtonHovered(dealerButt))
                 textList.createText(gvars::mousePos,15,sf::Color::Yellow,"Looking for some fresh meat? \n(Left Mouse Button) \n*Not Implimented*");
             if(imageButtonClicked(dealerButt))
-                recruiterMenu();
+                recruiterMenu(npc.getPos());
 
         }
     }
