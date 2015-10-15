@@ -789,7 +789,7 @@ void renderRecruiterMenu(baseMenu &menu)
         vPos.x += 30;
         textList.createText(vPos,15,sf::Color::White,npc.name,gvars::hudView);
         vPos.y += 10;
-        textList.createText(vPos,15,sf::Color::White,"$" + critterCost,gvars::hudView);
+        textList.createText(vPos,15,sf::Color::White,"$" + str(critterCost),gvars::hudView);
 
         if(imageButtonHovered(npcButt))
             textList.createText(gvars::mousePos,15,sf::Color::White,npc.name);
