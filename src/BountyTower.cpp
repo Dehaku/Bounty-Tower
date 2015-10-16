@@ -976,6 +976,10 @@ void nextFloorTransition()
 {
     for(auto &npc : npclist)
     {
+        npc.storedPath.clear();
+        npc.endPos = Vec3();
+        npc.hasPath = false;
+        npc.needsPath = false;
         //!npc.alive
         if(gvars::currentz != abs_to_index(npc.zpos/GRID_SIZE))
         {
