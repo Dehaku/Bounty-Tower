@@ -1059,6 +1059,10 @@ void workSwitch(Npc &npc, std::list<Npc> &container)
         {
             standTile->state = "On";
         }
+
+        if(inputState.key[Key::L])
+            standTile->state = "On";
+
         int percentage = percentIs(standTile->workGoal,standTile->workProgress);
         textList.createText(xTile*GRID_SIZE+10,yTile*GRID_SIZE+10,15,sf::Color::Yellow,"%" + std::to_string(percentage));
     }

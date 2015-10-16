@@ -966,6 +966,12 @@ void spawnBoss()
     npclist.push_back(boss);
 }
 
+void clearSlots(Npc &npc)
+{
+    for(int i = 0; i != 20; i++)
+        npc.invSlots[i] = nullptr;
+}
+
 void nextFloorTransition()
 {
     for(auto &npc : npclist)
@@ -973,6 +979,7 @@ void nextFloorTransition()
         //!npc.alive
         if(gvars::currentz != abs_to_index(npc.zpos/GRID_SIZE))
         {
+            clearSlots(npc);
             leftBehind.push_back(npc);
             npc.toDelete = true;
         }
