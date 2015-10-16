@@ -947,7 +947,9 @@ void spawnBoss()
 
     boss.id = gvars::globalid++;
     boss.level = 10;
+    boss.maxhealth = 10000;
     boss.health = 10000;
+
 
     boss.faction = "Towerlings";
     boss.factionPtr = &listAt(uniFact,2);
@@ -976,8 +978,7 @@ void nextFloorTransition()
         }
     }
 
-    if(gvars::currentz == bountytower::currentTower->floors)
-        spawnBoss();
+
 }
 
 
@@ -1343,6 +1344,9 @@ void checkDoors()
             bountytower::pausewaves = false;
             chatBox.addChat("Here they come!",sf::Color::White);
             soundmanager.playSound("AngryWallabee.ogg");
+
+            if(gvars::currentz == bountytower::currentTower->floors)
+                spawnBoss();
         }
 
     }
@@ -1352,12 +1356,30 @@ void layHints()
 {
     if(bountytower::currentTower != nullptr)
         if(bountytower::currentTower->name == "FantasyModern")
+        {
             if(gvars::currentz == 1)
-    {
-        textList.createText(2940,3870,15,gvars::cycleRed,"Passing through doors will alert enemies to your presence on the floor! \n"
+            {
+                textList.createText(2940,3870,15,gvars::cycleRed,"Passing through doors will alert enemies to your presence on the floor! \n"
                             " They will flood from the stairs until they're sufficiently scared!");
-        textList.createText(3000,2790,15,gvars::cycleRed,"Stand squaddies on switches to activate them, enabling the elevator. \n"
+                textList.createText(3000,2790,15,gvars::cycleRed,"Stand squaddies on switches to activate them, enabling the elevator. \n"
                             "Be sure to get everyone on the elevator before you try to leave, Or you'll abandon them!");
+            }
+            else if(gvars::currentz == 4)
+            {
+                textList.createText(2940,2940,15,gvars::cycleRed,"Your bounty is waiting for you. \n"
+                                                                "Be prepared for a fight upstairs!");
+            }
+        }
+}
+
+void debugTeleportSquaddies(Vec3 telePos)
+{
+    for(auto &npc : npclist)
+        if(npc.isSquaddie)
+    {
+        npc.xpos = telePos.x;
+        npc.ypos = telePos.y;
+        npc.zpos = telePos.z;
     }
 }
 
@@ -1368,6 +1390,12 @@ void bountyTowerLoop()
     checkDoors();
     NPCbuttons();
     layHints();
+
+    if(inputState.key[Key::LControl].time > 10)
+        if(inputState.key[Key::LShift].time > 10)
+            if(inputState.lmbTime > 10)
+                debugTeleportSquaddies(Vec3(gvars::mousePos.x,gvars::mousePos.y,gvars::currentz*GRID_SIZE));
+
 
     if(inputState.key[Key::LControl].time > 10)
     { // Display current mouse position.
