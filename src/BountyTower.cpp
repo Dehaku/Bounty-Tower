@@ -498,10 +498,13 @@ void towerMenu()
     shapes.createCircle((-xMinus)+xPart*5,(-yMinus)+yPart*3,50,gvars::cycleRed);
 
 
-    int returnButt = createImageButton(sf::Vector2f(50,50),texturemanager.getTexture("ExitButton.png"),"",0,gvars::hudView);
+    int returnButt = createImageButton(sf::Vector2f(50,50),texturemanager.getTexture("returnButton.png"),"",0,gvars::hudView);
     if(imageButtonClicked(returnButt))
     {
         gCtrl.phase = "Lobby";
+        int xview = (96*60)/20;
+        gvars::currentx = xview/2;
+        gvars::currenty = xview/1.4;
     }
 
 
@@ -1105,6 +1108,7 @@ void loadTavern()
         npc.momentum = sf::Vector2f(0,0);
 
     Npc barPatron = *getGlobalCritter("BTHuman");
+    barPatron.canmove = false;
     barPatron.name = "The Tender";
     barPatron.id = gvars::globalid++;
     barPatron.xpos = 2790;
