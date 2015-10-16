@@ -450,7 +450,7 @@ class PathingController
 #ifdef USE_PATHER
     : public Graph
 #endif
-{
+{ // This is the one actually being used.
 private:
     PathingController(const PathingController &);
     void operator=(const PathingController &);
@@ -683,7 +683,7 @@ public:
                 if(i == 1)
                 {
                     //1 up left, 3 up right, 6 down left, 8 down right
-                    if(Passable(x-1,y,z) > 0 && Passable(x,y-1,z) > 0){}
+                    if(Passable(x+dx[i],y,z) > 0 && Passable(x,y+dy[i],z) > 0){}
                     else
                         notCorner = false;
 
@@ -691,7 +691,7 @@ public:
                 if(i == 3)
                 {
                     //1 up left, 3 up right, 6 down left, 8 down right
-                    if(Passable(x+1,y,z) > 0 && Passable(x,y-1,z) > 0){}
+                    if(Passable(x+dx[i],y,z) > 0 && Passable(x,y+dy[i],z) > 0){}
                     else
                         notCorner = false;
 
@@ -699,7 +699,7 @@ public:
                 if(i == 6)
                 {
                     //1 up left, 3 up right, 6 down left, 8 down right
-                    if(Passable(x-1,y,z) > 0 && Passable(x,y+1,z) > 0){}
+                    if(Passable(x+dx[i],y,z) > 0 && Passable(x,y+dy[i],z) > 0){}
                     else
                         notCorner = false;
 
@@ -707,14 +707,14 @@ public:
                 if(i == 8)
                 {
                     //1 up left, 3 up right, 6 down left, 8 down right
-                    if(Passable(x+1,y,z) > 0 && Passable(x,y+1,z) > 0){}
+                    if(Passable(x+dx[i],y,z) > 0 && Passable(x,y+dy[i],z) > 0){}
                     else
                         notCorner = false;
 
                 }
             }
 
-            if(i == 0 || i == 1) // Z-levels are not needed on BT.
+            if(i == 0 || i == 9) // Z-levels are not needed on BT.
                 pass = 0;
 
             if (pass > 0 && notCorner)
