@@ -5,6 +5,11 @@
 
 std::vector<Npc*> Squaddies;
 
+int gridIt(int num)
+{
+    return num/GRID_SIZE;
+}
+
 void setupSquadHotKeySelection()
 {
     Squaddies.clear();
@@ -440,7 +445,7 @@ void towerMenu()
     if(imageButtonClicked(fanTowButt))
     {
 
-
+        bountytower::pausewaves = true;
         bountytower::towerLoaded = towers[1].name;
         bountytower::currentTower = &towers[1];
         gCtrl.phase = "Lobby";
@@ -1312,11 +1317,53 @@ void displayCash()
         conFact->credits += 50;
 }
 
+void checkDoors()
+{// This starts the assault the moment a squaddie touchs a door tile.
+    if(bountytower::pausewaves == false)
+        return;
+    if(bountytower::currentTower == nullptr)
+        return;
+    if(bountytower::currentTower->name == "The Tavern")
+        return;
+
+
+    for(auto &npc : Squaddies)
+    {
+        if(!isInBounds(npc->getPos2d()))
+            continue;
+
+        Tile * tile;
+        tile = &tiles[gridIt(npc->xpos)][gridIt(npc->ypos)][gridIt(npc->zpos)];
+        if(tile->id == 2100)
+        {
+            bountytower::pausewaves = false;
+            chatBox.addChat("Here they come!",sf::Color::White);
+            soundmanager.playSound("AngryWallabee.ogg");
+        }
+
+    }
+}
+
+void layHints()
+{
+    if(bountytower::currentTower != nullptr)
+        if(bountytower::currentTower->name == "FantasyModern")
+            if(gvars::currentz == 1)
+    {
+        textList.createText(2940,3870,15,gvars::cycleRed,"Passing through doors will alert enemies to your presence on the floor! \n"
+                            " They will flood from the stairs until they're sufficiently scared!");
+        textList.createText(3000,2790,15,gvars::cycleRed,"Stand squaddies on switches to activate them, enabling the elevator. \n"
+                            "Be sure to get everyone on the elevator before you try to leave, Or you'll abandon them!");
+    }
+}
+
 void bountyTowerLoop()
 { // Game Loop
     hotkeySquaddieSelect();
     bossLoop();
+    checkDoors();
     NPCbuttons();
+    layHints();
 
     if(inputState.key[Key::LControl].time > 10)
     { // Display current mouse position.
@@ -1378,17 +1425,6 @@ void bountyTowerLoop()
         textList.createText(gvars::centerScreen.x,gvars::topLeft.y,10,gvars::cycleBlue,"Debug Tilemode Engaged");
         debugTileMode();
     }
-
-    if(bountytower::pausewaves && bountytower::towerLoaded != "" && bountytower::towerLoaded != "The Tavern")
-    {
-        sf::Vector2f vPos(RESOLUTION.x/2,(RESOLUTION.y/2)-(RESOLUTION.y/4));
-        int startButt = createImageButton(vPos,texturemanager.getTexture("ElevatorButton.png"),"Start the swarm!",0,window.getDefaultView());
-        if(imageButtonClicked(startButt))
-            bountytower::pausewaves = false;
-        if(imageButtonHovered(startButt))
-            textList.createText(vPos,15,sf::Color::Yellow,"Click to start the waves!",gvars::hudView);
-    }
-
 
     cameraControls();
 

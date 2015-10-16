@@ -1808,7 +1808,8 @@ void critterPathFind(Npc &npc, std::list<Npc> &container)
         std::string pathy = "PathTime: ";
         pathy.append(out.str());
         Vec3 endPathPos(npc.storedPath[npc.storedPath.size()-1]->getPos());
-        textList.createText((endPathPos.x)*GRID_SIZE-GRID_SIZE,(endPathPos.y)*GRID_SIZE-GRID_SIZE,10,sf::Color(255,255,255), pathy );
+        if(npc.isSquaddie)
+            textList.createText((endPathPos.x)*GRID_SIZE-GRID_SIZE,(endPathPos.y)*GRID_SIZE-GRID_SIZE,10,sf::Color(255,255,255), pathy );
 
         //Moving to the next position in our path!
         npc.dirMove(sf::Vector2f(Pos.x*GRID_SIZE+(GRID_SIZE/2),Pos.y*GRID_SIZE+(GRID_SIZE/2)));

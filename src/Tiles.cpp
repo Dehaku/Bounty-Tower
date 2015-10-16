@@ -1476,6 +1476,7 @@ void Tile::BTswitch()
     walkable = true;
     img.setTexture(texturemanager.getTexture("Switchboard.png"));
     state = "Off";
+    workProgress = 0;
 }
 
 
@@ -1553,7 +1554,7 @@ Tile::Tile() : id{}
     health = 10;
     transparent = true;
     deathID = id;
-    walkable = true;
+    walkable = false;
     goesUp = false;
     goesDown = false;
     teleporter = false;
