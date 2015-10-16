@@ -743,19 +743,38 @@ void renderMerchantMenu(baseMenu &menu)
         if(item.value == -1)
             continue;
         int posX = 150+(xOffset*300);
-        int posY = 150+(yOffset*60);;
+        int posY = 150+(yOffset*60);
         shapes.createSquare(posX-30,posY-30,posX+30,posY+30,sf::Color::Black,0,sf::Color::Cyan, &gvars::hudView);
 
         sf::Vector2f vPos(posX,posY);
         int itemButt = createImageButton(vPos,*item.img.getTexture(),"",0,gvars::hudView);
+
+        sf::Color highlightColor = sf::Color::White;
+        if(imageButtonHovered(itemButt))
+            highlightColor = sf::Color::Cyan;
+
         vPos.y -= 30;
         vPos.x += 30;
-        textList.createText(vPos,15,sf::Color::White,item.name,gvars::hudView);
-        vPos.y += 10;
-        textList.createText(vPos,15,sf::Color::White,"$" + str(item.value),gvars::hudView);
+        std::string outPut = item.name;
 
-        if(imageButtonHovered(itemButt))
-            textList.createText(gvars::mousePos,15,sf::Color::White,item.name);
+
+        textList.createText(vPos,15,highlightColor,outPut,gvars::hudView);
+        vPos.y += 15;
+        textList.createText(vPos,10,highlightColor,"$" + str(item.value),gvars::hudView);
+        vPos.y += 15;
+        std::string stats = "Dam: " + str(item.mindam) + "/" + str(item.maxdam);
+        if(item.type == 1 || item.type == 2 || item.type == 23)
+            stats.append(", AtkDelay: " + str(static_cast<int>(item.activateratemax / item.activaterategrowth)));
+        stats.append("\nRange:" + str(item.range));
+
+
+        if(item.type == 2)
+            stats.append(", Mag: " + str(item.maxclip));
+        if(item.stackSize > 1)
+            stats.append("\nStack: " + str(item.stackSize));
+        textList.createText(vPos,10,highlightColor,stats,gvars::hudView);
+
+
 
         if(imageButtonClicked(itemButt))
         {
