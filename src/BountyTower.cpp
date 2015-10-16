@@ -169,7 +169,7 @@ void bountyTowerSetup()
 
     conFact->factRelations.push_back(factR);
 
-    conFact->credits = 500;
+    conFact->credits = 750;
 
     addMembers(1,"The Titanium Grip");
     equipStarters();
@@ -834,16 +834,19 @@ void renderRecruiterMenu(baseMenu &menu)
         shapes.createSquare(posX-30,posY-30,posX+30,posY+30,sf::Color::Black,0,sf::Color::Cyan, &gvars::hudView);
 
         sf::Vector2f vPos(posX,posY);
-        int npcButt = createImageButton(vPos,*npc.img.getTexture(),"",0,gvars::hudView);
+        int npcButt = createImageButton(vPos,texturemanager.getTexture("SpriteSheet"+npc.race+"Frame.png"),"",0,gvars::hudView);
         // hehe... npc butt.
+        sf::Color highlightColor = sf::Color::White;
+        if(imageButtonHovered(npcButt))
+            highlightColor = sf::Color::Cyan;
+
         vPos.y -= 30;
         vPos.x += 30;
-        textList.createText(vPos,15,sf::Color::White,npc.name,gvars::hudView);
+        textList.createText(vPos,15,highlightColor,npc.name,gvars::hudView);
         vPos.y += 10;
-        textList.createText(vPos,15,sf::Color::White,"$" + str(critterCost),gvars::hudView);
+        textList.createText(vPos,15,highlightColor,"$" + str(critterCost),gvars::hudView);
 
-        if(imageButtonHovered(npcButt))
-            textList.createText(gvars::mousePos,15,sf::Color::White,npc.name);
+
 
         if(imageButtonClicked(npcButt))
         {
