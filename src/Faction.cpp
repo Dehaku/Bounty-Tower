@@ -653,6 +653,7 @@ void buildTurret(Npc &npc, std::list<Npc> &container)
             bool canBuild = false;
             bool tileBuildable = false;
             bool enoughScrap = false;
+            int turretCount = 0;
             Item * scrapPtr = nullptr;
 
             for(auto &item : npc.inventory)
@@ -686,8 +687,14 @@ void buildTurret(Npc &npc, std::list<Npc> &container)
                 shapes.createCircle(npc.xpos,npc.ypos,120,sf::Color::Transparent,1,sf::Color::Red);
             }
 
+            for(auto &npc : npclist)
+                if(npc.name == "BTTurret" && npc.alive && npc.faction == conFact->name)
+                    turretCount++;
 
-            if(inputState.lmbTime == 1 && canBuild)
+            if(turretSkill->ranks <= turretCount)
+                textList.createText(sf::Vector2f(sKI->usePos.x,sKI->usePos.y+20),15,sf::Color::Red,"You already have too many turrets!");
+
+            if(inputState.lmbTime == 1 && canBuild && turretSkill->ranks > turretCount)
             {
                 turretSkill->cooldown = turretSkill->cooldownint;
 
@@ -4626,10 +4633,10 @@ void drawNPCs(std::list<Npc> &container)
                 }
             }
 
-            /*
-            if(!hasAnim)
+
+            if(npc.name == "BTTurret")
                 npc.drawImg();
-            */
+
 
             sf::Color shadow(50,50,50,50);
             if(!npc.alive) // To simulate blood.
