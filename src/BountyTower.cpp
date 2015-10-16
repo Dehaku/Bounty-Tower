@@ -113,6 +113,19 @@ void setupTowers()
     towers.push_back(fantasyTower);
 }
 
+void positionSquaddies()
+{
+    for(auto &npc : npclist)
+    {
+        if(npc.faction == conFact->name)
+        {
+            npc.ypos = 4040;
+            npc.xpos = (96*GRID_SIZE/2) + random(-50,50);
+            npc.zpos = 60;
+        }
+    }
+}
+
 void bountyTowerSetup()
 {
     assignSlotPos();
@@ -150,6 +163,8 @@ void bountyTowerSetup()
     factR.appeal = -1337;
 
     conFact->factRelations.push_back(factR);
+
+    conFact->credits = 500;
 
     addMembers(1,"The Titanium Grip");
     equipStarters();
@@ -439,11 +454,13 @@ void towerMenu()
 
         for(auto &npc : npclist)
         {
-            if(npc.faction != "The Titanium Grip")
+            if(npc.faction != conFact->name)
                 npc.toDelete = true;
 
             npc.momentum = sf::Vector2f(0,0);
         }
+
+        positionSquaddies();
 
     }
 
@@ -474,6 +491,13 @@ void towerMenu()
     shapes.createCircle((-xMinus)+xPart*3,(-yMinus)+yPart*3,50,gvars::cycleBlue);
     shapes.createCircle((-xMinus)+xPart*4,(-yMinus)+yPart*3,50,gvars::cycleBlue);
     shapes.createCircle((-xMinus)+xPart*5,(-yMinus)+yPart*3,50,gvars::cycleRed);
+
+
+    int returnButt = createImageButton(sf::Vector2f(50,50),texturemanager.getTexture("ExitButton.png"),"",0,gvars::hudView);
+    if(imageButtonClicked(returnButt))
+    {
+        gCtrl.phase = "Lobby";
+    }
 
 
 }
@@ -1051,13 +1075,76 @@ void spawnEnemies()
     debug("Done placin Towerlings");
 }
 
+
+void loadTavern()
+{
+    gvars::currentz = 1;
+    for(auto &npc : npclist)
+        if(npc.faction != conFact->name)
+            npc.toDelete = true;
+
+    positionSquaddies();
+
+
+    bountytower::towerLoaded = towers[0].name;
+    bountytower::currentTower = &towers[0];
+    //buildTower(towers[1].name);
+
+    loadMap(towers[0].mapID,0,0,50,50);
+
+    int xview = (96*60)/20;
+    gvars::currentx = xview/2;
+    gvars::currenty = xview/1.4;
+
+    for(auto &npc : npclist)
+        npc.momentum = sf::Vector2f(0,0);
+
+    Npc barPatron = *getGlobalCritter("BTHuman");
+    barPatron.name = "The Tender";
+    barPatron.id = gvars::globalid++;
+    barPatron.xpos = 2790;
+    barPatron.ypos = 3090;
+    barPatron.zpos = 60;
+    barPatron.tags.append("[WearsHat:1]");
+
+    //Saving the tags so each patron can provide different services.
+    std::string backupTags = barPatron.tags;
+    barPatron.tags.append("[BountyProvider:1]");
+
+    npclist.push_back(barPatron);
+    barPatron.name = "The Dealer";
+    barPatron.xpos = 2160;
+    barPatron.ypos = 2970;
+    barPatron.tags = backupTags;
+    barPatron.tags.append("[WeaponDealer:1]");
+    npclist.push_back(barPatron);
+    barPatron.name = "The Recruiter";
+    barPatron.xpos = 3600;
+    barPatron.ypos = 2970;
+    barPatron.tags = backupTags;
+    barPatron.tags.append("[Recruiter:1]");
+    npclist.push_back(barPatron);
+
+    gCtrl.phase = "Lobby";
+}
+
+
 void towerVictory()
 {
     shapes.createSquare(0,0,RESOLUTION.x,RESOLUTION.y,sf::Color(0,0,0,100),0,sf::Color::Transparent,&gvars::hudView);
     sf::Vector2f textPos(RESOLUTION.x/2,50);
-    textList.createText(textPos,30,sf::Color::Yellow,"$ Bounty Killed! $ \n $ Time to collect! $",window.getDefaultView());
+    textList.createText(textPos,10,sf::Color::Yellow,"$ Bounty Killed! $ \n $ Time to collect! $",window.getDefaultView());
     textPos.y += 30;
-    textList.createText(textPos,30,sf::Color::White,"The people who got in your way.",window.getDefaultView());
+    textList.createText(textPos,10,sf::Color::White,"The people who got in your way.",window.getDefaultView());
+
+    textPos.x -= 100;
+
+    int returnButt = createImageButton(textPos,texturemanager.getTexture("returnButton.png"),"",0,gvars::hudView);
+    if(imageButtonClicked(returnButt))
+    {
+        bountytower::towerVictory = false;
+        loadTavern();
+    }
 
     int xSlot = 0;
     int ySlot = 0;
@@ -1110,6 +1197,9 @@ void deadDrawTest()
 
 void bossLoop()
 {
+    if(bountytower::towerVictory)
+        return;
+
 
     if(inputState.key[Key::F] && true == false)
     {
@@ -1144,7 +1234,11 @@ void bossLoop()
         }
     }
     if(bossesDead > 0 && bossesDead == bosses)
+    {
+        conFact->credits += bountytower::currentTower->bountyPay;
         bountytower::towerVictory = true;
+    }
+
 }
 
 void bountyTowerMainMenu()
@@ -1153,50 +1247,7 @@ void bountyTowerMainMenu()
     textList.createText(gvars::mousePos,10,sf::Color::White,"Click to begin!");
 
     if(imageButtonClicked(startBut))
-    {
-        bountytower::towerLoaded = towers[0].name;
-        bountytower::currentTower = &towers[0];
-        //buildTower(towers[1].name);
-
-        loadMap(towers[0].mapID,0,0,50,50);
-
-        int xview = (96*60)/20;
-        gvars::currentx = xview/2;
-        gvars::currenty = xview/1.4;
-
-        for(auto &npc : npclist)
-            npc.momentum = sf::Vector2f(0,0);
-
-        Npc barPatron = *getGlobalCritter("BTHuman");
-        barPatron.name = "The Tender";
-        barPatron.id = gvars::globalid++;
-        barPatron.xpos = 2790;
-        barPatron.ypos = 3090;
-        barPatron.zpos = 60;
-        barPatron.tags.append("[WearsHat:1]");
-
-        //Saving the tags so each patron can provide different services.
-        std::string backupTags = barPatron.tags;
-        barPatron.tags.append("[BountyProvider:1]");
-
-        npclist.push_back(barPatron);
-        barPatron.name = "The Dealer";
-        barPatron.xpos = 2160;
-        barPatron.ypos = 2970;
-        barPatron.tags = backupTags;
-        barPatron.tags.append("[WeaponDealer:1]");
-        npclist.push_back(barPatron);
-        barPatron.name = "The Recruiter";
-        barPatron.xpos = 3600;
-        barPatron.ypos = 2970;
-        barPatron.tags = backupTags;
-        barPatron.tags.append("[Recruiter:1]");
-        npclist.push_back(barPatron);
-
-        gCtrl.phase = "Lobby";
-    }
-        //gCtrl.phase = "Tower Selection";
-
+        loadTavern();
 }
 
 void tavernButtons()
@@ -1262,7 +1313,7 @@ void displayCash()
 }
 
 void bountyTowerLoop()
-{
+{ // Game Loop
     hotkeySquaddieSelect();
     bossLoop();
     NPCbuttons();
@@ -1273,6 +1324,8 @@ void bountyTowerLoop()
         textList.createText(gvars::mousePos,10,sf::Color::White,outPut);
     }
 
+    if(inputState.key[Key::N])
+        bountytower::towerVictory = true;
 
     if(bountytower::currentTower != nullptr && bountytower::currentTower->name == "The Tavern")
         tavernButtons();
