@@ -721,12 +721,19 @@ void drawTile(int xpos, int ypos, sf::Texture &image)
 
 void drawNewTiles()
 {
+    int lowcapX = (gvars::view1.getCenter().x - (gvars::view1.getSize().x/2)) / GRID_SIZE;
+    int lowcapY = (gvars::view1.getCenter().y - (gvars::view1.getSize().y/2)) / GRID_SIZE;
+    int highcapX = ((gvars::view1.getCenter().x + (gvars::view1.getSize().x/2)) / GRID_SIZE)+1;
+    int highcapY = ((gvars::view1.getCenter().y + (gvars::view1.getSize().y/2)) / GRID_SIZE)+1;
 
-    //TODO: When Optimization is needed, simply start i and t at the beginning of the view, rather than checking up to the view.
-    // Same can be done for the 'end' of i and t's loops.
-    for (int i = 0; i != GRIDS; i++)
+    lowcapX = math::clamp(lowcapX,0,GRIDS-1);
+    lowcapY = math::clamp(lowcapY,0,GRIDS-1);
+    highcapX = math::clamp(highcapX,0,GRIDS-1);
+    highcapY = math::clamp(highcapY,0,GRIDS-1);
+
+    for (int i = lowcapX; i != highcapX; i++)
     {
-        for (int t = 0; t != GRIDS; t++)
+        for (int t = lowcapY; t != highcapY; t++)
         {
             if (aabb(i * GRID_SIZE, t * GRID_SIZE, gvars::topLeft.x - GRID_SIZE, gvars::topRight.x,
                      gvars::topLeft.y - GRID_SIZE, gvars::bottomRight.y))
