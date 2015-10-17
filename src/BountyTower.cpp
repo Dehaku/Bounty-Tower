@@ -794,8 +794,8 @@ void renderMerchantMenu(baseMenu &menu)
                 conFact->credits -= item.value;
                 Item soldItem = item;
                 soldItem.id = gvars::globalid++;
-                soldItem.xpos = menu.makePos.x+(randz(-30,30));
-                soldItem.ypos = menu.makePos.y+30;
+                soldItem.xpos = menu.makePos.x+(randz(-90,90));
+                soldItem.ypos = menu.makePos.y+90;
                 soldItem.zpos = menu.makePos.z;
                 soldItem.amount = soldItem.stackSize;
 
@@ -1191,6 +1191,7 @@ void loadTavern()
 
     Npc barPatron = *getGlobalCritter("BTHuman");
     barPatron.canmove = false;
+    barPatron.moverate = 0;
     barPatron.name = "The Tender";
     barPatron.id = gvars::globalid++;
     barPatron.xpos = 2790;

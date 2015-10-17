@@ -2459,7 +2459,9 @@ void drawSquadHud()
         if(npc.faction == "The Titanium Grip" && npc.isSquaddie)
         {
 
-            sf::Vector2f spritePos(60,100+(ydrawPos*60));
+            sf::Vector2f spritePos(5,40+(ydrawPos*60));
+            /*
+
 
             sf::Sprite squadSprite;
             {
@@ -2543,7 +2545,7 @@ void drawSquadHud()
 
 
 
-            ydrawPos++;
+
             window.draw(rectangle);
 
             window.draw(squadHealthBG);
@@ -2553,6 +2555,123 @@ void drawSquadHud()
             //window.draw(squadSprite);
             window.draw(squadName);
 
+            */
+
+
+            int outLine = 2;
+            sf::Color highlightColor = sf::Color::Cyan;
+
+            if(!selectedNPCs.empty())
+                for(auto &selected : selectedNPCs)
+                    if(npc.id == selected->id)
+                    {
+                        outLine = 5;
+                        highlightColor = sf::Color::White;
+                    }
+
+
+            shapes.createSquare(spritePos.x,spritePos.y,spritePos.x+200,spritePos.y+55,sf::Color(0,50,50,100),outLine,highlightColor,&gvars::hudView);
+
+            spritePos.x += 2;
+            textList.createText(spritePos,10,sf::Color::White,str(ydrawPos+1) +": " + npc.name, gvars::hudView);
+            spritePos.y += 10;
+            textList.createText(spritePos,10,sf::Color::White,"Health: " + str(static_cast<int>(npc.health)) + "/" + str(static_cast<int>(npc.maxhealth)), gvars::hudView);
+            spritePos.y += 1;
+
+
+            // Health-o-meter!
+            float remainingHealth = npc.health / npc.maxhealth;
+            shapes.createSquare(spritePos.x,spritePos.y+1,spritePos.x+150,spritePos.y+9,sf::Color(0,0,0),1,sf::Color::White,&gvars::hudView);
+            shapes.createSquare(spritePos.x,spritePos.y+1,spritePos.x+(150*remainingHealth),spritePos.y+9,sf::Color(255,0,0),0,highlightColor,&gvars::hudView);
+
+            // Level-o-meter!
+            spritePos.y += 10;
+            textList.createText(spritePos,10,sf::Color::White,"Level "+str(npc.level) + ", XP: " + str(npc.xp) + "/" +str(nextLevelXpRequired(npc.level)), gvars::hudView);
+            spritePos.y += 1;
+            float remainingXP = static_cast<float>(npc.xp) / static_cast<float>(nextLevelXpRequired(npc.level));
+            shapes.createSquare(spritePos.x,spritePos.y+1,spritePos.x+150,spritePos.y+9,sf::Color(0,0,0),1,sf::Color::White,&gvars::hudView);
+            shapes.createSquare(spritePos.x,spritePos.y+1,spritePos.x+(150*remainingXP),spritePos.y+9,sf::Color::Yellow,0,highlightColor,&gvars::hudView);
+
+
+            // ???-o-meter!
+            spritePos.y += 10;
+            //textList.createText(spritePos,10,sf::Color::White,"???: " + str(npc.health), gvars::hudView);
+            spritePos.y += 1;
+            //shapes.createSquare(spritePos.x,spritePos.y+1,spritePos.x+150,spritePos.y+9,sf::Color(0,0,0),1,sf::Color::White,&gvars::hudView);
+            //shapes.createSquare(spritePos.x,spritePos.y+1,spritePos.x+(150*remainingHealth),spritePos.y+9,sf::Color::Blue,0,highlightColor,&gvars::hudView);
+
+
+            // Profit!-o-meter!
+            spritePos.y += 10;
+            //textList.createText(spritePos,10,sf::Color::White,"???: " + str(npc.health), gvars::hudView);
+            spritePos.y += 1;
+            //shapes.createSquare(spritePos.x,spritePos.y+1,spritePos.x+150,spritePos.y+9,sf::Color(0,0,0),1,sf::Color::White,&gvars::hudView);
+            //shapes.createSquare(spritePos.x,spritePos.y+1,spritePos.x+(150*remainingHealth),spritePos.y+9,sf::Color::Green,0,highlightColor,&gvars::hudView);
+
+
+
+            spritePos.x = 170;
+            Item * leftHand = npc.invSlots[0];
+            if(leftHand != nullptr && leftHand->type == 2)
+            {
+                Item * ammoLeft = nullptr;
+                for(auto &ammo : leftHand->internalitems)
+                    ammoLeft = &ammo;
+
+                int ammoCount = 0;
+                if(ammoLeft != nullptr)
+                    ammoCount = ammoLeft->amount;
+
+                float ammoRemaining = static_cast<float>(ammoCount) / static_cast<float>(leftHand->maxclip);
+
+                // LeftHanded Ammo Remaining
+                spritePos.x += 1;
+                spritePos.y -= 3;
+                textList.createText(spritePos,10,sf::Color::White,"L", gvars::hudView);
+                spritePos.x -= 1;
+                spritePos.y += 3;
+                shapes.createSquare(spritePos.x,spritePos.y+8,spritePos.x+10,spritePos.y+8-48,sf::Color::Black,1,sf::Color::White,&gvars::hudView);
+                shapes.createSquare(spritePos.x+1,spritePos.y+8,spritePos.x+9,spritePos.y+8-(48*ammoRemaining),sf::Color(200,200,0),0,sf::Color::White,&gvars::hudView);
+            }
+
+
+            Item * rightHand = npc.invSlots[1];
+            if(rightHand != nullptr && rightHand->type == 2)
+            {// RightHanded Ammo Remaining
+                Item * ammoLeft = nullptr;
+                for(auto &ammo : rightHand->internalitems)
+                    ammoLeft = &ammo;
+
+                int ammoCount = 0;
+                if(ammoLeft != nullptr)
+                    ammoCount = ammoLeft->amount;
+
+                float ammoRemaining = static_cast<float>(ammoCount) / static_cast<float>(rightHand->maxclip);
+
+
+                spritePos.x += 21;
+                spritePos.y -= 3;
+                textList.createText(spritePos,10,sf::Color::White,"R", gvars::hudView);
+                spritePos.x -= 1;
+                spritePos.y += 3;
+                shapes.createSquare(spritePos.x,spritePos.y+8,spritePos.x+10,spritePos.y+8-48,sf::Color::Black,1,sf::Color::White,&gvars::hudView);
+                shapes.createSquare(spritePos.x+1,spritePos.y+8,spritePos.x+9,spritePos.y+8-(48*ammoRemaining),sf::Color(200,200,0),0,sf::Color::White,&gvars::hudView);
+            }
+
+
+            /*
+            // RightHanded Ammo Remaining
+            spritePos.x += 21;
+            spritePos.y -= 3;
+            textList.createText(spritePos,10,sf::Color::White,"R", gvars::hudView);
+            spritePos.x -= 1;
+            spritePos.y += 3;
+            shapes.createSquare(spritePos.x,spritePos.y+8,spritePos.x+10,spritePos.y-40,sf::Color(200,200,0),1,sf::Color::White,&gvars::hudView);
+            */
+
+
+            ydrawPos++;
+            spritePos.x = 90;
             drawHudSkills(npc,spritePos);
         }
     }
