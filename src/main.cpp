@@ -1535,7 +1535,7 @@ void assaultDesire(Npc &npc, std::list<Npc> &container, Npc * closEnmy, bool &ha
                 withinRange = (math::closeish(npc.xpos,npc.ypos,closEnmy->xpos,closEnmy->ypos) <= rangewep->getRange()+(rangewep->getRange()*(snipeShot->ranks*0.50)));
 
                 //Checking for Ammo, else WithinRange = false.
-                if(getItemType(rangewep->internalitems,3) == nullptr)
+                if(getItemType(rangewep->internalitems,rangewep->ammotype) == nullptr)
                     withinRange = false;
 
                 //Making sure they're in range before doing the raytrace, since it's very slow.
@@ -1566,7 +1566,7 @@ void assaultDesire(Npc &npc, std::list<Npc> &container, Npc * closEnmy, bool &ha
             withinRange = (math::closeish(npc.xpos,npc.ypos,closEnmy->xpos,closEnmy->ypos) <= rangewep->getRange());
 
             //Checking for Ammo, else WithinRange = false.
-            if(getItemType(rangewep->internalitems,3) == nullptr)
+            if(getItemType(rangewep->internalitems,rangewep->ammotype) == nullptr)
                 withinRange = false;
 
             //Making sure they're in range before doing the raytrace, since it's very slow. canSee == false due to snipeShot having further reach, no need to do it twice.
@@ -1605,7 +1605,7 @@ void assaultDesire(Npc &npc, std::list<Npc> &container, Npc * closEnmy, bool &ha
 
 
                     //Checking for Ammo, else WithinRange = false.
-                    if(getItemType(rangewep->internalitems,3) == nullptr)
+                    if(getItemType(rangewep->internalitems,rangewep->ammotype) == nullptr)
                         withinRange = false;
 
                     if(withinRange)

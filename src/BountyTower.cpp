@@ -824,6 +824,10 @@ void renderRecruiterMenu(baseMenu &menu)
 
     int xOffset = 0;
     int yOffset = 0;
+
+    std::string SPICED = "SPICED = Strength Perception Intelligence Charisma Endurance Dexterity";
+    textList.createText(sf::Vector2f(105,100),10,sf::Color::White,SPICED,gvars::hudView);
+
     for(auto npc : npcmanager.globalCritter)
     {
         if(!npc.recruitable)
@@ -833,7 +837,10 @@ void renderRecruiterMenu(baseMenu &menu)
         int posY = 150+(yOffset*60);;
         shapes.createSquare(posX-30,posY-30,posX+30,posY+30,sf::Color::Black,0,sf::Color::Cyan, &gvars::hudView);
 
+
+
         sf::Vector2f vPos(posX,posY);
+
         int npcButt = createImageButton(vPos,texturemanager.getTexture("SpriteSheet"+npc.race+"Frame.png"),"",0,gvars::hudView);
         // hehe... npc butt.
         sf::Color highlightColor = sf::Color::White;
@@ -843,8 +850,18 @@ void renderRecruiterMenu(baseMenu &menu)
         vPos.y -= 30;
         vPos.x += 30;
         textList.createText(vPos,15,highlightColor,npc.name,gvars::hudView);
+        vPos.y += 15;
+        textList.createText(vPos,10,highlightColor,"$" + str(critterCost),gvars::hudView);
         vPos.y += 10;
-        textList.createText(vPos,15,highlightColor,"$" + str(critterCost),gvars::hudView);
+        std::string outPut = "Speed: " + str(static_cast<int>(npc.moverate) );
+        outPut.append("\nS.P.I.C.E.D. : ");
+        outPut.append(str(npc.attributes.strength) + ",");
+        outPut.append(str(npc.attributes.perception) + ",");
+        outPut.append(str(npc.attributes.intelligence) + ",");
+        outPut.append(str(npc.attributes.charisma) + ",");
+        outPut.append(str(npc.attributes.endurance) + ",");
+        outPut.append(str(npc.attributes.dexterity));
+        textList.createText(vPos,10,highlightColor,outPut,gvars::hudView);
 
 
 
@@ -1048,7 +1065,9 @@ void hotkeySquaddieSelect()
 void spawnEnemies()
 {
     //Preemptively acquiring item lists here, instead of doing it once per critter.
-    std::vector<Item> ammoV = itemmanager.getAllofType(3);
+    std::vector<Item> ammoBullet = itemmanager.getAllofType(3);
+    std::vector<Item> ammoShell = itemmanager.getAllofType(4);
+    std::vector<Item> ammoMissile = itemmanager.getAllofType(5);
     std::vector<Item> rangedweps = itemmanager.getAllofType(2);
     std::vector<Item> meleeweps = itemmanager.getAllofType(1);
 
@@ -1088,11 +1107,31 @@ void spawnEnemies()
             gun.id = gvars::globalid++;
             member.inventory.push_back(gun);
 
-            int ranAmmo = random(0,ammoV.size()-1);
-            Item ammo = ammoV[ranAmmo];
-            ammo.id = gvars::globalid++;
-            ammo.amount = random(5,30);
-            member.inventory.push_back(ammo);
+            if(gun.ammotype == 3)
+            {
+                int ranAmmo = random(0,ammoBullet.size()-1);
+                Item ammo = ammoBullet[ranAmmo];
+                ammo.id = gvars::globalid++;
+                ammo.amount = random(5,30);
+                member.inventory.push_back(ammo);
+            }
+            if(gun.ammotype == 4)
+            {
+                int ranAmmo = random(0,ammoShell.size()-1);
+                Item ammo = ammoShell[ranAmmo];
+                ammo.id = gvars::globalid++;
+                ammo.amount = random(5,30);
+                member.inventory.push_back(ammo);
+            }
+            if(gun.ammotype == 5)
+            {
+                int ranAmmo = random(0,ammoMissile.size()-1);
+                Item ammo = ammoMissile[ranAmmo];
+                ammo.id = gvars::globalid++;
+                ammo.amount = random(1,5);
+                member.inventory.push_back(ammo);
+            }
+
             member.tags.append("[WearsHat:1]");
 
         }

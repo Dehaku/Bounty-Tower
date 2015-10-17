@@ -490,7 +490,7 @@ int Item::getRange()
     int returns = range;
     if(type == 2)
     {
-        Item * itemptr = getItemType(internalitems,3);
+        Item * itemptr = getItemType(internalitems,ammotype);
         if(itemptr == nullptr)
             returns += 0;
         else
@@ -649,6 +649,7 @@ void ItemManager::initializeItems()
             item.pickupable =
                 booleanize(stringFindNumber(line, "[Pickupable:"));
             item.type = stringFindNumber(line, "[type:");
+            item.ammotype = stringFindNumber(line, "[ammotype:");
             item.cbaseid = stringFindNumber(line, "[baseid:");
             item.produces = booleanize(stringFindNumber(line, "[produces:"));
             item.prodrate = stringFindNumber(line, "[prodrate:");
@@ -925,7 +926,7 @@ std::string Item::activate(Vec3f vPos) // Returns a string declaring the problem
             {
                 std::string outString;
                 outString.append(user->name + " has struck " + npc.name + " for " + std::to_string(maxdam) );
-                chatBox.addChat(outString,sf::Color::Red);
+                //chatBox.addChat(outString,sf::Color::Red);
 
                 std::string atkStatus = user->dealDamage(&npc,this);
                 if(atkStatus == "Hit")
@@ -978,7 +979,7 @@ std::string Item::activate(Vec3f vPos) // Returns a string declaring the problem
     if(type == 2)
     { // Ranged weapons
 
-        Item * itemptr = getItemType(internalitems,3);
+        Item * itemptr = getItemType(internalitems,ammotype);
         if(itemptr == nullptr || itemptr->amount <= 0)
             return "No Ammo";
 

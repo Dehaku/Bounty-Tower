@@ -541,7 +541,7 @@ void checkAmmo(Npc &npc, std::list<Npc> &container, Item * rangewep)
     bool hasSpareAmmo = false;
 
     //Checking if there's any ammo at all.
-    Item * currentAmmo = getItemType(rangewep->internalitems,3);
+    Item * currentAmmo = getItemType(rangewep->internalitems,rangewep->ammotype);
     if(currentAmmo == nullptr)
         weaponEmpty = true;
 
@@ -555,7 +555,7 @@ void checkAmmo(Npc &npc, std::list<Npc> &container, Item * rangewep)
     //Check if we have some ammo in our inventory to reload with!
     itemPtrVector ammoVector;
     for(auto &item : npc.inventory)
-        if(item.type == 3)
+        if(item.type == rangewep->ammotype)
             ammoVector.ptrs.push_back(&item);
 
     if(!ammoVector.ptrs.empty())
