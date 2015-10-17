@@ -796,6 +796,15 @@ void drawNewTiles()
                     spinner.setColor(spin);
                     window.draw(spinner);
                 }
+
+                if(inputState.key[Key::Insert])
+                {
+                    if(tiles[i][t][gvars::currentz].walkable)
+                        shapes.createCircle(30+(GRID_SIZE*i),30+(GRID_SIZE*t),15,sf::Color::Blue);
+                    else
+                        shapes.createCircle(30+(GRID_SIZE*i),30+(GRID_SIZE*t),15,sf::Color::Red);
+                }
+
             }
         }
     }

@@ -4,6 +4,7 @@
 
 
 std::vector<Npc*> Squaddies;
+std::list<Npc> leftBehind;
 
 int gridIt(int num)
 {
@@ -111,7 +112,7 @@ void setupTowers()
         fantasyTower.bountyTarget = "Trifecta";
         fantasyTower.floors = 5;
         fantasyTower.difficulty = 5;
-        fantasyTower.minioncount = 100;
+        fantasyTower.minioncount = 200;
         fantasyTower.name = "FantasyModern";
         fantasyTower.tex = &texturemanager.getTexture("FantasyModern.png");
     }
@@ -387,7 +388,26 @@ void debugTileMode()
 
 }
 
+void towerTransition()
+{
+    worlditems.clear();
+    leftBehind.clear();
+    clearBullets();
 
+
+    for(auto &npc : npclist)
+    {
+        npc.storedPath.clear();
+        npc.endPos = Vec3();
+        npc.hasPath = false;
+        npc.needsPath = false;
+        npc.momentum = sf::Vector2f(0,0);
+
+        if(npc.faction != conFact->name)
+            npc.toDelete = true;
+    }
+
+}
 
 void towerMenu()
 {
@@ -457,13 +477,8 @@ void towerMenu()
         gvars::currentx = xview/2;
         gvars::currenty = xview/1.4;
 
-        for(auto &npc : npclist)
-        {
-            if(npc.faction != conFact->name)
-                npc.toDelete = true;
+        towerTransition();
 
-            npc.momentum = sf::Vector2f(0,0);
-        }
 
         positionSquaddies();
 
@@ -968,7 +983,7 @@ int getFloorFactionMemberCount(int floor, std::string faction)
     return Count;
 }
 
-std::list<Npc> leftBehind;
+
 
 void spawnBoss()
 {
@@ -1021,15 +1036,14 @@ void clearSlots(Npc &npc)
         npc.invSlots[i] = nullptr;
 }
 
+
+
 void loadTavern()
 {
-    worlditems.clear();
-    leftBehind.clear();
+    towerTransition();
 
     gvars::currentz = 1;
-    for(auto &npc : npclist)
-        if(npc.faction != conFact->name)
-            npc.toDelete = true;
+
 
     positionSquaddies();
 
@@ -1097,6 +1111,8 @@ void nextFloorTransition()
             npc.toDelete = true;
         }
     }
+
+    clearBullets();
 
     if(gvars::currentz > bountytower::currentTower->floors)
         loadTavern();

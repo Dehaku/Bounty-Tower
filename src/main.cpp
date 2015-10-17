@@ -13,6 +13,7 @@
 #include "Tiles.h"
 #include "FactionJobSecurity.h"
 #include "Galaxy.h"
+#include "Bullet.h"
 #include "BountyTower.h"
 #include "menus.h"
 #include "astar.h"
@@ -22,7 +23,7 @@
 #include "util.h"
 #include "globalvars.h"
 #include "Networking.h"
-#include "Bullet.h"
+
 #include "Camera.h"
 
 

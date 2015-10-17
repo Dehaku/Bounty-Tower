@@ -10,6 +10,8 @@
 
 class Npc;
 
+void clearBullets();
+
 class Item
 {
 public:

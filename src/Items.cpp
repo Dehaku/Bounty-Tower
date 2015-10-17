@@ -12,6 +12,11 @@
 
 extern sf::RenderWindow window;
 
+void clearBullets()
+{
+    bullets.clear();
+}
+
 Item * mouseItem = nullptr;
 
 std::list<Item> worlditems;

@@ -22,7 +22,6 @@ class Faction;
 
 extern Faction *conFact;
 
-
 struct skillKeepInfo
 {
     Npc * user;
