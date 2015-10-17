@@ -1475,6 +1475,9 @@ void layHints()
                             " They will flood from the stairs until they're sufficiently scared!");
                 textList.createText(3000,2790,15,gvars::cycleRed,"Stand squaddies on switches to activate them, enabling the elevator. \n"
                             "Be sure to get everyone on the elevator before you try to leave, Or you'll abandon them!");
+
+                textList.createText(2520,3900,15,gvars::cycleRed,"Your goal? Fix the elevator! \n"
+                            "(White Tiles in the Middle) \nFind Switches, then head up!");
             }
             else if(gvars::currentz == 4)
             {
