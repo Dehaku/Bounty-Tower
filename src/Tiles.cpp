@@ -805,6 +805,19 @@ void drawNewTiles()
                         shapes.createCircle(30+(GRID_SIZE*i),30+(GRID_SIZE*t),15,sf::Color::Red);
                 }
 
+                if(tiles[i][t][gvars::currentz].id == 3500)
+                {
+                    sf::Color greenGlow = sf::Color::Green;
+                    sf::Color redGlow = gvars::cycleRed;
+                    greenGlow.a = 100;
+                    redGlow.a = 100;
+
+                    if(tiles[i][t][gvars::currentz].state == "Off")
+                        shapes.createSquare((GRID_SIZE*i),(GRID_SIZE*t),(GRID_SIZE*i)+60,(GRID_SIZE*t)+60,redGlow);
+                    else if(tiles[i][t][gvars::currentz].state == "On")
+                        shapes.createSquare((GRID_SIZE*i),(GRID_SIZE*t),(GRID_SIZE*i)+60,(GRID_SIZE*t)+60,greenGlow);
+                }
+
             }
         }
     }
