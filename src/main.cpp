@@ -2334,8 +2334,9 @@ void hoverItemHUD()
 
         sf::Vector2f vPos(gvars::slotPos[i]);
         bool allowPlace = true;
+        bool onSlot = (math::closeish(pixelPos,vPos) <= 20);
 
-        if(math::closeish(pixelPos,vPos) <= 20)
+        if(onSlot)
         {
             gvars::hovering = true;
 
@@ -2361,7 +2362,7 @@ void hoverItemHUD()
             }
         }
 
-        if(inputState.lmbTime == 1 && math::closeish(pixelPos,vPos) <= 20 && !isSecondSlot)
+        if(inputState.lmbTime == 1 && onSlot && !isSecondSlot)
         {
 
             if(mouseItem == nullptr && selectedNPCs[0]->invSlots[i] != nullptr)
@@ -2398,6 +2399,37 @@ void hoverItemHUD()
                         mouseItem = nullptr;
                     }
                 }
+                else
+                {
+
+                    // This took so much damn work! I even had to graph it down and study it!
+                    //Item * itemBuff = mouseItem;
+                    //mouseItem = selectedNPCs[0]->invSlots[i];
+                    //mouseItem->currentSlot = &selectedNPCs[0]->invSlots[i];
+                    //selectedNPCs[0]->invSlots[i] = itemBuff;
+
+                    //Item * itemBuff = selectedNPCs[0]->invSlots[i];
+                    Item ** itemBuff = mouseItem->currentSlot;
+                    Item * itemPtrBuff = selectedNPCs[0]->invSlots[i];
+
+
+                    //(*mouseItem->currentSlot) = nullptr;
+                    selectedNPCs[0]->invSlots[i] = mouseItem;
+                    selectedNPCs[0]->invSlots[i]->currentSlot = &selectedNPCs[0]->invSlots[i];
+                    (*itemBuff) = itemPtrBuff;
+                    (*(*itemBuff)).currentSlot = (itemBuff);
+                    //selectedNPCs[0]->invSlots[i] = itemBuff;
+
+                    //mouseItem->currentSlot = &selectedNPCs[0]->invSlots[i];
+                    mouseItem = nullptr;
+
+
+                    //mouseItem = selectedNPCs[0]->invSlots[i];
+                    //mouseItem->currentSlot = &selectedNPCs[0]->invSlots[i];
+                    //selectedNPCs[0]->invSlots[i] = itemBuff;
+
+                }
+
             }
         }
     }
@@ -3327,7 +3359,6 @@ void acquireSelectedNPCs()
     else
         gvars::heldClickPos = sf::Vector2f(-1, -1);
 }
-
 
 void lmbPress()
 {
