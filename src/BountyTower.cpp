@@ -40,7 +40,7 @@ void equipStarters()
             item = *getGlobalItem("Shotgun");
             //member.inventory.push_back(item);
 
-            item = *getGlobalItem("Shotgun - Spread");
+            item = *getGlobalItem("Shell: Spread");
             item.amount = 30;
             //member.inventory.push_back(item);
         }
@@ -62,7 +62,7 @@ void equipStarters()
         {
             Item item = *getGlobalItem("Gun");
             Item bullet;
-            bullet = *getGlobalItem("Bullet - Standard");
+            bullet = *getGlobalItem("Bullet: Standard");
             bullet.amount = 30;
 
             member.inventory.push_back(item);
@@ -73,7 +73,7 @@ void equipStarters()
         {
             Item item = *getGlobalItem("Sniper");
             Item bullet;
-            bullet = *getGlobalItem("Bullet - Armor Piercing");
+            bullet = *getGlobalItem("Bullet: Armor Piercing");
             bullet.amount = 30;
 
             member.inventory.push_back(item);
@@ -769,7 +769,16 @@ void renderMerchantMenu(baseMenu &menu)
 
 
         if(item.type == 2)
+        {
             stats.append(", Mag: " + str(item.maxclip));
+            if(item.ammotype == 3)
+                stats.append(", Bullet");
+            if(item.ammotype == 4)
+                stats.append(", Shell");
+            if(item.ammotype == 5)
+                stats.append(", Missile");
+        }
+
         if(item.stackSize > 1)
             stats.append("\nStack: " + str(item.stackSize));
         textList.createText(vPos,10,highlightColor,stats,gvars::hudView);
