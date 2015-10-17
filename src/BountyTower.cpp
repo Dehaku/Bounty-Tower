@@ -1354,6 +1354,7 @@ void bountyTowerMainMenu()
 
 void tavernButtons()
 {
+    /*
     int towerButt = createImageButton(sf::Vector2f(43*GRID_SIZE,67*GRID_SIZE),texturemanager.getTexture("yellowBook.png"));
     int towerButt2 = createImageButton(sf::Vector2f(53*GRID_SIZE,67*GRID_SIZE),texturemanager.getTexture("yellowBook.png"));
 
@@ -1364,6 +1365,8 @@ void tavernButtons()
     {
         gCtrl.phase = "Tower Selection";
     }
+
+    */
 }
 
 void NPCbuttons()

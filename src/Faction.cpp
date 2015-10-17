@@ -1953,6 +1953,23 @@ void Npc::momMove()
     {
         xpos = oldPos.x;
         ypos = oldPos.y;
+
+        int momSpeed = 0;
+        if(abs_to_index(momentum.x) > momSpeed)
+            momSpeed = abs_to_index(momentum.x);
+        if(abs_to_index(momentum.y) > momSpeed)
+            momSpeed = abs_to_index(momentum.y);
+
+        momentum.x = 0;
+        momentum.y = 0;
+        if(alive && momSpeed > 30)
+        {
+            takeDamage(nullptr,nullptr,(momSpeed/2) );
+            chatBox.addChat(name + " slammed into the wall with " + str(momSpeed) + " force!",sf::Color::White);
+        }
+
+
+
     }
 
     //I have no idea how I figured this out, but it worked first try and seems perfect, Woohoo! I'm free!
@@ -2476,7 +2493,8 @@ std::string Npc::takeDamage(Npc *attacker, Item *weapon, float amount, critScore
     int dodgeRoll = random(0,100);
     if(dodgeRoll <= dodgeChance)
     {
-        std::cout << name << " dodged " << attacker->name << "'s attack! (" << dodgeRoll << "/" << dodgeChance << ")" << std::endl;
+        if(attacker != nullptr)
+            std::cout << name << " dodged " << attacker->name << "'s attack! (" << dodgeRoll << "/" << dodgeChance << ")" << std::endl;
         return "Dodged";
     }
 
@@ -2486,7 +2504,7 @@ std::string Npc::takeDamage(Npc *attacker, Item *weapon, float amount, critScore
         amount = amount-reduction;
     }
 
-    if(attacker->skills.getRanks("Batter Up") > 0)
+    if(attacker != nullptr && attacker->skills.getRanks("Batter Up") > 0)
     {
         int ranks = attacker->skills.getRanks("Batter Up");
         sf::Vector2f AtkerPos = attacker->getPos2d();
