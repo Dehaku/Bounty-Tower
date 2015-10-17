@@ -1846,6 +1846,9 @@ void critterPathFind(Npc &npc, std::list<Npc> &container)
 void critterBrain(Npc &npc, std::list<Npc> &container)
 {
 
+    //Applying momentum movement to critter
+    npc.momMove();
+
     if(!npc.alive)
         return;
 
@@ -2173,8 +2176,7 @@ ReDesire:
 
     /* End of Critter Prioritization */
 
-    //Applying momentum movement to critter
-    npc.momMove();
+
 
     //Checking and Acquiring path for movement
     critterPathFind(npc,container);
