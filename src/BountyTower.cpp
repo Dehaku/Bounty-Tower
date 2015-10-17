@@ -1095,7 +1095,7 @@ void spawnEnemies()
     {
         Npc member;
         debug("V");
-        member = *getGlobalCritter("BTHalfCelestial");
+        member = *getGlobalCritter("BTBlankBody");
         debug("X");
         member.faction = "Towerlings";
         debug("Y");
@@ -1297,7 +1297,7 @@ void bossLoop()
     {
         for(int i = 0; i != 10; i++)
         {
-            Npc corpse = *getGlobalCritter("BTHalfCelestial");
+            Npc corpse = *getGlobalCritter("BTBlankBody");
             corpse.alive = random(0,1);
 
             if(random(1,5) == 1)

@@ -1895,7 +1895,7 @@ void critterBrain(Npc &npc, std::list<Npc> &container)
     }
 
 
-    if(npc.name == "BTHalfCelestial" && randz(1,1000) == 1000)
+    if(npc.name == "BTBlankBody" && randz(1,1000) == 1000)
         soundmanager.playSound("AngryWallabee.ogg");
 
 

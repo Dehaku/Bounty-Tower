@@ -2879,7 +2879,7 @@ void NpcManager::initializeCritters()
 
             // Critter Bodies
             {
-                if(critter.race == "BTHuman" || critter.race == "BTHalfCelestial")
+                if(critter.race == "BTHuman" || critter.race == "BTBlankBody")
                 {
 
                     critter.body.bodyParts =
