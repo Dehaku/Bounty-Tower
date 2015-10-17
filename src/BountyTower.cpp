@@ -498,7 +498,7 @@ void towerMenu()
     shapes.createCircle((-xMinus)+xPart*5,(-yMinus)+yPart*3,50,gvars::cycleRed);
 
 
-    int returnButt = createImageButton(sf::Vector2f(50,50),texturemanager.getTexture("returnButton.png"),"",0,gvars::hudView);
+    int returnButt = createImageButton(sf::Vector2f(RESOLUTION.x-50,50),texturemanager.getTexture("returnButton.png"),"",0,gvars::hudView);
     if(imageButtonClicked(returnButt))
     {
         gCtrl.phase = "Lobby";
