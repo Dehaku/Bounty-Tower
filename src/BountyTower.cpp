@@ -1437,6 +1437,7 @@ void checkDoors()
 void layHints()
 {
     if(bountytower::currentTower != nullptr)
+    {
         if(bountytower::currentTower->name == "FantasyModern")
         {
             if(gvars::currentz == 1)
@@ -1452,6 +1453,29 @@ void layHints()
                                                                 "Be prepared for a fight upstairs!");
             }
         }
+        if(bountytower::currentTower->name == "The Tavern")
+        {
+            textList.createText(2520,4200,15,gvars::cycleRed,"Camera Control: WASD / Arrow Keys \n"
+                            "Select/Order: Left Mouse Button to select your squad, Right Mouse Button to order them around. \n"
+                            "You can buy equipment or recruit more squaddies from the venders up north. \n"
+                            "You start with a simple magitech PDA, though you will likely want better weapons. \n"
+                            "The bartender will provide you with the means to go after your first bounty."
+                            );
+            if(menus.empty())
+            {
+                textList.createText(1920,3120,15,gvars::cycleRed,"Inventory: Press I with a squaddie selected to see their stats, skills, and inventory. \n"
+                                "Range Check: Press and hold Alt with squaddies selected to see their attack ranges. \nRed for guns,  Green for magic, Blue for melee.\n"
+                                "Squaddies have two hand slots, and can duel wield, though can only use one of each type at a time(For now)\nSword and Gun? Sure! Two guns? Nope. \n"
+                                "You can manage their hand slots with a squaddie selected at the bottom of the screen.");
+            textList.createText(2220,2940,15,gvars::cycleRed,"Right Click to pickup items with a selected squaddie(Must be near item.) \n"
+                                "You can also drop items by right clicking near the squaddie with an item from their hotbar.");
+            }
+
+
+
+        }
+    }
+
 }
 
 void debugTeleportSquaddies(Vec3 telePos)
