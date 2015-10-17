@@ -3289,6 +3289,9 @@ void acquireSelectedNPCs()
         sf::Lock lock(mutex::npcList);
         for (auto &i : npclist)
         {
+            if(i.faction != conFact->name)
+                continue;
+
             if (inbetween(S.x, E.x, i.xpos) == true)
             {
                 if (inbetween(S.y, E.y, i.ypos) == true)
@@ -3337,7 +3340,7 @@ void lmbPress()
         sf::Lock lock(mutex::npcList);
         for (auto &elem : npclist)
         {
-            if (inputState.lmb == true)
+            if (elem.faction == conFact->name && inputState.lmb)
             {
                 int dist = math::closeish(gvars::mousePos.x,
                                             gvars::mousePos.y,
