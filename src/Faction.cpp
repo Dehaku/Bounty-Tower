@@ -484,7 +484,7 @@ void scrapPickup(Npc &npc, std::list<Npc> &container)
                     }
                     if(coinFlip == 2)
                     {
-                        Item Ammo = *getGlobalItem("Bullet - Standard");
+                        Item Ammo = *getGlobalItem("Bullet: Standard");
                         Ammo.amount = random(1,5);
                         npc.addItem(Ammo);
                     }
