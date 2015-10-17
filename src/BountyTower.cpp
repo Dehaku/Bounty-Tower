@@ -1526,6 +1526,19 @@ void debugTeleportSquaddies(Vec3 telePos)
     }
 }
 
+void useElevator()
+{
+    chatBox.addChat("You progress to the next floor!", sf::Color::Blue);
+    bountytower::elevatoravailable = false;
+    bountytower::pausewaves = true;
+    gvars::currentz++;
+    elevateElevatorInhabitants();
+    soundmanager.playSound("ding.wav");
+    nextFloorTransition();
+    AnyDeletes(npclist);
+    setupSquadHotKeySelection();
+}
+
 void bountyTowerLoop()
 { // Game Loop
     hotkeySquaddieSelect();
@@ -1790,31 +1803,22 @@ void bountyTowerLoop()
 
         int AmountRaised = 0;
         for(auto &npc : npclist)
-        {
             if(tiles[abs_to_index(npc.xpos/GRID_SIZE)][abs_to_index(npc.ypos/GRID_SIZE)][gvars::currentz].id == 3202)
-            {
                 AmountRaised++;
-            }
-        }
+
         textList.createText(sf::Vector2f(RESOLUTION.x/2,70),20,sf::Color::White,"On Elevator: " + std::to_string(AmountRaised),window.getDefaultView());
 
         sf::Vector2f vPos((RESOLUTION.x/2)-25,75);
         int butt = createImageButton(vPos,texturemanager.getTexture("ElevatorButton.png"),"",0,window.getDefaultView());
         if(imageButtonClicked(butt))
         {
-            if (gvars::currentz < CHUNK_SIZE - 1) {
-                chatBox.addChat("You progress to the next floor!", sf::Color::Blue);
-                bountytower::elevatoravailable = false;
-                bountytower::pausewaves = true;
-                gvars::currentz++;
-                elevateElevatorInhabitants();
-                soundmanager.playSound("ding.wav");
-                nextFloorTransition();
-                AnyDeletes(npclist);
-                setupSquadHotKeySelection();
-            } else {
+            selectedNPCs.clear();
+            if(AmountRaised == 0)
+                chatBox.addChat("No one's on the elevator!", sf::Color::Red);
+            else if (gvars::currentz < CHUNK_SIZE - 1)
+                useElevator();
+            else
                 chatBox.addChat("You cannot go further up.", sf::Color::Red);
-            }
         }
     }
 

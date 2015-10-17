@@ -21,7 +21,7 @@ Skills::Skills()
     skill.tree = "Melee";
 
     skill.name = "Batter Up";
-    skill.desc = "Passive - Damage*Rank is applied as force to a melee victim.";
+    skill.desc = "Passive - Damage*Rank is applied as force to your enemies.";
     skill.active = false;
     list.push_back(skill);
 
@@ -156,7 +156,7 @@ Skills::Skills()
     list.push_back(skill);
 
     skill.name = "Snipe Shot";
-    skill.desc = "Active - Fires a single bullet with 50% additional Range and Damage per rank, When aiming, displays a line of travel, including richochet potential and penetration.";
+    skill.desc = "Active - Fires a single bullet with 50% additional Range and Damage per rank.";// When aiming, displays a line of travel, including richochet potential and penetration.";
     skill.active = true;
     list.push_back(skill);
 

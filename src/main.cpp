@@ -1624,7 +1624,8 @@ void assaultDesire(Npc &npc, std::list<Npc> &container, Npc * closEnmy, bool &ha
 
 
                     // Firing once the weapon is ready, and the user clicks with the skill.
-                    if(rangewep->isReady() && inputState.lmbTime == 1 && withinRange)
+                    //if(rangewep->isReady() && inputState.lmbTime == 1 && withinRange)
+                    if(inputState.lmbTime == 1 && withinRange)
                     {
                         snipeShot->cooldown = snipeShot->cooldownint;
                         rangewep->trigger();
