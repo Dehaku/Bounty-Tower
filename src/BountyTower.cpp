@@ -997,13 +997,14 @@ void spawnBoss()
     boss.level = 10;
     boss.maxhealth = 10000;
     boss.health = 10000;
+    boss.name = "The Hardened Criminal";
 
 
     boss.faction = "Towerlings";
     boss.factionPtr = &listAt(uniFact,2);
 
     Item weaponry = *getGlobalItem("Gun");
-    Item ammo = *getGlobalItem("Bullet: Standard");
+    Item ammo = *getGlobalItem("Bullet: Armor Piercing");
     ammo.amount = 10000;
     weaponry.internalitems.push_back(ammo);
 
