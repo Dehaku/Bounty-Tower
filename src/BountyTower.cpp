@@ -1577,7 +1577,7 @@ void bountyTowerLoop()
         boss.factionPtr = &listAt(uniFact,2);
 
         Item weaponry = *getGlobalItem("Minigun");
-        Item ammo = *getGlobalItem("Bullet - Standard");
+        Item ammo = *getGlobalItem("Bullet: Standard");
         ammo.amount = 10000;
         weaponry.internalitems.push_back(ammo);
 
@@ -1640,7 +1640,7 @@ void bountyTowerLoop()
 
     if(inputState.key[Key::N].time == 1)
     { // Spawn Ammo
-        Item item = *getGlobalItem("Bullet - Standard");
+        Item item = *getGlobalItem("Bullet: Standard");
         item.amount = random(5,10);
         item.xpos = gvars::mousePos.x;
         item.ypos = gvars::mousePos.y;

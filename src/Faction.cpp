@@ -714,7 +714,7 @@ void buildTurret(Npc &npc, std::list<Npc> &container)
                 turret.factionPtr = npc.factionPtr;
 
                 Item gun = *getGlobalItem("Gun");
-                Item ammo = *getGlobalItem("Bullet - Standard");
+                Item ammo = *getGlobalItem("Bullet: Standard");
                 ammo.amount = 100;
                 gun.internalitems.push_back(ammo);
                 turret.inventory.push_back(gun);
@@ -765,7 +765,7 @@ void craftAmmo(Npc &npc, std::list<Npc> &container)
                         scrapPtr->remove();
                 }
 
-                Item ammo = *getGlobalItem("Bullet - Standard");
+                Item ammo = *getGlobalItem("Bullet: Standard");
                 ammo.amount = 5*ammoSkill->ranks;
                 npc.inventory.push_back(ammo);
                 sKI->toDelete = true;
