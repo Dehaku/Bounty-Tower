@@ -297,7 +297,7 @@ void debugTileMode()
         }
         if(inputState.key[Key::O].time == 300)
         {
-            saveMap(23,0,0,50,50);
+            saveMap(636,0,0,50,50);
             soundmanager.playSound("Startup.wav");
             std::string outPut = "The current map has been saved! \n";
             std::cout << outPut;
@@ -1003,7 +1003,7 @@ void spawnBoss()
     boss.factionPtr = &listAt(uniFact,2);
 
     Item weaponry = *getGlobalItem("Gun");
-    Item ammo = *getGlobalItem("Bullet - Standard");
+    Item ammo = *getGlobalItem("Bullet: Standard");
     ammo.amount = 10000;
     weaponry.internalitems.push_back(ammo);
 
@@ -1020,8 +1020,68 @@ void clearSlots(Npc &npc)
         npc.invSlots[i] = nullptr;
 }
 
+void loadTavern()
+{
+    worlditems.clear();
+    leftBehind.clear();
+
+    gvars::currentz = 1;
+    for(auto &npc : npclist)
+        if(npc.faction != conFact->name)
+            npc.toDelete = true;
+
+    positionSquaddies();
+
+
+    bountytower::towerLoaded = towers[0].name;
+    bountytower::currentTower = &towers[0];
+    //buildTower(towers[1].name);
+
+    loadMap(towers[0].mapID,0,0,50,50);
+
+    int xview = (96*60)/20;
+    gvars::currentx = xview/2;
+    gvars::currenty = xview/1.4;
+
+    for(auto &npc : npclist)
+        npc.momentum = sf::Vector2f(0,0);
+
+    Npc barPatron = *getGlobalCritter("BTHuman");
+    barPatron.canmove = false;
+    barPatron.moverate = 0;
+    barPatron.name = "The Tender";
+    barPatron.id = gvars::globalid++;
+    barPatron.xpos = 2790;
+    barPatron.ypos = 3090;
+    barPatron.zpos = 60;
+    barPatron.tags.append("[WearsHat:1]");
+
+    //Saving the tags so each patron can provide different services.
+    std::string backupTags = barPatron.tags;
+    barPatron.tags.append("[BountyProvider:1]");
+
+    npclist.push_back(barPatron);
+    barPatron.name = "The Dealer";
+    barPatron.xpos = 2160;
+    barPatron.ypos = 2970;
+    barPatron.tags = backupTags;
+    barPatron.tags.append("[WeaponDealer:1]");
+    npclist.push_back(barPatron);
+    barPatron.name = "The Recruiter";
+    barPatron.xpos = 3600;
+    barPatron.ypos = 2970;
+    barPatron.tags = backupTags;
+    barPatron.tags.append("[Recruiter:1]");
+    npclist.push_back(barPatron);
+
+    gCtrl.phase = "Lobby";
+}
+
+
+
 void nextFloorTransition()
 {
+
     for(auto &npc : npclist)
     {
         npc.storedPath.clear();
@@ -1036,6 +1096,9 @@ void nextFloorTransition()
             npc.toDelete = true;
         }
     }
+
+    if(gvars::currentz > bountytower::currentTower->floors)
+        loadTavern();
 
 
 }
@@ -1165,60 +1228,6 @@ void spawnEnemies()
     debug("Done placin Towerlings");
 }
 
-
-void loadTavern()
-{
-    gvars::currentz = 1;
-    for(auto &npc : npclist)
-        if(npc.faction != conFact->name)
-            npc.toDelete = true;
-
-    positionSquaddies();
-
-
-    bountytower::towerLoaded = towers[0].name;
-    bountytower::currentTower = &towers[0];
-    //buildTower(towers[1].name);
-
-    loadMap(towers[0].mapID,0,0,50,50);
-
-    int xview = (96*60)/20;
-    gvars::currentx = xview/2;
-    gvars::currenty = xview/1.4;
-
-    for(auto &npc : npclist)
-        npc.momentum = sf::Vector2f(0,0);
-
-    Npc barPatron = *getGlobalCritter("BTHuman");
-    barPatron.canmove = false;
-    barPatron.moverate = 0;
-    barPatron.name = "The Tender";
-    barPatron.id = gvars::globalid++;
-    barPatron.xpos = 2790;
-    barPatron.ypos = 3090;
-    barPatron.zpos = 60;
-    barPatron.tags.append("[WearsHat:1]");
-
-    //Saving the tags so each patron can provide different services.
-    std::string backupTags = barPatron.tags;
-    barPatron.tags.append("[BountyProvider:1]");
-
-    npclist.push_back(barPatron);
-    barPatron.name = "The Dealer";
-    barPatron.xpos = 2160;
-    barPatron.ypos = 2970;
-    barPatron.tags = backupTags;
-    barPatron.tags.append("[WeaponDealer:1]");
-    npclist.push_back(barPatron);
-    barPatron.name = "The Recruiter";
-    barPatron.xpos = 3600;
-    barPatron.ypos = 2970;
-    barPatron.tags = backupTags;
-    barPatron.tags.append("[Recruiter:1]");
-    npclist.push_back(barPatron);
-
-    gCtrl.phase = "Lobby";
-}
 
 
 void towerVictory()
@@ -1452,6 +1461,11 @@ void layHints()
                 textList.createText(2940,2940,15,gvars::cycleRed,"Your bounty is waiting for you. \n"
                                                                 "Be prepared for a fight upstairs!");
             }
+            else if(gvars::currentz == 5)
+            {
+                textList.createText(3000,2760,15,gvars::cycleRed,"Using the elevator from here will return you to the tavern. \n"
+                                                                "Are you up to the challenge, or are you a blank body coward?!");
+            }
         }
         if(bountytower::currentTower->name == "The Tavern")
         {
@@ -1467,7 +1481,7 @@ void layHints()
                                 "Range Check: Press and hold Alt with squaddies selected to see their attack ranges. \nRed for guns,  Green for magic, Blue for melee.\n"
                                 "Squaddies have two hand slots, and can duel wield, though can only use one of each type at a time(For now)\nSword and Gun? Sure! Two guns? Nope. \n"
                                 "You can manage their hand slots with a squaddie selected at the bottom of the screen.");
-            textList.createText(2220,2940,15,gvars::cycleRed,"Right Click to pickup items with a selected squaddie(Must be near item.) \n"
+                textList.createText(2220,2940,15,gvars::cycleRed,"Right Click to pickup items with a selected squaddie(Must be near item.) \n"
                                 "You can also drop items by right clicking near the squaddie with an item from their hotbar.");
             }
 
