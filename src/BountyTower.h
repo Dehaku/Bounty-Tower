@@ -38,6 +38,21 @@ int getFloorDifficulty(float currentFloor, float towerFloors, float towerDifficu
 int getLivingFactionMemberCount(std::string faction);
 int getFactionMemberCount(std::string faction);
 
+class baseMenu
+{
+public:
+    bool toDelete;
+    std::string name;
+    sf::Vector2f Pos;
+    Vec3f makePos;
+    Npc *npc;
+
+    baseMenu();
+
+};
+
+extern std::list<baseMenu> menus;
+
 class Tower
 {
 public:

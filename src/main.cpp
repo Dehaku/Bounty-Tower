@@ -2454,6 +2454,9 @@ void drawHudSkills(Npc &npc, sf::Vector2f spritePos)
 
 void drawSquadHud()
 {
+    if(!menus.empty())
+        return;
+
     window.setView(gvars::hudView);
     int ydrawPos = 0;
 

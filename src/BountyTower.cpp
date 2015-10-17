@@ -527,18 +527,6 @@ void towerMenu()
 
 
 
-class baseMenu
-{
-public:
-    bool toDelete;
-    std::string name;
-    sf::Vector2f Pos;
-    Vec3f makePos;
-    Npc *npc;
-
-    baseMenu();
-
-};
 
 baseMenu::baseMenu()
 {
@@ -1387,7 +1375,8 @@ void tavernButtons()
 
 void NPCbuttons()
 {
-    for(auto &npc : npclist)
+    if(menus.empty())
+        for(auto &npc : npclist)
     {
         if(npc.tags.find("[BountyProvider:1]") != npc.tags.npos)
         {
