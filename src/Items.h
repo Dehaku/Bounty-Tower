@@ -135,6 +135,7 @@ public:
     void spawn(int gposx, int gposy, int rposx, int rposy, int posx, int posy, int posz);
     void printConsoleInfo();
     int getRange();
+    int getSpread();
     std::string activate(Vec3f vPos);
     bool trigger();
     bool isReady();

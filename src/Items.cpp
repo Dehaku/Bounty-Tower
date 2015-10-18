@@ -505,6 +505,22 @@ int Item::getRange()
     return returns;
 }
 
+int Item::getSpread()
+{
+    debug(name + " getSpread()");
+    int returns = spread;
+    if(type == 2)
+    {
+        Item * itemptr = getItemType(internalitems,ammotype);
+        if(itemptr == nullptr)
+            returns += 0;
+        else
+            returns += itemptr->spread;
+    }
+    debug(name + " getSpread() done");
+    return returns;
+}
+
 Vec3f Item::getPos()
 {
     Vec3f myPos(xpos,ypos,zpos);
@@ -1058,9 +1074,9 @@ std::string Item::activate(Vec3f vPos) // Returns a string declaring the problem
         {
 
             if(randz(0,1) == 1)
-                boolet.angle += randz(0,spread);
+                boolet.angle += randz(0,getSpread());
             else
-                boolet.angle -= randz(0,spread);
+                boolet.angle -= randz(0,getSpread());
 
             bullets.push_back(boolet);
         }
