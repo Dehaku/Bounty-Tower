@@ -2499,104 +2499,6 @@ void drawSquadHud()
         {
 
             sf::Vector2f spritePos(5,40+(ydrawPos*60));
-            /*
-
-
-            sf::Sprite squadSprite;
-            {
-                squadSprite.setTexture(*npc.img.getTexture());
-                squadSprite.setPosition(spritePos);
-                squadSprite.scale(0.5,0.5);
-                squadSprite.setRotation(npc.img.getRotation());
-                squadSprite.setOrigin(squadSprite.getTexture()->getSize().x/2,squadSprite.getTexture()->getSize().y/2);
-            }
-
-
-            sf::RectangleShape rectangle;
-            {
-                rectangle.setSize(sf::Vector2f(130, 50));
-                rectangle.setPosition(40,100+(ydrawPos*60)-30);
-                rectangle.setFillColor(sf::Color(0,0,0,100));
-                rectangle.setOutlineColor(sf::Color::Cyan);
-                rectangle.setOutlineThickness(1);
-
-                //Showing on the hud that we got this guy selected.
-                if(!selectedNPCs.empty())
-                    for(auto &selected : selectedNPCs)
-                        if(npc.id == selected->id)
-                            rectangle.setOutlineThickness(5);
-
-            }
-
-
-            int healthSize = 15;
-            sf::CircleShape squadHealthBG;
-            {
-                squadHealthBG.setFillColor(sf::Color(100,100,100));
-                squadHealthBG.setPosition(100,spritePos.y-10);
-                squadHealthBG.setOutlineColor(gvars::cycleRed);
-                squadHealthBG.setOutlineThickness(2);
-                squadHealthBG.setRadius(healthSize);
-                squadHealthBG.setOrigin(healthSize,healthSize);
-            }
-
-            sf::CircleShape squadHealth;
-            {
-                squadHealth.setFillColor(sf::Color::Red);
-                squadHealth.setPosition(100,spritePos.y-10);
-                squadHealth.setOutlineColor(gvars::cycleRed);
-                squadHealth.setOutlineThickness(1);
-                //float remainingHealth = (npc.maxhealth - npc.health)/npc.maxhealth;
-                float remainingHealth = npc.health / npc.maxhealth;
-                //squadHealth.setRadius(50*remainingHealth);
-                squadHealth.setRadius(healthSize*remainingHealth);
-                squadHealth.setOrigin(squadHealth.getRadius(),squadHealth.getRadius());
-            }
-
-            sf::Text squadHealthNum;
-            {
-                int npcHealth = npc.health;
-                squadHealthNum.setString(std::to_string(npcHealth));
-                squadHealthNum.setColor(sf::Color::White);
-                squadHealthNum.setPosition(95,spritePos.y-15);
-                squadHealthNum.setCharacterSize(10);
-
-                squadHealthNum.setFont(gvars::defaultFont);
-            }
-
-            sf::Text squadName;
-            {
-                std::string nameThing;
-                for(int i = 0; i != Squaddies.size(); i++)
-                    if(Squaddies[i]->id == npc.id)
-                        nameThing.append(std::to_string(i+1) + ": ");
-
-                nameThing.append(npc.name);
-                squadName.setString(nameThing);
-
-                squadName.setColor(sf::Color::White);
-                squadName.setPosition(45,130+(ydrawPos*60)-60);
-                squadName.setCharacterSize(10);
-
-                squadName.setFont(gvars::defaultFont);
-            }
-
-
-
-
-
-            window.draw(rectangle);
-
-            window.draw(squadHealthBG);
-            window.draw(squadHealth);
-            window.draw(squadHealthNum);
-
-            //window.draw(squadSprite);
-            window.draw(squadName);
-
-            */
-
-
             int outLine = 2;
             sf::Color highlightColor = sf::Color::Cyan;
 
@@ -2610,6 +2512,15 @@ void drawSquadHud()
 
 
             shapes.createSquare(spritePos.x,spritePos.y,spritePos.x+200,spritePos.y+55,sf::Color(0,50,50,100),outLine,highlightColor,&gvars::hudView);
+
+
+            if(npc.skillpoints > 0)
+            {
+                sf::Vector2f skilltextPos = spritePos;
+                skilltextPos.x += 205;
+                textList.createText(skilltextPos,10,gvars::cycleGreen,"Unspent Skillpoints!", gvars::hudView);
+            }
+
 
             spritePos.x += 2;
             textList.createText(spritePos,10,sf::Color::White,str(ydrawPos+1) +": " + npc.name, gvars::hudView);
@@ -2698,15 +2609,6 @@ void drawSquadHud()
             }
 
 
-            /*
-            // RightHanded Ammo Remaining
-            spritePos.x += 21;
-            spritePos.y -= 3;
-            textList.createText(spritePos,10,sf::Color::White,"R", gvars::hudView);
-            spritePos.x -= 1;
-            spritePos.y += 3;
-            shapes.createSquare(spritePos.x,spritePos.y+8,spritePos.x+10,spritePos.y-40,sf::Color(200,200,0),1,sf::Color::White,&gvars::hudView);
-            */
 
 
             ydrawPos++;
