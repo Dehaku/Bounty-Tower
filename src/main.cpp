@@ -1460,135 +1460,104 @@ entityvectorpointercontainer entityTrace(Vec3 Ori, Vec3 Tar) /* TODO: Improve th
     return EVPC;
 }
 
-void assaultDesire(Npc &npc, std::list<Npc> &container, Npc * closEnmy, bool &hasPath, Vec3 &endPos)
+void handsOffense(Npc &npc, std::list<Npc> &container, Npc * closEnmy, bool &hasPath, Vec3 &endPos)
 {
-    if(closEnmy != nullptr && npc.faction == "Towerlings")
-    {
-        hasPath = true;
-        endPos = Vec3(closEnmy->xpos,closEnmy->ypos,closEnmy->zpos);
-    }
-    debug("0");
+    for(int i = 0; i != 2; i++)
+    { //TODO: GALAXY: Instead of running through pointers, just iterate the slots directly, Allows for multiarmed critters to use stuffs!
+        Item * weapon = npc.invSlots[i];
 
-    //Item * rangewep = npc.getItemType(2);
-    Item * rangewep = npc.getItemTypeInHands(2);
-    if(rangewep != nullptr && rangewep->isReady() == false)
-        rangewep->trigger();
-    Item * meleewep = npc.getItemTypeInHands(1);
-    if(meleewep != nullptr && meleewep->isReady() == false)
-        meleewep->trigger();
+        if(weapon == nullptr)
+            continue;
 
-    Item * pda = npc.getItemTypeInHands(23);
-    if(pda != nullptr && pda->isReady() == false)
-        pda->trigger();
+        //Making sure the weapon has the right owner for later pointing.
+        weapon->user = &npc;
 
+        //Working the item until it's ready to fire.
+        if(!weapon->isReady())
+            weapon->trigger();
 
+        //If it's a gun, Let's make sure it's loaded.
+        if(weapon->type == 2)
+            checkAmmo(npc,container,weapon);
 
-    if(rangewep != nullptr)
-        checkAmmo(npc,container,rangewep);
-
-    if(inputState.key[Key::LAlt] && !selectedNPCs.empty() && npc.id == selectedNPCs[0]->id)
-    {
-
-        //rangewep->getRange();
-        if(rangewep != nullptr)
-            shapes.createCircle(npc.xpos,npc.ypos,rangewep->getRange(),sf::Color(255,0,0,50),2,sf::Color::Red);
-        if(meleewep != nullptr)
-            shapes.createCircle(npc.xpos,npc.ypos,meleewep->getRange(),sf::Color(0,0,255,50),2,sf::Color::Blue);
-        if(pda != nullptr)
-            shapes.createCircle(npc.xpos,npc.ypos,pda->getRange(),sf::Color(0,255,0,50),2,sf::Color::Green);
-    }
-        debug("1");
+        if(inputState.key[Key::LAlt] && !selectedNPCs.empty() && npc.id == selectedNPCs[0]->id)
+        { // Setting up radiuses so we can see how far our weapon can strike.
+            if(weapon->type == 2)
+                shapes.createCircle(npc.xpos,npc.ypos,weapon->getRange(),sf::Color(255,0,0,50),2,sf::Color::Red);
+            if(weapon->type == 1)
+                shapes.createCircle(npc.xpos,npc.ypos,weapon->getRange(),sf::Color(0,0,255,50),2,sf::Color::Blue);
+            if(weapon->type == 23)
+                shapes.createCircle(npc.xpos,npc.ypos,weapon->getRange(),sf::Color(0,255,0,50),2,sf::Color::Green);
+        }
 
         //We check if the target is within range of the current weapon, and if we can actually directly see them.
         bool withinRange = false;
         bool canSee = false;
 
-        if(pda != nullptr && closEnmy != nullptr)
+        if(closEnmy != nullptr)
         {
-            withinRange = (math::closeish(npc.xpos,npc.ypos,closEnmy->xpos,closEnmy->ypos) <= pda->getRange());
+            if(weapon->type == 2)
+            { // Gun Skills!
+                Skill * snipeShot = npc.skills.getSkill("Snipe Shot");
+                if(snipeShot != nullptr && snipeShot->ranks > 0 && snipeShot->cooldown <= 0 && snipeShot->autouse)
+                { // TODO: Figure out how to not use duplicate code here... ugh.
 
-            //Making sure they're in range before doing the raytrace, since it's very slow.
-            if(withinRange && canSee == false)
-                canSee = canSeeNpc(npc,*closEnmy);
+                    withinRange = (math::closeish(npc.xpos,npc.ypos,closEnmy->xpos,closEnmy->ypos) <= weapon->getRange()+(weapon->getRange()*(snipeShot->ranks*0.50)));
 
-            if(withinRange && canSee)
-            {
-                //Making sure the weapon has the right owner for later pointing.
-                pda->user = &npc;
-                // Ticking the timer on the weapon, and firing once the cap is met.
-                if(pda->isReady())
-                {
-                    pda->trigger();
-                    std::string Status = pda->activate(Vec3f(closEnmy->xpos,closEnmy->ypos,closEnmy->zpos));
-                }
-            }
-        }
+                    //Checking for Ammo, else WithinRange = false.
+                    if(getItemType(weapon->internalitems,weapon->ammotype) == nullptr)
+                        withinRange = false;
 
+                    //Making sure they're in range before doing the raytrace, since it's very slow.
+                    if(withinRange && weapon->isReady())
+                        canSee = canSeeNpc(npc,*closEnmy);
 
-
-
-        if(rangewep != nullptr && closEnmy != nullptr)
-        {
-            Skill * snipeShot = npc.skills.getSkill("Snipe Shot");
-            if(snipeShot != nullptr && snipeShot->ranks > 0 && snipeShot->cooldown <= 0 && snipeShot->autouse)
-            { // TODO: Figure out how to not use duplicate code here... ugh.
-
-                withinRange = (math::closeish(npc.xpos,npc.ypos,closEnmy->xpos,closEnmy->ypos) <= rangewep->getRange()+(rangewep->getRange()*(snipeShot->ranks*0.50)));
-
-                //Checking for Ammo, else WithinRange = false.
-                if(getItemType(rangewep->internalitems,rangewep->ammotype) == nullptr)
+                    if(withinRange && canSee )
+                    {
+                        // Firing once the weapon is ready.
+                        if(weapon->isReady())
+                        {
+                            snipeShot->cooldown = snipeShot->cooldownint;
+                            weapon->trigger();
+                            int damStorage = weapon->maxdam;
+                            weapon->maxdam = weapon->maxdam+(weapon->maxdam*(snipeShot->ranks*0.50));
+                            std::string Status = weapon->activate(Vec3f(closEnmy->xpos,closEnmy->ypos,closEnmy->zpos));
+                            weapon->maxdam = damStorage;
+                            AnyDeletes(weapon->internalitems);
+                        }
+                    }
                     withinRange = false;
 
-                //Making sure they're in range before doing the raytrace, since it's very slow.
-                if(withinRange)
-                    canSee = canSeeNpc(npc,*closEnmy);
-
-                if(withinRange && canSee)
-                {
-                    //Making sure the weapon has the right owner for later pointing.
-                    rangewep->user = &npc;
-
-                    // Firing once the weapon is ready.
-                    if(rangewep->isReady())
-                    {
-                        snipeShot->cooldown = snipeShot->cooldownint;
-                        rangewep->trigger();
-                        int damStorage = rangewep->maxdam;
-                        rangewep->maxdam = rangewep->maxdam+(rangewep->maxdam*(snipeShot->ranks*0.50));
-                        std::string Status = rangewep->activate(Vec3f(closEnmy->xpos,closEnmy->ypos,closEnmy->zpos));
-                        rangewep->maxdam = damStorage;
-                        AnyDeletes(rangewep->internalitems);
-                    }
                 }
-                withinRange = false;
-
             }
 
-            withinRange = (math::closeish(npc.xpos,npc.ypos,closEnmy->xpos,closEnmy->ypos) <= rangewep->getRange());
 
-            //Checking for Ammo, else WithinRange = false.
-            if(getItemType(rangewep->internalitems,rangewep->ammotype) == nullptr)
-                withinRange = false;
 
-            //Making sure they're in range before doing the raytrace, since it's very slow. canSee == false due to snipeShot having further reach, no need to do it twice.
-            if(withinRange && canSee == false)
+            withinRange = (math::closeish(npc.xpos,npc.ypos,closEnmy->xpos,closEnmy->ypos) <= weapon->getRange());
+
+            //Making sure they're in range before doing the raytrace, since it's very slow,
+            //Added isReady, No point in checking if we can see them if we can't do anything about it.
+            if(withinRange && canSee == false && weapon->isReady())
                 canSee = canSeeNpc(npc,*closEnmy);
 
             if(withinRange && canSee)
             {
-                //Making sure the weapon has the right owner for later pointing.
-                rangewep->user = &npc;
-                // Ticking the timer on the weapon, and firing once the cap is met.
-                if(rangewep->isReady())
+                // Making sure we're ready to strike.
+                if(weapon->isReady())
                 {
-                    rangewep->trigger();
-                    std::string Status = rangewep->activate(Vec3f(closEnmy->xpos,closEnmy->ypos,closEnmy->zpos));
-                    AnyDeletes(rangewep->internalitems);
+                    weapon->trigger();
+                    std::string Status = weapon->activate(Vec3f(closEnmy->xpos,closEnmy->ypos,closEnmy->zpos));
+                    AnyDeletes(weapon->internalitems);
                 }
             }
+
+
+
+
         }
 
-        if(rangewep != nullptr)
+
+        if(weapon->type == 2)
         {// Here we do ranged weapon active skills.
             Skill * snipeShot = npc.skills.getSkill("Snipe Shot");
             if(snipeShot != nullptr && snipeShot->ranks > 0 && snipeShot->cooldown <= 0)
@@ -1598,15 +1567,10 @@ void assaultDesire(Npc &npc, std::list<Npc> &container, Npc * closEnmy, bool &ha
                 sKI = getSkillKeep();
                 if(sKI != nullptr && sKI->user->id == npc.id && sKI->skillName == "Snipe Shot")
                 {
-
-                    rangewep->user = &npc;
-
-                    withinRange = (math::closeish(npc.xpos,npc.ypos,sKI->usePos.x,sKI->usePos.y) <= rangewep->getRange()+(rangewep->getRange()*(snipeShot->ranks*0.50)));
-
-
+                    withinRange = (math::closeish(npc.xpos,npc.ypos,sKI->usePos.x,sKI->usePos.y) <= weapon->getRange()+(weapon->getRange()*(snipeShot->ranks*0.50)));
 
                     //Checking for Ammo, else WithinRange = false.
-                    if(getItemType(rangewep->internalitems,rangewep->ammotype) == nullptr)
+                    if(getItemType(weapon->internalitems,weapon->ammotype) == nullptr)
                         withinRange = false;
 
                     if(withinRange)
@@ -1624,41 +1588,22 @@ void assaultDesire(Npc &npc, std::list<Npc> &container, Npc * closEnmy, bool &ha
 
 
                     // Firing once the weapon is ready, and the user clicks with the skill.
-                    //if(rangewep->isReady() && inputState.lmbTime == 1 && withinRange)
+                    //if(weapon->isReady() && inputState.lmbTime == 1 && withinRange)
                     if(inputState.lmbTime == 1 && withinRange)
                     {
                         snipeShot->cooldown = snipeShot->cooldownint;
-                        rangewep->trigger();
-                        int damStorage = rangewep->maxdam;
-                        rangewep->maxdam = rangewep->maxdam+(rangewep->maxdam*(snipeShot->ranks*0.50));
-                        std::string Status = rangewep->activate(Vec3f(sKI->usePos.x,sKI->usePos.y,gvars::currentz));
-                        rangewep->maxdam = damStorage;
-                        AnyDeletes(rangewep->internalitems);
+                        weapon->trigger();
+                        int damStorage = weapon->maxdam;
+                        weapon->maxdam = weapon->maxdam+(weapon->maxdam*(snipeShot->ranks*0.50));
+                        std::string Status = weapon->activate(Vec3f(sKI->usePos.x,sKI->usePos.y,gvars::currentz));
+                        weapon->maxdam = damStorage;
+                        AnyDeletes(weapon->internalitems);
                     }
                 }
             }
         }
 
-        debug("2");
-
-        if(meleewep != nullptr && closEnmy != nullptr)
-        {
-            if(!withinRange)
-                withinRange = (math::closeish(npc.xpos,npc.ypos,closEnmy->xpos,closEnmy->ypos) <= meleewep->range);
-            if(withinRange)
-            {
-                meleewep->user = &npc;
-                if(meleewep->trigger())
-                {
-                    std::string Status = meleewep->activate(Vec3f(closEnmy->xpos,closEnmy->ypos,closEnmy->zpos));
-                    AnyDeletes(meleewep->internalitems);
-                    //if(Status != "Success")
-                    //    chatBox.addChat(npc.name + ", cannot strike with " + meleewep->name + " due to :" + Status, sf::Color::Yellow);
-                }
-            }
-        }
-
-        if(meleewep != nullptr)
+        if(weapon->type == 1)
         {// Here we do melee weapon active skills.
 
             Skill * cleave = npc.skills.getSkill("Cleave");
@@ -1702,23 +1647,31 @@ void assaultDesire(Npc &npc, std::list<Npc> &container, Npc * closEnmy, bool &ha
                             {
                                 //Found someone within range! STRIKING!
                                 std::cout << npcCleave.id << "; Someone was hit by the Cleave! \n";
-                                int cleaveDamage = meleewep->maxdam*(0.75+(cleave->ranks*0.25));
-                                npc.dealDamage(&npcCleave,meleewep,cleaveDamage);
+                                int cleaveDamage = weapon->maxdam*(0.75+(cleave->ranks*0.25));
+                                npc.dealDamage(&npcCleave,weapon,cleaveDamage);
                             }
                         }
                     }
                 }
             }
-        }
+        } //
 
-        debug("3");
-        //If the Squaddie check isn't there, Your squaddies will try to walk through walls if an enemy is in range.
-        if(withinRange && canSee && !npc.isSquaddie)
-        {
-            hasPath = false;
-        }
-            //std::cout << rangewep->name << ",'s range: " << rangewep->range << std::endl;
-        debug("4");
+
+    }
+}
+
+void assaultDesire(Npc &npc, std::list<Npc> &container, Npc * closEnmy, bool &hasPath, Vec3 &endPos)
+{
+    if(closEnmy != nullptr && npc.faction == "Towerlings")
+    {
+        hasPath = true;
+        endPos = Vec3(closEnmy->xpos,closEnmy->ypos,closEnmy->zpos);
+    }
+    debug("0");
+
+    handsOffense(npc,container,closEnmy,hasPath,endPos);
+
+    debug("4");
 }
 
 void critterPathFind(Npc &npc, std::list<Npc> &container)
