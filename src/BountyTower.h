@@ -41,6 +41,7 @@ int getFactionMemberCount(std::string faction);
 class baseMenu
 {
 public:
+    int age;
     bool toDelete;
     std::string name;
     sf::Vector2f Pos;

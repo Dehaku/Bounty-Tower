@@ -530,6 +530,7 @@ void towerMenu()
 
 baseMenu::baseMenu()
 {
+    age = 0;
     toDelete = false;
 }
 
@@ -710,13 +711,13 @@ void renderSquaddieMenu(baseMenu &menu)
             else
                 textList.createText(drawPos,20,sf::Color::White,outPut,window.getView());
 
-            if(imageButtonClicked(decreaseSkillButton) && skill.ranks > 0)
+            if(imageButtonClicked(decreaseSkillButton) && skill.ranks > 0 && menu.age > 60)
             {
                 skill.ranks--;
                 npc->skillpoints++;
             }
 
-            if(imageButtonClicked(increaseSkillButton) && skill.ranks < skill.ranksmax && npc->skillpoints > 0)
+            if(imageButtonClicked(increaseSkillButton) && skill.ranks < skill.ranksmax && npc->skillpoints > 0 && menu.age > 60)
             {
                 skill.ranks++;
                 npc->skillpoints--;
@@ -781,6 +782,11 @@ void renderMerchantMenu(baseMenu &menu)
             if(item.ammotype == 5)
                 stats.append(", Missile");
         }
+        else if(item.type == 3)
+        {
+            stats.append(", Pierce:" + str(item.penetration));
+            stats.append(", Richochets:" + str(item.richochets));
+        }
 
         if(item.stackSize > 1)
             stats.append("\nStack: " + str(item.stackSize));
@@ -788,7 +794,7 @@ void renderMerchantMenu(baseMenu &menu)
 
 
 
-        if(imageButtonClicked(itemButt))
+        if(imageButtonClicked(itemButt) && menu.age > 60)
         {
             if(conFact->credits < item.value)
                 chatBox.addChat("You do not have enough cash for "+item.name+"!", sf::Color::White);
@@ -877,7 +883,7 @@ void renderRecruiterMenu(baseMenu &menu)
 
 
 
-        if(imageButtonClicked(npcButt))
+        if(imageButtonClicked(npcButt) && menu.age > 60)
         {
             if(Squaddies.size() >= 4)
                 chatBox.addChat("You already have a full squad!", sf::Color::White);
@@ -932,7 +938,7 @@ void drawMenus()
 
     for(auto &menu : menus)
     {
-
+        menu.age++;
         if(menu.name == "Squaddie Menu")
             renderSquaddieMenu(menu);
         if(menu.name == "Merchant Menu")
