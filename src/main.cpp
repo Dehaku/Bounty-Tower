@@ -1463,7 +1463,7 @@ entityvectorpointercontainer entityTrace(Vec3 Ori, Vec3 Tar) /* TODO: Improve th
 void handsOffense(Npc &npc, std::list<Npc> &container, Npc * closEnmy, bool &hasPath, Vec3 &endPos)
 {
     for(int i = 0; i != 2; i++)
-    { //TODO: GALAXY: Instead of running through pointers, just iterate the slots directly, Allows for multiarmed critters to use stuffs!
+    { //TODO: GALAXY: Increase the slots iterated through based on the amount of hands the critter has! Multiarmed critters!
         Item * weapon = npc.invSlots[i];
 
         if(weapon == nullptr)

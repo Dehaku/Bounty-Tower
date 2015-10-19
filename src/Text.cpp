@@ -26,10 +26,17 @@ sf::Text drawText(sf::Vector2f vPos, std::string text, sf::Color color, int size
 std::string randomWindowName()
 {
     std::vector<std::string> const names{
+        /*
+        //Galaxies Names
         "Zombificational Settlementation Experimentation", "Galaxy",
         "Ye Old Settlement, Ye New Galaxy",
         "The first Galaxy had Joey, Just saying",
-        "First comes the universe, then comes Galaxy"};
+        "First comes the universe, then comes Galaxy"
+        */
+        "Bounty Tower", "Galaxy: Bounty Tower",
+        "Bounty Tower: The Fortune Fortress",
+        "Galaxy: Fortune Fortress: The Hunters of Bounty: The Reckoning",
+        "BT, Now with less Joey", "BLT, Bounty Letus Tower", "rewoT ytnuoB Bounty Tower"};
 
     return names[randz(0, names.size() - 1)];
 }
