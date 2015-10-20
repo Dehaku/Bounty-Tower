@@ -711,13 +711,13 @@ void renderSquaddieMenu(baseMenu &menu)
             else
                 textList.createText(drawPos,20,sf::Color::White,outPut,window.getView());
 
-            if(imageButtonClicked(decreaseSkillButton) && skill.ranks > 0 && menu.age > 60)
+            if(imageButtonClicked(decreaseSkillButton) && skill.ranks > 0 && menu.age > 30)
             {
                 skill.ranks--;
                 npc->skillpoints++;
             }
 
-            if(imageButtonClicked(increaseSkillButton) && skill.ranks < skill.ranksmax && npc->skillpoints > 0 && menu.age > 60)
+            if(imageButtonClicked(increaseSkillButton) && skill.ranks < skill.ranksmax && npc->skillpoints > 0 && menu.age > 30)
             {
                 skill.ranks++;
                 npc->skillpoints--;
@@ -794,7 +794,7 @@ void renderMerchantMenu(baseMenu &menu)
 
 
 
-        if(imageButtonClicked(itemButt) && menu.age > 60)
+        if(imageButtonClicked(itemButt) && menu.age > 30)
         {
             if(conFact->credits < item.value)
                 chatBox.addChat("You do not have enough cash for "+item.name+"!", sf::Color::White);
@@ -883,7 +883,7 @@ void renderRecruiterMenu(baseMenu &menu)
 
 
 
-        if(imageButtonClicked(npcButt) && menu.age > 60)
+        if(imageButtonClicked(npcButt) && menu.age > 30)
         {
             if(Squaddies.size() >= 4)
                 chatBox.addChat("You already have a full squad!", sf::Color::White);
@@ -1044,6 +1044,8 @@ void loadTavern()
 
     bountytower::towerLoaded = towers[0].name;
     bountytower::currentTower = &towers[0];
+    bountytower::elevatoravailable = false;
+    bountytower::pausewaves = true;
     //buildTower(towers[1].name);
 
     loadMap(towers[0].mapID,0,0,50,50);
