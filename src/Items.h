@@ -137,6 +137,7 @@ public:
     void printConsoleInfo();
     int getRange();
     int getSpread();
+    int getKnockback();
     std::string activate(Vec3f vPos);
     bool trigger();
     bool isReady();

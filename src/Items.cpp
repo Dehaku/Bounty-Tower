@@ -521,6 +521,22 @@ int Item::getSpread()
     return returns;
 }
 
+int Item::getKnockback()
+{
+    debug(name + " getKnockback()");
+    int returns = knockback;
+    if(type == 2)
+    {
+        Item * itemptr = getItemType(internalitems,ammotype);
+        if(itemptr == nullptr)
+            returns += 0;
+        else
+            returns += itemptr->knockback;
+    }
+    debug(name + " getKnockback() done");
+    return returns;
+}
+
 Vec3f Item::getPos()
 {
     Vec3f myPos(xpos,ypos,zpos);
@@ -1159,12 +1175,6 @@ std::string Item::activate(Vec3f vPos) // Returns a string declaring the problem
             if(dist <= 20)
                 user->dealDamage(npc,this,69);
         }
-
-        /*
-        Item * itemptr = getItemType(internalitems,3);
-        if(itemptr == nullptr || itemptr->amount <= 0)
-            return "No Ammo";
-        */
     }
 
     return "Failed";

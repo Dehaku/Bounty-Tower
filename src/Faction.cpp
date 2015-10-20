@@ -2530,18 +2530,38 @@ std::string Npc::takeDamage(Npc *attacker, Item *weapon, float amount, critScore
         amount = amount-reduction;
     }
 
-    if(attacker != nullptr && attacker->skills.getRanks("Batter Up") > 0)
-    {
-        int ranks = attacker->skills.getRanks("Batter Up");
-        sf::Vector2f AtkerPos = attacker->getPos2d();
+
+    {// Knockback Code
+        int knockbackAmount = 0;
+        sf::Vector2f AtkerPos;
+
+        if(weapon != nullptr)
+        {
+            knockbackAmount += weapon->getKnockback();
+        }
+        if(attacker != nullptr)
+        {
+            AtkerPos = attacker->getPos2d();
+            if(weapon != nullptr && weapon->type == 1 && attacker->skills.getRanks("Batter Up") > 0)
+            {
+                int ranks = attacker->skills.getRanks("Batter Up");
+                knockbackAmount += amount*ranks;
+            }
+        }
+
+
         sf::Vector2f VictPos = getPos2d();
         float attackAngle = math::angleBetweenVectors(AtkerPos,VictPos);
-        sf::Vector2f finalPos = math::angleCalc(VictPos,attackAngle,amount*ranks);
+        sf::Vector2f finalPos = math::angleCalc(VictPos,attackAngle,knockbackAmount);
 
         sf::Vector2f compared(finalPos.x-xpos,finalPos.y-ypos);
-        momentum += compared;
-
+        if(AtkerPos != sf::Vector2f())
+            momentum += compared;
     }
+
+
+
+
 
     if(modhealth(-amount) == false) // modhealth returns false on death.
         onDeath(attacker, weapon, amount, crit);
