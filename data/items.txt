@@ -18,7 +18,6 @@
 [name:Shell: Slug][value:30][stackSize:30][Projectiles:1][Pickupable:true][richochets:1][penetration:1][type:4][image:Shells.png][baseid:5715790][mindam:100][maxdam:200][range:100]
 [name:Shell: Spread][value:45][stackSize:30][Projectiles:5][Pickupable:true][richochets:0][penetration:0][type:4][image:Shells.png][baseid:5785720][mindam:100][maxdam:200][range:50]
 [name:Missile: Standard][value:50][Pickupable:true][type:5][stackSize:5][richochets:0][penetration:0][Projectiles:1][image:Missiles.png][baseid:5413812][mindam:50][maxdam:100][range:200][radius:200]
-[name:Missile: Ragnarok][value:500][Pickupable:true][type:5][stackSize:5][richochets:0][penetration:0][Projectiles:32][image:Missiles.png][baseid:5413813][mindam:25][maxdam:50][range:200][radius:100][Spread:300]
 [name:Wood][stackSize:99][Pickupable:true][image:Plank.png][type:12][baseid:7871787][produces:false]
 [name:Rock][stackSize:99][Pickupable:true][image:Rock.png][type:12][baseid:7971787][produces:false]
 [name:Rune][Pickupable:true][image:BaseRune.png][type:12][baseid:8001747][produces:false]

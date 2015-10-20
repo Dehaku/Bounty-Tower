@@ -15,3 +15,8 @@ Perhaps have robits or other forms of mechanical means to transfer items from bu
 Immovable Object Power Generator
 	This material, when supplied with a power connection, locks it's position with the nearest celestial body, All momentum(damage)
 	applied to it is then sent along the power lines as direct power, can be used for charging batteries.
+
+
+Plants
+GrowthTemperature Range, Only grows between those temperatures.
+GrowthLight Range, Only grows when exposed to this amount of light(Perhaps have it as an exposure time instead? Ranging in hours.)
