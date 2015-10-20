@@ -4,18 +4,12 @@
 #include <SFML/Audio.hpp>
 #include "globalvars.h"
 #include <memory>
-
-class SoundHolder
-{
-public:
-    sf::SoundBuffer soundstorage;
-    std::string name;
-};
+#include <unordered_map>
 
 class SoundManager
 {
 public:
-    std::vector<SoundHolder> sounds;
+    std::unordered_map<std::string, sf::SoundBuffer> buffers;
     std::vector<std::unique_ptr<sf::Sound>> playSounds;
     sf::SoundBuffer &getSound(std::string input);
     void cleanSounds();
