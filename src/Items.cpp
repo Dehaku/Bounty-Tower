@@ -550,6 +550,7 @@ Item::Item()
     radius = 0;
     penetration = 0;
     richochets = 0;
+    knockback = 0;
 
     // This may be a little confusing, This is so the item can stay
     // inside without being ejected because one function doesn't need it.
@@ -653,6 +654,7 @@ void ItemManager::initializeItems()
             item.radius = stringFindNumber(line, "[radius:");
             item.penetration = stringFindNumber(line, "[penetration:");
             item.richochets = stringFindNumber(line, "[richochets:");
+            item.knockback = stringFindNumber(line, "[knockback:");
 
 
             item.massGlass = stringFindNumber(line, "[MassGlass:");

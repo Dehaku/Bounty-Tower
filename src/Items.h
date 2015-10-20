@@ -44,6 +44,7 @@ public:
     int radius;
     int penetration;
     int richochets;
+    int knockback;
     int age;
     int weight;
     int value;
