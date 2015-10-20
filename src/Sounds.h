@@ -11,20 +11,11 @@ public:
     std::string name;
 };
 
-class SoundPlayer
-{
-    public:
-    sf::Sound sound;
-    std::string name;
-    bool toDelete;
-    SoundPlayer();
-};
-
 class SoundManager
 {
 public:
     std::vector<SoundHolder> sounds;
-    std::vector<SoundPlayer> playSounds;
+    std::vector<std::unique_ptr<sf::Sound>> playSounds;
     sf::SoundBuffer &getSound(std::string input);
     void cleanSounds();
     void playSound(std::string input);
