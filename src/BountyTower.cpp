@@ -1790,7 +1790,7 @@ void bountyTowerLoop()
 
     displayCash();
 
-    if(bountytower::elevatoravailable && bountytower::towerLoaded != "")
+    if(bountytower::elevatoravailable && bountytower::towerLoaded != "" && !bountytower::towerVictory)
     { // Prints Elevator HUD and other such things
 
 

@@ -54,14 +54,14 @@ int randz(int minValue, int maxValue)
     return (minValue + rawRand);
 }
 
-unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
-std::minstd_rand0 generator (seed); // minstd_rand0 is a standard linear_congruential_engine
+
 
 
 
 
 int random(int minValue, int maxValue)
 {
+    static std::minstd_rand0 generator (std::chrono::system_clock::now().time_since_epoch().count()); // minstd_rand0 is a standard linear_congruential_engine
     maxValue = maxValue + 1;
     if (minValue == maxValue)
     {

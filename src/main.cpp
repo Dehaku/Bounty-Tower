@@ -2264,6 +2264,7 @@ void dropItem()
     }
 }
 
+
 void hoverItemHUD()
 {
     if(mouseItem != nullptr)
@@ -2279,7 +2280,7 @@ void hoverItemHUD()
     {
         bool isSecondSlot = false;
         if(selectedNPCs[0]->invSlots[i] != nullptr && selectedNPCs[0]->invSlots[i]->size > 1)
-        {
+       {
             if(i > 0 && selectedNPCs[0]->invSlots[i-1] != nullptr && selectedNPCs[0]->invSlots[i-1]->id == selectedNPCs[0]->invSlots[i]->id)
                 isSecondSlot = true;
         }
@@ -2321,16 +2322,6 @@ void hoverItemHUD()
             if(mouseItem == nullptr && selectedNPCs[0]->invSlots[i] != nullptr)
             {
                 mouseItem = selectedNPCs[0]->invSlots[i];
-
-                /*
-                if(mouseItem->size > 1)
-                {
-                    if(selectedNPCs[0]->invSlots[i+1] != nullptr && selectedNPCs[0]->invSlots[i+1]->id == selectedNPCs[0]->invSlots[i]->id)
-                        selectedNPCs[0]->invSlots[i+1] = nullptr;
-                }
-                selectedNPCs[0]->invSlots[i] = nullptr;
-                */
-
             }
             else if(mouseItem != nullptr)
             {
@@ -2354,43 +2345,22 @@ void hoverItemHUD()
                 }
                 else
                 {
-
-                    // This took so much damn work! I even had to graph it down and study it!
-                    //Item * itemBuff = mouseItem;
-                    //mouseItem = selectedNPCs[0]->invSlots[i];
-                    //mouseItem->currentSlot = &selectedNPCs[0]->invSlots[i];
-                    //selectedNPCs[0]->invSlots[i] = itemBuff;
-
-                    //Item * itemBuff = selectedNPCs[0]->invSlots[i];
                     Item ** itemBuff = mouseItem->currentSlot;
                     Item * itemPtrBuff = selectedNPCs[0]->invSlots[i];
 
-
-                    //(*mouseItem->currentSlot) = nullptr;
                     selectedNPCs[0]->invSlots[i] = mouseItem;
                     selectedNPCs[0]->invSlots[i]->currentSlot = &selectedNPCs[0]->invSlots[i];
                     (*itemBuff) = itemPtrBuff;
                     (*(*itemBuff)).currentSlot = (itemBuff);
-                    //selectedNPCs[0]->invSlots[i] = itemBuff;
 
-                    //mouseItem->currentSlot = &selectedNPCs[0]->invSlots[i];
                     mouseItem = nullptr;
-
-
-                    //mouseItem = selectedNPCs[0]->invSlots[i];
-                    //mouseItem->currentSlot = &selectedNPCs[0]->invSlots[i];
-                    //selectedNPCs[0]->invSlots[i] = itemBuff;
-
                 }
-
             }
         }
     }
     window.setView(gvars::view1);
     dropItem();
 }
-
-
 
 void drawHudSkills(Npc &npc, sf::Vector2f spritePos)
 {

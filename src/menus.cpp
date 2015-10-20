@@ -1760,7 +1760,11 @@ void rightMouseButtonContextMenu()
             return;
         }
 
-        gCtrl.menuType = "BlankRMB";
-        menuPopUp();
+        if(inputState.key[Key::LShift])
+        {
+            gCtrl.menuType = "BlankRMB";
+            menuPopUp();
+        }
+
     }
 }
