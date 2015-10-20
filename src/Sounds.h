@@ -3,6 +3,7 @@
 
 #include <SFML/Audio.hpp>
 #include "globalvars.h"
+#include <memory>
 
 class SoundHolder
 {
