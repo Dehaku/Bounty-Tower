@@ -6,49 +6,19 @@
 SoundManager soundmanager;
 //MusicManager musicmanager;
 
-sf::SoundBuffer &SoundManager::getSound(std::string input)
-{
-    for (size_t i = 0; i != sounds.size(); i++)
-    {
-        if (sounds.at(i).name == input)
-        {
-            return sounds.at(i).soundstorage;
-        }
-    }
-    for (size_t i = 0; i != sounds.size(); i++)
-    {
-        if (sounds.at(i).name == "Error.bmp")
-        {
-            return sounds.at(i).soundstorage;
-        }
-    }
-    throw std::runtime_error("GetSound: Couldn't find sound.");
-}
-
 void SoundManager::playSound(std::string input)
 {
-    for (size_t i = 0; i != sounds.size(); i++)
-    {
-        if (sounds.at(i).name == input)
-        {
-            auto sound = std::make_unique<sf::Sound>(sounds[i].soundstorage);
-            sound->setVolume(gvars::soundVolume);
-            playSounds.push_back(std::move(sound));
-            playSounds.back()->play();
-            return;
-        }
-    }
-    for (size_t i = 0; i != sounds.size(); i++)
-    {
-        if (sounds.at(i).name == "Error.wav")
-        {
-            //return sounds.at(i).soundstorage;
-            auto sound = std::make_unique<sf::Sound>(sounds[i].soundstorage);
-            sound->setVolume(gvars::soundVolume);
-            playSounds.push_back(std::move(sound));
-            playSounds.back()->play();
-            return;
-        }
+    auto play = [this](sf::SoundBuffer const & buf) {
+        auto sound = std::make_unique<sf::Sound>(buf);
+        sound->setVolume(gvars::soundVolume);
+        playSounds.push_back(std::move(sound));
+        playSounds.back()->play();
+    };
+    auto it = buffers.find(input);
+    if (it != buffers.end()) {
+        play(it->second);
+    } else {
+        play(buffers["Error.wav"]);
     }
 }
 
@@ -73,12 +43,9 @@ void SoundManager::init()
         if (file != "." && file != "..")
         {
             line.append(ending);
-            SoundHolder sound;
-            sound.soundstorage.loadFromFile(line);
-
-            std::string namebit = file;
-            sound.name = namebit;
-            sounds.push_back(sound);
+            sf::SoundBuffer buf;
+            buf.loadFromFile(line);
+            buffers[file] = buf;
         }
     }
 }
