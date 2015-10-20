@@ -1864,7 +1864,8 @@ void critterBrain(Npc &npc, std::list<Npc> &container)
     int critterHealth = npc.health;
 
 
-    textList.createText(npc.xpos-30,npc.ypos-50,10,sf::Color::White,npc.name);
+    if(npc.name != npc.race)
+        textList.createText(npc.xpos-30,npc.ypos-50,10,sf::Color::White,npc.name);
     textList.createText(npc.xpos-30,npc.ypos-40,10,sf::Color::White,"Health: " + std::to_string(critterHealth));
     //textList.createText(npc.xpos,npc.ypos-10,10,sf::Color::White,"Mom: " + std::to_string(npc.momentum.x) + "/" + std::to_string(npc.momentum.y));
     runCritterBody(npc);
