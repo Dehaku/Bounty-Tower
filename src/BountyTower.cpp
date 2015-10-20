@@ -1801,7 +1801,8 @@ void bountyTowerLoop()
         int AmountRaised = 0;
         for(auto &npc : npclist)
             if(tiles[abs_to_index(npc.xpos/GRID_SIZE)][abs_to_index(npc.ypos/GRID_SIZE)][gvars::currentz].id == 3202)
-                AmountRaised++;
+                if(npc.faction == conFact->name)
+                    AmountRaised++;
 
         textList.createText(sf::Vector2f(RESOLUTION.x/2,70),20,sf::Color::White,"On Elevator: " + std::to_string(AmountRaised),window.getDefaultView());
 

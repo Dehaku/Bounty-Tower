@@ -413,6 +413,32 @@ void critterPickUp()
                 textList.createText(item.xpos,item.ypos+15,15,sf::Color::White,"RMB: Pickup " + item.name);
                 if(selectedNPCs[0]->inventory.size() < 20 && inputState.rmbTime == 1)
                 {//Making sure we have room.
+
+                    if(item.name == "Scrap" && item.firstPickup && selectedNPCs[0]->skills.getRanks("Lucky Scavenger") > 0)
+                    { // TODO: Turn this into an item.onPickup(Npc &npc) kinda thing instead.
+                        int scavRandom = random(1,100);
+                        if(scavRandom <= selectedNPCs[0]->skills.getRanks("Lucky Scavenger")*20)
+                        {
+                            int coinFlip = random(1,2);
+                            if(coinFlip == 1)
+                            {
+                                Item Cash = *getGlobalItem("Cash");
+                                Cash.name = "Cash";
+                                Cash.amount = random(10,100);
+                                Cash.xpos = selectedNPCs[0]->xpos;
+                                Cash.ypos = selectedNPCs[0]->ypos;
+                                Cash.zpos = selectedNPCs[0]->zpos;
+                                worlditems.push_back(Cash);
+                            }
+                            if(coinFlip == 2)
+                            {
+                                Item Ammo = *getGlobalItem("Bullet: Standard");
+                                Ammo.amount = random(1,5);
+                                selectedNPCs[0]->addItem(Ammo);
+                            }
+                        }
+                    }
+
                     item.xpos = 0;
                     item.ypos = 0;
                     item.zpos = 0;
