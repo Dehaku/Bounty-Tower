@@ -1825,7 +1825,7 @@ void critterBrain(Npc &npc, std::list<Npc> &container)
 
     int moveSpeed = npc.moverate;
 
-    if(inputState.key[Key::L])
+    if(inputState.key[Key::L] && inputState.key[Key::LShift])
         npc.moverate = 100;
 
 

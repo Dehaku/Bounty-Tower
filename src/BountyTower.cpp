@@ -1555,7 +1555,7 @@ void bountyTowerLoop()
         textList.createText(gvars::mousePos,10,sf::Color::White,outPut);
     }
 
-    if(inputState.key[Key::N])
+    if(inputState.key[Key::N] && inputState.key[Key::LShift])
         bountytower::towerVictory = true;
 
     if(bountytower::currentTower != nullptr && bountytower::currentTower->name == "The Tavern")
@@ -1574,7 +1574,7 @@ void bountyTowerLoop()
     }
 
 
-    if(inputState.key[Key::T].time == 1)
+    if(inputState.key[Key::T].time == 1 && inputState.key[Key::LShift])
     {
         Npc boss = *getGlobalCritter("BTRockkid");
         boss.xpos = gvars::mousePos.x;
@@ -1629,7 +1629,7 @@ void bountyTowerLoop()
         }
     }
 
-    if(inputState.key[Key::V].time == 1)
+    if(inputState.key[Key::V].time == 1 && inputState.key[Key::LShift])
     { // Spawn Scrap
         Item item = *getGlobalItem("Scrap");
         item.xpos = gvars::mousePos.x;
@@ -1639,7 +1639,7 @@ void bountyTowerLoop()
         worlditems.push_back(item);
     }
 
-    if(inputState.key[Key::B].time == 1)
+    if(inputState.key[Key::B].time == 1 && inputState.key[Key::LShift])
     { // Spawn Cash
         Item item = *getGlobalItem("Cash");
         item.amount = random(10,100);
@@ -1650,7 +1650,7 @@ void bountyTowerLoop()
 
     }
 
-    if(inputState.key[Key::N].time == 1)
+    if(inputState.key[Key::N].time == 1 && inputState.key[Key::LShift])
     { // Spawn Ammo
         Item item = *getGlobalItem("Bullet: Standard");
         item.amount = random(5,10);
@@ -1661,7 +1661,7 @@ void bountyTowerLoop()
     }
 
 
-    if(inputState.key[Key::G].time == 1)
+    if(inputState.key[Key::G].time == 1 && inputState.key[Key::LShift])
     { // Renew Menu Towers
         towers.clear();
         int Amt = randz(5,30);

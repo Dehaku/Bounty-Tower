@@ -1093,7 +1093,7 @@ void workSwitch(Npc &npc, std::list<Npc> &container)
             standTile->state = "On";
         }
 
-        if(inputState.key[Key::L])
+        if(inputState.key[Key::L] && inputState.key[Key::LShift])
             standTile->state = "On";
 
         int percentage = percentIs(standTile->workGoal,standTile->workProgress);
