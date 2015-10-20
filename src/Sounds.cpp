@@ -31,13 +31,10 @@ void SoundManager::playSound(std::string input)
     {
         if (sounds.at(i).name == input)
         {
-            //return sounds.at(i).soundstorage;
-            SoundPlayer SP;
-            SP.sound.setBuffer(sounds[i].soundstorage);
-            SP.sound.setVolume(gvars::soundVolume);
-            //SP.sound.play();
-            playSounds.push_back(SP);
-            playSounds.back().sound.play();
+            auto sound = std::make_unique<sf::Sound>(sounds[i].soundstorage);
+            sound->setVolume(gvars::soundVolume);
+            playSounds.push_back(std::move(sound));
+            playSounds.back()->play();
             return;
         }
     }
@@ -46,57 +43,21 @@ void SoundManager::playSound(std::string input)
         if (sounds.at(i).name == "Error.wav")
         {
             //return sounds.at(i).soundstorage;
-            SoundPlayer SP;
-            SP.sound.setBuffer(sounds[i].soundstorage);
-            SP.sound.setVolume(gvars::soundVolume);
-            playSounds.push_back(SP);
-            playSounds.back().sound.play();
+            auto sound = std::make_unique<sf::Sound>(sounds[i].soundstorage);
+            sound->setVolume(gvars::soundVolume);
+            playSounds.push_back(std::move(sound));
+            playSounds.back()->play();
             return;
-        }
-    }
-}
-
-SoundPlayer::SoundPlayer()
-{
-    toDelete = false;
-}
-
-void checkSounds(std::vector<SoundPlayer> &playsound)
-{
-    for (auto &i : playsound)
-    {
-        SoundPlayer SP;
-        //SP.sound.getStatus
-        //std::cout << "Sound Status: " << i.sound.getStatus() << ", VS: " << sf::Sound::Status::Stopped << std::endl;
-        if(i.sound.getStatus() == sf::Sound::Status::Stopped)
-        {
-            i.toDelete = true;
         }
     }
 }
 
 void SoundManager::cleanSounds()
 {
-    checkSounds(playSounds);
-    bool done = false;
-    while (done == false)
-    {
-        bool yet = false;
-        for (auto it = playSounds.begin(); it != playSounds.end(); ++it)
-        {
-            if (it->toDelete)
-            {
-                //std::cout << it->name << " to be deleted. \n";
-                playSounds.erase(it);
-                yet = true;
-                break;
-            }
-        }
-        if (yet == false)
-        {
-            done = true;
-        }
-    }
+    auto it = std::remove_if(playSounds.begin(), playSounds.end(), [](auto const & s) {
+        return s->getStatus() == sf::Sound::Stopped;
+    });
+    playSounds.erase(it, playSounds.end());
 }
 
 void SoundManager::init()

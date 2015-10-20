@@ -5154,8 +5154,6 @@ int main()
 
         debug("Starting Removing process, NPC/Unpoint/Items/GC.Menu");
 
-        AnyDeletes(soundmanager.playSounds);
-
         removeNPCs(npclist, mutex::npcList);
         removeItems(worlditems);
         soundmanager.cleanSounds();
