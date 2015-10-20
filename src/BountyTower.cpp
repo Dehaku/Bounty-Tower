@@ -703,9 +703,8 @@ void renderSquaddieMenu(baseMenu &menu)
             if(imageButtonHovered(increaseSkillButton) || imageButtonHovered(decreaseSkillButton))
             {
                 textList.createText(drawPos,20,sf::Color::Cyan,outPut,window.getView());
-                sf::Vector2f textPos(drawPos);
-                textPos.y -= 10;
-                textPos.x -= 500;
+                sf::Vector2f textPos(RESOLUTION.x/8,70);
+                shapes.createSquare(0,textPos.y,RESOLUTION.x,textPos.y+13,sf::Color::Black,1,sf::Color::White,&gvars::hudView);
                 textList.createText(textPos,10,sf::Color::Cyan,skill.desc,window.getView());
             }
             else
