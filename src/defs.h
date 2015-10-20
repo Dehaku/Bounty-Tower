@@ -37,7 +37,7 @@ struct Vec3
         return sf::Vector2f(x,y);
     }
 
-    operator == (Vec3 a)
+    bool operator == (Vec3 a)
     {
       if(a.x == x && a.y == y && a.z == z)
          return true;
@@ -45,7 +45,7 @@ struct Vec3
          return false;
     }
 
-    operator != (Vec3 a)
+    bool operator != (Vec3 a)
     {
       if(a.x != x || a.y != y || a.z != z)
          return true;
@@ -78,7 +78,7 @@ struct Vec3f
         return sf::Vector2f(x,y);
     }
 
-    operator == (Vec3f a)
+    bool operator == (Vec3f a)
     {
       if(a.x == x && a.y == y && a.z == z)
          return true;
@@ -86,7 +86,7 @@ struct Vec3f
          return false;
     }
 
-    operator != (Vec3f a)
+    bool operator != (Vec3f a)
     {
       if(a.x != x || a.y != y || a.z != z)
          return true;

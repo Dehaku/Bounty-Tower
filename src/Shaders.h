@@ -20,7 +20,7 @@ public:
 
     void setupShaders();
 
-    shadermanager();
+    void shadermanager();
 
     void setShockwave(sf::Vector2f vPos);
 
