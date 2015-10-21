@@ -12,6 +12,7 @@
 [name:Shotgun][value:150][Pickupable:true][Spread:15][type:2][ammotype:4][MaxClip:8][image:Shotty.png][baseid:5872792][mindam:10][maxdam:20][range:150][IsWeapon:true][activaterategrowth:1][activateratemax:30][Size:1]
 [name:RocketLauncher][value:1000][Pickupable:true][Spread:3][type:2][ammotype:5][MaxClip:1][image:Thirteenth.png][baseid:5676762][mindam:10][maxdam:200][range:250][IsWeapon:true][activaterategrowth:1][activateratemax:60][Size:1]
 [name:Bullet: Standard][value:30][stackSize:30][Projectiles:1] [richochets:1][penetration:0] [Pickupable:true][type:3][image:Bullets.png][baseid:5715720][mindam:100][maxdam:200][range:250]
+[name:Bullet Box: Standard][value:500][stackSize:200][Projectiles:1] [richochets:1][penetration:0] [Pickupable:true][type:3][image:BulletsBox.png][baseid:5715730][mindam:100][maxdam:200][range:250]
 [name:Bullet: Long Range][value:45][stackSize:30][Projectiles:1][richochets:1][penetration:1][Pickupable:true][type:3][image:Bullets.png][baseid:5715721][mindam:100][maxdam:200][range:450]
 [name:Bullet: Incinderary][value:45][stackSize:30][Projectiles:1][richochets:0][penetration:0][Pickupable:true][type:3][image:Bullets.png][baseid:5715722][mindam:150][maxdam:250][range:250]
 [name:Bullet: Armor Piercing][value:45][stackSize:30][Projectiles:1][richochets:0][penetration:3][Pickupable:true][type:3][image:Bullets.png][baseid:5715723][mindam:50][maxdam:300][range:250]
