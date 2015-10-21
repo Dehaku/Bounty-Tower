@@ -25,6 +25,7 @@ public:
     bool showPath;
     Npc * owner;
     Item * parent;
+    sf::Texture * tex;
     npcPtrVector targets;
     npcPtrVector targetsHit;
 

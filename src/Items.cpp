@@ -1032,6 +1032,10 @@ std::string Item::activate(Vec3f vPos) // Returns a string declaring the problem
         boolet.pos = muzzlePos;
         boolet.positions.push_back(boolet.pos);
         boolet.angle = math::angleBetweenVectors(muzzlePosV2f,vPosV2f);
+        if(ammotype == 5)
+            boolet.tex = &texturemanager.getTexture("RocketBulletv2.png");
+        else
+            boolet.tex = &texturemanager.getTexture("NormalBullet.png");
 
         boolet.radius = itemptr->radius;
         boolet.maxrichochet = itemptr->richochets;
