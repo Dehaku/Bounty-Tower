@@ -263,7 +263,7 @@ Skills::Skills()
     skill.tree = "Engineer";
 
     skill.name = "Turret Construction";
-    skill.desc = "Active - Allows construction of up to total ranks of turrets, for 30 scrap a piece.";
+    skill.desc = "Active - For 30 scrap, Creates a friendly turret that deals 25*rank damage.";
     skill.active = true;
     skill.autouse = false;
     list.push_back(skill);

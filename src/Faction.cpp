@@ -414,30 +414,8 @@ void critterPickUp()
                 if(selectedNPCs[0]->inventory.size() < 20 && inputState.rmbTime == 1)
                 {//Making sure we have room.
 
-                    if(item.name == "Scrap" && item.firstPickup && selectedNPCs[0]->skills.getRanks("Lucky Scavenger") > 0)
-                    { // TODO: Turn this into an item.onPickup(Npc &npc) kinda thing instead.
-                        int scavRandom = random(1,100);
-                        if(scavRandom <= selectedNPCs[0]->skills.getRanks("Lucky Scavenger")*20)
-                        {
-                            int coinFlip = random(1,2);
-                            if(coinFlip == 1)
-                            {
-                                Item Cash = *getGlobalItem("Cash");
-                                Cash.name = "Cash";
-                                Cash.amount = random(10,100);
-                                Cash.xpos = selectedNPCs[0]->xpos;
-                                Cash.ypos = selectedNPCs[0]->ypos;
-                                Cash.zpos = selectedNPCs[0]->zpos;
-                                worlditems.push_back(Cash);
-                            }
-                            if(coinFlip == 2)
-                            {
-                                Item Ammo = *getGlobalItem("Bullet: Standard");
-                                Ammo.amount = random(1,5);
-                                selectedNPCs[0]->addItem(Ammo);
-                            }
-                        }
-                    }
+                    if(item.name == "Scrap" && item.firstPickup)
+                        continue;
 
                     item.xpos = 0;
                     item.ypos = 0;
@@ -490,7 +468,7 @@ void scrapPickup(Npc &npc, std::list<Npc> &container)
 {
     for(auto &scraps : worlditems)
     {
-        if(math::distance(npc.getPos(),scraps.getPos()) <= 60 && scraps.name == "Scrap" && scraps.firstPickup)
+        if(scraps.name == "Scrap" && math::distance(npc.getPos(),scraps.getPos()) <= 60 && scraps.firstPickup)
         {
             if(scraps.firstPickup && npc.skills.getRanks("Lucky Scavenger") > 0)
             {
@@ -679,7 +657,6 @@ void buildTurret(Npc &npc, std::list<Npc> &container)
             bool canBuild = false;
             bool tileBuildable = false;
             bool enoughScrap = false;
-            int turretCount = 0;
             Item * scrapPtr = nullptr;
 
             for(auto &item : npc.inventory)
@@ -713,14 +690,8 @@ void buildTurret(Npc &npc, std::list<Npc> &container)
                 shapes.createCircle(npc.xpos,npc.ypos,120,sf::Color::Transparent,1,sf::Color::Red);
             }
 
-            for(auto &npc : npclist)
-                if(npc.name == "BTTurret" && npc.alive && npc.faction == conFact->name)
-                    turretCount++;
 
-            if(turretSkill->ranks <= turretCount)
-                textList.createText(sf::Vector2f(sKI->usePos.x,sKI->usePos.y+20),15,sf::Color::Red,"You already have too many turrets!");
-
-            if(inputState.lmbTime == 1 && canBuild && turretSkill->ranks > turretCount)
+            if(inputState.lmbTime == 1 && canBuild)
             {
                 turretSkill->cooldown = turretSkill->cooldownint;
 
@@ -740,6 +711,9 @@ void buildTurret(Npc &npc, std::list<Npc> &container)
                 turret.factionPtr = npc.factionPtr;
 
                 Item gun = *getGlobalItem("Gun");
+                gun.maxdam = 25*turretSkill->ranks;
+                gun.mindam = gun.maxdam/2;
+
                 Item ammo = *getGlobalItem("Bullet: Standard");
                 ammo.amount = 100;
                 gun.internalitems.push_back(ammo);
