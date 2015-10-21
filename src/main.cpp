@@ -5083,7 +5083,7 @@ int main()
 
     onStart();
 
-    while (!inputState.key[Key::Escape] && window.isOpen())
+    while (window.isOpen())
     {
         shadermanager.shaderLoop();
 
@@ -5120,8 +5120,6 @@ int main()
         }
 
         pauseMenu();
-        if(inputState.key[Key::Escape])
-            window.close();
         fpsKeeper.calcFPS();
 
         gvars::hovering = false;

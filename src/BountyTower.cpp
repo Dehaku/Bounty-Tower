@@ -586,6 +586,18 @@ void towerMenu(Vec3f creationPos)
     menus.push_back(sMenu);
 }
 
+void escapeMenu(Vec3f creationPos)
+{
+    for(auto menu : menus)
+        if(menu.name == "Escape Menu")
+            return;
+    baseMenu sMenu;
+    sMenu.name = "Escape Menu";
+    sMenu.Pos = sf::Vector2f(RESOLUTION.x/2,RESOLUTION.y/2);
+    sMenu.makePos = creationPos;
+    menus.push_back(sMenu);
+}
+
 int nextLevelXpRequired(int level)
 {
     int baseXpPerLevel = 100;
@@ -1030,6 +1042,60 @@ void renderTowerMenu(baseMenu &menu)
 
 }
 
+void renderEscapeMenu(baseMenu &menu)
+{
+    shapes.createSquare(100,100,RESOLUTION.x-100,RESOLUTION.y-100,sf::Color(sf::Color(150,150,0)),5,sf::Color::White,&gvars::hudView);
+    //Close Button
+    int exitButt = createImageButton(sf::Vector2f(RESOLUTION.x-100,100),texturemanager.getTexture("ExitButton.png"),"",0,window.getDefaultView());
+    if(imageButtonClicked(exitButt))
+        menu.toDelete = true;
+
+    sf::Vector2f textPos( (RESOLUTION.x/2) - 50,110);
+    sf::Vector2f buttonPos(textPos);
+    textList.createText(textPos,10,sf::Color::White,"Sound: " + str(gvars::soundVolume),gvars::hudView);
+    buttonPos.x += 90;
+    buttonPos.y += 15;
+    int decreaseSoundButt = createImageButton(buttonPos,texturemanager.getTexture("ArrowButton.png"),"",-90,gvars::hudView);
+    buttonPos.x += 30;
+    int IncreaseSoundButt = createImageButton(buttonPos,texturemanager.getTexture("ArrowButton.png"),"",90,gvars::hudView);
+
+
+
+    textPos.y += RESOLUTION.y/8;
+    buttonPos = textPos;
+    textList.createText(textPos,10,sf::Color::White,"Music: " + str(gvars::musicVolume),gvars::hudView);
+    buttonPos.x += 90;
+    buttonPos.y += 15;
+    int decreaseMusicButt = createImageButton(buttonPos,texturemanager.getTexture("ArrowButton.png"),"",-90,gvars::hudView);
+    buttonPos.x += 30;
+    int IncreaseMusicButt = createImageButton(buttonPos,texturemanager.getTexture("ArrowButton.png"),"",90,gvars::hudView);
+
+
+    sf::Vector2f exitPos((RESOLUTION.x/2), RESOLUTION.y-150);
+    int exitGameButt = createImageButton(exitPos,texturemanager.getTexture("blankButton.png"),"",0,gvars::hudView);
+    exitPos.x -= 30;
+    textList.createText(exitPos,9,sf::Color::White,"Exit Game",gvars::hudView);
+
+
+    if(menu.age > 30 && imageButtonHovered(decreaseSoundButt) && (inputState.lmbTime == 1 || inputState.lmbTime > 20))
+        gvars::soundVolume = math::clamp(gvars::soundVolume-1,0,100);
+
+    if(menu.age > 30 && imageButtonHovered(IncreaseSoundButt) && (inputState.lmbTime == 1 || inputState.lmbTime > 20))
+        gvars::soundVolume = math::clamp(gvars::soundVolume+1,0,100);
+
+    if(menu.age > 30 && imageButtonHovered(decreaseMusicButt) && (inputState.lmbTime == 1 || inputState.lmbTime > 20))
+        gvars::musicVolume = math::clamp(gvars::musicVolume-1,0,100);
+
+    if(menu.age > 30 && imageButtonHovered(IncreaseMusicButt) && (inputState.lmbTime == 1 || inputState.lmbTime > 20))
+        gvars::musicVolume = math::clamp(gvars::musicVolume+1,0,100);
+
+
+
+    if(menu.age > 30 && imageButtonClicked(exitGameButt))
+        window.close();
+
+}
+
 void drawMenus()
 {
     int xOffset = gvars::mousePos.x - gvars::topLeft.x;
@@ -1049,6 +1115,11 @@ void drawMenus()
             renderRecruiterMenu(menu);
         if(menu.name == "Tower Menu")
             renderTowerMenu(menu);
+        if(menu.name == "Escape Menu")
+            renderEscapeMenu(menu);
+
+        if(inputState.key[Key::Escape] && menu.age > 30)
+            menu.toDelete = true;
 
     }
     window.setView(gvars::view1);
@@ -1647,6 +1718,9 @@ void bountyTowerLoop()
     checkDoors();
     NPCbuttons();
     layHints();
+
+    if(inputState.key[Key::Escape].time == 1 && menus.empty())
+        escapeMenu(Vec3());
 
     if(inputState.key[Key::T])
         towerMenu(Vec3f());
