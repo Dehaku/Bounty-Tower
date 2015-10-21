@@ -109,6 +109,14 @@ void Detonate(Bullet &bullet)
     shape.texture = &texturemanager.getTexture("Explosion1.png");
     shapes.shapes.push_back(shape);
 
+    int soundRan = random(1,3);
+    if(soundRan == 1)
+        soundmanager.playSound("Explosion1.ogg");
+    if(soundRan == 2)
+        soundmanager.playSound("Explosion2.ogg");
+    if(soundRan == 3)
+        soundmanager.playSound("Explosion3.ogg");
+
 
     for(auto &i : bullet.targets.ptrs)
     {
