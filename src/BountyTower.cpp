@@ -114,7 +114,8 @@ void setupTowers()
         fantasyTower.difficulty = 5;
         fantasyTower.minioncount = 200;
         fantasyTower.name = "FantasyModern";
-        fantasyTower.tex = &texturemanager.getTexture("FantasyModern.png");
+        //fantasyTower.tex = &texturemanager.getTexture("FantasyModern.png");
+        fantasyTower.tex = &texturemanager.getTexture("Scroll.png");
     }
     towers.push_back(fantasyTower);
 }
@@ -573,6 +574,18 @@ void recruiterMenu(Vec3f creationPos)
     menus.push_back(sMenu);
 }
 
+void towerMenu(Vec3f creationPos)
+{
+    for(auto menu : menus)
+        if(menu.name == "Tower Menu")
+            return;
+    baseMenu sMenu;
+    sMenu.name = "Tower Menu";
+    sMenu.Pos = sf::Vector2f(RESOLUTION.x/2,RESOLUTION.y/2);
+    sMenu.makePos = creationPos;
+    menus.push_back(sMenu);
+}
+
 int nextLevelXpRequired(int level)
 {
     int baseXpPerLevel = 100;
@@ -927,6 +940,96 @@ void renderRecruiterMenu(baseMenu &menu)
     }
 }
 
+void renderTowerMenu(baseMenu &menu)
+{
+    shapes.createSquare(100,100,RESOLUTION.x-100,RESOLUTION.y-100,sf::Color(sf::Color(150,150,0)),5,sf::Color::White,&gvars::hudView);
+    //Close Button
+    int exitButt = createImageButton(sf::Vector2f(RESOLUTION.x-100,100),texturemanager.getTexture("ExitButton.png"),"",0,window.getDefaultView());
+    if(imageButtonClicked(exitButt))
+        menu.toDelete = true;
+
+        //Screen position defaults
+    int xPart = RESOLUTION.x/5;
+    int yPart = RESOLUTION.y/3;
+    int xMinus = xPart/2;
+    int yMinus = yPart/2;
+
+    std::vector<sf::Vector2f> towerPos;
+    {// Inserting all the positions
+        sf::Vector2f vInsert;
+        vInsert = sf::Vector2f(150,150);
+        towerPos.push_back(vInsert);
+        vInsert = sf::Vector2f((-xMinus)+xPart*2,(-yMinus)+yPart);
+        towerPos.push_back(vInsert);
+        vInsert = sf::Vector2f((-xMinus)+xPart*3,(-yMinus)+yPart);
+        towerPos.push_back(vInsert);
+        vInsert = sf::Vector2f((-xMinus)+xPart*4,(-yMinus)+yPart);
+        towerPos.push_back(vInsert);
+        vInsert = sf::Vector2f((-xMinus)+xPart*5,(-yMinus)+yPart);
+        towerPos.push_back(vInsert);
+
+        vInsert = sf::Vector2f((-xMinus)+xPart,(-yMinus)+yPart*2);
+        towerPos.push_back(vInsert);
+        vInsert = sf::Vector2f((-xMinus)+xPart*2,(-yMinus)+yPart*2);
+        towerPos.push_back(vInsert);
+        vInsert = sf::Vector2f((-xMinus)+xPart*3,(-yMinus)+yPart*2);
+        towerPos.push_back(vInsert);
+        vInsert = sf::Vector2f((-xMinus)+xPart*4,(-yMinus)+yPart*2);
+        towerPos.push_back(vInsert);
+        vInsert = sf::Vector2f((-xMinus)+xPart*5,(-yMinus)+yPart*2);
+        towerPos.push_back(vInsert);
+
+        vInsert = sf::Vector2f((-xMinus)+xPart,(-yMinus)+yPart*3);
+        towerPos.push_back(vInsert);
+        vInsert = sf::Vector2f((-xMinus)+xPart*2,(-yMinus)+yPart*3);
+        towerPos.push_back(vInsert);
+        vInsert = sf::Vector2f((-xMinus)+xPart*3,(-yMinus)+yPart*3);
+        towerPos.push_back(vInsert);
+        vInsert = sf::Vector2f((-xMinus)+xPart*4,(-yMinus)+yPart*3);
+        towerPos.push_back(vInsert);
+        vInsert = sf::Vector2f((-xMinus)+xPart*5,(-yMinus)+yPart*3);
+        towerPos.push_back(vInsert);
+
+    }
+
+    int fanTowButt = createImageButton(towerPos[0],*towers[1].tex,"",0,gvars::hudView);
+    if(imageButtonClicked(fanTowButt))
+    {
+        menu.toDelete = true;
+        bountytower::pausewaves = true;
+        bountytower::towerLoaded = towers[1].name;
+        bountytower::currentTower = &towers[1];
+        gCtrl.phase = "Lobby";
+        //buildTower(towers[1].name);
+
+        loadMap(towers[1].mapID,0,0,50,50);
+
+        int xview = (96*60)/20;
+        gvars::currentx = xview/2;
+        gvars::currenty = xview/1.4;
+
+        towerTransition();
+
+
+        positionSquaddies();
+
+    }
+
+    //Draw some info about the thing.
+    {
+        std::string textOut = " Tower: " + towers[1].name +
+        //"\n Minions: " + std::to_string(towers[1].minioncount) +
+        "\n Target: " + "Rockkid, The Hardened Criminal" +
+        "\n Bounty: $" + str(towers[1].bountyPay) +
+        "\n Difficulty: " + std::to_string(towers[1].difficulty);
+        sf::Vector2f textPos(towerPos[0].x+50,towerPos[0].y-25);
+        textList.createText(textPos,15,sf::Color::Red,textOut,gvars::hudView);
+    }
+
+
+
+}
+
 void drawMenus()
 {
     int xOffset = gvars::mousePos.x - gvars::topLeft.x;
@@ -944,6 +1047,8 @@ void drawMenus()
             renderMerchantMenu(menu);
         if(menu.name == "Recruitment Menu")
             renderRecruiterMenu(menu);
+        if(menu.name == "Tower Menu")
+            renderTowerMenu(menu);
 
     }
     window.setView(gvars::view1);
@@ -1391,7 +1496,7 @@ void NPCbuttons()
             if(imageButtonHovered(bountyButt))
                 textList.createText(gvars::mousePos,15,sf::Color::Yellow,"Ready to go bounty hunting? \n(Left Mouse Button)");
             if(imageButtonClicked(bountyButt))
-                gCtrl.phase = "Tower Selection";
+                towerMenu(Vec3());
         }
         else if(npc.tags.find("[WeaponDealer:1]") != npc.tags.npos)
         {
@@ -1542,6 +1647,9 @@ void bountyTowerLoop()
     checkDoors();
     NPCbuttons();
     layHints();
+
+    if(inputState.key[Key::T])
+        towerMenu(Vec3f());
 
     if(inputState.key[Key::LControl].time > 10)
         if(inputState.key[Key::LShift].time > 10)
