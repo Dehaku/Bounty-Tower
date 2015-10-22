@@ -6,6 +6,31 @@
 std::vector<Npc*> Squaddies;
 std::list<Npc> leftBehind;
 
+void screenShake(float intensity)
+{
+    gvars::screenShake += intensity;
+}
+
+void renderScreenShake()
+{
+    sf::Vector2f screenPos = gvars::view1.getCenter();
+
+
+    if(randz(0,1) == 0)
+        screenPos.x += randz(gvars::screenShake/2,gvars::screenShake);
+    else
+        screenPos.x -= randz(gvars::screenShake/2,gvars::screenShake);
+
+    if(randz(0,1) == 0)
+        screenPos.y += randz(gvars::screenShake/2,gvars::screenShake);
+    else
+        screenPos.y -= randz(gvars::screenShake/2,gvars::screenShake);
+
+    gvars::view1.setCenter(screenPos);
+
+    gvars::screenShake = math::clamp(gvars::screenShake - 0.5,0,100);
+}
+
 int gridIt(int num)
 {
     return num/GRID_SIZE;

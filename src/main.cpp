@@ -2976,6 +2976,9 @@ void genericLoop()
             gCtrl.phase != "MakeSquad" && gCtrl.phase != "MicroPatherTest")
     {
         gvars::view1.setCenter(gvars::currentx * 20,gvars::currenty * 20);
+
+        renderScreenShake();
+
     }
 
     for(auto &bullet : bullets)
@@ -5005,7 +5008,6 @@ void detectLineGrid( float x1, float y1, float x2, float y2)
 
 void pauseMenu()
 {
-
 
     if(inputState.key[Key::P].time == 1)
     {

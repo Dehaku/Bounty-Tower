@@ -71,6 +71,7 @@ extern int musicVolume;
 extern int vocalVolume;
 extern bool tileEdit;
 extern sf::Font defaultFont;
+extern float screenShake;
 }
 
 

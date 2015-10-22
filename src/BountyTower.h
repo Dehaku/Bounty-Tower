@@ -22,6 +22,9 @@ extern void critterBrain(std::list<Npc> &npcs);
 
 extern std::vector<Npc*> Squaddies;
 
+void screenShake(float intensity);
+void renderScreenShake();
+
 void bountyTowerSetup();
 void bountyTowerLoop();
 

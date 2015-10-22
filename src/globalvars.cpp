@@ -181,4 +181,6 @@ bool tileEdit = false;
 
 sf::Font defaultFont;
 
+float screenShake = 0;
+
 } // namespace gvars

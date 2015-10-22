@@ -117,6 +117,8 @@ void Detonate(Bullet &bullet)
     if(soundRan == 3)
         soundmanager.playSound("Explosion3.ogg");
 
+    screenShake(5);
+
 
     for(auto &i : bullet.targets.ptrs)
     {
