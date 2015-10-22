@@ -568,6 +568,8 @@ Item::Item()
     richochets = 0;
     knockback = 0;
 
+    healAmount = 0;
+
     // This may be a little confusing, This is so the item can stay
     // inside without being ejected because one function doesn't need it.
     hasInternalUse = 0;
@@ -671,6 +673,7 @@ void ItemManager::initializeItems()
             item.penetration = stringFindNumber(line, "[penetration:");
             item.richochets = stringFindNumber(line, "[richochets:");
             item.knockback = stringFindNumber(line, "[knockback:");
+            item.healAmount = stringFindNumber(line, "[HealAmount:");
 
 
             item.massGlass = stringFindNumber(line, "[MassGlass:");

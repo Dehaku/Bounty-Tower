@@ -2239,32 +2239,7 @@ void displayMouseItem()
     }
 }
 
-void dropItem()
-{
-    if(mouseItem != nullptr)
-    {
-        if(math::closeish(gvars::mousePos,mouseItem->user->getPos2d()) <= 60)
-        {
-            sf::Vector2f vPos(gvars::mousePos.x,gvars::mousePos.y+15);
-            textList.createText(vPos,15,sf::Color::White,"RMB: drop " + mouseItem->name,gvars::view1);
 
-            if(inputState.rmbTime == 1)
-            {
-                mouseItem->xpos = gvars::mousePos.x;
-                mouseItem->ypos = gvars::mousePos.y;
-                mouseItem->zpos = mouseItem->user->zpos;
-                mouseItem->slotted = false;
-                mouseItem->currentSlot = nullptr;
-
-                worlditems.push_back(*mouseItem);
-                mouseItem->remove();
-                AnyDeletes(mouseItem->user->inventory);
-                mouseItem = nullptr;
-
-            }
-        }
-    }
-}
 
 
 void hoverItemHUD()
@@ -2361,7 +2336,9 @@ void hoverItemHUD()
         }
     }
     window.setView(gvars::view1);
-    dropItem();
+
+    mouseItemFunctions();
+
 }
 
 void drawHudSkills(Npc &npc, sf::Vector2f spritePos)

@@ -430,6 +430,96 @@ void critterPickUp()
     }
 }
 
+
+
+std::string useHealItem()
+{
+    if(mouseItem->type != 42)
+        return "";
+    if(mouseItem->user == nullptr)
+        return "";
+
+    int useRange = 120;
+
+    Npc &npc = *mouseItem->user;
+
+    shapes.createCircle(npc.xpos,npc.ypos,useRange,sf::Color(0,255,0,100));
+
+    for(auto &squaddie : Squaddies)
+    {
+
+        bool squadClose = (math::distance(npc.getPos(),squaddie->getPos()) <= useRange);
+        bool mouseClose = (math::closeish(gvars::mousePos,squaddie->getPos2d()) <= 20);
+
+        if(squadClose && mouseClose)
+        {
+            sf::Vector2f vPos(gvars::mousePos.x,gvars::mousePos.y+15);
+            textList.createText(vPos,15,sf::Color::White,"RMB: Heal " + squaddie->name,gvars::view1);
+
+            if(inputState.rmbTime == 1)
+            {
+                if(squaddie->health == squaddie->maxhealth)
+                {
+                    chatBox.addChat(squaddie->name + " is fully healed!", sf::Color::Green);
+                    return "Full Health";
+                }
+                else
+                {
+                    squaddie->modhealth(mouseItem->healAmount);
+                    chatBox.addChat(npc.name + " used " + mouseItem->name + " on " + squaddie->name, sf::Color::Green);
+                    mouseItem->remove();
+                    AnyDeletes(mouseItem->user->inventory);
+                    mouseItem = nullptr;
+                    return "Used";
+                }
+            }
+            return "Hovering";
+        }
+    }
+    return "";
+}
+
+std::string dropItem()
+{
+    if(mouseItem != nullptr)
+    {
+        if(math::closeish(gvars::mousePos,mouseItem->user->getPos2d()) <= 60)
+        {
+            sf::Vector2f vPos(gvars::mousePos.x,gvars::mousePos.y+15);
+            textList.createText(vPos,15,sf::Color::White,"RMB: drop " + mouseItem->name,gvars::view1);
+
+            if(inputState.rmbTime == 1)
+            {
+                mouseItem->xpos = gvars::mousePos.x;
+                mouseItem->ypos = gvars::mousePos.y;
+                mouseItem->zpos = mouseItem->user->zpos;
+                mouseItem->slotted = false;
+                mouseItem->currentSlot = nullptr;
+
+                worlditems.push_back(*mouseItem);
+                mouseItem->remove();
+                AnyDeletes(mouseItem->user->inventory);
+                mouseItem = nullptr;
+
+            }
+        }
+    }
+    return "";
+}
+
+void mouseItemFunctions()
+{
+    if(mouseItem == nullptr)
+        return;
+
+    if(useHealItem() != "")
+    {
+
+    }
+    else
+        dropItem();
+}
+
 void critterWallCheck(Npc &npc, std::list<Npc> &container)
 {
     if(tiles[abs_to_index(npc.xpos/GRID_SIZE)][abs_to_index(npc.ypos/GRID_SIZE)][abs_to_index(npc.zpos/GRID_SIZE)].walkable == false)

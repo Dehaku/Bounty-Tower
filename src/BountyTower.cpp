@@ -836,6 +836,10 @@ void renderMerchantMenu(baseMenu &menu)
             stats.append(", Pierce:" + str(item.penetration));
             stats.append(", Richochets:" + str(item.richochets));
         }
+        else if(item.type == 42)
+        {
+            stats.append(", Heal Amount: " + str(item.healAmount));
+        }
 
         if(item.stackSize > 1)
             stats.append("\nStack: " + str(item.stackSize));

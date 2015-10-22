@@ -57,6 +57,9 @@ void critterSkillRefresh(Npc &npc, std::list<Npc> &container);
 void scrapPickup(Npc &npc, std::list<Npc> &container);
 void cashPickup(Npc &npc, std::list<Npc> &container);
 void critterPickUp();
+std::string useHealItem();
+std::string dropItem();
+void mouseItemFunctions();
 void critterWallCheck(Npc &npc, std::list<Npc> &container);
 void critterLevelUp(Npc &npc, std::list<Npc> &container);
 

@@ -48,6 +48,9 @@ public:
     int age;
     int weight;
     int value;
+
+    int healAmount;
+
     sf::Vector2f targetPos;
     float xpos;
     float ypos;
