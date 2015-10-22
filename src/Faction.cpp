@@ -4438,6 +4438,34 @@ void drawSelectedCritterHUD()
 
                 }
 
+                if(slotItem->type == 42)
+                { // Playing with Medical Supplies
+                    outPut.append("\n(" + str(slotItem->healAmount) + ")");
+                    sf::Vector2f buttPos(uPos);
+                    buttPos.y -= 50;
+                    int healButt = createImageButton(buttPos,texturemanager.getTexture("ArrowButton.png"),"",0,gvars::hudView);
+
+                    if(imageButtonHovered(healButt))
+                    {
+                        textList.createText(gvars::mousePos.x+10,gvars::mousePos.y,10,sf::Color::White,"Heal Self");
+                        gvars::hovering = true;
+                        if(inputState.lmbTime == 1)
+                        {
+                            if(slotItem->user->alive == false)
+                                chatBox.addChat("He's dead, Jim.", sf::Color::Green);
+                            else if(slotItem->user->health == slotItem->user->maxhealth)
+                                chatBox.addChat(slotItem->user->name + " is fully healed!", sf::Color::Green);
+                            else
+                            {
+                                chatBox.addChat(slotItem->user->name + " used " + slotItem->name + "!", sf::Color::Green);
+                                slotItem->user->modhealth(slotItem->healAmount);
+                                slotItem->remove();
+                            }
+                        }
+                    }
+
+                }
+
                 window.draw(drawText(uPos,outPut));
 
 

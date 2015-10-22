@@ -20,3 +20,16 @@ Immovable Object Power Generator
 Plants
 GrowthTemperature Range, Only grows between those temperatures.
 GrowthLight Range, Only grows when exposed to this amount of light(Perhaps have it as an exposure time instead? Ranging in hours.)
+
+Afterlife/Spirits/Graveyards
+
+Each region will have a spiritfavor variable, It grows into positive numbers when respects are paid to gravesites, creatures are properly buried, ect.
+It grows into negitive numbers when creatures are left slain on the ground, mass graves are done, graves are never visited/paid respects, and horrific deaths occur.
+
+This number will warrent certain things to occur, If in the positive, Spirits may provide the residents with buffs, happy thoughts, or even assist in defense in small ways.
+In the positive, Hauntings will occur, possession, killings, ectoplasmic diseases spread... such things.
+
+When an individual dies, depending on the spiritfavor of the region, They will occasionally return as a spirit and do their last task over again, if they didn't move on for whatever reason.
+In the positive numbers, sometimes you'll have a crafter appear and make random trinkets and items in the dead of the night, farmers returning to tend fields for short durations...
+In the negitives, You'll have warriors return to slaughter creatures, butchers return to dissect creatures, gluttonous spirits appear and eat from your foodstocks.
+
