@@ -658,7 +658,8 @@ void unloadAmmo(Item * rangewep, std::list<Item> * npcInv)
             item.slotted = false;
             item.id = gvars::globalid++;
 
-            npcInv->push_back(item);
+            rangewep->user->addItem(item);
+            //npcInv->push_back(item);
             item.toDelete = true;
         }
     }
@@ -2428,6 +2429,14 @@ void Npc::addItem(Item &item)
                 item.amount -= stackDiff;
             }
         }
+    }
+    while(item.amount > item.stackSize)
+    {
+        Item newStack = item;
+        newStack.id = gvars::globalid++;
+        newStack.amount = newStack.stackSize;
+        inventory.push_back(newStack);
+        item.amount -= item.stackSize;
     }
     if(item.amount > 0)
         inventory.push_back(item);
