@@ -1050,6 +1050,8 @@ void renderTowerMenu(baseMenu &menu)
 
         positionSquaddies();
 
+        playMusic("KerriOverblowEcho.ogg");
+
     }
 
     //Draw some info about the thing.
@@ -1727,13 +1729,39 @@ void useElevator()
 {
     chatBox.addChat("You progress to the next floor!", sf::Color::Blue);
     bountytower::elevatoravailable = false;
+    bountytower::floorCleared = false;
     bountytower::pausewaves = true;
+
     gvars::currentz++;
     elevateElevatorInhabitants();
     soundmanager.playSound("ding.wav");
+
     nextFloorTransition();
     AnyDeletes(npclist);
     setupSquadHotKeySelection();
+}
+
+void checkFloorCleared()
+{
+    int enemies = 0;
+    int deadEnemies = 0;
+    for(auto &npc : npclist)
+    {
+        if(npc.faction == "Towerlings")
+        {
+            enemies++;
+            if(!npc.alive)
+                deadEnemies++;
+        }
+    }
+
+    if(enemies > 0 && deadEnemies == enemies)
+        if(!bountytower::floorCleared)
+    {
+        bountytower::floorCleared = true;
+        playMusic("KerriHauntedCanyonFlute.ogg");
+    }
+
 }
 
 void bountyTowerLoop()
@@ -1998,6 +2026,8 @@ void bountyTowerLoop()
 
     displayCash();
 
+    checkFloorCleared();
+
     if(bountytower::elevatoravailable && bountytower::towerLoaded != "" && !bountytower::towerVictory)
     { // Prints Elevator HUD and other such things
 
@@ -2139,4 +2169,5 @@ namespace bountytower
     Tower * currentTower = nullptr;
     int switchesRemain = 0;
     bool towerVictory = false;
+    bool floorCleared = false;
 }

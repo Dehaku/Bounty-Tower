@@ -4782,14 +4782,18 @@ void newItemstuffs()
 void playThemeTrack()
 {
     //gvars::soundVolume = 0;
-    gvars::musicVolume = 0;
-    int ranNum = randz(1,3);
+    gvars::musicVolume = 50;
+
+    playMusic("LimetoeLonelyCowboy.ogg");
+
+    /*
+    int ranNum = randz(1,2);
     if(ranNum == 1)
         playMusic("Jalandhar.ogg");
     else if(ranNum == 2)
         playMusic("Neo Western.ogg");
-    else if(ranNum == 3)
-        playMusic("Electro_Cabello.ogg");
+        */
+
 }
 
 

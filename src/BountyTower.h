@@ -87,6 +87,7 @@ namespace bountytower
     extern Tower * currentTower;
     extern int switchesRemain;
     extern bool towerVictory;
+    extern bool floorCleared;
 }
 
 extern std::vector<Tower> towers;
