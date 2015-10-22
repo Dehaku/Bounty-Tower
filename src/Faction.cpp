@@ -2522,6 +2522,8 @@ std::string Npc::onDeath(Npc *attacker, Item *weapon, float amount, critScore *c
             }
         }
     }
+
+
     return "";
 }
 
@@ -2573,7 +2575,30 @@ std::string Npc::takeDamage(Npc *attacker, Item *weapon, float amount, critScore
     }
 
 
+    {//Sound code
+        if(race.find("Human") != race.npos)
+        {
+            int soundRan = random(1,9);
+            soundmanager.playSound("InjuryHumanMale"+str(soundRan)+".ogg");
+        }
+        else if(race.find("Rockkid") != race.npos)
+        {
+            int soundRan = random(1,4);
+            soundmanager.playSound("InjuryRockkid"+str(soundRan)+".ogg");
+        }
+        else if(race.find("Noirves") != race.npos)
+        {
+            int soundRan = random(1,9);
+            soundmanager.playSound("InjuryHumanMale"+str(soundRan)+".ogg");
+        }
 
+        if(amount > maxhealth/2)
+        {
+            int soundRan = random(1,6);
+            soundmanager.playSound("vlatkoblazek_bones-breaking"+str(soundRan)+".ogg");
+        }
+
+    }
 
 
     if(modhealth(-amount) == false) // modhealth returns false on death.
