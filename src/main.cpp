@@ -2254,6 +2254,7 @@ void dropItem()
                 mouseItem->ypos = gvars::mousePos.y;
                 mouseItem->zpos = mouseItem->user->zpos;
                 mouseItem->slotted = false;
+                mouseItem->currentSlot = nullptr;
 
                 worlditems.push_back(*mouseItem);
                 mouseItem->remove();

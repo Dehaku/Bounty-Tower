@@ -1073,7 +1073,7 @@ void renderEscapeMenu(baseMenu &menu)
 
     sf::Vector2f exitPos((RESOLUTION.x/2), RESOLUTION.y-150);
     int exitGameButt = createImageButton(exitPos,texturemanager.getTexture("blankButton.png"),"",0,gvars::hudView);
-    exitPos.x -= 30;
+    exitPos.x -= 31;
     textList.createText(exitPos,9,sf::Color::White,"Exit Game",gvars::hudView);
 
 

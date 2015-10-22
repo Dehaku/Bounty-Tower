@@ -536,7 +536,7 @@ void cashPickup(Npc &npc, std::list<Npc> &container)
 }
 
 
-void checkAmmo(Npc &npc, std::list<Npc> &container, Item * rangewep)
+void checkAmmo(Npc &npc, std::list<Npc> &container, Item * rangewep, bool forceReload)
 {
     bool weaponEmpty = false;
     bool needsReload = false;
@@ -556,6 +556,9 @@ void checkAmmo(Npc &npc, std::list<Npc> &container, Item * rangewep)
     if(inputState.key[Key::R].time == 1)
         needsReload = true;
 
+    if(forceReload)
+        needsReload = true;
+
     //Check if we have some ammo in our inventory to reload with!
     itemPtrVector ammoVector;
     for(auto &item : npc.inventory)
@@ -570,6 +573,12 @@ void checkAmmo(Npc &npc, std::list<Npc> &container, Item * rangewep)
         if(currentAmmo->amount >= rangewep->maxclip)
             isFull = true;
 
+    for(auto &item : rangewep->internalitems)
+    { // Doing some cleaning to make sure nothing bad ever happens.
+        item.currentSlot = nullptr;
+        item.slotted = false;
+        item.user = nullptr;
+    }
 
     if(needsReload && hasSpareAmmo && !isFull)
     {//Conditions are right, Let's reload!
@@ -633,6 +642,27 @@ void checkAmmo(Npc &npc, std::list<Npc> &container, Item * rangewep)
     }
 
 
+}
+
+void unloadAmmo(Item * rangewep, std::list<Item> * npcInv)
+{
+    if(rangewep == nullptr)
+        return;
+    if(npcInv == nullptr)
+        return;
+    for(auto &item : rangewep->internalitems)
+    {
+        if(item.type == rangewep->ammotype)
+        {
+            item.currentSlot = nullptr;
+            item.slotted = false;
+            item.id = gvars::globalid++;
+
+            npcInv->push_back(item);
+            item.toDelete = true;
+        }
+    }
+    AnyDeletes(rangewep->internalitems);
 }
 
 
@@ -4187,25 +4217,65 @@ void drawSelectedCritterHUD()
         {
             sf::Vector2f vPos = gvars::slotPos[i];
 
-
-            if(selectedNPCs[0]->invSlots[i] != nullptr)
+            Item * slotItem = selectedNPCs[0]->invSlots[i];
+            if(slotItem != nullptr)
             {
-                if(selectedNPCs[0]->invSlots[i]->img.getTexture() == nullptr)
+                if(slotItem->img.getTexture() == nullptr)
                 {
                     std::cout << "Breaking on Item GetTexture() of slot:" << i << std::endl;
                     break;
                 }
 
                 sf::Sprite SP;
-                SP.setTexture(*selectedNPCs[0]->invSlots[i]->img.getTexture());
+                SP.setTexture(*slotItem->img.getTexture());
                 SP.setPosition(vPos);
                 SP.setOrigin(SP.getTexture()->getSize().x/2,SP.getTexture()->getSize().y/2);
                 window.draw(SP);
                 sf::Vector2f uPos(vPos.x-20,vPos.y+20);
-                int amount = selectedNPCs[0]->invSlots[i]->amount;
-                std::string outPut = selectedNPCs[0]->invSlots[i]->name;
+                int amount = slotItem->amount;
+                std::string outPut = slotItem->name;
                 if(amount > 1)
                     outPut.append(": " + std::to_string(amount));
+
+                if(slotItem->type == 2)
+                { // Checking and display ammo count/max.
+                    int curAmmo = 0;
+                    int maxAmmo = slotItem->maxclip;
+                    Item * itemAmmo = getItemType(slotItem->internalitems,slotItem->ammotype);
+                    if(itemAmmo != nullptr)
+                        curAmmo = itemAmmo->amount;
+
+                    outPut.append("\n("+str(curAmmo)+"/"+str(maxAmmo)+")");
+
+                    sf::Vector2f buttPos(uPos);
+                    buttPos.y -= 50;
+                    int reloadButt = createImageButton(buttPos,texturemanager.getTexture("ArrowButton.png"),"",0,gvars::hudView);
+                    buttPos.x += 20;
+                    int unloadButt = createImageButton(buttPos,texturemanager.getTexture("ArrowButton.png"),"",180,gvars::hudView);
+
+                    if(imageButtonHovered(reloadButt))
+                    {
+                        textList.createText(gvars::mousePos.x+10,gvars::mousePos.y,10,sf::Color::White,"Reload");
+                        gvars::hovering = true;
+                        if(inputState.lmbTime == 1)
+                            checkAmmo(*slotItem->user, *slotItem->user->container, slotItem, true);
+                    }
+
+                    if(imageButtonHovered(unloadButt))
+                    {
+                        textList.createText(gvars::mousePos.x+10,gvars::mousePos.y,10,sf::Color::White,"Unload");
+                        gvars::hovering = true;
+                        if(inputState.lmbTime == 1)
+                        {
+                            unloadAmmo(slotItem, &slotItem->user->inventory);
+
+                        }
+
+                    }
+
+
+
+                }
 
                 window.draw(drawText(uPos,outPut));
 
