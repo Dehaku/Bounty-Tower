@@ -796,8 +796,45 @@ void craftAmmo(Npc &npc, std::list<Npc> &container)
                         scrapPtr->remove();
                 }
 
+                //Get the default generic bullet.
                 Item ammo = *getGlobalItem("Bullet: Standard");
+
+                //Acquire hands items.
+                Item * leftItem = npc.getLeftHandItem();
+                Item * rightItem = npc.getRightHandItem();
+
+                if(leftItem != nullptr && leftItem->type == 2)
+                {
+                    if(leftItem->ammotype != 3)
+                    {
+                        for(auto &globalammo : itemmanager.globalItems)
+                        {
+                            if(globalammo.type == leftItem->ammotype)
+                            {
+                                ammo = globalammo;
+                                break;
+                            }
+                        }
+                    }
+                }
+                else if(rightItem != nullptr && rightItem->type == 2)
+                {
+                    if(rightItem->ammotype != 3)
+                    {
+                        for(auto &globalammo : itemmanager.globalItems)
+                        {
+                            if(globalammo.type == rightItem->ammotype)
+                            {
+                                ammo = globalammo;
+                                break;
+                            }
+                        }
+                    }
+                }
+
                 ammo.amount = 5*ammoSkill->ranks;
+                if(ammo.amount > ammo.stackSize)
+                    ammo.amount = ammo.stackSize;
                 npc.inventory.push_back(ammo);
                 sKI->toDelete = true;
             }

@@ -275,7 +275,7 @@ Skills::Skills()
     list.push_back(skill);
 
     skill.name = "Ammo Construction";
-    skill.desc = "Active - Produces 5 ammo per rank for 30 scrap. ";
+    skill.desc = "Active - Produces 5 ammo per rank for 30 scrap, Cannot produce ammo beyond cap.(LeftHand priority) ";
     skill.active = true;
     skill.autouse = false;
     list.push_back(skill);
