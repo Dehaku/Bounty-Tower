@@ -1437,7 +1437,7 @@ void Tile::BTstairs()
 { // 2031
     id = 2031;
     worldColor = sf::Color(150, 150, 0);
-    img.setTexture(texturemanager.getTexture("BTStairs.png"));
+    img.setTexture(texturemanager.getTexture("CautionTile.png"));
     transparent = true;
     walkable = true;
     goesUp = true;
