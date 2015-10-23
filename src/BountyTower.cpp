@@ -1115,10 +1115,18 @@ void renderEscapeMenu(baseMenu &menu)
         gvars::soundVolume = math::clamp(gvars::soundVolume+1,0,100);
 
     if(menu.age > 30 && imageButtonHovered(decreaseMusicButt) && (inputState.lmbTime == 1 || inputState.lmbTime > 20))
+    {
         gvars::musicVolume = math::clamp(gvars::musicVolume-1,0,100);
+        setMusicVolume();
+    }
+
 
     if(menu.age > 30 && imageButtonHovered(IncreaseMusicButt) && (inputState.lmbTime == 1 || inputState.lmbTime > 20))
+    {
         gvars::musicVolume = math::clamp(gvars::musicVolume+1,0,100);
+        setMusicVolume();
+    }
+
 
 
 

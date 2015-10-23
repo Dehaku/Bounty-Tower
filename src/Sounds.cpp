@@ -76,6 +76,12 @@ void initializeMusic()
     }
 }
 
+void setMusicVolume()
+{
+    for (size_t i = 0; i != musics.size(); i++)
+        musics[i]->musictrack.setVolume(gvars::musicVolume);
+}
+
 void playMusic(std::string track)
 {
     for (size_t i = 0; i != musics.size(); i++)

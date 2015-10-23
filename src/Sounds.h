@@ -28,6 +28,7 @@ struct MusicHolder
 extern std::vector<MusicHolder*> musics;
 
 void initializeMusic();
+void setMusicVolume();
 void playMusic(std::string track);
 
 
