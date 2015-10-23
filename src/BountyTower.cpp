@@ -1363,6 +1363,19 @@ void hotkeySquaddieSelect()
 
 void spawnEnemies()
 {
+    // This looks for stairs, then spawns critters from them every 60 frames until a certain cap is met.
+    if((gvars::framesPassed % 60) != 0)
+        return;
+    if( !(getLivingFactionMemberCount("Towerlings") < 20) )
+        return;
+    if( !(getFloorFactionMemberCount(gvars::currentz,"Towerlings") < 50) )
+        return;
+    if(bountytower::pausewaves)
+        return;
+
+
+
+
     //Preemptively acquiring item lists here, instead of doing it once per critter.
     std::vector<Item> ammoBullet = itemmanager.getAllofType(3);
     std::vector<Item> ammoShell = itemmanager.getAllofType(4);
@@ -1383,6 +1396,10 @@ void spawnEnemies()
     //I'm still not sure why I nabbed all stairs, then did another for loop just for them... but I kinda like it.
     for(auto &stair : stairs)
     {
+        //Add a 25% chance for a critter to spawn.
+        if(randz(1,4) != 1)
+            continue;
+
         Npc member;
         debug("V");
         member = *getGlobalCritter("BTBlankBody");
@@ -1451,8 +1468,17 @@ void spawnEnemies()
         std::cout << "\n \n";
 
         npclist.push_back(member);
+        int soundRan = random(1,2);
+        soundmanager.playSound("Thump"+str(soundRan)+".ogg");
     }
     debug("Done placin Towerlings");
+
+
+
+
+
+
+
 }
 
 
@@ -2028,10 +2054,9 @@ void bountyTowerLoop()
         textList.createText(vPos,15,sf::Color::White,"Remaining Elevator Components: " + std::to_string(bountytower::switchesRemain),window.getDefaultView());
     }
 
-    if( (gvars::framesPassed % 300) == 0 && getLivingFactionMemberCount("Towerlings") < 20 && getFloorFactionMemberCount(gvars::currentz,"Towerlings") < 50 && !bountytower::pausewaves)
-    { // This looks for stairs, then spawns critters from them every 300 frames until a certain cap is met.
-        spawnEnemies();
-    }
+
+    spawnEnemies();
+
 
     if(bountytower::towerLoaded != "")
         textList.createText(sf::Vector2f(RESOLUTION.x/2,15),15,sf::Color::White,"Floor: " + std::to_string(gvars::currentz),window.getDefaultView());
