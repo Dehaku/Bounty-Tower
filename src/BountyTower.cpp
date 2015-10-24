@@ -932,7 +932,21 @@ void renderRecruiterMenu(baseMenu &menu)
         outPut.append(str(npc.attributes.charisma) + ",");
         outPut.append(str(npc.attributes.endurance) + ",");
         outPut.append(str(npc.attributes.dexterity));
+
+        if(npc.racialAbility != "")
+        {
+            outPut.append("\nRacial: " + npc.racialAbility);
+            if(npc.racialAbility == "Ideal Command")
+                outPut.append(", +10% EXP for the entire squad.");
+            if(npc.racialAbility == "Rock Steady")
+                outPut.append(", Immune to Knockback Damage, Additional 20% Damage Reduction.");
+            if(npc.racialAbility == "Pocket Picker")
+                outPut.append(", 5% Chance to gain some small items when using Melee.");
+        }
+
         textList.createText(vPos,10,highlightColor,outPut,gvars::hudView);
+
+
 
 
 

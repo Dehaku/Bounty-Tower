@@ -288,9 +288,11 @@ Skills::Skills()
     list.push_back(skill);
 
     skill.name = "Explosive Deconstruction";
+    skill.ranksmax = 1;
     skill.desc = "Passive - Upon constructions death, detonates with a scaled explosion based on constructions health and cost.";
     skill.active = false;
     list.push_back(skill);
+    skill.ranksmax = 5;
 
     skill.name = "Practical Problems";
     skill.desc = "Passive - Doubles the weapon slots of the turret. Sometimes, You just need more gun.";

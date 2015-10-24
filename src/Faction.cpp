@@ -2157,8 +2157,14 @@ void Npc::momMove()
         momentum.y = 0;
         if(alive && momSpeed > 30)
         {
-            takeDamage(nullptr,nullptr,(momSpeed/2) );
-            chatBox.addChat(name + " slammed into the wall with " + str(momSpeed) + " force!",sf::Color::White);
+            if(racialAbility == "Rock Steady")
+                chatBox.addChat(name + " slammed into the wall, but is immune!",sf::Color::White);
+            else
+            {
+                takeDamage(nullptr,nullptr,(momSpeed/2) );
+                chatBox.addChat(name + " slammed into the wall with " + str(momSpeed) + " force!",sf::Color::White);
+            }
+
         }
 
 
@@ -2656,10 +2662,20 @@ std::string Npc::onDeath(Npc *attacker, Item *weapon, float amount, critScore *c
     alive = false;
     if(attacker != nullptr)
     {
+        float extraExperience = 0;
+
+        for(auto &npc : *attacker->container)
+            if(npc.faction == attacker->faction)
+                if(npc.racialAbility == "Ideal Command")
+                    extraExperience += 0.1;
+
         for(auto &npc : *attacker->container)
         {
+            float expGain = level*10;
+            expGain += expGain*extraExperience;
+
             if(npc.faction == attacker->faction)
-                npc.xp += level*10;
+                npc.xp += expGain;
         }
     }
 
@@ -2712,6 +2728,11 @@ std::string Npc::takeDamage(Npc *attacker, Item *weapon, float amount, critScore
         if(attacker != nullptr)
             std::cout << name << " dodged " << attacker->name << "'s attack! (" << dodgeRoll << "/" << dodgeChance << ")" << std::endl;
         return "Dodged";
+    }
+
+    if(racialAbility == "Rock Steady")
+    {
+        amount -= amount*0.2;
     }
 
     if(skills.getRanks("Feral Body") > 0)
@@ -2816,6 +2837,32 @@ std::string Npc::dealDamage(Npc *victim, Item *weapon, float amount)
     else
         outPut = victim->takeDamage(this,weapon,amount);
 
+
+    if(racialAbility == "Pocket Picker")
+        if(weapon != nullptr && weapon->type == 1)
+    {
+        if(randz(0,100) <= 5)
+        {
+            Item loot;
+            int ranNum = randz(1,4);
+            if(ranNum == 1)
+                loot = *getGlobalItem("Cash");
+            if(ranNum == 2)
+                loot = *getGlobalItem("Scrap");
+            if(ranNum == 3)
+                loot = *getGlobalItem("Bullet: Standard");
+            if(ranNum == 4)
+                loot = *getGlobalItem("Shell: Slug");
+
+            loot.amount = random(5,loot.stackSize);
+            loot.xpos = xpos;
+            loot.ypos = ypos;
+            loot.zpos = zpos;
+
+            worlditems.push_back(loot);
+
+        }
+    }
 
     if(outPut == "Hit")
     {
@@ -3045,6 +3092,8 @@ void NpcManager::initializeCritters()
             critter.faction = "";
             critter.factionPtr = nullptr;
             critter.name = "Debuggery";
+
+            critter.racialAbility = stringFindString(line, "[RacialAbility:");
 
             //hungerrate = 1; // TODO: Should these be modded? Or only effected by Diseases/Bionics ect.
             //thirstrate = 1;

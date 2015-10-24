@@ -103,6 +103,8 @@ public:
     std::list<Item> inventory;
     std::list<Item> equipped;
 
+    std::string racialAbility;
+
     int level;
     int xp;
     int skillpoints;
