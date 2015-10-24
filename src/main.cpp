@@ -1463,20 +1463,20 @@ entityvectorpointercontainer entityTrace(Vec3 Ori, Vec3 Tar) /* TODO: Improve th
 void handsOffense(Npc &npc, std::list<Npc> &container, Npc * closEnmy, bool &hasPath, Vec3 &endPos)
 {
     for(int i = 0; i != 2; i++)
-    { //TODO: GALAXY: Increase the slots iterated through based on the amount of hands the critter has! Multiarmed critters!
+    { // TODO: GALAXY: Increase the slots iterated through based on the amount of hands the critter has! Multiarmed critters!
         Item * weapon = npc.invSlots[i];
 
         if(weapon == nullptr)
             continue;
 
-        //Making sure the weapon has the right owner for later pointing.
+        // Making sure the weapon has the right owner for later pointing.
         weapon->user = &npc;
 
-        //Working the item until it's ready to fire.
+        // Working the item until it's ready to fire.
         if(!weapon->isReady())
             weapon->trigger();
 
-        //If it's a gun, Let's make sure it's loaded.
+        // If it's a gun, Let's make sure it's loaded.
         if(weapon->type == 2)
             checkAmmo(npc,container,weapon);
 
@@ -1490,7 +1490,7 @@ void handsOffense(Npc &npc, std::list<Npc> &container, Npc * closEnmy, bool &has
                 shapes.createCircle(npc.xpos,npc.ypos,weapon->getRange(),sf::Color(0,255,0,50),2,sf::Color::Green);
         }
 
-        //We check if the target is within range of the current weapon, and if we can actually directly see them.
+        // We check if the target is within range of the current weapon, and if we can actually directly see them.
         bool withinRange = false;
         bool canSee = false;
 

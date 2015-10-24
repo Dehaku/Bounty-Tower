@@ -377,6 +377,11 @@ Skills::Skills()
     skill.active = false;
     list.push_back(skill);
 
+    skill.name = "Vampirism";
+    skill.desc = "Passive - Gain (Rank)% Life Steal on damage done to enemies.";
+    skill.active = false;
+    list.push_back(skill);
+
 
     /*
 
@@ -385,10 +390,7 @@ Skills::Skills()
     skill.active = false;
     list.push_back(skill);
 
-    skill.name = "Vampirism";
-    skill.desc = "Passive - Gain (Rank)% Life Steal on damage done to enemies.";
-    skill.active = false;
-    list.push_back(skill);
+
 
     skill.name = "Undeath";
     skill.desc = "Passive - Missing health percentage is added to attributes.";

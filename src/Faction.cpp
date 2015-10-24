@@ -2710,7 +2710,7 @@ std::string Npc::takeDamage(Npc *attacker, Item *weapon, float amount, critScore
     }
 
 
-    {//Sound code
+    {// Sound code
         if(race.find("Human") != race.npos)
         {
             int soundRan = random(1,9);
@@ -2735,6 +2735,15 @@ std::string Npc::takeDamage(Npc *attacker, Item *weapon, float amount, critScore
 
     }
 
+    if(attacker != nullptr)
+    { // Vampirism Skill
+        Skill * vamp = attacker->skills.getSkill("Vampirism");
+        if(vamp != nullptr && vamp->ranks > 0)
+        {
+            float hpRegen = (amount*0.01)*(vamp->ranks);
+            attacker->modhealth(hpRegen);
+        }
+    }
 
     if(modhealth(-amount) == false) // modhealth returns false on death.
         onDeath(attacker, weapon, amount, crit);
@@ -2758,7 +2767,10 @@ std::string Npc::dealDamage(Npc *victim, Item *weapon, float amount)
 
 
     if(outPut == "Hit")
+    {
         return outPut;
+    }
+
     else
         return "Miss";
 }
