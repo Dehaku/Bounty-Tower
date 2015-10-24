@@ -35,6 +35,9 @@ public:
 };
 extern std::vector<Bullet> bullets;
 
+
+
+
 void predictBullet(Bullet bullet);
 
 void removeBullets();

@@ -864,6 +864,9 @@ void buildTurret(Npc &npc, std::list<Npc> &container)
                 if(npc.skills.getSkill("Practical Problems")->ranks > 0)
                     turret.inventory.push_back(gun);
 
+                if(npc.skills.getSkill("Explosive Deconstruction")->ranks > 0)
+                    turret.skills.getSkill("Explosive Deconstruction")->ranks = -1;
+
                 npclist.push_back(turret);
             }
         }
@@ -2682,6 +2685,20 @@ std::string Npc::onDeath(Npc *attacker, Item *weapon, float amount, critScore *c
         }
     }
 
+    if(skills.getSkill("Explosive Deconstruction")->ranks == -1)
+    {
+        int scrapCost = 30;
+        //Damage is equal to 10% total health, multiplied by 10% of scrapCost
+        int exploDamage = (maxhealth*0.1)*(scrapCost*0.1);
+
+        std::vector<Npc*> victims;
+        for(auto &npc: npclist)
+            if(npc.faction != conFact->name)
+                victims.push_back(&npc);
+
+        explosion(getPos(),200,exploDamage,this,&victims);
+        chatBox.addChat("Boom?", sf::Color::Red);
+    }
 
     return "";
 }

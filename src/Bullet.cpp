@@ -90,46 +90,12 @@ std::string richochetCheck(Bullet &bullet)
     return "";
 }
 
+
+
+
 void Detonate(Bullet &bullet)
 {
-    sf::Vector2f bulletPos(bullet.pos.x,bullet.pos.y);
-    shadermanager.setShockwave(bulletPos);
-
-    Shape shape;
-    shape.shape = shape.Circle;
-    shape.duration = 15;
-    shape.startPos = bulletPos;
-    shape.size = 120;
-    shape.maincolor = sf::Color::White;
-    shape.fades = true;
-    shape.texture = &texturemanager.getTexture("Explosion2.png");
-    shapes.shapes.push_back(shape);
-    shape.duration = 30;
-    shape.size = 60;
-    shape.texture = &texturemanager.getTexture("Explosion1.png");
-    shapes.shapes.push_back(shape);
-
-    int soundRan = random(1,3);
-    if(soundRan == 1)
-        soundmanager.playSound("Explosion1.ogg");
-    if(soundRan == 2)
-        soundmanager.playSound("Explosion2.ogg");
-    if(soundRan == 3)
-        soundmanager.playSound("Explosion3.ogg");
-
-    screenShake(5);
-
-
-    for(auto &i : bullet.targets.ptrs)
-    {
-        int distance = math::distance(i->getPos(),bullet.pos);
-        if(distance <= bullet.radius)
-        {
-            chatBox.addChat(i->name + " was hit by an explosion!",sf::Color::Red);
-            std::string atkStatus = bullet.owner->dealDamage(i,nullptr,bullet.damage);
-        }
-
-    }
+    explosion(bullet.pos,bullet.radius,bullet.damage,bullet.owner,&bullet.targets.ptrs);
 }
 
 void Bullet::moveBullet()

@@ -200,4 +200,6 @@ Item *getItemType(std::list<Item> &inventory, int type);
 
 itemPtrVector randomEquipment(std::list<Item> &inventory);
 
+void explosion(Vec3f vPos, int radius, float damage, Npc *attacker = nullptr, std::vector<Npc*> * victims = nullptr);
+
 #endif // ITEMS_H_INCLUDED

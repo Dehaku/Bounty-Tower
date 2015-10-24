@@ -1233,7 +1233,65 @@ void Item::remove()
     }
 }
 
+void explosion(Vec3f vPos, int radius, float damage, Npc *attacker, std::vector<Npc*> *victims)
+{
+    sf::Vector2f gfxPos(vPos.x,vPos.y);
+    shadermanager.setShockwave(gfxPos);
 
+    Shape shape;
+    shape.shape = shape.Circle;
+    shape.duration = 15;
+    shape.startPos = gfxPos;
+    shape.size = 120;
+    shape.maincolor = sf::Color::White;
+    shape.fades = true;
+    shape.texture = &texturemanager.getTexture("Explosion2.png");
+    shapes.shapes.push_back(shape);
+    shape.duration = 30;
+    shape.size = 60;
+    shape.texture = &texturemanager.getTexture("Explosion1.png");
+    shapes.shapes.push_back(shape);
+
+    int soundRan = random(1,3);
+    if(soundRan == 1)
+        soundmanager.playSound("Explosion1.ogg");
+    if(soundRan == 2)
+        soundmanager.playSound("Explosion2.ogg");
+    if(soundRan == 3)
+        soundmanager.playSound("Explosion3.ogg");
+
+    screenShake(5);
+
+    if(victims != nullptr)
+        for(auto &i : *victims)
+        {
+            int distance = math::distance(i->getPos(),vPos);
+            if(distance <= radius)
+            {
+                chatBox.addChat(i->name + " was hit by an explosion!",sf::Color::Red);
+
+                if(attacker != nullptr)
+                    std::string atkStatus = attacker->dealDamage(i,nullptr,damage);
+                else
+                    i->takeDamage(nullptr, nullptr, damage);
+            }
+        }
+    else
+        for(auto &i : npclist)
+        {
+            int distance = math::distance(i.getPos(),vPos);
+            if(distance <= radius)
+            {
+                chatBox.addChat(i.name + " was hit by an explosion!",sf::Color::Red);
+
+                if(attacker != nullptr)
+                    std::string atkStatus = attacker->dealDamage(&i,nullptr,damage);
+                else
+                    i.takeDamage(nullptr, nullptr, damage);
+            }
+        }
+
+}
 
 
 

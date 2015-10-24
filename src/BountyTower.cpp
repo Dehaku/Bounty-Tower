@@ -1811,6 +1811,16 @@ void bountyTowerLoop()
     NPCbuttons();
     layHints();
 
+    Vec3 mV3(gvars::mousePos.x,gvars::mousePos.y,gvars::currentz*GRID_SIZE);
+    std::vector<Npc*> victims;
+    for(auto &npc: npclist)
+        if(npc.faction != conFact->name)
+            victims.push_back(&npc);
+
+    if(inputState.key[Key::LShift] && inputState.key[Key::M].time == 1)
+        explosion(mV3,180,60,Squaddies.at(0),&victims);
+
+
     if(inputState.key[Key::Escape].time == 1 && menus.empty())
         escapeMenu(Vec3());
 
