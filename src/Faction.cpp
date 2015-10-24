@@ -2697,7 +2697,6 @@ std::string Npc::onDeath(Npc *attacker, Item *weapon, float amount, critScore *c
                 victims.push_back(&npc);
 
         explosion(getPos(),200,exploDamage,this,&victims);
-        chatBox.addChat("Boom?", sf::Color::Red);
     }
 
     return "";

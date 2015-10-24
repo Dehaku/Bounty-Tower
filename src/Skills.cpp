@@ -306,6 +306,13 @@ Skills::Skills()
 
     /*
 
+    skill.name = "Deconstruct";
+    skill.desc = "Active - Allows reclaimation of parts from machines you've made, or broken enemy machines.";
+    skill.ranksmax = 1;
+    skill.active = true;
+    list.push_back(skill);
+    skill.ranksmax = 5;
+
     skill.name = "Shield Generator Construction";
     skill.desc = "Active - Allows construction of a placable shield generator, The shield takes the damage of those inside it's protection. Shield Health: [Rank*1000]";
     skill.active = true;
