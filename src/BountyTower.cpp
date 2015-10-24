@@ -1817,6 +1817,35 @@ void checkFloorCleared()
 
 }
 
+void printTile()
+{
+    if(!isInBounds(gvars::mousePos))
+        return;
+
+    int x = gvars::mousePos.x/GRID_SIZE;
+    int y = gvars::mousePos.y/GRID_SIZE;
+
+    Tile * printTile = &tiles[x][y][gvars::currentz];
+
+    std::cout << "====Tile Printout==== \n";
+    std::cout << "printTile->deathID: " << printTile->deathID << std::endl;
+    std::cout << "printTile->goesDown: " << printTile->goesDown << std::endl;
+    std::cout << "printTile->goesUp: " << printTile->goesUp << std::endl;
+    std::cout << "printTile->health: " << printTile->health << std::endl;
+
+    std::cout << "\nprintTile->pos: " << printTile->pos.x << "/" << printTile->pos.y << "/" << printTile->pos.z << std::endl;
+    std::cout << "printTile->state: " << printTile->state << std::endl;
+    std::cout << "printTile->teleporter: " << printTile->teleporter << std::endl;
+    std::cout << "printTile->telePos: " << printTile->telePos.x << "/" << printTile->telePos.y << "/" << printTile->telePos.z << std::endl;
+
+    std::cout << "\nprintTile->id: " << printTile->id << std::endl;
+    std::cout << "printTile->walkable: " << printTile->walkable << std::endl;
+    std::cout << "printTile->transparent: " << printTile->transparent << std::endl;
+    std::cout << "printTile->workGoal: " << printTile->workGoal << std::endl;
+    std::cout << "printTile->workProgress: " << printTile->workProgress << std::endl;
+    std::cout << "===================== \n";
+}
+
 void bountyTowerLoop()
 { // Game Loop
     hotkeySquaddieSelect();
@@ -1824,6 +1853,9 @@ void bountyTowerLoop()
     checkDoors();
     NPCbuttons();
     layHints();
+
+    if(inputState.key[Key::End].time == 1)
+        printTile();
 
     Vec3 mV3(gvars::mousePos.x,gvars::mousePos.y,gvars::currentz*GRID_SIZE);
     std::vector<Npc*> victims;
