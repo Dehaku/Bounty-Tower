@@ -5064,11 +5064,11 @@ void drawNPCs(std::list<Npc> &container)
                 npc.drawImg();
 
 
-            sf::Color shadow(50,50,50,50);
-            if(!npc.alive) // To simulate blood.
-                shadow.r = 255;
+            sf::Color shadow(255,50,50,50);
 
-            shapes.createCircle(npc.xpos, npc.ypos, npc.size, shadow);
+
+            if(!npc.alive) // To simulate blood.
+                shapes.createCircle(npc.xpos, npc.ypos, npc.size, shadow);
             }
         }
     }

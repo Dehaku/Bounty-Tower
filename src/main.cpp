@@ -1816,7 +1816,7 @@ void critterBrain(Npc &npc, std::list<Npc> &container)
 
     if((gvars::framesPassed % 60) == 0)
     {
-        float hpRegen = npc.maxhealth*(npc.skills.getRanks("Feral Regeneration")*0.01);
+        float hpRegen = npc.maxhealth*(npc.skills.getRanks("Feral Regeneration")*0.002);
         npc.modhealth(hpRegen);
     }
 
