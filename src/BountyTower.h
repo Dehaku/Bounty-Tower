@@ -22,6 +22,8 @@ extern void critterBrain(std::list<Npc> &npcs);
 
 extern std::vector<Npc*> Squaddies;
 
+bool onScreen(sf::Vector2f vPos);
+
 void screenShake(float intensity);
 void renderScreenShake();
 

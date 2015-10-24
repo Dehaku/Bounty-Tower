@@ -6,6 +6,14 @@
 std::vector<Npc*> Squaddies;
 std::list<Npc> leftBehind;
 
+bool onScreen(sf::Vector2f vPos)
+{
+    if(aabb(vPos,gvars::centerScreen.x-(RESOLUTION.x/2),gvars::centerScreen.x+(RESOLUTION.x/2),gvars::centerScreen.y-(RESOLUTION.y/2),gvars::centerScreen.y+(RESOLUTION.y/2)))
+        return true;
+
+    return false;
+}
+
 void screenShake(float intensity)
 {
     gvars::screenShake += intensity;
@@ -1483,8 +1491,14 @@ void spawnEnemies()
         std::cout << "\n \n";
 
         npclist.push_back(member);
-        int soundRan = random(1,2);
-        soundmanager.playSound("Thump"+str(soundRan)+".ogg");
+
+
+        if(onScreen(member.getPos2d()))
+        {
+            int soundRan = random(1,2);
+            soundmanager.playSound("Thump"+str(soundRan)+".ogg");
+        }
+
     }
     debug("Done placin Towerlings");
 
@@ -1846,6 +1860,7 @@ void printTile()
     std::cout << "===================== \n";
 }
 
+
 void bountyTowerLoop()
 { // Game Loop
     hotkeySquaddieSelect();
@@ -1853,6 +1868,7 @@ void bountyTowerLoop()
     checkDoors();
     NPCbuttons();
     layHints();
+
 
     if(inputState.key[Key::End].time == 1)
         printTile();
