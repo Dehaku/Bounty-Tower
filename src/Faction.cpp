@@ -831,14 +831,38 @@ void buildTurret(Npc &npc, std::list<Npc> &container)
                 turret.faction = npc.faction;
                 turret.factionPtr = npc.factionPtr;
 
+
+
+
+
+                Item ammo = *getGlobalItem("Bullet: Standard");
+                ammo.amount = 100;
+
                 Item gun = *getGlobalItem("Gun");
                 gun.maxdam = 25*turretSkill->ranks;
                 gun.mindam = gun.maxdam/2;
 
-                Item ammo = *getGlobalItem("Bullet: Standard");
-                ammo.amount = 100;
+                gun.range += ammo.range;
+                ammo.range = 0;
+                ammo.richochets = 0;
+
+                { // Quality Built Skill
+                    Skill * qualityBuilt = npc.skills.getSkill("Quality Built");
+                    if(qualityBuilt != nullptr && qualityBuilt->ranks > 0)
+                    {
+                        gun.maxdam += gun.maxdam*(qualityBuilt->ranks*0.2);
+                        gun.mindam = gun.maxdam/2;
+                        gun.range += gun.range*(qualityBuilt->ranks*0.2);
+                    }
+                }
+
+
                 gun.internalitems.push_back(ammo);
                 turret.inventory.push_back(gun);
+
+                // Tossing on another gun if you've got Practical Problems.
+                if(npc.skills.getSkill("Practical Problems")->ranks > 0)
+                    turret.inventory.push_back(gun);
 
                 npclist.push_back(turret);
             }

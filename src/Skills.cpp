@@ -262,11 +262,7 @@ Skills::Skills()
 
     skill.tree = "Engineer";
 
-    skill.name = "Turret Construction";
-    skill.desc = "Active - For 30 scrap, Creates a friendly turret that deals 25*rank damage.";
-    skill.active = true;
-    skill.autouse = false;
-    list.push_back(skill);
+
 
     skill.name = "Lucky Scavenger";
     skill.desc = "Passive - 20% chance per rank to find money or ammo while picking up scrap.";
@@ -282,6 +278,29 @@ Skills::Skills()
 
     skill.name = "Logistics Expert";
     skill.desc = "Passive - Increases the rate switches are fixed. Intelligence is applied to work speed per rank.";
+    skill.active = false;
+    list.push_back(skill);
+
+    skill.name = "Turret Construction";
+    skill.desc = "Active - For 30 scrap, Creates a friendly turret that deals 25*rank damage.";
+    skill.active = true;
+    skill.autouse = false;
+    list.push_back(skill);
+
+    skill.name = "Explosive Deconstruction";
+    skill.desc = "Passive - Upon constructions death, detonates with a scaled explosion based on constructions health and cost.";
+    skill.active = false;
+    list.push_back(skill);
+
+    skill.name = "Practical Problems";
+    skill.desc = "Passive - Doubles the weapon slots of the turret. Sometimes, You just need more gun.";
+    skill.ranksmax = 1;
+    skill.active = false;
+    list.push_back(skill);
+    skill.ranksmax = 5;
+
+    skill.name = "Quality Built";
+    skill.desc = "Passive - Increases construction base damage and range by 20% per rank.";
     skill.active = false;
     list.push_back(skill);
 
@@ -325,23 +344,6 @@ Skills::Skills()
 
     skill.name = "Lemme help with that";
     skill.desc = "Passive - 10% chance per rank to prevent allies item durability loss and prevent weapon jamming.";
-    skill.active = false;
-    list.push_back(skill);
-
-    skill.name = "Explosive Deconstruction";
-    skill.desc = "Passive - Upon constructions death, detonates with a scaled explosion based on constructions health and cost.";
-    skill.active = false;
-    list.push_back(skill);
-
-    skill.name = "Practical Problems";
-    skill.desc = "Passive - Doubles the weapon slots of the turret. Sometimes, You just need more gun.";
-    skill.ranksmax = 1;
-    skill.active = false;
-    list.push_back(skill);
-    skill.ranksmax = 5;
-
-    skill.name = "Quality Built";
-    skill.desc = "Passive - Increases construction base damage and range by 20% per rank.";
     skill.active = false;
     list.push_back(skill);
 
@@ -393,8 +395,6 @@ Skills::Skills()
     skill.desc = "Active - Causes enemies within an AoE to use twice the ammo, but gaining 30% additional damage, for 2 seconds per rank.";
     skill.active = false;
     list.push_back(skill);
-
-
 
     skill.name = "Undeath";
     skill.desc = "Passive - Missing health percentage is added to attributes.";
