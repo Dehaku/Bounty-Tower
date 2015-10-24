@@ -382,6 +382,10 @@ Skills::Skills()
     skill.active = false;
     list.push_back(skill);
 
+    skill.name = "Undead Dread";
+    skill.desc = "Passive - 20% of missing health percentage is added to damage per rank.";
+    skill.active = false;
+    list.push_back(skill);
 
     /*
 

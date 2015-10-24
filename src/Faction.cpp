@@ -2756,6 +2756,17 @@ std::string Npc::dealDamage(Npc *victim, Item *weapon, float amount)
     critScore pass;
     std::string outPut;
 
+    { // Vampirism Skill
+        Skill * undeadDread = skills.getSkill("Undead Dread");
+        if(undeadDread != nullptr && undeadDread->ranks > 0)
+        {
+            float removeAmount = health/maxhealth;
+            float missingHealth = 1 - removeAmount;
+            missingHealth = missingHealth / 5;
+            amount += amount*(missingHealth*undeadDread->ranks);
+        }
+    }
+
     if(weapon != nullptr)
     {
         int damage = random(weapon->mindam,weapon->maxdam);
