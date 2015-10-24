@@ -1219,7 +1219,15 @@ void workSwitch(Npc &npc, std::list<Npc> &container)
     Tile *standTile = &tiles[xTile][yTile][zTile];
     if(standTile->state == "Off")
     {
-        standTile->workProgress += npc.attributes.intelligence;
+        float workAmount = npc.attributes.intelligence;
+
+
+        Skill * logExpert = npc.skills.getSkill("Logistics Expert");
+        if(logExpert != nullptr && logExpert->ranks > 0)
+            workAmount = workAmount * logExpert->ranks;
+
+        standTile->workProgress += workAmount;
+
         if(standTile->workProgress >= standTile->workGoal)
         {
             standTile->state = "On";

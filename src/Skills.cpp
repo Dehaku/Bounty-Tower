@@ -280,6 +280,11 @@ Skills::Skills()
     skill.autouse = false;
     list.push_back(skill);
 
+    skill.name = "Logistics Expert";
+    skill.desc = "Passive - Increases the rate switches are fixed. Intelligence is applied to work speed per rank.";
+    skill.active = false;
+    list.push_back(skill);
+
     /*
 
     skill.name = "Shield Generator Construction";
@@ -316,11 +321,6 @@ Skills::Skills()
     skill.desc = "Active - Builds a fortification to block enemy fire/progression, Ranks add spikes and other lethal bits";
     skill.active = true;
     skill.autouse = false;
-    list.push_back(skill);
-
-    skill.name = "Logistics Expert";
-    skill.desc = "Passive - Immensely increases the rate at which this critter works on switches";
-    skill.active = false;
     list.push_back(skill);
 
     skill.name = "Lemme help with that";

@@ -1226,11 +1226,12 @@ void spawnBoss()
     boss.faction = "Towerlings";
     boss.factionPtr = &listAt(uniFact,2);
 
-    Item weaponry = *getGlobalItem("Gun");
-    Item ammo = *getGlobalItem("Bullet: Armor Piercing");
+    Item weaponry = *getGlobalItem("Shotgun");
+    Item ammo = *getGlobalItem("Shell: Spread");
     ammo.amount = 10000;
     weaponry.internalitems.push_back(ammo);
 
+    boss.inventory.push_back(weaponry);
     boss.inventory.push_back(weaponry);
 
     boss.skills.getSkill("Feral Body")->ranks = 2;
