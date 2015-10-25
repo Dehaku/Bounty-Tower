@@ -1274,6 +1274,23 @@ void explosion(Vec3f vPos, int radius, float damage, Npc *attacker, std::vector<
                     std::string atkStatus = attacker->dealDamage(i,nullptr,damage);
                 else
                     i->takeDamage(nullptr, nullptr, damage);
+
+                {// Knockback Code
+
+                    int knockbackAmount = damage;
+                    sf::Vector2f AtkerPos(vPos.x,vPos.y);
+
+                    sf::Vector2f VictPos = i->getPos2d();
+                    float attackAngle = math::angleBetweenVectors(AtkerPos,VictPos);
+                    sf::Vector2f finalPos = math::angleCalc(VictPos,attackAngle,knockbackAmount);
+
+                    sf::Vector2f compared(finalPos.x-i->xpos,finalPos.y-i->ypos);
+                    if(AtkerPos != sf::Vector2f())
+                        i->momentum += compared;
+
+                }
+
+
             }
         }
     else
@@ -1288,6 +1305,25 @@ void explosion(Vec3f vPos, int radius, float damage, Npc *attacker, std::vector<
                     std::string atkStatus = attacker->dealDamage(&i,nullptr,damage);
                 else
                     i.takeDamage(nullptr, nullptr, damage);
+
+
+
+                {// Knockback Code
+
+                    int knockbackAmount = damage;
+                    sf::Vector2f AtkerPos(vPos.x,vPos.y);
+
+                    sf::Vector2f VictPos = i.getPos2d();
+                    float attackAngle = math::angleBetweenVectors(AtkerPos,VictPos);
+                    sf::Vector2f finalPos = math::angleCalc(VictPos,attackAngle,knockbackAmount);
+
+                    sf::Vector2f compared(finalPos.x-i.xpos,finalPos.y-i.ypos);
+                    if(AtkerPos != sf::Vector2f())
+                        i.momentum += compared;
+
+                }
+
+
             }
         }
 

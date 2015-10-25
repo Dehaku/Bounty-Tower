@@ -2775,8 +2775,8 @@ void testProcess()
                 */
 }
 
-sf::Thread TcpServerThread(&runTcpServer, network::mainPort);
-sf::Thread TcpClientThread(&runTcpClient, network::mainPort+23);
+//sf::Thread TcpServerThread(&runTcpServer, network::mainPort);
+//sf::Thread TcpClientThread(&runTcpClient, network::mainPort+23);
 
 void galaxyLoop()
 {
@@ -5142,8 +5142,8 @@ int main()
         cleanMenu();
     } // End of game loop
 
-    TcpServerThread.terminate();
-    TcpClientThread.terminate();
+    //TcpServerThread.terminate();
+    //TcpClientThread.terminate();
 
     return EXIT_SUCCESS;
 }

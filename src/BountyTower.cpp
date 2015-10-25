@@ -1880,7 +1880,7 @@ void bountyTowerLoop()
             victims.push_back(&npc);
 
     if(inputState.key[Key::LShift] && inputState.key[Key::M].time == 1)
-        explosion(mV3,180,60,Squaddies.at(0),&victims);
+        explosion(mV3,180,60);
 
 
     if(inputState.key[Key::Escape].time == 1 && menus.empty())
