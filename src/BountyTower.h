@@ -19,6 +19,7 @@ extern sf::RenderWindow window;
 extern void lmbPress();
 extern void critterBrain(Npc &npc, std::list<Npc> &container);
 extern void critterBrain(std::list<Npc> &npcs);
+extern void resetPathingController();
 
 extern std::vector<Npc*> Squaddies;
 

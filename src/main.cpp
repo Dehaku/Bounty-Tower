@@ -809,6 +809,11 @@ public:
 PathingController pathCon;
 
 
+void resetPathingController()
+{
+    pathCon.pather->Reset();
+}
+
 void drawStoredPath(std::vector<Tile *> storedPath)
 {
     Vec3 oldPos;

@@ -427,6 +427,7 @@ void towerTransition()
     worlditems.clear();
     leftBehind.clear();
     clearBullets();
+    resetPathingController();
 
 
     for(auto &npc : npclist)
