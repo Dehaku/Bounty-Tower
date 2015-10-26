@@ -1803,6 +1803,28 @@ void critterPathFind(Npc &npc, std::list<Npc> &container)
 
 }
 
+void overheadOverlay(Npc &npc)
+{
+
+    //Overhead Healthbar.
+    float remainingHealth = npc.health / npc.maxhealth;
+    if(remainingHealth != 0 && remainingHealth != 1)
+    {
+        shapes.createSquare(npc.xpos-40,npc.ypos-40, npc.xpos+40, npc.ypos-40+10,sf::Color::Black);
+        shapes.createSquare(npc.xpos-(40*remainingHealth),npc.ypos-40, npc.xpos+(40*remainingHealth), npc.ypos-40+8,sf::Color::Red,1,sf::Color::Black);
+    }
+
+
+    //Overhead Healthtext.
+    //int critterHealth = npc.health;
+    //textList.createText(npc.xpos-30,npc.ypos-40,10,sf::Color::White,"Health: " + std::to_string(critterHealth));
+
+    //Overhead Name
+    if(npc.name != npc.race)
+        textList.createText(npc.xpos-30,npc.ypos-55,10,sf::Color::White,npc.name);
+
+}
+
 void critterBrain(Npc &npc, std::list<Npc> &container)
 {
 
@@ -1864,15 +1886,9 @@ void critterBrain(Npc &npc, std::list<Npc> &container)
 
     npc.img.setRotation(npc.angle);
 
-    //int critterZ = npc.zpos/20;
-    //textList.createText(npc.xpos,npc.ypos,10,sf::Color::White,"ZPos:","",npc.zpos," /","",critterZ);
-    int critterHealth = npc.health;
+    if(onScreen(npc.getPos2d()))
+        overheadOverlay(npc);
 
-
-    if(npc.name != npc.race)
-        textList.createText(npc.xpos-30,npc.ypos-50,10,sf::Color::White,npc.name);
-    textList.createText(npc.xpos-30,npc.ypos-40,10,sf::Color::White,"Health: " + std::to_string(critterHealth));
-    //textList.createText(npc.xpos,npc.ypos-10,10,sf::Color::White,"Mom: " + std::to_string(npc.momentum.x) + "/" + std::to_string(npc.momentum.y));
     runCritterBody(npc);
     debug("Ending Part Loop");
     debug("debug 1", false);

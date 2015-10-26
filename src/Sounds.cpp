@@ -85,6 +85,9 @@ void setMusicVolume()
 void playMusic(std::string track)
 {
     for (size_t i = 0; i != musics.size(); i++)
+        musics[i]->musictrack.stop();
+
+    for (size_t i = 0; i != musics.size(); i++)
     {
         if (musics[i]->name == track)
         {
