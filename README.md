@@ -7,6 +7,9 @@ Code
 SneakySnake (Mika Attila), Upgraded the project up to SFML 2.2, C++ 14, Vastly improved formatting, and improved countless systems.
 
 Art
+Basic Body(Changed), roots (opengameart.com) http://opengameart.org/content/2d-sprite-skins-walking-animation
+https://creativecommons.org/licenses/by-sa/3.0/
+
 Blood, blood1-8.png, knittel (opengameart.com) http://opengameart.org/content/blood-decals-32-in-zip-file
 https://creativecommons.org/licenses/by/3.0/
 

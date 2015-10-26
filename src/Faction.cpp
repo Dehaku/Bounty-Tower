@@ -2725,7 +2725,7 @@ std::string Npc::onDeath(Npc *attacker, Item *weapon, float amount, critScore *c
 
         splatter.shape = splatter.Square;
         splatter.duration = 2000000000;
-        splatter.maincolor = sf::Color(255,0,0,127);
+        splatter.maincolor = sf::Color(255,0,0,60);
 
         int bloodNum = random(1,8);
         splatter.texture = &texturemanager.getTexture("Blood"+str(bloodNum)+".png");
@@ -2733,7 +2733,12 @@ std::string Npc::onDeath(Npc *attacker, Item *weapon, float amount, critScore *c
         bloodNum = random(1,8);
         splatter.texture = &texturemanager.getTexture("Blood"+str(bloodNum)+".png");
         shapes.shapes.push_back(splatter);
+        //splatter.maincolor = sf::Color(255,255,255,255);
+        //splatter.texture = &texturemanager.getTexture("MeatCorpsev2.png");
+        //shapes.shapes.push_back(splatter);
+        img.setTexture(texturemanager.getTexture("MeatCorpsev2.png"));
     }
+
 
     return "";
 }
@@ -2837,13 +2842,13 @@ std::string Npc::dealDamage(Npc *victim, Item *weapon, float amount)
     critScore pass;
     std::string outPut;
 
-    { // Vampirism Skill
+    { // undeadDread Skill
         Skill * undeadDread = skills.getSkill("Undead Dread");
         if(undeadDread != nullptr && undeadDread->ranks > 0)
         {
             float removeAmount = health/maxhealth;
             float missingHealth = 1 - removeAmount;
-            missingHealth = missingHealth / 5;
+            missingHealth = missingHealth / 2.5;
             amount += amount*(missingHealth*undeadDread->ranks);
         }
     }
@@ -4990,7 +4995,7 @@ void drawNPCs(std::list<Npc> &container)
 
     for (auto &npc : container)
     {
-        if (npc.hasSpawned == true && npc.deadFrames < 600)
+        if (npc.hasSpawned == true)
         {
             int CritterZ = npc.zpos/GRID_SIZE;
             bool withinField = aabb(npc.xpos,npc.ypos,gvars::topLeft.x,gvars::topRight.x,gvars::topLeft.y,gvars::bottomRight.y);
@@ -5039,7 +5044,9 @@ void drawNPCs(std::list<Npc> &container)
 
 
 
-            for(auto &ani : animationmanager.animations)
+
+            if(npc.alive)
+                for(auto &ani : animationmanager.animations)
             {
                 bool drawMe = false;
                 bool allowedHat = false;
@@ -5071,30 +5078,30 @@ void drawNPCs(std::list<Npc> &container)
                     else
                         ani.animation.setScale(1,1);
 
-
-                    float alphaRemaining = static_cast<float>(npc.deadFrames) / 600;
-
-                    // Crap, It seems like the animations don't care about the colors... what do.
-                    ani.animation.setColor(sf::Color(0,0,0,255*alphaRemaining) );
-
-
-
                     ani.animation.setPosition(npc.xpos,npc.ypos);
                     window.draw(ani.animation, &shadermanager.shockwaveShader);
-                    ani.animation.setColor(sf::Color(0,00,255));
                 }
+            }
+            else
+            {
+                npc.img.setColor(sf::Color(255,255,255,255));
+                npc.img.setRotation(0);
+                npc.angle = 0;
+                npc.img.setOrigin(30,30);
+                npc.drawImg();
             }
 
 
             if(npc.name == "BTTurret")
                 npc.drawImg();
 
-
+            /*
             sf::Color shadow(255,50,50,50);
 
 
             if(!npc.alive) // To simulate blood.
                 shapes.createCircle(npc.xpos, npc.ypos, npc.size, shadow);
+            */
             }
         }
     }

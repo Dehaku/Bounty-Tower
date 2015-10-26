@@ -1754,8 +1754,8 @@ void layHints()
             }
             else if(gvars::currentz == 4)
             {
-                textList.createText(2940,2940,15,gvars::cycleRed,"Your bounty is waiting for you. \n"
-                                                                "Be prepared for a fight upstairs!");
+                textList.createText(2940,2940,15,gvars::cycleRed,"Your bounty is waiting for you upstairs! \n"
+                                                                "Be prepared for a fight.");
             }
             else if(gvars::currentz == 5)
             {
@@ -1881,11 +1881,12 @@ void makeBlood()
 
     splatter.shape = splatter.Square;
     splatter.duration = 2000000000;
-    splatter.maincolor = sf::Color(255,0,0,127);
+    splatter.maincolor = sf::Color(255,255,255,255);
 
     int bloodNum = random(1,8);
 
-    splatter.texture = &texturemanager.getTexture("Blood"+str(bloodNum)+".png");
+    //splatter.texture = &texturemanager.getTexture("Blood"+str(bloodNum)+".png");
+    splatter.texture = &texturemanager.getTexture("MeatCorpse.png");
 
     //splatter.rotation = random(1,360);
 
