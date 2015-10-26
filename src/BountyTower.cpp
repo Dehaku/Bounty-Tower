@@ -914,6 +914,10 @@ void renderRecruiterMenu(baseMenu &menu)
         if(!npc.recruitable)
             continue;
         int critterCost = 100;
+
+        if(npc.race == "BTRockkid")
+            critterCost = 1000;
+
         int posX = 150+(xOffset*300);
         int posY = 150+(yOffset*60);;
         shapes.createSquare(posX-30,posY-30,posX+30,posY+30,sf::Color::Black,0,sf::Color::Cyan, &gvars::hudView);
