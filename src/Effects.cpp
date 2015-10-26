@@ -1,6 +1,7 @@
 #include "Effects.h"
 
 #include <cmath>
+#include "BountyTower.h"
 
 extern sf::RenderWindow window;
 
@@ -69,6 +70,7 @@ Shape::Shape()
     shape = Circle;
     size = 0;
     outline = 0;
+    rotation = 0;
     maincolor = sf::Color::Transparent;
     seccolor = sf::Color::Transparent;
     //drawView = window.getView();
@@ -198,6 +200,8 @@ void Shapes::drawShapes()
         sf::View oldView = window.getView();
         window.setView(*shape.drawView);
 
+
+
         if(shape.shape == shape.Square)
         {
             sf::RectangleShape rectangle;
@@ -206,6 +210,7 @@ void Shapes::drawShapes()
             rectangle.setOutlineColor(shape.seccolor);
             rectangle.setOutlineThickness(shape.outline);
             rectangle.setPosition(shape.endPos.x, shape.endPos.y);
+            rectangle.setRotation(shape.rotation);
 
             if(shape.fades)
             {
@@ -217,7 +222,17 @@ void Shapes::drawShapes()
             if(shape.texture != nullptr)
                 rectangle.setTexture(shape.texture);
 
-            window.draw(rectangle);
+            // An attempt to help performance, but is all the boundry checks faster than drawing things off screen?
+            // I hope so.
+            if(shape.drawView == &gvars::view1)
+            {
+                if(onScreen(shape.startPos) || onScreen(shape.endPos))
+                    window.draw(rectangle);
+            }
+            else
+                window.draw(rectangle);
+
+
         }
         else if(shape.shape == shape.Circle)
         {
@@ -228,6 +243,7 @@ void Shapes::drawShapes()
             circle.setOutlineColor(shape.seccolor);
             circle.setPosition(shape.startPos.x, shape.startPos.y);
             circle.setOrigin(shape.size, shape.size);
+            circle.setRotation(shape.rotation);
 
             if(shape.fades)
             {
@@ -239,7 +255,13 @@ void Shapes::drawShapes()
             if(shape.texture != nullptr)
                 circle.setTexture(shape.texture);
 
-            window.draw(circle);
+            if(shape.drawView == &gvars::view1)
+            {
+                if(onScreen(shape.startPos) || onScreen(shape.endPos))
+                    window.draw(circle);
+            }
+            else
+                window.draw(circle);
         }
         else if(shape.shape == shape.Line)
         {
@@ -270,8 +292,13 @@ void Shapes::drawShapes()
             if(shape.texture != nullptr)
                 rectangle.setTexture(shape.texture);
 
-            //window.draw(rectangle, &shadermanager.lazorShader);
-            window.draw(rectangle);
+            if(shape.drawView == &gvars::view1)
+            {
+                if(onScreen(shape.startPos) || onScreen(shape.endPos))
+                    window.draw(rectangle);
+            }
+            else
+                window.draw(rectangle);
         }
 
         window.setView(oldView);

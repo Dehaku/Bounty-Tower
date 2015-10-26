@@ -26,6 +26,7 @@ public:
     sf::Vector2f endPos;
     int size;
     int outline;
+    int rotation;
     sf::Color maincolor;
     sf::Color seccolor;
     sf::View * drawView;

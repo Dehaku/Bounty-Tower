@@ -1591,6 +1591,8 @@ Npc::Npc()
 
     recruitable = false;
 
+    deadFrames = 0;
+
     graspItemLeft = nullptr;
     graspItemRight = nullptr;
     graspNpcLeft = nullptr;
@@ -2713,6 +2715,24 @@ std::string Npc::onDeath(Npc *attacker, Item *weapon, float amount, critScore *c
                 victims.push_back(&npc);
 
         explosion(getPos(),200,exploDamage,this,&victims);
+    }
+
+    if(race != "BTTurret")
+    { // Blood stuffs
+        Shape splatter;
+        splatter.startPos = sf::Vector2f(xpos-30,ypos-30);
+        splatter.endPos = sf::Vector2f(xpos+30,ypos+30);
+
+        splatter.shape = splatter.Square;
+        splatter.duration = 2000000000;
+        splatter.maincolor = sf::Color(255,0,0,127);
+
+        int bloodNum = random(1,8);
+        splatter.texture = &texturemanager.getTexture("Blood"+str(bloodNum)+".png");
+        shapes.shapes.push_back(splatter);
+        bloodNum = random(1,8);
+        splatter.texture = &texturemanager.getTexture("Blood"+str(bloodNum)+".png");
+        shapes.shapes.push_back(splatter);
     }
 
     return "";
@@ -4970,7 +4990,7 @@ void drawNPCs(std::list<Npc> &container)
 
     for (auto &npc : container)
     {
-        if (npc.hasSpawned == true)
+        if (npc.hasSpawned == true && npc.deadFrames < 600)
         {
             int CritterZ = npc.zpos/GRID_SIZE;
             bool withinField = aabb(npc.xpos,npc.ypos,gvars::topLeft.x,gvars::topRight.x,gvars::topLeft.y,gvars::bottomRight.y);
@@ -5052,10 +5072,16 @@ void drawNPCs(std::list<Npc> &container)
                         ani.animation.setScale(1,1);
 
 
+                    float alphaRemaining = static_cast<float>(npc.deadFrames) / 600;
+
+                    // Crap, It seems like the animations don't care about the colors... what do.
+                    ani.animation.setColor(sf::Color(0,0,0,255*alphaRemaining) );
+
 
 
                     ani.animation.setPosition(npc.xpos,npc.ypos);
                     window.draw(ani.animation, &shadermanager.shockwaveShader);
+                    ani.animation.setColor(sf::Color(0,00,255));
                 }
             }
 

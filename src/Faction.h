@@ -111,6 +111,8 @@ public:
 
     bool recruitable;
 
+    unsigned int deadFrames;
+
     Item * getLeftHandItem();
     Item * getRightHandItem();
     Item * getItemTypeInHands(int type);

@@ -424,6 +424,7 @@ void debugTileMode()
 
 void towerTransition()
 {
+    shapes.shapes.clear();
     worlditems.clear();
     leftBehind.clear();
     clearBullets();
@@ -1347,6 +1348,7 @@ void nextFloorTransition()
     }
 
     clearBullets();
+    shapes.shapes.clear();
 
     if(gvars::currentz > bountytower::currentTower->floors)
         loadTavern();
@@ -1861,6 +1863,72 @@ void printTile()
     std::cout << "===================== \n";
 }
 
+void makeBlood()
+{
+    if(!inputState.key[Key::LShift])
+        return;
+
+    if(inputState.lmbTime != 1)
+        return;
+
+    Shape splatter;
+    splatter.startPos = sf::Vector2f(gvars::mousePos.x-30,gvars::mousePos.y-30);
+    splatter.endPos = sf::Vector2f(gvars::mousePos.x+30,gvars::mousePos.y+30);
+
+    splatter.shape = splatter.Square;
+    splatter.duration = 2000000000;
+    splatter.maincolor = sf::Color(255,0,0,127);
+
+    int bloodNum = random(1,8);
+
+    splatter.texture = &texturemanager.getTexture("Blood"+str(bloodNum)+".png");
+
+    //splatter.rotation = random(1,360);
+
+    shapes.shapes.push_back(splatter);
+}
+
+void corpsesBleed()
+{ // Such a friendly title.
+    for(auto &npc : npclist)
+    {
+        //Alive? Get outta here!
+        if(npc.alive)
+            continue;
+
+        npc.deadFrames++;
+        //Dead for too long? Get outta here!
+        if(npc.deadFrames > 15)
+            continue;
+
+        //Robot? Get outta here!
+        if(npc.race == "BTTurret")
+            continue;
+        //Too soon? Get outta here!
+        if((gvars::framesPassed % 5) != 0)
+            continue;
+
+        //Not moving? Get outta here!
+        if(npc.momentum == sf::Vector2f())
+            continue;
+
+        Shape splatter;
+        splatter.startPos = sf::Vector2f(npc.xpos-30,npc.ypos-30);
+        splatter.endPos = sf::Vector2f(npc.xpos+30,npc.ypos+30);
+
+        splatter.shape = splatter.Square;
+        splatter.duration = 2000000000;
+        splatter.maincolor = sf::Color(255,0,0,127);
+
+        int bloodNum = random(1,8);
+        splatter.texture = &texturemanager.getTexture("Blood"+str(bloodNum)+".png");
+        shapes.shapes.push_back(splatter);
+        bloodNum = random(1,8);
+        splatter.texture = &texturemanager.getTexture("Blood"+str(bloodNum)+".png");
+        shapes.shapes.push_back(splatter);
+    }
+
+}
 
 void bountyTowerLoop()
 { // Game Loop
@@ -1869,6 +1937,9 @@ void bountyTowerLoop()
     checkDoors();
     NPCbuttons();
     layHints();
+    corpsesBleed();
+
+    makeBlood();
 
 
     if(inputState.key[Key::End].time == 1)

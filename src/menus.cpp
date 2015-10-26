@@ -122,7 +122,7 @@ void ImageButton::draw()
 
 
 
-    shapes.drawShapes();
+    //shapes.drawShapes();
     window.setView(oldview);
 }
 
