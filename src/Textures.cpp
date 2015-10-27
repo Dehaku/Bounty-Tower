@@ -102,8 +102,8 @@ void AnimationManager::init()
                 line.append(ending);
 
                 AnimationHolder AniD;
-                AniD.texture.loadFromFile(line);
-                //AniD.texture = texturemanager.getTexture(file);
+                //AniD.texture.loadFromFile(line);
+                AniD.texture = file;
 
                 AniD.name = outPut;
                 AniD.name.append("DownWalk");
@@ -114,7 +114,7 @@ void AnimationManager::init()
                 animationmanager.animations.push_back(AniD);
 
                 AnimationHolder AniR;
-                AniR.texture.loadFromFile(line);
+                AniR.texture = file;
 
                 AniR.name = outPut;
                 AniR.name.append("RightWalk");
@@ -125,7 +125,7 @@ void AnimationManager::init()
                 animationmanager.animations.push_back(AniR);
 
                 AnimationHolder AniU;
-                AniU.texture.loadFromFile(line);
+                AniU.texture = file;
 
                 AniU.name = outPut;
                 AniU.name.append("UpWalk");
@@ -137,7 +137,7 @@ void AnimationManager::init()
 
 
                 AnimationHolder AniL;
-                AniL.texture.loadFromFile(line);
+                AniL.texture = file;
 
                 AniL.name = outPut;
                 AniL.name.append("LeftWalk");
@@ -154,8 +154,8 @@ void AnimationManager::init()
 
     for(auto &Ani : animationmanager.animations)
     {
-        Ani.animationImage.setSpriteSheet(Ani.texture);
-        //Ani.animationImage.setSpriteSheet(texturemanager.getTexture("SpriteSheetBTHuman.png"));
+        //Ani.animationImage.setSpriteSheet(Ani.texture);
+        Ani.animationImage.setSpriteSheet(texturemanager.getTexture(Ani.texture));
 
         if(Ani.name.find("LeftWalk") != Ani.name.npos)
             Ani.animation.scale(-1,1);

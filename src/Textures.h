@@ -25,7 +25,7 @@ extern TextureManager texturemanager;
 class AnimationHolder
 {
 public:
-    sf::Texture texture;
+    std::string texture;
     Animation animationImage;
     AnimatedSprite animation;
     std::string name;
