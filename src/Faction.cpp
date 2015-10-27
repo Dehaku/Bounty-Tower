@@ -2733,9 +2733,12 @@ std::string Npc::onDeath(Npc *attacker, Item *weapon, float amount, critScore *c
         bloodNum = random(1,8);
         splatter.texture = &texturemanager.getTexture("Blood"+str(bloodNum)+".png");
         shapes.shapes.push_back(splatter);
-        //splatter.maincolor = sf::Color(255,255,255,255);
-        //splatter.texture = &texturemanager.getTexture("MeatCorpsev2.png");
-        //shapes.shapes.push_back(splatter);
+
+        img.setColor(sf::Color(255,255,255,255));
+        img.setRotation(0);
+        angle = 0;
+        img.setOrigin(30,30);
+
         img.setTexture(texturemanager.getTexture("MeatCorpsev2.png"));
     }
 
@@ -5084,10 +5087,6 @@ void drawNPCs(std::list<Npc> &container)
             }
             else
             {
-                npc.img.setColor(sf::Color(255,255,255,255));
-                npc.img.setRotation(0);
-                npc.angle = 0;
-                npc.img.setOrigin(30,30);
                 npc.drawImg();
             }
 
