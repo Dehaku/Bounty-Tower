@@ -4982,6 +4982,53 @@ void drawEquippedItems(Npc &npc)
     }
 }
 
+void Npc::setupAnimations()
+{
+    sf::Texture * spriteSheet = &texturemanager.getTexture("SpriteSheet"+race+".png");
+    aniLeftWalk.setSpriteSheet(*spriteSheet);
+    aniDownWalk.setSpriteSheet(*spriteSheet);
+    aniRightWalk.setSpriteSheet(*spriteSheet);
+    aniUpWalk.setSpriteSheet(*spriteSheet);
+
+    aniDownWalk.addFrame(sf::IntRect( 0, 0, 60, 60));
+    aniDownWalk.addFrame(sf::IntRect(60, 0, 60, 60));
+    aniDownWalk.addFrame(sf::IntRect( 0, 0, 60, 60));
+    aniDownWalk.addFrame(sf::IntRect(120, 0, 60, 60));
+
+    spriteDownWalk.setAnimation(aniDownWalk);
+    spriteDownWalk.setOrigin(30,30);
+
+    aniRightWalk.addFrame(sf::IntRect( 0, 60, 60, 60));
+    aniRightWalk.addFrame(sf::IntRect(60, 60, 60, 60));
+    aniRightWalk.addFrame(sf::IntRect( 0, 60, 60, 60));
+    aniRightWalk.addFrame(sf::IntRect(120, 60, 60, 60));
+    spriteRightWalk.setAnimation(aniRightWalk);
+    spriteRightWalk.setOrigin(30,30);
+
+    aniUpWalk.addFrame(sf::IntRect( 0, 120, 60, 60));
+    aniUpWalk.addFrame(sf::IntRect(60, 120, 60, 60));
+    aniUpWalk.addFrame(sf::IntRect( 0, 120, 60, 60));
+    aniUpWalk.addFrame(sf::IntRect(120, 120, 60, 60));
+    spriteUpWalk.setAnimation(aniUpWalk);
+    spriteUpWalk.setOrigin(30,30);
+
+    aniLeftWalk.addFrame(sf::IntRect( 0, 60, 60, 60));
+    aniLeftWalk.addFrame(sf::IntRect(60, 60, 60, 60));
+    aniLeftWalk.addFrame(sf::IntRect( 0, 60, 60, 60));
+    aniLeftWalk.addFrame(sf::IntRect(120, 60, 60, 60));
+    spriteLeftWalk.setAnimation(aniLeftWalk);
+    spriteLeftWalk.setOrigin(30,30);
+    spriteLeftWalk.scale(-1,1);
+
+    if(race.find("Noirves") != race.npos)
+    {
+        spriteDownWalk.scale(0.75,0.75);
+        spriteLeftWalk.scale(0.75,0.75);
+        spriteRightWalk.scale(0.75,0.75);
+        spriteUpWalk.scale(0.75,0.75);
+    }
+}
+
 void drawNPCs(std::list<Npc> &container)
 {
     if(inputState.key[Key::I].time == 1)
@@ -5045,10 +5092,22 @@ void drawNPCs(std::list<Npc> &container)
             if(inbetween(-91,1,math::constrainAngle(aniAngle+angMod)))
                 Direction = "DownWalk";
 
+            if(npc.isSquaddie)
+            {
+                if(inputState.key[Key::H])
+                    npc.aniDownWalk.setSpriteSheet(texturemanager.getTexture("SpriteSheetBTNoirves.png"));
+                else
+                    npc.aniDownWalk.setSpriteSheet(texturemanager.getTexture("SpriteSheetBTHuman.png"));
+
+                //npc.spriteDownWalk.setAnimation(npc.aniDownWalk);
+
+                npc.spriteDownWalk.update(sf::milliseconds(10));
+                npc.spriteDownWalk.setPosition(npc.getPos2d());
+                window.draw(npc.spriteDownWalk, &shadermanager.shockwaveShader);
+            }
 
 
-
-            if(npc.alive)
+            if(npc.alive && !npc.isSquaddie)
                 for(auto &ani : animationmanager.animations)
             {
                 bool drawMe = false;
@@ -5085,7 +5144,7 @@ void drawNPCs(std::list<Npc> &container)
                     window.draw(ani.animation, &shadermanager.shockwaveShader);
                 }
             }
-            else
+            else if(!npc.alive)
             {
                 npc.drawImg();
             }

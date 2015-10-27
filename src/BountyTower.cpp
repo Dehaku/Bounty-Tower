@@ -60,6 +60,8 @@ void equipStarters()
         member.name = generateName();
         member.isSquaddie = true;
 
+        member.setupAnimations();
+
         member.ypos = 4040;
 
         if(random(1,2) == 1)

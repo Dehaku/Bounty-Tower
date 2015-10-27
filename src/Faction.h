@@ -100,6 +100,18 @@ public:
     // TODO: Add racial defaults for attributes and skill growth,
     // Will allow interesting mechanics and fix spawning variety.
     sf::Sprite img;
+    Animation aniLeftWalk;
+    Animation aniDownWalk;
+    Animation aniRightWalk;
+    Animation aniUpWalk;
+    AnimatedSprite spriteLeftWalk;
+    AnimatedSprite spriteDownWalk;
+    AnimatedSprite spriteRightWalk;
+    AnimatedSprite spriteUpWalk;
+
+    void setupAnimations();
+
+
     std::list<Item> inventory;
     std::list<Item> equipped;
 

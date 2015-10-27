@@ -103,6 +103,7 @@ void AnimationManager::init()
 
                 AnimationHolder AniD;
                 AniD.texture.loadFromFile(line);
+                //AniD.texture = texturemanager.getTexture(file);
 
                 AniD.name = outPut;
                 AniD.name.append("DownWalk");
@@ -154,6 +155,7 @@ void AnimationManager::init()
     for(auto &Ani : animationmanager.animations)
     {
         Ani.animationImage.setSpriteSheet(Ani.texture);
+        //Ani.animationImage.setSpriteSheet(texturemanager.getTexture("SpriteSheetBTHuman.png"));
 
         if(Ani.name.find("LeftWalk") != Ani.name.npos)
             Ani.animation.scale(-1,1);
