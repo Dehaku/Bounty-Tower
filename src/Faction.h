@@ -46,6 +46,7 @@ struct entityvectorpointercontainer
 };
 
 bool canSeeNpc(Npc &ori, Npc &target);
+bool canSeeNpcv2(Npc &ori, Npc &target);
 void assignItemsUser(Npc &npc, std::list<Npc> &container);
 
 void critterEquip(Npc &npc, std::list<Npc> &container);

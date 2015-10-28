@@ -1948,8 +1948,21 @@ void bountyTowerLoop()
     corpsesBleed();
 
     makeBlood();
-
-
+    if(inputState.key[Key::J])
+        for(auto &squaddie : Squaddies)
+    {
+        for(auto &npc : npclist)
+        {
+            if(npc.id != squaddie->id)
+            {
+                bool canSee = canSeeNpcv2(*squaddie, npc);
+                if(canSee)
+                {
+                    shapes.createLine(squaddie->xpos,squaddie->ypos,npc.xpos,npc.ypos,2,sf::Color::Green);
+                }
+            }
+        }
+    }
 
     if(inputState.key[Key::End].time == 1)
         printTile();
@@ -1979,6 +1992,7 @@ void bountyTowerLoop()
     if(inputState.key[Key::LControl].time > 10)
     { // Display current mouse position.
         std::string outPut = "MousePos: " + std::to_string(gvars::mousePos.x) + "/" + std::to_string(gvars::mousePos.y) + "/" + std::to_string(gvars::currentz*GRID_SIZE);
+        outPut.append("\n" + str(gvars::mousePos.x/GRID_SIZE) + "/" + str(gvars::mousePos.y/GRID_SIZE) + "/" + str(gvars::currentz));
         textList.createText(gvars::mousePos,10,sf::Color::White,outPut);
     }
 

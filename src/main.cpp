@@ -1471,25 +1471,32 @@ Npc * critterDetectNearestEnemy(Npc &npc, std::list<Npc> &container)
         }
         for (auto &enemy : enemyPtrs)
         {
-            //shapes.createLine(npc.xpos,npc.ypos,enemy->xpos,enemy->ypos,2,sf::Color::Yellow);
-            if(closEnmy == nullptr)
-                closEnmy = enemy;
-            else if(math::closeish(npc.xpos,npc.ypos,enemy->xpos,enemy->ypos) <
-                    math::closeish(npc.xpos,npc.ypos,closEnmy->xpos,closEnmy->ypos)
-                    )
+            if(npc.isSquaddie)
             {
-                closEnmy = enemy;
+                bool canSee = canSeeNpcv2(npc,*enemy);
+
+                if(closEnmy == nullptr)
+                    closEnmy = enemy;
+                else if(math::closeish(npc.xpos,npc.ypos,enemy->xpos,enemy->ypos) <
+                        math::closeish(npc.xpos,npc.ypos,closEnmy->xpos,closEnmy->ypos)
+                        && canSee
+                        )
+                {
+                    closEnmy = enemy;
+                }
             }
-
+            else
+            {
+                if(closEnmy == nullptr)
+                    closEnmy = enemy;
+                else if(math::closeish(npc.xpos,npc.ypos,enemy->xpos,enemy->ypos) <
+                        math::closeish(npc.xpos,npc.ypos,closEnmy->xpos,closEnmy->ypos)
+                        )
+                {
+                    closEnmy = enemy;
+                }
+            }
         }
-
-        if(closEnmy != nullptr && inputState.key[Key::LAlt] && true == false)
-        {
-            shapes.createLine(npc.xpos,npc.ypos,closEnmy->xpos,closEnmy->ypos,4,sf::Color::Red);
-            //hasPath = true;
-            //endPos = Vec3(closEnmy->xpos/GRID_SIZE,closEnmy->ypos/GRID_SIZE,closEnmy->zpos/GRID_SIZE);
-        }
-
     }
     return closEnmy;
 }
