@@ -1448,6 +1448,52 @@ void overheadOverlay(Npc &npc)
 
 }
 
+Npc * critterDetectNearestEnemy(Npc &npc, std::list<Npc> &container)
+{
+    std::vector<Npc*> enemyPtrs;
+    Npc * closEnmy = nullptr;
+
+    if(bountytower::towerlingassault)
+    {
+        for (auto &enemys : container)
+        {
+            if( enemys.factionPtr != nullptr && npc.factionPtr != nullptr && enemys.faction != npc.faction)
+            {
+                for (auto &i : npc.factionPtr->factRelations)
+                {
+                    if(enemys.faction == i.faction && i.appeal < 1000 && enemys.alive)
+                    {
+                        //std::cout << "ZE ENEMY HAS BEEN SPOTTED AT " << enemys.xpos << "/" << enemys.ypos << std::endl;
+                        enemyPtrs.push_back(&enemys);
+                    }
+                }
+            }
+        }
+        for (auto &enemy : enemyPtrs)
+        {
+            //shapes.createLine(npc.xpos,npc.ypos,enemy->xpos,enemy->ypos,2,sf::Color::Yellow);
+            if(closEnmy == nullptr)
+                closEnmy = enemy;
+            else if(math::closeish(npc.xpos,npc.ypos,enemy->xpos,enemy->ypos) <
+                    math::closeish(npc.xpos,npc.ypos,closEnmy->xpos,closEnmy->ypos)
+                    )
+            {
+                closEnmy = enemy;
+            }
+
+        }
+
+        if(closEnmy != nullptr && inputState.key[Key::LAlt] && true == false)
+        {
+            shapes.createLine(npc.xpos,npc.ypos,closEnmy->xpos,closEnmy->ypos,4,sf::Color::Red);
+            //hasPath = true;
+            //endPos = Vec3(closEnmy->xpos/GRID_SIZE,closEnmy->ypos/GRID_SIZE,closEnmy->zpos/GRID_SIZE);
+        }
+
+    }
+    return closEnmy;
+}
+
 void critterBrain(Npc &npc, std::list<Npc> &container)
 {
 
@@ -1527,46 +1573,8 @@ void critterBrain(Npc &npc, std::list<Npc> &container)
     /* *BodyPart Loop* */
 
     /* Critter Prioritization */
-    std::vector<Npc*> enemyPtrs;
-    Npc * closEnmy = nullptr;
-    if(bountytower::towerlingassault)
-    {
-        for (auto &enemys : container)
-        {
-            if( enemys.factionPtr != nullptr && npc.factionPtr != nullptr && enemys.faction != npc.faction)
-            {
-                for (auto &i : npc.factionPtr->factRelations)
-                {
-                    if(enemys.faction == i.faction && i.appeal < 1000 && enemys.alive)
-                    {
-                        //std::cout << "ZE ENEMY HAS BEEN SPOTTED AT " << enemys.xpos << "/" << enemys.ypos << std::endl;
-                        enemyPtrs.push_back(&enemys);
-                    }
-                }
-            }
-        }
-        for (auto &enemy : enemyPtrs)
-        {
-            //shapes.createLine(npc.xpos,npc.ypos,enemy->xpos,enemy->ypos,2,sf::Color::Yellow);
-            if(closEnmy == nullptr)
-                closEnmy = enemy;
-            else if(math::closeish(npc.xpos,npc.ypos,enemy->xpos,enemy->ypos) <
-                    math::closeish(npc.xpos,npc.ypos,closEnmy->xpos,closEnmy->ypos)
-                    )
-            {
-                closEnmy = enemy;
-            }
 
-        }
-
-        if(closEnmy != nullptr && inputState.key[Key::LAlt] && true == false)
-        {
-            shapes.createLine(npc.xpos,npc.ypos,closEnmy->xpos,closEnmy->ypos,4,sf::Color::Red);
-            //hasPath = true;
-            //endPos = Vec3(closEnmy->xpos/GRID_SIZE,closEnmy->ypos/GRID_SIZE,closEnmy->zpos/GRID_SIZE);
-        }
-
-    }
+    Npc * closEnmy = critterDetectNearestEnemy(npc,container);
 
     if(closEnmy != nullptr)
         npc.desiredViewAngle = closEnmy->getPos2d();
