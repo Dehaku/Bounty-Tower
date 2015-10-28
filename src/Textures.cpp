@@ -146,7 +146,6 @@ void AnimationManager::init()
                 AniL.animationImage.addFrame(sf::IntRect( 0, 60, 60, 60));
                 AniL.animationImage.addFrame(sf::IntRect(120, 60, 60, 60));
                 animationmanager.animations.push_back(AniL);
-                //AnimatedSprite.
 
             }
         }
@@ -154,7 +153,6 @@ void AnimationManager::init()
 
     for(auto &Ani : animationmanager.animations)
     {
-        //Ani.animationImage.setSpriteSheet(Ani.texture);
         Ani.animationImage.setSpriteSheet(texturemanager.getTexture(Ani.texture));
 
         if(Ani.name.find("LeftWalk") != Ani.name.npos)

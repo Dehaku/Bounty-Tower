@@ -4985,52 +4985,74 @@ void drawEquippedItems(Npc &npc)
 void Npc::setupAnimations()
 {
     sf::Texture * spriteSheet = &texturemanager.getTexture("SpriteSheet"+race+".png");
-    aniLeftWalk.setSpriteSheet(*spriteSheet);
-    aniDownWalk.setSpriteSheet(*spriteSheet);
-    aniRightWalk.setSpriteSheet(*spriteSheet);
-    aniUpWalk.setSpriteSheet(*spriteSheet);
+    bodyAnimation.aniLeftWalk.setSpriteSheet(*spriteSheet);
+    bodyAnimation.aniDownWalk.setSpriteSheet(*spriteSheet);
+    bodyAnimation.aniRightWalk.setSpriteSheet(*spriteSheet);
+    bodyAnimation.aniUpWalk.setSpriteSheet(*spriteSheet);
 
-    aniDownWalk.addFrame(sf::IntRect( 0, 0, 60, 60));
-    aniDownWalk.addFrame(sf::IntRect(60, 0, 60, 60));
-    aniDownWalk.addFrame(sf::IntRect( 0, 0, 60, 60));
-    aniDownWalk.addFrame(sf::IntRect(120, 0, 60, 60));
+    bodyAnimation.aniDownWalk.addFrame(sf::IntRect( 0, 0, 60, 60));
+    bodyAnimation.aniDownWalk.addFrame(sf::IntRect(60, 0, 60, 60));
+    bodyAnimation.aniDownWalk.addFrame(sf::IntRect( 0, 0, 60, 60));
+    bodyAnimation.aniDownWalk.addFrame(sf::IntRect(120, 0, 60, 60));
 
-    spriteDownWalk.setAnimation(aniDownWalk);
-    spriteDownWalk.setOrigin(30,30);
+    bodyAnimation.spriteDownWalk.setAnimation(bodyAnimation.aniDownWalk);
+    bodyAnimation.spriteDownWalk.setOrigin(30,30);
 
-    aniRightWalk.addFrame(sf::IntRect( 0, 60, 60, 60));
-    aniRightWalk.addFrame(sf::IntRect(60, 60, 60, 60));
-    aniRightWalk.addFrame(sf::IntRect( 0, 60, 60, 60));
-    aniRightWalk.addFrame(sf::IntRect(120, 60, 60, 60));
-    spriteRightWalk.setAnimation(aniRightWalk);
-    spriteRightWalk.setOrigin(30,30);
+    bodyAnimation.aniRightWalk.addFrame(sf::IntRect( 0, 60, 60, 60));
+    bodyAnimation.aniRightWalk.addFrame(sf::IntRect(60, 60, 60, 60));
+    bodyAnimation.aniRightWalk.addFrame(sf::IntRect( 0, 60, 60, 60));
+    bodyAnimation.aniRightWalk.addFrame(sf::IntRect(120, 60, 60, 60));
+    bodyAnimation.spriteRightWalk.setAnimation(bodyAnimation.aniRightWalk);
+    bodyAnimation.spriteRightWalk.setOrigin(30,30);
 
-    aniUpWalk.addFrame(sf::IntRect( 0, 120, 60, 60));
-    aniUpWalk.addFrame(sf::IntRect(60, 120, 60, 60));
-    aniUpWalk.addFrame(sf::IntRect( 0, 120, 60, 60));
-    aniUpWalk.addFrame(sf::IntRect(120, 120, 60, 60));
-    spriteUpWalk.setAnimation(aniUpWalk);
-    spriteUpWalk.setOrigin(30,30);
+    bodyAnimation.aniUpWalk.addFrame(sf::IntRect( 0, 120, 60, 60));
+    bodyAnimation.aniUpWalk.addFrame(sf::IntRect(60, 120, 60, 60));
+    bodyAnimation.aniUpWalk.addFrame(sf::IntRect( 0, 120, 60, 60));
+    bodyAnimation.aniUpWalk.addFrame(sf::IntRect(120, 120, 60, 60));
+    bodyAnimation.spriteUpWalk.setAnimation(bodyAnimation.aniUpWalk);
+    bodyAnimation.spriteUpWalk.setOrigin(30,30);
 
-    aniLeftWalk.addFrame(sf::IntRect( 0, 60, 60, 60));
-    aniLeftWalk.addFrame(sf::IntRect(60, 60, 60, 60));
-    aniLeftWalk.addFrame(sf::IntRect( 0, 60, 60, 60));
-    aniLeftWalk.addFrame(sf::IntRect(120, 60, 60, 60));
-    spriteLeftWalk.setAnimation(aniLeftWalk);
-    spriteLeftWalk.setOrigin(30,30);
-    spriteLeftWalk.scale(-1,1);
+    bodyAnimation.aniLeftWalk.addFrame(sf::IntRect( 0, 60, 60, 60));
+    bodyAnimation.aniLeftWalk.addFrame(sf::IntRect(60, 60, 60, 60));
+    bodyAnimation.aniLeftWalk.addFrame(sf::IntRect( 0, 60, 60, 60));
+    bodyAnimation.aniLeftWalk.addFrame(sf::IntRect(120, 60, 60, 60));
+    bodyAnimation.spriteLeftWalk.setAnimation(bodyAnimation.aniLeftWalk);
+    bodyAnimation.spriteLeftWalk.setOrigin(30,30);
+    bodyAnimation.spriteLeftWalk.scale(-1,1);
 
     if(race.find("Noirves") != race.npos)
     {
-        spriteDownWalk.scale(0.75,0.75);
-        spriteLeftWalk.scale(0.75,0.75);
-        spriteRightWalk.scale(0.75,0.75);
-        spriteUpWalk.scale(0.75,0.75);
+        bodyAnimation.spriteDownWalk.scale(0.75,0.75);
+        bodyAnimation.spriteLeftWalk.scale(0.75,0.75);
+        bodyAnimation.spriteRightWalk.scale(0.75,0.75);
+        bodyAnimation.spriteUpWalk.scale(0.75,0.75);
     }
 }
 
+AnimationHolder * aniHold = nullptr;
+
 void drawNPCs(std::list<Npc> &container)
 {
+    if(inputState.key[Key::M])
+        for(int i = 0; i != animationmanager.animations.size(); i++)
+        {
+            if(animationmanager.animations[i].name.find("BTHuman") != animationmanager.animations[i].name.npos)
+            {
+                aniHold = &animationmanager.animations[i];
+                std::cout << "Found one!" << animationmanager.animations[i].name << " \n";
+            }
+
+        }
+
+
+    if(inputState.lmb && aniHold != nullptr)
+    {
+        std::cout << "Name: " << aniHold->name << std::endl;
+        aniHold->animation.setPosition(gvars::mousePos);
+        window.draw(aniHold->animation);
+    }
+
+
     if(inputState.key[Key::I].time == 1)
     {
         for(auto &ani : animationmanager.animations)
@@ -5092,22 +5114,41 @@ void drawNPCs(std::list<Npc> &container)
             if(inbetween(-91,1,math::constrainAngle(aniAngle+angMod)))
                 Direction = "DownWalk";
 
-            if(npc.isSquaddie)
-            {
+            bool performanceLowDueToAnimationIteration = false;
+
+            if(performanceLowDueToAnimationIteration && npc.isSquaddie)
+            { // TODO: This is for when adding in more clothing and races bloats the animiation loop too much.
+
                 if(inputState.key[Key::H])
-                    npc.aniDownWalk.setSpriteSheet(texturemanager.getTexture("SpriteSheetBTNoirves.png"));
-                else
-                    npc.aniDownWalk.setSpriteSheet(texturemanager.getTexture("SpriteSheetBTHuman.png"));
+                {
+                    npc.bodyAnimation.aniDownWalk.setSpriteSheet(texturemanager.getTexture("SpriteSheetBTNoirves.png"));
+                    npc.bodyAnimation.spriteDownWalk.setAnimation(npc.bodyAnimation.aniDownWalk);
+                }
 
-                //npc.spriteDownWalk.setAnimation(npc.aniDownWalk);
+                else if(inputState.key[Key::LShift])
+                {
+                    npc.bodyAnimation.aniDownWalk.setSpriteSheet(texturemanager.getTexture("SpriteSheetBTHuman.png"));
+                    npc.bodyAnimation.spriteDownWalk.setAnimation(npc.bodyAnimation.aniDownWalk);
+                }
 
-                npc.spriteDownWalk.update(sf::milliseconds(10));
-                npc.spriteDownWalk.setPosition(npc.getPos2d());
-                window.draw(npc.spriteDownWalk, &shadermanager.shockwaveShader);
+                AnimatedSprite * spriteWalk = nullptr;
+
+                if(Direction == "LeftWalk")
+                    spriteWalk = &npc.bodyAnimation.spriteLeftWalk;
+                else if(Direction == "DownWalk")
+                    spriteWalk = &npc.bodyAnimation.spriteDownWalk;
+                else if(Direction == "RightWalk")
+                    spriteWalk = &npc.bodyAnimation.spriteRightWalk;
+                else if(Direction == "UpWalk")
+                    spriteWalk = &npc.bodyAnimation.spriteUpWalk;
+
+
+                spriteWalk->update(sf::milliseconds(10));
+                spriteWalk->setPosition(npc.getPos2d());
+                window.draw(*spriteWalk, &shadermanager.shockwaveShader);
             }
 
-
-            if(npc.alive && !npc.isSquaddie)
+            if(npc.alive)
                 for(auto &ani : animationmanager.animations)
             {
                 bool drawMe = false;
@@ -5148,8 +5189,6 @@ void drawNPCs(std::list<Npc> &container)
             {
                 npc.drawImg();
             }
-
-
             if(npc.name == "BTTurret")
                 npc.drawImg();
 

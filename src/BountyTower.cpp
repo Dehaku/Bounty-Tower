@@ -1937,6 +1937,7 @@ void corpsesBleed()
 
 }
 
+
 void bountyTowerLoop()
 { // Game Loop
     hotkeySquaddieSelect();
@@ -1947,6 +1948,7 @@ void bountyTowerLoop()
     corpsesBleed();
 
     makeBlood();
+
 
 
     if(inputState.key[Key::End].time == 1)

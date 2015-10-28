@@ -94,12 +94,9 @@ struct partGrasp
     }
 };
 
-class Npc
+class directionAnimation
 {
 public:
-    // TODO: Add racial defaults for attributes and skill growth,
-    // Will allow interesting mechanics and fix spawning variety.
-    sf::Sprite img;
     Animation aniLeftWalk;
     Animation aniDownWalk;
     Animation aniRightWalk;
@@ -108,6 +105,18 @@ public:
     AnimatedSprite spriteDownWalk;
     AnimatedSprite spriteRightWalk;
     AnimatedSprite spriteUpWalk;
+};
+
+class Npc
+{
+public:
+    // TODO: Add racial defaults for attributes and skill growth,
+    // Will allow interesting mechanics and fix spawning variety.
+    sf::Sprite img;
+    directionAnimation bodyAnimation;
+    directionAnimation hatAnimation;
+    directionAnimation gloveAnimation;
+    directionAnimation bootAnimation;
 
     void setupAnimations();
 
