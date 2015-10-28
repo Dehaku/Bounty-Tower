@@ -2908,6 +2908,19 @@ std::string Npc::takeDamage(Npc *attacker, Item *weapon, float amount, critScore
         }
     }
 
+    {// Damage Popup Code
+        Shape text;
+        text.shape = text.Text;
+        text.duration = 60;
+        text.fades = true;
+        text.maincolor = sf::Color::Red;
+        text.size = 20;
+        sf::Vector2f textPos(xpos-15,(ypos-50)-random(0,50));
+        text.startPos = textPos;
+        text.text = "-"+str(static_cast<int>(amount));
+        shapes.shapes.push_back(text);
+    }
+
     if(modhealth(-amount) == false) // modhealth returns false on death.
         onDeath(attacker, weapon, amount, crit);
 

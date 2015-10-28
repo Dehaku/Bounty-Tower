@@ -314,6 +314,7 @@ void Shapes::drawShapes()
             shapeText.setColor(shape.maincolor);
             shapeText.setFont(gvars::defaultFont);
             shapeText.setPosition(shape.startPos);
+            shapeText.setStyle(shapeText.Bold);
             //shapeText.setOrigin(halfPos)
             shapeText.setRotation(shape.rotation);
             //shapeText.setScale()
