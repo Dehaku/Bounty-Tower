@@ -30,13 +30,8 @@
 #include <SFML/Audio.hpp>
 #include "AnimatedSprite.hpp"
 
-#define USE_PATHER
-
-#ifdef USE_PATHER
-
 #include "micropather.h"
 using namespace micropather;
-#endif
 
 using std::abs;
 
@@ -133,9 +128,7 @@ public:
 cTile grid[worldSizeX][worldSizeY][worldSizeZ];
 
 class worldclass
-#ifdef USE_PATHER
     : public Graph
-#endif
 {
 private:
     worldclass(const worldclass &);
@@ -196,7 +189,6 @@ public:
         }
     }
 
-#ifdef USE_PATHER
 
     MPVector<void *> microPath;
     MicroPather *pather;
@@ -275,7 +267,6 @@ public:
         int result = 0;
         if (Passable(Tar.x, Tar.y, Tar.z) == 1)
         {
-#ifdef USE_PATHER
             float totalCost;
 
             result = pather->Solve(XYZToNode(Ori.x, Ori.y, Ori.z),
@@ -293,7 +284,6 @@ public:
 
 //printf( "Pather returned %d\n", result );
 
-#endif
         }
         return result;
     }
@@ -443,14 +433,11 @@ public:
         printf("(%d,%d,%d)", x, y, z);
     }
 
-#endif
 };
 worldclass world;
 
 class PathingController
-#ifdef USE_PATHER
     : public Graph
-#endif
 { // This is the one actually being used.
 private:
     PathingController(const PathingController &);
@@ -489,7 +476,6 @@ public:
         return 0;
     }
 
-#ifdef USE_PATHER
 
     MPVector<void *> microPath;
     MicroPather *pather;
@@ -592,7 +578,6 @@ public:
         int result = 0;
         if (Passable(Tar.x, Tar.y, Tar.z) == 1)
         {
-#ifdef USE_PATHER
             float totalCost;
 
             result = pather->Solve(XYZToNode(Ori.x, Ori.y, Ori.z),
@@ -615,7 +600,6 @@ public:
 
 
 
-#endif
         }
         return result;
     }
@@ -804,7 +788,6 @@ public:
         printf("(%d,%d,%d)", x, y, z);
     }
 
-#endif
 };
 PathingController pathCon;
 
