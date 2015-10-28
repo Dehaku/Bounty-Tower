@@ -16,11 +16,13 @@ public:
     {
         Circle,
         Square,
-        Line
+        Line,
+        Text
     };
 
     int shape;
     sf::Texture * texture;
+    std::string text;
 
     sf::Vector2f startPos;
     sf::Vector2f endPos;

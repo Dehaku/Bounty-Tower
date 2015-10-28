@@ -1964,6 +1964,19 @@ void bountyTowerLoop()
         }
     }
 
+    if(inputState.key[Key::LShift] && inputState.lmbTime == 1)
+    {
+        Shape text;
+        text.shape = text.Text;
+        text.duration = 60;
+        text.fades = true;
+        text.maincolor = sf::Color::Red;
+        text.size = 20;
+        text.startPos = gvars::mousePos;
+        text.text = "-"+str(random(0,30));
+        shapes.shapes.push_back(text);
+    }
+
     if(inputState.key[Key::End].time == 1)
         printTile();
 

@@ -300,6 +300,34 @@ void Shapes::drawShapes()
             else
                 window.draw(rectangle);
         }
+        else if(shape.shape == shape.Text)
+        {
+            if(shape.fades)
+            {
+                int alpha = 10 * shape.duration;
+                shape.maincolor.a = math::clamp(alpha,0,255);
+                shape.seccolor.a = shape.maincolor.a;
+            }
+
+            sf::Text shapeText;
+            shapeText.setCharacterSize(shape.size);
+            shapeText.setColor(shape.maincolor);
+            shapeText.setFont(gvars::defaultFont);
+            shapeText.setPosition(shape.startPos);
+            //shapeText.setOrigin(halfPos)
+            shapeText.setRotation(shape.rotation);
+            //shapeText.setScale()
+            shapeText.setString(shape.text);
+
+
+            if(shape.drawView == &gvars::view1)
+            {
+                if(onScreen(shape.startPos) || onScreen(shape.endPos))
+                    window.draw(shapeText);
+            }
+            else
+                window.draw(shapeText);
+        }
 
         window.setView(oldView);
         shape.duration--;
