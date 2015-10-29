@@ -2231,7 +2231,7 @@ void Npc::momMove()
 
         momentum.x = 0;
         momentum.y = 0;
-        if(alive && momSpeed > 30)
+        if(alive && momSpeed > 50)
         {
             if(racialAbility == "Rock Steady")
                 chatBox.addChat(name + " slammed into the wall, but is immune!",sf::Color::White);
@@ -4650,7 +4650,7 @@ void drawSelectedCritterHUD()
                     buttPos.x += 20;
                     int unloadButt = createImageButton(buttPos,texturemanager.getTexture("ArrowButton.png"),"",180,gvars::hudView);
 
-                    if(imageButtonHovered(reloadButt))
+                    if(slotItem->user->isSquaddie && imageButtonHovered(reloadButt))
                     {
                         textList.createText(gvars::mousePos.x+10,gvars::mousePos.y,10,sf::Color::White,"Reload");
                         gvars::hovering = true;
@@ -4658,7 +4658,7 @@ void drawSelectedCritterHUD()
                             checkAmmo(*slotItem->user, *slotItem->user->container, slotItem, true);
                     }
 
-                    if(imageButtonHovered(unloadButt))
+                    if(slotItem->user->isSquaddie && imageButtonHovered(unloadButt))
                     {
                         textList.createText(gvars::mousePos.x+10,gvars::mousePos.y,10,sf::Color::White,"Unload");
                         gvars::hovering = true;

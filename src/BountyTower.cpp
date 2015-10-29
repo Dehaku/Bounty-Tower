@@ -441,7 +441,7 @@ void towerTransition()
         npc.needsPath = false;
         npc.momentum = sf::Vector2f(0,0);
 
-        if(npc.faction != conFact->name)
+        if(!npc.isSquaddie)
             npc.toDelete = true;
     }
 
@@ -2086,8 +2086,8 @@ void bountyTowerLoop()
         towerMenu();
     if(!selectedNPCs.empty() && inputState.key[Key::I].time == 1)
     {
-        //TODO: Add a check of isSquaddie to prevent turrets from being modified/skilled.
-        squaddieMenu(*selectedNPCs[0]);
+        if(selectedNPCs[0]->isSquaddie)
+            squaddieMenu(*selectedNPCs[0]);
     }
 
 

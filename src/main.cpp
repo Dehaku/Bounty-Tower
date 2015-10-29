@@ -1903,6 +1903,9 @@ void displayMouseItem()
 
 void hoverItemHUD()
 {
+    if(!selectedNPCs.empty() && selectedNPCs[0]->isSquaddie == false)
+        return;
+
     if(mouseItem != nullptr)
         if(selectedNPCs.empty() || selectedNPCs[0]->id != mouseItem->user->id)
             mouseItem = nullptr;
