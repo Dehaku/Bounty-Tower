@@ -829,6 +829,9 @@ void renderMerchantMenu(baseMenu &menu)
         std::string stats = "Dam: " + str(item.mindam) + "/" + str(item.maxdam);
         if(item.type == 1 || item.type == 2 || item.type == 23)
             stats.append(", AtkDelay: " + str(static_cast<int>(item.activateratemax / item.activaterategrowth)));
+        if(item.type == 3 || item.type == 4 || item.type == 5)
+            stats.append(", Knockback: " + str(static_cast<int>(item.getKnockback())));
+
         stats.append("\nRange:" + str(item.range));
 
 
