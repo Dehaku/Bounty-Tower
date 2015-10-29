@@ -4649,6 +4649,39 @@ void detectLineGrid( float x1, float y1, float x2, float y2)
 void pauseMenu()
 {
 
+    if(inputState.key[Key::F5].time == 1)
+    {
+        window.create(sf::VideoMode(800,640,32), randomWindowName());
+        window.setFramerateLimit(60);
+    }
+
+
+    if(inputState.key[Key::F6].time == 1)
+    {
+        window.create(sf::VideoMode(1024,720,32), randomWindowName());
+        window.setFramerateLimit(60);
+    }
+    int x = 1280;
+    int y = 720;
+
+    if(inputState.key[Key::F7].time == 1)
+    {
+        window.create(sf::VideoMode(x,y,32), randomWindowName());
+        window.setFramerateLimit(60);
+    }
+
+
+    if(inputState.key[Key::F8].time == 1)
+    {
+        window.create(sf::VideoMode(1280,1024,32), randomWindowName());
+        window.setFramerateLimit(60);
+    }
+
+    if(inputState.key[Key::F4].time == 1)
+        std::cout << "Resolution: " << window.getSize().x << "/" << window.getSize().y << std::endl;
+
+
+
     if(inputState.key[Key::P].time == 1)
     {
         bool gamePaused = true;

@@ -1,7 +1,45 @@
 #include "BountyTower.h"
 
 
+class ResolutionManager
+{
+public:
+    int x;
+    int y;
+    int newX;
+    int newY;
+    std::vector<sf::Vector2i> resolutions;
+    int currentRes;
+    ResolutionManager()
+    {
+        x = 1280;
+        y = 720;
+        newX = x;
+        newY = y;
+        currentRes = 2;
 
+        /*
+        resolutions.push_back(sf::Vector2i(640,480));
+        resolutions.push_back(sf::Vector2i(800,640));
+        resolutions.push_back(sf::Vector2i(1024,720));
+        resolutions.push_back(sf::Vector2i(1280,720));
+        resolutions.push_back(sf::Vector2i(1280,1024));
+        resolutions.push_back(sf::Vector2i(1366,768));
+        resolutions.push_back(sf::Vector2i(1600,900));
+        */
+
+        std::vector<sf::VideoMode> videomodes;
+        videomodes = sf::VideoMode::getFullscreenModes();
+
+        for(auto &vM : videomodes)
+        {
+            std::cout << "Possible Resolution: " << vM.width << "/" << vM.height << std::endl;
+            resolutions.push_back(sf::Vector2i(vM.width,vM.height));
+        }
+
+    }
+};
+ResolutionManager resolution;
 
 std::vector<Npc*> Squaddies;
 std::list<Npc> leftBehind;
@@ -681,7 +719,7 @@ void renderSquaddieMenu(baseMenu &menu)
 
     shapes.createSquare(100,100,RESOLUTION.x-100,RESOLUTION.y-100,sf::Color(sf::Color(150,150,0)),5,sf::Color::White,&gvars::hudView);
     //Close Button
-    int exitButt = createImageButton(sf::Vector2f(RESOLUTION.x-100,100),texturemanager.getTexture("ExitButton.png"),"",0,window.getDefaultView());
+    int exitButt = createImageButton(sf::Vector2f(RESOLUTION.x-100,100),texturemanager.getTexture("ExitButton.png"),"",0,gvars::hudView);
     if(imageButtonClicked(exitButt))
         menu.toDelete = true;
 
@@ -797,7 +835,7 @@ void renderMerchantMenu(baseMenu &menu)
 {
     shapes.createSquare(100,100,RESOLUTION.x-100,RESOLUTION.y-100,sf::Color(sf::Color(150,150,0)),5,sf::Color::White,&gvars::hudView);
     //Close Button
-    int exitButt = createImageButton(sf::Vector2f(RESOLUTION.x-100,100),texturemanager.getTexture("ExitButton.png"),"",0,window.getDefaultView());
+    int exitButt = createImageButton(sf::Vector2f(RESOLUTION.x-100,100),texturemanager.getTexture("ExitButton.png"),"",0,gvars::hudView);
     if(imageButtonClicked(exitButt))
         menu.toDelete = true;
 
@@ -901,7 +939,7 @@ void renderRecruiterMenu(baseMenu &menu)
 {
     shapes.createSquare(100,100,RESOLUTION.x-100,RESOLUTION.y-100,sf::Color(sf::Color(150,150,0)),5,sf::Color::White,&gvars::hudView);
     //Close Button
-    int exitButt = createImageButton(sf::Vector2f(RESOLUTION.x-100,100),texturemanager.getTexture("ExitButton.png"),"",0,window.getDefaultView());
+    int exitButt = createImageButton(sf::Vector2f(RESOLUTION.x-100,100),texturemanager.getTexture("ExitButton.png"),"",0,gvars::hudView);
     if(imageButtonClicked(exitButt))
         menu.toDelete = true;
 
@@ -1015,7 +1053,7 @@ void renderTowerMenu(baseMenu &menu)
 {
     shapes.createSquare(100,100,RESOLUTION.x-100,RESOLUTION.y-100,sf::Color(sf::Color(150,150,0)),5,sf::Color::White,&gvars::hudView);
     //Close Button
-    int exitButt = createImageButton(sf::Vector2f(RESOLUTION.x-100,100),texturemanager.getTexture("ExitButton.png"),"",0,window.getDefaultView());
+    int exitButt = createImageButton(sf::Vector2f(RESOLUTION.x-100,100),texturemanager.getTexture("ExitButton.png"),"",0,gvars::hudView);
     if(imageButtonClicked(exitButt))
         menu.toDelete = true;
 
@@ -1103,6 +1141,8 @@ void renderTowerMenu(baseMenu &menu)
 
 }
 
+
+
 void renderEscapeMenu(baseMenu &menu)
 {
     shapes.createSquare(100,100,RESOLUTION.x-100,RESOLUTION.y-100,sf::Color(sf::Color(150,150,0)),5,sf::Color::White,&gvars::hudView);
@@ -1118,7 +1158,7 @@ void renderEscapeMenu(baseMenu &menu)
     buttonPos.y += 15;
     int decreaseSoundButt = createImageButton(buttonPos,texturemanager.getTexture("ArrowButton.png"),"",-90,gvars::hudView);
     buttonPos.x += 30;
-    int IncreaseSoundButt = createImageButton(buttonPos,texturemanager.getTexture("ArrowButton.png"),"",90,gvars::hudView);
+    int increaseSoundButt = createImageButton(buttonPos,texturemanager.getTexture("ArrowButton.png"),"",90,gvars::hudView);
 
 
 
@@ -1129,7 +1169,18 @@ void renderEscapeMenu(baseMenu &menu)
     buttonPos.y += 15;
     int decreaseMusicButt = createImageButton(buttonPos,texturemanager.getTexture("ArrowButton.png"),"",-90,gvars::hudView);
     buttonPos.x += 30;
-    int IncreaseMusicButt = createImageButton(buttonPos,texturemanager.getTexture("ArrowButton.png"),"",90,gvars::hudView);
+    int increaseMusicButt = createImageButton(buttonPos,texturemanager.getTexture("ArrowButton.png"),"",90,gvars::hudView);
+
+    textPos.y += RESOLUTION.y/8;
+    buttonPos = textPos;
+    textList.createText(textPos,10,sf::Color::White,"Resolution: " + str(resolution.resolutions[resolution.currentRes].x)+"/"+str(resolution.resolutions[resolution.currentRes].y),gvars::hudView);
+    buttonPos.x += 90;
+    buttonPos.y += 20;
+    int decreaseResolution = createImageButton(buttonPos,texturemanager.getTexture("ArrowButton.png"),"",-90,gvars::hudView);
+    buttonPos.x += 30;
+    int increaseResolution = createImageButton(buttonPos,texturemanager.getTexture("ArrowButton.png"),"",90,gvars::hudView);
+    buttonPos.x += 30;
+    int applyResolution = createImageButton(buttonPos,texturemanager.getTexture("ArrowButton.png"),"",180,gvars::hudView);
 
 
     sf::Vector2f exitPos((RESOLUTION.x/2), RESOLUTION.y-150);
@@ -1138,10 +1189,30 @@ void renderEscapeMenu(baseMenu &menu)
     textList.createText(exitPos,9,sf::Color::White,"Exit Game",gvars::hudView);
 
 
+    if(menu.age > 30 && imageButtonHovered(decreaseResolution) && (inputState.lmbTime == 1 || inputState.lmbTime > 20))
+        if(resolution.currentRes > 0)
+            resolution.currentRes--;
+    if(menu.age > 30 && imageButtonHovered(increaseResolution) && (inputState.lmbTime == 1 || inputState.lmbTime > 20))
+        if(resolution.currentRes < resolution.resolutions.size()-1)
+            resolution.currentRes++;
+
+    if(menu.age > 30 && imageButtonHovered(applyResolution))
+    {
+        textList.createText(gvars::mousePos,9,sf::Color::White,"Apply the Resolution!",gvars::view1);
+
+        if(inputState.lmbTime == 1)
+        {
+            window.create(sf::VideoMode(resolution.resolutions[resolution.currentRes].x,resolution.resolutions[resolution.currentRes].y,32), randomWindowName());
+            //,sf::Style::Fullscreen
+            window.setFramerateLimit(60);
+        }
+
+    }
+
     if(menu.age > 30 && imageButtonHovered(decreaseSoundButt) && (inputState.lmbTime == 1 || inputState.lmbTime > 20))
         gvars::soundVolume = math::clamp(gvars::soundVolume-1,0,100);
 
-    if(menu.age > 30 && imageButtonHovered(IncreaseSoundButt) && (inputState.lmbTime == 1 || inputState.lmbTime > 20))
+    if(menu.age > 30 && imageButtonHovered(increaseSoundButt) && (inputState.lmbTime == 1 || inputState.lmbTime > 20))
         gvars::soundVolume = math::clamp(gvars::soundVolume+1,0,100);
 
     if(menu.age > 30 && imageButtonHovered(decreaseMusicButt) && (inputState.lmbTime == 1 || inputState.lmbTime > 20))
@@ -1151,7 +1222,7 @@ void renderEscapeMenu(baseMenu &menu)
     }
 
 
-    if(menu.age > 30 && imageButtonHovered(IncreaseMusicButt) && (inputState.lmbTime == 1 || inputState.lmbTime > 20))
+    if(menu.age > 30 && imageButtonHovered(increaseMusicButt) && (inputState.lmbTime == 1 || inputState.lmbTime > 20))
     {
         gvars::musicVolume = math::clamp(gvars::musicVolume+1,0,100);
         setMusicVolume();
