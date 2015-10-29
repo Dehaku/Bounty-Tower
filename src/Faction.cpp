@@ -4632,7 +4632,7 @@ void drawSelectedCritterHUD()
                 int amount = slotItem->amount;
                 std::string outPut = slotItem->name;
                 if(amount > 1)
-                    outPut.append(": " + std::to_string(amount));
+                    outPut.append("\n" + std::to_string(amount));
 
                 if(slotItem->type == 2)
                 { // Checking and display ammo count/max.
