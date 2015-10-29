@@ -716,7 +716,7 @@ void renderSquaddieMenu(baseMenu &menu)
     textList.createText(sf::Vector2f(636,102),15,sf::Color::White,"Inventory",gvars::hudView);
     shapes.createSquare(invPos.x-40,invPos.y-10,invPos.x+100,invPos.y+(screen.y()/2)+120,sf::Color::Transparent,2,sf::Color::Black,&gvars::hudView);
 
-    int x = 0, y = 0;
+    float x = 0, y = 0;
     bool offSet = false;
     for(auto &item : npc->inventory)
     {
@@ -790,7 +790,8 @@ void renderSquaddieMenu(baseMenu &menu)
 
 
 
-        y++;
+        y += 1.3;
+
     }
 
 }
@@ -1799,6 +1800,9 @@ void checkDoors()
 
 void layHints()
 {
+    if(!menus.empty())
+        return;
+
     if(bountytower::currentTower != nullptr)
     {
         if(bountytower::currentTower->name == "FantasyModern")
@@ -1835,7 +1839,7 @@ void layHints()
             if(menus.empty())
             {
                 textList.createText(1920,3120,15,gvars::cycleRed,"Inventory: Press I with a squaddie selected to see their stats, skills, and inventory. \n"
-                                "Range Check: Press and hold Alt with squaddies selected to see their attack ranges. \nRed for guns,  Green for magic, Blue for melee.\n"
+                                "Range Check: Press and hold Alt with squaddies selected to see their held item's attack ranges. \nRed for guns,  Green for magic, Blue for melee.\n"
                                 "Squaddies have two hand slots, and can dual wield any two items! \n"
                                 "You can manage their hand slots with a squaddie selected at the bottom of the screen.");
                 textList.createText(2220,2940,15,gvars::cycleRed,"Right Click to pickup items with a selected squaddie(Must be near item.) \n"
