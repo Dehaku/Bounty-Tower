@@ -5,7 +5,7 @@
 [name:Fruit Tree][Pickupable:false][image:FruitTree.png][type:12][baseid:7771777][produces:true][prodrate:600][produce:Food]
 [name:Sword][value:50][Pickupable:true][type:1][image:BTSword.png][baseid:5515512][mindam:5][maxdam:30][range:75][IsWeapon:true][activaterategrowth:2][activateratemax:60][Size:1][knockback:10]
 [name:Baton][value:15][Pickupable:true][type:1][image:Clubbing.png][baseid:5575512][mindam:5][maxdam:30][range:40][IsWeapon:true][activaterategrowth:2][activateratemax:30][Size:1][knockback:10]
-[name:Gun][value:100][Pickupable:true][Spread:5][type:2][ammotype:3][MaxClip:30][image:Thirteenth.png][baseid:5715712][mindam:5][maxdam:30][range:100][IsWeapon:true][activaterategrowth:2][activateratemax:30][Size:1]
+[name:Gun][value:100][Pickupable:true][Spread:5][type:2][ammotype:3][MaxClip:30][image:SimplisticRifle.png][baseid:5715712][mindam:5][maxdam:30][range:100][IsWeapon:true][activaterategrowth:2][activateratemax:30][Size:1]
 [name:Sniper][value:200][Pickupable:true][type:2][ammotype:3][Spread:1][MaxClip:5][image:BoltBeam.png][baseid:9715702][mindam:30][maxdam:200][range:500][IsWeapon:true][activaterategrowth:1][activateratemax:50][Size:1]
 [name:Minigun][value:300][Pickupable:true][Spread:5][type:2][ammotype:3][MaxClip:200][image:Minigun.png][baseid:5572192][mindam:1][maxdam:20][range:50][IsWeapon:true][activaterategrowth:10][activateratemax:30][Size:1]
 [name:DeathCannon][value:1000][Pickupable:true][type:2][ammotype:3][Spread:1][MaxClip:1][image:DeathCannon.png][baseid:5872122][mindam:100][maxdam:200][range:1000][IsWeapon:true][activaterategrowth:1][activateratemax:200][Size:1]

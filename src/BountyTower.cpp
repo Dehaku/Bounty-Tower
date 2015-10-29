@@ -685,6 +685,9 @@ void renderSquaddieMenu(baseMenu &menu)
     if(imageButtonClicked(exitButt))
         menu.toDelete = true;
 
+    if(menu.age > 30 && inputState.key[Key::I])
+        menu.toDelete = true;
+
     Npc *npc = menu.npc;
     textList.createText(sf::Vector2f(105,100),20,sf::Color(100,100,100),"Name: " + npc->name,gvars::hudView);
 
