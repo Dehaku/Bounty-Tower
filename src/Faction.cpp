@@ -4597,7 +4597,7 @@ void drawSelectedCritterHUD()
     if(!selectedNPCs.empty() && bountytower::bountytower)
     {
         // restore the default view
-        window.setView(window.getDefaultView());
+        window.setView(gvars::hudView);
 
         sf::Sprite CIH;
         sf::Texture Tex;

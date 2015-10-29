@@ -1908,8 +1908,17 @@ void hoverItemHUD()
             mouseItem = nullptr;
 
     window.setView(gvars::hudView);
-    sf::Vector2i pixelPosi = sf::Mouse::getPosition(window);
+
+
+
+    //sf::Vector2i pixelPosi = sf::Mouse::getPosition(window);
+    sf::Vector2f pixelPosi = window.mapPixelToCoords(sf::Mouse::getPosition(window), gvars::hudView);
     sf::Vector2f pixelPos(pixelPosi.x,pixelPosi.y);
+
+    if(inputState.key[Key::Home])
+    {
+        textList.createText(sf::Vector2f(gvars::mousePos.x,gvars::mousePos.y+20),10,sf::Color::White,"defaultPos:" + str(pixelPosi.x) + "/" + str(pixelPosi.y));
+    }
 
     if(!selectedNPCs.empty() && bountytower::bountytower)
         for (int i = 0; i != 20; i++)
@@ -4392,6 +4401,7 @@ void beamTestLoop()
 
 void newItemstuffs()
 {
+    return;
     std::cout << "Kaboom! \n";
     makeItems(itemlist,1);
     printItems(itemlist);
