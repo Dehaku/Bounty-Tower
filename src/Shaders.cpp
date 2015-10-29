@@ -25,8 +25,8 @@ void ShaderManager::shaderLoop()
     shockwaveShader.setParameter("in_ShockParams", shockPower, 0.8f, shockThickness);
     //10 instead of 20 for a weak blast, 30 looks like it's ripping tiles, any more and it's broken.
     // 0.05 instead of 0.15, is a much smaller wave, may have uses, but I like it big.
-    shockwaveShader.setParameter("in_WindowWidth", RESOLUTION.y);
-    shockwaveShader.setParameter("in_WindowHeight", RESOLUTION.y);
+    shockwaveShader.setParameter("in_WindowWidth", screen.y());
+    shockwaveShader.setParameter("in_WindowHeight", screen.y());
 
 }
 

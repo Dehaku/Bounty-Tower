@@ -184,3 +184,14 @@ sf::Font defaultFont;
 float screenShake = 0;
 
 } // namespace gvars
+
+Screen screen;
+
+int Screen::x()
+{
+    return gvars::hudView.getSize().x;
+}
+int Screen::y()
+{
+    return gvars::hudView.getSize().y;
+}

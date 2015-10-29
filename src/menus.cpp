@@ -1570,10 +1570,7 @@ void menuPopUp()
     {
 
         int options = 10;
-        //sf::Vector2f lowerBound(RESOLUTION.x*0.1,RESOLUTION.y*0.1);
         gCtrl.menuPos = gvars::topLeft;
-
-        //gCtrl.menuEndPos = sf::Vector2f(RESOLUTION.x-lowerBound.x,RESOLUTION.y-lowerBound.y);
         gCtrl.menuEndPos = gvars::bottomRight;
 
         shapes.createSquare(gCtrl.menuPos.x, gCtrl.menuPos.y,

@@ -8,7 +8,7 @@ std::list<Npc> leftBehind;
 
 bool onScreen(sf::Vector2f vPos)
 {
-    if(aabb(vPos,gvars::centerScreen.x-(RESOLUTION.x/2),gvars::centerScreen.x+(RESOLUTION.x/2),gvars::centerScreen.y-(RESOLUTION.y/2),gvars::centerScreen.y+(RESOLUTION.y/2)))
+    if(aabb(vPos,gvars::centerScreen.x-(screen.x()/2),gvars::centerScreen.x+(screen.x()/2),gvars::centerScreen.y-(screen.y()/2),gvars::centerScreen.y+(screen.y()/2)))
         return true;
 
     return false;
@@ -453,8 +453,8 @@ void towerMenu()
     gvars::currentx = 32;
     gvars::currenty = 18;
     //Screen position defaults
-    int xPart = RESOLUTION.x/5;
-    int yPart = RESOLUTION.y/3;
+    int xPart = screen.x()/5;
+    int yPart = screen.y()/3;
     int xMinus = xPart/2;
     int yMinus = yPart/2;
 
@@ -530,7 +530,7 @@ void towerMenu()
         textList.createText(towerPos[0].x+50,towerPos[0].y-25,15,sf::Color::Red,textOut);
     }
 
-    shapes.createSquare(-60,-60,RESOLUTION.x+60,RESOLUTION.y+60,sf::Color::Black);
+    shapes.createSquare(-60,-60,screen.x()+60,screen.y()+60,sf::Color::Black);
 
     shapes.createCircle((-xMinus)+xPart,(-yMinus)+yPart,50,gvars::cycleBlue);
     shapes.createCircle((-xMinus)+xPart*2,(-yMinus)+yPart,50,gvars::cycleBlue);
@@ -551,7 +551,7 @@ void towerMenu()
     shapes.createCircle((-xMinus)+xPart*5,(-yMinus)+yPart*3,50,gvars::cycleRed);
 
 
-    int returnButt = createImageButton(sf::Vector2f(RESOLUTION.x-50,50),texturemanager.getTexture("returnButton.png"),"",0,gvars::hudView);
+    int returnButt = createImageButton(sf::Vector2f(screen.x()-50,50),texturemanager.getTexture("returnButton.png"),"",0,gvars::hudView);
     if(imageButtonClicked(returnButt))
     {
         gCtrl.phase = "Lobby";
@@ -582,7 +582,7 @@ void squaddieMenu(Npc &npc)
     std::cout << "This squaddie has, Health: " << npc.health << ", items: " << npc.inventory.size() << std::endl;
     baseMenu sMenu;
     sMenu.name = "Squaddie Menu";
-    sMenu.Pos = sf::Vector2f(RESOLUTION.x/2,RESOLUTION.y/2);
+    sMenu.Pos = sf::Vector2f(screen.x()/2,screen.y()/2);
     sMenu.npc = &npc;
     menus.push_back(sMenu);
 }
@@ -594,7 +594,7 @@ void merchantMenu(Vec3f creationPos)
             return;
     baseMenu sMenu;
     sMenu.name = "Merchant Menu";
-    sMenu.Pos = sf::Vector2f(RESOLUTION.x/2,RESOLUTION.y/2);
+    sMenu.Pos = sf::Vector2f(screen.x()/2,screen.y()/2);
     sMenu.makePos = creationPos;
     menus.push_back(sMenu);
 }
@@ -606,7 +606,7 @@ void recruiterMenu(Vec3f creationPos)
             return;
     baseMenu sMenu;
     sMenu.name = "Recruitment Menu";
-    sMenu.Pos = sf::Vector2f(RESOLUTION.x/2,RESOLUTION.y/2);
+    sMenu.Pos = sf::Vector2f(screen.x()/2,screen.y()/2);
     sMenu.makePos = creationPos;
     menus.push_back(sMenu);
 }
@@ -618,7 +618,7 @@ void towerMenu(Vec3f creationPos)
             return;
     baseMenu sMenu;
     sMenu.name = "Tower Menu";
-    sMenu.Pos = sf::Vector2f(RESOLUTION.x/2,RESOLUTION.y/2);
+    sMenu.Pos = sf::Vector2f(screen.x()/2,screen.y()/2);
     sMenu.makePos = creationPos;
     menus.push_back(sMenu);
 }
@@ -630,7 +630,7 @@ void escapeMenu(Vec3f creationPos)
             return;
     baseMenu sMenu;
     sMenu.name = "Escape Menu";
-    sMenu.Pos = sf::Vector2f(RESOLUTION.x/2,RESOLUTION.y/2);
+    sMenu.Pos = sf::Vector2f(screen.x()/2,screen.y()/2);
     sMenu.makePos = creationPos;
     menus.push_back(sMenu);
 }
@@ -679,20 +679,20 @@ void renderSquaddieMenu(baseMenu &menu)
 
 
 
-    shapes.createSquare(100,100,RESOLUTION.x-100,RESOLUTION.y-100,sf::Color(sf::Color(150,150,0)),5,sf::Color::White,&gvars::hudView);
+    shapes.createSquare(100,100,screen.x()-100,screen.y()-100,sf::Color(sf::Color(150,150,0)),5,sf::Color::White,&gvars::hudView);
     //Close Button
-    int exitButt = createImageButton(sf::Vector2f(RESOLUTION.x-100,100),texturemanager.getTexture("ExitButton.png"),"",0,gvars::hudView);
+    int exitButt = createImageButton(sf::Vector2f(screen.x()-100,100),texturemanager.getTexture("ExitButton.png"),"",0,gvars::hudView);
     if(imageButtonClicked(exitButt))
         menu.toDelete = true;
 
     Npc *npc = menu.npc;
-    textList.createText(sf::Vector2f(105,100),20,sf::Color(100,100,100),"Name: " + npc->name,window.getView());
+    textList.createText(sf::Vector2f(105,100),20,sf::Color(100,100,100),"Name: " + npc->name,gvars::hudView);
 
     //XP and Level!
     std::string LevelXpLine = "Level: " + std::to_string(npc->level) + "\n";
     LevelXpLine.append("XP: " + std::to_string(npc->xp));
     LevelXpLine.append(", (Next Level: " + std::to_string(nextLevelXpRequired(npc->level)) + ")");
-    textList.createText(sf::Vector2f(105,120),20,sf::Color::White,LevelXpLine,window.getView());
+    textList.createText(sf::Vector2f(105,120),20,sf::Color::White,LevelXpLine,gvars::hudView);
 
     //Attributes! SPICED
     std::string AttributeLine;
@@ -703,15 +703,15 @@ void renderSquaddieMenu(baseMenu &menu)
     AttributeLine.append("Charisma: " + std::to_string(npc->attributes.charisma) + "\n");
     AttributeLine.append("Endurance: " + std::to_string(npc->attributes.endurance) + "\n");
     AttributeLine.append("Dexterity: " + std::to_string(npc->attributes.dexterity) + "\n");
-    textList.createText(sf::Vector2f(105,170),20,sf::Color::White,AttributeLine,window.getView());
+    textList.createText(sf::Vector2f(105,170),20,sf::Color::White,AttributeLine,gvars::hudView);
 
 
 
 
     //Inventory!
-    sf::Vector2f invPos(RESOLUTION.x/2,130);
-    textList.createText(sf::Vector2f(636,102),15,sf::Color::White,"Inventory",window.getView());
-    shapes.createSquare(invPos.x-40,invPos.y-10,invPos.x+100,invPos.y+(RESOLUTION.y/2)+120,sf::Color::Transparent,2,sf::Color::Black,&gvars::hudView);
+    sf::Vector2f invPos(screen.x()/2,130);
+    textList.createText(sf::Vector2f(636,102),15,sf::Color::White,"Inventory",gvars::hudView);
+    shapes.createSquare(invPos.x-40,invPos.y-10,invPos.x+100,invPos.y+(screen.y()/2)+120,sf::Color::Transparent,2,sf::Color::Black,&gvars::hudView);
 
     int x = 0, y = 0;
     bool offSet = false;
@@ -721,7 +721,7 @@ void renderSquaddieMenu(baseMenu &menu)
         if(offSet)
             drawPos.x += 62;
         shapes.createSquare(drawPos.x-30,drawPos.y-30,drawPos.x+30,drawPos.y+30,sf::Color::Black,2,sf::Color::White,&gvars::hudView);
-        createImageButton(drawPos,*item.img.getTexture(),"",0,window.getDefaultView());
+        createImageButton(drawPos,*item.img.getTexture(),"",0,gvars::hudView);
         if(offSet)
         {
             drawPos.x -= 62;
@@ -735,9 +735,9 @@ void renderSquaddieMenu(baseMenu &menu)
     sf::Vector2f skillPos(800,105);
 
     if(npc->skillpoints > 0)
-        textList.createText(skillPos,15,sf::Color::White,"Skills   SP Remaining: " + std::to_string(npc->skillpoints),window.getView());
+        textList.createText(skillPos,15,sf::Color::White,"Skills   SP Remaining: " + std::to_string(npc->skillpoints),gvars::hudView);
     else
-        textList.createText(skillPos,15,sf::Color::White,"Skills",window.getView());
+        textList.createText(skillPos,15,sf::Color::White,"Skills",gvars::hudView);
 
     y = 0;
     std::string lastTree = "";
@@ -748,29 +748,28 @@ void renderSquaddieMenu(baseMenu &menu)
         if(skill.tree != lastTree)
         {
             lastTree = skill.tree;
-            textList.createText(drawPos,20,sf::Color::Red,skill.tree,window.getView());
+            textList.createText(drawPos,20,sf::Color::Red,skill.tree,gvars::hudView);
             y++;
         }
         drawPos = sf::Vector2f(skillPos.x,skillPos.y+(y*15)+15);
         //else
         {
-            //textList.createText(drawPos,20,sf::Color::White,outPut,window.getView());
             sf::Vector2f buttonPos(drawPos.x-40,drawPos.y+10);
 
 
-            int decreaseSkillButton = createImageButton(buttonPos,texturemanager.getTexture("ArrowButton.png"),"",-90,window.getView());
+            int decreaseSkillButton = createImageButton(buttonPos,texturemanager.getTexture("ArrowButton.png"),"",-90,gvars::hudView);
             buttonPos.x += 20;
-            int increaseSkillButton = createImageButton(buttonPos,texturemanager.getTexture("ArrowButton.png"),"",90,window.getView());
+            int increaseSkillButton = createImageButton(buttonPos,texturemanager.getTexture("ArrowButton.png"),"",90,gvars::hudView);
 
             if(imageButtonHovered(increaseSkillButton) || imageButtonHovered(decreaseSkillButton))
             {
-                textList.createText(drawPos,20,sf::Color::Cyan,outPut,window.getView());
-                sf::Vector2f textPos(RESOLUTION.x/8,70);
-                shapes.createSquare(0,textPos.y,RESOLUTION.x,textPos.y+13,sf::Color::Black,1,sf::Color::White,&gvars::hudView);
-                textList.createText(textPos,10,sf::Color::Cyan,skill.desc,window.getView());
+                textList.createText(drawPos,20,sf::Color::Cyan,outPut,gvars::hudView);
+                sf::Vector2f textPos(screen.x()/8,70);
+                shapes.createSquare(0,textPos.y,screen.x(),textPos.y+13,sf::Color::Black,1,sf::Color::White,&gvars::hudView);
+                textList.createText(textPos,10,sf::Color::Cyan,skill.desc,gvars::hudView);
             }
             else
-                textList.createText(drawPos,20,sf::Color::White,outPut,window.getView());
+                textList.createText(drawPos,20,sf::Color::White,outPut,gvars::hudView);
 
             if(imageButtonClicked(decreaseSkillButton) && skill.ranks > 0 && menu.age > 30)
             {
@@ -795,9 +794,9 @@ void renderSquaddieMenu(baseMenu &menu)
 
 void renderMerchantMenu(baseMenu &menu)
 {
-    shapes.createSquare(100,100,RESOLUTION.x-100,RESOLUTION.y-100,sf::Color(sf::Color(150,150,0)),5,sf::Color::White,&gvars::hudView);
+    shapes.createSquare(100,100,screen.x()-100,screen.y()-100,sf::Color(sf::Color(150,150,0)),5,sf::Color::White,&gvars::hudView);
     //Close Button
-    int exitButt = createImageButton(sf::Vector2f(RESOLUTION.x-100,100),texturemanager.getTexture("ExitButton.png"),"",0,gvars::hudView);
+    int exitButt = createImageButton(sf::Vector2f(screen.x()-100,100),texturemanager.getTexture("ExitButton.png"),"",0,gvars::hudView);
     if(imageButtonClicked(exitButt))
         menu.toDelete = true;
 
@@ -899,9 +898,9 @@ void renderMerchantMenu(baseMenu &menu)
 
 void renderRecruiterMenu(baseMenu &menu)
 {
-    shapes.createSquare(100,100,RESOLUTION.x-100,RESOLUTION.y-100,sf::Color(sf::Color(150,150,0)),5,sf::Color::White,&gvars::hudView);
+    shapes.createSquare(100,100,screen.x()-100,screen.y()-100,sf::Color(sf::Color(150,150,0)),5,sf::Color::White,&gvars::hudView);
     //Close Button
-    int exitButt = createImageButton(sf::Vector2f(RESOLUTION.x-100,100),texturemanager.getTexture("ExitButton.png"),"",0,gvars::hudView);
+    int exitButt = createImageButton(sf::Vector2f(screen.x()-100,100),texturemanager.getTexture("ExitButton.png"),"",0,gvars::hudView);
     if(imageButtonClicked(exitButt))
         menu.toDelete = true;
 
@@ -1013,15 +1012,15 @@ void renderRecruiterMenu(baseMenu &menu)
 
 void renderTowerMenu(baseMenu &menu)
 {
-    shapes.createSquare(100,100,RESOLUTION.x-100,RESOLUTION.y-100,sf::Color(sf::Color(150,150,0)),5,sf::Color::White,&gvars::hudView);
+    shapes.createSquare(100,100,screen.x()-100,screen.y()-100,sf::Color(sf::Color(150,150,0)),5,sf::Color::White,&gvars::hudView);
     //Close Button
-    int exitButt = createImageButton(sf::Vector2f(RESOLUTION.x-100,100),texturemanager.getTexture("ExitButton.png"),"",0,gvars::hudView);
+    int exitButt = createImageButton(sf::Vector2f(screen.x()-100,100),texturemanager.getTexture("ExitButton.png"),"",0,gvars::hudView);
     if(imageButtonClicked(exitButt))
         menu.toDelete = true;
 
         //Screen position defaults
-    int xPart = RESOLUTION.x/5;
-    int yPart = RESOLUTION.y/3;
+    int xPart = screen.x()/5;
+    int yPart = screen.y()/3;
     int xMinus = xPart/2;
     int yMinus = yPart/2;
 
@@ -1107,13 +1106,13 @@ void renderTowerMenu(baseMenu &menu)
 
 void renderEscapeMenu(baseMenu &menu)
 {
-    shapes.createSquare(100,100,RESOLUTION.x-100,RESOLUTION.y-100,sf::Color(sf::Color(150,150,0)),5,sf::Color::White,&gvars::hudView);
+    shapes.createSquare(100,100,screen.x()-100,screen.y()-100,sf::Color(sf::Color(150,150,0)),5,sf::Color::White,&gvars::hudView);
     //Close Button
-    int exitButt = createImageButton(sf::Vector2f(RESOLUTION.x-100,100),texturemanager.getTexture("ExitButton.png"),"",0,window.getDefaultView());
+    int exitButt = createImageButton(sf::Vector2f(screen.x()-100,100),texturemanager.getTexture("ExitButton.png"),"",0,gvars::hudView);
     if(imageButtonClicked(exitButt))
         menu.toDelete = true;
 
-    sf::Vector2f textPos( (RESOLUTION.x/2) - 50,110);
+    sf::Vector2f textPos( (screen.x()/2) - 50,110);
     sf::Vector2f buttonPos(textPos);
     textList.createText(textPos,10,sf::Color::White,"Sound: " + str(gvars::soundVolume),gvars::hudView);
     buttonPos.x += 90;
@@ -1124,7 +1123,7 @@ void renderEscapeMenu(baseMenu &menu)
 
 
 
-    textPos.y += RESOLUTION.y/8;
+    textPos.y += screen.y()/8;
     buttonPos = textPos;
     textList.createText(textPos,10,sf::Color::White,"Music: " + str(gvars::musicVolume),gvars::hudView);
     buttonPos.x += 90;
@@ -1133,7 +1132,7 @@ void renderEscapeMenu(baseMenu &menu)
     buttonPos.x += 30;
     int increaseMusicButt = createImageButton(buttonPos,texturemanager.getTexture("ArrowButton.png"),"",90,gvars::hudView);
 
-    textPos.y += RESOLUTION.y/8;
+    textPos.y += screen.y()/8;
     buttonPos = textPos;
     textList.createText(textPos,10,sf::Color::White,"Resolution: "
                         + std::to_string(resolution.resolutions[resolution.currentRes].width)
@@ -1153,7 +1152,7 @@ void renderEscapeMenu(baseMenu &menu)
     int toggleFullscreen = createImageButton(buttonPos,texturemanager.getTexture("ArrowButton.png"),"",180,gvars::hudView);
 
 
-    sf::Vector2f exitPos((RESOLUTION.x/2), RESOLUTION.y-150);
+    sf::Vector2f exitPos((screen.x()/2), screen.y()-150);
     int exitGameButt = createImageButton(exitPos,texturemanager.getTexture("blankButton.png"),"",0,gvars::hudView);
     exitPos.x -= 31;
     textList.createText(exitPos,9,sf::Color::White,"Exit Game",gvars::hudView);
@@ -1577,8 +1576,8 @@ void spawnEnemies()
 
 void towerVictory()
 {
-    shapes.createSquare(0,0,RESOLUTION.x,RESOLUTION.y,sf::Color(0,0,0,100),0,sf::Color::Transparent,&gvars::hudView);
-    sf::Vector2f textPos(RESOLUTION.x/2,50);
+    shapes.createSquare(0,0,screen.x(),screen.y(),sf::Color(0,0,0,100),0,sf::Color::Transparent,&gvars::hudView);
+    sf::Vector2f textPos(screen.x()/2,50);
     textList.createText(textPos,10,sf::Color::Yellow,"$ Bounty Killed! $ \n $ Time to collect! $",window.getDefaultView());
     textPos.y += 30;
     textList.createText(textPos,10,sf::Color::White,"The people who got in your way.",window.getDefaultView());
@@ -1689,7 +1688,7 @@ void bossLoop()
 
 void bountyTowerMainMenu()
 {
-    int startBut = createImageButton(sf::Vector2f(RESOLUTION.x/2,RESOLUTION.y/2),texturemanager.getTexture("Fortune Fortress Title.png"));
+    int startBut = createImageButton(sf::Vector2f(screen.x()/2,screen.y()/2),texturemanager.getTexture("Fortune Fortress Title.png"));
     textList.createText(gvars::mousePos,10,sf::Color::White,"Click to begin!");
 
     if(imageButtonClicked(startBut))
@@ -1754,7 +1753,7 @@ void displayCash()
 
     cashLine.append( str(cashAmount) );
     int offSet = cashLine.size()*17;
-    sf::Vector2f vPos( (RESOLUTION.x-offSet)-20,0);
+    sf::Vector2f vPos( (screen.x()-offSet)-20,0);
 
     textList.createText(vPos,20,sf::Color::Yellow,cashLine,gvars::hudView);
 
@@ -2285,7 +2284,7 @@ void bountyTowerLoop()
 
     if(bountytower::switchesRemain > 0)
     {
-        sf::Vector2f vPos(RESOLUTION.x/1.5,30);
+        sf::Vector2f vPos(screen.x()/1.5,30);
         textList.createText(vPos,15,sf::Color::White,"Remaining Elevator Components: " + std::to_string(bountytower::switchesRemain),window.getDefaultView());
     }
 
@@ -2294,7 +2293,7 @@ void bountyTowerLoop()
 
 
     if(bountytower::towerLoaded != "")
-        textList.createText(sf::Vector2f(RESOLUTION.x/2,15),15,sf::Color::White,"Floor: " + std::to_string(gvars::currentz),window.getDefaultView());
+        textList.createText(sf::Vector2f(screen.x()/2,15),15,sf::Color::White,"Floor: " + std::to_string(gvars::currentz),window.getDefaultView());
 
     displayCash();
 
@@ -2304,7 +2303,7 @@ void bountyTowerLoop()
     { // Prints Elevator HUD and other such things
 
 
-        textList.createText(sf::Vector2f(RESOLUTION.x/2,50),20,sf::Color::Green,"Elevator is Ready!",window.getDefaultView());
+        textList.createText(sf::Vector2f(screen.x()/2,50),20,sf::Color::Green,"Elevator is Ready!",window.getDefaultView());
 
         int AmountRaised = 0;
         for(auto &npc : npclist)
@@ -2312,9 +2311,9 @@ void bountyTowerLoop()
                 if(npc.faction == conFact->name)
                     AmountRaised++;
 
-        textList.createText(sf::Vector2f(RESOLUTION.x/2,70),20,sf::Color::White,"On Elevator: " + std::to_string(AmountRaised),window.getDefaultView());
+        textList.createText(sf::Vector2f(screen.x()/2,70),20,sf::Color::White,"On Elevator: " + std::to_string(AmountRaised),window.getDefaultView());
 
-        sf::Vector2f vPos((RESOLUTION.x/2)-25,75);
+        sf::Vector2f vPos((screen.x()/2)-25,75);
         int butt = createImageButton(vPos,texturemanager.getTexture("ElevatorButton.png"),"",0,window.getDefaultView());
         if(imageButtonClicked(butt))
         {

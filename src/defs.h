@@ -33,6 +33,8 @@ public:
 };
 extern ResolutionManager resolution;
 
+
+
 struct Desire
 {
     std::string type;

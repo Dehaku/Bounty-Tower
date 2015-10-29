@@ -2184,7 +2184,7 @@ void drawSquadHud()
 void drawEnemyCounterHud()
 {
     int counter = getLivingFactionMemberCount("Towerlings");
-    sf::Vector2f vPos(RESOLUTION.x/1.5,50);
+    sf::Vector2f vPos(screen.x()/1.5,50);
     std::string outPut = "Enemies Remaining: " + std::to_string(counter);
     if(counter > 0)
         textList.createText(vPos,15,sf::Color::White,outPut,gvars::hudView);
@@ -2275,7 +2275,7 @@ void drawStuffs()
 
 
     //displayChat(sf::Vector2f(gvars::bottomLeft.x + 5, gvars::bottomLeft.y - 5));
-    displayChat(sf::Vector2f(5, RESOLUTION.y - 5));
+    displayChat(sf::Vector2f(5, screen.y() - 5));
     debug("Drew Chat");
 
     //purtyOrbitals();
@@ -3336,20 +3336,20 @@ void handlePhase()
 
         if (gCtrl.phase == "MakeSquad") // Needs a heavy menu overhaul.
         {
-            gvars::view1.setCenter(RESOLUTION.x / 2, RESOLUTION.y / 2);
+            gvars::view1.setCenter(screen.x() / 2, screen.y() / 2);
 
-            textList.createText(RESOLUTION.x / 2, 20, 20, gvars::cycleBlue,
+            textList.createText(screen.x() / 2, 20, 20, gvars::cycleBlue,
                                 "Design Your Squad");
-            textList.createText(RESOLUTION.x / 2, 50, 15, sf::Color::Yellow,
+            textList.createText(screen.x() / 2, 50, 15, sf::Color::Yellow,
                                 "Squad Points: ", "", squady.makeSquadPoints);
-            textList.createText(RESOLUTION.x / 2, 70, 11, sf::Color::Yellow,
+            textList.createText(screen.x() / 2, 70, 11, sf::Color::Yellow,
                                 "Squad Mates: ", "", squady.squadMates);
 
             SquareButton var200;
             var200.color = sf::Color::Yellow;
             var200.iSizex = 5;
             var200.iSizey = 5;
-            var200.vPos = sf::Vector2f((RESOLUTION.x / 2) - 10, 75);
+            var200.vPos = sf::Vector2f((screen.x() / 2) - 10, 75);
             var200.sButtonText = "Howdy";
 
             vSquareButtonList.push_back(var200);
@@ -3405,7 +3405,7 @@ void handlePhase()
             var201.color = sf::Color::Yellow;
             var201.iSizex = 5;
             var201.iSizey = 5;
-            var201.vPos = sf::Vector2f((RESOLUTION.x / 2) + 150, 75);
+            var201.vPos = sf::Vector2f((screen.x() / 2) + 150, 75);
             var201.sButtonText = "Howdy";
             vSquareButtonList.push_back(var201);
             if (squareButtonClicked(var201.id))
@@ -3518,7 +3518,7 @@ void handlePhase()
             var100.color = sf::Color::Green;
             var100.iSizex = 5;
             var100.iSizey = 5;
-            var100.vPos = sf::Vector2f((RESOLUTION.x / 2) - 10,
+            var100.vPos = sf::Vector2f((screen.x() / 2) - 10,
                                        5 + (80 + (20 * spacing)));
             var100.sButtonText = "Howdy";
             vSquareButtonList.push_back(var100);
@@ -3535,7 +3535,7 @@ void handlePhase()
             var101.color = sf::Color::Green;
             var101.iSizex = 5;
             var101.iSizey = 5;
-            var101.vPos = sf::Vector2f((RESOLUTION.x / 2) + 150,
+            var101.vPos = sf::Vector2f((screen.x() / 2) + 150,
                                        5 + (80 + (20 * spacing)));
             var101.sButtonText = "Howdy";
             vSquareButtonList.push_back(var101);
@@ -3549,11 +3549,11 @@ void handlePhase()
                 fSleep(0.2);
             }
 
-            textList.createText(RESOLUTION.x / 2, 80 + (10 * spacing++), 11,
+            textList.createText(screen.x() / 2, 80 + (10 * spacing++), 11,
                                 sf::Color::Green, "Human: ",
                                 squady.squad.at(squady.aim).name);
 
-            textList.createText(RESOLUTION.x / 2, 80 + (20 * spacing), 11,
+            textList.createText(screen.x() / 2, 80 + (20 * spacing), 11,
                                 sf::Color::White, "Strength: ", "",
                                 squady.squad.at(squady.aim).attributes.strength);
 
@@ -3561,7 +3561,7 @@ void handlePhase()
             var.color = sf::Color::Red;
             var.iSizex = 5;
             var.iSizey = 5;
-            var.vPos = sf::Vector2f((RESOLUTION.x / 2) - 10,
+            var.vPos = sf::Vector2f((screen.x() / 2) - 10,
                                     5 + (80 + (20 * spacing)));
             var.sButtonText = "Howdy";
             vSquareButtonList.push_back(var);
@@ -3577,7 +3577,7 @@ void handlePhase()
             var2.color = sf::Color::Red;
             var2.iSizex = 5;
             var2.iSizey = 5;
-            var2.vPos = sf::Vector2f((RESOLUTION.x / 2) + 150,
+            var2.vPos = sf::Vector2f((screen.x() / 2) + 150,
                                      5 + (80 + (20 * spacing++)));
             var2.sButtonText = "Howdy";
             vSquareButtonList.push_back(var2);
@@ -3590,7 +3590,7 @@ void handlePhase()
                 }
             }
 
-            textList.createText(RESOLUTION.x / 2, 80 + (20 * spacing), 11,
+            textList.createText(screen.x() / 2, 80 + (20 * spacing), 11,
                                 sf::Color::White, "Perception: ", "",
                                 squady.squad.at(squady.aim).attributes.perception);
 
@@ -3598,7 +3598,7 @@ void handlePhase()
             var3.color = sf::Color::Red;
             var3.iSizex = 5;
             var3.iSizey = 5;
-            var3.vPos = sf::Vector2f((RESOLUTION.x / 2) - 10,
+            var3.vPos = sf::Vector2f((screen.x() / 2) - 10,
                                      5 + (80 + (20 * spacing)));
             var3.sButtonText = "Howdy";
             vSquareButtonList.push_back(var3);
@@ -3614,7 +3614,7 @@ void handlePhase()
             var4.color = sf::Color::Red;
             var4.iSizex = 5;
             var4.iSizey = 5;
-            var4.vPos = sf::Vector2f((RESOLUTION.x / 2) + 150,
+            var4.vPos = sf::Vector2f((screen.x() / 2) + 150,
                                      5 + (80 + (20 * spacing++)));
             var4.sButtonText = "Howdy";
             vSquareButtonList.push_back(var4);
@@ -3628,7 +3628,7 @@ void handlePhase()
             }
 
             textList.createText(
-                RESOLUTION.x / 2, 80 + (20 * spacing), 11, sf::Color::White,
+                screen.x() / 2, 80 + (20 * spacing), 11, sf::Color::White,
                 "Intelligence: ", "",
                 squady.squad.at(squady.aim).attributes.intelligence);
 
@@ -3636,7 +3636,7 @@ void handlePhase()
             var5.color = sf::Color::Red;
             var5.iSizex = 5;
             var5.iSizey = 5;
-            var5.vPos = sf::Vector2f((RESOLUTION.x / 2) - 10,
+            var5.vPos = sf::Vector2f((screen.x() / 2) - 10,
                                      5 + (80 + (20 * spacing)));
             var5.sButtonText = "Howdy";
             vSquareButtonList.push_back(var5);
@@ -3652,7 +3652,7 @@ void handlePhase()
             var6.color = sf::Color::Red;
             var6.iSizex = 5;
             var6.iSizey = 5;
-            var6.vPos = sf::Vector2f((RESOLUTION.x / 2) + 150,
+            var6.vPos = sf::Vector2f((screen.x() / 2) + 150,
                                      5 + (80 + (20 * spacing++)));
             var6.sButtonText = "Howdy";
             vSquareButtonList.push_back(var6);
@@ -3665,7 +3665,7 @@ void handlePhase()
                 }
             }
 
-            textList.createText(RESOLUTION.x / 2, 80 + (20 * spacing), 11,
+            textList.createText(screen.x() / 2, 80 + (20 * spacing), 11,
                                 sf::Color::White, "Charisma: ", "",
                                 squady.squad.at(squady.aim).attributes.charisma);
 
@@ -3673,7 +3673,7 @@ void handlePhase()
             var7.color = sf::Color::Red;
             var7.iSizex = 5;
             var7.iSizey = 5;
-            var7.vPos = sf::Vector2f((RESOLUTION.x / 2) - 10,
+            var7.vPos = sf::Vector2f((screen.x() / 2) - 10,
                                      5 + (80 + (20 * spacing)));
             var7.sButtonText = "Howdy";
             vSquareButtonList.push_back(var7);
@@ -3689,7 +3689,7 @@ void handlePhase()
             var8.color = sf::Color::Red;
             var8.iSizex = 5;
             var8.iSizey = 5;
-            var8.vPos = sf::Vector2f((RESOLUTION.x / 2) + 150,
+            var8.vPos = sf::Vector2f((screen.x() / 2) + 150,
                                      5 + (80 + (20 * spacing++)));
             var8.sButtonText = "Howdy";
             vSquareButtonList.push_back(var8);
@@ -3702,7 +3702,7 @@ void handlePhase()
                 }
             }
 
-            textList.createText(RESOLUTION.x / 2, 80 + (20 * spacing), 11,
+            textList.createText(screen.x() / 2, 80 + (20 * spacing), 11,
                                 sf::Color::White, "Endurance: ", "",
                                 squady.squad.at(squady.aim).attributes.endurance);
 
@@ -3710,7 +3710,7 @@ void handlePhase()
             var9.color = sf::Color::Red;
             var9.iSizex = 5;
             var9.iSizey = 5;
-            var9.vPos = sf::Vector2f((RESOLUTION.x / 2) - 10,
+            var9.vPos = sf::Vector2f((screen.x() / 2) - 10,
                                      5 + (80 + (20 * spacing)));
             var9.sButtonText = "Howdy";
             vSquareButtonList.push_back(var9);
@@ -3726,7 +3726,7 @@ void handlePhase()
             var10.color = sf::Color::Red;
             var10.iSizex = 5;
             var10.iSizey = 5;
-            var10.vPos = sf::Vector2f((RESOLUTION.x / 2) + 150,
+            var10.vPos = sf::Vector2f((screen.x() / 2) + 150,
                                       5 + (80 + (20 * spacing++)));
             var10.sButtonText = "Howdy";
             vSquareButtonList.push_back(var10);
@@ -3739,7 +3739,7 @@ void handlePhase()
                 }
             }
 
-            textList.createText(RESOLUTION.x / 2, 80 + (20 * spacing), 11,
+            textList.createText(screen.x() / 2, 80 + (20 * spacing), 11,
                                 sf::Color::White, "Dexterity: ", "",
                                 squady.squad.at(squady.aim).attributes.dexterity);
 
@@ -3747,7 +3747,7 @@ void handlePhase()
             var11.color = sf::Color::Red;
             var11.iSizex = 5;
             var11.iSizey = 5;
-            var11.vPos = sf::Vector2f((RESOLUTION.x / 2) - 10,
+            var11.vPos = sf::Vector2f((screen.x() / 2) - 10,
                                       5 + (80 + (20 * spacing)));
             var11.sButtonText = "Howdy";
             vSquareButtonList.push_back(var11);
@@ -3763,7 +3763,7 @@ void handlePhase()
             var12.color = sf::Color::Red;
             var12.iSizex = 5;
             var12.iSizey = 5;
-            var12.vPos = sf::Vector2f((RESOLUTION.x / 2) + 150,
+            var12.vPos = sf::Vector2f((screen.x() / 2) + 150,
                                       5 + (80 + (20 * spacing++)));
             var12.sButtonText = "Howdy";
             vSquareButtonList.push_back(var12);
@@ -3776,7 +3776,7 @@ void handlePhase()
                 }
             }
 
-            textList.createText(RESOLUTION.x / 2, 80 + (20 * spacing), 11,
+            textList.createText(screen.x() / 2, 80 + (20 * spacing), 11,
                                 sf::Color::White, "Agility: ", "",
                                 squady.squad.at(squady.aim).attributes.agility);
 
@@ -3784,7 +3784,7 @@ void handlePhase()
             var13.color = sf::Color::Red;
             var13.iSizex = 5;
             var13.iSizey = 5;
-            var13.vPos = sf::Vector2f((RESOLUTION.x / 2) - 10,
+            var13.vPos = sf::Vector2f((screen.x() / 2) - 10,
                                       5 + (80 + (20 * spacing)));
             var13.sButtonText = "Howdy";
             vSquareButtonList.push_back(var13);
@@ -3800,7 +3800,7 @@ void handlePhase()
             var14.color = sf::Color::Red;
             var14.iSizex = 5;
             var14.iSizey = 5;
-            var14.vPos = sf::Vector2f((RESOLUTION.x / 2) + 150,
+            var14.vPos = sf::Vector2f((screen.x() / 2) + 150,
                                       5 + (80 + (20 * spacing++)));
             var14.sButtonText = "Howdy";
             vSquareButtonList.push_back(var14);
@@ -3813,12 +3813,12 @@ void handlePhase()
                 }
             }
 
-            //cText.CreateText(RESOLUTION.x/2,80+(20*Spacing),11,sf::Color::White," ");
+            //cText.CreateText(screen.x()/2,80+(20*Spacing),11,sf::Color::White," ");
             SquareButton var50;
             var50.color = sf::Color::Yellow;
             var50.iSizex = 5;
             var50.iSizey = 5;
-            var50.vPos = sf::Vector2f((RESOLUTION.x / 2) + 180,
+            var50.vPos = sf::Vector2f((screen.x() / 2) + 180,
                                       5 + (80 + ((20 * spacing++) / 2)));
 
             var50.sForwardText = "Done";
@@ -4649,33 +4649,15 @@ void detectLineGrid( float x1, float y1, float x2, float y2)
 void pauseMenu()
 {
 
-    if(inputState.key[Key::F5].time == 1)
+    if(inputState.key[Key::F1].time == 1)
     {
-        window.create(sf::VideoMode(800,640,32), randomWindowName());
-        window.setFramerateLimit(60);
+        std::cout << "Old Size: " << gvars::hudView.getSize().x << "/" << gvars::hudView.getSize().y << std::endl;
+    }
+    if(inputState.key[Key::F2].time == 1)
+    {
+        std::cout << "Old Size: " << gvars::view1.getSize().x << "/" << gvars::view1.getSize().y << std::endl;
     }
 
-
-    if(inputState.key[Key::F6].time == 1)
-    {
-        window.create(sf::VideoMode(1024,720,32), randomWindowName());
-        window.setFramerateLimit(60);
-    }
-    int x = 1280;
-    int y = 720;
-
-    if(inputState.key[Key::F7].time == 1)
-    {
-        window.create(sf::VideoMode(x,y,32), randomWindowName());
-        window.setFramerateLimit(60);
-    }
-
-
-    if(inputState.key[Key::F8].time == 1)
-    {
-        window.create(sf::VideoMode(1280,1024,32), randomWindowName());
-        window.setFramerateLimit(60);
-    }
 
     if(inputState.key[Key::F4].time == 1)
         std::cout << "Resolution: " << window.getSize().x << "/" << window.getSize().y << std::endl;
@@ -4688,7 +4670,7 @@ void pauseMenu()
 
         window.setView(gvars::hudView);
 
-        sf::Vector2f tSize(RESOLUTION.x/2-100,RESOLUTION.y/2);
+        sf::Vector2f tSize(screen.x()/2-100,screen.y()/2);
         textList.createText(tSize,20,sf::Color::White,"Game Paused, Press P to resume.",gvars::hudView);
         textList.drawTextz();
         window.display();
@@ -4749,7 +4731,7 @@ int main()
     galaxySetup();
     bountyTowerSetup();
 
-    window.create(sf::VideoMode(RESOLUTION.x, RESOLUTION.y, 32), randomWindowName());
+    window.create(sf::VideoMode(1280, 720, 32), randomWindowName());
     window.setVerticalSyncEnabled(true);
 
     textList.loadFont();

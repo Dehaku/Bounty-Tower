@@ -4460,7 +4460,7 @@ void drawSelectedCritterHUD()
     if (!selectedNPCs.empty() && !bountytower::bountytower)
     {
         int nxpos = gvars::topLeft.x+5;
-        int nypos = gvars::topLeft.y + (RESOLUTION.y / 2);
+        int nypos = gvars::topLeft.y + (screen.y() / 2);
 
         textList.createText(nxpos+5,nypos-20-13,10,sf::Color::Cyan,"<Inventory>");
         drawInventory(sf::Vector2f(nxpos,nypos), selectedNPCs[0]->inventory);

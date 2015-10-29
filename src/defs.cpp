@@ -7,6 +7,7 @@ int ResolutionManager::X()
     return window.getSize().x;
 }
 
+
 int ResolutionManager::Y()
 {
     return window.getSize().y;

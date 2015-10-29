@@ -9,6 +9,13 @@ float cz(float number);
 void debug(std::string info, bool endline = true);
 void assignSlotPos();
 
+class Screen
+{
+public:
+    int x();
+    int y();
+};
+extern Screen screen;
 
 namespace mutex
 {
