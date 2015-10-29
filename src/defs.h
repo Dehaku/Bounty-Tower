@@ -14,6 +14,25 @@ const int GRID_SIZE = 60;
 const int TILE_PIXELS = 20;
 const sf::Color BROWN(100, 100, 0, 255);
 
+extern sf::RenderWindow window;
+
+class ResolutionManager
+{
+public:
+    int x;
+    int y;
+    int newX;
+    int newY;
+    std::vector<sf::VideoMode> resolutions;
+    int currentRes;
+    bool fullscreen;
+
+    int X();
+    int Y();
+    ResolutionManager();
+};
+extern ResolutionManager resolution;
+
 struct Desire
 {
     std::string type;

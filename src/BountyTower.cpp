@@ -1,28 +1,7 @@
 #include "BountyTower.h"
 
 
-class ResolutionManager
-{
-public:
-    int x;
-    int y;
-    int newX;
-    int newY;
-    std::vector<sf::VideoMode> resolutions;
-    int currentRes;
-    bool fullscreen;
-    ResolutionManager()
-    {
-        x = 1280;
-        y = 720;
-        newX = x;
-        newY = y;
-        currentRes = 2;
-        fullscreen = false;
-        resolutions = sf::VideoMode::getFullscreenModes();
-    }
-};
-ResolutionManager resolution;
+
 
 std::vector<Npc*> Squaddies;
 std::list<Npc> leftBehind;
