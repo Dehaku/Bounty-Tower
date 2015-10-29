@@ -2777,6 +2777,9 @@ float Magnitude(Vec3f v1)
 
 void acquireSelectedNPCs()
 {
+    if(!menus.empty())
+        return;
+
     if (inputState.lmbTime == 0 &&
         gvars::heldClickPos != sf::Vector2f(-1, -1))
     {
@@ -2827,6 +2830,9 @@ void acquireSelectedNPCs()
 
 void lmbPress()
 {
+    if(!menus.empty())
+        return;
+
     hoverItemHUD();
     bool foundOne = false;
     debug("Pre Mouse Based Functions");
