@@ -18,6 +18,9 @@ public:
     int penetration;
     int health;
     int maxrichochet;
+
+    Item weapon;
+
     float damage;
     int radius;
     bool toDelete;

@@ -518,6 +518,9 @@ int Item::getSpread()
             returns += itemptr->spread;
     }
     debug(name + " getSpread() done");
+    if(returns < 0)
+        returns = 0;
+
     return returns;
 }
 
@@ -534,6 +537,38 @@ int Item::getKnockback()
             returns += itemptr->knockback;
     }
     debug(name + " getKnockback() done");
+    return returns;
+}
+
+int Item::getMinDamage()
+{
+    debug(name + " getMinDamage()");
+    int returns = mindam;
+    if(type == 2)
+    {
+        Item * itemptr = getItemType(internalitems,ammotype);
+        if(itemptr == nullptr)
+            returns += 0;
+        else
+            returns += itemptr->mindam;
+    }
+    debug(name + " getMinDamage() done");
+    return returns;
+}
+
+int Item::getMaxDamage()
+{
+    debug(name + " getMaxDamage()");
+    int returns = maxdam;
+    if(type == 2)
+    {
+        Item * itemptr = getItemType(internalitems,ammotype);
+        if(itemptr == nullptr)
+            returns += 0;
+        else
+            returns += itemptr->maxdam;
+    }
+    debug(name + " getMaxDamage() done");
     return returns;
 }
 
@@ -1032,6 +1067,7 @@ std::string Item::activate(Vec3f vPos) // Returns a string declaring the problem
         Bullet boolet;
         boolet.owner = user;
         boolet.parent = this;
+        boolet.weapon = *this;
         boolet.pos = muzzlePos;
         boolet.positions.push_back(boolet.pos);
         boolet.angle = math::angleBetweenVectors(muzzlePosV2f,vPosV2f);
@@ -1046,7 +1082,7 @@ std::string Item::activate(Vec3f vPos) // Returns a string declaring the problem
 
 
 
-        boolet.damage = random(mindam,maxdam);
+        boolet.damage = random(getMinDamage(),getMaxDamage());
         int bulletDamage = boolet.damage;
 
         if(user->skills.getRanks("Bronze Bullet") > 0 && itemptr->amount == maxclip)

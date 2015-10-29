@@ -141,6 +141,8 @@ public:
     int getRange();
     int getSpread();
     int getKnockback();
+    int getMinDamage();
+    int getMaxDamage();
     std::string activate(Vec3f vPos);
     bool trigger();
     bool isReady();

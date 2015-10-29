@@ -13,8 +13,8 @@ std::string hitTarget(Bullet &bullet)
 
         if(dist <= i->size/2 && !alreadyHit && i->alive)
         {
-            Item item;
-            std::string atkStatus = bullet.owner->dealDamage(i,nullptr,bullet.damage);
+
+            std::string atkStatus = bullet.owner->dealDamage(i,&bullet.weapon,bullet.damage);
             if(atkStatus == "Hit")
             {
                 hitSomething = true;

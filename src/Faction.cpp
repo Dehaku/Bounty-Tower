@@ -2932,6 +2932,12 @@ std::string Npc::dealDamage(Npc *victim, Item *weapon, float amount)
     critScore pass;
     std::string outPut;
 
+
+
+    int totalDamage = amount;
+    if(weapon != nullptr)
+        totalDamage = random(weapon->getMinDamage(),weapon->getMaxDamage());
+
     { // undeadDread Skill
         Skill * undeadDread = skills.getSkill("Undead Dread");
         if(undeadDread != nullptr && undeadDread->ranks > 0)
@@ -2939,18 +2945,13 @@ std::string Npc::dealDamage(Npc *victim, Item *weapon, float amount)
             float removeAmount = health/maxhealth;
             float missingHealth = 1 - removeAmount;
             missingHealth = missingHealth / 2.5;
-            amount += amount*(missingHealth*undeadDread->ranks);
+            totalDamage += totalDamage*(missingHealth*undeadDread->ranks);
         }
     }
 
-    if(weapon != nullptr)
-    {
-        int damage = random(weapon->mindam,weapon->maxdam);
-        outPut = victim->takeDamage(this,weapon,damage,&pass);
-    }
+    outPut = victim->takeDamage(this,weapon,totalDamage);
 
-    else
-        outPut = victim->takeDamage(this,weapon,amount);
+    //outPut = victim->takeDamage(this,weapon,amount);
 
 
     if(racialAbility == "Pocket Picker")
