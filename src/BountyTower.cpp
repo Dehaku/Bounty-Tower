@@ -8,8 +8,9 @@ public:
     int y;
     int newX;
     int newY;
-    std::vector<sf::Vector2i> resolutions;
+    std::vector<sf::VideoMode> resolutions;
     int currentRes;
+    bool fullscreen;
     ResolutionManager()
     {
         x = 1280;
@@ -17,26 +18,8 @@ public:
         newX = x;
         newY = y;
         currentRes = 2;
-
-        /*
-        resolutions.push_back(sf::Vector2i(640,480));
-        resolutions.push_back(sf::Vector2i(800,640));
-        resolutions.push_back(sf::Vector2i(1024,720));
-        resolutions.push_back(sf::Vector2i(1280,720));
-        resolutions.push_back(sf::Vector2i(1280,1024));
-        resolutions.push_back(sf::Vector2i(1366,768));
-        resolutions.push_back(sf::Vector2i(1600,900));
-        */
-
-        std::vector<sf::VideoMode> videomodes;
-        videomodes = sf::VideoMode::getFullscreenModes();
-
-        for(auto &vM : videomodes)
-        {
-            std::cout << "Possible Resolution: " << vM.width << "/" << vM.height << std::endl;
-            resolutions.push_back(sf::Vector2i(vM.width,vM.height));
-        }
-
+        fullscreen = false;
+        resolutions = sf::VideoMode::getFullscreenModes();
     }
 };
 ResolutionManager resolution;
@@ -1173,7 +1156,12 @@ void renderEscapeMenu(baseMenu &menu)
 
     textPos.y += RESOLUTION.y/8;
     buttonPos = textPos;
-    textList.createText(textPos,10,sf::Color::White,"Resolution: " + str(resolution.resolutions[resolution.currentRes].x)+"/"+str(resolution.resolutions[resolution.currentRes].y),gvars::hudView);
+    textList.createText(textPos,10,sf::Color::White,"Resolution: "
+                        + std::to_string(resolution.resolutions[resolution.currentRes].width)
+                        +"/"+std::to_string(resolution.resolutions[resolution.currentRes].height)
+                        +": "+std::to_string(resolution.resolutions[resolution.currentRes].bitsPerPixel)
+                        +"\n \n \nFullscreen: " + str(resolution.fullscreen)
+                        ,gvars::hudView);
     buttonPos.x += 90;
     buttonPos.y += 20;
     int decreaseResolution = createImageButton(buttonPos,texturemanager.getTexture("ArrowButton.png"),"",-90,gvars::hudView);
@@ -1182,6 +1170,9 @@ void renderEscapeMenu(baseMenu &menu)
     buttonPos.x += 30;
     int applyResolution = createImageButton(buttonPos,texturemanager.getTexture("ArrowButton.png"),"",180,gvars::hudView);
 
+    buttonPos.y += 20;
+    int toggleFullscreen = createImageButton(buttonPos,texturemanager.getTexture("ArrowButton.png"),"",180,gvars::hudView);
+
 
     sf::Vector2f exitPos((RESOLUTION.x/2), RESOLUTION.y-150);
     int exitGameButt = createImageButton(exitPos,texturemanager.getTexture("blankButton.png"),"",0,gvars::hudView);
@@ -1189,12 +1180,22 @@ void renderEscapeMenu(baseMenu &menu)
     textList.createText(exitPos,9,sf::Color::White,"Exit Game",gvars::hudView);
 
 
-    if(menu.age > 30 && imageButtonHovered(decreaseResolution) && (inputState.lmbTime == 1 || inputState.lmbTime > 20))
+
+    //Warning, the increase and decrease resolution buttons are backwards, since the videomode put the highest res in first, and the smallest last.
+    if(menu.age > 30 && imageButtonHovered(increaseResolution) && (inputState.lmbTime == 1 || inputState.lmbTime > 20))
         if(resolution.currentRes > 0)
             resolution.currentRes--;
-    if(menu.age > 30 && imageButtonHovered(increaseResolution) && (inputState.lmbTime == 1 || inputState.lmbTime > 20))
+    if(menu.age > 30 && imageButtonHovered(decreaseResolution) && (inputState.lmbTime == 1 || inputState.lmbTime > 20))
         if(resolution.currentRes < resolution.resolutions.size()-1)
             resolution.currentRes++;
+
+    if(menu.age > 30 && imageButtonHovered(toggleFullscreen))
+    {
+        textList.createText(gvars::mousePos,9,sf::Color::White,"Toggle fullscreen",gvars::view1);
+        if((inputState.lmbTime == 1))
+            toggle(resolution.fullscreen);
+    }
+
 
     if(menu.age > 30 && imageButtonHovered(applyResolution))
     {
@@ -1202,7 +1203,10 @@ void renderEscapeMenu(baseMenu &menu)
 
         if(inputState.lmbTime == 1)
         {
-            window.create(sf::VideoMode(resolution.resolutions[resolution.currentRes].x,resolution.resolutions[resolution.currentRes].y,32), randomWindowName());
+            if(resolution.fullscreen)
+                window.create(resolution.resolutions[resolution.currentRes], randomWindowName(),sf::Style::Fullscreen);
+            else
+                window.create(resolution.resolutions[resolution.currentRes], randomWindowName());
             //,sf::Style::Fullscreen
             window.setFramerateLimit(60);
         }
