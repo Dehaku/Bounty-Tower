@@ -491,11 +491,7 @@ void critterPickUp()
                     if(item.name == "Scrap" && item.firstPickup)
                         continue;
 
-                    item.xpos = 0;
-                    item.ypos = 0;
-                    item.zpos = 0;
                     selectedNPCs[0]->addItem(item);
-                    item.toDelete = true;
                     AnyDeletes(worlditems);
                 }
                 return;
@@ -630,50 +626,60 @@ void critterLevelUp(Npc &npc, std::list<Npc> &container)
 
 void scrapPickup(Npc &npc, std::list<Npc> &container)
 {
+
     for(auto &scraps : worlditems)
     {
         if(scraps.name == "Scrap" && math::distance(npc.getPos(),scraps.getPos()) <= 60 && scraps.firstPickup)
         {
-            if(scraps.firstPickup && npc.skills.getRanks("Lucky Scavenger") > 0)
+            scraps.firstPickup = false;
+            std::string invStatus = npc.addItem(scraps);
+
+            if(invStatus == "Done")
             {
-                int scavRandom = random(1,100);
-                if(scavRandom <= npc.skills.getRanks("Lucky Scavenger")*20)
+                if(npc.skills.getRanks("Lucky Scavenger") > 0)
                 {
-                    int coinFlip = random(1,2);
-                    if(coinFlip == 1)
+                    int scavRandom = random(1,100);
+                    if(scavRandom <= npc.skills.getRanks("Lucky Scavenger")*20)
                     {
-                        Item Cash = *getGlobalItem("Cash");
-                        Cash.name = "Cash";
-                        Cash.amount = random(10,100);
-                        Cash.xpos = npc.xpos;
-                        Cash.ypos = npc.ypos;
-                        Cash.zpos = npc.zpos;
-                        worlditems.push_back(Cash);
-                    }
-                    if(coinFlip == 2)
-                    {
-                        Item Ammo = *getGlobalItem("Bullet: Standard");
-                        Ammo.amount = random(1,5);
-                        npc.addItem(Ammo);
+                        int coinFlip = random(1,2);
+                        if(coinFlip == 1)
+                        {
+                            Item Cash = *getGlobalItem("Cash");
+                            Cash.name = "Cash";
+                            Cash.amount = random(10,100);
+                            Cash.xpos = npc.xpos;
+                            Cash.ypos = npc.ypos;
+                            Cash.zpos = npc.zpos;
+                            worlditems.push_back(Cash);
+                        }
+                        if(coinFlip == 2)
+                        {
+                            Item Ammo = *getGlobalItem("Bullet: Standard");
+                            Ammo.amount = random(1,5);
+                            Ammo.xpos = npc.xpos;
+                            Ammo.ypos = npc.ypos;
+                            Ammo.zpos = npc.zpos;
+                            worlditems.push_back(Ammo);
+                            npc.addItem(worlditems.back());
+                            //npc.addItem(Ammo);
+                        }
                     }
                 }
+
+                int soundRan = random(1,4);
+                if(soundRan == 1)
+                    soundmanager.playSound("ScrapPickup1.ogg");
+                if(soundRan == 2)
+                    soundmanager.playSound("ScrapPickup2.ogg");
+                if(soundRan == 3)
+                    soundmanager.playSound("ScrapPickup3.ogg");
+                if(soundRan == 4)
+                    soundmanager.playSound("ScrapPickup4.ogg");
             }
-
-            scraps.firstPickup = false;
-            npc.addItem(scraps);
-            scraps.toDelete = true;
-
-            int soundRan = random(1,4);
-            if(soundRan == 1)
-                soundmanager.playSound("ScrapPickup1.ogg");
-            if(soundRan == 2)
-                soundmanager.playSound("ScrapPickup2.ogg");
-            if(soundRan == 3)
-                soundmanager.playSound("ScrapPickup3.ogg");
-            if(soundRan == 4)
-                soundmanager.playSound("ScrapPickup4.ogg");
-
-
+            else
+            {
+                scraps.firstPickup = true;
+            }
         }
     }
 }
@@ -2654,7 +2660,7 @@ void Npc::addItem(const std::string &itemname, int amount)
     }
 }
 
-void Npc::addItem(Item &item)
+std::string Npc::addItem(Item &item)
 {
     for(auto &inv : inventory)
     {
@@ -2664,7 +2670,7 @@ void Npc::addItem(Item &item)
             {
                 inv.amount += item.amount;
                 item.toDelete = true;
-                return;
+                return "Done";
             }
             else if(inv.amount != inv.stackSize)
             {
@@ -2674,6 +2680,10 @@ void Npc::addItem(Item &item)
             }
         }
     }
+
+    if(inventory.size() >= getInventoryMax())
+        return "Full";
+
     while(item.amount > item.stackSize)
     {
         Item newStack = item;
@@ -2683,8 +2693,21 @@ void Npc::addItem(Item &item)
         item.amount -= item.stackSize;
     }
     if(item.amount > 0)
+    {
         inventory.push_back(item);
-    return;
+        item.amount = 0;
+        item.toDelete = true;
+    }
+
+    return "Done";
+}
+
+int Npc::getInventoryMax()
+{
+    if(race == "BTNoirves")
+        return 10;
+
+    return 20;
 }
 
 void Npc::printConsoleInfo()
