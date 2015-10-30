@@ -48,7 +48,7 @@ void setupSquadHotKeySelection()
 {
     Squaddies.clear();
     for(auto &npc : npclist)
-        if(npc.faction == "The Titanium Grip")
+        if(npc.faction == "The Titanium Grip" && npc.isSquaddie)
             Squaddies.push_back(&npc);
 }
 
@@ -1809,45 +1809,110 @@ void layHints()
         {
             if(gvars::currentz == 1)
             {
-                textList.createText(2940,3870,15,gvars::cycleRed,"Passing through doors will alert enemies to your presence on the floor! \n"
+                float timeHover = cos(fpsKeeper.startTime.getElapsedTime().asMilliseconds()/250)*2;
+                sf::Vector2f textPos;
+                textPos = sf::Vector2f(2970,3920);
+                int tutBook1 = createImageButton(sf::Vector2f(textPos.x,textPos.y+timeHover),texturemanager.getTexture("tutBook.png"));
+                if(imageButtonHovered(tutBook1))
+                {
+                    textPos = sf::Vector2f(textPos.x+20,textPos.y-10);
+                    shapes.createSquare(textPos.x-5,textPos.y,textPos.x+900,textPos.y+40,sf::Color::Black,3,sf::Color::Cyan);
+                    textList.createText(textPos,15,sf::Color::Red,"Passing through doors will alert enemies to your presence on the floor! \n"
                             " They will flood from the stairs until they're sufficiently scared!");
-                textList.createText(3000,2790,15,gvars::cycleRed,"Stand squaddies on switches to activate them, enabling the elevator. \n"
-                            "Be sure to get everyone on the elevator before you try to leave, Or you'll abandon them!");
+                }
 
-                textList.createText(2520,3900,15,gvars::cycleRed,"Your goal? Fix the elevator! \n"
+                textPos = sf::Vector2f(3030,2790);
+                int tutBook2 = createImageButton(sf::Vector2f(textPos.x,textPos.y+timeHover),texturemanager.getTexture("tutBook.png"));
+                if(imageButtonHovered(tutBook2))
+                {
+                    textPos = sf::Vector2f(textPos.x+20,textPos.y-10);
+                    shapes.createSquare(textPos.x-5,textPos.y,textPos.x+900,textPos.y+40,sf::Color::Black,3,sf::Color::Cyan);
+                    textList.createText(textPos,15,sf::Color::Red,"Stand squaddies on switches to activate them, enabling the elevator. \n"
+                            "Be sure to get everyone on the elevator before you try to leave, Or you'll abandon them!");
+                }
+
+                textPos = sf::Vector2f(2790,3920);
+                int tutBook3 = createImageButton(sf::Vector2f(textPos.x,textPos.y+timeHover),texturemanager.getTexture("tutBook.png"));
+                if(imageButtonHovered(tutBook3))
+                {
+                    textPos = sf::Vector2f(textPos.x+20,textPos.y-10);
+                    shapes.createSquare(textPos.x-5,textPos.y,textPos.x+400,textPos.y+60,sf::Color::Black,3,sf::Color::Cyan);
+                    textList.createText(textPos,15,sf::Color::Red,"Your goal? Fix the elevator! \n"
                             "(White Tiles in the Middle) \nFind Switches, then head up!");
+                }
             }
             else if(gvars::currentz == 4)
             {
-                textList.createText(2940,2940,15,gvars::cycleRed,"Your bounty is waiting for you upstairs! \n"
+
+                float timeHover = cos(fpsKeeper.startTime.getElapsedTime().asMilliseconds()/250)*2;
+                sf::Vector2f textPos;
+                textPos = sf::Vector2f(2940,2940);
+                int tutBook1 = createImageButton(sf::Vector2f(textPos.x,textPos.y+timeHover),texturemanager.getTexture("tutBook.png"));
+                if(imageButtonHovered(tutBook1))
+                {
+                    textPos = sf::Vector2f(textPos.x+20,textPos.y-10);
+                    shapes.createSquare(textPos.x-5,textPos.y,textPos.x+450,textPos.y+40,sf::Color::Black,3,sf::Color::Cyan);
+                    textList.createText(textPos,15,sf::Color::Red,"Your bounty is waiting for you upstairs! \n"
                                                                 "Be prepared for a fight.");
+                }
             }
             else if(gvars::currentz == 5)
             {
-                textList.createText(3000,2760,15,gvars::cycleRed,"Using the elevator from here will return you to the tavern. \n"
+                float timeHover = cos(fpsKeeper.startTime.getElapsedTime().asMilliseconds()/250)*2;
+                sf::Vector2f textPos;
+                textPos = sf::Vector2f(2970,2790);
+                int tutBook1 = createImageButton(sf::Vector2f(textPos.x,textPos.y+timeHover),texturemanager.getTexture("tutBook.png"));
+                if(imageButtonHovered(tutBook1))
+                {
+                    textPos = sf::Vector2f(textPos.x+20,textPos.y-10);
+                    textPos = sf::Vector2f(textPos.x+10,textPos.y+10);
+                    shapes.createSquare(textPos.x-5,textPos.y,textPos.x+800,textPos.y+40,sf::Color::Black,3,sf::Color::Cyan);
+                    textList.createText(textPos,15,sf::Color::Red,"Using the elevator from here will return you to the tavern. \n"
                                                                 "Are you up to the challenge, or are you a blank body coward?!");
+                }
             }
         }
         if(bountytower::currentTower->name == "The Tavern")
         {
-            textList.createText(2520,4200,15,gvars::cycleRed,"Camera Control: WASD / Arrow Keys \n"
+            textList.createText(2520,4170,15,sf::Color::Red,"Hover your mouse over books to see tutorial text!");
+
+            float timeHover = cos(fpsKeeper.startTime.getElapsedTime().asMilliseconds()/250)*2;
+            sf::Vector2f textPos;
+            textPos = sf::Vector2f(2550,4230);
+            int tutBook1 = createImageButton(sf::Vector2f(textPos.x,textPos.y+timeHover),texturemanager.getTexture("tutBook.png"));
+            if(imageButtonHovered(tutBook1))
+            {
+                textPos = sf::Vector2f(textPos.x+20,textPos.y-10);
+                shapes.createSquare(textPos.x-5,textPos.y,textPos.x+900,textPos.y+100,sf::Color::Black,3,sf::Color::Cyan);
+                textList.createText(textPos,15,sf::Color::Red,"Camera Control: WASD / Arrow Keys \n"
                             "Select/Order: Left Mouse Button to select your squad, Right Mouse Button to order them around. \n"
                             "You can buy equipment or recruit more squaddies from the venders up north. \n"
                             "You start with a simple magitech PDA, though you will likely want better weapons. \n"
                             "The bartender will provide you with the means to go after your first bounty."
                             );
-            if(menus.empty())
+            }
+
+            textPos = sf::Vector2f(1950,3210);
+            int tutBook2 = createImageButton(sf::Vector2f(textPos.x,textPos.y+timeHover),texturemanager.getTexture("tutBook.png"));
+            if(imageButtonHovered(tutBook2))
             {
-                textList.createText(1920,3120,15,gvars::cycleRed,"Inventory: Press I with a squaddie selected to see their stats, skills, and inventory. \n"
+                textPos = sf::Vector2f(textPos.x+20,textPos.y-10);
+                shapes.createSquare(textPos.x-5,textPos.y,textPos.x+900,textPos.y+100,sf::Color::Black,3,sf::Color::Cyan);
+                textList.createText(textPos,15,sf::Color::Red,"Inventory: Press I with a squaddie selected to see their stats, skills, and inventory. \n"
                                 "Range Check: Press and hold Alt with squaddies selected to see their held item's attack ranges. \nRed for guns,  Green for magic, Blue for melee.\n"
                                 "Squaddies have two hand slots, and can dual wield any two items! \n"
                                 "You can manage their hand slots with a squaddie selected at the bottom of the screen.");
-                textList.createText(2220,2940,15,gvars::cycleRed,"Right Click to pickup items with a selected squaddie(Must be near item.) \n"
-                                "You can also drop items by right clicking near the squaddie with an item from their hotbar.");
             }
 
-
-
+            textPos = sf::Vector2f(2250,2970);
+            int tutBook3 = createImageButton(sf::Vector2f(textPos.x,textPos.y+timeHover),texturemanager.getTexture("tutBook.png"));
+            if(imageButtonHovered(tutBook3))
+            {
+                textPos = sf::Vector2f(textPos.x+20,textPos.y-10);
+                shapes.createSquare(textPos.x-5,textPos.y,textPos.x+850,textPos.y+50,sf::Color::Black,3,sf::Color::Cyan);
+                textList.createText(textPos,15,sf::Color::Red,"Right Click to pickup items with a selected squaddie(Must be near item.) \n"
+                                "You can also drop items by right clicking near the squaddie with an item from their hotbar.");
+            }
         }
     }
 

@@ -38,66 +38,7 @@ using std::abs;
 
 void drawBeams();
 
-class fpsTracker
-{
-public:
-    int framesPassed;
-    float framesPerSecond;
-    int highestFrameTimePerSecond;
 
-    sf::Clock startTime;
-    sf::Clock fpsTimerLive;
-    sf::Clock fpsTimer;
-    sf::Clock frameClock;
-
-    sf::Time framesPassedTime;
-    sf::Time frameTime;
-
-    fpsTracker()
-    {
-        startTime.restart();
-        framesPassed = 0;
-        framesPerSecond = 0;
-        framesPassedTime = fpsTimer.restart();
-    }
-
-    void calcFPS()
-    {
-        int timeBetweenFrames = frameTime.asMicroseconds();
-        frameTime = frameClock.restart();
-        if(highestFrameTimePerSecond < timeBetweenFrames)
-            highestFrameTimePerSecond = timeBetweenFrames;
-
-        framesPassed++;
-
-        float estimatedFPS = -1;
-        if(fpsTimerLive.getElapsedTime().asMilliseconds() != 0)
-            estimatedFPS = 1000/fpsTimerLive.getElapsedTime().asMilliseconds();
-        fpsTimerLive.restart();
-
-        if(fpsTimer.getElapsedTime().asMilliseconds() >= 1000)
-        {
-            highestFrameTimePerSecond = 0;
-            framesPerSecond = framesPassed;
-            framesPassed = 0;
-            framesPassedTime = fpsTimer.restart();
-        }
-
-        //std::cout << "FPS(Live/Second/TenSecond): " << estimatedFPS << "/" << framesPerSecond << std::endl;
-        int floatConv1 = estimatedFPS, floatConv2 = framesPerSecond;
-        std::string outPut = "FPS(" + std::to_string(floatConv1) + "/" + std::to_string(floatConv2) + "), ("
-            + std::to_string(timeBetweenFrames) + "/" + std::to_string(highestFrameTimePerSecond) + ") \n";
-        int gameHours = startTime.getElapsedTime().asSeconds()/60/60;
-        int gameMinutes = startTime.getElapsedTime().asSeconds()/60;
-        gameMinutes = (gameMinutes % 60);
-        int gameSeconds = ((startTime.getElapsedTime().asSeconds()));
-        gameSeconds = (gameSeconds % 60);
-        outPut.append("Game Time: " + std::to_string(gameHours) + "h" + std::to_string(gameMinutes) + "m" + std::to_string(gameSeconds) + "s" );
-        textList.createText(sf::Vector2f(0,0),15,sf::Color::White,outPut,gvars::hudView);
-    }
-
-};
-fpsTracker fpsKeeper;
 
 const int worldSizeX = 32;
 const int worldSizeY = 32;

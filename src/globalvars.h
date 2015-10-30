@@ -9,6 +9,29 @@ float cz(float number);
 void debug(std::string info, bool endline = true);
 void assignSlotPos();
 
+class fpsTracker
+{
+public:
+    int framesPassed;
+    float framesPerSecond;
+    int highestFrameTimePerSecond;
+
+    sf::Clock startTime;
+    sf::Clock fpsTimerLive;
+    sf::Clock fpsTimer;
+    sf::Clock frameClock;
+
+    sf::Time framesPassedTime;
+    sf::Time frameTime;
+
+    fpsTracker();
+
+    void calcFPS();
+
+};
+extern fpsTracker fpsKeeper;
+
+
 class Screen
 {
 public:
