@@ -4217,8 +4217,115 @@ void detectLineGrid( float x1, float y1, float x2, float y2)
     }
 }
 
+class RandomWeightList
+{
+public:
+    class WeightEntry
+    {
+    public:
+        float weight;
+        std::string name;
+        WeightEntry()
+        {
+            weight = 0;
+        }
+    };
+    std::vector<WeightEntry> entries;
+
+    void clear()
+    {
+        entries.clear();
+    }
+    void addEntry(std::string entryName, int entryWeight)
+    {
+        WeightEntry wE;
+        wE.name = entryName;
+        wE.weight = entryWeight;
+        entries.push_back(wE);
+    }
+    int getRandomSlot()
+    {
+        int sum_of_weight = 0;
+        for(int i = 0; i < entries.size(); i++)
+        {
+            sum_of_weight += entries[i].weight;
+        }
+
+        int rnd = random(0, sum_of_weight);
+
+        for(int i = 0; i < entries.size(); i++)
+        {
+            if(rnd < entries[i].weight)
+                return i;
+            rnd -= entries[i].weight;
+        }
+    }
+    std::string getRandomName()
+    {
+        int sum_of_weight = 0;
+        for(int i = 0; i < entries.size(); i++)
+        {
+            sum_of_weight += entries[i].weight;
+        }
+
+        int rnd = random(0, sum_of_weight);
+
+        for(int i = 0; i < entries.size(); i++)
+        {
+            if(rnd < entries[i].weight)
+                return entries[i].name;
+            rnd -= entries[i].weight;
+        }
+    }
+    void printEntries()
+    {
+        int sum_of_weight = 0;
+        for(int i = 0; i < entries.size(); i++)
+        {
+            std::cout << entries[i].name << ": " << sum_of_weight << " - " << sum_of_weight+entries[i].weight << std::endl;
+            sum_of_weight += entries[i].weight;
+        }
+    }
+
+
+};
+RandomWeightList randomWeightList;
+
+
+
+
+
+
+int weightChance()
+{
+    randomWeightList.clear();
+    randomWeightList.addEntry("Minigun",5);
+    randomWeightList.addEntry("Shotgun",25);
+    randomWeightList.addEntry("Harpoon Cannon",5);
+    randomWeightList.addEntry("Pistol",50);
+
+    int ran = randomWeightList.getRandomSlot();
+    std::cout << "Achieved Element: " << ran << std::endl;
+
+    randomWeightList.printEntries();
+
+    std::cout << "First Item: " << randomWeightList.getRandomName() << std::endl;
+    std::cout << "Second Item: " << randomWeightList.getRandomName() << std::endl;
+    std::cout << "Third Item: " << randomWeightList.getRandomName() << std::endl;
+    std::cout << "Fourth Item: " << randomWeightList.getRandomName() << std::endl;
+    std::cout << "Fifth Item: " << randomWeightList.getRandomName() << std::endl;
+
+    return ran;
+}
+
 void pauseMenu()
 {
+
+    if(inputState.key[Key::R].time == 1)
+    {
+        int itemChosen = weightChance();
+        std::cout << "Random Item: " << randomWeightList.entries[itemChosen].name << std::endl;
+    }
 
     if(inputState.key[Key::F1].time == 1)
     {
@@ -4266,6 +4373,8 @@ void pauseMenu()
         }
     }
 }
+
+
 
 void onStart()
 {
