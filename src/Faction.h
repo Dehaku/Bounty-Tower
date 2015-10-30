@@ -132,6 +132,12 @@ public:
     int xp;
     int skillpoints;
 
+
+    std::string chasePriority;
+    sf::Vector2f chaseDefendPos;
+    int chaseRange;
+
+
     bool recruitable;
 
     unsigned int deadFrames;

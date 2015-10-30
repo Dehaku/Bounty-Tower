@@ -62,6 +62,8 @@ void equipStarters()
 
         member.setupAnimations();
 
+        member.chasePriority = "Hold Ground";
+
         member.ypos = 4040;
 
         if(random(1,2) == 1)
@@ -991,6 +993,7 @@ void renderRecruiterMenu(baseMenu &menu)
                 soldNpc.name = generateName();
                 soldNpc.tags.append("[WearsHat:1]");
                 soldNpc.isSquaddie = true;
+                soldNpc.chasePriority = "Hold Ground";
 
                 npclist.push_back(soldNpc);
                 int soundRan = random(1,3);
@@ -1697,6 +1700,10 @@ void bountyTowerMainMenu()
 {
     int startBut = createImageButton(sf::Vector2f(screen.x()/2,screen.y()/2),texturemanager.getTexture("Fortune Fortress Title.png"));
     textList.createText(gvars::mousePos,10,sf::Color::White,"Click to begin!");
+
+    textList.createText(10,screen.y()-80,10,sf::Color(255,255,255),"Made by Johnny Fojtik(Dehaku Zedon)");
+    textList.createText(10,screen.y()-60,10,sf::Color(255,255,255),"Contact: dehakuzedon@hotmail.com  or reddit.com/r/bountytower");
+    textList.createText(10,screen.y()-40,10,sf::Color(255,255,255),"Can't stand some of the art in this game? \nCan you do better? Contact me! I'm looking for an artist!");
 
     if(imageButtonClicked(startBut))
         loadTavern();

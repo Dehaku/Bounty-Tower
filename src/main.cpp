@@ -891,7 +891,7 @@ void handsOffense(Npc &npc, std::list<Npc> &container, Npc * closEnmy, bool &has
 
 void assaultDesire(Npc &npc, std::list<Npc> &container, Npc * closEnmy, bool &hasPath, Vec3 &endPos)
 {
-    if(closEnmy != nullptr && npc.faction == "Towerlings")
+    if(closEnmy != nullptr && npc.chasePriority == "Assault")
     {
         hasPath = true;
         endPos = Vec3(closEnmy->xpos,closEnmy->ypos,closEnmy->zpos);
