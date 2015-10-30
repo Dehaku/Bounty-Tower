@@ -1702,7 +1702,7 @@ void bountyTowerMainMenu()
     textList.createText(gvars::mousePos,10,sf::Color::White,"Click to begin!");
 
     textList.createText(10,screen.y()-80,10,sf::Color(255,255,255),"Made by Johnny Fojtik(Dehaku Zedon)");
-    textList.createText(10,screen.y()-60,10,sf::Color(255,255,255),"Contact: dehakuzedon@hotmail.com  or reddit.com/r/bountytower");
+    textList.createText(10,screen.y()-60,10,sf::Color(255,255,255),"Contact: dehakuzedon@gmail.com  or reddit.com/r/bountytower");
     textList.createText(10,screen.y()-40,10,sf::Color(255,255,255),"Can't stand some of the art in this game? \nCan you do better? Contact me! I'm looking for an artist!");
 
     if(imageButtonClicked(startBut))
