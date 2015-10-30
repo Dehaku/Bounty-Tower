@@ -1818,6 +1818,7 @@ void layHints()
         {
             if(gvars::currentz == 1)
             {
+
                 float timeHover = cos(fpsKeeper.startTime.getElapsedTime().asMilliseconds()/250)*2;
                 sf::Vector2f textPos;
                 textPos = sf::Vector2f(2970,3920);
@@ -1850,6 +1851,26 @@ void layHints()
                             "(White Tiles in the Middle) \nFind Switches, then head up!");
                 }
             }
+
+            else if(gvars::currentz == 2)
+            {
+                float timeHover = cos(fpsKeeper.startTime.getElapsedTime().asMilliseconds()/250)*2;
+                sf::Vector2f textPos;
+                textPos = sf::Vector2f(2970,3090);
+                int tutBook1 = createImageButton(sf::Vector2f(textPos.x,textPos.y+timeHover),texturemanager.getTexture("tutBook.png"));
+                if(imageButtonHovered(tutBook1))
+                {
+                    textPos = sf::Vector2f(textPos.x+20,textPos.y-10);
+                    shapes.createSquare(textPos.x-5,textPos.y,textPos.x+1040,textPos.y+100,sf::Color::Black,3,sf::Color::Cyan);
+                    textList.createText(textPos,15,sf::Color::Red,"Advanced Tactics: You can hold Left Alt to see 'passive orders' that you can assign, floating above your units. \n"
+                                                                "Assault: Automatically run off and assault enemies \n"
+                                                                "Defend: Guards the position you tell them to move, attacking anyone who enters the area \n"
+                                                                "You can change the radius they protect with the two buttons below the main three passive orders. \n"
+                                                                "Hold Position: This unit will not willingly move unless you tell them to, They will still attack enemies they see."
+                                        );
+                }
+            }
+
             else if(gvars::currentz == 4)
             {
 
