@@ -2314,11 +2314,13 @@ void bountyTowerLoop()
     */
 
 
+    /*
     if(inputState.key[Key::Space])
         for(auto &npc : npclist)
     { // Move NPC's towards mouse
         npc.dirMove(gvars::mousePos);
     }
+    */
 
 
 

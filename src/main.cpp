@@ -896,6 +896,48 @@ void assaultDesire(Npc &npc, std::list<Npc> &container, Npc * closEnmy, bool &ha
         hasPath = true;
         endPos = Vec3(closEnmy->xpos,closEnmy->ypos,closEnmy->zpos);
     }
+    if(npc.chasePriority == "Defend" || npc.isSquaddie && inputState.key[Key::Space])
+    {
+        shapes.createCircle(npc.chaseDefendPos.x,npc.chaseDefendPos.y,npc.chaseRange,sf::Color::Transparent,1,sf::Color::White);
+        Npc * closestEnemy = nullptr;
+        int closestEnemyDistance = 0;
+        for(auto &enemy : npclist)
+        {
+            if(enemy.alive && enemy.faction == "Towerlings")
+            {
+                int distance = math::distance(npc.chaseDefendPos,enemy.getPos());
+                if(distance <= npc.chaseRange)
+                {
+                    if(closestEnemy == nullptr)
+                    {
+                        closestEnemy = &enemy;
+                        closestEnemyDistance = distance;
+                    }
+                    else if(distance < closestEnemyDistance)
+                    {
+                        closestEnemy = &enemy;
+                        closestEnemyDistance = distance;
+                    }
+                    shapes.createCircle(enemy.xpos,enemy.ypos,10,sf::Color::Red);
+                }
+
+            }
+        }
+
+        if(closestEnemy != nullptr)
+        {
+
+            shapes.createCircle(closestEnemy->xpos,closestEnemy->ypos,10,sf::Color::Green);
+            hasPath = true;
+            endPos = Vec3(closestEnemy->xpos,closestEnemy->ypos,closestEnemy->zpos);
+        }
+        else
+        {
+            hasPath = true;
+            endPos = Vec3(npc.chaseDefendPos.x,npc.chaseDefendPos.y,npc.chaseDefendPos.z);
+        }
+
+    }
     debug("0");
 
     handsOffense(npc,container,closEnmy,hasPath,endPos);

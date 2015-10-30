@@ -1753,6 +1753,7 @@ void rightMouseButtonContextMenu()
                 lilguy->storedPath.clear();
 
                 lilguy->endPos = Vec3(gvars::mousePos.x,gvars::mousePos.y,gvars::currentz*GRID_SIZE);
+                lilguy->chaseDefendPos = Vec3(gvars::mousePos.x,gvars::mousePos.y,gvars::currentz*GRID_SIZE);
             }
             return;
         }
