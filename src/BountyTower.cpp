@@ -1913,6 +1913,21 @@ void layHints()
                 textList.createText(textPos,15,sf::Color::Red,"Right Click to pickup items with a selected squaddie(Must be near item.) \n"
                                 "You can also drop items by right clicking near the squaddie with an item from their hotbar.");
             }
+
+            textPos = sf::Vector2f(3390,3270);
+            int tutBook4 = createImageButton(sf::Vector2f(textPos.x,textPos.y+timeHover),texturemanager.getTexture("tutBook.png"));
+            if(imageButtonHovered(tutBook4))
+            {
+                textPos = sf::Vector2f(textPos.x+20,textPos.y-10);
+                shapes.createSquare(textPos.x-5,textPos.y,textPos.x+850,textPos.y+100,sf::Color::Black,3,sf::Color::Cyan);
+                textList.createText(textPos,15,sf::Color::Red,"You can have up to a total of 4 Squad members at once.\n"
+                                "A critters stats is represented as S.P.I.C.E.D., \n"
+                                "Strength, Perception, Intelligence, Charisma, Endurance, Dexterity\n"
+                                "Intelligence affects your switch working speed \n"
+                                "Dexterity affects your dodge chance. \n"
+                                );
+            }
+
         }
     }
 
