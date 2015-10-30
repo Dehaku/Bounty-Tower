@@ -38,346 +38,6 @@ using std::abs;
 
 void drawBeams();
 
-
-
-const int worldSizeX = 32;
-const int worldSizeY = 32;
-const int worldSizeZ = 3;
-
-class cTile
-{
-public:
-    Vec3 position;
-    int type;
-    bool teleporter;
-    Vec3 telePos;
-    void setPos(int x, int y, int z)
-    {
-        position = Vec3(x, y, z);
-    }
-    Vec3 getPos()
-    {
-        return position;
-    }
-    cTile()
-    {
-        type = 0;
-        teleporter = false;
-        telePos = Vec3(-1, -1, -1);
-    }
-};
-
-cTile grid[worldSizeX][worldSizeY][worldSizeZ];
-
-class worldclass
-    : public Graph
-{
-private:
-    worldclass(const worldclass &);
-    void operator=(const worldclass &);
-
-public:
-    void NodeToXYZ(void *node, int *x, int *y, int *z)
-    {
-        cTile *Nodeling = static_cast<cTile *>(node);
-
-        *x = Nodeling->position.x;
-        *y = Nodeling->position.y;
-        *z = Nodeling->position.z;
-    }
-
-    void *XYZToNode(int x, int y, int z)
-    {
-        return (void *)&(grid[x][y][z]);
-    }
-
-    int Passable(int nx, int ny, int nz)
-    {
-        if (nx >= 0 && nx < worldSizeX && ny >= 0 && ny < worldSizeY &&
-            nz >= 0 && nz < worldSizeZ)
-        {
-            if (grid[nx][ny][nz].type == 0)
-                return 1;
-            if (grid[nx][ny][nz].type == 2)
-                return 2;
-            if (grid[nx][ny][nz].type == 3)
-                return 3;
-            if (grid[nx][ny][nz].type == 10)
-                return 1;
-        }
-        return 0;
-    }
-
-    void toggleTeleporter()
-    {
-        if (grid[5][1][0].type == 10)
-        {
-            grid[5][1][0].type = 0;
-            grid[5][1][0].teleporter = false;
-            grid[5][1][0].telePos = Vec3(-1, -1, -1);
-
-            grid[20][30][2].type = 0;
-            grid[20][30][2].teleporter = false;
-            grid[20][30][2].telePos = Vec3(-1, -1, -1);
-        }
-        else
-        {
-            grid[5][1][0].type = 10;
-            grid[5][1][0].teleporter = true;
-            grid[5][1][0].telePos = Vec3(20, 30, 2);
-            grid[20][30][2].type = 10;
-            grid[20][30][2].teleporter = true;
-            grid[20][30][2].telePos = Vec3(5, 1, 0);
-        }
-    }
-
-
-    MPVector<void *> microPath;
-    MicroPather *pather;
-    std::vector<cTile *> storedPath;
-
-    worldclass() : pather(0)
-    {
-        pather = new MicroPather(
-            this, 20); // Use a very small memory block to stress the pather
-    }
-
-    void drawPath()
-    {
-        unsigned int k;
-        unsigned int pathSize = microPath.size();
-        Vec3 oldPos;
-        for (k = 0; k < pathSize; ++k)
-        {
-            Vec3 pathPos;
-            NodeToXYZ(microPath[k], &pathPos.x, &pathPos.y, &pathPos.z);
-            sf::Color pathColor(0, 0, 0);
-            if (pathPos.z == 0)
-                pathColor.r = 255;
-            if (pathPos.z == 1)
-                pathColor.g = 255;
-            if (pathPos.z == 2)
-                pathColor.b = 255;
-
-            if (k != 0)
-                shapes.createLine((oldPos.x + 1) * GRID_SIZE - GRID_SIZE/2,
-                                   (oldPos.y + 1) * GRID_SIZE - GRID_SIZE/2,
-                                   (pathPos.x + 1) * GRID_SIZE - GRID_SIZE/2,
-                                   (pathPos.y + 1) * GRID_SIZE - GRID_SIZE/2, 5, pathColor);
-
-            oldPos = pathPos;
-        }
-    }
-
-    void drawStoredPath()
-    {
-        Vec3 oldPos;
-        bool firstRun = true;
-
-        for (auto &i : storedPath)
-        {
-            Vec3 pathPos;
-            pathPos = Vec3(i->getPos());
-            sf::Color pathColor(0, 0, 0);
-            if (pathPos.z == 0)
-                pathColor.r = 255;
-            if (pathPos.z == 1)
-                pathColor.g = 255;
-            if (pathPos.z == 2)
-                pathColor.b = 255;
-
-            if (!firstRun)
-                shapes.createLine((oldPos.x + 1) * GRID_SIZE - GRID_SIZE/2,
-                                   (oldPos.y + 1) * GRID_SIZE - GRID_SIZE/2,
-                                   (pathPos.x + 1) * GRID_SIZE - GRID_SIZE/2,
-                                   (pathPos.y + 1) * GRID_SIZE - GRID_SIZE/2, 5, pathColor);
-
-            oldPos = pathPos;
-            firstRun = false;
-        }
-        storedPath.clear();
-    }
-
-    void storePath(void *node)
-    {
-        cTile *Nodeling = static_cast<cTile *>(node);
-        storedPath.push_back(Nodeling);
-    }
-
-    int makePath(Vec3 Ori, Vec3 Tar)
-    {
-        int result = 0;
-        if (Passable(Tar.x, Tar.y, Tar.z) == 1)
-        {
-            float totalCost;
-
-            result = pather->Solve(XYZToNode(Ori.x, Ori.y, Ori.z),
-                                   XYZToNode(Tar.x, Tar.y, Tar.z), &microPath,
-                                   &totalCost);
-
-            if (result == MicroPather::SOLVED)
-            {
-                unsigned int pathSize = microPath.size();
-                for (int i = 0; i != pathSize; i++)
-                {
-                    storePath(microPath[i]);
-                }
-            }
-
-//printf( "Pather returned %d\n", result );
-
-        }
-        return result;
-    }
-
-    virtual ~worldclass()
-    {
-        delete pather;
-    }
-
-    virtual float LeastCostEstimate(void *nodeStart, void *nodeEnd)
-    {
-        int xStart, yStart, zStart, xEnd, yEnd, zEnd;
-        NodeToXYZ(nodeStart, &xStart, &yStart, &zStart);
-        NodeToXYZ(nodeEnd, &xEnd, &yEnd, &zEnd);
-
-        double d = sqrt(pow(xEnd - xStart, 2) + pow(yEnd - yStart, 2) +
-                        pow(zEnd - zStart, 2));
-        /* Compute the minimum path cost using distance measurement. It is possible
-		   to compute the exact minimum path using the fact that you can move only
-		   on a straight line or on a diagonal, and this will yield a better result.
-		*/
-        return d;
-    }
-
-    virtual void AdjacentCost(void *node,
-                              micropather::MPVector<StateCost> *neighbors)
-    {
-        int x, y, z;
-        NodeToXYZ(node, &x, &y, &z);
-        //const int dx[8] = { 1, 1, 0, -1, -1, -1, 0, 1 };
-        //const int dy[8] = { 0, 1, 1, 1, 0, -1, -1, -1 };
-        //const int dx[26] = { -1, 0, 1, -1, 0, 1, -1, 0, 1, -1, 0, 1, -1, 1, -1, 0, 1, -1, 0, 1, -1, 0, 1, -1, 0, 1};
-        //const int dy[26] = { -1, -1, -1, 0, 0, 0, 1, 1, 1, -1, -1, -1, 0, 0, 1, 1, 1, -1, -1, -1, 0, 0, 0, 1, 1, 1};
-        //const int dz[26] = { -1, -1, -1, -1, -1, -1, -1, -1, -1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1};
-
-        const int dx[10] = {0, -1, 0, 1, -1, 1, -1, 0, 1, 0};
-        const int dy[10] = {0, -1, -1, -1, 0, 0, 1, 1, 1, 0};
-        const int dz[10] = {-1, 0, 0, 0, 0, 0, 0, 0, 0, 1};
-
-        //const float cost[8] = { 1.0f, 1.41f, 1.0f, 1.41f, 1.0f, 1.41f, 1.0f, 1.41f };
-        float One = 1;
-        float Two = 1.41f;
-        float Three = 1.44f;
-        const float cost[10] = {One, Two, One, Two, One,
-                                One, Two, One, Two, One};
-
-        cTile *Nodeling = static_cast<cTile *>(node);
-
-        if (Nodeling->teleporter)
-        {
-            Vec3 N(Nodeling->telePos);
-            StateCost nodeCost = {XYZToNode(N.x, N.y, N.z), 3};
-            neighbors->push_back(nodeCost);
-        }
-
-        for (int i = 0; i < 10; ++i)
-        {
-
-            int nx = x + dx[i];
-            int ny = y + dy[i];
-            int nz = z + dz[i];
-
-            //void* targetTile = XYZToNode(nx,ny,nz);
-
-            int pass = Passable(nx, ny, nz);
-            if (pass > 0)
-            {
-                //std::cout << dz[i];
-                if (pass == 1 && dz[i] == 0)
-                {
-                    // Normal floor
-                    StateCost nodeCost = {XYZToNode(nx, ny, nz), cost[i]};
-                    neighbors->push_back(nodeCost);
-                }
-                else if (pass == 3 && dz[i] == -1 && dx[i] == 0 && dy[i] == 0)
-                {
-                    StateCost nodeCost = {XYZToNode(nx, ny, nz), cost[i]};
-                    neighbors->push_back(nodeCost);
-                }
-                else if (pass == 2 && dz[i] == 1 && dx[i] == 0 && dy[i] == 0)
-                {
-                    StateCost nodeCost = {XYZToNode(nx, ny, nz), cost[i]};
-                    neighbors->push_back(nodeCost);
-                }
-                else
-                {
-                    // Normal floor
-                    StateCost nodeCost = {XYZToNode(nx, ny, nz), FLT_MAX};
-                    neighbors->push_back(nodeCost);
-                }
-            }
-        }
-    }
-
-    virtual void
-    AdjacentCostPureFlight(void *node,
-                           micropather::MPVector<StateCost> *neighbors)
-    {
-        int x, y, z;
-        NodeToXYZ(node, &x, &y, &z);
-        //const int dx[8] = { 1, 1, 0, -1, -1, -1, 0, 1 };
-        //const int dy[8] = { 0, 1, 1, 1, 0, -1, -1, -1 };
-        const int dx[26] = {-1, 0,  1, -1, 0,  1, -1, 0,  1, -1, 0,  1, -1,
-                            1,  -1, 0, 1,  -1, 0, 1,  -1, 0, 1,  -1, 0, 1};
-        const int dy[26] = {-1, -1, -1, 0, 0,  0,  1,  1, 1, -1, -1, -1, 0,
-                            0,  1,  1,  1, -1, -1, -1, 0, 0, 0,  1,  1,  1};
-        const int dz[26] = {-1, -1, -1, -1, -1, -1, -1, -1, -1, 0, 0, 0, 0,
-                            0,  0,  0,  0,  1,  1,  1,  1,  1,  1, 1, 1, 1};
-        //const float cost[8] = { 1.0f, 1.41f, 1.0f, 1.41f, 1.0f, 1.41f, 1.0f, 1.41f };
-        float One = 1;
-        float Two = 1.41f;
-        float Three = 1.44f;
-        const float cost[26] = {Three, Two,   Three, Two,   One,  Two,   Three,
-                                Two,   Three, Two,   One,   Two,  One,   One,
-                                Two,   One,   Two,   Three, Two,  Three, Two,
-                                One,   Two,   Three, Two,   Three};
-
-        for (int i = 0; i < 26; ++i)
-        {
-            int nx = x + dx[i];
-            int ny = y + dy[i];
-            int nz = z + dz[i];
-
-            int pass = Passable(nx, ny, nz);
-            if (pass > 0)
-            {
-                if (pass == 1)
-                {
-                    // Normal floor
-                    StateCost nodeCost = {XYZToNode(nx, ny, nz), cost[i]};
-                    neighbors->push_back(nodeCost);
-                }
-                else
-                {
-                    // Normal floor
-                    StateCost nodeCost = {XYZToNode(nx, ny, nz), FLT_MAX};
-                    neighbors->push_back(nodeCost);
-                }
-            }
-        }
-    }
-
-    virtual void PrintStateInfo(void *node)
-    {
-        int x, y, z;
-        NodeToXYZ(node, &x, &y, &z);
-        printf("(%d,%d,%d)", x, y, z);
-    }
-
-};
-worldclass world;
-
 void drawStoredPath(std::vector<Tile *> storedPath)
 {
     Vec3 oldPos;
@@ -2336,35 +1996,6 @@ Item *getGlobalItem(std::string strtype)
     return nullptr;
 }
 
-void buildMicroPatherTest()
-{
-    for (int x = 0; x != worldSizeX; x++)
-        for (int y = 0; y != worldSizeY; y++)
-            for (int z = 0; z != worldSizeZ; z++)
-            {
-                grid[x][y][z].setPos(x, y, z);
-                grid[x][y][z].type = 0;
-                if (randz(0, 10) == 10)
-                    grid[x][y][z].type = 1;
-            }
-
-    grid[16][16][0].type = 0;
-    grid[16][16][1].type = 2;
-
-    grid[5][1][0].type = 10;
-    grid[5][1][0].teleporter = true;
-    grid[5][1][0].telePos = Vec3(20, 30, 2);
-    grid[20][30][2].type = 10;
-    grid[20][30][2].teleporter = true;
-    grid[20][30][2].telePos = Vec3(5, 1, 0);
-
-    grid[16][8][1].type = 0;
-    grid[16][8][2].type = 2;
-
-    grid[0][0][0].type = 0;
-    grid[worldSizeX - 1][worldSizeY - 1][worldSizeZ - 1].type = 0;
-}
-
 void testProcess()
 {
                 /*
@@ -2424,8 +2055,6 @@ void galaxySetup()
 {
     if (!gvars::defaultFont.loadFromFile("data/fonts/sansation.ttf"))
         throw std::runtime_error("Failed to load font!");
-
-    buildMicroPatherTest();
 
 
     network::mainPort = randz(23636,65511);
@@ -2806,1318 +2435,1254 @@ void lmbPress()
 
 void handlePhase()
 {
-        if(bountytower::bountytower)
-            bountyTowerLoop();
+    if(bountytower::bountytower)
+        bountyTowerLoop();
+
+    if (gCtrl.phase == "Local")
+    { //=======================================================*Local*============================================================================
 
 
-        if (gCtrl.phase == "MicroPatherTest")
+        attractNPCs(gvars::mousePos);
+
+        if (gvars::debug)
+            textList.createText((gvars::currentx - 2) * GRID_SIZE,
+                                (gvars::currenty + 1) * GRID_SIZE, 11,
+                                sf::Color::Red, "Debug On");
+
+        if (inputState.key[Key::V].time == 1 && !network::chatting)
+            chatBox.addChat(
+                randomWindowName(),
+                sf::Color(randz(0, 255), randz(0, 255), randz(0, 255)));
+        if (inputState.key[Key::X].time == 10 && !network::chatting)
         {
-            cameraControls();
-
-            for (int x = 0; x != worldSizeX; x++)
-                for (int y = 0; y != worldSizeY; y++)
-                    for (int z = 0; z != worldSizeZ; z++)
-                    {
-                        sf::Color wallColor(0, 0, 0);
-                        if (z == 0)
-                            wallColor.r = 150;
-                        else if (z == 1)
-                            wallColor.g = 150;
-                        else //if (z == 2)
-                            wallColor.b = 150;
-                        if (grid[x][y][z].type == 10)
-                            wallColor = sf::Color(255, 0, 255);
-
-                        if (grid[x][y][z].type == 1 || grid[x][y][z].type == 10)
-                            shapes.createSquare(x * 20, y * 20, (x + 1) * 20,
-                                                 (y + 1) * 20, wallColor);
-                    }
-            /* Adding a second loop to make sure the yellow squares are on top of the display, Temporary only. */
-            for (int x = 0; x != worldSizeX; x++)
-                for (int y = 0; y != worldSizeY; y++)
-                    for (int z = 0; z != worldSizeZ; z++)
-                    {
-                        if (grid[x][y][z].type == 2)
-                            shapes.createSquare(
-                                (x * 20) + 2, (y * 20) + 2, ((x + 1) * 20) - 2,
-                                ((y + 1) * 20) - 2, sf::Color::Yellow, 4,
-                                sf::Color::White);
-                    }
-
-            Vec3 startPos(0, 0, 0);
-            Vec3 endPos(worldSizeX - 1, worldSizeY - 1, worldSizeZ - 1);
-            world.makePath(startPos, endPos);
-
-            //world.DrawPath();
-            world.drawStoredPath();
-
-            textList.createText(700, 100, 10, sf::Color::White,
-                                "Total Tile Movement: ", "",
-                                world.microPath.size());
-            textList.createText(700, 120, 10, sf::Color::White,
-                                "Toggle Teleporters: [Space]");
-            textList.createText(700, 140, 10, sf::Color::White,
-                                "Randomize Tiles: [Tab]");
-
-            if (inputState.key[Key::Space].time == 1)
+            for(int x = 0; x != GRIDS; x++)
+                for(int y = 0; y != GRIDS; y++)
+                    for(int z = 0; z != CHUNK_SIZE; z++)
             {
-                world.toggleTeleporter();
-                world.pather->Reset();
+                int ranNum = randz(0,6);
+                if(ranNum == 6)
+                    tiles[x][y][z].stoneWall();
+                else if(ranNum == 5)
+                    tiles[x][y][z].stone();
+                else if(ranNum == 4)
+                    tiles[x][y][z].grass();
+                else
+                    tiles[x][y][z].dirt();
+                if(randz(0,100) == 100 && y != 0 && y != GRIDS-1)
+                {
+                    tiles[x][y][z].lava();
+                    tiles[x][y-1][z].lava();
+                    tiles[x][y+1][z].lava();
+                }
             }
-            if (inputState.key[Key::Tab].time == 1)
+        }
+        if (inputState.key[Key::Z].time == 10 && !network::chatting && clients.size() != 0)
+        {
+            sf::Packet pack;
+            std::cout << "Packet size: " << sizeof(pack);
+            pack << ident.gridUpdate;
+            for(int x = 0; x != GRIDS; x++)
+                for(int y = 0; y != GRIDS; y++)
+                    for(int z = 0; z != CHUNK_SIZE; z++)
             {
-                buildMicroPatherTest();
-                world.pather->Reset();
+                pack << tiles[x][y][z].id;
             }
+            std::cout << ", " << sizeof(pack) << std::endl;
+            tcpSendtoAll(pack);
         }
 
 
+        squadHud();
 
-        if (gCtrl.phase == "Local")
-        { //=======================================================*Local*============================================================================
+        if (gvars::initalZeds)
+            gCtrl.wave();
 
+        rightMouseButtonContextMenu();
 
-            attractNPCs(gvars::mousePos);
-
-            if (gvars::debug)
-                textList.createText((gvars::currentx - 2) * GRID_SIZE,
-                                    (gvars::currenty + 1) * GRID_SIZE, 11,
-                                    sf::Color::Red, "Debug On");
-
-            if (inputState.key[Key::V].time == 1 && !network::chatting)
-                chatBox.addChat(
-                    randomWindowName(),
-                    sf::Color(randz(0, 255), randz(0, 255), randz(0, 255)));
-            if (inputState.key[Key::X].time == 10 && !network::chatting)
+        if(inputState.key[Key::V] && !network::chatting)
+        {
+            for (int x = 0; x != GRIDS; x++)
+                for (int y = 0; y != GRIDS; y++)
             {
-                for(int x = 0; x != GRIDS; x++)
-                    for(int y = 0; y != GRIDS; y++)
-                        for(int z = 0; z != CHUNK_SIZE; z++)
-                {
-                    int ranNum = randz(0,6);
-                    if(ranNum == 6)
-                        tiles[x][y][z].stoneWall();
-                    else if(ranNum == 5)
-                        tiles[x][y][z].stone();
-                    else if(ranNum == 4)
-                        tiles[x][y][z].grass();
-                    else
-                        tiles[x][y][z].dirt();
-                    if(randz(0,100) == 100 && y != 0 && y != GRIDS-1)
-                    {
-                        tiles[x][y][z].lava();
-                        tiles[x][y-1][z].lava();
-                        tiles[x][y+1][z].lava();
-                    }
-                }
+                //textList.createText(x*TILE_PIXELS,y*TILE_PIXELS,10,sf::Color::Red,std::to_string(tiles[x][y][gvars::currentz].walkable));
+                if(tiles[x][y][gvars::currentz].walkable)
+                    shapes.createSquare(x*TILE_PIXELS,y*TILE_PIXELS,x*TILE_PIXELS+TILE_PIXELS,y*TILE_PIXELS+TILE_PIXELS,sf::Color(255,255,0,100));
+                else
+                    shapes.createSquare(x*TILE_PIXELS,y*TILE_PIXELS,x*TILE_PIXELS+TILE_PIXELS,y*TILE_PIXELS+TILE_PIXELS,sf::Color(255,0,0,100));
             }
-            if (inputState.key[Key::Z].time == 10 && !network::chatting && clients.size() != 0)
-            {
-                sf::Packet pack;
-                std::cout << "Packet size: " << sizeof(pack);
-                pack << ident.gridUpdate;
-                for(int x = 0; x != GRIDS; x++)
-                    for(int y = 0; y != GRIDS; y++)
-                        for(int z = 0; z != CHUNK_SIZE; z++)
-                {
-                    pack << tiles[x][y][z].id;
-                }
-                std::cout << ", " << sizeof(pack) << std::endl;
-                tcpSendtoAll(pack);
-            }
+        }
+        if (inputState.rmbTime == 1 && inputState.key[Key::LShift])
+            rmbMenuTile(    Vec3(gvars::mousePos.x,gvars::mousePos.y,gvars::currentz)   );
+
+        if (inputState.key[Key::LShift] &&
+            inputState.key[Key::Tab]) // Debug NPC Spawn Menu
+        {
+
+            gCtrl.menuType = "DebugCritterSpawn";
+            menuPopUp();
+        }
+        else if (inputState.key[Key::Tab] == true &&
+                 inputState.key[Key::LShift] ==
+                     false) // Debug Item Spawn Menu TODO: Sort them by Type.
+        {
+            gCtrl.menuType = "DebugItemSpawn";
+            menuPopUp();
+        }
+        else if (gCtrl.menuType == "DebugItemSpawn" ||
+                 gCtrl.menuType == "DebugCritterSpawn")
+        {
+            gCtrl.menuType = "NULL";
+            gCtrl.menuPos = sf::Vector2f(-10000, -10000);
+            gCtrl.menuEndPos = sf::Vector2f(-10000, -10000);
+            menuPtrCon.pItem = nullptr;
+            menuPtrCon.pNPC = nullptr;
+            menuPtrCon.pTile = nullptr;
+            con("Closing DebugMenus Due To Lack of Key Presses");
+        }
+        //                       if(Key.lshift && Key.z){GC.ZombieSwarmLocal();}
+
+        if (inputState.key[Key::LShift] &&
+            inputState.key[Key::Z]) // Debug Stuffs Menu
+        {
+            gCtrl.menuType = "DebugFunctions";
+            menuPopUp();
+        }
 
 
-            squadHud();
-
-            if (gvars::initalZeds)
-                gCtrl.wave();
-
-            rightMouseButtonContextMenu();
-
-            if(inputState.key[Key::V] && !network::chatting)
-            {
-                for (int x = 0; x != GRIDS; x++)
-                    for (int y = 0; y != GRIDS; y++)
-                {
-                    //textList.createText(x*TILE_PIXELS,y*TILE_PIXELS,10,sf::Color::Red,std::to_string(tiles[x][y][gvars::currentz].walkable));
-                    if(tiles[x][y][gvars::currentz].walkable)
-                        shapes.createSquare(x*TILE_PIXELS,y*TILE_PIXELS,x*TILE_PIXELS+TILE_PIXELS,y*TILE_PIXELS+TILE_PIXELS,sf::Color(255,255,0,100));
-                    else
-                        shapes.createSquare(x*TILE_PIXELS,y*TILE_PIXELS,x*TILE_PIXELS+TILE_PIXELS,y*TILE_PIXELS+TILE_PIXELS,sf::Color(255,0,0,100));
-                }
-            }
-            if (inputState.rmbTime == 1 && inputState.key[Key::LShift])
-                rmbMenuTile(    Vec3(gvars::mousePos.x,gvars::mousePos.y,gvars::currentz)   );
-
-            if (inputState.key[Key::LShift] &&
-                inputState.key[Key::Tab]) // Debug NPC Spawn Menu
-            {
-
-                gCtrl.menuType = "DebugCritterSpawn";
-                menuPopUp();
-            }
-            else if (inputState.key[Key::Tab] == true &&
-                     inputState.key[Key::LShift] ==
-                         false) // Debug Item Spawn Menu TODO: Sort them by Type.
-            {
-                gCtrl.menuType = "DebugItemSpawn";
-                menuPopUp();
-            }
-            else if (gCtrl.menuType == "DebugItemSpawn" ||
-                     gCtrl.menuType == "DebugCritterSpawn")
-            {
-                gCtrl.menuType = "NULL";
-                gCtrl.menuPos = sf::Vector2f(-10000, -10000);
-                gCtrl.menuEndPos = sf::Vector2f(-10000, -10000);
-                menuPtrCon.pItem = nullptr;
-                menuPtrCon.pNPC = nullptr;
-                menuPtrCon.pTile = nullptr;
-                con("Closing DebugMenus Due To Lack of Key Presses");
-            }
-            //                       if(Key.lshift && Key.z){GC.ZombieSwarmLocal();}
-
-            if (inputState.key[Key::LShift] &&
-                inputState.key[Key::Z]) // Debug Stuffs Menu
-            {
-                gCtrl.menuType = "DebugFunctions";
-                menuPopUp();
-            }
+        cameraControls();
 
 
-            cameraControls();
-
-
-            if (selectedNPCs.empty())
-            {
-                gvars::following = false;
-            }
-            else if (inputState.key[Key::C] && !network::chatting)
-            {
-                gvars::following = true;
-            }
-            if (gvars::following)
-            {
-                sf::Lock lock(mutex::npcList);
-
-                if(!selectedNPCs.empty())
-                    gvars::view1.setCenter(selectedNPCs[0]->xpos,
-                                       selectedNPCs[0]->ypos);
-            }
-
-            shapes.createSquare(
-                32 * 20, 32 * 20, 64 * 20, 64 * 20, sf::Color(0, 0, 0, 0), 1,
-                sf::Color::
-                    Cyan); // These two are the chunk borders, Debug stuffs so you can see where the loading boundries are. (As if you needed 'em, Damn thing lags a bit, Should thread each loading bit soon.)
-            shapes.createSquare(
-                0 * 20, 0 * 20, 32 * 20, 32 * 20, sf::Color(0, 0, 0, 0), 1,
-                sf::Color::
-                    Red); // This one reachs from 0 to 32 only because it draws from the left, not the center.
-
-            if (inputState.key[Key::LControl].time > 10)
-            {
-                int Variable =
-                    tiles[abs_to_index(gvars::mousePos.x / 20)][abs_to_index(
-                        gvars::mousePos.y / 20)][gvars::currentz].id;
-                Vec3 Pos = tiles[abs_to_index(gvars::mousePos.x / 20)][abs_to_index(
-                        gvars::mousePos.y / 20)][gvars::currentz].getPos();
-
-                textList.createText(gvars::mousePos.x, gvars::mousePos.y, 11,
-                                    sf::Color::Red, "ID: ", "", Variable, ", Pos (" + std::to_string(Pos.x) + "/" + std::to_string(Pos.y) + "/" + std::to_string(Pos.z) + ")");
-            }
+        if (selectedNPCs.empty())
+        {
+            gvars::following = false;
+        }
+        else if (inputState.key[Key::C] && !network::chatting)
+        {
+            gvars::following = true;
+        }
+        if (gvars::following)
+        {
+            sf::Lock lock(mutex::npcList);
 
             if(!selectedNPCs.empty())
+                gvars::view1.setCenter(selectedNPCs[0]->xpos,
+                                   selectedNPCs[0]->ypos);
+        }
+
+        shapes.createSquare(
+            32 * 20, 32 * 20, 64 * 20, 64 * 20, sf::Color(0, 0, 0, 0), 1,
+            sf::Color::
+                Cyan); // These two are the chunk borders, Debug stuffs so you can see where the loading boundries are. (As if you needed 'em, Damn thing lags a bit, Should thread each loading bit soon.)
+        shapes.createSquare(
+            0 * 20, 0 * 20, 32 * 20, 32 * 20, sf::Color(0, 0, 0, 0), 1,
+            sf::Color::
+                Red); // This one reachs from 0 to 32 only because it draws from the left, not the center.
+
+        if (inputState.key[Key::LControl].time > 10)
+        {
+            int Variable =
+                tiles[abs_to_index(gvars::mousePos.x / 20)][abs_to_index(
+                    gvars::mousePos.y / 20)][gvars::currentz].id;
+            Vec3 Pos = tiles[abs_to_index(gvars::mousePos.x / 20)][abs_to_index(
+                    gvars::mousePos.y / 20)][gvars::currentz].getPos();
+
+            textList.createText(gvars::mousePos.x, gvars::mousePos.y, 11,
+                                sf::Color::Red, "ID: ", "", Variable, ", Pos (" + std::to_string(Pos.x) + "/" + std::to_string(Pos.y) + "/" + std::to_string(Pos.z) + ")");
+        }
+
+        if(!selectedNPCs.empty())
+        {
+            shapes.createCircle(selectedNPCs[0]->xpos,selectedNPCs[0]->ypos,30,sf::Color(255,255,255,100));
+        }
+
+        if(inputState.key[Key::Space].time == 1)
+        {
+            toggle(gvars::transitionLock);
+        }
+
+        bool transitioning = false;
+        if (gvars::currenty > 64 && !gvars::transitionLock)
+        {
+            tilesGoUp();
+            gvars::currenty = 33;
             {
-                shapes.createCircle(selectedNPCs[0]->xpos,selectedNPCs[0]->ypos,30,sf::Color(255,255,255,100));
-            }
-
-            if(inputState.key[Key::Space].time == 1)
-            {
-                toggle(gvars::transitionLock);
-            }
-
-            bool transitioning = false;
-            if (gvars::currenty > 64 && !gvars::transitionLock)
-            {
-                tilesGoUp();
-                gvars::currenty = 33;
-                {
-                    sf::Lock lock(mutex::npcList);
-
-                    //for (size_t i = 0; i != npclist.size(); i++)
-                    for (auto &i : npclist)
-                    {
-                        i.ypos += -640;
-                        i.targetPos.y += -640;
-                    }
-                }
-
-                for (auto &worlditem : worlditems)
-                    (worlditem).ypos += -640;
-
-                for (auto &i : listAt(uniFact,0).jobList)
-                    i.workPos.y += -640;
-
-                transitioning = true;
-                std::string line;
-                line = loadCritters(sf::Vector2i(gvars::currentregionx - 1,
-                                                 gvars::currentregiony + 1),
-                                    "BottomLeft", gvars::currentplanet);
-                remove(line.c_str());
-                line = loadCritters(sf::Vector2i(gvars::currentregionx,
-                                                 gvars::currentregiony + 1),
-                                    "Bottom", gvars::currentplanet);
-                remove(line.c_str());
-                line = loadCritters(sf::Vector2i(gvars::currentregionx + 1,
-                                                 gvars::currentregiony + 1),
-                                    "BottomRight", gvars::currentplanet);
-                remove(line.c_str());
-                line = loadItems(sf::Vector2i(gvars::currentregionx - 1,
-                                              gvars::currentregiony + 1),
-                                 "BottomLeft", gvars::currentplanet);
-                remove(line.c_str());
-                line = loadItems(sf::Vector2i(gvars::currentregionx,
-                                              gvars::currentregiony + 1),
-                                 "Bottom", gvars::currentplanet);
-                remove(line.c_str());
-                line = loadItems(sf::Vector2i(gvars::currentregionx + 1,
-                                              gvars::currentregiony + 1),
-                                 "BottomRight", gvars::currentplanet);
-                remove(line.c_str());
-            }
-            if (gvars::currenty < 32 && !gvars::transitionLock)
-            {
-                tilesGoDown();
-                gvars::currenty = 63;
-                {
-                    sf::Lock lock(mutex::npcList);
-
-                    //for (size_t i = 0; i != npclist.size(); i++)
-                    for (auto &i : npclist)
-                    {
-                        i.ypos += 640;
-                        i.targetPos.y += 640;
-                    }
-                }
-
-                //for(int i = 0; i != worlditems.size(); i++) worlditems.at(i).ypos += 640;
-                for (auto &worlditem : worlditems)
-                    (worlditem).ypos += 640;
-
-                for (auto &i : listAt(uniFact,0).jobList)
-                    i.workPos.y += 640;
-
-                transitioning = true;
-                std::string line;
-                line = loadCritters(sf::Vector2i(gvars::currentregionx - 1,
-                                                 gvars::currentregiony - 1),
-                                    "TopLeft", gvars::currentplanet);
-                remove(line.c_str());
-                line = loadCritters(sf::Vector2i(gvars::currentregionx,
-                                                 gvars::currentregiony - 1),
-                                    "Top", gvars::currentplanet);
-                remove(line.c_str());
-                line = loadCritters(sf::Vector2i(gvars::currentregionx + 1,
-                                                 gvars::currentregiony - 1),
-                                    "TopRight", gvars::currentplanet);
-                remove(line.c_str());
-                line = loadItems(sf::Vector2i(gvars::currentregionx - 1,
-                                              gvars::currentregiony - 1),
-                                 "TopLeft", gvars::currentplanet);
-                remove(line.c_str());
-                line = loadItems(sf::Vector2i(gvars::currentregionx,
-                                              gvars::currentregiony - 1),
-                                 "Top", gvars::currentplanet);
-                remove(line.c_str());
-                line = loadItems(sf::Vector2i(gvars::currentregionx + 1,
-                                              gvars::currentregiony - 1),
-                                 "TopRight", gvars::currentplanet);
-                remove(line.c_str());
-            }
-            if (gvars::currentx > 64 && !gvars::transitionLock)
-            {
-                tilesGoLeft();
-                gvars::currentx = 33;
-                {
-
-                    sf::Lock lock(mutex::npcList);
+                sf::Lock lock(mutex::npcList);
 
                 //for (size_t i = 0; i != npclist.size(); i++)
                 for (auto &i : npclist)
                 {
-                    i.xpos += -640;
-                    i.targetPos.x += -640;
+                    i.ypos += -640;
+                    i.targetPos.y += -640;
                 }
-
-                }
-                //for(int i = 0; i != worlditems.size(); i++) worlditems.at(i).xpos += -640;
-                for (auto &worlditem : worlditems)
-                    (worlditem).xpos += -640;
-
-                for (auto &i : listAt(uniFact,0).jobList)
-                    i.workPos.x += -640;
-
-                transitioning = true;
-                std::string line;
-                line = loadCritters(sf::Vector2i(gvars::currentregionx + 1,
-                                                 gvars::currentregiony - 1),
-                                    "TopRight", gvars::currentplanet);
-                remove(line.c_str());
-                line = loadCritters(sf::Vector2i(gvars::currentregionx + 1,
-                                                 gvars::currentregiony),
-                                    "Right", gvars::currentplanet);
-                remove(line.c_str());
-                line = loadCritters(sf::Vector2i(gvars::currentregionx + 1,
-                                                 gvars::currentregiony + 1),
-                                    "BottomRight", gvars::currentplanet);
-                remove(line.c_str());
-                line = loadItems(sf::Vector2i(gvars::currentregionx + 1,
-                                              gvars::currentregiony - 1),
-                                 "TopRight", gvars::currentplanet);
-                remove(line.c_str());
-                line = loadItems(sf::Vector2i(gvars::currentregionx + 1,
-                                              gvars::currentregiony),
-                                 "Right", gvars::currentplanet);
-                remove(line.c_str());
-                line = loadItems(sf::Vector2i(gvars::currentregionx + 1,
-                                              gvars::currentregiony + 1),
-                                 "BottomRight", gvars::currentplanet);
-                remove(line.c_str());
             }
-            if (gvars::currentx < 32 && !gvars::transitionLock)
+
+            for (auto &worlditem : worlditems)
+                (worlditem).ypos += -640;
+
+            for (auto &i : listAt(uniFact,0).jobList)
+                i.workPos.y += -640;
+
+            transitioning = true;
+            std::string line;
+            line = loadCritters(sf::Vector2i(gvars::currentregionx - 1,
+                                             gvars::currentregiony + 1),
+                                "BottomLeft", gvars::currentplanet);
+            remove(line.c_str());
+            line = loadCritters(sf::Vector2i(gvars::currentregionx,
+                                             gvars::currentregiony + 1),
+                                "Bottom", gvars::currentplanet);
+            remove(line.c_str());
+            line = loadCritters(sf::Vector2i(gvars::currentregionx + 1,
+                                             gvars::currentregiony + 1),
+                                "BottomRight", gvars::currentplanet);
+            remove(line.c_str());
+            line = loadItems(sf::Vector2i(gvars::currentregionx - 1,
+                                          gvars::currentregiony + 1),
+                             "BottomLeft", gvars::currentplanet);
+            remove(line.c_str());
+            line = loadItems(sf::Vector2i(gvars::currentregionx,
+                                          gvars::currentregiony + 1),
+                             "Bottom", gvars::currentplanet);
+            remove(line.c_str());
+            line = loadItems(sf::Vector2i(gvars::currentregionx + 1,
+                                          gvars::currentregiony + 1),
+                             "BottomRight", gvars::currentplanet);
+            remove(line.c_str());
+        }
+        if (gvars::currenty < 32 && !gvars::transitionLock)
+        {
+            tilesGoDown();
+            gvars::currenty = 63;
             {
-                con("Starting GoRight");
-                tilesGoRight();
-                con("Ending GoRight");
-                gvars::currentx = 63;
-                con("Starting GoRight with NPC's and Items");
-                {
-                    sf::Lock lock(mutex::npcList);
+                sf::Lock lock(mutex::npcList);
 
                 //for (size_t i = 0; i != npclist.size(); i++)
                 for (auto &i : npclist)
                 {
-                    i.xpos += 640;
-                    i.targetPos.x += 640;
+                    i.ypos += 640;
+                    i.targetPos.y += 640;
                 }
-
-                }
-                //for(int i = 0; i != worlditems.size(); i++) worlditems.at(i).xpos += 640;
-                for (auto &worlditem : worlditems)
-                    (worlditem).xpos += 640;
-
-                for (auto &i : listAt(uniFact,0).jobList)
-                    i.workPos.x += 640;
-
-                con("Done GoRight with NPC's and Items");
-                transitioning = true;
-                std::string line;
-                line = loadCritters(sf::Vector2i(gvars::currentregionx - 1,
-                                                 gvars::currentregiony - 1),
-                                    "TopLeft", gvars::currentplanet);
-                remove(line.c_str());
-                line = loadCritters(sf::Vector2i(gvars::currentregionx - 1,
-                                                 gvars::currentregiony),
-                                    "Left", gvars::currentplanet);
-                remove(line.c_str());
-                line = loadCritters(sf::Vector2i(gvars::currentregionx - 1,
-                                                 gvars::currentregiony + 1),
-                                    "BottomLeft", gvars::currentplanet);
-                remove(line.c_str());
-                line = loadItems(sf::Vector2i(gvars::currentregionx - 1,
-                                              gvars::currentregiony - 1),
-                                 "TopLeft", gvars::currentplanet);
-                remove(line.c_str());
-                line = loadItems(sf::Vector2i(gvars::currentregionx - 1,
-                                              gvars::currentregiony),
-                                 "Left", gvars::currentplanet);
-                remove(line.c_str());
-                line = loadItems(sf::Vector2i(gvars::currentregionx - 1,
-                                              gvars::currentregiony + 1),
-                                 "BottomLeft", gvars::currentplanet);
-                remove(line.c_str());
             }
 
-            if (transitioning == true && !gvars::transitionLock)
+            //for(int i = 0; i != worlditems.size(); i++) worlditems.at(i).ypos += 640;
+            for (auto &worlditem : worlditems)
+                (worlditem).ypos += 640;
+
+            for (auto &i : listAt(uniFact,0).jobList)
+                i.workPos.y += 640;
+
+            transitioning = true;
+            std::string line;
+            line = loadCritters(sf::Vector2i(gvars::currentregionx - 1,
+                                             gvars::currentregiony - 1),
+                                "TopLeft", gvars::currentplanet);
+            remove(line.c_str());
+            line = loadCritters(sf::Vector2i(gvars::currentregionx,
+                                             gvars::currentregiony - 1),
+                                "Top", gvars::currentplanet);
+            remove(line.c_str());
+            line = loadCritters(sf::Vector2i(gvars::currentregionx + 1,
+                                             gvars::currentregiony - 1),
+                                "TopRight", gvars::currentplanet);
+            remove(line.c_str());
+            line = loadItems(sf::Vector2i(gvars::currentregionx - 1,
+                                          gvars::currentregiony - 1),
+                             "TopLeft", gvars::currentplanet);
+            remove(line.c_str());
+            line = loadItems(sf::Vector2i(gvars::currentregionx,
+                                          gvars::currentregiony - 1),
+                             "Top", gvars::currentplanet);
+            remove(line.c_str());
+            line = loadItems(sf::Vector2i(gvars::currentregionx + 1,
+                                          gvars::currentregiony - 1),
+                             "TopRight", gvars::currentplanet);
+            remove(line.c_str());
+        }
+        if (gvars::currentx > 64 && !gvars::transitionLock)
+        {
+            tilesGoLeft();
+            gvars::currentx = 33;
             {
-
-                {
-
 
                 sf::Lock lock(mutex::npcList);
-                //for (size_t i = 0; i != npclist.size(); i++)
-                offloadNpcs();
 
-
-                }
-
-                removeNPCs(npclist, mutex::npcList);
-
-
-                offloadItems();
-
-                removeItems(worlditems);
-                initializeTilePositions();
-            }
-
-            if (gCtrl.menuType != "NULL")
+            //for (size_t i = 0; i != npclist.size(); i++)
+            for (auto &i : npclist)
             {
-                menuPopUp();
-            }
-            else
-            {
-                gCtrl.menuPos = math::Vec2f(-10000, -10000);
+                i.xpos += -640;
+                i.targetPos.x += -640;
             }
 
-            debug("Doing Local Items");
-            updateItem();
-            debug("Doing Local AddItems");
-            itemmanager.addItems();
-            debug("Doing Local critterBrain's");
-            critterBrain(npclist);
-            debug("Pre Add Critters");
-            npcmanager.addCritters();
-            debug("Post Add Critters");
+            }
+            //for(int i = 0; i != worlditems.size(); i++) worlditems.at(i).xpos += -640;
+            for (auto &worlditem : worlditems)
+                (worlditem).xpos += -640;
 
+            for (auto &i : listAt(uniFact,0).jobList)
+                i.workPos.x += -640;
 
-
-
-        } //=============================================================================*End of Local*========================================================================
-
-        if (gCtrl.phase == "MakeSquad") // Needs a heavy menu overhaul.
+            transitioning = true;
+            std::string line;
+            line = loadCritters(sf::Vector2i(gvars::currentregionx + 1,
+                                             gvars::currentregiony - 1),
+                                "TopRight", gvars::currentplanet);
+            remove(line.c_str());
+            line = loadCritters(sf::Vector2i(gvars::currentregionx + 1,
+                                             gvars::currentregiony),
+                                "Right", gvars::currentplanet);
+            remove(line.c_str());
+            line = loadCritters(sf::Vector2i(gvars::currentregionx + 1,
+                                             gvars::currentregiony + 1),
+                                "BottomRight", gvars::currentplanet);
+            remove(line.c_str());
+            line = loadItems(sf::Vector2i(gvars::currentregionx + 1,
+                                          gvars::currentregiony - 1),
+                             "TopRight", gvars::currentplanet);
+            remove(line.c_str());
+            line = loadItems(sf::Vector2i(gvars::currentregionx + 1,
+                                          gvars::currentregiony),
+                             "Right", gvars::currentplanet);
+            remove(line.c_str());
+            line = loadItems(sf::Vector2i(gvars::currentregionx + 1,
+                                          gvars::currentregiony + 1),
+                             "BottomRight", gvars::currentplanet);
+            remove(line.c_str());
+        }
+        if (gvars::currentx < 32 && !gvars::transitionLock)
         {
-            gvars::view1.setCenter(screen.x() / 2, screen.y() / 2);
-
-            textList.createText(screen.x() / 2, 20, 20, gvars::cycleBlue,
-                                "Design Your Squad");
-            textList.createText(screen.x() / 2, 50, 15, sf::Color::Yellow,
-                                "Squad Points: ", "", squady.makeSquadPoints);
-            textList.createText(screen.x() / 2, 70, 11, sf::Color::Yellow,
-                                "Squad Mates: ", "", squady.squadMates);
-
-            SquareButton var200;
-            var200.color = sf::Color::Yellow;
-            var200.iSizex = 5;
-            var200.iSizey = 5;
-            var200.vPos = sf::Vector2f((screen.x() / 2) - 10, 75);
-            var200.sButtonText = "Howdy";
-
-            vSquareButtonList.push_back(var200);
-            if (squareButtonClicked(var200.id))
+            con("Starting GoRight");
+            tilesGoRight();
+            con("Ending GoRight");
+            gvars::currentx = 63;
+            con("Starting GoRight with NPC's and Items");
             {
-                if (squady.squad.size() > 1)
-                {
-                    int stre, perc, inte, charis, endu, dext, agil = 0;
+                sf::Lock lock(mutex::npcList);
 
-                    stre = squady.squad.at(squady.squad.size() - 1)
-                               .attributes.strength;
-                    perc = squady.squad.at(squady.squad.size() - 1)
-                               .attributes.perception;
-                    inte = squady.squad.at(squady.squad.size() - 1)
-                               .attributes.intelligence;
-                    charis = squady.squad.at(squady.squad.size() - 1)
-                                 .attributes.charisma;
-                    endu = squady.squad.at(squady.squad.size() - 1)
-                               .attributes.endurance;
-                    dext = squady.squad.at(squady.squad.size() - 1)
-                               .attributes.dexterity;
-                    agil =
-                        squady.squad.at(squady.squad.size() - 1).attributes.agility;
-                    int leftOvers = 0;
-                    if (stre >= 20)
-                        leftOvers += stre - 20;
-                    if (perc >= 20)
-                        leftOvers += perc - 20;
-                    if (inte >= 20)
-                        leftOvers += inte - 20;
-                    if (charis >= 20)
-                        leftOvers += charis - 20;
-                    if (endu >= 20)
-                        leftOvers += endu - 20;
-                    if (dext >= 20)
-                        leftOvers += dext - 20;
-                    if (agil >= 20)
-                        leftOvers += agil - 20;
+            //for (size_t i = 0; i != npclist.size(); i++)
+            for (auto &i : npclist)
+            {
+                i.xpos += 640;
+                i.targetPos.x += 640;
+            }
 
-                    squady.makeSquadPoints += leftOvers + 100;
-                    squady.squadMates--;
-                    if (static_cast<size_t>(squady.aim) ==
-                        squady.squad.size() - 1)
-                        squady.aim--;
-                    squady.squad.pop_back();
-                }
+            }
+            //for(int i = 0; i != worlditems.size(); i++) worlditems.at(i).xpos += 640;
+            for (auto &worlditem : worlditems)
+                (worlditem).xpos += 640;
 
+            for (auto &i : listAt(uniFact,0).jobList)
+                i.workPos.x += 640;
+
+            con("Done GoRight with NPC's and Items");
+            transitioning = true;
+            std::string line;
+            line = loadCritters(sf::Vector2i(gvars::currentregionx - 1,
+                                             gvars::currentregiony - 1),
+                                "TopLeft", gvars::currentplanet);
+            remove(line.c_str());
+            line = loadCritters(sf::Vector2i(gvars::currentregionx - 1,
+                                             gvars::currentregiony),
+                                "Left", gvars::currentplanet);
+            remove(line.c_str());
+            line = loadCritters(sf::Vector2i(gvars::currentregionx - 1,
+                                             gvars::currentregiony + 1),
+                                "BottomLeft", gvars::currentplanet);
+            remove(line.c_str());
+            line = loadItems(sf::Vector2i(gvars::currentregionx - 1,
+                                          gvars::currentregiony - 1),
+                             "TopLeft", gvars::currentplanet);
+            remove(line.c_str());
+            line = loadItems(sf::Vector2i(gvars::currentregionx - 1,
+                                          gvars::currentregiony),
+                             "Left", gvars::currentplanet);
+            remove(line.c_str());
+            line = loadItems(sf::Vector2i(gvars::currentregionx - 1,
+                                          gvars::currentregiony + 1),
+                             "BottomLeft", gvars::currentplanet);
+            remove(line.c_str());
+        }
+
+        if (transitioning == true && !gvars::transitionLock)
+        {
+
+            {
+
+
+            sf::Lock lock(mutex::npcList);
+            //for (size_t i = 0; i != npclist.size(); i++)
+            offloadNpcs();
+
+
+            }
+
+            removeNPCs(npclist, mutex::npcList);
+
+
+            offloadItems();
+
+            removeItems(worlditems);
+            initializeTilePositions();
+        }
+
+        if (gCtrl.menuType != "NULL")
+        {
+            menuPopUp();
+        }
+        else
+        {
+            gCtrl.menuPos = math::Vec2f(-10000, -10000);
+        }
+
+        debug("Doing Local Items");
+        updateItem();
+        debug("Doing Local AddItems");
+        itemmanager.addItems();
+        debug("Doing Local critterBrain's");
+        critterBrain(npclist);
+        debug("Pre Add Critters");
+        npcmanager.addCritters();
+        debug("Post Add Critters");
+
+
+
+
+    } //=============================================================================*End of Local*========================================================================
+
+    if (gCtrl.phase == "MakeSquad") // Needs a heavy menu overhaul.
+    {
+        gvars::view1.setCenter(screen.x() / 2, screen.y() / 2);
+
+        textList.createText(screen.x() / 2, 20, 20, gvars::cycleBlue,
+                            "Design Your Squad");
+        textList.createText(screen.x() / 2, 50, 15, sf::Color::Yellow,
+                            "Squad Points: ", "", squady.makeSquadPoints);
+        textList.createText(screen.x() / 2, 70, 11, sf::Color::Yellow,
+                            "Squad Mates: ", "", squady.squadMates);
+
+        SquareButton var200;
+        var200.color = sf::Color::Yellow;
+        var200.iSizex = 5;
+        var200.iSizey = 5;
+        var200.vPos = sf::Vector2f((screen.x() / 2) - 10, 75);
+        var200.sButtonText = "Howdy";
+
+        vSquareButtonList.push_back(var200);
+        if (squareButtonClicked(var200.id))
+        {
+            if (squady.squad.size() > 1)
+            {
+                int stre, perc, inte, charis, endu, dext, agil = 0;
+
+                stre = squady.squad.at(squady.squad.size() - 1)
+                           .attributes.strength;
+                perc = squady.squad.at(squady.squad.size() - 1)
+                           .attributes.perception;
+                inte = squady.squad.at(squady.squad.size() - 1)
+                           .attributes.intelligence;
+                charis = squady.squad.at(squady.squad.size() - 1)
+                             .attributes.charisma;
+                endu = squady.squad.at(squady.squad.size() - 1)
+                           .attributes.endurance;
+                dext = squady.squad.at(squady.squad.size() - 1)
+                           .attributes.dexterity;
+                agil =
+                    squady.squad.at(squady.squad.size() - 1).attributes.agility;
+                int leftOvers = 0;
+                if (stre >= 20)
+                    leftOvers += stre - 20;
+                if (perc >= 20)
+                    leftOvers += perc - 20;
+                if (inte >= 20)
+                    leftOvers += inte - 20;
+                if (charis >= 20)
+                    leftOvers += charis - 20;
+                if (endu >= 20)
+                    leftOvers += endu - 20;
+                if (dext >= 20)
+                    leftOvers += dext - 20;
+                if (agil >= 20)
+                    leftOvers += agil - 20;
+
+                squady.makeSquadPoints += leftOvers + 100;
+                squady.squadMates--;
+                if (static_cast<size_t>(squady.aim) ==
+                    squady.squad.size() - 1)
+                    squady.aim--;
+                squady.squad.pop_back();
+            }
+
+            //if(Squady.Aim < 0) Squady.Aim = 0;
+            //if(Squady.Aim > Squady.Squad.size()-1) Squady.Aim = Squady.Squad.size()-1;
+            fSleep(0.2);
+        }
+        SquareButton var201;
+        var201.color = sf::Color::Yellow;
+        var201.iSizex = 5;
+        var201.iSizey = 5;
+        var201.vPos = sf::Vector2f((screen.x() / 2) + 150, 75);
+        var201.sButtonText = "Howdy";
+        vSquareButtonList.push_back(var201);
+        if (squareButtonClicked(var201.id))
+        {
+            if (squady.makeSquadPoints > 99)
+            {
+
+                squady.squadMates++;
                 //if(Squady.Aim < 0) Squady.Aim = 0;
                 //if(Squady.Aim > Squady.Squad.size()-1) Squady.Aim = Squady.Squad.size()-1;
-                fSleep(0.2);
-            }
-            SquareButton var201;
-            var201.color = sf::Color::Yellow;
-            var201.iSizex = 5;
-            var201.iSizey = 5;
-            var201.vPos = sf::Vector2f((screen.x() / 2) + 150, 75);
-            var201.sButtonText = "Howdy";
-            vSquareButtonList.push_back(var201);
-            if (squareButtonClicked(var201.id))
-            {
-                if (squady.makeSquadPoints > 99)
+                Npc squ;
+
+                squ = *getGlobalCritter("Human");
+                squ.id = gvars::globalid++;
+                squ.blankSkills();
+                std::string name;
+                std::string gender;
+                int numz = randz(0, 1);
+                if (numz == 0)
                 {
-
-                    squady.squadMates++;
-                    //if(Squady.Aim < 0) Squady.Aim = 0;
-                    //if(Squady.Aim > Squady.Squad.size()-1) Squady.Aim = Squady.Squad.size()-1;
-                    Npc squ;
-
-                    squ = *getGlobalCritter("Human");
-                    squ.id = gvars::globalid++;
-                    squ.blankSkills();
-                    std::string name;
-                    std::string gender;
-                    int numz = randz(0, 1);
-                    if (numz == 0)
-                    {
-                        gender = "Male";
-                    }
-                    else
-                    {
-                        gender = "Female";
-                    }
-                    int numzb = randz(0, 1);
+                    gender = "Male";
+                }
+                else
+                {
+                    gender = "Female";
+                }
+                int numzb = randz(0, 1);
+                if (numzb == 0)
+                {
+                    gender = "Male";
+                }
+                else
+                {
+                    gender = "Female";
+                }
+                if (gender == "Male")
+                {
+                    int numzb = randz(0, 5);
                     if (numzb == 0)
                     {
-                        gender = "Male";
+                        name = "John";
                     }
-                    else
+                    else if (numzb == 1)
                     {
-                        gender = "Female";
+                        name = "Jack";
                     }
-                    if (gender == "Male")
+                    else if (numzb == 2)
                     {
-                        int numzb = randz(0, 5);
-                        if (numzb == 0)
-                        {
-                            name = "John";
-                        }
-                        else if (numzb == 1)
-                        {
-                            name = "Jack";
-                        }
-                        else if (numzb == 2)
-                        {
-                            name = "Jonathan";
-                        }
-                        else if (numzb == 3)
-                        {
-                            name = "James";
-                        }
-                        else if (numzb == 4)
-                        {
-                            name = "Joseph";
-                        }
-                        else if (numzb == 5)
-                        {
-                            name = "Joe";
-                        }
-                    };
-                    if (gender == "Female")
+                        name = "Jonathan";
+                    }
+                    else if (numzb == 3)
                     {
-                        int numzb = randz(0, 5);
-                        if (numzb == 0)
-                        {
-                            name = "Jennifer";
-                        }
-                        else if (numzb == 1)
-                        {
-                            name = "Jill";
-                        }
-                        else if (numzb == 2)
-                        {
-                            name = "Jamie";
-                        }
-                        else if (numzb == 3)
-                        {
-                            name = "Jackie";
-                        }
-                        else if (numzb == 4)
-                        {
-                            name = "Joan";
-                        }
-                        else if (numzb == 5)
-                        {
-                            name = "Jessica";
-                        }
-                    };
-
-                    squ.name = name;
-                    squ.gender = gender;
-                    squ.faction = conFact->name;
-
-                    squady.squad.push_back(squ);
-                    squady.makeSquadPoints -= 100;
-                }
-
-                fSleep(0.2);
-            }
-
-            //Squady.Squad.at(Squady.Aim).
-
-            int spacing = 1;
-            //NPC.attributes.
-
-            SquareButton var100;
-            var100.color = sf::Color::Green;
-            var100.iSizex = 5;
-            var100.iSizey = 5;
-            var100.vPos = sf::Vector2f((screen.x() / 2) - 10,
-                                       5 + (80 + (20 * spacing)));
-            var100.sButtonText = "Howdy";
-            vSquareButtonList.push_back(var100);
-            if (squareButtonClicked(var100.id))
-            {
-                squady.aim--;
-                if (squady.aim < 0)
-                    squady.aim = 0;
-                if (static_cast<size_t>(squady.aim) > squady.squad.size() - 1)
-                    squady.aim = squady.squad.size() - 1;
-                fSleep(0.2);
-            }
-            SquareButton var101;
-            var101.color = sf::Color::Green;
-            var101.iSizex = 5;
-            var101.iSizey = 5;
-            var101.vPos = sf::Vector2f((screen.x() / 2) + 150,
-                                       5 + (80 + (20 * spacing)));
-            var101.sButtonText = "Howdy";
-            vSquareButtonList.push_back(var101);
-            if (squareButtonClicked(var101.id))
-            {
-                squady.aim++;
-                if (squady.aim < 0)
-                    squady.aim = 0;
-                if (static_cast<size_t>(squady.aim) > squady.squad.size() - 1)
-                    squady.aim = squady.squad.size() - 1;
-                fSleep(0.2);
-            }
-
-            textList.createText(screen.x() / 2, 80 + (10 * spacing++), 11,
-                                sf::Color::Green, "Human: ",
-                                squady.squad.at(squady.aim).name);
-
-            textList.createText(screen.x() / 2, 80 + (20 * spacing), 11,
-                                sf::Color::White, "Strength: ", "",
-                                squady.squad.at(squady.aim).attributes.strength);
-
-            SquareButton var;
-            var.color = sf::Color::Red;
-            var.iSizex = 5;
-            var.iSizey = 5;
-            var.vPos = sf::Vector2f((screen.x() / 2) - 10,
-                                    5 + (80 + (20 * spacing)));
-            var.sButtonText = "Howdy";
-            vSquareButtonList.push_back(var);
-            if (squareButtonClicked(var.id))
-            {
-                if (squady.makeSquadPoints < 1000)
+                        name = "James";
+                    }
+                    else if (numzb == 4)
+                    {
+                        name = "Joseph";
+                    }
+                    else if (numzb == 5)
+                    {
+                        name = "Joe";
+                    }
+                };
+                if (gender == "Female")
                 {
-                    squady.makeSquadPoints += 1;
-                    squady.squad.at(squady.aim).attributes.strength -= 1;
-                }
-            }
-            SquareButton var2;
-            var2.color = sf::Color::Red;
-            var2.iSizex = 5;
-            var2.iSizey = 5;
-            var2.vPos = sf::Vector2f((screen.x() / 2) + 150,
-                                     5 + (80 + (20 * spacing++)));
-            var2.sButtonText = "Howdy";
-            vSquareButtonList.push_back(var2);
-            if (squareButtonClicked(var2.id))
-            {
-                if (squady.makeSquadPoints > 0)
-                {
-                    squady.makeSquadPoints -= 1;
-                    squady.squad.at(squady.aim).attributes.strength += 1;
-                }
-            }
+                    int numzb = randz(0, 5);
+                    if (numzb == 0)
+                    {
+                        name = "Jennifer";
+                    }
+                    else if (numzb == 1)
+                    {
+                        name = "Jill";
+                    }
+                    else if (numzb == 2)
+                    {
+                        name = "Jamie";
+                    }
+                    else if (numzb == 3)
+                    {
+                        name = "Jackie";
+                    }
+                    else if (numzb == 4)
+                    {
+                        name = "Joan";
+                    }
+                    else if (numzb == 5)
+                    {
+                        name = "Jessica";
+                    }
+                };
 
-            textList.createText(screen.x() / 2, 80 + (20 * spacing), 11,
-                                sf::Color::White, "Perception: ", "",
-                                squady.squad.at(squady.aim).attributes.perception);
+                squ.name = name;
+                squ.gender = gender;
+                squ.faction = conFact->name;
 
-            SquareButton var3;
-            var3.color = sf::Color::Red;
-            var3.iSizex = 5;
-            var3.iSizey = 5;
-            var3.vPos = sf::Vector2f((screen.x() / 2) - 10,
-                                     5 + (80 + (20 * spacing)));
-            var3.sButtonText = "Howdy";
-            vSquareButtonList.push_back(var3);
-            if (squareButtonClicked(var3.id))
-            {
-                if (squady.makeSquadPoints < 1000)
-                {
-                    squady.makeSquadPoints += 1;
-                    squady.squad.at(squady.aim).attributes.perception -= 1;
-                }
-            }
-            SquareButton var4;
-            var4.color = sf::Color::Red;
-            var4.iSizex = 5;
-            var4.iSizey = 5;
-            var4.vPos = sf::Vector2f((screen.x() / 2) + 150,
-                                     5 + (80 + (20 * spacing++)));
-            var4.sButtonText = "Howdy";
-            vSquareButtonList.push_back(var4);
-            if (squareButtonClicked(var4.id))
-            {
-                if (squady.makeSquadPoints > 0)
-                {
-                    squady.makeSquadPoints -= 1;
-                    squady.squad.at(squady.aim).attributes.perception += 1;
-                }
+                squady.squad.push_back(squ);
+                squady.makeSquadPoints -= 100;
             }
 
-            textList.createText(
-                screen.x() / 2, 80 + (20 * spacing), 11, sf::Color::White,
-                "Intelligence: ", "",
-                squady.squad.at(squady.aim).attributes.intelligence);
-
-            SquareButton var5;
-            var5.color = sf::Color::Red;
-            var5.iSizex = 5;
-            var5.iSizey = 5;
-            var5.vPos = sf::Vector2f((screen.x() / 2) - 10,
-                                     5 + (80 + (20 * spacing)));
-            var5.sButtonText = "Howdy";
-            vSquareButtonList.push_back(var5);
-            if (squareButtonClicked(var5.id))
-            {
-                if (squady.makeSquadPoints < 1000)
-                {
-                    squady.makeSquadPoints += 1;
-                    squady.squad.at(squady.aim).attributes.intelligence -= 1;
-                }
-            }
-            SquareButton var6;
-            var6.color = sf::Color::Red;
-            var6.iSizex = 5;
-            var6.iSizey = 5;
-            var6.vPos = sf::Vector2f((screen.x() / 2) + 150,
-                                     5 + (80 + (20 * spacing++)));
-            var6.sButtonText = "Howdy";
-            vSquareButtonList.push_back(var6);
-            if (squareButtonClicked(var6.id))
-            {
-                if (squady.makeSquadPoints > 0)
-                {
-                    squady.makeSquadPoints -= 1;
-                    squady.squad.at(squady.aim).attributes.intelligence += 1;
-                }
-            }
-
-            textList.createText(screen.x() / 2, 80 + (20 * spacing), 11,
-                                sf::Color::White, "Charisma: ", "",
-                                squady.squad.at(squady.aim).attributes.charisma);
-
-            SquareButton var7;
-            var7.color = sf::Color::Red;
-            var7.iSizex = 5;
-            var7.iSizey = 5;
-            var7.vPos = sf::Vector2f((screen.x() / 2) - 10,
-                                     5 + (80 + (20 * spacing)));
-            var7.sButtonText = "Howdy";
-            vSquareButtonList.push_back(var7);
-            if (squareButtonClicked(var7.id))
-            {
-                if (squady.makeSquadPoints < 1000)
-                {
-                    squady.makeSquadPoints += 1;
-                    squady.squad.at(squady.aim).attributes.charisma -= 1;
-                }
-            }
-            SquareButton var8;
-            var8.color = sf::Color::Red;
-            var8.iSizex = 5;
-            var8.iSizey = 5;
-            var8.vPos = sf::Vector2f((screen.x() / 2) + 150,
-                                     5 + (80 + (20 * spacing++)));
-            var8.sButtonText = "Howdy";
-            vSquareButtonList.push_back(var8);
-            if (squareButtonClicked(var8.id))
-            {
-                if (squady.makeSquadPoints > 0)
-                {
-                    squady.makeSquadPoints -= 1;
-                    squady.squad.at(squady.aim).attributes.charisma += 1;
-                }
-            }
-
-            textList.createText(screen.x() / 2, 80 + (20 * spacing), 11,
-                                sf::Color::White, "Endurance: ", "",
-                                squady.squad.at(squady.aim).attributes.endurance);
-
-            SquareButton var9;
-            var9.color = sf::Color::Red;
-            var9.iSizex = 5;
-            var9.iSizey = 5;
-            var9.vPos = sf::Vector2f((screen.x() / 2) - 10,
-                                     5 + (80 + (20 * spacing)));
-            var9.sButtonText = "Howdy";
-            vSquareButtonList.push_back(var9);
-            if (squareButtonClicked(var9.id))
-            {
-                if (squady.makeSquadPoints < 1000)
-                {
-                    squady.makeSquadPoints += 1;
-                    squady.squad.at(squady.aim).attributes.endurance -= 1;
-                }
-            }
-            SquareButton var10;
-            var10.color = sf::Color::Red;
-            var10.iSizex = 5;
-            var10.iSizey = 5;
-            var10.vPos = sf::Vector2f((screen.x() / 2) + 150,
-                                      5 + (80 + (20 * spacing++)));
-            var10.sButtonText = "Howdy";
-            vSquareButtonList.push_back(var10);
-            if (squareButtonClicked(var10.id))
-            {
-                if (squady.makeSquadPoints > 0)
-                {
-                    squady.makeSquadPoints -= 1;
-                    squady.squad.at(squady.aim).attributes.endurance += 1;
-                }
-            }
-
-            textList.createText(screen.x() / 2, 80 + (20 * spacing), 11,
-                                sf::Color::White, "Dexterity: ", "",
-                                squady.squad.at(squady.aim).attributes.dexterity);
-
-            SquareButton var11;
-            var11.color = sf::Color::Red;
-            var11.iSizex = 5;
-            var11.iSizey = 5;
-            var11.vPos = sf::Vector2f((screen.x() / 2) - 10,
-                                      5 + (80 + (20 * spacing)));
-            var11.sButtonText = "Howdy";
-            vSquareButtonList.push_back(var11);
-            if (squareButtonClicked(var11.id))
-            {
-                if (squady.makeSquadPoints < 1000)
-                {
-                    squady.makeSquadPoints += 1;
-                    squady.squad.at(squady.aim).attributes.dexterity -= 1;
-                }
-            }
-            SquareButton var12;
-            var12.color = sf::Color::Red;
-            var12.iSizex = 5;
-            var12.iSizey = 5;
-            var12.vPos = sf::Vector2f((screen.x() / 2) + 150,
-                                      5 + (80 + (20 * spacing++)));
-            var12.sButtonText = "Howdy";
-            vSquareButtonList.push_back(var12);
-            if (squareButtonClicked(var12.id))
-            {
-                if (squady.makeSquadPoints > 0)
-                {
-                    squady.makeSquadPoints -= 1;
-                    squady.squad.at(squady.aim).attributes.dexterity += 1;
-                }
-            }
-
-            textList.createText(screen.x() / 2, 80 + (20 * spacing), 11,
-                                sf::Color::White, "Agility: ", "",
-                                squady.squad.at(squady.aim).attributes.agility);
-
-            SquareButton var13;
-            var13.color = sf::Color::Red;
-            var13.iSizex = 5;
-            var13.iSizey = 5;
-            var13.vPos = sf::Vector2f((screen.x() / 2) - 10,
-                                      5 + (80 + (20 * spacing)));
-            var13.sButtonText = "Howdy";
-            vSquareButtonList.push_back(var13);
-            if (squareButtonClicked(var13.id))
-            {
-                if (squady.makeSquadPoints < 1000)
-                {
-                    squady.makeSquadPoints += 1;
-                    squady.squad.at(squady.aim).attributes.agility -= 1;
-                }
-            }
-            SquareButton var14;
-            var14.color = sf::Color::Red;
-            var14.iSizex = 5;
-            var14.iSizey = 5;
-            var14.vPos = sf::Vector2f((screen.x() / 2) + 150,
-                                      5 + (80 + (20 * spacing++)));
-            var14.sButtonText = "Howdy";
-            vSquareButtonList.push_back(var14);
-            if (squareButtonClicked(var14.id))
-            {
-                if (squady.makeSquadPoints > 0)
-                {
-                    squady.makeSquadPoints -= 1;
-                    squady.squad.at(squady.aim).attributes.agility += 1;
-                }
-            }
-
-            //cText.CreateText(screen.x()/2,80+(20*Spacing),11,sf::Color::White," ");
-            SquareButton var50;
-            var50.color = sf::Color::Yellow;
-            var50.iSizex = 5;
-            var50.iSizey = 5;
-            var50.vPos = sf::Vector2f((screen.x() / 2) + 180,
-                                      5 + (80 + ((20 * spacing++) / 2)));
-
-            var50.sForwardText = "Done";
-            var50.textColor = sf::Color::White;
-            var50.textSize = 11;
-
-            vSquareButtonList.push_back(var50);
-            if (squareButtonClicked(var50.id))
-            {
-
-                gCtrl.phase = "World";
-                gCtrl.buildWorldTest();
-
-                initializeFactions(13);
-            }
-
-            //DrawStuffs();
+            fSleep(0.2);
         }
 
-        if (gCtrl.phase == "System")
+        //Squady.Squad.at(Squady.Aim).
+
+        int spacing = 1;
+        //NPC.attributes.
+
+        SquareButton var100;
+        var100.color = sf::Color::Green;
+        var100.iSizex = 5;
+        var100.iSizey = 5;
+        var100.vPos = sf::Vector2f((screen.x() / 2) - 10,
+                                   5 + (80 + (20 * spacing)));
+        var100.sButtonText = "Howdy";
+        vSquareButtonList.push_back(var100);
+        if (squareButtonClicked(var100.id))
         {
-            class Planet
-            {
-            public:
-                sf::Vector2f position;
-                sf::Image sprite;
-                float density;
-                float volume;
-
-                Planet()
-                {
-                    density = 100;
-                    volume = 20000;
-                }
-            };
-
-            //std::vector<Planet> Planetsz;
-            /*
-            for(int i = 0; i != Planets.size(); i++)
-            {
-                for(int t = 0; t != Planets.size(); t++)
-                {
-                    float MassDifference = Planets[i].Density/Planets[i].Volume - Planets[t].Density/Planets[t].Volume;
-                    std::cout << MassDifference
-                }
-            }
-            */
+            squady.aim--;
+            if (squady.aim < 0)
+                squady.aim = 0;
+            if (static_cast<size_t>(squady.aim) > squady.squad.size() - 1)
+                squady.aim = squady.squad.size() - 1;
+            fSleep(0.2);
+        }
+        SquareButton var101;
+        var101.color = sf::Color::Green;
+        var101.iSizex = 5;
+        var101.iSizey = 5;
+        var101.vPos = sf::Vector2f((screen.x() / 2) + 150,
+                                   5 + (80 + (20 * spacing)));
+        var101.sButtonText = "Howdy";
+        vSquareButtonList.push_back(var101);
+        if (squareButtonClicked(var101.id))
+        {
+            squady.aim++;
+            if (squady.aim < 0)
+                squady.aim = 0;
+            if (static_cast<size_t>(squady.aim) > squady.squad.size() - 1)
+                squady.aim = squady.squad.size() - 1;
+            fSleep(0.2);
         }
 
-        if (gCtrl.phase == "World")
+        textList.createText(screen.x() / 2, 80 + (10 * spacing++), 11,
+                            sf::Color::Green, "Human: ",
+                            squady.squad.at(squady.aim).name);
+
+        textList.createText(screen.x() / 2, 80 + (20 * spacing), 11,
+                            sf::Color::White, "Strength: ", "",
+                            squady.squad.at(squady.aim).attributes.strength);
+
+        SquareButton var;
+        var.color = sf::Color::Red;
+        var.iSizex = 5;
+        var.iSizey = 5;
+        var.vPos = sf::Vector2f((screen.x() / 2) - 10,
+                                5 + (80 + (20 * spacing)));
+        var.sButtonText = "Howdy";
+        vSquareButtonList.push_back(var);
+        if (squareButtonClicked(var.id))
         {
-            cameraControls();
-
-            gCtrl.worldLoop();
-
-            shapes.createSquare(gvars::topLeft.x, gvars::topLeft.y,
-                                 gvars::topLeft.x + 300, gvars::topLeft.y + 150,
-                                 sf::Color(0, 0, 0, 100));
-
-            int id;
-            int infected;
-            if (gvars::mousePos.x >= 2000 || gvars::mousePos.y >= 2000 ||
-                gvars::mousePos.x < 0 || gvars::mousePos.y < 0)
+            if (squady.makeSquadPoints < 1000)
             {
-                id = -1;
-                infected = -1;
+                squady.makeSquadPoints += 1;
+                squady.squad.at(squady.aim).attributes.strength -= 1;
             }
-            else
+        }
+        SquareButton var2;
+        var2.color = sf::Color::Red;
+        var2.iSizex = 5;
+        var2.iSizey = 5;
+        var2.vPos = sf::Vector2f((screen.x() / 2) + 150,
+                                 5 + (80 + (20 * spacing++)));
+        var2.sButtonText = "Howdy";
+        vSquareButtonList.push_back(var2);
+        if (squareButtonClicked(var2.id))
+        {
+            if (squady.makeSquadPoints > 0)
             {
-                id = worldMap[abs_to_index(gvars::mousePos.x / 20)]
-                             [abs_to_index(gvars::mousePos.y / 20)].id;
-                infected = worldMap[abs_to_index(
-                    gvars::mousePos.x / 20)][abs_to_index(gvars::mousePos.y /
-                                                          20)].infected;
+                squady.makeSquadPoints -= 1;
+                squady.squad.at(squady.aim).attributes.strength += 1;
             }
-            debug("Pre-World HUD");
-            int hudz = 0;
+        }
 
-            textList.createText(gvars::topLeft.x + 2,
-                                gvars::topLeft.y + (hudz++) * 11, 22,
-                                sf::Color::Yellow, "World Population: ", "",
-                                factionPopulation());
-            hudz++;
-            hudz++;
-            textList.createText(gvars::topLeft.x + 2,
-                                gvars::topLeft.y + (hudz++) * 11, 11,
-                                sf::Color::White, "CurrentTileID: ", "", id);
-            textList.createText(
-                gvars::topLeft.x + 2, gvars::topLeft.y + (hudz++) * 11, 11,
-                sf::Color::White, "CurrentTileInfected: ", "", infected);
-            textList.createText(
-                gvars::topLeft.x + 2, gvars::topLeft.y + (hudz++) * 11, 11,
-                sf::Color::White, "FactionOwned: ",
-                worldMap[math::clamp(abs(gvars::mousePos.x / 20), 0, 99)]
-                        [math::clamp(abs(gvars::mousePos.y / 20), 0, 99)]
-                            .owner);
-            textList.createText(
-                gvars::topLeft.x + 2, gvars::topLeft.y + (hudz++) * 11, 11,
-                sf::Color::White, "FactionMembers: ", "",
-                factionMembers(worldMap[math::clamp(
-                    abs(gvars::mousePos.x / 20), 0,
-                    99)][math::clamp(abs(gvars::mousePos.y / 20), 0, 99)]
+        textList.createText(screen.x() / 2, 80 + (20 * spacing), 11,
+                            sf::Color::White, "Perception: ", "",
+                            squady.squad.at(squady.aim).attributes.perception);
+
+        SquareButton var3;
+        var3.color = sf::Color::Red;
+        var3.iSizex = 5;
+        var3.iSizey = 5;
+        var3.vPos = sf::Vector2f((screen.x() / 2) - 10,
+                                 5 + (80 + (20 * spacing)));
+        var3.sButtonText = "Howdy";
+        vSquareButtonList.push_back(var3);
+        if (squareButtonClicked(var3.id))
+        {
+            if (squady.makeSquadPoints < 1000)
+            {
+                squady.makeSquadPoints += 1;
+                squady.squad.at(squady.aim).attributes.perception -= 1;
+            }
+        }
+        SquareButton var4;
+        var4.color = sf::Color::Red;
+        var4.iSizex = 5;
+        var4.iSizey = 5;
+        var4.vPos = sf::Vector2f((screen.x() / 2) + 150,
+                                 5 + (80 + (20 * spacing++)));
+        var4.sButtonText = "Howdy";
+        vSquareButtonList.push_back(var4);
+        if (squareButtonClicked(var4.id))
+        {
+            if (squady.makeSquadPoints > 0)
+            {
+                squady.makeSquadPoints -= 1;
+                squady.squad.at(squady.aim).attributes.perception += 1;
+            }
+        }
+
+        textList.createText(
+            screen.x() / 2, 80 + (20 * spacing), 11, sf::Color::White,
+            "Intelligence: ", "",
+            squady.squad.at(squady.aim).attributes.intelligence);
+
+        SquareButton var5;
+        var5.color = sf::Color::Red;
+        var5.iSizex = 5;
+        var5.iSizey = 5;
+        var5.vPos = sf::Vector2f((screen.x() / 2) - 10,
+                                 5 + (80 + (20 * spacing)));
+        var5.sButtonText = "Howdy";
+        vSquareButtonList.push_back(var5);
+        if (squareButtonClicked(var5.id))
+        {
+            if (squady.makeSquadPoints < 1000)
+            {
+                squady.makeSquadPoints += 1;
+                squady.squad.at(squady.aim).attributes.intelligence -= 1;
+            }
+        }
+        SquareButton var6;
+        var6.color = sf::Color::Red;
+        var6.iSizex = 5;
+        var6.iSizey = 5;
+        var6.vPos = sf::Vector2f((screen.x() / 2) + 150,
+                                 5 + (80 + (20 * spacing++)));
+        var6.sButtonText = "Howdy";
+        vSquareButtonList.push_back(var6);
+        if (squareButtonClicked(var6.id))
+        {
+            if (squady.makeSquadPoints > 0)
+            {
+                squady.makeSquadPoints -= 1;
+                squady.squad.at(squady.aim).attributes.intelligence += 1;
+            }
+        }
+
+        textList.createText(screen.x() / 2, 80 + (20 * spacing), 11,
+                            sf::Color::White, "Charisma: ", "",
+                            squady.squad.at(squady.aim).attributes.charisma);
+
+        SquareButton var7;
+        var7.color = sf::Color::Red;
+        var7.iSizex = 5;
+        var7.iSizey = 5;
+        var7.vPos = sf::Vector2f((screen.x() / 2) - 10,
+                                 5 + (80 + (20 * spacing)));
+        var7.sButtonText = "Howdy";
+        vSquareButtonList.push_back(var7);
+        if (squareButtonClicked(var7.id))
+        {
+            if (squady.makeSquadPoints < 1000)
+            {
+                squady.makeSquadPoints += 1;
+                squady.squad.at(squady.aim).attributes.charisma -= 1;
+            }
+        }
+        SquareButton var8;
+        var8.color = sf::Color::Red;
+        var8.iSizex = 5;
+        var8.iSizey = 5;
+        var8.vPos = sf::Vector2f((screen.x() / 2) + 150,
+                                 5 + (80 + (20 * spacing++)));
+        var8.sButtonText = "Howdy";
+        vSquareButtonList.push_back(var8);
+        if (squareButtonClicked(var8.id))
+        {
+            if (squady.makeSquadPoints > 0)
+            {
+                squady.makeSquadPoints -= 1;
+                squady.squad.at(squady.aim).attributes.charisma += 1;
+            }
+        }
+
+        textList.createText(screen.x() / 2, 80 + (20 * spacing), 11,
+                            sf::Color::White, "Endurance: ", "",
+                            squady.squad.at(squady.aim).attributes.endurance);
+
+        SquareButton var9;
+        var9.color = sf::Color::Red;
+        var9.iSizex = 5;
+        var9.iSizey = 5;
+        var9.vPos = sf::Vector2f((screen.x() / 2) - 10,
+                                 5 + (80 + (20 * spacing)));
+        var9.sButtonText = "Howdy";
+        vSquareButtonList.push_back(var9);
+        if (squareButtonClicked(var9.id))
+        {
+            if (squady.makeSquadPoints < 1000)
+            {
+                squady.makeSquadPoints += 1;
+                squady.squad.at(squady.aim).attributes.endurance -= 1;
+            }
+        }
+        SquareButton var10;
+        var10.color = sf::Color::Red;
+        var10.iSizex = 5;
+        var10.iSizey = 5;
+        var10.vPos = sf::Vector2f((screen.x() / 2) + 150,
+                                  5 + (80 + (20 * spacing++)));
+        var10.sButtonText = "Howdy";
+        vSquareButtonList.push_back(var10);
+        if (squareButtonClicked(var10.id))
+        {
+            if (squady.makeSquadPoints > 0)
+            {
+                squady.makeSquadPoints -= 1;
+                squady.squad.at(squady.aim).attributes.endurance += 1;
+            }
+        }
+
+        textList.createText(screen.x() / 2, 80 + (20 * spacing), 11,
+                            sf::Color::White, "Dexterity: ", "",
+                            squady.squad.at(squady.aim).attributes.dexterity);
+
+        SquareButton var11;
+        var11.color = sf::Color::Red;
+        var11.iSizex = 5;
+        var11.iSizey = 5;
+        var11.vPos = sf::Vector2f((screen.x() / 2) - 10,
+                                  5 + (80 + (20 * spacing)));
+        var11.sButtonText = "Howdy";
+        vSquareButtonList.push_back(var11);
+        if (squareButtonClicked(var11.id))
+        {
+            if (squady.makeSquadPoints < 1000)
+            {
+                squady.makeSquadPoints += 1;
+                squady.squad.at(squady.aim).attributes.dexterity -= 1;
+            }
+        }
+        SquareButton var12;
+        var12.color = sf::Color::Red;
+        var12.iSizex = 5;
+        var12.iSizey = 5;
+        var12.vPos = sf::Vector2f((screen.x() / 2) + 150,
+                                  5 + (80 + (20 * spacing++)));
+        var12.sButtonText = "Howdy";
+        vSquareButtonList.push_back(var12);
+        if (squareButtonClicked(var12.id))
+        {
+            if (squady.makeSquadPoints > 0)
+            {
+                squady.makeSquadPoints -= 1;
+                squady.squad.at(squady.aim).attributes.dexterity += 1;
+            }
+        }
+
+        textList.createText(screen.x() / 2, 80 + (20 * spacing), 11,
+                            sf::Color::White, "Agility: ", "",
+                            squady.squad.at(squady.aim).attributes.agility);
+
+        SquareButton var13;
+        var13.color = sf::Color::Red;
+        var13.iSizex = 5;
+        var13.iSizey = 5;
+        var13.vPos = sf::Vector2f((screen.x() / 2) - 10,
+                                  5 + (80 + (20 * spacing)));
+        var13.sButtonText = "Howdy";
+        vSquareButtonList.push_back(var13);
+        if (squareButtonClicked(var13.id))
+        {
+            if (squady.makeSquadPoints < 1000)
+            {
+                squady.makeSquadPoints += 1;
+                squady.squad.at(squady.aim).attributes.agility -= 1;
+            }
+        }
+        SquareButton var14;
+        var14.color = sf::Color::Red;
+        var14.iSizex = 5;
+        var14.iSizey = 5;
+        var14.vPos = sf::Vector2f((screen.x() / 2) + 150,
+                                  5 + (80 + (20 * spacing++)));
+        var14.sButtonText = "Howdy";
+        vSquareButtonList.push_back(var14);
+        if (squareButtonClicked(var14.id))
+        {
+            if (squady.makeSquadPoints > 0)
+            {
+                squady.makeSquadPoints -= 1;
+                squady.squad.at(squady.aim).attributes.agility += 1;
+            }
+        }
+
+        //cText.CreateText(screen.x()/2,80+(20*Spacing),11,sf::Color::White," ");
+        SquareButton var50;
+        var50.color = sf::Color::Yellow;
+        var50.iSizex = 5;
+        var50.iSizey = 5;
+        var50.vPos = sf::Vector2f((screen.x() / 2) + 180,
+                                  5 + (80 + ((20 * spacing++) / 2)));
+
+        var50.sForwardText = "Done";
+        var50.textColor = sf::Color::White;
+        var50.textSize = 11;
+
+        vSquareButtonList.push_back(var50);
+        if (squareButtonClicked(var50.id))
+        {
+
+            gCtrl.phase = "World";
+            gCtrl.buildWorldTest();
+
+            initializeFactions(13);
+        }
+
+        //DrawStuffs();
+    }
+
+    if (gCtrl.phase == "System")
+    {
+        class Planet
+        {
+        public:
+            sf::Vector2f position;
+            sf::Image sprite;
+            float density;
+            float volume;
+
+            Planet()
+            {
+                density = 100;
+                volume = 20000;
+            }
+        };
+
+        //std::vector<Planet> Planetsz;
+        /*
+        for(int i = 0; i != Planets.size(); i++)
+        {
+            for(int t = 0; t != Planets.size(); t++)
+            {
+                float MassDifference = Planets[i].Density/Planets[i].Volume - Planets[t].Density/Planets[t].Volume;
+                std::cout << MassDifference
+            }
+        }
+        */
+    }
+
+    if (gCtrl.phase == "World")
+    {
+        cameraControls();
+
+        gCtrl.worldLoop();
+
+        shapes.createSquare(gvars::topLeft.x, gvars::topLeft.y,
+                             gvars::topLeft.x + 300, gvars::topLeft.y + 150,
+                             sf::Color(0, 0, 0, 100));
+
+        int id;
+        int infected;
+        if (gvars::mousePos.x >= 2000 || gvars::mousePos.y >= 2000 ||
+            gvars::mousePos.x < 0 || gvars::mousePos.y < 0)
+        {
+            id = -1;
+            infected = -1;
+        }
+        else
+        {
+            id = worldMap[abs_to_index(gvars::mousePos.x / 20)]
+                         [abs_to_index(gvars::mousePos.y / 20)].id;
+            infected = worldMap[abs_to_index(
+                gvars::mousePos.x / 20)][abs_to_index(gvars::mousePos.y /
+                                                      20)].infected;
+        }
+        debug("Pre-World HUD");
+        int hudz = 0;
+
+        textList.createText(gvars::topLeft.x + 2,
+                            gvars::topLeft.y + (hudz++) * 11, 22,
+                            sf::Color::Yellow, "World Population: ", "",
+                            factionPopulation());
+        hudz++;
+        hudz++;
+        textList.createText(gvars::topLeft.x + 2,
+                            gvars::topLeft.y + (hudz++) * 11, 11,
+                            sf::Color::White, "CurrentTileID: ", "", id);
+        textList.createText(
+            gvars::topLeft.x + 2, gvars::topLeft.y + (hudz++) * 11, 11,
+            sf::Color::White, "CurrentTileInfected: ", "", infected);
+        textList.createText(
+            gvars::topLeft.x + 2, gvars::topLeft.y + (hudz++) * 11, 11,
+            sf::Color::White, "FactionOwned: ",
+            worldMap[math::clamp(abs(gvars::mousePos.x / 20), 0, 99)]
+                    [math::clamp(abs(gvars::mousePos.y / 20), 0, 99)]
+                        .owner);
+        textList.createText(
+            gvars::topLeft.x + 2, gvars::topLeft.y + (hudz++) * 11, 11,
+            sf::Color::White, "FactionMembers: ", "",
+            factionMembers(worldMap[math::clamp(
+                abs(gvars::mousePos.x / 20), 0,
+                99)][math::clamp(abs(gvars::mousePos.y / 20), 0, 99)]
+                               .owner));
+        textList.createText(
+            gvars::topLeft.x + 2, gvars::topLeft.y + (hudz++) * 11, 11,
+            sf::Color::White, "FactionAggression: ", "",
+            factionAggression(worldMap[math::clamp(
+                abs(gvars::mousePos.x / 20), 0,
+                99)][math::clamp(abs(gvars::mousePos.y / 20), 0, 99)]
+                                  .owner));
+        textList.createText(
+            gvars::topLeft.x + 2, gvars::topLeft.y + (hudz++) * 11, 11,
+            sf::Color::White, "FactionTerritories: ", "",
+            factionTerritories(worldMap[math::clamp(
+                abs(gvars::mousePos.x / 20), 0,
+                99)][math::clamp(abs(gvars::mousePos.y / 20), 0, 99)]
                                    .owner));
-            textList.createText(
-                gvars::topLeft.x + 2, gvars::topLeft.y + (hudz++) * 11, 11,
-                sf::Color::White, "FactionAggression: ", "",
-                factionAggression(worldMap[math::clamp(
-                    abs(gvars::mousePos.x / 20), 0,
-                    99)][math::clamp(abs(gvars::mousePos.y / 20), 0, 99)]
-                                      .owner));
-            textList.createText(
-                gvars::topLeft.x + 2, gvars::topLeft.y + (hudz++) * 11, 11,
-                sf::Color::White, "FactionTerritories: ", "",
-                factionTerritories(worldMap[math::clamp(
-                    abs(gvars::mousePos.x / 20), 0,
-                    99)][math::clamp(abs(gvars::mousePos.y / 20), 0, 99)]
-                                       .owner));
-            textList.createText(
-                gvars::topLeft.x + 2, gvars::topLeft.y + (hudz++) * 11, 11,
-                sf::Color::White, "FactionPower: ", "",
-                factionPower(worldMap[math::clamp(
-                    abs(gvars::mousePos.x / 20), 0,
-                    99)][math::clamp(abs(gvars::mousePos.y / 20), 0, 99)]
-                                 .owner));
+        textList.createText(
+            gvars::topLeft.x + 2, gvars::topLeft.y + (hudz++) * 11, 11,
+            sf::Color::White, "FactionPower: ", "",
+            factionPower(worldMap[math::clamp(
+                abs(gvars::mousePos.x / 20), 0,
+                99)][math::clamp(abs(gvars::mousePos.y / 20), 0, 99)]
+                             .owner));
 
-            textList.createText(gvars::topLeft.x + 2,
-                                gvars::topLeft.y + (hudz++) * 11, 11,
-                                sf::Color::White, "AimedPos(DELETEME): ", "",
-                                abs(gvars::mousePos.x / 20), "/", "",
-                                abs(gvars::mousePos.y / 20));
+        textList.createText(gvars::topLeft.x + 2,
+                            gvars::topLeft.y + (hudz++) * 11, 11,
+                            sf::Color::White, "AimedPos(DELETEME): ", "",
+                            abs(gvars::mousePos.x / 20), "/", "",
+                            abs(gvars::mousePos.y / 20));
 
-            drawWorldTiles();
-            int xMouse(gvars::mousePos.x / 20);
-            int yMouse(gvars::mousePos.y / 20);
-            sf::Vector2f pos(xMouse, yMouse);
-            shapes.createSquare(pos.x * 20, pos.y * 20, (pos.x * 20) + 20,
-                                 (pos.y * 20) + 20, sf::Color(0, 0, 0, 0), 2,
-                                 sf::Color(0, 200, 200, 255));
+        drawWorldTiles();
+        int xMouse(gvars::mousePos.x / 20);
+        int yMouse(gvars::mousePos.y / 20);
+        sf::Vector2f pos(xMouse, yMouse);
+        shapes.createSquare(pos.x * 20, pos.y * 20, (pos.x * 20) + 20,
+                             (pos.y * 20) + 20, sf::Color(0, 0, 0, 0), 2,
+                             sf::Color(0, 200, 200, 255));
 
-            if (inputState.key[Key::C] && true == false)
-            { // Not sure what this was for, Perhaps an early alpha planet builder?
-                for (int x = 0; x != GRIDS; x++)
+        if (inputState.key[Key::C] && true == false)
+        { // Not sure what this was for, Perhaps an early alpha planet builder?
+            for (int x = 0; x != GRIDS; x++)
+            {
+                for (int y = 0; y != GRIDS; y++)
                 {
-                    for (int y = 0; y != GRIDS; y++)
+                    if (tiles[x][y][0].id == 1001)
                     {
-                        if (tiles[x][y][0].id == 1001)
+                        sf::Image grazz;
+                        grazz.create(20, 20, sf::Color(0, 0, 0, 255));
+                        for (int i = 0; i != 20; i++)
                         {
-                            sf::Image grazz;
-                            grazz.create(20, 20, sf::Color(0, 0, 0, 255));
-                            for (int i = 0; i != 20; i++)
+                            for (int t = 0; t != 20; t++)
                             {
-                                for (int t = 0; t != 20; t++)
-                                {
-                                    int pix = randz(0, 1);
-                                    if (pix == 0)
-                                        grazz.setPixel(
-                                            i, t, sf::Color(0, 255, 0, 255));
-                                    if (pix == 1)
-                                        grazz.setPixel(
-                                            i, t, sf::Color(0, 128, 0, 255));
-                                    grazz.setPixel(i, t,
-                                                   sf::Color(0, 128, 0, 255));
-                                }
+                                int pix = randz(0, 1);
+                                if (pix == 0)
+                                    grazz.setPixel(
+                                        i, t, sf::Color(0, 255, 0, 255));
+                                if (pix == 1)
+                                    grazz.setPixel(
+                                        i, t, sf::Color(0, 128, 0, 255));
+                                grazz.setPixel(i, t,
+                                               sf::Color(0, 128, 0, 255));
                             }
-                            sf::Texture why;
-                            why.loadFromImage(grazz);
-                            //                Tiles[x][y][0].Img.setTexture(Why);
                         }
+                        sf::Texture why;
+                        why.loadFromImage(grazz);
+                        //                Tiles[x][y][0].Img.setTexture(Why);
                     }
                 }
-
-                con("Starting Now");
-                gCtrl.addvPlanet();
             }
 
-            if (inputState.rmb == true)
-            { // Entering Menu and such.
-                debug("After RMB");
-
-                gCtrl.menuType = "WorldRMB";
-                menuPopUp();
-            }
-            debug("Done with world.");
-            if (gCtrl.menuType != "NULL")
-            {
-                menuPopUp();
-            }
-            else
-            {
-                gCtrl.menuPos = math::Vec2f(-10000, -10000);
-            }
+            con("Starting Now");
+            gCtrl.addvPlanet();
         }
 
-        if (gCtrl.phase == "MainMenu")
-        { //=======================================================*Main Menu*============================================================================
-            gCtrl.buildMainMenu();
-            gvars::view1.setCenter(HALF_SIZE.x, HALF_SIZE.y);
-            textList.createText(500, 0, 25, sf::Color::White, "Welcome!", "",
-                                -6698, "", "", -6698, "", "", -6698, 1, 0);
-            textList.createText(
-                450, 25, 11, sf::Color::Red,
-                "Take this 'game' with a grain of salt, It's not done yet");
-            textList.createText(450, 45, 11, gvars::cycleGreen,
-                                "Design Your Squad");
+        if (inputState.rmb == true)
+        { // Entering Menu and such.
+            debug("After RMB");
 
-            textList.createText(450, 60, 11, sf::Color::Red,
-                                "Press 'm' to view MicroPather basic test");
+            gCtrl.menuType = "WorldRMB";
+            menuPopUp();
+        }
+        debug("Done with world.");
+        if (gCtrl.menuType != "NULL")
+        {
+            menuPopUp();
+        }
+        else
+        {
+            gCtrl.menuPos = math::Vec2f(-10000, -10000);
+        }
+    }
 
-            // TODO: Simply add cText.CreateText for the Button Text, Or at least make it an option, Since sButtonText is designed for text 'on' the button.
-            SquareButton var;
-            var.color = gvars::cycleRed;
-            var.iSizex = 10;
-            var.iSizey = 6;
+    if (gCtrl.phase == "MainMenu")
+    { //=======================================================*Main Menu*============================================================================
+        gCtrl.buildMainMenu();
+        gvars::view1.setCenter(HALF_SIZE.x, HALF_SIZE.y);
+        textList.createText(500, 0, 25, sf::Color::White, "Welcome!", "",
+                            -6698, "", "", -6698, "", "", -6698, 1, 0);
+        textList.createText(
+            450, 25, 11, sf::Color::Red,
+            "Take this 'game' with a grain of salt, It's not done yet");
+        textList.createText(450, 45, 11, gvars::cycleGreen,
+                            "Design Your Squad");
 
-            var.vPos = sf::Vector2f(440, 52);
-            var.sButtonText = "Howdy";
-            vSquareButtonList.push_back(var);
+        textList.createText(450, 60, 11, sf::Color::Red,
+                            "Press 'm' to view MicroPather basic test");
 
-            textList.createText(450, 75, 11, sf::Color::Red,
-                                "Press r to turn on the "
-                                "debugger, If it slows down the "
-                                "game, Minimize the console.");
-            textList.createText(395, 755, 10, sf::Color::White,
-                                "Pathfinding: MicroPather by Lee Thomason");
-            /* textList.createText(gvars::mousePos.x,gvars::mousePos.y-10,10,sf::Color::White,"X: "+std::to_string(gvars::mousePos.x)+" Y: "+std::to_string(gvars::mousePos.y)); */
+        // TODO: Simply add cText.CreateText for the Button Text, Or at least make it an option, Since sButtonText is designed for text 'on' the button.
+        SquareButton var;
+        var.color = gvars::cycleRed;
+        var.iSizex = 10;
+        var.iSizey = 6;
 
-            if (inputState.key[Key::M] && !network::chatting)
+        var.vPos = sf::Vector2f(440, 52);
+        var.sButtonText = "Howdy";
+        vSquareButtonList.push_back(var);
+
+        textList.createText(450, 75, 11, sf::Color::Red,
+                            "Press r to turn on the "
+                            "debugger, If it slows down the "
+                            "game, Minimize the console.");
+        textList.createText(395, 755, 10, sf::Color::White,
+                            "Pathfinding: MicroPather by Lee Thomason");
+        /* textList.createText(gvars::mousePos.x,gvars::mousePos.y-10,10,sf::Color::White,"X: "+std::to_string(gvars::mousePos.x)+" Y: "+std::to_string(gvars::mousePos.y)); */
+
+        if (inputState.key[Key::M] && !network::chatting)
+        {
+            gCtrl.phase = "MicroPatherTest";
+            gvars::currentx = 14;
+            gvars::currenty = 14;
+        }
+
+        if (squareButtonClicked(var.id))
+        {
+            if (gvars::debug)
+                std::cout << "Switching to MakeSquad\n";
+            gCtrl.phase = "MakeSquad";
+
+            for (int amount = 0; amount != squady.squadMates; amount++)
             {
-                gCtrl.phase = "MicroPatherTest";
-                gvars::currentx = 14;
-                gvars::currenty = 14;
-            }
 
-            if (squareButtonClicked(var.id))
-            {
-                if (gvars::debug)
-                    std::cout << "Switching to MakeSquad\n";
-                gCtrl.phase = "MakeSquad";
-
-                for (int amount = 0; amount != squady.squadMates; amount++)
+                Npc var;
+                var = *getGlobalCritter("Human");
+                var.id = gvars::globalid++;
+                var.blankSkills();
+                std::string name;
+                std::string gender;
+                int numz = randz(0, 1);
+                if (numz == 0)
                 {
-
-                    Npc var;
-                    var = *getGlobalCritter("Human");
-                    var.id = gvars::globalid++;
-                    var.blankSkills();
-                    std::string name;
-                    std::string gender;
-                    int numz = randz(0, 1);
-                    if (numz == 0)
-                    {
-                        gender = "Male";
-                    }
-                    else
-                    {
-                        gender = "Female";
-                    }
-                    int numzb = randz(0, 1);
+                    gender = "Male";
+                }
+                else
+                {
+                    gender = "Female";
+                }
+                int numzb = randz(0, 1);
+                if (numzb == 0)
+                {
+                    gender = "Male";
+                }
+                else
+                {
+                    gender = "Female";
+                }
+                if (gender == "Male")
+                {
+                    int numzb = randz(0, 5);
                     if (numzb == 0)
                     {
-                        gender = "Male";
+                        name = "John";
                     }
-                    else
+                    else if (numzb == 1)
                     {
-                        gender = "Female";
+                        name = "Jack";
                     }
-                    if (gender == "Male")
+                    else if (numzb == 2)
                     {
-                        int numzb = randz(0, 5);
-                        if (numzb == 0)
-                        {
-                            name = "John";
-                        }
-                        else if (numzb == 1)
-                        {
-                            name = "Jack";
-                        }
-                        else if (numzb == 2)
-                        {
-                            name = "Jonathan";
-                        }
-                        else if (numzb == 3)
-                        {
-                            name = "James";
-                        }
-                        else if (numzb == 4)
-                        {
-                            name = "Joseph";
-                        }
-                        else if (numzb == 5)
-                        {
-                            name = "Joe";
-                        }
-                    };
-                    if (gender == "Female")
+                        name = "Jonathan";
+                    }
+                    else if (numzb == 3)
                     {
-                        int numzb = randz(0, 5);
-                        if (numzb == 0)
-                        {
-                            name = "Jennifer";
-                        }
-                        else if (numzb == 1)
-                        {
-                            name = "Jill";
-                        }
-                        else if (numzb == 2)
-                        {
-                            name = "Jamie";
-                        }
-                        else if (numzb == 3)
-                        {
-                            name = "Jackie";
-                        }
-                        else if (numzb == 4)
-                        {
-                            name = "Joan";
-                        }
-                        else if (numzb == 5)
-                        {
-                            name = "Jessica";
-                        }
-                    };
+                        name = "James";
+                    }
+                    else if (numzb == 4)
+                    {
+                        name = "Joseph";
+                    }
+                    else if (numzb == 5)
+                    {
+                        name = "Joe";
+                    }
+                };
+                if (gender == "Female")
+                {
+                    int numzb = randz(0, 5);
+                    if (numzb == 0)
+                    {
+                        name = "Jennifer";
+                    }
+                    else if (numzb == 1)
+                    {
+                        name = "Jill";
+                    }
+                    else if (numzb == 2)
+                    {
+                        name = "Jamie";
+                    }
+                    else if (numzb == 3)
+                    {
+                        name = "Jackie";
+                    }
+                    else if (numzb == 4)
+                    {
+                        name = "Joan";
+                    }
+                    else if (numzb == 5)
+                    {
+                        name = "Jessica";
+                    }
+                };
 
-                    var.name = name;
-                    var.gender = gender;
+                var.name = name;
+                var.gender = gender;
 
-                    squady.squad.push_back(var);
-                }
+                squady.squad.push_back(var);
             }
-            if (inputState.key[Key::Comma] && !network::chatting)
-            {
-                if (gvars::debug)
-                    std::cout << "Comma was pressed \n";
-                gCtrl.phase = "Local";
-                if (gvars::debug)
-                    std::cout << "Building Local Test\n";
-                gCtrl.buildLocalTest();
-                if (gvars::debug)
-                    std::cout << "Done Building Local Test\n";
-            }
-            if (inputState.key[Key::Period] && !network::chatting)
-            {
-                gCtrl.phase = "World";
-                gCtrl.buildWorldTest();
-            }
-            if (inputState.key[Key::RControl] && !network::chatting)
-            {
-                gCtrl.phase = "Test";
-            }
-        } //=============================================================================*End of Main Menu*========================================================================
+        }
+        if (inputState.key[Key::Comma] && !network::chatting)
+        {
+            if (gvars::debug)
+                std::cout << "Comma was pressed \n";
+            gCtrl.phase = "Local";
+            if (gvars::debug)
+                std::cout << "Building Local Test\n";
+            gCtrl.buildLocalTest();
+            if (gvars::debug)
+                std::cout << "Done Building Local Test\n";
+        }
+        if (inputState.key[Key::Period] && !network::chatting)
+        {
+            gCtrl.phase = "World";
+            gCtrl.buildWorldTest();
+        }
+        if (inputState.key[Key::RControl] && !network::chatting)
+        {
+            gCtrl.phase = "Test";
+        }
+    } //=============================================================================*End of Main Menu*========================================================================
 
 
 
