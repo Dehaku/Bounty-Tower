@@ -933,6 +933,16 @@ void critterPathFind(Npc &npc, std::list<Npc> &container)
 
         //Acquiring the path.
         int result = pathCon.makePath(startPos, pathPos);
+        if(result == MicroPather::NO_SOLUTION)
+        {
+
+            npc.storedPath.clear();
+            npc.endPos = Vec3();
+            npc.hasPath = false;
+            npc.needsPath = false;
+            chatBox.addChat("There's no way to get there!", sf::Color::White);
+        }
+
         if(!pathCon.storedPath.empty())
         {
             npc.hasPath = true;
@@ -948,10 +958,14 @@ void critterPathFind(Npc &npc, std::list<Npc> &container)
         //Setting the target tile to it's original walkable state.
         tiles[pathPos.x][pathPos.y][pathPos.z].walkable = prevWalkable;
 
-        //Clearing the old path, and inserting the new one for storage.
-        npc.storedPath.clear();
-        for(auto &i : pathCon.storedPath)
-            npc.storedPath.push_back(i);
+        //Clearing the old path, and inserting the new one for storage, as long as there IS a new path.
+        if( !(result == MicroPather::NO_SOLUTION) )
+        {
+            npc.storedPath.clear();
+            for(auto &i : pathCon.storedPath)
+                npc.storedPath.push_back(i);
+        }
+
         //Cleaning the pather's storage for next use.
         pathCon.storedPath.clear();
     }
