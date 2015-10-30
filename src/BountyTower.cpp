@@ -62,7 +62,7 @@ void equipStarters()
 
         member.setupAnimations();
 
-        member.chasePriority = "Hold Ground";
+        member.chasePriority = "Hold Position";
 
         member.ypos = 4040;
 
@@ -442,6 +442,7 @@ void towerTransition()
         npc.hasPath = false;
         npc.needsPath = false;
         npc.momentum = sf::Vector2f(0,0);
+        npc.chaseDefendPos = Vec3(npc.xpos,npc.ypos,npc.zpos);
 
         if(!npc.isSquaddie)
             npc.toDelete = true;
@@ -1407,6 +1408,7 @@ void nextFloorTransition()
         npc.endPos = Vec3();
         npc.hasPath = false;
         npc.needsPath = false;
+        npc.chaseDefendPos = Vec3(npc.xpos,npc.ypos,npc.zpos);
         //!npc.alive
         if(gvars::currentz != abs_to_index(npc.zpos/GRID_SIZE))
         {
@@ -2087,6 +2089,69 @@ void corpsesBleed()
 
 }
 
+void chasePriorityFunction()
+{
+    if(!inputState.key[Key::LAlt])
+        return;
+
+    for(auto &npc : Squaddies)
+    {
+        sf::Texture * arrowButt = &texturemanager.getTexture("ArrowButton.png");
+
+        //Multiplying by Boolean, BOOYAH!
+        int assaultRotate = 180*(npc->chasePriority == "Assault");
+        int defendRotate = 180*(npc->chasePriority == "Defend");
+        int holdRotate = 180*(npc->chasePriority == "Hold Position");
+
+        //I love shortening button to butt.
+        int assaultButt = createImageButton(sf::Vector2f(npc->xpos-30,npc->ypos-90),*arrowButt,"",assaultRotate);
+        int defendButt = createImageButton(sf::Vector2f(npc->xpos,npc->ypos-90),*arrowButt,"",defendRotate);
+        int holdButt = createImageButton(sf::Vector2f(npc->xpos+30,npc->ypos-90),*arrowButt,"",holdRotate);
+        sf::Vector2f mouseConv(gvars::mousePos.x+20,gvars::mousePos.y);
+
+        if(imageButtonHovered(assaultButt))
+        {
+            textList.createText(mouseConv,10,sf::Color::White,"Assault Order, Constantly hunts down enemies.");
+            if(inputState.lmb)
+                npc->chasePriority = "Assault";
+        }
+        if(imageButtonHovered(defendButt))
+        {
+            textList.createText(mouseConv,10,sf::Color::White,"Defend Order, Guards an area you define, centered on their lost move order.");
+            if(inputState.lmb)
+                npc->chasePriority = "Defend";
+
+        }
+        if(imageButtonHovered(holdButt))
+        {
+            textList.createText(mouseConv,10,sf::Color::White,"Hold Position Order, Will not move automatically.");
+            if(inputState.lmb)
+                npc->chasePriority = "Hold Position";
+        }
+
+        int decreaseRadiusButt = createImageButton(sf::Vector2f(npc->xpos-15,npc->ypos-70),*arrowButt,"",-90);
+        int increaseRadiusButt = createImageButton(sf::Vector2f(npc->xpos+15,npc->ypos-70),*arrowButt,"",90);
+
+        if(imageButtonHovered(decreaseRadiusButt))
+        {
+            textList.createText(mouseConv,10,sf::Color::White,"Decrease Defend Radius");
+            if(inputState.lmbTime == 1 || inputState.lmbTime > 15)
+                npc->chaseRange--;
+        }
+
+        if(imageButtonHovered(increaseRadiusButt))
+        {
+            textList.createText(mouseConv,10,sf::Color::White,"Increase Defend Radius");
+            if(inputState.lmbTime == 1 || inputState.lmbTime > 15)
+                npc->chaseRange++;
+        }
+
+
+        if(npc->chasePriority == "Defend")
+            shapes.createCircle(npc->chaseDefendPos.x,npc->chaseDefendPos.y,npc->chaseRange,sf::Color::Transparent,2,sf::Color::White);
+
+    }
+}
 
 void bountyTowerLoop()
 { // Game Loop
@@ -2096,6 +2161,7 @@ void bountyTowerLoop()
     NPCbuttons();
     layHints();
     corpsesBleed();
+    chasePriorityFunction();
 
     makeBlood();
     if(inputState.key[Key::J])

@@ -1669,7 +1669,7 @@ Npc::Npc()
     xp = 0;
     skillpoints = 5;
 
-    chasePriority = "Assault"; // Assault, Defend, Hold Ground
+    chasePriority = "Assault"; // Assault, Defend, Hold Position
     chaseRange = 100;
 
     recruitable = false;

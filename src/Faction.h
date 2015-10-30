@@ -133,7 +133,7 @@ public:
     int skillpoints;
 
 
-    std::string chasePriority; // Assault, Defend, Hold Ground
+    std::string chasePriority; // Assault, Defend, Hold Position
     Vec3f chaseDefendPos;
     int chaseRange;
 
