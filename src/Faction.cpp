@@ -2886,6 +2886,11 @@ std::string Npc::takeDamage(Npc *attacker, Item *weapon, float amount, critScore
             shapes.shapes.push_back(text);
         }
 
+        {// Dodge Sound Code
+            int soundRan = random(1,6);
+            soundmanager.playSound("Woosh"+str(soundRan)+".ogg");
+        }
+
         return "Dodged";
     }
 
@@ -5340,6 +5345,12 @@ void drawNPCs(std::list<Npc> &container)
                         ani.animation.setScale(0.75,0.75);
                     else
                         ani.animation.setScale(1,1);
+
+                    if(npc.name == "The Hardened Criminal")
+                        ani.animation.setScale(1.25,1.25);
+                    else
+                        ani.animation.setScale(1,1);
+
 
                     ani.animation.setPosition(npc.xpos,npc.ypos);
                     window.draw(ani.animation, &shadermanager.shockwaveShader);
