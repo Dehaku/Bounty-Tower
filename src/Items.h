@@ -40,6 +40,8 @@ public:
 
     void remove();
 
+    int rarity;
+
     int range;
     int radius;
     int penetration;

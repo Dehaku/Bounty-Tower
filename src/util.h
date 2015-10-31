@@ -75,6 +75,29 @@ template <typename T> T &listAt(std::list<T> &list, size_t index)
     return *it;
 }
 
+class RandomWeightList
+{
+public:
+    class WeightEntry
+    {
+    public:
+        float weight;
+        std::string name;
+        WeightEntry();
+    };
+    std::vector<WeightEntry> entries;
+
+    void clear();
+    void addEntry(std::string entryName, int entryWeight);
+    int getRandomSlot();
+    std::string getRandomName();
+    void printEntries();
+    float getChance(std::string entryName);
+    float getChance(int entryPosition);
+    void printChances();
+};
+extern RandomWeightList randomWeightList;
+
 
 
 bool booleanize(int num);

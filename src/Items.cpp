@@ -596,6 +596,8 @@ Item::Item()
     age = 0;
     amount = 1;
 
+    rarity = 0;
+
     projectiles = 0;
     spread = 0;
     radius = 0;
@@ -701,6 +703,8 @@ void ItemManager::initializeItems()
 
             item.hungervalue = stringFindNumber(line, "[hungervalue:");
             item.thirstvalue = stringFindNumber(line, "[thirstvalue:");
+
+            item.rarity = stringFindNumber(line, "[Rarity:");
 
             item.spread = stringFindNumber(line, "[Spread:");
             item.projectiles = stringFindNumber(line, "[Projectiles:");

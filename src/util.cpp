@@ -10,6 +10,123 @@ std::string str(float num)
     return std::to_string(num);
 }
 
+RandomWeightList::WeightEntry::WeightEntry()
+{
+    weight = 0;
+}
+
+void RandomWeightList::clear()
+{
+    entries.clear();
+}
+
+void RandomWeightList::addEntry(std::string entryName, int entryWeight)
+{
+    WeightEntry wE;
+    wE.name = entryName;
+    wE.weight = entryWeight;
+    if(entryWeight > 0)
+        entries.push_back(wE);
+}
+
+int RandomWeightList::getRandomSlot()
+{
+    int sum_of_weight = 0;
+    for(int i = 0; i < entries.size(); i++)
+    {
+        sum_of_weight += entries[i].weight;
+    }
+
+    int rnd = random(1, sum_of_weight);
+    for(int i = 0; i < entries.size(); i++)
+    {
+        if(rnd <= entries[i].weight)
+            return i;
+        rnd -= entries[i].weight;
+    }
+    return 0;
+}
+
+std::string RandomWeightList::getRandomName()
+{
+    int sum_of_weight = 0;
+    for(int i = 0; i < entries.size(); i++)
+    {
+        sum_of_weight += entries[i].weight;
+    }
+
+    int rnd = random(1, sum_of_weight);
+    for(int i = 0; i < entries.size(); i++)
+    {
+        if(rnd <= entries[i].weight)
+            return entries[i].name;
+        rnd -= entries[i].weight;
+    }
+    return "";
+}
+
+void RandomWeightList::printEntries()
+{
+    int sum_of_weight = 0;
+    for(int i = 0; i < entries.size(); i++)
+    {
+        std::cout << entries[i].name << ": " << sum_of_weight+1 << " - " << sum_of_weight+entries[i].weight << std::endl;
+        sum_of_weight += entries[i].weight;
+    }
+}
+
+float RandomWeightList::getChance(std::string entryName)
+{
+    float sum_of_weight = 0;
+    for(int i = 0; i < entries.size(); i++)
+    {
+        sum_of_weight += entries[i].weight;
+    }
+    for(int i = 0; i < entries.size(); i++)
+    {
+        if(entries[i].name == entryName)
+        {
+            return (entries[i].weight / sum_of_weight) * 100;
+        }
+    }
+
+    return -1; // Nothing found, Return impossible.
+}
+float RandomWeightList::getChance(int entryPosition)
+{
+    float sum_of_weight = 0;
+    for(int i = 0; i < entries.size(); i++)
+    {
+        sum_of_weight += entries[i].weight;
+    }
+    for(int i = 0; i < entries.size(); i++)
+    {
+        if(i == entryPosition)
+        {
+            return (entries[i].weight / sum_of_weight) * 100;
+        }
+    }
+
+    return -1; // Nothing found, Return impossible.
+}
+
+void RandomWeightList::printChances()
+{
+    float sum_of_weight = 0;
+    for(int i = 0; i < entries.size(); i++)
+    {
+        sum_of_weight += entries[i].weight;
+    }
+
+    for(int i = 0; i < entries.size(); i++)
+    {
+        std::cout << entries[i].name << ": %" << (entries[i].weight / sum_of_weight) * 100 << std::endl;
+    }
+}
+
+RandomWeightList randomWeightList;
+
+
 void fSleep(float time)
 {
     sf::sleep(sf::seconds(time));
