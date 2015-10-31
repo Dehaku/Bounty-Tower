@@ -4653,7 +4653,11 @@ void drawSelectedCritterHUD()
                 SP.setTexture(*slotItem->img.getTexture());
                 SP.setPosition(vPos);
                 SP.setOrigin(SP.getTexture()->getSize().x/2,SP.getTexture()->getSize().y/2);
-                window.draw(SP);
+
+                //Don't draw the item in the slot while we're holding it.
+                if(mouseItem == nullptr || mouseItem != nullptr && mouseItem->id != slotItem->id)
+                    window.draw(SP);
+
                 sf::Vector2f uPos(vPos.x-20,vPos.y+20);
                 int amount = slotItem->amount;
                 std::string outPut = slotItem->name;
