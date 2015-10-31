@@ -1193,7 +1193,7 @@ void critterBrain(Npc &npc, std::list<Npc> &container)
     workSwitch(npc,container);
 
 
-    critterWallCheck(npc,container);
+    //critterWallCheck(npc,container);
 
 
 

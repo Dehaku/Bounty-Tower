@@ -2181,6 +2181,8 @@ void dirMove(sf::Vector2f tar)
 
 void Npc::dirMove(sf::Vector2f tar)
 {
+    sf::Vector2f oldPos(xpos,ypos);
+
     sf::Vector2f pos(xpos,ypos);
     if(math::closeish(pos.x,pos.y,tar.x,tar.y) <= moverate)
     {
@@ -2203,6 +2205,19 @@ void Npc::dirMove(sf::Vector2f tar)
         xpos -= xx;
         ypos -= yy;
     }
+
+    if(!isInBounds(getPos2d()))
+    {
+        xpos = oldPos.x;
+        ypos = oldPos.y;
+    }
+    if(!tiles[abs_to_index(xpos/GRID_SIZE)][abs_to_index(ypos/GRID_SIZE)][abs_to_index(zpos/GRID_SIZE)].walkable)
+    {
+        xpos = oldPos.x;
+        ypos = oldPos.y;
+    }
+
+
 }
 
 
