@@ -2722,8 +2722,10 @@ std::string Npc::addItem(Item &item)
 
 int Npc::getInventoryMax()
 {
+    /*
     if(race == "BTNoirves")
         return 10;
+    */
 
     return 20;
 }

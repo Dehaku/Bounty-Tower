@@ -1480,6 +1480,31 @@ void spawnEnemies()
     std::vector<Item> rangedweps = itemmanager.getAllofType(2);
     std::vector<Item> meleeweps = itemmanager.getAllofType(1);
 
+    RandomWeightList equipmentSet;
+    equipmentSet.addEntry("Melee",100*bountytower::currentTower->floors);
+    equipmentSet.addEntry("Ranged",50*(gvars::currentz*4));
+
+    RandomWeightList meleeList;
+    RandomWeightList rangedList;
+    RandomWeightList bulletList;
+    RandomWeightList shellList;
+    RandomWeightList missileList;
+    for(auto &item : itemmanager.globalItems)
+    {
+        if(item.type == 1)
+            meleeList.addEntry(item.name,item.rarity);
+        if(item.type == 2)
+            rangedList.addEntry(item.name,item.rarity);
+        if(item.type == 3)
+            bulletList.addEntry(item.name,item.rarity);
+        if(item.type == 4)
+            shellList.addEntry(item.name,item.rarity);
+        if(item.type == 5)
+            missileList.addEntry(item.name,item.rarity);
+    }
+
+
+
     debug("Gettin Stairs");
     std::vector<Tile*> stairs;
     std::vector<Tile*> offSwitches;
@@ -1501,6 +1526,7 @@ void spawnEnemies()
         if(randz(1,4) != 1)
             continue;
 
+
         Npc member;
         debug("V");
         member = *getGlobalCritter("BTBlankBody");
@@ -1515,6 +1541,34 @@ void spawnEnemies()
         member.id = gvars::globalid++;
         member.level = getFloorDifficulty(gvars::currentz,bountytower::currentTower->floors,bountytower::currentTower->difficulty);
 
+
+        std::string equipmentResult = equipmentSet.getRandomName();
+
+        Item meleeWeapon = *getGlobalItem(meleeList.getRandomName());
+        member.inventory.push_back(meleeWeapon);
+
+        if(equipmentResult == "Ranged")
+        {
+            Item rangedWeapon = *getGlobalItem(rangedList.getRandomName());
+            member.inventory.push_back(rangedWeapon);
+
+            Item ammo;
+            if(rangedWeapon.ammotype == 3)
+                ammo = *getGlobalItem(bulletList.getRandomName());
+            if(rangedWeapon.ammotype == 4)
+                ammo = *getGlobalItem(shellList.getRandomName());
+            if(rangedWeapon.ammotype == 5)
+                ammo = *getGlobalItem(missileList.getRandomName());
+
+            ammo.amount = random(1,ammo.stackSize);
+            member.inventory.push_back(ammo);
+
+            //Gun wielders wear hats!
+            member.tags.append("[WearsHat:1]");
+        }
+
+
+        /*
         int randomEquipRoll = random(1,100);
         int gunChance = 30;
         if(randomEquipRoll <= gunChance)
@@ -1553,16 +1607,18 @@ void spawnEnemies()
 
         }
 
-        if(random(1,5) == 1)
-            member.tags.append("[WearsBoots:1]");
-        if(random(1,5) == 1)
-            member.tags.append("[WearsGloves:1]");
-
         //Melee Me!
         int ranMelee = random(0,meleeweps.size()-1);
         Item melee = meleeweps[ranMelee];
         melee.id = gvars::globalid++;
         member.inventory.push_back(melee);
+
+        */
+
+        if(random(1,5) == 1)
+            member.tags.append("[WearsBoots:1]");
+        if(random(1,5) == 1)
+            member.tags.append("[WearsGloves:1]");
 
         std::cout << "Member: " << member.id;
         printItems(member.inventory);
