@@ -4251,14 +4251,14 @@ public:
             sum_of_weight += entries[i].weight;
         }
 
-        int rnd = random(0, sum_of_weight);
-
+        int rnd = random(1, sum_of_weight);
         for(int i = 0; i < entries.size(); i++)
         {
-            if(rnd < entries[i].weight)
+            if(rnd <= entries[i].weight)
                 return i;
             rnd -= entries[i].weight;
         }
+        return 0;
     }
     std::string getRandomName()
     {
@@ -4268,21 +4268,21 @@ public:
             sum_of_weight += entries[i].weight;
         }
 
-        int rnd = random(0, sum_of_weight);
-
+        int rnd = random(1, sum_of_weight);
         for(int i = 0; i < entries.size(); i++)
         {
-            if(rnd < entries[i].weight)
+            if(rnd <= entries[i].weight)
                 return entries[i].name;
             rnd -= entries[i].weight;
         }
+        return "";
     }
     void printEntries()
     {
         int sum_of_weight = 0;
         for(int i = 0; i < entries.size(); i++)
         {
-            std::cout << entries[i].name << ": " << sum_of_weight << " - " << sum_of_weight+entries[i].weight << std::endl;
+            std::cout << entries[i].name << ": " << sum_of_weight+1 << " - " << sum_of_weight+entries[i].weight << std::endl;
             sum_of_weight += entries[i].weight;
         }
     }
@@ -4300,9 +4300,9 @@ int weightChance()
 {
     randomWeightList.clear();
     randomWeightList.addEntry("Minigun",5);
-    randomWeightList.addEntry("Shotgun",25);
+    randomWeightList.addEntry("Shotgun",5);
     randomWeightList.addEntry("Harpoon Cannon",5);
-    randomWeightList.addEntry("Pistol",50);
+    randomWeightList.addEntry("Pistol",5);
 
     int ran = randomWeightList.getRandomSlot();
     std::cout << "Achieved Element: " << ran << std::endl;
