@@ -139,6 +139,8 @@ public:
 
 
     bool recruitable;
+    int value;
+    int rarity;
 
     unsigned int deadFrames;
 

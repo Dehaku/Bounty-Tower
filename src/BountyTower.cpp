@@ -5,6 +5,7 @@
 
 std::vector<Npc*> Squaddies;
 std::list<Npc> leftBehind;
+std::list<Npc> recruitables;
 
 bool onScreen(sf::Vector2f vPos)
 {
@@ -607,6 +608,42 @@ void recruiterMenu(Vec3f creationPos)
     for(auto menu : menus)
         if(menu.name == "Recruitment Menu")
             return;
+
+    if(recruitables.empty())
+    {
+        RandomWeightList recruitList;
+        for(auto &npc : npcmanager.globalCritter)
+            if(npc.recruitable)
+        {
+            recruitList.addEntry(npc.race,npc.rarity);
+        }
+
+        for(int i = 0; i != 8; i++)
+        {
+            Npc recruit = *getGlobalCritter(recruitList.getRandomName());
+            recruit.attributes.strength = random(5,15);
+            recruit.attributes.perception = random(5,15);
+            recruit.attributes.intelligence = random(5,15);
+            recruit.attributes.charisma = random(5,15);
+            recruit.attributes.endurance = random(5,15);
+            recruit.attributes.dexterity = random(5,15);
+
+            int sum_of_attributes = 0;
+            sum_of_attributes += recruit.attributes.strength;
+            sum_of_attributes += recruit.attributes.perception;
+            sum_of_attributes += recruit.attributes.intelligence;
+            sum_of_attributes += recruit.attributes.charisma;
+            sum_of_attributes += recruit.attributes.endurance;
+            sum_of_attributes += recruit.attributes.dexterity;
+
+            recruit.value += sum_of_attributes*3;
+
+            recruit.name = generateName();
+
+            recruitables.push_back(recruit);
+        }
+    }
+
     baseMenu sMenu;
     sMenu.name = "Recruitment Menu";
     sMenu.Pos = sf::Vector2f(screen.x()/2,screen.y()/2);
@@ -883,13 +920,9 @@ void renderMerchantMenu(baseMenu &menu)
                 soldItem.amount = soldItem.stackSize;
 
                 worlditems.push_back(soldItem);
+
                 int soundRan = random(1,3);
-                if(soundRan == 1)
-                    soundmanager.playSound("CashPickup1.ogg");
-                if(soundRan == 2)
-                    soundmanager.playSound("CashPickup2.ogg");
-                if(soundRan == 3)
-                    soundmanager.playSound("CashPickup3.ogg");
+                soundmanager.playSound("CashPickup"+str(soundRan)+".ogg");
 
                 chatBox.addChat("You purchased a "+item.name+" for "+str(item.value)+"!", sf::Color::White);
             }
@@ -920,7 +953,8 @@ void renderRecruiterMenu(baseMenu &menu)
     std::string SPICED = "SPICED = Strength Perception Intelligence Charisma Endurance Dexterity";
     textList.createText(sf::Vector2f(105,100),10,sf::Color::White,SPICED,gvars::hudView);
 
-    for(auto npc : npcmanager.globalCritter)
+    //for(auto npc : npcmanager.globalCritter)
+    for(auto &npc : recruitables)
     {
         if(!npc.recruitable)
             continue;
@@ -928,6 +962,8 @@ void renderRecruiterMenu(baseMenu &menu)
 
         if(npc.race == "BTRockkid")
             critterCost = 1000;
+
+        critterCost = npc.value;
 
         int posX = 150+(xOffset*300);
         int posY = 150+(yOffset*60);;
@@ -945,7 +981,7 @@ void renderRecruiterMenu(baseMenu &menu)
 
         vPos.y -= 30;
         vPos.x += 30;
-        textList.createText(vPos,15,highlightColor,npc.name,gvars::hudView);
+        textList.createText(vPos,15,highlightColor,npc.race+": "+npc.name,gvars::hudView);
         vPos.y += 15;
         textList.createText(vPos,10,highlightColor,"$" + str(critterCost),gvars::hudView);
         vPos.y += 10;
@@ -991,19 +1027,23 @@ void renderRecruiterMenu(baseMenu &menu)
                 soldNpc.zpos = menu.makePos.z;
                 soldNpc.factionPtr = conFact;
                 soldNpc.faction = conFact->name;
-                soldNpc.name = generateName();
+                //soldNpc.name = generateName();
                 soldNpc.tags.append("[WearsHat:1]");
                 soldNpc.isSquaddie = true;
                 soldNpc.chasePriority = "Hold Ground";
 
                 npclist.push_back(soldNpc);
+                npc.toDelete = true;
+
+                for(auto &dudes : recruitables)
+                {
+                    if(dudes.toDelete)
+                        std::cout << dudes.name << " should be deleted! \n";
+                }
+
                 int soundRan = random(1,3);
-                if(soundRan == 1)
-                    soundmanager.playSound("CashPickup1.ogg");
-                if(soundRan == 2)
-                    soundmanager.playSound("CashPickup2.ogg");
-                if(soundRan == 3)
-                    soundmanager.playSound("CashPickup3.ogg");
+                soundmanager.playSound("CashPickup"+str(soundRan)+".ogg");
+
 
                 chatBox.addChat("You purchased a "+npc.name+" for "+str(critterCost)+"!", sf::Color::White);
                 setupSquadHotKeySelection();
@@ -1019,6 +1059,15 @@ void renderRecruiterMenu(baseMenu &menu)
             xOffset++;
         }
     }
+
+
+    AnyDeletes(recruitables);
+
+    for(auto &dudes : recruitables)
+                {
+                    if(dudes.toDelete)
+                        std::cout << dudes.name << " should be deleted! \n";
+                }
 }
 
 void renderTowerMenu(baseMenu &menu)

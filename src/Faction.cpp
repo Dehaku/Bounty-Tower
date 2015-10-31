@@ -1673,6 +1673,8 @@ Npc::Npc()
     chaseRange = 100;
 
     recruitable = false;
+    value = 0;
+    rarity = -1;
 
     deadFrames = 0;
 
@@ -3312,6 +3314,8 @@ void NpcManager::initializeCritters()
             critter.thirsttimerint = stringFindNumber(line, "[ThirstTimerInt:");
 
             critter.recruitable = stringFindNumber(line, "[Recruitable:");
+            critter.value = stringFindNumber(line, "[Value:");
+            critter.rarity = stringFindNumber(line, "[Rarity:");
 
             critter.moverateint = stringFindNumber(line, "[MoveSpeed:");
             critter.turnSpeed = stringFindNumber(line, "[TurnSpeed:");
@@ -5343,10 +5347,7 @@ void drawNPCs(std::list<Npc> &container)
 
                     if(npc.race.find("Noirves") != npc.race.npos)
                         ani.animation.setScale(0.75,0.75);
-                    else
-                        ani.animation.setScale(1,1);
-
-                    if(npc.name == "The Hardened Criminal")
+                    else if(npc.name == "The Hardened Criminal")
                         ani.animation.setScale(1.25,1.25);
                     else
                         ani.animation.setScale(1,1);

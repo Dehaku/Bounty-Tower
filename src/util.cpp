@@ -27,6 +27,10 @@ void RandomWeightList::addEntry(std::string entryName, int entryWeight)
     wE.weight = entryWeight;
     if(entryWeight > 0)
         entries.push_back(wE);
+    else
+    {
+        std::cout << wE.name << " doesn't have enough weight. \n";
+    }
 }
 
 int RandomWeightList::getRandomSlot()
