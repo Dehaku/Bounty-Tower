@@ -1482,15 +1482,19 @@ void spawnEnemies()
 
     debug("Gettin Stairs");
     std::vector<Tile*> stairs;
+    std::vector<Tile*> offSwitches;
     for(int x = 0; x != GRIDS; x++)
         for(int y = 0; y != GRIDS; y++)
     {
         if(tiles[x][y][gvars::currentz].id == 2031)
             stairs.push_back(&tiles[x][y][gvars::currentz]);
+        if(tiles[x][y][gvars::currentz].id == 3500 && tiles[x][y][gvars::currentz].state == "Off")
+            offSwitches.push_back(&tiles[x][y][gvars::currentz]);
     }
     debug("Placin Towerlings");
 
     //I'm still not sure why I nabbed all stairs, then did another for loop just for them... but I kinda like it.
+    //There made it also get Offswitches for me, Efficiency!
     for(auto &stair : stairs)
     {
         //Add a 25% chance for a critter to spawn.
@@ -1563,6 +1567,18 @@ void spawnEnemies()
         std::cout << "Member: " << member.id;
         printItems(member.inventory);
         std::cout << "\n \n";
+
+        if(!offSwitches.empty() && random(1,10) == 1)
+        {
+            int randomSwitch = random(0,offSwitches.size()-1);
+
+            member.chasePriority = "Defend";
+            member.chaseDefendPos.x = offSwitches[randomSwitch]->pos.x*GRID_SIZE+(GRID_SIZE/2);
+            member.chaseDefendPos.y = offSwitches[randomSwitch]->pos.y*GRID_SIZE+(GRID_SIZE/2);
+            member.chaseDefendPos.z = (gvars::currentz*GRID_SIZE);
+            member.chaseRange = 200;
+        }
+
 
         npclist.push_back(member);
 

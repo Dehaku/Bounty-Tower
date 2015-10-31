@@ -898,13 +898,23 @@ void assaultDesire(Npc &npc, std::list<Npc> &container, Npc * closEnmy, bool &ha
     }
     if(npc.chasePriority == "Defend" || npc.isSquaddie && inputState.key[Key::Space])
     {
-        shapes.createCircle(npc.chaseDefendPos.x,npc.chaseDefendPos.y,npc.chaseRange,sf::Color::Transparent,1,sf::Color::White);
+
+        if(npc.isSquaddie)
+            shapes.createCircle(npc.chaseDefendPos.x,npc.chaseDefendPos.y,npc.chaseRange,sf::Color::Transparent,1,sf::Color::White);
+
         Npc * closestEnemy = nullptr;
         int closestEnemyDistance = 0;
         for(auto &enemy : npclist)
         {
-            if(enemy.alive && enemy.faction == "Towerlings")
+
+            //Enemy needs to be alive to be worth a threat, and their faction cannot be ours...
+            if(enemy.alive && enemy.faction != npc.faction)
             {
+                //Find out if the 'enemy' faction is actually our enemy, If not, continue on!
+                if(npc.factionPtr->getFactionRelations(enemy.faction) > -1000)
+                    continue;
+
+
                 int distance = math::distance(npc.chaseDefendPos,enemy.getPos());
                 if(distance <= npc.chaseRange)
                 {
@@ -918,7 +928,7 @@ void assaultDesire(Npc &npc, std::list<Npc> &container, Npc * closEnmy, bool &ha
                         closestEnemy = &enemy;
                         closestEnemyDistance = distance;
                     }
-                    shapes.createCircle(enemy.xpos,enemy.ypos,10,sf::Color::Red);
+                    //shapes.createCircle(enemy.xpos,enemy.ypos,10,sf::Color::Red);
                 }
 
             }
@@ -927,7 +937,7 @@ void assaultDesire(Npc &npc, std::list<Npc> &container, Npc * closEnmy, bool &ha
         if(closestEnemy != nullptr)
         {
 
-            shapes.createCircle(closestEnemy->xpos,closestEnemy->ypos,10,sf::Color::Green);
+            //shapes.createCircle(closestEnemy->xpos,closestEnemy->ypos,10,sf::Color::Green);
             hasPath = true;
             endPos = Vec3(closestEnemy->xpos,closestEnemy->ypos,closestEnemy->zpos);
         }
@@ -939,6 +949,11 @@ void assaultDesire(Npc &npc, std::list<Npc> &container, Npc * closEnmy, bool &ha
 
     }
     debug("0");
+
+    //This makes it so Towerlings defending switches will start chasing once they get hurt.
+    if(npc.faction != conFact->name && npc.chasePriority == "Defend")
+        if(npc.health != npc.maxhealth)
+            npc.chasePriority = "Assault";
 
     handsOffense(npc,container,closEnmy,hasPath,endPos);
 

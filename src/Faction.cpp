@@ -24,12 +24,12 @@ std::vector<Npc*> selectedNPCs;
 
 
 skillKeepInfo::skillKeepInfo()
-    {
-        user = nullptr;
-        toDelete = false;
-        legal = false;
-        age = 0;
-    }
+{
+    user = nullptr;
+    toDelete = false;
+    legal = false;
+    age = 0;
+}
 
 std::vector<skillKeepInfo> skillKeeps;
 
@@ -3756,6 +3756,17 @@ Faction::Faction()
 
     primaryColor = sf::Color(randz(0, 255), randz(0, 255), randz(0, 255));
     secondaryColor = sf::Color(randz(0, 255), randz(0, 255), randz(0, 255));
+}
+
+int Faction::getFactionRelations(std::string factionName)
+{
+    for(auto &faction : factRelations)
+    {
+        if(factionName == faction.faction)
+            return faction.appeal;
+    }
+
+    return 0;
 }
 
 int factionMembers(std::string factionName)

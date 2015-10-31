@@ -519,7 +519,7 @@ public:
     bool initialized;
 
     std::vector<FactionRelation> factRelations;
-
+    int getFactionRelations(std::string factionName);
     int members;
 
     sf::Color primaryColor;
