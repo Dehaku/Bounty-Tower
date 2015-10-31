@@ -2872,6 +2872,20 @@ std::string Npc::takeDamage(Npc *attacker, Item *weapon, float amount, critScore
     {
         if(attacker != nullptr)
             std::cout << name << " dodged " << attacker->name << "'s attack! (" << dodgeRoll << "/" << dodgeChance << ")" << std::endl;
+
+        {// Dodge Popup Code
+            Shape text;
+            text.shape = text.Text;
+            text.duration = 60;
+            text.fades = true;
+            text.maincolor = sf::Color::White;
+            text.size = 20;
+            sf::Vector2f textPos(xpos-15,(ypos-50)-random(0,50));
+            text.startPos = textPos;
+            text.text = "Dodged";
+            shapes.shapes.push_back(text);
+        }
+
         return "Dodged";
     }
 
