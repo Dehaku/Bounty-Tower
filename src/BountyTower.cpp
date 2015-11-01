@@ -1890,7 +1890,8 @@ void displayCash()
 
     cashLine.append( str(cashAmount) );
     int offSet = cashLine.size()*17;
-    sf::Vector2f vPos( (screen.x()-offSet)-20,0);
+    //sf::Vector2f vPos( (screen.x()-offSet)-20,0);
+    sf::Vector2f vPos( 300,0);
 
     textList.createText(vPos,20,sf::Color::Yellow,cashLine,gvars::hudView);
 

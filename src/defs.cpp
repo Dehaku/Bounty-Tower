@@ -20,7 +20,7 @@ ResolutionManager::ResolutionManager()
     y = 720;
     newX = x;
     newY = y;
-    currentRes = 2;
+    currentRes = 0;
     fullscreen = false;
     resolutions = sf::VideoMode::getFullscreenModes();
 }

@@ -1949,7 +1949,10 @@ void drawStuffs()
 
 
     //displayChat(sf::Vector2f(gvars::bottomLeft.x + 5, gvars::bottomLeft.y - 5));
-    displayChat(sf::Vector2f(5, screen.y() - 5));
+    if(selectedNPCs.empty())
+        displayChat(sf::Vector2f(5, screen.y() - 5));
+    else
+        displayChat(sf::Vector2f(5, 600));
     debug("Drew Chat");
 
     //purtyOrbitals();
