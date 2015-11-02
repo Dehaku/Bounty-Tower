@@ -1103,10 +1103,59 @@ void overheadOverlay(Npc &npc)
 
     //Overhead Healthbar.
     float remainingHealth = npc.health / npc.maxhealth;
+    /*
     if(remainingHealth != 0 && remainingHealth != 1)
     {
         shapes.createSquare(npc.xpos-40,npc.ypos-40, npc.xpos+40, npc.ypos-40+10,sf::Color::Black);
         shapes.createSquare(npc.xpos-(40*remainingHealth),npc.ypos-40, npc.xpos+(40*remainingHealth), npc.ypos-40+8,sf::Color::Red,1,sf::Color::Black);
+    }
+    */
+
+    if(npc.health != npc.maxhealth && npc.health > 0)
+    {
+        float healthLow = math::clamp(npc.health,0,1000);
+        float healthCap = 1000;
+        float healthPercent = healthLow / healthCap;
+        shapes.createSquare(npc.xpos-40,npc.ypos-40, npc.xpos+40, npc.ypos-40+10,sf::Color::Black);
+        shapes.createSquare(npc.xpos-(40*healthPercent),npc.ypos-40, npc.xpos+(40*healthPercent), npc.ypos-40+8,sf::Color::Red,1,sf::Color::Black);
+    }
+    if(npc.health != npc.maxhealth && npc.health > 1000) //1k - 10k Yellow bar
+    {
+        float healthLow = math::clamp(npc.health - 1000,0,10000);
+        float healthCap = 10000 - 1000;
+        float healthPercent = healthLow / healthCap;
+
+        shapes.createSquare(npc.xpos-(40*healthPercent),npc.ypos-40, npc.xpos+(40*healthPercent), npc.ypos-40+8,sf::Color::Yellow,1,sf::Color::Black);
+    }
+    if(npc.health != npc.maxhealth && npc.health > 10000) //10k - 100k Green bar
+    {
+        float healthLow = math::clamp(npc.health - 10000,0,100000);
+        float healthCap = 100000 - 10000;
+        float healthPercent = healthLow / healthCap;
+
+        shapes.createSquare(npc.xpos-(40*healthPercent),npc.ypos-40, npc.xpos+(40*healthPercent), npc.ypos-40+8,sf::Color::Green,1,sf::Color::Black);
+    }
+    if(npc.health != npc.maxhealth && npc.health > 100000) //100k - 1m Blue bar
+    {
+        float healthLow = math::clamp(npc.health - 100000,0,1000000);
+        float healthCap = 1000000 - 100000;
+        float healthPercent = healthLow / healthCap;
+
+        shapes.createSquare(npc.xpos-(40*healthPercent),npc.ypos-40, npc.xpos+(40*healthPercent), npc.ypos-40+8,sf::Color::Blue,1,sf::Color::Black);
+    }
+
+    if(inputState.key[Key::LAlt])
+        if(inputState.key[Key::LShift])
+            if(inputState.key[Key::Z].time == 1 || inputState.key[Key::Z].time >= 15)
+                npc.modhealth(-random(250,750));
+
+
+    if(inputState.key[Key::LShift])
+        if(inputState.key[Key::LControl])
+            if(inputState.key[Key::X].time == 1)
+    {
+        npc.health = 150000;
+        npc.maxhealth = 150000;
     }
 
 
@@ -1115,8 +1164,12 @@ void overheadOverlay(Npc &npc)
     //textList.createText(npc.xpos-30,npc.ypos-40,10,sf::Color::White,"Health: " + std::to_string(critterHealth));
 
     //Overhead Name
+
+    std::string testString;
+    if(inputState.key[Key::LAlt])
+        testString.append(": Health: " + str(static_cast<int>(npc.health)) + "/" + str(static_cast<int>(npc.maxhealth)));
     if(npc.name != npc.race)
-        textList.createText(npc.xpos-30,npc.ypos-55,10,sf::Color::White,npc.name);
+        textList.createText(npc.xpos-30,npc.ypos-55,10,sf::Color::White,npc.name+testString);
 
 }
 
