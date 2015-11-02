@@ -1121,7 +1121,7 @@ void overheadOverlay(Npc &npc)
     }
     if(npc.health != npc.maxhealth && npc.health > 1000) //1k - 10k Yellow bar
     {
-        float healthLow = math::clamp(npc.health - 1000,0,10000);
+        float healthLow = math::clamp(npc.health - 1000,0,10000 - 1000);
         float healthCap = 10000 - 1000;
         float healthPercent = healthLow / healthCap;
 
@@ -1129,7 +1129,7 @@ void overheadOverlay(Npc &npc)
     }
     if(npc.health != npc.maxhealth && npc.health > 10000) //10k - 100k Green bar
     {
-        float healthLow = math::clamp(npc.health - 10000,0,100000);
+        float healthLow = math::clamp(npc.health - 10000,0,100000 - 10000);
         float healthCap = 100000 - 10000;
         float healthPercent = healthLow / healthCap;
 
@@ -1137,12 +1137,14 @@ void overheadOverlay(Npc &npc)
     }
     if(npc.health != npc.maxhealth && npc.health > 100000) //100k - 1m Blue bar
     {
-        float healthLow = math::clamp(npc.health - 100000,0,1000000);
+        float healthLow = math::clamp(npc.health - 100000,0,1000000 - 100000);
         float healthCap = 1000000 - 100000;
         float healthPercent = healthLow / healthCap;
 
         shapes.createSquare(npc.xpos-(40*healthPercent),npc.ypos-40, npc.xpos+(40*healthPercent), npc.ypos-40+8,sf::Color::Blue,1,sf::Color::Black);
     }
+
+    /*
 
     if(inputState.key[Key::LAlt])
         if(inputState.key[Key::LShift])
@@ -1158,6 +1160,8 @@ void overheadOverlay(Npc &npc)
         npc.maxhealth = 150000;
     }
 
+    */
+
 
     //Overhead Healthtext.
     //int critterHealth = npc.health;
@@ -1166,10 +1170,13 @@ void overheadOverlay(Npc &npc)
     //Overhead Name
 
     std::string testString;
-    if(inputState.key[Key::LAlt])
-        testString.append(": Health: " + str(static_cast<int>(npc.health)) + "/" + str(static_cast<int>(npc.maxhealth)));
     if(npc.name != npc.race)
-        textList.createText(npc.xpos-30,npc.ypos-55,10,sf::Color::White,npc.name+testString);
+        testString.append(npc.name);
+
+    if(inputState.key[Key::LAlt])
+        testString.append(" Health: " + str(static_cast<int>(npc.health)) + "/" + str(static_cast<int>(npc.maxhealth)));
+
+    textList.createText(npc.xpos-30,npc.ypos-55,10,sf::Color::White,testString);
 
 }
 
