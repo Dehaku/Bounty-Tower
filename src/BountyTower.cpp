@@ -2296,6 +2296,38 @@ void chasePriorityFunction()
     }
 }
 
+void showItemProgressCone()
+{
+    for(auto &npc : npclist)
+    {
+        if(!npc.alive)
+            continue;
+
+        for(int i = 0; i != 2; i++)
+        {
+            Item * curHand = npc.invSlots[i];
+            if(curHand == nullptr)
+                continue;
+
+            if(!curHand->isReady())
+            {
+                sf::Color coneColor;
+                if(curHand->type == 1)
+                    coneColor = sf::Color::Blue;
+                if(curHand->type == 2)
+                    coneColor = sf::Color::Red;
+                if(curHand->type == 3)
+                    coneColor = sf::Color::Green;
+
+                float remainingTime = curHand->activaterate / curHand->activateratemax;
+                remainingTime = 1 - remainingTime;
+
+                shapes.createCone(npc.getPos2d(),npc.angle,180*(remainingTime),20,coneColor);
+            }
+        }
+    }
+}
+
 void bountyTowerLoop()
 { // Game Loop
     hotkeySquaddieSelect();
@@ -2305,6 +2337,7 @@ void bountyTowerLoop()
     layHints();
     corpsesBleed();
     chasePriorityFunction();
+    showItemProgressCone();
 
     makeBlood();
     if(inputState.key[Key::J])
