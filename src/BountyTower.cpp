@@ -578,6 +578,18 @@ baseMenu::baseMenu()
 
 std::list<baseMenu> menus;
 
+void skillMenu(Npc &npc)
+{
+    for(auto menu : menus)
+        if(menu.name == "Skill Menu")
+            return;
+    baseMenu sMenu;
+    sMenu.name = "Skill Menu";
+    sMenu.Pos = sf::Vector2f(screen.x()/2,screen.y()/2);
+    sMenu.npc = &npc;
+    menus.push_back(sMenu);
+}
+
 void squaddieMenu(Npc &npc)
 {
     for(auto menu : menus)
@@ -703,6 +715,61 @@ int totalLevelXp(int level)
 int getFloorDifficulty(float currentFloor, float towerFloors, float towerDifficulty)
 {
     return (towerDifficulty/2)+((currentFloor/towerFloors*towerDifficulty)/2);
+}
+
+void renderSkillMenu(baseMenu &menu)
+{
+    shapes.createSquare(100,100,screen.x()-100,screen.y()-100,sf::Color(sf::Color(150,150,0)),5,sf::Color::White,&gvars::hudView);
+    //Close Button
+    int exitButt = createImageButton(sf::Vector2f(screen.x()-100,100),texturemanager.getTexture("ExitButton.png"),"",0,gvars::hudView);
+    if(imageButtonClicked(exitButt))
+        menu.toDelete = true;
+
+    if(menu.age > 30 && inputState.key[Key::U])
+        menu.toDelete = true;
+
+    Npc *npc = menu.npc;
+
+    textList.createText(sf::Vector2f(105,100),20,sf::Color(100,100,100),"Name: " + npc->name,gvars::hudView);
+
+    sf::Vector2f invPos(screen.x()/3,130);
+    textList.createText(sf::Vector2f(636,102),15,sf::Color::White,"Skills",gvars::hudView);
+    shapes.createSquare(invPos.x-40,invPos.y-10,invPos.x+100,invPos.y+(screen.y()/2)+120,sf::Color::Transparent,2,sf::Color::Black,&gvars::hudView);
+    float x = 0, y = 0;
+    bool offSet = false;
+    std::string lastSkillTree = "Melee"; //Cheating a bit here, Hope it doesn't come back to haunt me.
+    for(auto &skill : npc->skills.list)
+    {
+        if(lastSkillTree != skill.tree)
+        {
+            x++;
+            y = 0;
+            offSet = false;
+        }
+
+
+        sf::Vector2f drawPos(invPos.x+(x*130),invPos.y+(60*y)+30);
+        if(offSet)
+            drawPos.x += 62;
+        shapes.createSquare(drawPos.x-30,drawPos.y-30,drawPos.x+30,drawPos.y+30,sf::Color::Black,2,sf::Color::White,&gvars::hudView);
+        int skillButt = createImageButton(drawPos,texturemanager.getTexture("ArrowButton.png"),"",0,gvars::hudView);
+
+        if(imageButtonHovered(skillButt))
+        {
+            sf::Vector2f mouseConvPos(gvars::mousePos.x+10,gvars::mousePos.y);
+            textList.createText(mouseConvPos,10,sf::Color::White,skill.name);
+        }
+
+        if(offSet)
+        {
+            drawPos.x -= 62;
+            y++;
+        }
+
+        toggle(offSet);
+        lastSkillTree = skill.tree;
+    }
+
 }
 
 void renderSquaddieMenu(baseMenu &menu)
@@ -1291,6 +1358,8 @@ void drawMenus()
         menu.age++;
         if(menu.name == "Squaddie Menu")
             renderSquaddieMenu(menu);
+        if(menu.name == "Skill Menu")
+            renderSkillMenu(menu);
         if(menu.name == "Merchant Menu")
             renderMerchantMenu(menu);
         if(menu.name == "Recruitment Menu")
@@ -2417,6 +2486,11 @@ void bountyTowerLoop()
     {
         if(selectedNPCs[0]->isSquaddie)
             squaddieMenu(*selectedNPCs[0]);
+    }
+    if(!selectedNPCs.empty() && inputState.key[Key::U].time == 1)
+    {
+        if(selectedNPCs[0]->isSquaddie)
+            skillMenu(*selectedNPCs[0]);
     }
 
 
