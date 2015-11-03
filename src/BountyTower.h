@@ -44,6 +44,21 @@ int getFloorDifficulty(float currentFloor, float towerFloors, float towerDifficu
 int getLivingFactionMemberCount(std::string faction);
 int getFactionMemberCount(std::string faction);
 
+class dynamicVariable
+{
+public:
+    std::string name;
+    bool toDelete;
+
+    int varInt;
+    float varFloat;
+
+    std::string varString;
+
+    Npc * varNpcPtr;
+    Item * varItemPtr;
+};
+
 class baseMenu
 {
 public:
@@ -53,6 +68,11 @@ public:
     sf::Vector2f Pos;
     Vec3f makePos;
     Npc *npc;
+
+    std::vector<dynamicVariable> vars;
+
+    bool hasVar(std::string varName);
+    dynamicVariable * getVar(std::string varName);
 
     baseMenu();
 

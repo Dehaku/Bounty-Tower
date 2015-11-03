@@ -717,6 +717,28 @@ int getFloorDifficulty(float currentFloor, float towerFloors, float towerDifficu
     return (towerDifficulty/2)+((currentFloor/towerFloors*towerDifficulty)/2);
 }
 
+bool baseMenu::hasVar(std::string varName)
+{
+    for(auto &var : vars)
+    {
+        if(var.name == varName)
+            return true;
+    }
+
+    return false;
+}
+
+dynamicVariable * baseMenu::getVar(std::string varName)
+{
+    for(auto &var : vars)
+    {
+        if(var.name == varName)
+            return &var;
+    }
+
+    return nullptr;
+}
+
 void renderSkillMenu(baseMenu &menu)
 {
     shapes.createSquare(100,100,screen.x()-100,screen.y()-100,sf::Color(sf::Color(150,150,0)),5,sf::Color::White,&gvars::hudView);
@@ -734,25 +756,82 @@ void renderSkillMenu(baseMenu &menu)
 
     sf::Vector2f invPos(screen.x()/3,130);
     textList.createText(sf::Vector2f(636,102),15,sf::Color::White,"Skills",gvars::hudView);
-    shapes.createSquare(invPos.x-40,invPos.y-10,invPos.x+100,invPos.y+(screen.y()/2)+120,sf::Color::Transparent,2,sf::Color::Black,&gvars::hudView);
-    float x = 0, y = 0;
-    bool offSet = false;
-    std::string lastSkillTree = "Melee"; //Cheating a bit here, Hope it doesn't come back to haunt me.
-    for(auto &skill : npc->skills.list)
-    {
-        if(lastSkillTree != skill.tree)
+    shapes.createSquare(300,invPos.y-10,1150,invPos.y+(screen.y()/2),sf::Color::Transparent,2,sf::Color::Black,&gvars::hudView);
+
+    dynamicVariable * currentSkill = menu.getVar("currentSkill");
+
+    { // Current Skill Tree Selection
+        if(!menu.hasVar("currentSkill"))
         {
-            x++;
-            y = 0;
-            offSet = false;
+            dynamicVariable var;
+            var.name = "currentSkill";
+            var.varString = "Melee";
+
+            menu.vars.push_back(var);
+        }
+        std::cout << "Menu: " << menu.name << " has " << menu.vars.size() << " dynamic vars. \n";
+        int yOffset = 0;
+
+        std::string lastSkillTree;
+
+        for(auto &skill : npc->skills.list)
+        {
+            if(skill.tree == lastSkillTree)
+                continue;
+            lastSkillTree = skill.tree;
+
+            sf::Vector2f drawPos(120,150+(yOffset*60));
+            int skillTreeButt = createImageButton(drawPos,texturemanager.getTexture("Skills"+skill.tree+".png"),"",0,gvars::hudView);
+            sf::Vector2f textPos(drawPos.x+40, drawPos.y);
+            textList.createText(textPos,10,sf::Color::White,skill.tree,gvars::hudView);
+
+            if(imageButtonClicked(skillTreeButt))
+            {
+                if(currentSkill != nullptr)
+                    currentSkill->varString = skill.tree;
+            }
+
+            yOffset++;
         }
 
 
-        sf::Vector2f drawPos(invPos.x+(x*130),invPos.y+(60*y)+30);
+    }
+
+
+    // X-Range, 300-1150
+
+    int levels[20];
+    for(int i = 0; i != 20; i++)
+        levels[i] = 0;
+
+    for(auto &skill : npc->skills.list)
+    {
+        if(currentSkill == nullptr)
+            return;
+        if(currentSkill->varString != skill.tree)
+            continue;
+
+        levels[skill.level]++;
+    }
+
+
+
+    float x = 0, y = 0;
+    bool offSet = false;
+    for(auto &skill : npc->skills.list)
+    {
+        if(currentSkill == nullptr)
+            return;
+        if(currentSkill->varString != skill.tree)
+            continue;
+
+
+
+        sf::Vector2f drawPos(300+30+(x*130),invPos.y+(60*y)+30);
         if(offSet)
             drawPos.x += 62;
         shapes.createSquare(drawPos.x-30,drawPos.y-30,drawPos.x+30,drawPos.y+30,sf::Color::Black,2,sf::Color::White,&gvars::hudView);
-        int skillButt = createImageButton(drawPos,texturemanager.getTexture("ArrowButton.png"),"",0,gvars::hudView);
+        int skillButt = createImageButton(drawPos,texturemanager.getTexture("Skills"+skill.tree+".png"),"",0,gvars::hudView);
 
         if(imageButtonHovered(skillButt))
         {
@@ -767,7 +846,6 @@ void renderSkillMenu(baseMenu &menu)
         }
 
         toggle(offSet);
-        lastSkillTree = skill.tree;
     }
 
 }
