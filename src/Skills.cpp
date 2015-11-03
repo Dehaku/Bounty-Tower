@@ -5,7 +5,7 @@
 Skills::Skills()
 {
     Skill skill;
-    skill.level = 1;
+    skill.level = 0;
     skill.ranks = 0;
     skill.ranksmax = 5;
     skill.durationint = 0;
@@ -22,15 +22,51 @@ Skills::Skills()
 
     skill.name = "Batter Up";
     skill.desc = "Passive - Damage*Rank is applied as force to your enemies.";
-    skill.level = 1;
+    skill.level = 0;
+    skill.active = false;
+    list.push_back(skill);
+
+    skill.name = "Batter Up1";
+    skill.desc = "Passive - Damage*Rank is applied as force to your enemies.";
+    skill.level = 0;
+    skill.active = false;
+    list.push_back(skill);
+
+    skill.name = "Batter Up1";
+    skill.desc = "Passive - Damage*Rank is applied as force to your enemies.";
+    skill.level = 0;
     skill.active = false;
     list.push_back(skill);
 
     skill.name = "Cleave";
     skill.desc = "Active - Activate to Swing a melee weapon for 75% damage in a 180 degree arc, Ranks grant 25% more damage";
-    skill.level = 1;
+    skill.level = 0;
     skill.active = true;
     list.push_back(skill);
+
+    skill.name = "Batter Up2";
+    skill.desc = "Passive - Damage*Rank is applied as force to your enemies.";
+    skill.level = 1;
+    skill.active = false;
+    list.push_back(skill);
+
+    skill.name = "Batter Up2";
+    skill.desc = "Passive - Damage*Rank is applied as force to your enemies.";
+    skill.level = 1;
+    skill.active = false;
+    list.push_back(skill);
+    skill.name = "Batter Up2";
+    skill.desc = "Passive - Damage*Rank is applied as force to your enemies.";
+    skill.level = 1;
+    skill.active = false;
+    list.push_back(skill);
+
+    skill.name = "Batter Up3";
+    skill.desc = "Passive - Damage*Rank is applied as force to your enemies.";
+    skill.level = 2;
+    skill.active = false;
+    list.push_back(skill);
+
 
     /*
 
@@ -139,31 +175,31 @@ Skills::Skills()
 
     skill.name = "Bronze Bullet";
     skill.desc = "Passive - The first bullet in a magazine deals 10% extra base damage per rank, stacks with other 'Bullet' skills if the position aligns.";
-    skill.level = 1;
+    skill.level = 0;
     skill.active = false;
     list.push_back(skill);
 
     skill.name = "Miscounted Shot";
     skill.desc = "Passive - Each bullet has a 5% chance per rank to not consume any ammo.";
-    skill.level = 1;
+    skill.level = 0;
     skill.active = false;
     list.push_back(skill);
 
     skill.name = "Silver Bullet";
     skill.desc = "Passive - The middle-most bullet in a magazine deals 20% extra base damage per rank, stacks with other 'Bullet' skills if the position aligns.";
-    skill.level = 2;
+    skill.level = 1;
     skill.active = false;
     list.push_back(skill);
 
     skill.name = "Gold Bullet";
     skill.desc = "Passive - The last bullet in a magazine deals 30% extra base damage per rank, stacks with other 'Bullet' skills if the position aligns.";
-    skill.level = 3;
+    skill.level = 2;
     skill.active = false;
     list.push_back(skill);
 
     skill.name = "Snipe Shot";
     skill.desc = "Active - Fires a single bullet with 50% additional Range and Damage per rank.";// When aiming, displays a line of travel, including richochet potential and penetration.";
-    skill.level = 4;
+    skill.level = 3;
     skill.active = true;
     list.push_back(skill);
 
@@ -271,27 +307,27 @@ Skills::Skills()
 
     skill.name = "Ammo Construction";
     skill.desc = "Active - Produces 5 ammo per rank for 30 scrap, Cannot produce ammo beyond cap.(LeftHand priority) ";
-    skill.level = 1;
+    skill.level = 0;
     skill.active = true;
     skill.autouse = false;
     list.push_back(skill);
 
     skill.name = "Turret Construction";
     skill.desc = "Active - For 30 scrap, Creates a friendly turret that deals 25*rank damage.";
-    skill.level = 1;
+    skill.level = 0;
     skill.active = true;
     skill.autouse = false;
     list.push_back(skill);
 
     skill.name = "Logistics Expert";
     skill.desc = "Passive - Increases the rate switches are fixed. Intelligence is applied to work speed per rank.";
-    skill.level = 2;
+    skill.level = 1;
     skill.active = false;
     list.push_back(skill);
 
     skill.name = "Lucky Scavenger";
     skill.desc = "Passive - 20% chance per rank to find money or ammo while picking up scrap.";
-    skill.level = 2;
+    skill.level = 1;
     skill.active = false;
     skill.autouse = true;
     list.push_back(skill);
@@ -299,7 +335,7 @@ Skills::Skills()
     skill.name = "Explosive Deconstruction";
     skill.ranksmax = 1;
     skill.desc = "Passive - Upon constructions death, detonates with a scaled explosion based on constructions health and cost.";
-    skill.level = 3;
+    skill.level = 2;
     skill.active = false;
     list.push_back(skill);
     skill.ranksmax = 5;
@@ -308,13 +344,13 @@ Skills::Skills()
 
     skill.name = "Quality Built";
     skill.desc = "Passive - Increases construction base damage and range by 20% per rank.";
-    skill.level = 3;
+    skill.level = 2;
     skill.active = false;
     list.push_back(skill);
 
     skill.name = "Practical Problems";
     skill.desc = "Passive - Doubles the weapon slots of the turret. Sometimes, You just need more gun.";
-    skill.level = 4;
+    skill.level = 3;
     skill.ranksmax = 1;
     skill.active = false;
     list.push_back(skill);
@@ -393,26 +429,26 @@ Skills::Skills()
 
     skill.name = "Undead Dread";
     skill.desc = "Passive - 40% of missing health percentage is added to damage per rank.";
-    skill.level = 1;
+    skill.level = 0;
     skill.active = false;
     list.push_back(skill);
 
     skill.name = "Vampirism";
     skill.desc = "Passive - Gain (Rank)% Life Steal on damage done to enemies.";
-    skill.level = 2;
+    skill.level = 1;
     skill.active = false;
     list.push_back(skill);
 
     skill.name = "Feral Regeneration";
     skill.desc = "Passive - Creature gains 0.2% (total health per rank) health regeneration per second.";
-    skill.level = 2;
+    skill.level = 1;
     // Certain creatures will start with this at max ranks, like trolls.
     skill.active = false;
     list.push_back(skill);
 
     skill.name = "Feral Body";
     skill.desc = "Passive - Creature gains 10% Damage Resistence per Rank";
-    skill.level = 3;
+    skill.level = 2;
     skill.active = false;
     list.push_back(skill);
 

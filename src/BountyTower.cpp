@@ -825,11 +825,18 @@ void renderSkillMenu(baseMenu &menu)
         if(currentSkill->varString != skill.tree)
             continue;
 
+        if(y != skill.level)
+        {
+            y++;
+            x = 0;
+        }
+
+        sf::Vector2f drawPos(300+30+5+(x*(120)),invPos.y + 10 + (60*y)+30);
+        x++;
 
 
-        sf::Vector2f drawPos(300+30+(x*130),invPos.y+(60*y)+30);
-        if(offSet)
-            drawPos.x += 62;
+
+
         shapes.createSquare(drawPos.x-30,drawPos.y-30,drawPos.x+30,drawPos.y+30,sf::Color::Black,2,sf::Color::White,&gvars::hudView);
         int skillButt = createImageButton(drawPos,texturemanager.getTexture("Skills"+skill.tree+".png"),"",0,gvars::hudView);
 
@@ -839,13 +846,6 @@ void renderSkillMenu(baseMenu &menu)
             textList.createText(mouseConvPos,10,sf::Color::White,skill.name);
         }
 
-        if(offSet)
-        {
-            drawPos.x -= 62;
-            y++;
-        }
-
-        toggle(offSet);
     }
 
 }

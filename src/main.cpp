@@ -2009,7 +2009,11 @@ void drawStuffs()
 
 
     //displayChat(sf::Vector2f(gvars::bottomLeft.x + 5, gvars::bottomLeft.y - 5));
-    if(selectedNPCs.empty())
+    if(!menus.empty())
+    {
+
+    }
+    else if(selectedNPCs.empty())
         displayChat(sf::Vector2f(5, screen.y() - 5));
     else
         displayChat(sf::Vector2f(5, 600));
