@@ -203,6 +203,10 @@ Skills::Skills()
 
     skill.tree = "Magic";
 
+    skill.name = "(NON-FUNCTIONAL) Mana Regen";
+    skill.desc = "Passive - Gain an additional 20% mana regeneration for your devices per rank.";
+    skill.active = false;
+    list.push_back(skill);
     /*
     skill.name = "Mana Regen";
     skill.desc = "Passive - Gain an additional 20% mana regeneration for your devices per rank.";
@@ -455,6 +459,11 @@ Skills::Skills()
 
     skill.tree = "Paragon";
     skill.ranksmax = 99999;
+
+    skill.name = "(NON-FUNCTIONAL) Perfect Health";
+    skill.desc = "Passive - Gain 10% base health per rank.";
+    skill.active = false;
+    list.push_back(skill);
 
     /*
     skill.name = "Perfect Health";

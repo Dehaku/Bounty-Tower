@@ -1100,7 +1100,8 @@ void critterPathFind(Npc &npc, std::list<Npc> &container)
 
 void overheadOverlay(Npc &npc)
 {
-
+    if(!menus.empty())
+        return;
     //Overhead Healthbar.
     float remainingHealth = npc.health / npc.maxhealth;
     /*

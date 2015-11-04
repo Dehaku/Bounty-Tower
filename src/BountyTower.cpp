@@ -741,7 +741,7 @@ dynamicVariable * baseMenu::getVar(std::string varName)
 
 void renderSkillMenu(baseMenu &menu)
 {
-    //TODO: Add a button somewhere to the Squaddie menu to start this menu, and vice versa.
+    //TODO: Restrict spending SP on skills unless a certain amount has been spent on current level(5?)
     selectedNPCs.clear();
 
     shapes.createSquare(100,100,screen.x()-100,screen.y()-100,sf::Color(sf::Color(150,150,0)),5,sf::Color::White,&gvars::hudView);
@@ -900,6 +900,17 @@ void renderSkillMenu(baseMenu &menu)
 
     }
 
+    int squaddieNSkillButt = createImageButton(sf::Vector2f(110+30,490+30),texturemanager.getTexture("blankButton.png"),"",0,gvars::hudView);
+    textList.createText(sf::Vector2f(110+5,490+25),9,sf::Color::White,"Overview",gvars::hudView);
+    if(menu.age > 15 && imageButtonClicked(squaddieNSkillButt))
+    {
+        menu.toDelete = true;
+        squaddieMenu(*npc);
+    }
+
+
+
+
 }
 
 void renderSquaddieMenu(baseMenu &menu)
@@ -1029,6 +1040,15 @@ void renderSquaddieMenu(baseMenu &menu)
 
         y += 1.3;
 
+    }
+
+    int squaddieNSkillButt = createImageButton(sf::Vector2f(110+30,490+30),texturemanager.getTexture("blankButton.png"),"",0,gvars::hudView);
+    textList.createText(sf::Vector2f(110+5,490+25),10,sf::Color::White,"Skills",gvars::hudView);
+
+    if(menu.age > 15 && imageButtonClicked(squaddieNSkillButt))
+    {
+        menu.toDelete = true;
+        skillMenu(*npc);
     }
 
 }
