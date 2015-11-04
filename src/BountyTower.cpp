@@ -741,7 +741,6 @@ dynamicVariable * baseMenu::getVar(std::string varName)
 
 void renderSkillMenu(baseMenu &menu)
 {
-    //TODO: Restrict spending SP on skills unless a certain amount has been spent on current level(5?)
     selectedNPCs.clear();
 
     shapes.createSquare(100,100,screen.x()-100,screen.y()-100,sf::Color(sf::Color(150,150,0)),5,sf::Color::White,&gvars::hudView);
@@ -811,8 +810,15 @@ void renderSkillMenu(baseMenu &menu)
     // X-Range, 300-1150
 
     int levels[20];
+    int totalRanksPerLevel[20];
     for(int i = 0; i != 20; i++)
+    {
         levels[i] = 0;
+        totalRanksPerLevel[i] = 0;
+    }
+
+
+
 
     for(auto &skill : npc->skills.list)
     {
@@ -822,6 +828,7 @@ void renderSkillMenu(baseMenu &menu)
             continue;
 
         levels[skill.level]++;
+        totalRanksPerLevel[skill.level] += skill.ranks;
     }
 
 
@@ -844,13 +851,19 @@ void renderSkillMenu(baseMenu &menu)
         sf::Vector2f drawPos(300+30+5+(x*(120)),invPos.y + (80*y)+30);
         x++;
 
+        bool skillLocked = (skill.level != 0 && totalRanksPerLevel[skill.level-1] < 5);
 
+        if(skillLocked)
+            shapes.createSquare(drawPos.x-30,drawPos.y-30,drawPos.x+30,drawPos.y+30,sf::Color::Red,0,sf::Color::White,&gvars::hudView);
+        else
+            shapes.createSquare(drawPos.x-30,drawPos.y-30,drawPos.x+30,drawPos.y+30,sf::Color::Black,0,sf::Color::White,&gvars::hudView);
 
-
-        shapes.createSquare(drawPos.x-30,drawPos.y-30,drawPos.x+30,drawPos.y+30,sf::Color::Black,0,sf::Color::White,&gvars::hudView);
+        //shapes.createSquare(drawPos.x-30,drawPos.y-30,drawPos.x+30,drawPos.y+30,sf::Color::Black,0,sf::Color::White,&gvars::hudView);
         int skillButt = createImageButton(drawPos,texturemanager.getTexture("Skills"+skill.tree+".png"),"",0,gvars::hudView);
+
         sf::Vector2f skillNamePos(drawPos.x-30,drawPos.y-40);
         textList.createText(skillNamePos,8,sf::Color::White,skill.name,gvars::hudView);
+
         sf::Vector2f skillRankPos(drawPos.x-30,drawPos.y-30);
         textList.createText(skillRankPos,8,sf::Color::White,str(skill.ranks),gvars::hudView);
 
@@ -890,7 +903,7 @@ void renderSkillMenu(baseMenu &menu)
                 npc->skillpoints++;
             }
 
-            if(inputState.lmbTime == 1 && skill.ranks < skill.ranksmax && npc->skillpoints > 0 && menu.age > 30)
+            if(!skillLocked && inputState.lmbTime == 1 && skill.ranks < skill.ranksmax && npc->skillpoints > 0 && menu.age > 30)
             {
                 skill.ranks++;
                 npc->skillpoints--;
