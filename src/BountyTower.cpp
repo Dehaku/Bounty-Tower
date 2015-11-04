@@ -741,6 +741,9 @@ dynamicVariable * baseMenu::getVar(std::string varName)
 
 void renderSkillMenu(baseMenu &menu)
 {
+    //TODO: Add a button somewhere to the Squaddie menu to start this menu, and vice versa.
+    selectedNPCs.clear();
+
     shapes.createSquare(100,100,screen.x()-100,screen.y()-100,sf::Color(sf::Color(150,150,0)),5,sf::Color::White,&gvars::hudView);
     //Close Button
     int exitButt = createImageButton(sf::Vector2f(screen.x()-100,100),texturemanager.getTexture("ExitButton.png"),"",0,gvars::hudView);
@@ -755,7 +758,13 @@ void renderSkillMenu(baseMenu &menu)
     textList.createText(sf::Vector2f(105,100),20,sf::Color(100,100,100),"Name: " + npc->name,gvars::hudView);
 
     sf::Vector2f invPos(screen.x()/3,130);
-    textList.createText(sf::Vector2f(636,102),15,sf::Color::White,"Skills",gvars::hudView);
+
+    if(npc->skillpoints == 0)
+        textList.createText(sf::Vector2f(636,102),15,sf::Color::White,"Skills",gvars::hudView);
+    else
+        textList.createText(sf::Vector2f(636,102),15,sf::Color::White,"Skills   SP Remaining: " + str(npc->skillpoints),gvars::hudView);
+
+
     shapes.createSquare(300,invPos.y-10,1150,invPos.y+(screen.y()/2),sf::Color::Transparent,2,sf::Color::Black,&gvars::hudView);
     shapes.createSquare(300,invPos.y+(screen.y()/2),1150,invPos.y+(screen.y()/2)+110,sf::Color::Black,0,sf::Color::Black,&gvars::hudView);
 
@@ -873,6 +882,20 @@ void renderSkillMenu(baseMenu &menu)
             textPos.y += 15;
             outPut = skill.desc;
             textList.createText(textPos,15,sf::Color::White,outPut,gvars::hudView);
+
+
+            if(inputState.rmbTime == 1 && skill.ranks > 0 && menu.age > 30)
+            {
+                skill.ranks--;
+                npc->skillpoints++;
+            }
+
+            if(inputState.lmbTime == 1 && skill.ranks < skill.ranksmax && npc->skillpoints > 0 && menu.age > 30)
+            {
+                skill.ranks++;
+                npc->skillpoints--;
+            }
+
         }
 
     }
