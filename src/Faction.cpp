@@ -528,7 +528,7 @@ std::string useHealItem()
 
             if(inputState.rmbTime == 1)
             {
-                if(squaddie->health == squaddie->maxhealth)
+                if(squaddie->health == squaddie->getMaxHealth())
                 {
                     chatBox.addChat(squaddie->name + " is fully healed!", sf::Color::Green);
                     return "Full Health";
@@ -1853,6 +1853,17 @@ Npc::Npc()
     needsPath = false;
 }
 
+float Npc::getMaxHealth()
+{
+    float modifiedMaxHealth = maxhealth;
+
+    Skill * perfectHealth = skills.getSkill("Perfect Health");
+    if(perfectHealth != nullptr)
+        modifiedMaxHealth += modifiedMaxHealth*(perfectHealth->ranks*0.1);
+
+    return modifiedMaxHealth;
+}
+
 void Npc::reCreateSkills()
 {
 
@@ -2406,8 +2417,8 @@ void Npc::sethealth(float amount)
 bool Npc::modhealth(float amount)
 {
     health += amount;
-    if(health > maxhealth)
-        health = maxhealth;
+    if(health > getMaxHealth())
+        health = getMaxHealth();
 
     if (health < 1)
     {
@@ -2826,7 +2837,7 @@ std::string Npc::onDeath(Npc *attacker, Item *weapon, float amount, critScore *c
     {
         int scrapCost = 30;
         //Damage is equal to 10% total health, multiplied by 10% of scrapCost
-        int exploDamage = (maxhealth*0.1)*(scrapCost*0.1);
+        int exploDamage = (getMaxHealth()*0.1)*(scrapCost*0.1);
 
         std::vector<Npc*> victims;
         for(auto &npc: npclist)
@@ -2954,7 +2965,7 @@ std::string Npc::takeDamage(Npc *attacker, Item *weapon, float amount, critScore
             soundmanager.playSound("InjuryHumanMale"+str(soundRan)+".ogg");
         }
 
-        if(amount > maxhealth/2)
+        if(amount > getMaxHealth()/2)
         {
             int soundRan = random(1,6);
             soundmanager.playSound("vlatkoblazek_bones-breaking"+str(soundRan)+".ogg");
@@ -3006,7 +3017,7 @@ std::string Npc::dealDamage(Npc *victim, Item *weapon, float amount)
         Skill * undeadDread = skills.getSkill("Undead Dread");
         if(undeadDread != nullptr && undeadDread->ranks > 0)
         {
-            float removeAmount = health/maxhealth;
+            float removeAmount = health/getMaxHealth();
             float missingHealth = 1 - removeAmount;
             missingHealth = missingHealth / 2.5;
             totalDamage += totalDamage*(missingHealth*undeadDread->ranks);
@@ -4770,7 +4781,7 @@ void drawSelectedCritterHUD()
                         {
                             if(slotItem->user->alive == false)
                                 chatBox.addChat("He's dead, Jim.", sf::Color::Green);
-                            else if(slotItem->user->health == slotItem->user->maxhealth)
+                            else if(slotItem->user->health == slotItem->user->getMaxHealth())
                                 chatBox.addChat(slotItem->user->name + " is fully healed!", sf::Color::Green);
                             else
                             {

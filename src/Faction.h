@@ -126,6 +126,10 @@ public:
     int getInventoryMax();
     std::list<Item> equipped;
 
+    float getMaxHealth();
+
+
+
     std::string racialAbility;
 
     int level;

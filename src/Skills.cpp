@@ -460,8 +460,9 @@ Skills::Skills()
     skill.tree = "Paragon";
     skill.ranksmax = 99999;
 
-    skill.name = "(NON-FUNCTIONAL) Perfect Health";
+    skill.name = "Perfect Health";
     skill.desc = "Passive - Gain 10% base health per rank.";
+    skill.level = 0;
     skill.active = false;
     list.push_back(skill);
 

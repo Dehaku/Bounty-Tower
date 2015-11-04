@@ -952,7 +952,7 @@ void assaultDesire(Npc &npc, std::list<Npc> &container, Npc * closEnmy, bool &ha
 
     //This makes it so Towerlings defending switches will start chasing once they get hurt.
     if(npc.faction != conFact->name && npc.chasePriority == "Defend")
-        if(npc.health != npc.maxhealth)
+        if(npc.health != npc.getMaxHealth())
             npc.chasePriority = "Assault";
 
     handsOffense(npc,container,closEnmy,hasPath,endPos);
@@ -1103,7 +1103,7 @@ void overheadOverlay(Npc &npc)
     if(!menus.empty())
         return;
     //Overhead Healthbar.
-    float remainingHealth = npc.health / npc.maxhealth;
+    float remainingHealth = npc.health / npc.getMaxHealth();
     /*
     if(remainingHealth != 0 && remainingHealth != 1)
     {
@@ -1112,7 +1112,7 @@ void overheadOverlay(Npc &npc)
     }
     */
 
-    if(npc.health != npc.maxhealth && npc.health > 0)
+    if(npc.health != npc.getMaxHealth() && npc.health > 0)
     {
         float healthLow = math::clamp(npc.health,0,1000);
         float healthCap = 1000;
@@ -1120,7 +1120,7 @@ void overheadOverlay(Npc &npc)
         shapes.createSquare(npc.xpos-40,npc.ypos-40, npc.xpos+40, npc.ypos-40+10,sf::Color::Black);
         shapes.createSquare(npc.xpos-(40*healthPercent),npc.ypos-40, npc.xpos+(40*healthPercent), npc.ypos-40+8,sf::Color::Red,1,sf::Color::Black);
     }
-    if(npc.health != npc.maxhealth && npc.health > 1000) //1k - 10k Yellow bar
+    if(npc.health != npc.getMaxHealth() && npc.health > 1000) //1k - 10k Yellow bar
     {
         float healthLow = math::clamp(npc.health - 1000,0,10000 - 1000);
         float healthCap = 10000 - 1000;
@@ -1128,7 +1128,7 @@ void overheadOverlay(Npc &npc)
 
         shapes.createSquare(npc.xpos-(40*healthPercent),npc.ypos-40, npc.xpos+(40*healthPercent), npc.ypos-40+8,sf::Color::Yellow,1,sf::Color::Black);
     }
-    if(npc.health != npc.maxhealth && npc.health > 10000) //10k - 100k Green bar
+    if(npc.health != npc.getMaxHealth() && npc.health > 10000) //10k - 100k Green bar
     {
         float healthLow = math::clamp(npc.health - 10000,0,100000 - 10000);
         float healthCap = 100000 - 10000;
@@ -1136,7 +1136,7 @@ void overheadOverlay(Npc &npc)
 
         shapes.createSquare(npc.xpos-(40*healthPercent),npc.ypos-40, npc.xpos+(40*healthPercent), npc.ypos-40+8,sf::Color::Green,1,sf::Color::Black);
     }
-    if(npc.health != npc.maxhealth && npc.health > 100000) //100k - 1m Blue bar
+    if(npc.health != npc.getMaxHealth() && npc.health > 100000) //100k - 1m Blue bar
     {
         float healthLow = math::clamp(npc.health - 100000,0,1000000 - 100000);
         float healthCap = 1000000 - 100000;
@@ -1158,7 +1158,7 @@ void overheadOverlay(Npc &npc)
             if(inputState.key[Key::X].time == 1)
     {
         npc.health = 150000;
-        npc.maxhealth = 150000;
+        npc.getMaxHealth() = 150000;
     }
 
     */
@@ -1175,7 +1175,7 @@ void overheadOverlay(Npc &npc)
         testString.append(npc.name);
 
     if(inputState.key[Key::LAlt])
-        testString.append(" Health: " + str(static_cast<int>(npc.health)) + "/" + str(static_cast<int>(npc.maxhealth)));
+        testString.append(" Health: " + str(static_cast<int>(npc.health)) + "/" + str(static_cast<int>(npc.getMaxHealth())));
 
     textList.createText(npc.xpos-30,npc.ypos-55,10,sf::Color::White,testString);
 
@@ -1252,7 +1252,7 @@ void critterBrain(Npc &npc, std::list<Npc> &container)
 
     if((gvars::framesPassed % 60) == 0)
     {
-        float hpRegen = npc.maxhealth*(npc.skills.getRanks("Feral Regeneration")*0.002);
+        float hpRegen = npc.getMaxHealth()*(npc.skills.getRanks("Feral Regeneration")*0.002);
         npc.modhealth(hpRegen);
     }
 
@@ -1821,12 +1821,12 @@ void drawSquadHud()
             spritePos.x += 2;
             textList.createText(spritePos,10,sf::Color::White,str(ydrawPos+1) +": " + npc.name, gvars::hudView);
             spritePos.y += 10;
-            textList.createText(spritePos,10,sf::Color::White,"Health: " + str(static_cast<int>(npc.health)) + "/" + str(static_cast<int>(npc.maxhealth)), gvars::hudView);
+            textList.createText(spritePos,10,sf::Color::White,"Health: " + str(static_cast<int>(npc.health)) + "/" + str(static_cast<int>(npc.getMaxHealth())), gvars::hudView);
             spritePos.y += 1;
 
 
             // Health-o-meter!
-            float remainingHealth = npc.health / npc.maxhealth;
+            float remainingHealth = npc.health / npc.getMaxHealth();
             shapes.createSquare(spritePos.x,spritePos.y+1,spritePos.x+150,spritePos.y+9,sf::Color(0,0,0),1,sf::Color::White,&gvars::hudView);
             shapes.createSquare(spritePos.x,spritePos.y+1,spritePos.x+(150*remainingHealth),spritePos.y+9,sf::Color(255,0,0),0,highlightColor,&gvars::hudView);
 
