@@ -2579,6 +2579,49 @@ void showItemProgressCone()
     }
 }
 
+void newSlotWorkMethod()
+{
+    int slotCount = 10;
+    float xCenter = screen.x()/2;
+    float yPos = 600;
+    bool xFlip = false;
+    bool yFlip = false;
+    int xOffset = 0;
+
+    for(int i = 0; i != slotCount; i++)
+    {
+        float xDrawPos;
+        float yDrawPos;
+        if(xFlip)
+            xDrawPos = xCenter + (xOffset*30);
+        else
+            xDrawPos = xCenter + -(xOffset*30);
+
+        if(yFlip)
+            yDrawPos = yPos + 60;
+        else
+            yDrawPos = yPos;
+
+        shapes.createSquare(xDrawPos+5,yDrawPos,xDrawPos+60-5,yDrawPos+60,sf::Color::Cyan,0,sf::Color::Cyan,&gvars::hudView);
+
+        textList.createText(sf::Vector2f(xDrawPos,yDrawPos),10,sf::Color::White,"Slot: " + str(i),gvars::hudView);
+
+        /*
+        if(i < 2)
+            shapes.createSquare(xDrawPos+5,yPos,xDrawPos+60-5,yPos+120,sf::Color::Cyan,0,sf::Color::Cyan,&gvars::hudView);
+        else
+            shapes.createSquare(xDrawPos+5,yPos,xDrawPos+60-5,yPos+60,sf::Color::Cyan,0,sf::Color::Cyan,&gvars::hudView);
+        */
+
+        if(xFlip)
+            xOffset++;
+
+        toggle(xFlip);
+        if((i % 4) == 0)
+            toggle(yFlip);
+    }
+}
+
 void bountyTowerLoop()
 { // Game Loop
     hotkeySquaddieSelect();

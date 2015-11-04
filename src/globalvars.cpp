@@ -108,6 +108,7 @@ critScore::critScore()
 
 void assignSlotPos()
 {
+    /* Old straight line slot positions.
     for( int i = 0; i != 20; i++)
     {
         sf::Vector2f vPos;
@@ -158,6 +159,65 @@ void assignSlotPos()
                 vPos = sf::Vector2f(1234, 674);
         gvars::slotPos.push_back(vPos);
     }
+
+    */
+
+    for( int i = 0; i != 20; i++)
+    {
+        sf::Vector2f vPos;
+            //Left slots
+            if(i == 0)
+                vPos = sf::Vector2f(608,657);
+            if(i == 1)
+                vPos = sf::Vector2f(670,657);
+
+            if(i == 2)
+                vPos = sf::Vector2f(548, 629); // 764?
+            if(i == 4)
+                vPos = sf::Vector2f(548, 689);
+            if(i == 6)
+                vPos = sf::Vector2f(485, 629);
+            if(i == 8)
+                vPos = sf::Vector2f(485, 689);
+            if(i == 10)
+                vPos = sf::Vector2f(422, 629);
+            if(i == 12)
+                vPos = sf::Vector2f(422, 689);
+            if(i == 14)
+                vPos = sf::Vector2f(359, 629);
+            if(i == 16)
+                vPos = sf::Vector2f(359, 689);
+            if(i == 18)
+                vPos = sf::Vector2f(296, 629);
+            if(i == 20)
+                vPos = sf::Vector2f(296, 689);
+
+
+            // Right slots
+            if(i == 3)
+                vPos = sf::Vector2f(730, 629);
+            if(i == 5)
+                vPos = sf::Vector2f(730, 689);
+            if(i == 7)
+                vPos = sf::Vector2f(793, 629);
+            if(i == 9)
+                vPos = sf::Vector2f(793, 689);
+            if(i == 11)
+                vPos = sf::Vector2f(858, 629);
+            if(i == 13)
+                vPos = sf::Vector2f(858, 689);
+            if(i == 15)
+                vPos = sf::Vector2f(919, 629);
+            if(i == 17)
+                vPos = sf::Vector2f(919, 689);
+            if(i == 19)
+                vPos = sf::Vector2f(982, 629);
+            if(i == 21)
+                vPos = sf::Vector2f(982, 689);
+        gvars::slotPos.push_back(vPos);
+    }
+
+
 
 }
 
