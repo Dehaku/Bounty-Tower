@@ -757,6 +757,7 @@ void renderSkillMenu(baseMenu &menu)
     sf::Vector2f invPos(screen.x()/3,130);
     textList.createText(sf::Vector2f(636,102),15,sf::Color::White,"Skills",gvars::hudView);
     shapes.createSquare(300,invPos.y-10,1150,invPos.y+(screen.y()/2),sf::Color::Transparent,2,sf::Color::Black,&gvars::hudView);
+    shapes.createSquare(300,invPos.y+(screen.y()/2),1150,invPos.y+(screen.y()/2)+110,sf::Color::Black,0,sf::Color::Black,&gvars::hudView);
 
     dynamicVariable * currentSkill = menu.getVar("currentSkill");
 
@@ -831,19 +832,47 @@ void renderSkillMenu(baseMenu &menu)
             x = 0;
         }
 
-        sf::Vector2f drawPos(300+30+5+(x*(120)),invPos.y + 10 + (60*y)+30);
+        sf::Vector2f drawPos(300+30+5+(x*(120)),invPos.y + (80*y)+30);
         x++;
 
 
 
 
-        shapes.createSquare(drawPos.x-30,drawPos.y-30,drawPos.x+30,drawPos.y+30,sf::Color::Black,2,sf::Color::White,&gvars::hudView);
+        shapes.createSquare(drawPos.x-30,drawPos.y-30,drawPos.x+30,drawPos.y+30,sf::Color::Black,0,sf::Color::White,&gvars::hudView);
         int skillButt = createImageButton(drawPos,texturemanager.getTexture("Skills"+skill.tree+".png"),"",0,gvars::hudView);
+        sf::Vector2f skillNamePos(drawPos.x-30,drawPos.y-40);
+        textList.createText(skillNamePos,8,sf::Color::White,skill.name,gvars::hudView);
+        sf::Vector2f skillRankPos(drawPos.x-30,drawPos.y-30);
+        textList.createText(skillRankPos,8,sf::Color::White,str(skill.ranks),gvars::hudView);
 
         if(imageButtonHovered(skillButt))
         {
+            sf::Vector2f textPos(305,invPos.y+(screen.y()/2));
             sf::Vector2f mouseConvPos(gvars::mousePos.x+10,gvars::mousePos.y);
-            textList.createText(mouseConvPos,10,sf::Color::White,skill.name);
+            textList.createText(textPos,15,sf::Color::White,skill.name,gvars::hudView);
+
+            textPos.y += 15;
+            std::string outPut = "Ranks: (" + str(skill.ranks) + "/" + str(skill.ranksmax) + ")";
+            textList.createText(textPos,15,sf::Color::White,outPut,gvars::hudView);
+            textPos.y += 15;
+            if(skill.active)
+            { // Cooldown
+                outPut = "Cooldown: " + str(skill.cooldownint/60) + " sec."; // Dividing by 60 to give seconds.
+                textList.createText(textPos,15,sf::Color::White,outPut,gvars::hudView);
+            }
+
+            textPos.y += 15;
+            if(skill.durationint > 0)
+            { // Duration
+                outPut = "Duration: " + str(skill.durationint);
+                textList.createText(textPos,15,sf::Color::White,outPut,gvars::hudView);
+            }
+
+
+
+            textPos.y += 15;
+            outPut = skill.desc;
+            textList.createText(textPos,15,sf::Color::White,outPut,gvars::hudView);
         }
 
     }

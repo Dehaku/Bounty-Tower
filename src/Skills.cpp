@@ -26,45 +26,10 @@ Skills::Skills()
     skill.active = false;
     list.push_back(skill);
 
-    skill.name = "Batter Up1";
-    skill.desc = "Passive - Damage*Rank is applied as force to your enemies.";
-    skill.level = 0;
-    skill.active = false;
-    list.push_back(skill);
-
-    skill.name = "Batter Up1";
-    skill.desc = "Passive - Damage*Rank is applied as force to your enemies.";
-    skill.level = 0;
-    skill.active = false;
-    list.push_back(skill);
-
     skill.name = "Cleave";
-    skill.desc = "Active - Activate to Swing a melee weapon for 75% damage in a 180 degree arc, Ranks grant 25% more damage";
+    skill.desc = "Active - Activate to Swing a melee weapon for 75% damage in a 180 degree arc \nRanks grant 25% more damage";
     skill.level = 0;
     skill.active = true;
-    list.push_back(skill);
-
-    skill.name = "Batter Up2";
-    skill.desc = "Passive - Damage*Rank is applied as force to your enemies.";
-    skill.level = 1;
-    skill.active = false;
-    list.push_back(skill);
-
-    skill.name = "Batter Up2";
-    skill.desc = "Passive - Damage*Rank is applied as force to your enemies.";
-    skill.level = 1;
-    skill.active = false;
-    list.push_back(skill);
-    skill.name = "Batter Up2";
-    skill.desc = "Passive - Damage*Rank is applied as force to your enemies.";
-    skill.level = 1;
-    skill.active = false;
-    list.push_back(skill);
-
-    skill.name = "Batter Up3";
-    skill.desc = "Passive - Damage*Rank is applied as force to your enemies.";
-    skill.level = 2;
-    skill.active = false;
     list.push_back(skill);
 
 
@@ -174,7 +139,7 @@ Skills::Skills()
     */
 
     skill.name = "Bronze Bullet";
-    skill.desc = "Passive - The first bullet in a magazine deals 10% extra base damage per rank, stacks with other 'Bullet' skills if the position aligns.";
+    skill.desc = "Passive - The first bullet in a magazine deals 10% extra base damage per rank \nstacks with other 'Bullet' skills if the position aligns.";
     skill.level = 0;
     skill.active = false;
     list.push_back(skill);
@@ -186,13 +151,13 @@ Skills::Skills()
     list.push_back(skill);
 
     skill.name = "Silver Bullet";
-    skill.desc = "Passive - The middle-most bullet in a magazine deals 20% extra base damage per rank, stacks with other 'Bullet' skills if the position aligns.";
+    skill.desc = "Passive - The middle-most bullet in a magazine deals 20% extra base damage per rank \nstacks with other 'Bullet' skills if the position aligns.";
     skill.level = 1;
     skill.active = false;
     list.push_back(skill);
 
     skill.name = "Gold Bullet";
-    skill.desc = "Passive - The last bullet in a magazine deals 30% extra base damage per rank, stacks with other 'Bullet' skills if the position aligns.";
+    skill.desc = "Passive - The last bullet in a magazine deals 30% extra base damage per rank \nstacks with other 'Bullet' skills if the position aligns.";
     skill.level = 2;
     skill.active = false;
     list.push_back(skill);
@@ -306,7 +271,7 @@ Skills::Skills()
     skill.tree = "Engineer";
 
     skill.name = "Ammo Construction";
-    skill.desc = "Active - Produces 5 ammo per rank for 30 scrap, Cannot produce ammo beyond cap.(LeftHand priority) ";
+    skill.desc = "Active - Produces 5 ammo per rank for 30 scrap, Cannot produce ammo beyond cap.\n(LeftHand priority) ";
     skill.level = 0;
     skill.active = true;
     skill.autouse = false;
@@ -320,7 +285,7 @@ Skills::Skills()
     list.push_back(skill);
 
     skill.name = "Logistics Expert";
-    skill.desc = "Passive - Increases the rate switches are fixed. Intelligence is applied to work speed per rank.";
+    skill.desc = "Passive - Increases the rate switches are fixed. Intelligence is applied to work speed per \nrank.";
     skill.level = 1;
     skill.active = false;
     list.push_back(skill);
@@ -334,7 +299,7 @@ Skills::Skills()
 
     skill.name = "Explosive Deconstruction";
     skill.ranksmax = 1;
-    skill.desc = "Passive - Upon constructions death, detonates with a scaled explosion based on constructions health and cost.";
+    skill.desc = "Passive - Upon constructions death, detonates with a scaled explosion based on \nconstructions health and cost.";
     skill.level = 2;
     skill.active = false;
     list.push_back(skill);
