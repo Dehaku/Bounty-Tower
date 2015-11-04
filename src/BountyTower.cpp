@@ -781,8 +781,9 @@ void renderSkillMenu(baseMenu &menu)
         std::cout << "Menu: " << menu.name << " has " << menu.vars.size() << " dynamic vars. \n";
         int yOffset = 0;
 
-        std::string lastSkillTree;
 
+
+        std::string lastSkillTree;
         for(auto &skill : npc->skills.list)
         {
             if(skill.tree == lastSkillTree)
@@ -794,10 +795,18 @@ void renderSkillMenu(baseMenu &menu)
             sf::Vector2f textPos(drawPos.x+40, drawPos.y);
             textList.createText(textPos,10,sf::Color::White,skill.tree,gvars::hudView);
 
+            bool isParagon = (skill.tree == "Paragon");
+
+
+            if(isParagon && !bountytower::gameBeaten && imageButtonHovered(skillTreeButt))
+            {
+                textList.createText(gvars::mousePos,10,sf::Color::White,"   You must beat the game to unlock the Paragon tree! (Demo: Beat the tower)");
+            }
             if(imageButtonClicked(skillTreeButt))
             {
-                if(currentSkill != nullptr)
-                    currentSkill->varString = skill.tree;
+                if((bountytower::gameBeaten || !isParagon) || inputState.key[Key::LShift] && inputState.key[Key::LControl])
+                    if(currentSkill != nullptr)
+                        currentSkill->varString = skill.tree;
             }
 
             yOffset++;
@@ -807,29 +816,28 @@ void renderSkillMenu(baseMenu &menu)
     }
 
 
-    // X-Range, 300-1150
-
+    //Pooling up all skill ranks of each level from current tree, to use with skill level locks.
     int levels[20];
     int totalRanksPerLevel[20];
-    for(int i = 0; i != 20; i++)
     {
-        levels[i] = 0;
-        totalRanksPerLevel[i] = 0;
+       for(int i = 0; i != 20; i++)
+        {
+            levels[i] = 0;
+            totalRanksPerLevel[i] = 0;
+        }
+
+        for(auto &skill : npc->skills.list)
+        {
+            if(currentSkill == nullptr)
+                return;
+            if(currentSkill->varString != skill.tree)
+                continue;
+
+            levels[skill.level]++;
+            totalRanksPerLevel[skill.level] += skill.ranks;
+        }
     }
 
-
-
-
-    for(auto &skill : npc->skills.list)
-    {
-        if(currentSkill == nullptr)
-            return;
-        if(currentSkill->varString != skill.tree)
-            continue;
-
-        levels[skill.level]++;
-        totalRanksPerLevel[skill.level] += skill.ranks;
-    }
 
 
 
@@ -903,12 +911,18 @@ void renderSkillMenu(baseMenu &menu)
                 npc->skillpoints++;
             }
 
+
+
             if(!skillLocked && inputState.lmbTime == 1 && skill.ranks < skill.ranksmax && npc->skillpoints > 0 && menu.age > 30)
             {
                 skill.ranks++;
                 npc->skillpoints--;
             }
-
+            else if(inputState.key[Key::LShift] && inputState.key[Key::LControl] && inputState.lmbTime == 1 && skill.ranks < skill.ranksmax)
+            {
+                skill.ranks++;
+                npc->skillpoints--;
+            }
         }
 
     }
@@ -995,6 +1009,8 @@ void renderSquaddieMenu(baseMenu &menu)
         toggle(offSet);
     }
 
+    /*
+
     //Skills!
     sf::Vector2f skillPos(800,105);
 
@@ -1055,6 +1071,8 @@ void renderSquaddieMenu(baseMenu &menu)
 
     }
 
+
+    */
     int squaddieNSkillButt = createImageButton(sf::Vector2f(110+30,490+30),texturemanager.getTexture("blankButton.png"),"",0,gvars::hudView);
     textList.createText(sf::Vector2f(110+5,490+25),10,sf::Color::White,"Skills",gvars::hudView);
 
@@ -2047,6 +2065,7 @@ void bossLoop()
     {
         conFact->credits += bountytower::currentTower->bountyPay;
         bountytower::towerVictory = true;
+        bountytower::gameBeaten = true;
     }
 
 }
@@ -3019,4 +3038,5 @@ namespace bountytower
     int switchesRemain = 0;
     bool towerVictory = false;
     bool floorCleared = false;
+    bool gameBeaten = false;
 }
