@@ -155,8 +155,12 @@ void AnimationManager::init()
     {
         Ani.animationImage.setSpriteSheet(texturemanager.getTexture(Ani.texture));
 
+
+
         if(Ani.name.find("LeftWalk") != Ani.name.npos)
             Ani.animation.scale(-1,1);
+
+
 
         if(Ani.name.find("Noirves") != Ani.name.npos)
             Ani.animation.scale(0.75,0.75);

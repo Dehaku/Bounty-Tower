@@ -5356,12 +5356,50 @@ void drawNPCs(std::list<Npc> &container)
                 if(drawMe)
                 {
 
-                    if(npc.race.find("Noirves") != npc.race.npos)
+                    /*
+                    if(npc.race == "BTNoirves")
+                    {
                         ani.animation.setScale(0.75,0.75);
+                    }
+                    else if(ani.name.find("LeftWalk") != ani.name.npos)
+                        ani.animation.setScale(-1,1);
+                    else
+                        ani.animation.setScale(1,1);
+
+                        */
+
+
+
+                    if(npc.race == "BTNoirves")
+                    {
+                        ani.animation.setScale(0.75,0.75);
+
+                        if(ani.name.find("LeftWalk") != ani.name.npos)
+                            ani.animation.scale(-1,1);
+                    }
+                    else if(npc.name == "The Hardened Criminal")
+                    {
+                        ani.animation.setScale(1.25,1.25);
+
+                        if(ani.name.find("LeftWalk") != ani.name.npos)
+                            ani.animation.scale(-1,1);
+                    }
+                    else
+                    {
+                        ani.animation.setScale(1,1);
+
+                        if(ani.name.find("LeftWalk") != ani.name.npos)
+                            ani.animation.scale(-1,1);
+                    }
+
+
+
+                    /*
                     else if(npc.name == "The Hardened Criminal")
                         ani.animation.setScale(1.25,1.25);
                     else
                         ani.animation.setScale(1,1);
+                        */
 
 
                     ani.animation.setPosition(npc.xpos,npc.ypos);
