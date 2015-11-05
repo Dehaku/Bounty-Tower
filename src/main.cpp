@@ -1047,15 +1047,6 @@ void critterPathFind(Npc &npc, std::list<Npc> &container)
         //Getting the position of the NEXT tile in our path, since we're on the current one.
         Vec3 Pos(npc.storedPath[1]->getPos());
 
-
-        if(npc.storedPath.size() > 3)
-        {//If our path is long enough, Let's have the critter look in the direction their walking.
-            Vec3 viewPos(npc.storedPath[3]->getPos());
-            viewPos.x = viewPos.x*GRID_SIZE;
-            viewPos.y = viewPos.y*GRID_SIZE;
-            npc.desiredViewAngle = sf::Vector2f(viewPos.x,viewPos.y);
-        }
-
         //Displaying an inaccurate path trip time
         double pathTime = (((npc.storedPath.size()*GRID_SIZE)*1.2)/npc.moverate)/30;
         std::ostringstream out;
@@ -1319,6 +1310,14 @@ void critterBrain(Npc &npc, std::list<Npc> &container)
     if(closEnmy != nullptr)
         npc.desiredViewAngle = closEnmy->getPos2d();
         //npc.targetInfo.npc = closEnmy;
+
+    if(npc.storedPath.size() > 3)
+    {//If our path is long enough, Let's have the critter look in the direction their walking.
+        Vec3 viewPos(npc.storedPath[3]->getPos());
+        viewPos.x = viewPos.x*GRID_SIZE;
+        viewPos.y = viewPos.y*GRID_SIZE;
+        npc.desiredViewAngle = sf::Vector2f(viewPos.x,viewPos.y);
+    }
 
 
     /* Critter Vision   */

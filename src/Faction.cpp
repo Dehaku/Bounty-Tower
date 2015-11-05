@@ -5356,6 +5356,7 @@ void drawNPCs(std::list<Npc> &container)
                 if(drawMe)
                 {
 
+
                     if(npc.race == "BTNoirves")
                     {
                         ani.animation.setScale(0.75,0.75);
