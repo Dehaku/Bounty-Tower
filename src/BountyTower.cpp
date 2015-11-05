@@ -1924,14 +1924,14 @@ void spawnEnemies()
         std::cout << "\n \n";
 
         if(!offSwitches.empty() && random(1,10) == 1)
-        {
+        { // Having some enemies go and guard switches instead of assaulting the squaddies.
             int randomSwitch = random(0,offSwitches.size()-1);
 
             member.chasePriority = "Defend";
             member.chaseDefendPos.x = offSwitches[randomSwitch]->pos.x*GRID_SIZE+(GRID_SIZE/2);
             member.chaseDefendPos.y = offSwitches[randomSwitch]->pos.y*GRID_SIZE+(GRID_SIZE/2);
             member.chaseDefendPos.z = (gvars::currentz*GRID_SIZE);
-            member.chaseRange = 200;
+            member.chaseRange = 400;
         }
 
 
@@ -2582,6 +2582,22 @@ void showItemProgressCone()
 void newSlotWorkMethod()
 {
     int slotCount = 10;
+
+    for(int i = 0; i != slotCount; i++)
+    {
+        float xDrawPos;
+        float yDrawPos;
+
+        xDrawPos = gvars::slotPos[i].x-30;
+        yDrawPos = gvars::slotPos[i].y-30;
+
+        sf::Color primary(0,0,0,100);
+        sf::Color secondary(150,0,0);
+
+        shapes.createSquare(xDrawPos+5,yDrawPos+5,xDrawPos+60-5,yDrawPos+60-5,primary,1,secondary,&gvars::hudView);
+    }
+
+    /*
     float xCenter = screen.x()/2;
     float yPos = 600;
     bool xFlip = false;
@@ -2611,7 +2627,7 @@ void newSlotWorkMethod()
             shapes.createSquare(xDrawPos+5,yPos,xDrawPos+60-5,yPos+120,sf::Color::Cyan,0,sf::Color::Cyan,&gvars::hudView);
         else
             shapes.createSquare(xDrawPos+5,yPos,xDrawPos+60-5,yPos+60,sf::Color::Cyan,0,sf::Color::Cyan,&gvars::hudView);
-        */
+
 
         if(xFlip)
             xOffset++;
@@ -2620,6 +2636,8 @@ void newSlotWorkMethod()
         if((i % 4) == 0)
             toggle(yFlip);
     }
+
+    */
 }
 
 void bountyTowerLoop()
@@ -2632,6 +2650,8 @@ void bountyTowerLoop()
     corpsesBleed();
     chasePriorityFunction();
     showItemProgressCone();
+
+    //newSlotWorkMethod();
 
     makeBlood();
     if(inputState.key[Key::J])
