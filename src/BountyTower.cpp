@@ -2944,7 +2944,7 @@ void bountyTowerLoop()
 
     if(bountytower::switchesRemain > 0)
     {
-        sf::Vector2f vPos(screen.x()/1.5,30);
+        sf::Vector2f vPos(screen.x()/1.5,130);
         textList.createText(vPos,15,sf::Color::White,"Remaining Elevator Components: " + std::to_string(bountytower::switchesRemain),window.getDefaultView());
     }
 
@@ -2963,7 +2963,7 @@ void bountyTowerLoop()
     { // Prints Elevator HUD and other such things
 
 
-        textList.createText(sf::Vector2f(screen.x()/2,50),20,sf::Color::Green,"Elevator is Ready!",window.getDefaultView());
+        textList.createText(sf::Vector2f(screen.x()/2-110,50),20,sf::Color::Green,"Elevator is Ready!",window.getDefaultView());
 
         int AmountRaised = 0;
         for(auto &npc : npclist)
@@ -2971,9 +2971,9 @@ void bountyTowerLoop()
                 if(npc.faction == conFact->name)
                     AmountRaised++;
 
-        textList.createText(sf::Vector2f(screen.x()/2,70),20,sf::Color::White,"On Elevator: " + std::to_string(AmountRaised),window.getDefaultView());
+        textList.createText(sf::Vector2f(screen.x()/2-110,70),20,sf::Color::White,"On Elevator: " + std::to_string(AmountRaised),window.getDefaultView());
 
-        sf::Vector2f vPos((screen.x()/2)-25,75);
+        sf::Vector2f vPos((screen.x()/2)-25-110,75);
         int butt = createImageButton(vPos,texturemanager.getTexture("ElevatorButton.png"),"",0,window.getDefaultView());
         if(imageButtonClicked(butt))
         {

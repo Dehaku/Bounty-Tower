@@ -1919,7 +1919,7 @@ void drawSquadHud()
 void drawEnemyCounterHud()
 {
     int counter = getLivingFactionMemberCount("Towerlings");
-    sf::Vector2f vPos(screen.x()/1.5,50);
+    sf::Vector2f vPos(screen.x()/1.5,160);
     std::string outPut = "Enemies Remaining: " + std::to_string(counter);
     if(counter > 0)
         textList.createText(vPos,15,sf::Color::White,outPut,gvars::hudView);
