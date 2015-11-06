@@ -531,7 +531,7 @@ void towerMenu()
         std::string textOut = " Tower: " + towers[1].name +
         "\n Minions: " + std::to_string(towers[1].minioncount) +
         "\n Difficulty: " + std::to_string(towers[1].difficulty);
-        textList.createText(towerPos[0].x+50,towerPos[0].y-25,15,sf::Color::Red,textOut);
+        shapes.createText(towerPos[0].x+50,towerPos[0].y-25,15,sf::Color::Red,textOut);
     }
 
     shapes.createSquare(-60,-60,screen.x()+60,screen.y()+60,sf::Color::Black);
@@ -743,7 +743,9 @@ void renderSkillMenu(baseMenu &menu)
 {
     selectedNPCs.clear();
 
+
     shapes.createSquare(100,100,screen.x()-100,screen.y()-100,sf::Color(sf::Color(150,150,0)),5,sf::Color::White,&gvars::hudView);
+    //shapes.shapes.back().layer = 10;
     //Close Button
     int exitButt = createImageButton(sf::Vector2f(screen.x()-100,100),texturemanager.getTexture("ExitButton.png"),"",0,gvars::hudView);
     if(imageButtonClicked(exitButt))
@@ -754,14 +756,19 @@ void renderSkillMenu(baseMenu &menu)
 
     Npc *npc = menu.npc;
 
-    textList.createText(sf::Vector2f(105,100),20,sf::Color(100,100,100),"Name: " + npc->name,gvars::hudView);
+    if(inputState.key[Key::Space])
+        shapes.createText(sf::Vector2f(105,100),20,sf::Color(100,100,100),"Name: " + npc->name,&gvars::hudView);
+    else
+        shapes.createText(sf::Vector2f(105,100),20,sf::Color(100,100,100),"Name: " + npc->name,&gvars::hudView);
+
+
 
     sf::Vector2f invPos(screen.x()/3,130);
 
     if(npc->skillpoints == 0)
-        textList.createText(sf::Vector2f(636,102),15,sf::Color::White,"Skills",gvars::hudView);
+        shapes.createText(sf::Vector2f(636,102),15,sf::Color::White,"Skills",&gvars::hudView);
     else
-        textList.createText(sf::Vector2f(636,102),15,sf::Color::White,"Skills   SP Remaining: " + str(npc->skillpoints),gvars::hudView);
+        shapes.createText(sf::Vector2f(636,102),15,sf::Color::White,"Skills   SP Remaining: " + str(npc->skillpoints),&gvars::hudView);
 
 
     shapes.createSquare(300,invPos.y-10,1150,invPos.y+(screen.y()/2),sf::Color::Transparent,2,sf::Color::Black,&gvars::hudView);
@@ -793,14 +800,14 @@ void renderSkillMenu(baseMenu &menu)
             sf::Vector2f drawPos(120,150+(yOffset*60));
             int skillTreeButt = createImageButton(drawPos,texturemanager.getTexture("Skills"+skill.tree+".png"),"",0,gvars::hudView);
             sf::Vector2f textPos(drawPos.x+40, drawPos.y);
-            textList.createText(textPos,10,sf::Color::White,skill.tree,gvars::hudView);
+            shapes.createText(textPos,10,sf::Color::White,skill.tree,&gvars::hudView);
 
             bool isParagon = (skill.tree == "Paragon");
 
 
             if(isParagon && !bountytower::gameBeaten && imageButtonHovered(skillTreeButt))
             {
-                textList.createText(gvars::mousePos,10,sf::Color::White,"   You must beat the game to unlock the Paragon tree! (Demo: Beat the tower)");
+                shapes.createText(gvars::mousePos,10,sf::Color::White,"   You must beat the game to unlock the Paragon tree! (Demo: Beat the tower)");
             }
             if(imageButtonClicked(skillTreeButt))
             {
@@ -866,43 +873,43 @@ void renderSkillMenu(baseMenu &menu)
         else
             shapes.createSquare(drawPos.x-30,drawPos.y-30,drawPos.x+30,drawPos.y+30,sf::Color::Black,0,sf::Color::White,&gvars::hudView);
 
-        //shapes.createSquare(drawPos.x-30,drawPos.y-30,drawPos.x+30,drawPos.y+30,sf::Color::Black,0,sf::Color::White,&gvars::hudView);
+        //shapes.createSquare(drawPos.x-30,drawPos.y-30,drawPos.x+30,drawPos.y+30,sf::Color::Black,0,sf::Color::White,&&gvars::hudView);
         int skillButt = createImageButton(drawPos,texturemanager.getTexture("Skills"+skill.tree+".png"),"",0,gvars::hudView);
 
         sf::Vector2f skillNamePos(drawPos.x-30,drawPos.y-40);
-        textList.createText(skillNamePos,8,sf::Color::White,skill.name,gvars::hudView);
+        shapes.createText(skillNamePos,8,sf::Color::White,skill.name,&gvars::hudView);
 
         sf::Vector2f skillRankPos(drawPos.x-30,drawPos.y-30);
-        textList.createText(skillRankPos,8,sf::Color::White,str(skill.ranks),gvars::hudView);
+        shapes.createText(skillRankPos,8,sf::Color::White,str(skill.ranks),&gvars::hudView);
 
         if(imageButtonHovered(skillButt))
         {
             sf::Vector2f textPos(305,invPos.y+(screen.y()/2));
             sf::Vector2f mouseConvPos(gvars::mousePos.x+10,gvars::mousePos.y);
-            textList.createText(textPos,15,sf::Color::White,skill.name,gvars::hudView);
+            shapes.createText(textPos,15,sf::Color::White,skill.name,&gvars::hudView);
 
             textPos.y += 15;
             std::string outPut = "Ranks: (" + str(skill.ranks) + "/" + str(skill.ranksmax) + ")";
-            textList.createText(textPos,15,sf::Color::White,outPut,gvars::hudView);
+            shapes.createText(textPos,15,sf::Color::White,outPut,&gvars::hudView);
             textPos.y += 15;
             if(skill.active)
             { // Cooldown
                 outPut = "Cooldown: " + str(skill.cooldownint/60) + " sec."; // Dividing by 60 to give seconds.
-                textList.createText(textPos,15,sf::Color::White,outPut,gvars::hudView);
+                shapes.createText(textPos,15,sf::Color::White,outPut,&gvars::hudView);
             }
 
             textPos.y += 15;
             if(skill.durationint > 0)
             { // Duration
                 outPut = "Duration: " + str(skill.durationint);
-                textList.createText(textPos,15,sf::Color::White,outPut,gvars::hudView);
+                shapes.createText(textPos,15,sf::Color::White,outPut,&gvars::hudView);
             }
 
 
 
             textPos.y += 15;
             outPut = skill.desc;
-            textList.createText(textPos,15,sf::Color::White,outPut,gvars::hudView);
+            shapes.createText(textPos,15,sf::Color::White,outPut,&gvars::hudView);
 
 
             if(inputState.rmbTime == 1 && skill.ranks > 0 && menu.age > 30)
@@ -955,6 +962,7 @@ void renderSquaddieMenu(baseMenu &menu)
 
 
     shapes.createSquare(100,100,screen.x()-100,screen.y()-100,sf::Color(sf::Color(150,150,0)),5,sf::Color::White,&gvars::hudView);
+    shapes.shapes.back().layer = 100;
     //Close Button
     int exitButt = createImageButton(sf::Vector2f(screen.x()-100,100),texturemanager.getTexture("ExitButton.png"),"",0,gvars::hudView);
     if(imageButtonClicked(exitButt))
@@ -964,13 +972,13 @@ void renderSquaddieMenu(baseMenu &menu)
         menu.toDelete = true;
 
     Npc *npc = menu.npc;
-    textList.createText(sf::Vector2f(105,100),20,sf::Color(100,100,100),"Name: " + npc->name,gvars::hudView);
+    shapes.createText(sf::Vector2f(105,100),20,sf::Color(100,100,100),"Name: " + npc->name,&gvars::hudView);
 
     //XP and Level!
     std::string LevelXpLine = "Level: " + std::to_string(npc->level) + "\n";
     LevelXpLine.append("XP: " + std::to_string(npc->xp));
     LevelXpLine.append(", (Next Level: " + std::to_string(nextLevelXpRequired(npc->level)) + ")");
-    textList.createText(sf::Vector2f(105,120),20,sf::Color::White,LevelXpLine,gvars::hudView);
+    shapes.createText(sf::Vector2f(105,120),20,sf::Color::White,LevelXpLine,&gvars::hudView);
 
     //Attributes! SPICED
     std::string AttributeLine;
@@ -981,14 +989,14 @@ void renderSquaddieMenu(baseMenu &menu)
     AttributeLine.append("Charisma: " + std::to_string(npc->attributes.charisma) + "\n");
     AttributeLine.append("Endurance: " + std::to_string(npc->attributes.endurance) + "\n");
     AttributeLine.append("Dexterity: " + std::to_string(npc->attributes.dexterity) + "\n");
-    textList.createText(sf::Vector2f(105,170),20,sf::Color::White,AttributeLine,gvars::hudView);
+    shapes.createText(sf::Vector2f(105,170),20,sf::Color::White,AttributeLine,&gvars::hudView);
 
 
 
 
     //Inventory!
     sf::Vector2f invPos(screen.x()/2,130);
-    textList.createText(sf::Vector2f(636,102),15,sf::Color::White,"Inventory",gvars::hudView);
+    shapes.createText(sf::Vector2f(636,102),15,sf::Color::White,"Inventory",&gvars::hudView);
     shapes.createSquare(invPos.x-40,invPos.y-10,invPos.x+100,invPos.y+(screen.y()/2)+120,sf::Color::Transparent,2,sf::Color::Black,&gvars::hudView);
 
     float x = 0, y = 0;
@@ -1015,9 +1023,9 @@ void renderSquaddieMenu(baseMenu &menu)
     sf::Vector2f skillPos(800,105);
 
     if(npc->skillpoints > 0)
-        textList.createText(skillPos,15,sf::Color::White,"Skills   SP Remaining: " + std::to_string(npc->skillpoints),gvars::hudView);
+        shapes.createText(skillPos,15,sf::Color::White,"Skills   SP Remaining: " + std::to_string(npc->skillpoints),&gvars::hudView);
     else
-        textList.createText(skillPos,15,sf::Color::White,"Skills",gvars::hudView);
+        shapes.createText(skillPos,15,sf::Color::White,"Skills",&gvars::hudView);
 
     y = 0;
     std::string lastTree = "";
@@ -1028,7 +1036,7 @@ void renderSquaddieMenu(baseMenu &menu)
         if(skill.tree != lastTree)
         {
             lastTree = skill.tree;
-            textList.createText(drawPos,20,sf::Color::Red,skill.tree,gvars::hudView);
+            shapes.createText(drawPos,20,sf::Color::Red,skill.tree,&gvars::hudView);
             y++;
         }
         drawPos = sf::Vector2f(skillPos.x,skillPos.y+(y*15)+15);
@@ -1037,19 +1045,19 @@ void renderSquaddieMenu(baseMenu &menu)
             sf::Vector2f buttonPos(drawPos.x-40,drawPos.y+10);
 
 
-            int decreaseSkillButton = createImageButton(buttonPos,texturemanager.getTexture("ArrowButton.png"),"",-90,gvars::hudView);
+            int decreaseSkillButton = createImageButton(buttonPos,texturemanager.getTexture("ArrowButton.png"),"",-90,&gvars::hudView);
             buttonPos.x += 20;
-            int increaseSkillButton = createImageButton(buttonPos,texturemanager.getTexture("ArrowButton.png"),"",90,gvars::hudView);
+            int increaseSkillButton = createImageButton(buttonPos,texturemanager.getTexture("ArrowButton.png"),"",90,&gvars::hudView);
 
             if(imageButtonHovered(increaseSkillButton) || imageButtonHovered(decreaseSkillButton))
             {
-                textList.createText(drawPos,20,sf::Color::Cyan,outPut,gvars::hudView);
+                shapes.createText(drawPos,20,sf::Color::Cyan,outPut,&gvars::hudView);
                 sf::Vector2f textPos(screen.x()/8,70);
-                shapes.createSquare(0,textPos.y,screen.x(),textPos.y+13,sf::Color::Black,1,sf::Color::White,&gvars::hudView);
-                textList.createText(textPos,10,sf::Color::Cyan,skill.desc,gvars::hudView);
+                shapes.createSquare(0,textPos.y,screen.x(),textPos.y+13,sf::Color::Black,1,sf::Color::White,&&gvars::hudView);
+                shapes.createText(textPos,10,sf::Color::Cyan,skill.desc,&gvars::hudView);
             }
             else
-                textList.createText(drawPos,20,sf::Color::White,outPut,gvars::hudView);
+                shapes.createText(drawPos,20,sf::Color::White,outPut,&gvars::hudView);
 
             if(imageButtonClicked(decreaseSkillButton) && skill.ranks > 0 && menu.age > 30)
             {
@@ -1114,9 +1122,9 @@ void renderMerchantMenu(baseMenu &menu)
         std::string outPut = item.name;
 
 
-        textList.createText(vPos,15,highlightColor,outPut,gvars::hudView);
+        shapes.createText(vPos,15,highlightColor,outPut,&gvars::hudView);
         vPos.y += 15;
-        textList.createText(vPos,10,highlightColor,"$" + str(item.value),gvars::hudView);
+        shapes.createText(vPos,10,highlightColor,"$" + str(item.value),&gvars::hudView);
         vPos.y += 15;
         std::string stats = "Dam: " + str(item.mindam) + "/" + str(item.maxdam);
         if(item.type == 1 || item.type == 2 || item.type == 23)
@@ -1149,7 +1157,7 @@ void renderMerchantMenu(baseMenu &menu)
 
         if(item.stackSize > 1)
             stats.append("\nStack: " + str(item.stackSize));
-        textList.createText(vPos,10,highlightColor,stats,gvars::hudView);
+        shapes.createText(vPos,10,highlightColor,stats,&gvars::hudView);
 
 
 
@@ -1199,7 +1207,7 @@ void renderRecruiterMenu(baseMenu &menu)
     int yOffset = 0;
 
     std::string SPICED = "SPICED = Strength Perception Intelligence Charisma Endurance Dexterity";
-    textList.createText(sf::Vector2f(105,100),10,sf::Color::White,SPICED,gvars::hudView);
+    shapes.createText(sf::Vector2f(105,100),10,sf::Color::White,SPICED,&gvars::hudView);
 
     //for(auto npc : npcmanager.globalCritter)
     for(auto &npc : recruitables)
@@ -1229,9 +1237,9 @@ void renderRecruiterMenu(baseMenu &menu)
 
         vPos.y -= 30;
         vPos.x += 30;
-        textList.createText(vPos,15,highlightColor,npc.race+": "+npc.name,gvars::hudView);
+        shapes.createText(vPos,15,highlightColor,npc.race+": "+npc.name,&gvars::hudView);
         vPos.y += 15;
-        textList.createText(vPos,10,highlightColor,"$" + str(critterCost),gvars::hudView);
+        shapes.createText(vPos,10,highlightColor,"$" + str(critterCost),&gvars::hudView);
         vPos.y += 10;
         std::string outPut = "Speed: " + str(static_cast<int>(npc.moverate) );
         outPut.append("\nS.P.I.C.E.D. : ");
@@ -1253,7 +1261,7 @@ void renderRecruiterMenu(baseMenu &menu)
                 outPut.append(", 5% Chance to gain some small items when using Melee.");
         }
 
-        textList.createText(vPos,10,highlightColor,outPut,gvars::hudView);
+        shapes.createText(vPos,10,highlightColor,outPut,&gvars::hudView);
 
 
 
@@ -1321,6 +1329,7 @@ void renderRecruiterMenu(baseMenu &menu)
 void renderTowerMenu(baseMenu &menu)
 {
     shapes.createSquare(100,100,screen.x()-100,screen.y()-100,sf::Color(sf::Color(150,150,0)),5,sf::Color::White,&gvars::hudView);
+    //shapes.shapes.back().layer = 10000000;
     //Close Button
     int exitButt = createImageButton(sf::Vector2f(screen.x()-100,100),texturemanager.getTexture("ExitButton.png"),"",0,gvars::hudView);
     if(imageButtonClicked(exitButt))
@@ -1403,7 +1412,7 @@ void renderTowerMenu(baseMenu &menu)
         "\n Bounty: $" + str(towers[1].bountyPay) +
         "\n Difficulty: " + std::to_string(towers[1].difficulty);
         sf::Vector2f textPos(towerPos[0].x+50,towerPos[0].y-25);
-        textList.createText(textPos,15,sf::Color::Red,textOut,gvars::hudView);
+        shapes.createText(textPos,15,sf::Color::Red,textOut,&gvars::hudView);
     }
 
 
@@ -1422,7 +1431,7 @@ void renderEscapeMenu(baseMenu &menu)
 
     sf::Vector2f textPos( (screen.x()/2) - 50,110);
     sf::Vector2f buttonPos(textPos);
-    textList.createText(textPos,10,sf::Color::White,"Sound: " + str(gvars::soundVolume),gvars::hudView);
+    shapes.createText(textPos,10,sf::Color::White,"Sound: " + str(gvars::soundVolume),&gvars::hudView);
     buttonPos.x += 90;
     buttonPos.y += 15;
     int decreaseSoundButt = createImageButton(buttonPos,texturemanager.getTexture("ArrowButton.png"),"",-90,gvars::hudView);
@@ -1433,7 +1442,7 @@ void renderEscapeMenu(baseMenu &menu)
 
     textPos.y += screen.y()/8;
     buttonPos = textPos;
-    textList.createText(textPos,10,sf::Color::White,"Music: " + str(gvars::musicVolume),gvars::hudView);
+    shapes.createText(textPos,10,sf::Color::White,"Music: " + str(gvars::musicVolume),&gvars::hudView);
     buttonPos.x += 90;
     buttonPos.y += 15;
     int decreaseMusicButt = createImageButton(buttonPos,texturemanager.getTexture("ArrowButton.png"),"",-90,gvars::hudView);
@@ -1442,12 +1451,12 @@ void renderEscapeMenu(baseMenu &menu)
 
     textPos.y += screen.y()/8;
     buttonPos = textPos;
-    textList.createText(textPos,10,sf::Color::White,"Resolution: "
+    shapes.createText(textPos,10,sf::Color::White,"Resolution: "
                         + std::to_string(resolution.resolutions[resolution.currentRes].width)
                         +"/"+std::to_string(resolution.resolutions[resolution.currentRes].height)
                         +": "+std::to_string(resolution.resolutions[resolution.currentRes].bitsPerPixel)
                         +"\n \n \nFullscreen: " + str(resolution.fullscreen)
-                        ,gvars::hudView);
+                        ,&gvars::hudView);
     buttonPos.x += 90;
     buttonPos.y += 20;
     int decreaseResolution = createImageButton(buttonPos,texturemanager.getTexture("ArrowButton.png"),"",-90,gvars::hudView);
@@ -1477,7 +1486,7 @@ void renderEscapeMenu(baseMenu &menu)
 
     if(menu.age > 30 && imageButtonHovered(toggleFullscreen))
     {
-        textList.createText(gvars::mousePos,9,sf::Color::White,"Toggle fullscreen",gvars::view1);
+        shapes.createText(gvars::mousePos,9,sf::Color::White,"Toggle fullscreen");
         if((inputState.lmbTime == 1))
             toggle(resolution.fullscreen);
     }
@@ -1485,7 +1494,7 @@ void renderEscapeMenu(baseMenu &menu)
 
     if(menu.age > 30 && imageButtonHovered(applyResolution))
     {
-        textList.createText(gvars::mousePos,9,sf::Color::White,"Apply the Resolution!",gvars::view1);
+        shapes.createText(gvars::mousePos,9,sf::Color::White,"Apply the Resolution!");
 
         if(inputState.lmbTime == 1)
         {
@@ -1531,7 +1540,7 @@ void drawMenus()
     int xOffset = gvars::mousePos.x - gvars::topLeft.x;
     int yOffset = gvars::mousePos.y - gvars::topLeft.y;
     if(inputState.key[Key::Home])
-        textList.createText(gvars::mousePos,10,sf::Color::White,"defaultPos:" + std::to_string(xOffset) + "/" + std::to_string(yOffset));
+        shapes.createText(gvars::mousePos,10,sf::Color::White,"defaultPos:" + std::to_string(xOffset) + "/" + std::to_string(yOffset));
     window.setView(window.getDefaultView());
 
     for(auto &menu : menus)
@@ -1961,9 +1970,9 @@ void towerVictory()
 {
     shapes.createSquare(0,0,screen.x(),screen.y(),sf::Color(0,0,0,100),0,sf::Color::Transparent,&gvars::hudView);
     sf::Vector2f textPos(screen.x()/2,50);
-    textList.createText(textPos,10,sf::Color::Yellow,"$ Bounty Killed! $ \n $ Time to collect! $",window.getDefaultView());
+    shapes.createText(textPos,10,sf::Color::Yellow,"$ Bounty Killed! $ \n $ Time to collect! $",&gvars::hudView);
     textPos.y += 30;
-    textList.createText(textPos,10,sf::Color::White,"The people who got in your way.",window.getDefaultView());
+    shapes.createText(textPos,10,sf::Color::White,"The people who got in your way.",&gvars::hudView);
 
     textPos.x -= 100;
 
@@ -2073,11 +2082,11 @@ void bossLoop()
 void bountyTowerMainMenu()
 {
     int startBut = createImageButton(sf::Vector2f(screen.x()/2,screen.y()/2),texturemanager.getTexture("Fortune Fortress Title.png"));
-    textList.createText(gvars::mousePos,10,sf::Color::White,"Click to begin!");
+    shapes.createText(gvars::mousePos,10,sf::Color::White,"Click to begin!");
 
-    textList.createText(10,screen.y()-80,10,sf::Color(255,255,255),"Made by Johnny Fojtik(Dehaku Zedon)");
-    textList.createText(10,screen.y()-60,10,sf::Color(255,255,255),"Contact: dehakuzedon@gmail.com  or reddit.com/r/bountytower");
-    textList.createText(10,screen.y()-40,10,sf::Color(255,255,255),"Can't stand some of the art in this game? \nCan you do better? Contact me! I'm looking for an artist!");
+    shapes.createText(10,screen.y()-80,10,sf::Color(255,255,255),"Made by Johnny Fojtik(Dehaku Zedon)");
+    shapes.createText(10,screen.y()-60,10,sf::Color(255,255,255),"Contact: dehakuzedon@gmail.com  or reddit.com/r/bountytower");
+    shapes.createText(10,screen.y()-40,10,sf::Color(255,255,255),"Can't stand some of the art in this game? \nCan you do better? Contact me! I'm looking for an artist!");
 
     if(imageButtonClicked(startBut))
         loadTavern();
@@ -2090,7 +2099,7 @@ void tavernButtons()
     int towerButt2 = createImageButton(sf::Vector2f(53*GRID_SIZE,67*GRID_SIZE),texturemanager.getTexture("yellowBook.png"));
 
     if(imageButtonHovered(towerButt) || imageButtonHovered(towerButt2))
-        textList.createText(gvars::mousePos,15,sf::Color::Yellow,"Click to progress to bounty menus!");
+        shapes.createText(gvars::mousePos,15,sf::Color::Yellow,"Click to progress to bounty menus!");
 
     if(imageButtonClicked(towerButt) || imageButtonClicked(towerButt2))
     {
@@ -2109,7 +2118,7 @@ void NPCbuttons()
         {
             int bountyButt = createImageButton(npc.getPos2d(),texturemanager.getTexture("SelectionCircle.png"));
             if(imageButtonHovered(bountyButt))
-                textList.createText(gvars::mousePos,15,sf::Color::Yellow,"Ready to go bounty hunting? \n(Left Mouse Button)");
+                shapes.createText(gvars::mousePos,15,sf::Color::Yellow,"Ready to go bounty hunting? \n(Left Mouse Button)");
             if(imageButtonClicked(bountyButt))
                 towerMenu(Vec3());
         }
@@ -2117,7 +2126,7 @@ void NPCbuttons()
         {
             int dealerButt = createImageButton(npc.getPos2d(),texturemanager.getTexture("SelectionCircle.png"));
             if(imageButtonHovered(dealerButt))
-                textList.createText(gvars::mousePos,15,sf::Color::Yellow,"Wanna see my gear? \n(Left Mouse Button)");
+                shapes.createText(gvars::mousePos,15,sf::Color::Yellow,"Wanna see my gear? \n(Left Mouse Button)");
             if(imageButtonClicked(dealerButt))
                 merchantMenu(npc.getPos());
 
@@ -2126,7 +2135,7 @@ void NPCbuttons()
         {
             int dealerButt = createImageButton(npc.getPos2d(),texturemanager.getTexture("SelectionCircle.png"));
             if(imageButtonHovered(dealerButt))
-                textList.createText(gvars::mousePos,15,sf::Color::Yellow,"Looking for some fresh meat? \n(Left Mouse Button)");
+                shapes.createText(gvars::mousePos,15,sf::Color::Yellow,"Looking for some fresh meat? \n(Left Mouse Button)");
             if(imageButtonClicked(dealerButt))
                 recruiterMenu(npc.getPos());
 
@@ -2144,7 +2153,7 @@ void displayCash()
     //sf::Vector2f vPos( (screen.x()-offSet)-20,0);
     sf::Vector2f vPos( 300,0);
 
-    textList.createText(vPos,20,sf::Color::Yellow,cashLine,gvars::hudView);
+    shapes.createText(vPos,20,sf::Color::Yellow,cashLine,&gvars::hudView);
 
     if(inputState.key[Key::End].time == 1 || inputState.key[Key::End].time > 60)
         conFact->credits += 50;
@@ -2200,7 +2209,7 @@ void layHints()
                 {
                     textPos = sf::Vector2f(textPos.x+20,textPos.y-10);
                     shapes.createSquare(textPos.x-5,textPos.y,textPos.x+900,textPos.y+40,sf::Color::Black,3,sf::Color::Cyan);
-                    textList.createText(textPos,15,sf::Color::Red,"Passing through doors will alert enemies to your presence on the floor! \n"
+                    shapes.createText(textPos,15,sf::Color::Red,"Passing through doors will alert enemies to your presence on the floor! \n"
                             " They will flood from the stairs until they're sufficiently scared!");
                 }
 
@@ -2210,7 +2219,7 @@ void layHints()
                 {
                     textPos = sf::Vector2f(textPos.x+20,textPos.y-10);
                     shapes.createSquare(textPos.x-5,textPos.y,textPos.x+900,textPos.y+40,sf::Color::Black,3,sf::Color::Cyan);
-                    textList.createText(textPos,15,sf::Color::Red,"Stand squaddies on switches to activate them, enabling the elevator. \n"
+                    shapes.createText(textPos,15,sf::Color::Red,"Stand squaddies on switches to activate them, enabling the elevator. \n"
                             "Be sure to get everyone on the elevator before you try to leave, Or you'll abandon them!");
                 }
 
@@ -2220,7 +2229,7 @@ void layHints()
                 {
                     textPos = sf::Vector2f(textPos.x+20,textPos.y-10);
                     shapes.createSquare(textPos.x-5,textPos.y,textPos.x+400,textPos.y+60,sf::Color::Black,3,sf::Color::Cyan);
-                    textList.createText(textPos,15,sf::Color::Red,"Your goal? Fix the elevator! \n"
+                    shapes.createText(textPos,15,sf::Color::Red,"Your goal? Fix the elevator! \n"
                             "(White Tiles in the Middle) \nFind Switches, then head up!");
                 }
             }
@@ -2235,7 +2244,7 @@ void layHints()
                 {
                     textPos = sf::Vector2f(textPos.x+20,textPos.y-10);
                     shapes.createSquare(textPos.x-5,textPos.y,textPos.x+1040,textPos.y+100,sf::Color::Black,3,sf::Color::Cyan);
-                    textList.createText(textPos,15,sf::Color::Red,"Advanced Tactics: You can hold Left Alt to see 'passive orders' that you can assign, floating above your units. \n"
+                    shapes.createText(textPos,15,sf::Color::Red,"Advanced Tactics: You can hold Left Alt to see 'passive orders' that you can assign, floating above your units. \n"
                                                                 "Assault: Automatically run off and assault enemies \n"
                                                                 "Defend: Guards the position you tell them to move, attacking anyone who enters the area \n"
                                                                 "You can change the radius they protect with the two buttons below the main three passive orders. \n"
@@ -2255,7 +2264,7 @@ void layHints()
                 {
                     textPos = sf::Vector2f(textPos.x+20,textPos.y-10);
                     shapes.createSquare(textPos.x-5,textPos.y,textPos.x+450,textPos.y+40,sf::Color::Black,3,sf::Color::Cyan);
-                    textList.createText(textPos,15,sf::Color::Red,"Your bounty is waiting for you upstairs! \n"
+                    shapes.createText(textPos,15,sf::Color::Red,"Your bounty is waiting for you upstairs! \n"
                                                                 "Be prepared for a fight.");
                 }
             }
@@ -2270,14 +2279,14 @@ void layHints()
                     textPos = sf::Vector2f(textPos.x+20,textPos.y-10);
                     textPos = sf::Vector2f(textPos.x+10,textPos.y+10);
                     shapes.createSquare(textPos.x-5,textPos.y,textPos.x+800,textPos.y+40,sf::Color::Black,3,sf::Color::Cyan);
-                    textList.createText(textPos,15,sf::Color::Red,"Using the elevator from here will return you to the tavern. \n"
+                    shapes.createText(textPos,15,sf::Color::Red,"Using the elevator from here will return you to the tavern. \n"
                                                                 "Are you up to the challenge, or are you a blank body coward?!");
                 }
             }
         }
         if(bountytower::currentTower->name == "The Tavern")
         {
-            textList.createText(2520,4170,15,sf::Color::Red,"Hover your mouse over books to see tutorial text!");
+            shapes.createText(2520,4170,15,sf::Color::Red,"Hover your mouse over books to see tutorial text!");
 
             float timeHover = cos(fpsKeeper.startTime.getElapsedTime().asMilliseconds()/250)*2;
             sf::Vector2f textPos;
@@ -2287,7 +2296,7 @@ void layHints()
             {
                 textPos = sf::Vector2f(textPos.x+20,textPos.y-10);
                 shapes.createSquare(textPos.x-5,textPos.y,textPos.x+900,textPos.y+100,sf::Color::Black,3,sf::Color::Cyan);
-                textList.createText(textPos,15,sf::Color::Red,"Camera Control: WASD / Arrow Keys \n"
+                shapes.createText(textPos,15,sf::Color::Red,"Camera Control: WASD / Arrow Keys \n"
                             "Select/Order: Left Mouse Button to select your squad, Right Mouse Button to order them around. \n"
                             "You can buy equipment or recruit more squaddies from the venders up north. \n"
                             "You start with a simple magitech PDA, though you will likely want better weapons. \n"
@@ -2301,7 +2310,7 @@ void layHints()
             {
                 textPos = sf::Vector2f(textPos.x+20,textPos.y-10);
                 shapes.createSquare(textPos.x-5,textPos.y,textPos.x+900,textPos.y+100,sf::Color::Black,3,sf::Color::Cyan);
-                textList.createText(textPos,15,sf::Color::Red,"Inventory: Press I with a squaddie selected to see their stats, skills, and inventory. \n"
+                shapes.createText(textPos,15,sf::Color::Red,"Inventory: Press I with a squaddie selected to see their stats, skills, and inventory. \n"
                                 "Range Check: Press and hold Alt with squaddies selected to see their held item's attack ranges. \nRed for guns,  Green for magic, Blue for melee.\n"
                                 "Squaddies have two hand slots, and can dual wield any two items! \n"
                                 "You can manage their hand slots with a squaddie selected at the bottom of the screen.");
@@ -2313,7 +2322,7 @@ void layHints()
             {
                 textPos = sf::Vector2f(textPos.x+20,textPos.y-10);
                 shapes.createSquare(textPos.x-5,textPos.y,textPos.x+850,textPos.y+50,sf::Color::Black,3,sf::Color::Cyan);
-                textList.createText(textPos,15,sf::Color::Red,"Right Click to pickup items with a selected squaddie(Must be near item.) \n"
+                shapes.createText(textPos,15,sf::Color::Red,"Right Click to pickup items with a selected squaddie(Must be near item.) \n"
                                 "You can also drop items by right clicking near the squaddie with an item from their hotbar.");
             }
 
@@ -2323,7 +2332,7 @@ void layHints()
             {
                 textPos = sf::Vector2f(textPos.x+20,textPos.y-10);
                 shapes.createSquare(textPos.x-5,textPos.y,textPos.x+850,textPos.y+100,sf::Color::Black,3,sf::Color::Cyan);
-                textList.createText(textPos,15,sf::Color::Red,"You can have up to a total of 4 Squad members at once.\n"
+                shapes.createText(textPos,15,sf::Color::Red,"You can have up to a total of 4 Squad members at once.\n"
                                 "A critters stats is represented as S.P.I.C.E.D., \n"
                                 "Strength, Perception, Intelligence, Charisma, Endurance, Dexterity\n"
                                 "Intelligence affects your switch working speed \n"
@@ -2505,20 +2514,20 @@ void chasePriorityFunction()
 
         if(imageButtonHovered(assaultButt))
         {
-            textList.createText(mouseConv,10,sf::Color::White,"Assault Order, Constantly hunts down enemies.");
+            shapes.createText(mouseConv,10,sf::Color::White,"Assault Order, Constantly hunts down enemies.");
             if(inputState.lmb)
                 npc->chasePriority = "Assault";
         }
         if(imageButtonHovered(defendButt))
         {
-            textList.createText(mouseConv,10,sf::Color::White,"Defend Order, Guards an area you define, centered on their lost move order.");
+            shapes.createText(mouseConv,10,sf::Color::White,"Defend Order, Guards an area you define, centered on their lost move order.");
             if(inputState.lmb)
                 npc->chasePriority = "Defend";
 
         }
         if(imageButtonHovered(holdButt))
         {
-            textList.createText(mouseConv,10,sf::Color::White,"Hold Position Order, Will not move automatically.");
+            shapes.createText(mouseConv,10,sf::Color::White,"Hold Position Order, Will not move automatically.");
             if(inputState.lmb)
                 npc->chasePriority = "Hold Position";
         }
@@ -2528,14 +2537,14 @@ void chasePriorityFunction()
 
         if(imageButtonHovered(decreaseRadiusButt))
         {
-            textList.createText(mouseConv,10,sf::Color::White,"Decrease Defend Radius");
+            shapes.createText(mouseConv,10,sf::Color::White,"Decrease Defend Radius");
             if(inputState.lmbTime == 1 || inputState.lmbTime > 15)
                 npc->chaseRange--;
         }
 
         if(imageButtonHovered(increaseRadiusButt))
         {
-            textList.createText(mouseConv,10,sf::Color::White,"Increase Defend Radius");
+            shapes.createText(mouseConv,10,sf::Color::White,"Increase Defend Radius");
             if(inputState.lmbTime == 1 || inputState.lmbTime > 15)
                 npc->chaseRange++;
         }
@@ -2618,15 +2627,15 @@ void newSlotWorkMethod()
         else
             yDrawPos = yPos;
 
-        shapes.createSquare(xDrawPos+5,yDrawPos,xDrawPos+60-5,yDrawPos+60,sf::Color::Cyan,0,sf::Color::Cyan,&gvars::hudView);
+        shapes.createSquare(xDrawPos+5,yDrawPos,xDrawPos+60-5,yDrawPos+60,sf::Color::Cyan,0,sf::Color::Cyan,&&gvars::hudView);
 
-        textList.createText(sf::Vector2f(xDrawPos,yDrawPos),10,sf::Color::White,"Slot: " + str(i),gvars::hudView);
+        shapes.createText(sf::Vector2f(xDrawPos,yDrawPos),10,sf::Color::White,"Slot: " + str(i),&gvars::hudView);
 
         /*
         if(i < 2)
-            shapes.createSquare(xDrawPos+5,yPos,xDrawPos+60-5,yPos+120,sf::Color::Cyan,0,sf::Color::Cyan,&gvars::hudView);
+            shapes.createSquare(xDrawPos+5,yPos,xDrawPos+60-5,yPos+120,sf::Color::Cyan,0,sf::Color::Cyan,&&gvars::hudView);
         else
-            shapes.createSquare(xDrawPos+5,yPos,xDrawPos+60-5,yPos+60,sf::Color::Cyan,0,sf::Color::Cyan,&gvars::hudView);
+            shapes.createSquare(xDrawPos+5,yPos,xDrawPos+60-5,yPos+60,sf::Color::Cyan,0,sf::Color::Cyan,&&gvars::hudView);
 
 
         if(xFlip)
@@ -2638,6 +2647,54 @@ void newSlotWorkMethod()
     }
 
     */
+}
+
+void layerTest(int newThings)
+{
+    for(int i = 0; i != newThings; i++)
+    {
+        int randomShape = random(0,3);
+
+        Shape shape;
+        shape.startPos = sf::Vector2f(random(0,screen.x()),random(0,screen.y()));
+        shape.endPos = sf::Vector2f(random(0,screen.x()),random(0,screen.y()));
+        shape.duration = 600;
+        shape.size = random(5,20);
+        shape.outline = 1;
+        shape.seccolor = sf::Color::Black;
+
+
+        if(randomShape == 0) // Square
+        {
+            shape.shape = Shape::Square;
+            shape.maincolor = sf::Color::Red;
+            shape.layer = 50;
+        }
+
+        if(randomShape == 1) // Circle
+        {
+            shape.shape = Shape::Circle;
+            shape.maincolor = sf::Color::Green;
+            shape.layer = 5000;
+        }
+
+        if(randomShape == 2) // Line
+        {
+            shape.shape = Shape::Line;
+            shape.maincolor = sf::Color::Blue;
+            shape.layer = 500000;
+        }
+
+        if(randomShape == 3) // Text
+        {
+            shape.shape = Shape::Text;
+            shape.maincolor = sf::Color::White;
+            shape.text = randomWindowName();
+            shape.layer = 50000000;
+        }
+        shapes.shapes.push_back(shape);
+        shapes.layerSortAlpha();
+    }
 }
 
 void bountyTowerLoop()
@@ -2652,6 +2709,18 @@ void bountyTowerLoop()
     showItemProgressCone();
 
     //newSlotWorkMethod();
+
+    if(inputState.key[Key::Space].time == 1)
+        layerTest(30);
+    if(inputState.key[Key::V].time == 1)
+        layerTest(1);
+
+    if(inputState.key[Key::Z].time == 1)
+        shapes.layerSortAlpha();
+    if(inputState.key[Key::X].time == 1)
+        shapes.layerSortBeta();
+    if(inputState.key[Key::C].time == 1)
+        shapes.layerSortGamma();
 
     makeBlood();
     if(inputState.key[Key::J])
@@ -2712,7 +2781,7 @@ void bountyTowerLoop()
     { // Display current mouse position.
         std::string outPut = "MousePos: " + std::to_string(gvars::mousePos.x) + "/" + std::to_string(gvars::mousePos.y) + "/" + std::to_string(gvars::currentz*GRID_SIZE);
         outPut.append("\n" + str(gvars::mousePos.x/GRID_SIZE) + "/" + str(gvars::mousePos.y/GRID_SIZE) + "/" + str(gvars::currentz));
-        textList.createText(gvars::mousePos,10,sf::Color::White,outPut);
+        shapes.createText(gvars::mousePos,10,sf::Color::White,outPut);
     }
 
     if(inputState.key[Key::N] && inputState.key[Key::LShift])
@@ -2771,7 +2840,7 @@ void bountyTowerLoop()
 
     if(gvars::tileEdit)
     {
-        textList.createText(gvars::centerScreen.x,gvars::topLeft.y,10,gvars::cycleBlue,"Debug Tilemode Engaged");
+        shapes.createText(gvars::centerScreen.x,gvars::topLeft.y,10,gvars::cycleBlue,"Debug Tilemode Engaged");
         debugTileMode();
     }
 
@@ -2945,7 +3014,7 @@ void bountyTowerLoop()
     if(bountytower::switchesRemain > 0)
     {
         sf::Vector2f vPos(screen.x()/1.5,130);
-        textList.createText(vPos,15,sf::Color::White,"Remaining Elevator Components: " + std::to_string(bountytower::switchesRemain),window.getDefaultView());
+        shapes.createText(vPos,15,sf::Color::White,"Remaining Elevator Components: " + std::to_string(bountytower::switchesRemain),&gvars::hudView);
     }
 
 
@@ -2953,7 +3022,7 @@ void bountyTowerLoop()
 
 
     if(bountytower::towerLoaded != "")
-        textList.createText(sf::Vector2f(screen.x()/2,15),15,sf::Color::White,"Floor: " + std::to_string(gvars::currentz),window.getDefaultView());
+        shapes.createText(sf::Vector2f(screen.x()/2,15),15,sf::Color::White,"Floor: " + std::to_string(gvars::currentz),&gvars::hudView);
 
     displayCash();
 
@@ -2963,7 +3032,7 @@ void bountyTowerLoop()
     { // Prints Elevator HUD and other such things
 
 
-        textList.createText(sf::Vector2f(screen.x()/2-110,50),20,sf::Color::Green,"Elevator is Ready!",window.getDefaultView());
+        shapes.createText(sf::Vector2f(screen.x()/2-110,50),20,sf::Color::Green,"Elevator is Ready!",&gvars::hudView);
 
         int AmountRaised = 0;
         for(auto &npc : npclist)
@@ -2971,10 +3040,10 @@ void bountyTowerLoop()
                 if(npc.faction == conFact->name)
                     AmountRaised++;
 
-        textList.createText(sf::Vector2f(screen.x()/2-110,70),20,sf::Color::White,"On Elevator: " + std::to_string(AmountRaised),window.getDefaultView());
+        shapes.createText(sf::Vector2f(screen.x()/2-110,70),20,sf::Color::White,"On Elevator: " + std::to_string(AmountRaised),&gvars::hudView);
 
         sf::Vector2f vPos((screen.x()/2)-25-110,75);
-        int butt = createImageButton(vPos,texturemanager.getTexture("ElevatorButton.png"),"",0,window.getDefaultView());
+        int butt = createImageButton(vPos,texturemanager.getTexture("ElevatorButton.png"),"",0,gvars::hudView);
         if(imageButtonClicked(butt))
         {
             selectedNPCs.clear();
