@@ -38,6 +38,7 @@ public:
 
     int duration;
     bool fades;
+    int id;
     bool toDelete;
 
     Shape();
@@ -78,6 +79,9 @@ public:
     void layerSortAlpha();
     void layerSortBeta();
     void layerSortGamma();
+
+    int createImageButton(sf::Vector2f vPos, sf::Texture &Tex, std::string text, int rotation, sf::View * drawView = &gvars::view1);
+    bool shapeClicked(int id);
 
 };
 extern Shapes shapes;

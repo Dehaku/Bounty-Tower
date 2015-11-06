@@ -74,7 +74,7 @@ extern bool following;
 extern bool buttonClicked;
 extern int buttonClickedTime;
 extern sf::Vector2f heldClickPos;
-extern int glbbtn;
+extern unsigned long long glbbtn;
 extern float scalex;
 extern float scaley;
 extern unsigned long long globalid;

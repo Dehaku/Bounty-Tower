@@ -2710,6 +2710,14 @@ void bountyTowerLoop()
 
     //newSlotWorkMethod();
 
+    int testButt = shapes.createImageButton(sf::Vector2f(500,500),texturemanager.getTexture("blankButton.png"),"",0,&gvars::hudView);
+
+    if(shapes.shapeClicked(testButt))
+    {
+        explosion(Vec3(gvars::mousePos.x,gvars::mousePos.y,gvars::currentz*GRID_SIZE),200,200,nullptr);
+    }
+
+
     if(inputState.key[Key::Space].time == 1)
         layerTest(30);
     if(inputState.key[Key::V].time == 1)

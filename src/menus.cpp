@@ -104,6 +104,7 @@ ImageButton::ImageButton() : textSize{}
     beenPressed = false;
     textColor = sf::Color(175, 175, 0);
     hovering = false;
+    textSize = 15;
     id = gvars::glbbtn++;
     view = gvars::view1;
 }

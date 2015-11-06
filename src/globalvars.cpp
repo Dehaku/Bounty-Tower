@@ -249,7 +249,7 @@ bool following = false;
 bool buttonClicked = false;
 int buttonClickedTime = 0;
 sf::Vector2f heldClickPos;
-int glbbtn = 100;
+unsigned long long glbbtn = 100;
 float scalex = 1;
 float scaley = 1;
 unsigned long long globalid = 100;
