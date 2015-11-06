@@ -158,10 +158,7 @@ void TextList::createText(int xpos, int ypos, int sizeMe, sf::Color color,
 void TextList::createText(sf::Vector2f vPos, int sizeMe, sf::Color color,
                     std::string stringvalue, sf::View drawView)
 {
-    using namespace std;
-    string line1("");
-    stringstream convert1;
-
+    std::string line1("");
     line1.append(stringvalue);
 
     sf::Text textz(line1, font);

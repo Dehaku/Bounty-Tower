@@ -67,6 +67,7 @@ void Orb::drawOrb(int totalOrbs = 1)
 
 Shape::Shape()
 {
+    layer = 1000;
     shape = Circle;
     size = 0;
     outline = 0;
@@ -126,6 +127,57 @@ void Shapes::createCircle(int xpos, int ypos, int size, sf::Color mainColor,
     evar.seccolor = secondaryColor;
     evar.drawView = drawView;
     shapes.push_back(evar);
+}
+
+void Shapes::createText(int xpos, int ypos, int textSize, sf::Color textColor,
+                     std::string textString, sf::View * drawView)
+{
+    createText(sf::Vector2f(xpos,ypos), textSize, textColor, textString, drawView);
+}
+
+void Shapes::createText(sf::Vector2f vPos, int textSize, sf::Color textColor,
+                     std::string textString, sf::View * drawView)
+{
+    Shape shape;
+    shape.startPos = vPos;
+    shape.duration = 1;
+    shape.size = textSize;
+    //shape.outline = 1;
+    //shape.seccolor = sf::Color::Black;
+
+    shape.shape = Shape::Text;
+    shape.maincolor = textColor;
+    shape.text = textString;
+    shape.drawView = drawView;
+    //shape.layer = 50000000;
+    shapes.push_back(shape);
+
+
+
+    /*
+    std::string line1("");
+
+
+    line1.append(stringvalue);
+
+    sf::Text textz(line1, font);
+    textz.setStyle(sf::Text::Bold);
+    textz.setCharacterSize(sizeMe);
+    textz.setColor(color);
+    textz.setPosition(vPos.x, vPos.y);
+
+    TextList var;
+    var.drawView = drawView;
+    var.xpos = vPos.x;
+    var.ypos = vPos.y;
+    var.color = color;
+    var.sString = textz;
+    var.size = sizeMe;
+    var.shadow = 1;
+    var.bold = bold;
+    textlist.push_back(var);
+    */
+
 }
 
 void Shapes::createCone(sf::Vector2f vPos, int angle, int angleRadius, int depth, sf::Color color)
@@ -189,12 +241,68 @@ void Shapes::createCone(sf::Vector2f vPos, int angle, int angleRadius, int depth
 
 }
 
+void Shapes::layerSortAlpha()
+{
+    sf::Clock clock;
+    sf::Time time = clock.restart();
+
+    // http://mathbits.com/MathBits/CompSci/Arrays/Sorting.htm
+    // http://mathbits.com/MathBits/CompSci/Arrays/Shell.htm
+
+    std::vector<Shape> &num = shapes;
+    int i, temp, flag = 1, numLength = num.size();
+    Shape tempShape;
+    int d = numLength;
+    while( flag || (d > 1))      // boolean flag (true when not equal to 0)
+    {
+        flag = 0;           // reset flag to 0 to check for future swaps
+        d = (d+1) / 2;
+        for (i = 0; i < (numLength - d); i++)
+        {
+            if (num[i + d].layer < num[i].layer)
+            {
+                //temp = num[i + d];      // swap positions i+d and i
+                tempShape = num[i + d];      // swap positions i+d and i
+                num[i + d] = num[i];
+                //num[i] = temp;
+                num[i] = tempShape;
+                flag = 1;                  // tells swap has occurred
+            }
+        }
+    }
+
+    time = clock.restart();
+    //std::cout << "Alpha Time: " << time.asMicroseconds() << std::endl;
+}
+
+void Shapes::layerSortBeta()
+{
+    sf::Clock clock;
+    sf::Time time = clock.restart();
+
+
+    time = clock.restart();
+    std::cout << "Beta Time: " << time.asMicroseconds() << std::endl;
+}
+
+void Shapes::layerSortGamma()
+{
+    sf::Clock clock;
+    sf::Time time = clock.restart();
+
+
+    time = clock.restart();
+    std::cout << "Gamma Time: " << time.asMicroseconds() << std::endl;
+}
+
 Shapes shapes;
 
 
 
 void Shapes::drawShapes()
 {
+    layerSortAlpha();
+
     for(auto &shape : shapes)
     {
         sf::View oldView = window.getView();

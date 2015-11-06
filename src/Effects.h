@@ -20,6 +20,8 @@ public:
         Text
     };
 
+    unsigned int layer;
+
     int shape;
     sf::Texture * texture;
     std::string text;
@@ -59,12 +61,24 @@ public:
                       sf::Color SecondaryColor = sf::Color(0, 0, 0),
                       sf::View * drawView = &gvars::view1);
 
+    void createText(int xpos, int ypos, int textSize, sf::Color textColor,
+                     std::string textString, sf::View * drawView = &gvars::view1);
+
+    void createText(sf::Vector2f vPos, int textSize, sf::Color textColor,
+                     std::string textString, sf::View * drawView = &gvars::view1);
+
+
     std::vector<Shape> shapes;
     std::vector<sf::ConvexShape> polygons;
 
     void createCone(sf::Vector2f vPos, int angle, int angleRadius, int depth, sf::Color color);
 
     void drawShapes();
+
+    void layerSortAlpha();
+    void layerSortBeta();
+    void layerSortGamma();
+
 };
 extern Shapes shapes;
 

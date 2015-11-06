@@ -2191,8 +2191,14 @@ void galaxyLoop()
 
 void galaxySetup()
 {
+    if (!gvars::defaultFont.loadFromFile("data/fonts/Xolonium-Regular.otf"))
+        throw std::runtime_error("Failed to load font!");
+    /*
+
     if (!gvars::defaultFont.loadFromFile("data/fonts/sansation.ttf"))
         throw std::runtime_error("Failed to load font!");
+
+        */
 
 
     network::mainPort = randz(23636,65511);
