@@ -1651,6 +1651,7 @@ void clearSlots(Npc &npc)
 
 void loadTavern()
 {
+    recruitables.clear();
     towerTransition();
 
     gvars::currentz = 1;
