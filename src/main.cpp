@@ -867,10 +867,10 @@ void handsOffense(Npc &npc, std::list<Npc> &container, Npc * closEnmy, bool &has
                                 continue;
 
                             //Figuring out if the target is within range, and within an angle.
-                            int targetAngle = math::angleBetweenVectors(oriPos,gvars::mousePos);
+                            int targetAngle = math::angleBetweenVectors(oriPos,npcCleave.getPos2d());
                             int angleDiff = math::angleDiff(npc.angle,targetAngle);
                             angleDiff = math::constrainAngle(angleDiff-90);
-                            int dist = math::closeish(oriPos,gvars::mousePos);
+                            int dist = math::closeish(oriPos,npcCleave.getPos2d());
 
                             if(angleDiff < 90 && angleDiff > -90 && dist <= 120)
                             {

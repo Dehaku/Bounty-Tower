@@ -1024,7 +1024,7 @@ std::string Item::activate(Vec3f vPos) // Returns a string declaring the problem
                     sf::Vector2f oriPos(user->getPos2d());
                     sf::Vector2f offSet = math::angleCalc(oriPos,math::constrainAngle(user->angle+90),60);
 
-                    createImageButton(offSet,texturemanager.getTexture("Slash.png"),"",math::constrainAngle(user->angle+180) );
+                    shapes.createImageButton(offSet,texturemanager.getTexture("Slash.png"),"",math::constrainAngle(user->angle+180) );
 
                     for(auto &npcCleave : npclist)
                     {
@@ -1033,10 +1033,10 @@ std::string Item::activate(Vec3f vPos) // Returns a string declaring the problem
                             continue;
 
                         //Figuring out if the target is within range, and within an angle.
-                        int targetAngle = math::angleBetweenVectors(oriPos,gvars::mousePos);
+                        int targetAngle = math::angleBetweenVectors(oriPos,npcCleave.getPos2d());
                         int angleDiff = math::angleDiff(user->angle,targetAngle);
                         angleDiff = math::constrainAngle(angleDiff-90);
-                        int dist = math::closeish(oriPos,gvars::mousePos);
+                        int dist = math::closeish(oriPos,npcCleave.getPos2d());
 
                         if(angleDiff < 90 && angleDiff > -90 && dist <= 120)
                         {
@@ -1050,7 +1050,7 @@ std::string Item::activate(Vec3f vPos) // Returns a string declaring the problem
             }
         }
 
-        createImageButton(math::angleCalc(muzzlePosV2f,rot,60),*img.getTexture(),"", rot+90);
+        shapes.createImageButton(math::angleCalc(muzzlePosV2f,rot,60),*img.getTexture(),"", rot+90);
 
         soundmanager.playSound("Swing_xxchr0nosxx_1.ogg");
         if(Struck == true)
