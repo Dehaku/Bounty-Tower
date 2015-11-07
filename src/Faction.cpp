@@ -3340,7 +3340,39 @@ void NpcManager::initializeCritters()
             {
                 std::cout << "2 \n";
             }
-            critter.attributes.endurance =
+            critter.attributes.strengthMin = stringFindNumber(line, "[MinStr:");
+            critter.attributes.strengthMax = stringFindNumber(line, "[MaxStr:");
+            critter.attributes.strength = random(critter.attributes.strengthMin,critter.attributes.strengthMax);
+
+            critter.attributes.perceptionMin = stringFindNumber(line, "[MinPer:");
+            critter.attributes.perceptionMax = stringFindNumber(line, "[MaxPer:");
+            critter.attributes.perception = random(critter.attributes.perceptionMin,critter.attributes.perceptionMax);
+
+            critter.attributes.intelligenceMin = stringFindNumber(line, "[MinInt:");
+            critter.attributes.intelligenceMax = stringFindNumber(line, "[MaxInt:");
+            critter.attributes.intelligence = random(critter.attributes.intelligenceMin,critter.attributes.intelligenceMax);
+
+            critter.attributes.charismaMin = stringFindNumber(line, "[MinCha:");
+            critter.attributes.charismaMax = stringFindNumber(line, "[MaxCha:");
+            critter.attributes.charisma = random(critter.attributes.charismaMin,critter.attributes.charismaMax);
+
+            critter.attributes.enduranceMin = stringFindNumber(line, "[MinEnd:");
+            critter.attributes.enduranceMax = stringFindNumber(line, "[MaxEnd:");
+            critter.attributes.endurance = random(critter.attributes.enduranceMin,critter.attributes.enduranceMax);
+
+            critter.attributes.dexterityMin = stringFindNumber(line, "[MinDex:");
+            critter.attributes.dexterityMax = stringFindNumber(line, "[MaxDex:");
+            critter.attributes.dexterity = random(critter.attributes.dexterityMin,critter.attributes.dexterityMax);
+
+            critter.attributes.agilityMin = stringFindNumber(line, "[MinAgi:");
+            critter.attributes.agilityMax = stringFindNumber(line, "[MaxAgi:");
+            critter.attributes.agility = random(critter.attributes.agilityMin,critter.attributes.agilityMax);
+
+            critter.attributes.wisdomMin = stringFindNumber(line, "[MinWis:");
+            critter.attributes.wisdomMax = stringFindNumber(line, "[MaxWis:");
+            critter.attributes.wisdom = random(critter.attributes.wisdomMin,critter.attributes.wisdomMax);
+            /*
+            critter.attributes.enduranceMin = stringFindNumber(line, "[MinEnd:");
                 randz(stringFindNumber(line, "[MinEnd:"),
                       stringFindNumber(line, "[MaxEnd:"));
             critter.attributes.strength = randz(stringFindNumber(line, "[MinStr:"),
@@ -3360,6 +3392,9 @@ void NpcManager::initializeCritters()
                       stringFindNumber(line, "[MaxPer:"));
             critter.attributes.agility = randz(stringFindNumber(line, "[MinAgi:"),
                                            stringFindNumber(line, "[MaxAgi:"));
+
+
+                                           */
             if (gvars::debug)
             {
                 std::cout << "3 \n";

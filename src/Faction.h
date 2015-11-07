@@ -362,13 +362,29 @@ public:
     {
     public:
         int strength;
+        int strengthMin;
+        int strengthMax;
         int dexterity;
+        int dexterityMin;
+        int dexterityMax;
         int agility;
+        int agilityMin;
+        int agilityMax;
         int charisma;
+        int charismaMin;
+        int charismaMax;
         int endurance;
+        int enduranceMin;
+        int enduranceMax;
         int intelligence;
+        int intelligenceMin;
+        int intelligenceMax;
         int wisdom;
+        int wisdomMin;
+        int wisdomMax;
         int perception;
+        int perceptionMin;
+        int perceptionMax;
         int strengthxp;
         int dexterityxp;
         int charismaxp;
