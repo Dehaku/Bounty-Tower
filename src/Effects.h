@@ -84,6 +84,7 @@ public:
     int createImageButton(sf::Vector2f vPos, sf::Texture &Tex, std::string text = "", int rotation = 0, sf::View * drawView = &gvars::view1);
     int createImageButton(sf::Vector2f vPos, const sf::Texture &Tex, std::string text = "", int rotation = 0, sf::View * drawView = &gvars::view1);
     bool shapeClicked(int id);
+    bool shapeHovered(int id);
 
 };
 extern Shapes shapes;

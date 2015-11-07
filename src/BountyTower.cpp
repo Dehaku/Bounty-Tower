@@ -805,7 +805,7 @@ void renderSkillMenu(baseMenu &menu)
             bool isParagon = (skill.tree == "Paragon");
 
 
-            if(isParagon && !bountytower::gameBeaten && imageButtonHovered(skillTreeButt))
+            if(isParagon && !bountytower::gameBeaten && shapes.shapeHovered(skillTreeButt))
             {
                 shapes.createText(gvars::mousePos,10,sf::Color::White,"   You must beat the game to unlock the Paragon tree! (Demo: Beat the tower)");
             }
@@ -882,7 +882,7 @@ void renderSkillMenu(baseMenu &menu)
         sf::Vector2f skillRankPos(drawPos.x-30,drawPos.y-30);
         shapes.createText(skillRankPos,8,sf::Color::White,str(skill.ranks),&gvars::hudView);
 
-        if(imageButtonHovered(skillButt))
+        if(shapes.shapeHovered(skillButt))
         {
             sf::Vector2f textPos(305,invPos.y+(screen.y()/2));
             sf::Vector2f mouseConvPos(gvars::mousePos.x+10,gvars::mousePos.y);
@@ -1049,7 +1049,7 @@ void renderSquaddieMenu(baseMenu &menu)
             buttonPos.x += 20;
             int increaseSkillButton = shapes.createImageButton(buttonPos,texturemanager.getTexture("ArrowButton.png"),"",90,&gvars::hudView);
 
-            if(imageButtonHovered(increaseSkillButton) || imageButtonHovered(decreaseSkillButton))
+            if(shapes.shapeHovered(increaseSkillButton) || shapes.shapeHovered(decreaseSkillButton))
             {
                 shapes.createText(drawPos,20,sf::Color::Cyan,outPut,&gvars::hudView);
                 sf::Vector2f textPos(screen.x()/8,70);
@@ -1114,7 +1114,7 @@ void renderMerchantMenu(baseMenu &menu)
         int itemButt = shapes.createImageButton(vPos,*item.img.getTexture(),"",0,&gvars::hudView);
 
         sf::Color highlightColor = sf::Color::White;
-        if(imageButtonHovered(itemButt))
+        if(shapes.shapeHovered(itemButt))
             highlightColor = sf::Color::Cyan;
 
         vPos.y -= 30;
@@ -1232,7 +1232,7 @@ void renderRecruiterMenu(baseMenu &menu)
         int npcButt = shapes.createImageButton(vPos,texturemanager.getTexture("SpriteSheet"+npc.race+"Frame.png"),"",0,&gvars::hudView);
         // hehe... npc butt.
         sf::Color highlightColor = sf::Color::White;
-        if(imageButtonHovered(npcButt))
+        if(shapes.shapeHovered(npcButt))
             highlightColor = sf::Color::Cyan;
 
         vPos.y -= 30;
@@ -1477,14 +1477,14 @@ void renderEscapeMenu(baseMenu &menu)
 
 
     //Warning, the increase and decrease resolution buttons are backwards, since the videomode put the highest res in first, and the smallest last.
-    if(menu.age > 30 && imageButtonHovered(increaseResolution) && (inputState.lmbTime == 1 || inputState.lmbTime > 20))
+    if(menu.age > 30 && shapes.shapeHovered(increaseResolution) && (inputState.lmbTime == 1 || inputState.lmbTime > 20))
         if(resolution.currentRes > 0)
             resolution.currentRes--;
-    if(menu.age > 30 && imageButtonHovered(decreaseResolution) && (inputState.lmbTime == 1 || inputState.lmbTime > 20))
+    if(menu.age > 30 && shapes.shapeHovered(decreaseResolution) && (inputState.lmbTime == 1 || inputState.lmbTime > 20))
         if(resolution.currentRes < resolution.resolutions.size()-1)
             resolution.currentRes++;
 
-    if(menu.age > 30 && imageButtonHovered(toggleFullscreen))
+    if(menu.age > 30 && shapes.shapeHovered(toggleFullscreen))
     {
         shapes.createText(gvars::mousePos,9,sf::Color::White,"Toggle fullscreen");
         if((inputState.lmbTime == 1))
@@ -1492,7 +1492,7 @@ void renderEscapeMenu(baseMenu &menu)
     }
 
 
-    if(menu.age > 30 && imageButtonHovered(applyResolution))
+    if(menu.age > 30 && shapes.shapeHovered(applyResolution))
     {
         shapes.createText(gvars::mousePos,9,sf::Color::White,"Apply the Resolution!");
 
@@ -1508,20 +1508,20 @@ void renderEscapeMenu(baseMenu &menu)
 
     }
 
-    if(menu.age > 30 && imageButtonHovered(decreaseSoundButt) && (inputState.lmbTime == 1 || inputState.lmbTime > 20))
+    if(menu.age > 30 && shapes.shapeHovered(decreaseSoundButt) && (inputState.lmbTime == 1 || inputState.lmbTime > 20))
         gvars::soundVolume = math::clamp(gvars::soundVolume-1,0,100);
 
-    if(menu.age > 30 && imageButtonHovered(increaseSoundButt) && (inputState.lmbTime == 1 || inputState.lmbTime > 20))
+    if(menu.age > 30 && shapes.shapeHovered(increaseSoundButt) && (inputState.lmbTime == 1 || inputState.lmbTime > 20))
         gvars::soundVolume = math::clamp(gvars::soundVolume+1,0,100);
 
-    if(menu.age > 30 && imageButtonHovered(decreaseMusicButt) && (inputState.lmbTime == 1 || inputState.lmbTime > 20))
+    if(menu.age > 30 && shapes.shapeHovered(decreaseMusicButt) && (inputState.lmbTime == 1 || inputState.lmbTime > 20))
     {
         gvars::musicVolume = math::clamp(gvars::musicVolume-1,0,100);
         setMusicVolume();
     }
 
 
-    if(menu.age > 30 && imageButtonHovered(increaseMusicButt) && (inputState.lmbTime == 1 || inputState.lmbTime > 20))
+    if(menu.age > 30 && shapes.shapeHovered(increaseMusicButt) && (inputState.lmbTime == 1 || inputState.lmbTime > 20))
     {
         gvars::musicVolume = math::clamp(gvars::musicVolume+1,0,100);
         setMusicVolume();
@@ -2098,7 +2098,7 @@ void tavernButtons()
     int towerButt = shapes.createImageButton(sf::Vector2f(43*GRID_SIZE,67*GRID_SIZE),texturemanager.getTexture("yellowBook.png"));
     int towerButt2 = shapes.createImageButton(sf::Vector2f(53*GRID_SIZE,67*GRID_SIZE),texturemanager.getTexture("yellowBook.png"));
 
-    if(imageButtonHovered(towerButt) || imageButtonHovered(towerButt2))
+    if(shapes.shapeHovered(towerButt) || shapes.shapeHovered(towerButt2))
         shapes.createText(gvars::mousePos,15,sf::Color::Yellow,"Click to progress to bounty menus!");
 
     if(shapes.shapeClicked(towerButt) || shapes.shapeClicked(towerButt2))
@@ -2117,7 +2117,7 @@ void NPCbuttons()
         if(npc.tags.find("[BountyProvider:1]") != npc.tags.npos)
         {
             int bountyButt = shapes.createImageButton(npc.getPos2d(),texturemanager.getTexture("SelectionCircle.png"));
-            if(imageButtonHovered(bountyButt))
+            if(shapes.shapeHovered(bountyButt))
                 shapes.createText(gvars::mousePos,15,sf::Color::Yellow,"Ready to go bounty hunting? \n(Left Mouse Button)");
             if(shapes.shapeClicked(bountyButt))
                 towerMenu(Vec3());
@@ -2125,7 +2125,7 @@ void NPCbuttons()
         else if(npc.tags.find("[WeaponDealer:1]") != npc.tags.npos)
         {
             int dealerButt = shapes.createImageButton(npc.getPos2d(),texturemanager.getTexture("SelectionCircle.png"));
-            if(imageButtonHovered(dealerButt))
+            if(shapes.shapeHovered(dealerButt))
                 shapes.createText(gvars::mousePos,15,sf::Color::Yellow,"Wanna see my gear? \n(Left Mouse Button)");
             if(shapes.shapeClicked(dealerButt))
                 merchantMenu(npc.getPos());
@@ -2134,7 +2134,7 @@ void NPCbuttons()
         else if(npc.tags.find("[Recruiter:1]") != npc.tags.npos)
         {
             int dealerButt = shapes.createImageButton(npc.getPos2d(),texturemanager.getTexture("SelectionCircle.png"));
-            if(imageButtonHovered(dealerButt))
+            if(shapes.shapeHovered(dealerButt))
                 shapes.createText(gvars::mousePos,15,sf::Color::Yellow,"Looking for some fresh meat? \n(Left Mouse Button)");
             if(shapes.shapeClicked(dealerButt))
                 recruiterMenu(npc.getPos());
@@ -2205,7 +2205,7 @@ void layHints()
                 sf::Vector2f textPos;
                 textPos = sf::Vector2f(2970,3920);
                 int tutBook1 = shapes.createImageButton(sf::Vector2f(textPos.x,textPos.y+timeHover),texturemanager.getTexture("tutBook.png"));
-                if(imageButtonHovered(tutBook1))
+                if(shapes.shapeHovered(tutBook1))
                 {
                     textPos = sf::Vector2f(textPos.x+20,textPos.y-10);
                     shapes.createSquare(textPos.x-5,textPos.y,textPos.x+900,textPos.y+40,sf::Color::Black,3,sf::Color::Cyan);
@@ -2215,7 +2215,7 @@ void layHints()
 
                 textPos = sf::Vector2f(3030,2790);
                 int tutBook2 = shapes.createImageButton(sf::Vector2f(textPos.x,textPos.y+timeHover),texturemanager.getTexture("tutBook.png"));
-                if(imageButtonHovered(tutBook2))
+                if(shapes.shapeHovered(tutBook2))
                 {
                     textPos = sf::Vector2f(textPos.x+20,textPos.y-10);
                     shapes.createSquare(textPos.x-5,textPos.y,textPos.x+900,textPos.y+40,sf::Color::Black,3,sf::Color::Cyan);
@@ -2225,7 +2225,7 @@ void layHints()
 
                 textPos = sf::Vector2f(2790,3920);
                 int tutBook3 = shapes.createImageButton(sf::Vector2f(textPos.x,textPos.y+timeHover),texturemanager.getTexture("tutBook.png"));
-                if(imageButtonHovered(tutBook3))
+                if(shapes.shapeHovered(tutBook3))
                 {
                     textPos = sf::Vector2f(textPos.x+20,textPos.y-10);
                     shapes.createSquare(textPos.x-5,textPos.y,textPos.x+400,textPos.y+60,sf::Color::Black,3,sf::Color::Cyan);
@@ -2240,7 +2240,7 @@ void layHints()
                 sf::Vector2f textPos;
                 textPos = sf::Vector2f(2970,3090);
                 int tutBook1 = shapes.createImageButton(sf::Vector2f(textPos.x,textPos.y+timeHover),texturemanager.getTexture("tutBook.png"));
-                if(imageButtonHovered(tutBook1))
+                if(shapes.shapeHovered(tutBook1))
                 {
                     textPos = sf::Vector2f(textPos.x+20,textPos.y-10);
                     shapes.createSquare(textPos.x-5,textPos.y,textPos.x+1040,textPos.y+100,sf::Color::Black,3,sf::Color::Cyan);
@@ -2260,7 +2260,7 @@ void layHints()
                 sf::Vector2f textPos;
                 textPos = sf::Vector2f(2940,2940);
                 int tutBook1 = shapes.createImageButton(sf::Vector2f(textPos.x,textPos.y+timeHover),texturemanager.getTexture("tutBook.png"));
-                if(imageButtonHovered(tutBook1))
+                if(shapes.shapeHovered(tutBook1))
                 {
                     textPos = sf::Vector2f(textPos.x+20,textPos.y-10);
                     shapes.createSquare(textPos.x-5,textPos.y,textPos.x+450,textPos.y+40,sf::Color::Black,3,sf::Color::Cyan);
@@ -2274,7 +2274,7 @@ void layHints()
                 sf::Vector2f textPos;
                 textPos = sf::Vector2f(2970,2790);
                 int tutBook1 = shapes.createImageButton(sf::Vector2f(textPos.x,textPos.y+timeHover),texturemanager.getTexture("tutBook.png"));
-                if(imageButtonHovered(tutBook1))
+                if(shapes.shapeHovered(tutBook1))
                 {
                     textPos = sf::Vector2f(textPos.x+20,textPos.y-10);
                     textPos = sf::Vector2f(textPos.x+10,textPos.y+10);
@@ -2292,7 +2292,7 @@ void layHints()
             sf::Vector2f textPos;
             textPos = sf::Vector2f(2550,4230);
             int tutBook1 = shapes.createImageButton(sf::Vector2f(textPos.x,textPos.y+timeHover),texturemanager.getTexture("tutBook.png"));
-            if(imageButtonHovered(tutBook1))
+            if(shapes.shapeHovered(tutBook1))
             {
                 textPos = sf::Vector2f(textPos.x+20,textPos.y-10);
                 shapes.createSquare(textPos.x-5,textPos.y,textPos.x+900,textPos.y+100,sf::Color::Black,3,sf::Color::Cyan);
@@ -2306,7 +2306,7 @@ void layHints()
 
             textPos = sf::Vector2f(1950,3210);
             int tutBook2 = shapes.createImageButton(sf::Vector2f(textPos.x,textPos.y+timeHover),texturemanager.getTexture("tutBook.png"));
-            if(imageButtonHovered(tutBook2))
+            if(shapes.shapeHovered(tutBook2))
             {
                 textPos = sf::Vector2f(textPos.x+20,textPos.y-10);
                 shapes.createSquare(textPos.x-5,textPos.y,textPos.x+900,textPos.y+100,sf::Color::Black,3,sf::Color::Cyan);
@@ -2318,7 +2318,7 @@ void layHints()
 
             textPos = sf::Vector2f(2250,2970);
             int tutBook3 = shapes.createImageButton(sf::Vector2f(textPos.x,textPos.y+timeHover),texturemanager.getTexture("tutBook.png"));
-            if(imageButtonHovered(tutBook3))
+            if(shapes.shapeHovered(tutBook3))
             {
                 textPos = sf::Vector2f(textPos.x+20,textPos.y-10);
                 shapes.createSquare(textPos.x-5,textPos.y,textPos.x+850,textPos.y+50,sf::Color::Black,3,sf::Color::Cyan);
@@ -2328,7 +2328,7 @@ void layHints()
 
             textPos = sf::Vector2f(3390,3270);
             int tutBook4 = shapes.createImageButton(sf::Vector2f(textPos.x,textPos.y+timeHover),texturemanager.getTexture("tutBook.png"));
-            if(imageButtonHovered(tutBook4))
+            if(shapes.shapeHovered(tutBook4))
             {
                 textPos = sf::Vector2f(textPos.x+20,textPos.y-10);
                 shapes.createSquare(textPos.x-5,textPos.y,textPos.x+850,textPos.y+100,sf::Color::Black,3,sf::Color::Cyan);
@@ -2512,20 +2512,20 @@ void chasePriorityFunction()
         int holdButt = shapes.createImageButton(sf::Vector2f(npc->xpos+30,npc->ypos-90),*arrowButt,"",holdRotate);
         sf::Vector2f mouseConv(gvars::mousePos.x+20,gvars::mousePos.y);
 
-        if(imageButtonHovered(assaultButt))
+        if(shapes.shapeHovered(assaultButt))
         {
             shapes.createText(mouseConv,10,sf::Color::White,"Assault Order, Constantly hunts down enemies.");
             if(inputState.lmb)
                 npc->chasePriority = "Assault";
         }
-        if(imageButtonHovered(defendButt))
+        if(shapes.shapeHovered(defendButt))
         {
             shapes.createText(mouseConv,10,sf::Color::White,"Defend Order, Guards an area you define, centered on their lost move order.");
             if(inputState.lmb)
                 npc->chasePriority = "Defend";
 
         }
-        if(imageButtonHovered(holdButt))
+        if(shapes.shapeHovered(holdButt))
         {
             shapes.createText(mouseConv,10,sf::Color::White,"Hold Position Order, Will not move automatically.");
             if(inputState.lmb)
@@ -2535,14 +2535,14 @@ void chasePriorityFunction()
         int decreaseRadiusButt = shapes.createImageButton(sf::Vector2f(npc->xpos-15,npc->ypos-70),*arrowButt,"",-90);
         int increaseRadiusButt = shapes.createImageButton(sf::Vector2f(npc->xpos+15,npc->ypos-70),*arrowButt,"",90);
 
-        if(imageButtonHovered(decreaseRadiusButt))
+        if(shapes.shapeHovered(decreaseRadiusButt))
         {
             shapes.createText(mouseConv,10,sf::Color::White,"Decrease Defend Radius");
             if(inputState.lmbTime == 1 || inputState.lmbTime > 15)
                 npc->chaseRange--;
         }
 
-        if(imageButtonHovered(increaseRadiusButt))
+        if(shapes.shapeHovered(increaseRadiusButt))
         {
             shapes.createText(mouseConv,10,sf::Color::White,"Increase Defend Radius");
             if(inputState.lmbTime == 1 || inputState.lmbTime > 15)

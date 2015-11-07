@@ -306,6 +306,7 @@ int Shapes::createImageButton(sf::Vector2f vPos, sf::Texture &Tex, std::string t
     evar.startPos = vPos;
     evar.endPos = sf::Vector2f(vPos.x+Tex.getSize().x, vPos.y+Tex.getSize().y);
     evar.texture = &Tex;
+    evar.rotation = rotation;
     evar.drawView = drawView;
     shapes.push_back(evar);
     return evar.id;
@@ -338,6 +339,7 @@ int Shapes::createImageButton(sf::Vector2f vPos, const sf::Texture &Tex, std::st
     evar.startPos = vPos;
     evar.endPos = sf::Vector2f(vPos.x+Tex.getSize().x, vPos.y+Tex.getSize().y);
     evar.texture = &Tex;
+    evar.rotation = rotation;
     evar.drawView = drawView;
     shapes.push_back(evar);
     return evar.id;
@@ -364,24 +366,18 @@ bool Shapes::shapeClicked(int id)
 {
     for (auto &button : shapes)
     {
-        //sf::Vector2i pixelPos = sf::Mouse::getPosition(window);
-        //sf::Vector2f worldPos = window.mapPixelToCoords(pixelPos);
         sf::Vector2f worldPos = window.mapPixelToCoords(sf::Mouse::getPosition(window), *button.drawView);
 
         if (button.id == id)
         {
-            sf::Vector2f vPos(button.startPos);
-            //std::cout << "vPos: " << vPos.x << "/" << vPos.y << ", Difference: " << math::closeish(vPos.x,vPos.y,pixelPos.x,pixelPos.y) << std::endl;
             sf::Vector2f vSize(button.texture->getSize().x/2,button.texture->getSize().y/2);
 
-            //std::cout << "vPos: " << vPos.x << "/" << vPos.y << ", vSize: " << vSize.x << "/" << vSize.y << std::endl;
-            //std::cout << "worldPos: " << worldPos.x << "/" << worldPos.y << std::endl;
-
-            if (aabb(worldPos, vPos.x - vSize.x,
-                     vPos.x + vSize.x,
-                     vPos.y - vSize.y,
-                     vPos.y + vSize.y) &&
-                (inputState.lmbTime == 1 || inputState.lmbTime > 20))
+            if ((inputState.lmbTime == 1 || inputState.lmbTime > 20) &&
+                aabb(worldPos, button.startPos.x - vSize.x,
+                     button.startPos.x + vSize.x,
+                     button.startPos.y - vSize.y,
+                     button.startPos.y + vSize.y)
+                )
             {
                 //button.beenPressed = true;
                 std::cout << "Pressed! \n";
@@ -390,6 +386,32 @@ bool Shapes::shapeClicked(int id)
                 return true;
             }
 
+            return false;
+        }
+
+    }
+    return false;
+}
+
+bool Shapes::shapeHovered(int id)
+{
+    for (auto &button : shapes)
+    {
+        sf::Vector2f worldPos = window.mapPixelToCoords(sf::Mouse::getPosition(window), *button.drawView);
+
+        if (button.id == id)
+        {
+            sf::Vector2f vSize(button.texture->getSize().x/2,button.texture->getSize().y/2);
+
+            if (aabb(worldPos, button.startPos.x - vSize.x,
+                     button.startPos.x + vSize.x,
+                     button.startPos.y - vSize.y,
+                     button.startPos.y + vSize.y)
+                )
+            {
+                //button.Hovered = true;
+                return true;
+            }
             return false;
         }
 
@@ -542,14 +564,15 @@ void Shapes::drawShapes()
         else if(shape.shape == shape.Button)
         {
             sf::RectangleShape rectangle;
-            rectangle.setSize( shape.startPos - shape.endPos);
+            rectangle.setSize( shape.endPos - shape.startPos);
             rectangle.setFillColor(shape.maincolor);
             rectangle.setOutlineColor(shape.seccolor);
             rectangle.setOutlineThickness(shape.outline);
-            if(inputState.key[Key::Space])
-                rectangle.setPosition(shape.endPos.x + (shape.texture->getSize().x/2), shape.endPos.y + (shape.texture->getSize().y/2));
-            else
-                rectangle.setPosition(shape.endPos.x - (shape.texture->getSize().x/2), shape.endPos.y - (shape.texture->getSize().y/2));
+
+            rectangle.setOrigin(shape.texture->getSize().x/2,shape.texture->getSize().y/2);
+
+            rectangle.setPosition(shape.startPos.x, shape.startPos.y);
+
             rectangle.setRotation(shape.rotation);
 
             if(shape.fades)
