@@ -301,7 +301,39 @@ int Shapes::createImageButton(sf::Vector2f vPos, sf::Texture &Tex, std::string t
     sf::Texture * texture = &Tex;
 
     Shape evar;
-    evar.shape = Shape::Square;
+    evar.shape = Shape::Button;
+    evar.maincolor = sf::Color::White;
+    evar.startPos = vPos;
+    evar.endPos = sf::Vector2f(vPos.x+Tex.getSize().x, vPos.y+Tex.getSize().y);
+    evar.texture = &Tex;
+    evar.drawView = drawView;
+    shapes.push_back(evar);
+    return evar.id;
+
+
+
+    /*
+    ImageButton var;
+    var.sprite.setTexture(Tex);
+    //var.sprite.setScale(0.2,0.2);
+    var.sprite.setPosition(vPos);
+    var.sprite.setOrigin(Tex.getSize().x/2,Tex.getSize().y/2);
+    var.sprite.setRotation(var.sprite.getRotation()+rotation);
+    var.sButtonText = text;
+    var.sForwardText = text;
+    var.view = viewTarget;
+    vImageButtonList.push_back(var);
+
+    return var.id;
+    */
+}
+
+int Shapes::createImageButton(sf::Vector2f vPos, const sf::Texture &Tex, std::string text, int rotation, sf::View * drawView)
+{
+    const sf::Texture * texture = &Tex;
+
+    Shape evar;
+    evar.shape = Shape::Button;
     evar.maincolor = sf::Color::White;
     evar.startPos = vPos;
     evar.endPos = sf::Vector2f(vPos.x+Tex.getSize().x, vPos.y+Tex.getSize().y);
@@ -332,8 +364,6 @@ bool Shapes::shapeClicked(int id)
 {
     for (auto &button : shapes)
     {
-        sf::View oldview = window.getView();
-        window.setView(*button.drawView);
         //sf::Vector2i pixelPos = sf::Mouse::getPosition(window);
         //sf::Vector2f worldPos = window.mapPixelToCoords(pixelPos);
         sf::Vector2f worldPos = window.mapPixelToCoords(sf::Mouse::getPosition(window), *button.drawView);
@@ -342,14 +372,14 @@ bool Shapes::shapeClicked(int id)
         {
             sf::Vector2f vPos(button.startPos);
             //std::cout << "vPos: " << vPos.x << "/" << vPos.y << ", Difference: " << math::closeish(vPos.x,vPos.y,pixelPos.x,pixelPos.y) << std::endl;
-            sf::Vector2f vSize(button.texture->getSize().x,button.texture->getSize().y);
+            sf::Vector2f vSize(button.texture->getSize().x/2,button.texture->getSize().y/2);
 
-            std::cout << "vPos: " << vPos.x << "/" << vPos.y << ", vSize: " << vSize.x << "/" << vSize.y << std::endl;
-            std::cout << "worldPos: " << worldPos.x << "/" << worldPos.y << std::endl;
+            //std::cout << "vPos: " << vPos.x << "/" << vPos.y << ", vSize: " << vSize.x << "/" << vSize.y << std::endl;
+            //std::cout << "worldPos: " << worldPos.x << "/" << worldPos.y << std::endl;
 
-            if (aabb(worldPos, vPos.x,
+            if (aabb(worldPos, vPos.x - vSize.x,
                      vPos.x + vSize.x,
-                     vPos.y,
+                     vPos.y - vSize.y,
                      vPos.y + vSize.y) &&
                 (inputState.lmbTime == 1 || inputState.lmbTime > 20))
             {
@@ -359,8 +389,10 @@ bool Shapes::shapeClicked(int id)
                 gvars::buttonClickedTime = 3;
                 return true;
             }
+
+            return false;
         }
-        window.setView(oldview);
+
     }
     return false;
 }
@@ -506,6 +538,39 @@ void Shapes::drawShapes()
             }
             else
                 window.draw(shapeText);
+        }
+        else if(shape.shape == shape.Button)
+        {
+            sf::RectangleShape rectangle;
+            rectangle.setSize( shape.startPos - shape.endPos);
+            rectangle.setFillColor(shape.maincolor);
+            rectangle.setOutlineColor(shape.seccolor);
+            rectangle.setOutlineThickness(shape.outline);
+            if(inputState.key[Key::Space])
+                rectangle.setPosition(shape.endPos.x + (shape.texture->getSize().x/2), shape.endPos.y + (shape.texture->getSize().y/2));
+            else
+                rectangle.setPosition(shape.endPos.x - (shape.texture->getSize().x/2), shape.endPos.y - (shape.texture->getSize().y/2));
+            rectangle.setRotation(shape.rotation);
+
+            if(shape.fades)
+            {
+                int alpha = 10 * shape.duration;
+                shape.maincolor.a = math::clamp(alpha,0,255);
+                shape.seccolor.a = shape.maincolor.a;
+            }
+
+            if(shape.texture != nullptr)
+                rectangle.setTexture(shape.texture);
+
+            if(shape.drawView == &gvars::view1)
+            {
+                if(onScreen(shape.startPos) || onScreen(shape.endPos))
+                    window.draw(rectangle);
+            }
+            else
+                window.draw(rectangle);
+
+
         }
 
         window.setView(oldView);

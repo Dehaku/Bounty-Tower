@@ -17,13 +17,14 @@ public:
         Circle,
         Square,
         Line,
-        Text
+        Text,
+        Button
     };
 
     unsigned int layer;
 
     int shape;
-    sf::Texture * texture;
+    const sf::Texture * texture;
     std::string text;
 
     sf::Vector2f startPos;
@@ -80,7 +81,8 @@ public:
     void layerSortBeta();
     void layerSortGamma();
 
-    int createImageButton(sf::Vector2f vPos, sf::Texture &Tex, std::string text, int rotation, sf::View * drawView = &gvars::view1);
+    int createImageButton(sf::Vector2f vPos, sf::Texture &Tex, std::string text = "", int rotation = 0, sf::View * drawView = &gvars::view1);
+    int createImageButton(sf::Vector2f vPos, const sf::Texture &Tex, std::string text = "", int rotation = 0, sf::View * drawView = &gvars::view1);
     bool shapeClicked(int id);
 
 };

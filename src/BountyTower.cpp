@@ -375,51 +375,51 @@ void debugTileMode()
         tileWipe();
     }
 
-    int wallButt = createImageButton(sf::Vector2f(menuEdgeL+30,menuEdgeU+30),texturemanager.getTexture("FMTwallcheat2.png"));
-    if(imageButtonClicked(wallButt))
+    int wallButt = shapes.createImageButton(sf::Vector2f(menuEdgeL+30,menuEdgeU+30),texturemanager.getTexture("FMTwallcheat2.png"));
+    if(shapes.shapeClicked(wallButt))
         debugTileKeeper.useTile.BTwall();
 
-    int floorButt = createImageButton(sf::Vector2f(menuEdgeL+90,menuEdgeU+30),texturemanager.getTexture("FMTtile1.png"));
-    if(imageButtonClicked(floorButt))
+    int floorButt = shapes.createImageButton(sf::Vector2f(menuEdgeL+90,menuEdgeU+30),texturemanager.getTexture("FMTtile1.png"));
+    if(shapes.shapeClicked(floorButt))
         debugTileKeeper.useTile.BTstone();
 
-    int fakewallButt = createImageButton(sf::Vector2f(menuEdgeL+30+60+60,menuEdgeU+30),texturemanager.getTexture("FMTwallcheat.png"));
-    if(imageButtonClicked(fakewallButt))
+    int fakewallButt = shapes.createImageButton(sf::Vector2f(menuEdgeL+30+60+60,menuEdgeU+30),texturemanager.getTexture("FMTwallcheat.png"));
+    if(shapes.shapeClicked(fakewallButt))
         debugTileKeeper.useTile.BTwallFake();
 
     //
-    int grassButt = createImageButton(sf::Vector2f(menuEdgeL+30,menuEdgeU+30+60),texturemanager.getTexture("BTGrass.png"));
-    if(imageButtonClicked(grassButt))
+    int grassButt = shapes.createImageButton(sf::Vector2f(menuEdgeL+30,menuEdgeU+30+60),texturemanager.getTexture("BTGrass.png"));
+    if(shapes.shapeClicked(grassButt))
         debugTileKeeper.useTile.BTgrass();
-    int waterButt = createImageButton(sf::Vector2f(menuEdgeL+30+60,menuEdgeU+30+60),texturemanager.getTexture("BTWater.png"));
-    if(imageButtonClicked(waterButt))
+    int waterButt = shapes.createImageButton(sf::Vector2f(menuEdgeL+30+60,menuEdgeU+30+60),texturemanager.getTexture("BTWater.png"));
+    if(shapes.shapeClicked(waterButt))
         debugTileKeeper.useTile.BTwater();
-    int skyButt = createImageButton(sf::Vector2f(menuEdgeL+30+60+60,menuEdgeU+30+60),texturemanager.getTexture("BTSky.png"));
-    if(imageButtonClicked(skyButt))
+    int skyButt = shapes.createImageButton(sf::Vector2f(menuEdgeL+30+60+60,menuEdgeU+30+60),texturemanager.getTexture("BTSky.png"));
+    if(shapes.shapeClicked(skyButt))
         debugTileKeeper.useTile.BTsky();
 
-    int switchButt = createImageButton(sf::Vector2f(menuEdgeL+30,menuEdgeU+30+60+60),texturemanager.getTexture("Switchboard.png"));
-    if(imageButtonClicked(switchButt))
+    int switchButt = shapes.createImageButton(sf::Vector2f(menuEdgeL+30,menuEdgeU+30+60+60),texturemanager.getTexture("Switchboard.png"));
+    if(shapes.shapeClicked(switchButt))
         debugTileKeeper.useTile.BTswitch();
 
-    int stairButt = createImageButton(sf::Vector2f(menuEdgeL+30+60,menuEdgeU+30+60+60),texturemanager.getTexture("Stairs.png"));
-    if(imageButtonClicked(stairButt))
+    int stairButt = shapes.createImageButton(sf::Vector2f(menuEdgeL+30+60,menuEdgeU+30+60+60),texturemanager.getTexture("Stairs.png"));
+    if(shapes.shapeClicked(stairButt))
         debugTileKeeper.useTile.BTstairs();
 
-    int doorButt = createImageButton(sf::Vector2f(menuEdgeL+30+60+60,menuEdgeU+30+60+60),texturemanager.getTexture("BTDoorTile.png"));
-    if(imageButtonClicked(doorButt))
+    int doorButt = shapes.createImageButton(sf::Vector2f(menuEdgeL+30+60+60,menuEdgeU+30+60+60),texturemanager.getTexture("BTDoorTile.png"));
+    if(shapes.shapeClicked(doorButt))
         debugTileKeeper.useTile.BTdoor();
 
-    int elevatorButt = createImageButton(sf::Vector2f(menuEdgeL+30+60,menuEdgeU+30+60+60+60),texturemanager.getTexture("BTElevator.png"));
-    if(imageButtonClicked(elevatorButt))
+    int elevatorButt = shapes.createImageButton(sf::Vector2f(menuEdgeL+30+60,menuEdgeU+30+60+60+60),texturemanager.getTexture("BTElevator.png"));
+    if(shapes.shapeClicked(elevatorButt))
         debugTileKeeper.useTile.BTelevator();
 
-    int elevatordoorButt = createImageButton(sf::Vector2f(menuEdgeL+30+60+60,menuEdgeU+30+60+60+60),texturemanager.getTexture("BTElevatorDoor.png"));
-    if(imageButtonClicked(elevatordoorButt))
+    int elevatordoorButt = shapes.createImageButton(sf::Vector2f(menuEdgeL+30+60+60,menuEdgeU+30+60+60+60),texturemanager.getTexture("BTElevatorDoor.png"));
+    if(shapes.shapeClicked(elevatordoorButt))
         debugTileKeeper.useTile.BTelevatordoor();
 
-    int bossrugButt = createImageButton(sf::Vector2f(menuEdgeL+30+60+60+60,menuEdgeU+30+60+60+60),texturemanager.getTexture("BTRug.png"));
-    if(imageButtonClicked(bossrugButt))
+    int bossrugButt = shapes.createImageButton(sf::Vector2f(menuEdgeL+30+60+60+60,menuEdgeU+30+60+60+60),texturemanager.getTexture("BTRug.png"));
+    if(shapes.shapeClicked(bossrugButt))
         debugTileKeeper.useTile.BTbossrug();
 
 
@@ -503,8 +503,8 @@ void towerMenu()
 
     //Place a button for the tower.
     //sf::Vector2f vPos((-xMinus)+xPart,(-yMinus)+yPart);
-    int fanTowButt = createImageButton(towerPos[0],*towers[1].tex);
-    if(imageButtonClicked(fanTowButt))
+    int fanTowButt = shapes.createImageButton(towerPos[0],*towers[1].tex);
+    if(shapes.shapeClicked(fanTowButt))
     {
 
         bountytower::pausewaves = true;
@@ -555,8 +555,8 @@ void towerMenu()
     shapes.createCircle((-xMinus)+xPart*5,(-yMinus)+yPart*3,50,gvars::cycleRed);
 
 
-    int returnButt = createImageButton(sf::Vector2f(screen.x()-50,50),texturemanager.getTexture("returnButton.png"),"",0,gvars::hudView);
-    if(imageButtonClicked(returnButt))
+    int returnButt = shapes.createImageButton(sf::Vector2f(screen.x()-50,50),texturemanager.getTexture("returnButton.png"),"",0,&gvars::hudView);
+    if(shapes.shapeClicked(returnButt))
     {
         gCtrl.phase = "Lobby";
         int xview = (96*60)/20;
@@ -747,8 +747,8 @@ void renderSkillMenu(baseMenu &menu)
     shapes.createSquare(100,100,screen.x()-100,screen.y()-100,sf::Color(sf::Color(150,150,0)),5,sf::Color::White,&gvars::hudView);
     //shapes.shapes.back().layer = 10;
     //Close Button
-    int exitButt = createImageButton(sf::Vector2f(screen.x()-100,100),texturemanager.getTexture("ExitButton.png"),"",0,gvars::hudView);
-    if(imageButtonClicked(exitButt))
+    int exitButt = shapes.createImageButton(sf::Vector2f(screen.x()-100,100),texturemanager.getTexture("ExitButton.png"),"",0,&gvars::hudView);
+    if(shapes.shapeClicked(exitButt))
         menu.toDelete = true;
 
     if(menu.age > 30 && inputState.key[Key::U])
@@ -798,7 +798,7 @@ void renderSkillMenu(baseMenu &menu)
             lastSkillTree = skill.tree;
 
             sf::Vector2f drawPos(120,150+(yOffset*60));
-            int skillTreeButt = createImageButton(drawPos,texturemanager.getTexture("Skills"+skill.tree+".png"),"",0,gvars::hudView);
+            int skillTreeButt = shapes.createImageButton(drawPos,texturemanager.getTexture("Skills"+skill.tree+".png"),"",0,&gvars::hudView);
             sf::Vector2f textPos(drawPos.x+40, drawPos.y);
             shapes.createText(textPos,10,sf::Color::White,skill.tree,&gvars::hudView);
 
@@ -809,7 +809,7 @@ void renderSkillMenu(baseMenu &menu)
             {
                 shapes.createText(gvars::mousePos,10,sf::Color::White,"   You must beat the game to unlock the Paragon tree! (Demo: Beat the tower)");
             }
-            if(imageButtonClicked(skillTreeButt))
+            if(shapes.shapeClicked(skillTreeButt))
             {
                 if((bountytower::gameBeaten || !isParagon) || inputState.key[Key::LShift] && inputState.key[Key::LControl])
                     if(currentSkill != nullptr)
@@ -874,7 +874,7 @@ void renderSkillMenu(baseMenu &menu)
             shapes.createSquare(drawPos.x-30,drawPos.y-30,drawPos.x+30,drawPos.y+30,sf::Color::Black,0,sf::Color::White,&gvars::hudView);
 
         //shapes.createSquare(drawPos.x-30,drawPos.y-30,drawPos.x+30,drawPos.y+30,sf::Color::Black,0,sf::Color::White,&&gvars::hudView);
-        int skillButt = createImageButton(drawPos,texturemanager.getTexture("Skills"+skill.tree+".png"),"",0,gvars::hudView);
+        int skillButt = shapes.createImageButton(drawPos,texturemanager.getTexture("Skills"+skill.tree+".png"),"",0,&gvars::hudView);
 
         sf::Vector2f skillNamePos(drawPos.x-30,drawPos.y-40);
         shapes.createText(skillNamePos,8,sf::Color::White,skill.name,&gvars::hudView);
@@ -934,9 +934,9 @@ void renderSkillMenu(baseMenu &menu)
 
     }
 
-    int squaddieNSkillButt = createImageButton(sf::Vector2f(110+30,490+30),texturemanager.getTexture("blankButton.png"),"",0,gvars::hudView);
+    int squaddieNSkillButt = shapes.createImageButton(sf::Vector2f(110+30,490+30),texturemanager.getTexture("blankButton.png"),"",0,&gvars::hudView);
     textList.createText(sf::Vector2f(110+5,490+25),9,sf::Color::White,"Overview",gvars::hudView);
-    if(menu.age > 15 && imageButtonClicked(squaddieNSkillButt))
+    if(menu.age > 15 && shapes.shapeClicked(squaddieNSkillButt))
     {
         menu.toDelete = true;
         squaddieMenu(*npc);
@@ -964,8 +964,8 @@ void renderSquaddieMenu(baseMenu &menu)
     shapes.createSquare(100,100,screen.x()-100,screen.y()-100,sf::Color(sf::Color(150,150,0)),5,sf::Color::White,&gvars::hudView);
     shapes.shapes.back().layer = 100;
     //Close Button
-    int exitButt = createImageButton(sf::Vector2f(screen.x()-100,100),texturemanager.getTexture("ExitButton.png"),"",0,gvars::hudView);
-    if(imageButtonClicked(exitButt))
+    int exitButt = shapes.createImageButton(sf::Vector2f(screen.x()-100,100),texturemanager.getTexture("ExitButton.png"),"",0,&gvars::hudView);
+    if(shapes.shapeClicked(exitButt))
         menu.toDelete = true;
 
     if(menu.age > 30 && inputState.key[Key::I])
@@ -1045,9 +1045,9 @@ void renderSquaddieMenu(baseMenu &menu)
             sf::Vector2f buttonPos(drawPos.x-40,drawPos.y+10);
 
 
-            int decreaseSkillButton = createImageButton(buttonPos,texturemanager.getTexture("ArrowButton.png"),"",-90,&gvars::hudView);
+            int decreaseSkillButton = shapes.createImageButton(buttonPos,texturemanager.getTexture("ArrowButton.png"),"",-90,&gvars::hudView);
             buttonPos.x += 20;
-            int increaseSkillButton = createImageButton(buttonPos,texturemanager.getTexture("ArrowButton.png"),"",90,&gvars::hudView);
+            int increaseSkillButton = shapes.createImageButton(buttonPos,texturemanager.getTexture("ArrowButton.png"),"",90,&gvars::hudView);
 
             if(imageButtonHovered(increaseSkillButton) || imageButtonHovered(decreaseSkillButton))
             {
@@ -1059,13 +1059,13 @@ void renderSquaddieMenu(baseMenu &menu)
             else
                 shapes.createText(drawPos,20,sf::Color::White,outPut,&gvars::hudView);
 
-            if(imageButtonClicked(decreaseSkillButton) && skill.ranks > 0 && menu.age > 30)
+            if(shapes.shapeClicked(decreaseSkillButton) && skill.ranks > 0 && menu.age > 30)
             {
                 skill.ranks--;
                 npc->skillpoints++;
             }
 
-            if(imageButtonClicked(increaseSkillButton) && skill.ranks < skill.ranksmax && npc->skillpoints > 0 && menu.age > 30)
+            if(shapes.shapeClicked(increaseSkillButton) && skill.ranks < skill.ranksmax && npc->skillpoints > 0 && menu.age > 30)
             {
                 skill.ranks++;
                 npc->skillpoints--;
@@ -1081,10 +1081,10 @@ void renderSquaddieMenu(baseMenu &menu)
 
 
     */
-    int squaddieNSkillButt = createImageButton(sf::Vector2f(110+30,490+30),texturemanager.getTexture("blankButton.png"),"",0,gvars::hudView);
+    int squaddieNSkillButt = shapes.createImageButton(sf::Vector2f(110+30,490+30),texturemanager.getTexture("blankButton.png"),"",0,&gvars::hudView);
     textList.createText(sf::Vector2f(110+5,490+25),10,sf::Color::White,"Skills",gvars::hudView);
 
-    if(menu.age > 15 && imageButtonClicked(squaddieNSkillButt))
+    if(menu.age > 15 && shapes.shapeClicked(squaddieNSkillButt))
     {
         menu.toDelete = true;
         skillMenu(*npc);
@@ -1096,8 +1096,8 @@ void renderMerchantMenu(baseMenu &menu)
 {
     shapes.createSquare(100,100,screen.x()-100,screen.y()-100,sf::Color(sf::Color(150,150,0)),5,sf::Color::White,&gvars::hudView);
     //Close Button
-    int exitButt = createImageButton(sf::Vector2f(screen.x()-100,100),texturemanager.getTexture("ExitButton.png"),"",0,gvars::hudView);
-    if(imageButtonClicked(exitButt))
+    int exitButt = shapes.createImageButton(sf::Vector2f(screen.x()-100,100),texturemanager.getTexture("ExitButton.png"),"",0,&gvars::hudView);
+    if(shapes.shapeClicked(exitButt))
         menu.toDelete = true;
 
     int xOffset = 0;
@@ -1111,7 +1111,7 @@ void renderMerchantMenu(baseMenu &menu)
         shapes.createSquare(posX-30,posY-30,posX+30,posY+30,sf::Color::Black,0,sf::Color::Cyan, &gvars::hudView);
 
         sf::Vector2f vPos(posX,posY);
-        int itemButt = createImageButton(vPos,*item.img.getTexture(),"",0,gvars::hudView);
+        int itemButt = shapes.createImageButton(vPos,*item.img.getTexture(),"",0,&gvars::hudView);
 
         sf::Color highlightColor = sf::Color::White;
         if(imageButtonHovered(itemButt))
@@ -1161,7 +1161,7 @@ void renderMerchantMenu(baseMenu &menu)
 
 
 
-        if(imageButtonClicked(itemButt) && menu.age > 30)
+        if(shapes.shapeClicked(itemButt) && menu.age > 30)
         {
             if(conFact->credits < item.value)
                 chatBox.addChat("You do not have enough cash for "+item.name+"!", sf::Color::White);
@@ -1199,8 +1199,8 @@ void renderRecruiterMenu(baseMenu &menu)
 {
     shapes.createSquare(100,100,screen.x()-100,screen.y()-100,sf::Color(sf::Color(150,150,0)),5,sf::Color::White,&gvars::hudView);
     //Close Button
-    int exitButt = createImageButton(sf::Vector2f(screen.x()-100,100),texturemanager.getTexture("ExitButton.png"),"",0,gvars::hudView);
-    if(imageButtonClicked(exitButt))
+    int exitButt = shapes.createImageButton(sf::Vector2f(screen.x()-100,100),texturemanager.getTexture("ExitButton.png"),"",0,&gvars::hudView);
+    if(shapes.shapeClicked(exitButt))
         menu.toDelete = true;
 
     int xOffset = 0;
@@ -1229,7 +1229,7 @@ void renderRecruiterMenu(baseMenu &menu)
 
         sf::Vector2f vPos(posX,posY);
 
-        int npcButt = createImageButton(vPos,texturemanager.getTexture("SpriteSheet"+npc.race+"Frame.png"),"",0,gvars::hudView);
+        int npcButt = shapes.createImageButton(vPos,texturemanager.getTexture("SpriteSheet"+npc.race+"Frame.png"),"",0,&gvars::hudView);
         // hehe... npc butt.
         sf::Color highlightColor = sf::Color::White;
         if(imageButtonHovered(npcButt))
@@ -1267,7 +1267,7 @@ void renderRecruiterMenu(baseMenu &menu)
 
 
 
-        if(imageButtonClicked(npcButt) && menu.age > 30)
+        if(shapes.shapeClicked(npcButt) && menu.age > 30)
         {
             if(Squaddies.size() >= 4)
                 chatBox.addChat("You already have a full squad!", sf::Color::White);
@@ -1331,8 +1331,8 @@ void renderTowerMenu(baseMenu &menu)
     shapes.createSquare(100,100,screen.x()-100,screen.y()-100,sf::Color(sf::Color(150,150,0)),5,sf::Color::White,&gvars::hudView);
     //shapes.shapes.back().layer = 10000000;
     //Close Button
-    int exitButt = createImageButton(sf::Vector2f(screen.x()-100,100),texturemanager.getTexture("ExitButton.png"),"",0,gvars::hudView);
-    if(imageButtonClicked(exitButt))
+    int exitButt = shapes.createImageButton(sf::Vector2f(screen.x()-100,100),texturemanager.getTexture("ExitButton.png"),"",0,&gvars::hudView);
+    if(shapes.shapeClicked(exitButt))
         menu.toDelete = true;
 
         //Screen position defaults
@@ -1379,8 +1379,8 @@ void renderTowerMenu(baseMenu &menu)
 
     }
 
-    int fanTowButt = createImageButton(towerPos[0],*towers[1].tex,"",0,gvars::hudView);
-    if(imageButtonClicked(fanTowButt))
+    int fanTowButt = shapes.createImageButton(towerPos[0],*towers[1].tex,"",0,&gvars::hudView);
+    if(shapes.shapeClicked(fanTowButt))
     {
         menu.toDelete = true;
         bountytower::pausewaves = true;
@@ -1425,8 +1425,8 @@ void renderEscapeMenu(baseMenu &menu)
 {
     shapes.createSquare(100,100,screen.x()-100,screen.y()-100,sf::Color(sf::Color(150,150,0)),5,sf::Color::White,&gvars::hudView);
     //Close Button
-    int exitButt = createImageButton(sf::Vector2f(screen.x()-100,100),texturemanager.getTexture("ExitButton.png"),"",0,gvars::hudView);
-    if(imageButtonClicked(exitButt))
+    int exitButt = shapes.createImageButton(sf::Vector2f(screen.x()-100,100),texturemanager.getTexture("ExitButton.png"),"",0,&gvars::hudView);
+    if(shapes.shapeClicked(exitButt))
         menu.toDelete = true;
 
     sf::Vector2f textPos( (screen.x()/2) - 50,110);
@@ -1434,9 +1434,9 @@ void renderEscapeMenu(baseMenu &menu)
     shapes.createText(textPos,10,sf::Color::White,"Sound: " + str(gvars::soundVolume),&gvars::hudView);
     buttonPos.x += 90;
     buttonPos.y += 15;
-    int decreaseSoundButt = createImageButton(buttonPos,texturemanager.getTexture("ArrowButton.png"),"",-90,gvars::hudView);
+    int decreaseSoundButt = shapes.createImageButton(buttonPos,texturemanager.getTexture("ArrowButton.png"),"",-90,&gvars::hudView);
     buttonPos.x += 30;
-    int increaseSoundButt = createImageButton(buttonPos,texturemanager.getTexture("ArrowButton.png"),"",90,gvars::hudView);
+    int increaseSoundButt = shapes.createImageButton(buttonPos,texturemanager.getTexture("ArrowButton.png"),"",90,&gvars::hudView);
 
 
 
@@ -1445,9 +1445,9 @@ void renderEscapeMenu(baseMenu &menu)
     shapes.createText(textPos,10,sf::Color::White,"Music: " + str(gvars::musicVolume),&gvars::hudView);
     buttonPos.x += 90;
     buttonPos.y += 15;
-    int decreaseMusicButt = createImageButton(buttonPos,texturemanager.getTexture("ArrowButton.png"),"",-90,gvars::hudView);
+    int decreaseMusicButt = shapes.createImageButton(buttonPos,texturemanager.getTexture("ArrowButton.png"),"",-90,&gvars::hudView);
     buttonPos.x += 30;
-    int increaseMusicButt = createImageButton(buttonPos,texturemanager.getTexture("ArrowButton.png"),"",90,gvars::hudView);
+    int increaseMusicButt = shapes.createImageButton(buttonPos,texturemanager.getTexture("ArrowButton.png"),"",90,&gvars::hudView);
 
     textPos.y += screen.y()/8;
     buttonPos = textPos;
@@ -1459,18 +1459,18 @@ void renderEscapeMenu(baseMenu &menu)
                         ,&gvars::hudView);
     buttonPos.x += 90;
     buttonPos.y += 20;
-    int decreaseResolution = createImageButton(buttonPos,texturemanager.getTexture("ArrowButton.png"),"",-90,gvars::hudView);
+    int decreaseResolution = shapes.createImageButton(buttonPos,texturemanager.getTexture("ArrowButton.png"),"",-90,&gvars::hudView);
     buttonPos.x += 30;
-    int increaseResolution = createImageButton(buttonPos,texturemanager.getTexture("ArrowButton.png"),"",90,gvars::hudView);
+    int increaseResolution = shapes.createImageButton(buttonPos,texturemanager.getTexture("ArrowButton.png"),"",90,&gvars::hudView);
     buttonPos.x += 30;
-    int applyResolution = createImageButton(buttonPos,texturemanager.getTexture("ArrowButton.png"),"",180,gvars::hudView);
+    int applyResolution = shapes.createImageButton(buttonPos,texturemanager.getTexture("ArrowButton.png"),"",180,&gvars::hudView);
 
     buttonPos.y += 20;
-    int toggleFullscreen = createImageButton(buttonPos,texturemanager.getTexture("ArrowButton.png"),"",180,gvars::hudView);
+    int toggleFullscreen = shapes.createImageButton(buttonPos,texturemanager.getTexture("ArrowButton.png"),"",180,&gvars::hudView);
 
 
     sf::Vector2f exitPos((screen.x()/2), screen.y()-150);
-    int exitGameButt = createImageButton(exitPos,texturemanager.getTexture("blankButton.png"),"",0,gvars::hudView);
+    int exitGameButt = shapes.createImageButton(exitPos,texturemanager.getTexture("blankButton.png"),"",0,&gvars::hudView);
     exitPos.x -= 31;
     textList.createText(exitPos,9,sf::Color::White,"Exit Game",gvars::hudView);
 
@@ -1530,7 +1530,7 @@ void renderEscapeMenu(baseMenu &menu)
 
 
 
-    if(menu.age > 30 && imageButtonClicked(exitGameButt))
+    if(menu.age > 30 && shapes.shapeClicked(exitGameButt))
         window.close();
 
 }
@@ -1976,8 +1976,8 @@ void towerVictory()
 
     textPos.x -= 100;
 
-    int returnButt = createImageButton(textPos,texturemanager.getTexture("returnButton.png"),"",0,gvars::hudView);
-    if(imageButtonClicked(returnButt))
+    int returnButt = shapes.createImageButton(textPos,texturemanager.getTexture("returnButton.png"),"",0,&gvars::hudView);
+    if(shapes.shapeClicked(returnButt))
     {
         bountytower::towerVictory = false;
         loadTavern();
@@ -2081,27 +2081,27 @@ void bossLoop()
 
 void bountyTowerMainMenu()
 {
-    int startBut = createImageButton(sf::Vector2f(screen.x()/2,screen.y()/2),texturemanager.getTexture("Fortune Fortress Title.png"));
+    int startBut = shapes.createImageButton(sf::Vector2f(screen.x()/2,screen.y()/2),texturemanager.getTexture("Fortune Fortress Title.png"));
     shapes.createText(gvars::mousePos,10,sf::Color::White,"Click to begin!");
 
     shapes.createText(10,screen.y()-80,10,sf::Color(255,255,255),"Made by Johnny Fojtik(Dehaku Zedon)");
     shapes.createText(10,screen.y()-60,10,sf::Color(255,255,255),"Contact: dehakuzedon@gmail.com  or reddit.com/r/bountytower");
     shapes.createText(10,screen.y()-40,10,sf::Color(255,255,255),"Can't stand some of the art in this game? \nCan you do better? Contact me! I'm looking for an artist!");
 
-    if(imageButtonClicked(startBut))
+    if(shapes.shapeClicked(startBut))
         loadTavern();
 }
 
 void tavernButtons()
 {
     /*
-    int towerButt = createImageButton(sf::Vector2f(43*GRID_SIZE,67*GRID_SIZE),texturemanager.getTexture("yellowBook.png"));
-    int towerButt2 = createImageButton(sf::Vector2f(53*GRID_SIZE,67*GRID_SIZE),texturemanager.getTexture("yellowBook.png"));
+    int towerButt = shapes.createImageButton(sf::Vector2f(43*GRID_SIZE,67*GRID_SIZE),texturemanager.getTexture("yellowBook.png"));
+    int towerButt2 = shapes.createImageButton(sf::Vector2f(53*GRID_SIZE,67*GRID_SIZE),texturemanager.getTexture("yellowBook.png"));
 
     if(imageButtonHovered(towerButt) || imageButtonHovered(towerButt2))
         shapes.createText(gvars::mousePos,15,sf::Color::Yellow,"Click to progress to bounty menus!");
 
-    if(imageButtonClicked(towerButt) || imageButtonClicked(towerButt2))
+    if(shapes.shapeClicked(towerButt) || shapes.shapeClicked(towerButt2))
     {
         gCtrl.phase = "Tower Selection";
     }
@@ -2116,27 +2116,27 @@ void NPCbuttons()
     {
         if(npc.tags.find("[BountyProvider:1]") != npc.tags.npos)
         {
-            int bountyButt = createImageButton(npc.getPos2d(),texturemanager.getTexture("SelectionCircle.png"));
+            int bountyButt = shapes.createImageButton(npc.getPos2d(),texturemanager.getTexture("SelectionCircle.png"));
             if(imageButtonHovered(bountyButt))
                 shapes.createText(gvars::mousePos,15,sf::Color::Yellow,"Ready to go bounty hunting? \n(Left Mouse Button)");
-            if(imageButtonClicked(bountyButt))
+            if(shapes.shapeClicked(bountyButt))
                 towerMenu(Vec3());
         }
         else if(npc.tags.find("[WeaponDealer:1]") != npc.tags.npos)
         {
-            int dealerButt = createImageButton(npc.getPos2d(),texturemanager.getTexture("SelectionCircle.png"));
+            int dealerButt = shapes.createImageButton(npc.getPos2d(),texturemanager.getTexture("SelectionCircle.png"));
             if(imageButtonHovered(dealerButt))
                 shapes.createText(gvars::mousePos,15,sf::Color::Yellow,"Wanna see my gear? \n(Left Mouse Button)");
-            if(imageButtonClicked(dealerButt))
+            if(shapes.shapeClicked(dealerButt))
                 merchantMenu(npc.getPos());
 
         }
         else if(npc.tags.find("[Recruiter:1]") != npc.tags.npos)
         {
-            int dealerButt = createImageButton(npc.getPos2d(),texturemanager.getTexture("SelectionCircle.png"));
+            int dealerButt = shapes.createImageButton(npc.getPos2d(),texturemanager.getTexture("SelectionCircle.png"));
             if(imageButtonHovered(dealerButt))
                 shapes.createText(gvars::mousePos,15,sf::Color::Yellow,"Looking for some fresh meat? \n(Left Mouse Button)");
-            if(imageButtonClicked(dealerButt))
+            if(shapes.shapeClicked(dealerButt))
                 recruiterMenu(npc.getPos());
 
         }
@@ -2204,7 +2204,7 @@ void layHints()
                 float timeHover = cos(fpsKeeper.startTime.getElapsedTime().asMilliseconds()/250)*2;
                 sf::Vector2f textPos;
                 textPos = sf::Vector2f(2970,3920);
-                int tutBook1 = createImageButton(sf::Vector2f(textPos.x,textPos.y+timeHover),texturemanager.getTexture("tutBook.png"));
+                int tutBook1 = shapes.createImageButton(sf::Vector2f(textPos.x,textPos.y+timeHover),texturemanager.getTexture("tutBook.png"));
                 if(imageButtonHovered(tutBook1))
                 {
                     textPos = sf::Vector2f(textPos.x+20,textPos.y-10);
@@ -2214,7 +2214,7 @@ void layHints()
                 }
 
                 textPos = sf::Vector2f(3030,2790);
-                int tutBook2 = createImageButton(sf::Vector2f(textPos.x,textPos.y+timeHover),texturemanager.getTexture("tutBook.png"));
+                int tutBook2 = shapes.createImageButton(sf::Vector2f(textPos.x,textPos.y+timeHover),texturemanager.getTexture("tutBook.png"));
                 if(imageButtonHovered(tutBook2))
                 {
                     textPos = sf::Vector2f(textPos.x+20,textPos.y-10);
@@ -2224,7 +2224,7 @@ void layHints()
                 }
 
                 textPos = sf::Vector2f(2790,3920);
-                int tutBook3 = createImageButton(sf::Vector2f(textPos.x,textPos.y+timeHover),texturemanager.getTexture("tutBook.png"));
+                int tutBook3 = shapes.createImageButton(sf::Vector2f(textPos.x,textPos.y+timeHover),texturemanager.getTexture("tutBook.png"));
                 if(imageButtonHovered(tutBook3))
                 {
                     textPos = sf::Vector2f(textPos.x+20,textPos.y-10);
@@ -2239,7 +2239,7 @@ void layHints()
                 float timeHover = cos(fpsKeeper.startTime.getElapsedTime().asMilliseconds()/250)*2;
                 sf::Vector2f textPos;
                 textPos = sf::Vector2f(2970,3090);
-                int tutBook1 = createImageButton(sf::Vector2f(textPos.x,textPos.y+timeHover),texturemanager.getTexture("tutBook.png"));
+                int tutBook1 = shapes.createImageButton(sf::Vector2f(textPos.x,textPos.y+timeHover),texturemanager.getTexture("tutBook.png"));
                 if(imageButtonHovered(tutBook1))
                 {
                     textPos = sf::Vector2f(textPos.x+20,textPos.y-10);
@@ -2259,7 +2259,7 @@ void layHints()
                 float timeHover = cos(fpsKeeper.startTime.getElapsedTime().asMilliseconds()/250)*2;
                 sf::Vector2f textPos;
                 textPos = sf::Vector2f(2940,2940);
-                int tutBook1 = createImageButton(sf::Vector2f(textPos.x,textPos.y+timeHover),texturemanager.getTexture("tutBook.png"));
+                int tutBook1 = shapes.createImageButton(sf::Vector2f(textPos.x,textPos.y+timeHover),texturemanager.getTexture("tutBook.png"));
                 if(imageButtonHovered(tutBook1))
                 {
                     textPos = sf::Vector2f(textPos.x+20,textPos.y-10);
@@ -2273,7 +2273,7 @@ void layHints()
                 float timeHover = cos(fpsKeeper.startTime.getElapsedTime().asMilliseconds()/250)*2;
                 sf::Vector2f textPos;
                 textPos = sf::Vector2f(2970,2790);
-                int tutBook1 = createImageButton(sf::Vector2f(textPos.x,textPos.y+timeHover),texturemanager.getTexture("tutBook.png"));
+                int tutBook1 = shapes.createImageButton(sf::Vector2f(textPos.x,textPos.y+timeHover),texturemanager.getTexture("tutBook.png"));
                 if(imageButtonHovered(tutBook1))
                 {
                     textPos = sf::Vector2f(textPos.x+20,textPos.y-10);
@@ -2291,7 +2291,7 @@ void layHints()
             float timeHover = cos(fpsKeeper.startTime.getElapsedTime().asMilliseconds()/250)*2;
             sf::Vector2f textPos;
             textPos = sf::Vector2f(2550,4230);
-            int tutBook1 = createImageButton(sf::Vector2f(textPos.x,textPos.y+timeHover),texturemanager.getTexture("tutBook.png"));
+            int tutBook1 = shapes.createImageButton(sf::Vector2f(textPos.x,textPos.y+timeHover),texturemanager.getTexture("tutBook.png"));
             if(imageButtonHovered(tutBook1))
             {
                 textPos = sf::Vector2f(textPos.x+20,textPos.y-10);
@@ -2305,7 +2305,7 @@ void layHints()
             }
 
             textPos = sf::Vector2f(1950,3210);
-            int tutBook2 = createImageButton(sf::Vector2f(textPos.x,textPos.y+timeHover),texturemanager.getTexture("tutBook.png"));
+            int tutBook2 = shapes.createImageButton(sf::Vector2f(textPos.x,textPos.y+timeHover),texturemanager.getTexture("tutBook.png"));
             if(imageButtonHovered(tutBook2))
             {
                 textPos = sf::Vector2f(textPos.x+20,textPos.y-10);
@@ -2317,7 +2317,7 @@ void layHints()
             }
 
             textPos = sf::Vector2f(2250,2970);
-            int tutBook3 = createImageButton(sf::Vector2f(textPos.x,textPos.y+timeHover),texturemanager.getTexture("tutBook.png"));
+            int tutBook3 = shapes.createImageButton(sf::Vector2f(textPos.x,textPos.y+timeHover),texturemanager.getTexture("tutBook.png"));
             if(imageButtonHovered(tutBook3))
             {
                 textPos = sf::Vector2f(textPos.x+20,textPos.y-10);
@@ -2327,7 +2327,7 @@ void layHints()
             }
 
             textPos = sf::Vector2f(3390,3270);
-            int tutBook4 = createImageButton(sf::Vector2f(textPos.x,textPos.y+timeHover),texturemanager.getTexture("tutBook.png"));
+            int tutBook4 = shapes.createImageButton(sf::Vector2f(textPos.x,textPos.y+timeHover),texturemanager.getTexture("tutBook.png"));
             if(imageButtonHovered(tutBook4))
             {
                 textPos = sf::Vector2f(textPos.x+20,textPos.y-10);
@@ -2507,9 +2507,9 @@ void chasePriorityFunction()
         int holdRotate = 180*(npc->chasePriority == "Hold Position");
 
         //I love shortening button to butt.
-        int assaultButt = createImageButton(sf::Vector2f(npc->xpos-30,npc->ypos-90),*arrowButt,"",assaultRotate);
-        int defendButt = createImageButton(sf::Vector2f(npc->xpos,npc->ypos-90),*arrowButt,"",defendRotate);
-        int holdButt = createImageButton(sf::Vector2f(npc->xpos+30,npc->ypos-90),*arrowButt,"",holdRotate);
+        int assaultButt = shapes.createImageButton(sf::Vector2f(npc->xpos-30,npc->ypos-90),*arrowButt,"",assaultRotate);
+        int defendButt = shapes.createImageButton(sf::Vector2f(npc->xpos,npc->ypos-90),*arrowButt,"",defendRotate);
+        int holdButt = shapes.createImageButton(sf::Vector2f(npc->xpos+30,npc->ypos-90),*arrowButt,"",holdRotate);
         sf::Vector2f mouseConv(gvars::mousePos.x+20,gvars::mousePos.y);
 
         if(imageButtonHovered(assaultButt))
@@ -2532,8 +2532,8 @@ void chasePriorityFunction()
                 npc->chasePriority = "Hold Position";
         }
 
-        int decreaseRadiusButt = createImageButton(sf::Vector2f(npc->xpos-15,npc->ypos-70),*arrowButt,"",-90);
-        int increaseRadiusButt = createImageButton(sf::Vector2f(npc->xpos+15,npc->ypos-70),*arrowButt,"",90);
+        int decreaseRadiusButt = shapes.createImageButton(sf::Vector2f(npc->xpos-15,npc->ypos-70),*arrowButt,"",-90);
+        int increaseRadiusButt = shapes.createImageButton(sf::Vector2f(npc->xpos+15,npc->ypos-70),*arrowButt,"",90);
 
         if(imageButtonHovered(decreaseRadiusButt))
         {
@@ -2718,10 +2718,14 @@ void bountyTowerLoop()
     }
 
 
+    /*
+
     if(inputState.key[Key::Space].time == 1)
         layerTest(30);
     if(inputState.key[Key::V].time == 1)
         layerTest(1);
+
+
 
     if(inputState.key[Key::Z].time == 1)
         shapes.layerSortAlpha();
@@ -2729,6 +2733,8 @@ void bountyTowerLoop()
         shapes.layerSortBeta();
     if(inputState.key[Key::C].time == 1)
         shapes.layerSortGamma();
+
+        */
 
     makeBlood();
     if(inputState.key[Key::J])
@@ -3051,8 +3057,8 @@ void bountyTowerLoop()
         shapes.createText(sf::Vector2f(screen.x()/2-110,70),20,sf::Color::White,"On Elevator: " + std::to_string(AmountRaised),&gvars::hudView);
 
         sf::Vector2f vPos((screen.x()/2)-25-110,75);
-        int butt = createImageButton(vPos,texturemanager.getTexture("ElevatorButton.png"),"",0,gvars::hudView);
-        if(imageButtonClicked(butt))
+        int butt = shapes.createImageButton(vPos,texturemanager.getTexture("ElevatorButton.png"),"",0,&gvars::hudView);
+        if(shapes.shapeClicked(butt))
         {
             selectedNPCs.clear();
             if(AmountRaised == 0)
