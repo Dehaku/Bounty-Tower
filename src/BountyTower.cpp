@@ -1504,8 +1504,6 @@ void renderTowerMenu(baseMenu &menu)
 
 }
 
-
-
 void renderEscapeMenu(baseMenu &menu)
 { // Layer 15000
     // Backpanel 15000, Buttons 15050, shapes 15025, text 15075;
@@ -2698,20 +2696,52 @@ void showItemProgressCone()
 
 void newSlotWorkMethod()
 {
-    int slotCount = 10;
+    if(selectedNPCs.empty())
+        return;
+
+    int slotCount;
+    slotCount = 6;
+    if(inputState.key[Key::Z])
+        slotCount = 8;
+    if(inputState.key[Key::X])
+        slotCount = 9;
+    if(inputState.key[Key::C])
+        slotCount = 12;
+    if(inputState.key[Key::V])
+        slotCount = 22;
+
+    sf::Texture * slotTex = &texturemanager.getTexture("BeltSlot.png");
+
 
     for(int i = 0; i != slotCount; i++)
     {
+        if(i < 2)
+            continue;
+
         float xDrawPos;
         float yDrawPos;
 
         xDrawPos = gvars::slotPos[i].x-30;
         yDrawPos = gvars::slotPos[i].y-30;
 
-        sf::Color primary(0,0,0,100);
-        sf::Color secondary(150,0,0);
+        //sf::Color primary(0,0,0,100);
+        //sf::Color secondary(150,0,0);
 
-        shapes.createSquare(xDrawPos+5,yDrawPos+5,xDrawPos+60-5,yDrawPos+60-5,primary,1,secondary,&gvars::hudView);
+        //shapes.createSquare(xDrawPos+5,yDrawPos+5,xDrawPos+60-5,yDrawPos+60-5,primary,1,secondary,&gvars::hudView);
+        {
+
+            Shape evar;
+            evar.shape = Shape::Button;
+
+            evar.maincolor = sf::Color(255,255,255,255);
+            evar.startPos = gvars::slotPos[i];
+            evar.endPos = sf::Vector2f(gvars::slotPos[i].x+slotTex->getSize().x, gvars::slotPos[i].y+slotTex->getSize().y);
+            evar.texture = slotTex;
+            evar.drawView = &gvars::hudView;
+            shapes.shapes.push_back(evar);
+        }
+
+        //shapes.createImageButton(gvars::slotPos[i],*slotTex,"",0,&gvars::hudView);
     }
 
     /*
@@ -2816,7 +2846,7 @@ void bountyTowerLoop()
     chasePriorityFunction();
     showItemProgressCone();
 
-    //newSlotWorkMethod();
+    newSlotWorkMethod();
 
     /*
 

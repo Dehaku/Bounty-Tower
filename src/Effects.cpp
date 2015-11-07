@@ -298,8 +298,6 @@ void Shapes::layerSortGamma()
 
 int Shapes::createImageButton(sf::Vector2f vPos, sf::Texture &Tex, std::string text, int rotation, sf::View * drawView)
 {
-    sf::Texture * texture = &Tex;
-
     Shape evar;
     evar.shape = Shape::Button;
     evar.maincolor = sf::Color::White;

@@ -4732,6 +4732,9 @@ void drawSelectedCritterHUD()
         sf::Vector2u TexSize = texturemanager.getTexture("CritterInventoryHud.png").getSize();
         CIH.setTexture(texturemanager.getTexture("CritterInventoryHud.png"));
         CIH.setPosition(0,0);
+        sf::Color curColor = CIH.getColor();
+        //curColor.a = 200;
+        CIH.setColor(curColor);
 
         window.draw(CIH);
 
