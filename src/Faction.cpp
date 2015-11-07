@@ -5327,7 +5327,7 @@ void drawNPCs(std::list<Npc> &container)
                 spriteWalk->setPosition(npc.getPos2d());
                 window.draw(*spriteWalk, &shadermanager.shockwaveShader);
             }
-
+            bool hasAnimations = false;
             if(npc.alive)
                 for(auto &ani : animationmanager.animations)
             {
@@ -5341,7 +5341,11 @@ void drawNPCs(std::list<Npc> &container)
                 if(ani.name.find(Direction) != ani.name.npos)
                 {
                     if(ani.name.find(npc.race) != ani.name.npos)
+                    {
                         drawMe = true;
+                        hasAnimations = true;
+                    }
+
                     if(ani.name.find("HatBasic") != ani.name.npos)
                         if(npc.isSquaddie || npc.tags.find("[WearsHat:1]") != npc.tags.npos)
                             drawMe = true;
@@ -5388,7 +5392,7 @@ void drawNPCs(std::list<Npc> &container)
             {
                 npc.drawImg();
             }
-            if(npc.name == "BTTurret")
+            if(!hasAnimations)
                 npc.drawImg();
 
             /*

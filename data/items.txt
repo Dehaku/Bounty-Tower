@@ -21,5 +21,5 @@
 [name:PDA][value:250][Pickupable:true][type:23][image:PDA.png][baseid:529529][mindam:1][maxdam:5][range:200][IsWeapon:true][activaterategrowth:2][activateratemax:2][Size:1][knockback:5]
 [name:Scrap][Rarity:20000][value:30][stackSize:30][Pickupable:true][image:BTScrap.png][type:12][baseid:7772987][produces:false]
 [name:Cash][Pickupable:true][stackSize:250][image:FaceonMoney.png][type:12][baseid:636636][produces:false]
-[name:Healing Juices][Pickupable:true][image:healingJuices.png][type:42][baseid:623623][HealAmount:100][value:100]
-[name:Super Healing Juices][Pickupable:true][image:healingJuicesSuper.png][type:42][baseid:623624][HealAmount:1000][value:1000]
+[name:Healing Juices][Pickupable:true][image:healingJuices.png][type:42][baseid:623623][HealAmount:100][value:30]
+[name:Super Healing Juices][Pickupable:true][image:healingJuicesSuper.png][type:42][baseid:623624][HealAmount:1000][value:500]
