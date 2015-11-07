@@ -2277,6 +2277,8 @@ void checkDoors()
     {
         if(!isInBounds(npc->getPos2d()))
             continue;
+        if(!bountytower::pausewaves)
+            return;
 
         Tile * tile;
         tile = &tiles[gridIt(npc->xpos)][gridIt(npc->ypos)][gridIt(npc->zpos)];
