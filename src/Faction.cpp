@@ -4490,7 +4490,7 @@ void selectedNPCprocess()
         shapes.createCircle(Pos.x, Pos.y, 5,
                                 sf::Color(0, 255, 255, 100));
 
-        createImageButton(Pos,texturemanager.getTexture("SelectionCircle.png"),"",gvars::constantRotation);
+        shapes.createImageButton(Pos,texturemanager.getTexture("SelectionCircle.png"),"",gvars::constantRotation);
 
     }
 
@@ -4524,11 +4524,11 @@ void drawInventory(sf::Vector2f vPos, std::list<Item> &inventory)
             //i.img.setPosition(vPos.x+(20*itemCount)+5,vPos.y);
             //shapes.createCircle(vPos.x+(20*itemCount),vPos.y,20,gvars::cycleGreen);
             //i.drawImg();
-            int butt = createImageButton(sf::Vector2f(vPos.x+(20*itemCount)+10,vPos.y-10),
+            int butt = shapes.createImageButton(sf::Vector2f(vPos.x+(20*itemCount)+10,vPos.y-10),
                               texturemanager.getTexture(i.name + ".png")  //(i.img.getTexture())
                               ,i.name);
             textList.createText(vPos.x+(20*itemCount)+5,vPos.y-5,10,sf::Color::Yellow,std::to_string(i.amount));
-            if(imageButtonHovered(butt))
+            if(shapes.shapeHovered(butt))
             {
                 textList.createText(vPos.x+(20*itemCount),vPos.y-40,15,sf::Color::Cyan,i.name);
                 if(!i.internalitems.empty())
@@ -4738,11 +4738,11 @@ void drawSelectedCritterHUD()
 
                     sf::Vector2f buttPos(uPos);
                     buttPos.y -= 50;
-                    int reloadButt = createImageButton(buttPos,texturemanager.getTexture("ArrowButton.png"),"",0,gvars::hudView);
+                    int reloadButt = shapes.createImageButton(buttPos,texturemanager.getTexture("ArrowButton.png"),"",0,&gvars::hudView);
                     buttPos.x += 20;
-                    int unloadButt = createImageButton(buttPos,texturemanager.getTexture("ArrowButton.png"),"",180,gvars::hudView);
+                    int unloadButt = shapes.createImageButton(buttPos,texturemanager.getTexture("ArrowButton.png"),"",180,&gvars::hudView);
 
-                    if(slotItem->user->isSquaddie && imageButtonHovered(reloadButt))
+                    if(slotItem->user->isSquaddie && shapes.shapeHovered(reloadButt))
                     {
                         textList.createText(gvars::mousePos.x+10,gvars::mousePos.y,10,sf::Color::White,"Reload");
                         gvars::hovering = true;
@@ -4750,7 +4750,7 @@ void drawSelectedCritterHUD()
                             checkAmmo(*slotItem->user, *slotItem->user->container, slotItem, true);
                     }
 
-                    if(slotItem->user->isSquaddie && imageButtonHovered(unloadButt))
+                    if(slotItem->user->isSquaddie && shapes.shapeHovered(unloadButt))
                     {
                         textList.createText(gvars::mousePos.x+10,gvars::mousePos.y,10,sf::Color::White,"Unload");
                         gvars::hovering = true;
@@ -4771,9 +4771,9 @@ void drawSelectedCritterHUD()
                     outPut.append("\n(" + str(slotItem->healAmount) + ")");
                     sf::Vector2f buttPos(uPos);
                     buttPos.y -= 50;
-                    int healButt = createImageButton(buttPos,texturemanager.getTexture("ArrowButton.png"),"",0,gvars::hudView);
+                    int healButt = shapes.createImageButton(buttPos,texturemanager.getTexture("ArrowButton.png"),"",0,&gvars::hudView);
 
-                    if(imageButtonHovered(healButt))
+                    if(shapes.shapeHovered(healButt))
                     {
                         textList.createText(gvars::mousePos.x+10,gvars::mousePos.y,10,sf::Color::White,"Heal Self");
                         gvars::hovering = true;

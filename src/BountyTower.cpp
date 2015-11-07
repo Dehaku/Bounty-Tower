@@ -280,7 +280,7 @@ void debugTileMode()
     {
         debugTileKeeper.tex = *debugTileKeeper.useTile.img.getTexture();
         sf::Vector2f vPos((gvars::mousePos.x/GRID_SIZE)*GRID_SIZE,(gvars::mousePos.y/GRID_SIZE)*GRID_SIZE);
-        createImageButton(vPos,debugTileKeeper.tex);
+        shapes.createImageButton(vPos,debugTileKeeper.tex);
 
         if(inputState.lmbTime > 5)
         {
@@ -1007,7 +1007,7 @@ void renderSquaddieMenu(baseMenu &menu)
         if(offSet)
             drawPos.x += 62;
         shapes.createSquare(drawPos.x-30,drawPos.y-30,drawPos.x+30,drawPos.y+30,sf::Color::Black,2,sf::Color::White,&gvars::hudView);
-        createImageButton(drawPos,*item.img.getTexture(),"",0,gvars::hudView);
+        shapes.createImageButton(drawPos,*item.img.getTexture(),"",0,&gvars::hudView);
         if(offSet)
         {
             drawPos.x -= 62;
@@ -2709,14 +2709,6 @@ void bountyTowerLoop()
     showItemProgressCone();
 
     //newSlotWorkMethod();
-
-    int testButt = shapes.createImageButton(sf::Vector2f(500,500),texturemanager.getTexture("blankButton.png"),"",0,&gvars::hudView);
-
-    if(shapes.shapeClicked(testButt))
-    {
-        explosion(Vec3(gvars::mousePos.x,gvars::mousePos.y,gvars::currentz*GRID_SIZE),200,200,nullptr);
-    }
-
 
     /*
 

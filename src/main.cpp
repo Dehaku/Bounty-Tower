@@ -858,7 +858,7 @@ void handsOffense(Npc &npc, std::list<Npc> &container, Npc * closEnmy, bool &has
                         sf::Vector2f oriPos(npc.getPos2d());
                         sf::Vector2f offSet = math::angleCalc(oriPos,math::constrainAngle(npc.angle+90),60);
 
-                        createImageButton(offSet,texturemanager.getTexture("Slash.png"),"",math::constrainAngle(npc.angle+180) );
+                        shapes.createImageButton(offSet,texturemanager.getTexture("Slash.png"),"",math::constrainAngle(npc.angle+180) );
 
                         for(auto &npcCleave : npclist)
                         {
@@ -1746,11 +1746,11 @@ void drawHudSkills(Npc &npc, sf::Vector2f spritePos)
             sf::Vector2f skillPos(spritePos.x+130+(xOffset*20),spritePos.y);
             //Yes I'm multiplying it by a boolean, so what? It works perfectly here!
             int skillRot = 180+(180*skill.autouse);
-            int skillButt = createImageButton(skillPos,texturemanager.getTexture("ArrowButton.png"),"",skillRot,gvars::hudView);
+            int skillButt = shapes.createImageButton(skillPos,texturemanager.getTexture("ArrowButton.png"),"",skillRot,&gvars::hudView);
             if(skill.cooldown > 0)
                 textList.createText(skillPos,15,sf::Color::White,std::to_string(skill.cooldown/60),window.getView());
 
-            if(imageButtonClicked(skillButt) && skill.cooldown <= 0)
+            if(shapes.shapeClicked(skillButt) && skill.cooldown <= 0)
             {
                 skillKeepInfo sKI;
                 sKI.user = &npc;
@@ -1759,12 +1759,12 @@ void drawHudSkills(Npc &npc, sf::Vector2f spritePos)
                 skillKeeps.push_back(sKI);
             }
 
-            if(imageButtonHovered(skillButt))
+            if(shapes.shapeHovered(skillButt))
             {
                 gvars::hovering = true;
                 textList.createText(skillPos,15,sf::Color::White,skill.name,window.getView());
 
-                textList.createText(sf::Vector2f(skillPos.x,skillPos.y+20),15,sf::Color::White,skill.desc,window.getView());
+                textList.createText(sf::Vector2f(skillPos.x,skillPos.y+20),15,sf::Color::White,"    " + skill.desc,window.getView());
                 if(inputState.rmbTime == 1)
                 {
                     toggle(skill.autouse);
@@ -2536,7 +2536,7 @@ void acquireSelectedNPCs()
 
             if(npc.alive && aabb(npc.getPos2d(),gvars::heldClickPos.x,gvars::mousePos.x,gvars::heldClickPos.y,gvars::mousePos.y))
             {
-                createImageButton(npc.getPos2d(),texturemanager.getTexture("SelectionCircle.png"));
+                shapes.createImageButton(npc.getPos2d(),texturemanager.getTexture("SelectionCircle.png"));
             }
         }
 
