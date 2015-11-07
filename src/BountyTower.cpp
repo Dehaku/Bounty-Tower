@@ -209,7 +209,7 @@ void bountyTowerSetup()
 
     conFact->factRelations.push_back(factR);
 
-    conFact->credits = 750;
+    conFact->credits = 750*2;
 
     addMembers(1,"The Titanium Grip");
     equipStarters();
@@ -1400,11 +1400,21 @@ void renderRecruiterMenu(baseMenu &menu)
 }
 
 void renderTowerMenu(baseMenu &menu)
-{
+{// Layer 21000
+    int layer = 21000;
+    enum
+    {
+        BackPanel,
+        Shapes,
+        Button,
+        Text
+    };
     shapes.createSquare(100,100,screen.x()-100,screen.y()-100,sf::Color(sf::Color(150,150,0)),5,sf::Color::White,&gvars::hudView);
+    shapes.shapes.back().layer = layer+BackPanel;
     //shapes.shapes.back().layer = 10000000;
     //Close Button
     int exitButt = shapes.createImageButton(sf::Vector2f(screen.x()-100,100),texturemanager.getTexture("ExitButton.png"),"",0,&gvars::hudView);
+    shapes.shapes.back().layer = layer+Button;
     if(shapes.shapeClicked(exitButt))
         menu.toDelete = true;
 
@@ -1453,6 +1463,7 @@ void renderTowerMenu(baseMenu &menu)
     }
 
     int fanTowButt = shapes.createImageButton(towerPos[0],*towers[1].tex,"",0,&gvars::hudView);
+    shapes.shapes.back().layer = layer+Button;
     if(shapes.shapeClicked(fanTowButt))
     {
         menu.toDelete = true;
@@ -1485,7 +1496,8 @@ void renderTowerMenu(baseMenu &menu)
         "\n Bounty: $" + str(towers[1].bountyPay) +
         "\n Difficulty: " + std::to_string(towers[1].difficulty);
         sf::Vector2f textPos(towerPos[0].x+50,towerPos[0].y-25);
-        shapes.createText(textPos,15,sf::Color::Red,textOut,&gvars::hudView);
+        shapes.createText(textPos,15,sf::Color::White,textOut,&gvars::hudView);
+        shapes.shapes.back().layer = layer+Text;
     }
 
 
@@ -2312,6 +2324,7 @@ void layHints()
                     textPos = sf::Vector2f(textPos.x+20,textPos.y-10);
                     shapes.createSquare(textPos.x-5,textPos.y,textPos.x+900,textPos.y+40,sf::Color::Black,3,sf::Color::Cyan);
                     shapes.createText(textPos,15,sf::Color::Red,"Stand squaddies on switches to activate them, enabling the elevator. \n"
+                            "Intelligence is the main factor for activating switches! Use Smart People! \n"
                             "Be sure to get everyone on the elevator before you try to leave, Or you'll abandon them!");
                 }
 
