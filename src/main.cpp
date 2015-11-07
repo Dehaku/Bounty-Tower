@@ -1262,7 +1262,58 @@ void critterBrain(Npc &npc, std::list<Npc> &container)
 
     //critterWallCheck(npc,container);
 
+    if(npc.racialAbility == "Telekinetic Field")
+    {
+        int fieldRange = 300;
+        int fieldStrength = 4;
+        fieldStrength += cos(fpsKeeper.startTime.getElapsedTime().asSeconds());
 
+        /*
+        if(inputState.key[Key::Z])
+            fieldStrength += cos(fpsKeeper.startTime.getElapsedTime().asMicroseconds());
+        else if(inputState.key[Key::X])
+            fieldStrength += cos(fpsKeeper.startTime.getElapsedTime().asMilliseconds());
+        else if(inputState.key[Key::C])
+            */
+
+
+        shapes.createCircle(npc.xpos,npc.ypos,fieldRange,sf::Color(100,0,100,25));
+
+
+        for(auto &enemy : npclist)
+        {
+            if(!npc.alive)
+                continue;
+            if(npc.factionPtr->getFactionRelations(enemy.faction) > -1000)
+                continue;
+
+            int dist = math::distance(npc.getPos(),enemy.getPos());
+            if(dist > fieldRange)
+                continue;
+
+            float enemyAngle = math::angleBetweenVectors(npc.getPos2d(),enemy.getPos2d());
+
+            sf::Vector2f fieldPush = math::angleCalc(enemy.getPos2d(),enemyAngle,fieldStrength);
+
+            enemy.momentum += sf::Vector2f(fieldPush.x-enemy.xpos,fieldPush.y-enemy.ypos);
+        }
+
+        for(auto &bullet : bullets)
+        {
+            //Bullet.
+            if(bullet.owner == nullptr)
+                continue;
+            if(npc.factionPtr->getFactionRelations(bullet.owner->faction) > -1000)
+                continue;
+
+            int dist = math::distance(npc.getPos(),bullet.pos);
+            if(dist > fieldRange)
+                continue;
+
+            bullet.speed = math::clamp(bullet.speed-(fieldStrength/2),0,99999999);
+
+        }
+    }
 
     if(npc.faction == "The Titanium Grip")
         scrapPickup(npc,container);

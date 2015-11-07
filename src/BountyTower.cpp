@@ -1259,6 +1259,8 @@ void renderRecruiterMenu(baseMenu &menu)
                 outPut.append(", Immune to Knockback Damage, Additional 20% Damage Reduction.");
             if(npc.racialAbility == "Pocket Picker")
                 outPut.append(", 5% Chance to gain some small items when using Melee.");
+            if(npc.racialAbility == "Telekinetic Field")
+                outPut.append(", Constantly pushes back nearby enemies and slows enemy bullets.");
         }
 
         shapes.createText(vPos,10,highlightColor,outPut,&gvars::hudView);
@@ -1320,10 +1322,10 @@ void renderRecruiterMenu(baseMenu &menu)
     AnyDeletes(recruitables);
 
     for(auto &dudes : recruitables)
-                {
-                    if(dudes.toDelete)
-                        std::cout << dudes.name << " should be deleted! \n";
-                }
+    {
+        if(dudes.toDelete)
+            std::cout << dudes.name << " should be deleted! \n";
+    }
 }
 
 void renderTowerMenu(baseMenu &menu)
