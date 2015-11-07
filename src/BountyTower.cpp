@@ -970,8 +970,15 @@ void renderSkillMenu(baseMenu &menu)
 }
 
 void renderSquaddieMenu(baseMenu &menu)
-{
-
+{ // Layer 18000
+    int layer = 18000;
+    enum
+    {
+        BackPanel,
+        Shapes,
+        Button,
+        Text
+    };
     if(inputState.key[Key::Comma].time == 1)
     {
         for(int i = 0; i != 101; i++)
@@ -984,9 +991,10 @@ void renderSquaddieMenu(baseMenu &menu)
 
 
     shapes.createSquare(100,100,screen.x()-100,screen.y()-100,sf::Color(sf::Color(150,150,0)),5,sf::Color::White,&gvars::hudView);
-    shapes.shapes.back().layer = 100;
+    shapes.shapes.back().layer = layer+BackPanel;
     //Close Button
     int exitButt = shapes.createImageButton(sf::Vector2f(screen.x()-100,100),texturemanager.getTexture("ExitButton.png"),"",0,&gvars::hudView);
+    shapes.shapes.back().layer = layer+Button;
     if(shapes.shapeClicked(exitButt))
         menu.toDelete = true;
 
@@ -995,12 +1003,14 @@ void renderSquaddieMenu(baseMenu &menu)
 
     Npc *npc = menu.npc;
     shapes.createText(sf::Vector2f(105,100),20,sf::Color(100,100,100),"Name: " + npc->name,&gvars::hudView);
+    shapes.shapes.back().layer = layer+Text;
 
     //XP and Level!
     std::string LevelXpLine = "Level: " + std::to_string(npc->level) + "\n";
     LevelXpLine.append("XP: " + std::to_string(npc->xp));
     LevelXpLine.append(", (Next Level: " + std::to_string(nextLevelXpRequired(npc->level)) + ")");
     shapes.createText(sf::Vector2f(105,120),20,sf::Color::White,LevelXpLine,&gvars::hudView);
+    shapes.shapes.back().layer = layer+Text;
 
     //Attributes! SPICED
     std::string AttributeLine;
@@ -1012,6 +1022,7 @@ void renderSquaddieMenu(baseMenu &menu)
     AttributeLine.append("Endurance: " + std::to_string(npc->attributes.endurance) + "\n");
     AttributeLine.append("Dexterity: " + std::to_string(npc->attributes.dexterity) + "\n");
     shapes.createText(sf::Vector2f(105,170),20,sf::Color::White,AttributeLine,&gvars::hudView);
+    shapes.shapes.back().layer = layer+Text;
 
 
 
@@ -1019,7 +1030,9 @@ void renderSquaddieMenu(baseMenu &menu)
     //Inventory!
     sf::Vector2f invPos(screen.x()/2,130);
     shapes.createText(sf::Vector2f(636,102),15,sf::Color::White,"Inventory",&gvars::hudView);
+    shapes.shapes.back().layer = layer+Text;
     shapes.createSquare(invPos.x-40,invPos.y-10,invPos.x+100,invPos.y+(screen.y()/2)+120,sf::Color::Transparent,2,sf::Color::Black,&gvars::hudView);
+    shapes.shapes.back().layer = layer+Shapes;
 
     float x = 0, y = 0;
     bool offSet = false;
@@ -1029,7 +1042,9 @@ void renderSquaddieMenu(baseMenu &menu)
         if(offSet)
             drawPos.x += 62;
         shapes.createSquare(drawPos.x-30,drawPos.y-30,drawPos.x+30,drawPos.y+30,sf::Color::Black,2,sf::Color::White,&gvars::hudView);
+        shapes.shapes.back().layer = layer+Shapes;
         shapes.createImageButton(drawPos,*item.img.getTexture(),"",0,&gvars::hudView);
+        shapes.shapes.back().layer = layer+Button;
         if(offSet)
         {
             drawPos.x -= 62;
@@ -1104,7 +1119,9 @@ void renderSquaddieMenu(baseMenu &menu)
 
     */
     int squaddieNSkillButt = shapes.createImageButton(sf::Vector2f(110+30,490+30),texturemanager.getTexture("blankButton.png"),"",0,&gvars::hudView);
+    shapes.shapes.back().layer = layer+Button;
     textList.createText(sf::Vector2f(110+5,490+25),10,sf::Color::White,"Skills",gvars::hudView);
+    shapes.shapes.back().layer = layer+Text;
 
     if(menu.age > 15 && shapes.shapeClicked(squaddieNSkillButt))
     {
@@ -1115,10 +1132,21 @@ void renderSquaddieMenu(baseMenu &menu)
 }
 
 void renderMerchantMenu(baseMenu &menu)
-{
+{ // Layer 19000
+    int layer = 19000;
+    enum
+    {
+        BackPanel,
+        Shapes,
+        Button,
+        Text
+    };
+
     shapes.createSquare(100,100,screen.x()-100,screen.y()-100,sf::Color(sf::Color(150,150,0)),5,sf::Color::White,&gvars::hudView);
+    shapes.shapes.back().layer = layer+BackPanel;
     //Close Button
     int exitButt = shapes.createImageButton(sf::Vector2f(screen.x()-100,100),texturemanager.getTexture("ExitButton.png"),"",0,&gvars::hudView);
+    shapes.shapes.back().layer = layer+Button;
     if(shapes.shapeClicked(exitButt))
         menu.toDelete = true;
 
@@ -1131,9 +1159,11 @@ void renderMerchantMenu(baseMenu &menu)
         int posX = 150+(xOffset*300);
         int posY = 150+(yOffset*60);
         shapes.createSquare(posX-30,posY-30,posX+30,posY+30,sf::Color::Black,0,sf::Color::Cyan, &gvars::hudView);
+        shapes.shapes.back().layer = layer+Shapes;
 
         sf::Vector2f vPos(posX,posY);
         int itemButt = shapes.createImageButton(vPos,*item.img.getTexture(),"",0,&gvars::hudView);
+        shapes.shapes.back().layer = layer+Button;
 
         sf::Color highlightColor = sf::Color::White;
         if(shapes.shapeHovered(itemButt))
@@ -1145,8 +1175,10 @@ void renderMerchantMenu(baseMenu &menu)
 
 
         shapes.createText(vPos,15,highlightColor,outPut,&gvars::hudView);
+        shapes.shapes.back().layer = layer+Text;
         vPos.y += 15;
         shapes.createText(vPos,10,highlightColor,"$" + str(item.value),&gvars::hudView);
+        shapes.shapes.back().layer = layer+Text;
         vPos.y += 15;
         std::string stats = "Dam: " + str(item.mindam) + "/" + str(item.maxdam);
         if(item.type == 1 || item.type == 2 || item.type == 23)
@@ -1180,6 +1212,7 @@ void renderMerchantMenu(baseMenu &menu)
         if(item.stackSize > 1)
             stats.append("\nStack: " + str(item.stackSize));
         shapes.createText(vPos,10,highlightColor,stats,&gvars::hudView);
+        shapes.shapes.back().layer = layer+Text;
 
 
 
@@ -1218,10 +1251,20 @@ void renderMerchantMenu(baseMenu &menu)
 }
 
 void renderRecruiterMenu(baseMenu &menu)
-{
+{// Layer 20000
+    int layer = 20000;
+    enum
+    {
+        BackPanel,
+        Shapes,
+        Button,
+        Text
+    };
     shapes.createSquare(100,100,screen.x()-100,screen.y()-100,sf::Color(sf::Color(150,150,0)),5,sf::Color::White,&gvars::hudView);
+    shapes.shapes.back().layer = layer+BackPanel;
     //Close Button
     int exitButt = shapes.createImageButton(sf::Vector2f(screen.x()-100,100),texturemanager.getTexture("ExitButton.png"),"",0,&gvars::hudView);
+    shapes.shapes.back().layer = layer+Button;
     if(shapes.shapeClicked(exitButt))
         menu.toDelete = true;
 
@@ -1230,6 +1273,7 @@ void renderRecruiterMenu(baseMenu &menu)
 
     std::string SPICED = "SPICED = Strength Perception Intelligence Charisma Endurance Dexterity";
     shapes.createText(sf::Vector2f(105,100),10,sf::Color::White,SPICED,&gvars::hudView);
+    shapes.shapes.back().layer = layer+Text;
 
     //for(auto npc : npcmanager.globalCritter)
     for(auto &npc : recruitables)
@@ -1246,12 +1290,14 @@ void renderRecruiterMenu(baseMenu &menu)
         int posX = 150+(xOffset*300);
         int posY = 150+(yOffset*60);;
         shapes.createSquare(posX-30,posY-30,posX+30,posY+30,sf::Color::Black,0,sf::Color::Cyan, &gvars::hudView);
+        shapes.shapes.back().layer = layer+Shapes;
 
 
 
         sf::Vector2f vPos(posX,posY);
 
         int npcButt = shapes.createImageButton(vPos,texturemanager.getTexture("SpriteSheet"+npc.race+"Frame.png"),"",0,&gvars::hudView);
+        shapes.shapes.back().layer = layer+Button;
         // hehe... npc butt.
         sf::Color highlightColor = sf::Color::White;
         if(shapes.shapeHovered(npcButt))
@@ -1260,8 +1306,10 @@ void renderRecruiterMenu(baseMenu &menu)
         vPos.y -= 30;
         vPos.x += 30;
         shapes.createText(vPos,15,highlightColor,npc.race+": "+npc.name,&gvars::hudView);
+        shapes.shapes.back().layer = layer+Text;
         vPos.y += 15;
         shapes.createText(vPos,10,highlightColor,"$" + str(critterCost),&gvars::hudView);
+        shapes.shapes.back().layer = layer+Text;
         vPos.y += 10;
         std::string outPut = "Speed: " + str(static_cast<int>(npc.moverate) );
         outPut.append("\nS.P.I.C.E.D. : ");
@@ -1286,6 +1334,7 @@ void renderRecruiterMenu(baseMenu &menu)
         }
 
         shapes.createText(vPos,10,highlightColor,outPut,&gvars::hudView);
+        shapes.shapes.back().layer = layer+Text;
 
 
 
