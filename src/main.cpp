@@ -1055,7 +1055,7 @@ void critterPathFind(Npc &npc, std::list<Npc> &container)
         pathy.append(out.str());
         Vec3 endPathPos(npc.storedPath[npc.storedPath.size()-1]->getPos());
         if(npc.isSquaddie)
-            textList.createText((endPathPos.x)*GRID_SIZE-GRID_SIZE,(endPathPos.y)*GRID_SIZE-GRID_SIZE,10,sf::Color(255,255,255), pathy );
+            shapes.createText((endPathPos.x)*GRID_SIZE-GRID_SIZE,(endPathPos.y)*GRID_SIZE-GRID_SIZE,10,sf::Color(255,255,255), pathy );
 
         //Moving to the next position in our path!
         npc.dirMove(sf::Vector2f(Pos.x*GRID_SIZE+(GRID_SIZE/2),Pos.y*GRID_SIZE+(GRID_SIZE/2)));
@@ -1157,7 +1157,7 @@ void overheadOverlay(Npc &npc)
 
     //Overhead Healthtext.
     //int critterHealth = npc.health;
-    //textList.createText(npc.xpos-30,npc.ypos-40,10,sf::Color::White,"Health: " + std::to_string(critterHealth));
+    //shapes.createText(npc.xpos-30,npc.ypos-40,10,sf::Color::White,"Health: " + std::to_string(critterHealth));
 
     //Overhead Name
 
@@ -1168,7 +1168,7 @@ void overheadOverlay(Npc &npc)
     if(inputState.key[Key::LAlt])
         testString.append(" Health: " + str(static_cast<int>(npc.health)) + "/" + str(static_cast<int>(npc.getMaxHealth())));
 
-    textList.createText(npc.xpos-30,npc.ypos-55,10,sf::Color::White,testString);
+    shapes.createText(npc.xpos-30,npc.ypos-55,10,sf::Color::White,testString);
 
 }
 
@@ -1567,9 +1567,13 @@ ReDesire:
     if (inComplete)
         goto ReDesire;
 
+    /*
+
     if(inputState.key[Key::LAlt])
-        textList.createText(npc.xpos - 30, npc.ypos - 15, 10, sf::Color::Red,
+        shapes.createText(npc.xpos - 30, npc.ypos - 15, 10, sf::Color::Red,
                         (*highestDesire).type, ":", (*highestDesire).potency);
+
+    */
 
 
     /* End of Critter Prioritization */
@@ -1632,10 +1636,12 @@ void displayChat(sf::Vector2f position)
             (position.y - ((11) * 10)), // (position.y - ((chatBox.chatStorage.size() + 1) * 10)),
             sf::Color(0, 0, 0, 100), 2, sf::Color::Cyan, &gvars::hudView);
 
+    shapes.shapes.back().layer = 300000;
+
     /*
     for (size_t i = 0; i != chatBox.chatStorage.size(); i++)
     {
-        textList.createText(
+        shapes.createText(
             position.x,
             ((position.y - ((chatBox.chatStorage.size()) * 10))-10) + (i * 10), 10,
             chatBox.chatStorage[i].color, chatBox.chatStorage[i].line);
@@ -1651,16 +1657,17 @@ void displayChat(sf::Vector2f position)
     for (size_t i = chatBox.chatStorage.size(); i != chatBox.chatStorage.size()-10; i--)
     {
         sf::Vector2f drawPos(position.x,((position.y - ((chatBox.chatStorage.size()) * 10))-10) + ((i-1) * 10));
-        textList.createText(drawPos, 10, chatBox.chatStorage[i-1].color, chatBox.chatStorage[i-1].line, gvars::hudView);
+        shapes.createText(drawPos, 10, chatBox.chatStorage[i-1].color, chatBox.chatStorage[i-1].line, &gvars::hudView);
+        shapes.shapes.back().layer = 300001;
     }
 
 
     if(network::chatting)
     {
         if(gvars::secondSwitch)
-            textList.createText(gvars::bottomLeft.x+10,gvars::bottomLeft.y-15,10,sf::Color::White,"Chat: " + cliCon.chatString);
+            shapes.createText(gvars::bottomLeft.x+10,gvars::bottomLeft.y-15,10,sf::Color::White,"Chat: " + cliCon.chatString);
         else
-            textList.createText(gvars::bottomLeft.x+10,gvars::bottomLeft.y-15,10,sf::Color::White,"Chat: " + cliCon.chatString + "|");
+            shapes.createText(gvars::bottomLeft.x+10,gvars::bottomLeft.y-15,10,sf::Color::White,"Chat: " + cliCon.chatString + "|");
     }
 
     window.setView(gvars::view1);
@@ -1799,7 +1806,11 @@ void drawHudSkills(Npc &npc, sf::Vector2f spritePos)
             int skillRot = 180+(180*skill.autouse);
             int skillButt = shapes.createImageButton(skillPos,texturemanager.getTexture("ArrowButton.png"),"",skillRot,&gvars::hudView);
             if(skill.cooldown > 0)
-                textList.createText(skillPos,15,sf::Color::White,std::to_string(skill.cooldown/60),window.getView());
+            {
+                shapes.createText(skillPos,15,sf::Color::White,std::to_string(skill.cooldown/60),&gvars::hudView);
+                shapes.shapes.back().layer += 2;
+            }
+
 
             if(shapes.shapeClicked(skillButt) && skill.cooldown <= 0)
             {
@@ -1813,9 +1824,11 @@ void drawHudSkills(Npc &npc, sf::Vector2f spritePos)
             if(shapes.shapeHovered(skillButt))
             {
                 gvars::hovering = true;
-                textList.createText(skillPos,15,sf::Color::White,skill.name,window.getView());
+                shapes.createText(skillPos,15,sf::Color::White,skill.name,&gvars::hudView);
+                shapes.shapes.back().layer += 2;
 
-                textList.createText(sf::Vector2f(skillPos.x,skillPos.y+20),15,sf::Color::White,"    " + skill.desc,window.getView());
+                shapes.createText(sf::Vector2f(skillPos.x,skillPos.y+20),15,sf::Color::White,"    " + skill.desc,&gvars::hudView);
+                shapes.shapes.back().layer += 2;
                 if(inputState.rmbTime == 1)
                 {
                     toggle(skill.autouse);
@@ -1864,14 +1877,16 @@ void drawSquadHud()
             {
                 sf::Vector2f skilltextPos = spritePos;
                 skilltextPos.x += 205;
-                textList.createText(skilltextPos,10,gvars::cycleGreen,"Unspent Skillpoints!", gvars::hudView);
+                shapes.createText(skilltextPos,10,gvars::cycleGreen,"Unspent Skillpoints!", &gvars::hudView);
             }
 
 
             spritePos.x += 2;
-            textList.createText(spritePos,10,sf::Color::White,str(ydrawPos+1) +": " + npc.name, gvars::hudView);
+            shapes.createText(spritePos,10,sf::Color::White,str(ydrawPos+1) +": " + npc.name, &gvars::hudView);
+            shapes.shapes.back().layer += 1;
             spritePos.y += 10;
-            textList.createText(spritePos,10,sf::Color::White,"Health: " + str(static_cast<int>(npc.health)) + "/" + str(static_cast<int>(npc.getMaxHealth())), gvars::hudView);
+            shapes.createText(spritePos,10,sf::Color::White,"Health: " + str(static_cast<int>(npc.health)) + "/" + str(static_cast<int>(npc.getMaxHealth())), &gvars::hudView);
+            shapes.shapes.back().layer += 1;
             spritePos.y += 1;
 
 
@@ -1882,7 +1897,8 @@ void drawSquadHud()
 
             // Level-o-meter!
             spritePos.y += 10;
-            textList.createText(spritePos,10,sf::Color::White,"Level "+str(npc.level) + ", XP: " + str(npc.xp) + "/" +str(nextLevelXpRequired(npc.level)), gvars::hudView);
+            shapes.createText(spritePos,10,sf::Color::White,"Level "+str(npc.level) + ", XP: " + str(npc.xp) + "/" +str(nextLevelXpRequired(npc.level)), &gvars::hudView);
+            shapes.shapes.back().layer += 1;
             spritePos.y += 1;
             float remainingXP = static_cast<float>(npc.xp) / static_cast<float>(nextLevelXpRequired(npc.level));
             shapes.createSquare(spritePos.x,spritePos.y+1,spritePos.x+150,spritePos.y+9,sf::Color(0,0,0),1,sf::Color::White,&gvars::hudView);
@@ -1891,7 +1907,7 @@ void drawSquadHud()
 
             // ???-o-meter!
             spritePos.y += 10;
-            //textList.createText(spritePos,10,sf::Color::White,"???: " + str(npc.health), gvars::hudView);
+            //shapes.createText(spritePos,10,sf::Color::White,"???: " + str(npc.health), gvars::hudView);
             spritePos.y += 1;
             //shapes.createSquare(spritePos.x,spritePos.y+1,spritePos.x+150,spritePos.y+9,sf::Color(0,0,0),1,sf::Color::White,&gvars::hudView);
             //shapes.createSquare(spritePos.x,spritePos.y+1,spritePos.x+(150*remainingHealth),spritePos.y+9,sf::Color::Blue,0,highlightColor,&gvars::hudView);
@@ -1899,7 +1915,7 @@ void drawSquadHud()
 
             // Profit!-o-meter!
             spritePos.y += 10;
-            //textList.createText(spritePos,10,sf::Color::White,"???: " + str(npc.health), gvars::hudView);
+            //shapes.createText(spritePos,10,sf::Color::White,"???: " + str(npc.health), gvars::hudView);
             spritePos.y += 1;
             //shapes.createSquare(spritePos.x,spritePos.y+1,spritePos.x+150,spritePos.y+9,sf::Color(0,0,0),1,sf::Color::White,&gvars::hudView);
             //shapes.createSquare(spritePos.x,spritePos.y+1,spritePos.x+(150*remainingHealth),spritePos.y+9,sf::Color::Green,0,highlightColor,&gvars::hudView);
@@ -1923,11 +1939,13 @@ void drawSquadHud()
                 // LeftHanded Ammo Remaining
                 spritePos.x += 1;
                 spritePos.y -= 3;
-                textList.createText(spritePos,10,sf::Color::White,"L", gvars::hudView);
+                shapes.createText(spritePos,10,sf::Color::White,"L", &gvars::hudView);
+                shapes.shapes.back().layer += 2;
                 spritePos.x -= 1;
                 spritePos.y += 3;
                 shapes.createSquare(spritePos.x,spritePos.y+8,spritePos.x+10,spritePos.y+8-48,sf::Color::Black,1,sf::Color::White,&gvars::hudView);
                 shapes.createSquare(spritePos.x+1,spritePos.y+8,spritePos.x+9,spritePos.y+8-(48*ammoRemaining),sf::Color(200,200,0),0,sf::Color::White,&gvars::hudView);
+                shapes.shapes.back().layer += 1;
             }
 
 
@@ -1947,11 +1965,13 @@ void drawSquadHud()
 
                 spritePos.x += 21;
                 spritePos.y -= 3;
-                textList.createText(spritePos,10,sf::Color::White,"R", gvars::hudView);
+                shapes.createText(spritePos,10,sf::Color::White,"R", &gvars::hudView);
+                shapes.shapes.back().layer += 2;
                 spritePos.x -= 1;
                 spritePos.y += 3;
                 shapes.createSquare(spritePos.x,spritePos.y+8,spritePos.x+10,spritePos.y+8-48,sf::Color::Black,1,sf::Color::White,&gvars::hudView);
                 shapes.createSquare(spritePos.x+1,spritePos.y+8,spritePos.x+9,spritePos.y+8-(48*ammoRemaining),sf::Color(200,200,0),0,sf::Color::White,&gvars::hudView);
+                shapes.shapes.back().layer += 1;
             }
 
 
@@ -1972,14 +1992,14 @@ void drawEnemyCounterHud()
     sf::Vector2f vPos(screen.x()/1.5,160);
     std::string outPut = "Enemies Remaining: " + std::to_string(counter);
     if(counter > 0)
-        textList.createText(vPos,15,sf::Color::White,outPut,gvars::hudView);
+        shapes.createText(vPos,15,sf::Color::White,outPut,&gvars::hudView);
 }
 
 
 void drawStuffs()
 {
-    //textList.createText(15,15,10,sf::Color::White,"Server Port: " + std::to_string(network::mainPort));
-    //textList.createText(15,30,10,sf::Color::White,"Internal Port: " + std::to_string(network::mainPort+23));
+    //shapes.createText(15,15,10,sf::Color::White,"Server Port: " + std::to_string(network::mainPort));
+    //shapes.createText(15,30,10,sf::Color::White,"Internal Port: " + std::to_string(network::mainPort+23));
 
     //sf::Vector2f correction = gridEject(gvars::mousePos);
     //shapes.createCircle(correction.x,correction.y,5,sf::Color::Red);
@@ -1987,7 +2007,7 @@ void drawStuffs()
     for(int i = 0; i != peers.connected.size(); i++)
     {
         std::string Text = std::to_string(peers.connected[i].ping) + "Peer: " + peers.connected[i].name;
-        textList.createText(gvars::topRight.x-150,gvars::topRight.y+(i*10)+10,10,sf::Color::Yellow, Text);
+        shapes.createText(gvars::topRight.x-150,gvars::topRight.y+(i*10)+10,10,sf::Color::Yellow, Text);
     }
 
 
@@ -2013,7 +2033,7 @@ void drawStuffs()
             {
                 shapes.createSquare(x*20,y*20,(x+1)*20,(y+1)*20,liqClr);
                 liqClr.a = 255;
-                textList.createText(x*20+10,y*20+10,10,liqClr,std::to_string(liqAmt));
+                shapes.createText(x*20+10,y*20+10,10,liqClr,std::to_string(liqAmt));
             }
         }
     }
@@ -2127,7 +2147,7 @@ void drawStuffs()
         spinner.setOrigin(10.5f,10.5f);
         window.draw(spinner);
         std::string outText = "Map transition locked, Press Space to toggle.";
-        textList.createText(Pos-(outText.size()*3),gvars::topRight.y+50,10,sf::Color::Cyan,outText);
+        shapes.createText(Pos-(outText.size()*3),gvars::topRight.y+50,10,sf::Color::Cyan,outText);
     }
 
     //    DrawPlanets();//Remove this one, Reenable previous
@@ -2640,7 +2660,7 @@ void handlePhase()
         attractNPCs(gvars::mousePos);
 
         if (gvars::debug)
-            textList.createText((gvars::currentx - 2) * GRID_SIZE,
+            shapes.createText((gvars::currentx - 2) * GRID_SIZE,
                                 (gvars::currenty + 1) * GRID_SIZE, 11,
                                 sf::Color::Red, "Debug On");
 
@@ -2699,7 +2719,7 @@ void handlePhase()
             for (int x = 0; x != GRIDS; x++)
                 for (int y = 0; y != GRIDS; y++)
             {
-                //textList.createText(x*TILE_PIXELS,y*TILE_PIXELS,10,sf::Color::Red,std::to_string(tiles[x][y][gvars::currentz].walkable));
+                //shapes.createText(x*TILE_PIXELS,y*TILE_PIXELS,10,sf::Color::Red,std::to_string(tiles[x][y][gvars::currentz].walkable));
                 if(tiles[x][y][gvars::currentz].walkable)
                     shapes.createSquare(x*TILE_PIXELS,y*TILE_PIXELS,x*TILE_PIXELS+TILE_PIXELS,y*TILE_PIXELS+TILE_PIXELS,sf::Color(255,255,0,100));
                 else
@@ -2781,8 +2801,12 @@ void handlePhase()
             Vec3 Pos = tiles[abs_to_index(gvars::mousePos.x / 20)][abs_to_index(
                     gvars::mousePos.y / 20)][gvars::currentz].getPos();
 
-            textList.createText(gvars::mousePos.x, gvars::mousePos.y, 11,
+            /*
+
+            shapes.createText(gvars::mousePos.x, gvars::mousePos.y, 11,
                                 sf::Color::Red, "ID: ", "", Variable, ", Pos (" + std::to_string(Pos.x) + "/" + std::to_string(Pos.y) + "/" + std::to_string(Pos.z) + ")");
+
+                                */
         }
 
         if(!selectedNPCs.empty())
@@ -3043,15 +3067,17 @@ void handlePhase()
 
     } //=============================================================================*End of Local*========================================================================
 
+    /*
+
     if (gCtrl.phase == "MakeSquad") // Needs a heavy menu overhaul.
     {
         gvars::view1.setCenter(screen.x() / 2, screen.y() / 2);
 
-        textList.createText(screen.x() / 2, 20, 20, gvars::cycleBlue,
+        shapes.createText(screen.x() / 2, 20, 20, gvars::cycleBlue,
                             "Design Your Squad");
-        textList.createText(screen.x() / 2, 50, 15, sf::Color::Yellow,
+        shapes.createText(screen.x() / 2, 50, 15, sf::Color::Yellow,
                             "Squad Points: ", "", squady.makeSquadPoints);
-        textList.createText(screen.x() / 2, 70, 11, sf::Color::Yellow,
+        shapes.createText(screen.x() / 2, 70, 11, sf::Color::Yellow,
                             "Squad Mates: ", "", squady.squadMates);
 
         SquareButton var200;
@@ -3258,11 +3284,11 @@ void handlePhase()
             fSleep(0.2);
         }
 
-        textList.createText(screen.x() / 2, 80 + (10 * spacing++), 11,
+        shapes.createText(screen.x() / 2, 80 + (10 * spacing++), 11,
                             sf::Color::Green, "Human: ",
                             squady.squad.at(squady.aim).name);
 
-        textList.createText(screen.x() / 2, 80 + (20 * spacing), 11,
+        shapes.createText(screen.x() / 2, 80 + (20 * spacing), 11,
                             sf::Color::White, "Strength: ", "",
                             squady.squad.at(squady.aim).attributes.strength);
 
@@ -3299,7 +3325,7 @@ void handlePhase()
             }
         }
 
-        textList.createText(screen.x() / 2, 80 + (20 * spacing), 11,
+        shapes.createText(screen.x() / 2, 80 + (20 * spacing), 11,
                             sf::Color::White, "Perception: ", "",
                             squady.squad.at(squady.aim).attributes.perception);
 
@@ -3336,7 +3362,7 @@ void handlePhase()
             }
         }
 
-        textList.createText(
+        shapes.createText(
             screen.x() / 2, 80 + (20 * spacing), 11, sf::Color::White,
             "Intelligence: ", "",
             squady.squad.at(squady.aim).attributes.intelligence);
@@ -3374,7 +3400,7 @@ void handlePhase()
             }
         }
 
-        textList.createText(screen.x() / 2, 80 + (20 * spacing), 11,
+        shapes.createText(screen.x() / 2, 80 + (20 * spacing), 11,
                             sf::Color::White, "Charisma: ", "",
                             squady.squad.at(squady.aim).attributes.charisma);
 
@@ -3411,7 +3437,7 @@ void handlePhase()
             }
         }
 
-        textList.createText(screen.x() / 2, 80 + (20 * spacing), 11,
+        shapes.createText(screen.x() / 2, 80 + (20 * spacing), 11,
                             sf::Color::White, "Endurance: ", "",
                             squady.squad.at(squady.aim).attributes.endurance);
 
@@ -3448,7 +3474,7 @@ void handlePhase()
             }
         }
 
-        textList.createText(screen.x() / 2, 80 + (20 * spacing), 11,
+        shapes.createText(screen.x() / 2, 80 + (20 * spacing), 11,
                             sf::Color::White, "Dexterity: ", "",
                             squady.squad.at(squady.aim).attributes.dexterity);
 
@@ -3485,7 +3511,7 @@ void handlePhase()
             }
         }
 
-        textList.createText(screen.x() / 2, 80 + (20 * spacing), 11,
+        shapes.createText(screen.x() / 2, 80 + (20 * spacing), 11,
                             sf::Color::White, "Agility: ", "",
                             squady.squad.at(squady.aim).attributes.agility);
 
@@ -3574,7 +3600,7 @@ void handlePhase()
                 std::cout << MassDifference
             }
         }
-        */
+
     }
 
     if (gCtrl.phase == "World")
@@ -3606,46 +3632,46 @@ void handlePhase()
         debug("Pre-World HUD");
         int hudz = 0;
 
-        textList.createText(gvars::topLeft.x + 2,
+        shapes.createText(gvars::topLeft.x + 2,
                             gvars::topLeft.y + (hudz++) * 11, 22,
                             sf::Color::Yellow, "World Population: ", "",
                             factionPopulation());
         hudz++;
         hudz++;
-        textList.createText(gvars::topLeft.x + 2,
+        shapes.createText(gvars::topLeft.x + 2,
                             gvars::topLeft.y + (hudz++) * 11, 11,
                             sf::Color::White, "CurrentTileID: ", "", id);
-        textList.createText(
+        shapes.createText(
             gvars::topLeft.x + 2, gvars::topLeft.y + (hudz++) * 11, 11,
             sf::Color::White, "CurrentTileInfected: ", "", infected);
-        textList.createText(
+        shapes.createText(
             gvars::topLeft.x + 2, gvars::topLeft.y + (hudz++) * 11, 11,
             sf::Color::White, "FactionOwned: ",
             worldMap[math::clamp(abs(gvars::mousePos.x / 20), 0, 99)]
                     [math::clamp(abs(gvars::mousePos.y / 20), 0, 99)]
                         .owner);
-        textList.createText(
+        shapes.createText(
             gvars::topLeft.x + 2, gvars::topLeft.y + (hudz++) * 11, 11,
             sf::Color::White, "FactionMembers: ", "",
             factionMembers(worldMap[math::clamp(
                 abs(gvars::mousePos.x / 20), 0,
                 99)][math::clamp(abs(gvars::mousePos.y / 20), 0, 99)]
                                .owner));
-        textList.createText(
+        shapes.createText(
             gvars::topLeft.x + 2, gvars::topLeft.y + (hudz++) * 11, 11,
             sf::Color::White, "FactionAggression: ", "",
             factionAggression(worldMap[math::clamp(
                 abs(gvars::mousePos.x / 20), 0,
                 99)][math::clamp(abs(gvars::mousePos.y / 20), 0, 99)]
                                   .owner));
-        textList.createText(
+        shapes.createText(
             gvars::topLeft.x + 2, gvars::topLeft.y + (hudz++) * 11, 11,
             sf::Color::White, "FactionTerritories: ", "",
             factionTerritories(worldMap[math::clamp(
                 abs(gvars::mousePos.x / 20), 0,
                 99)][math::clamp(abs(gvars::mousePos.y / 20), 0, 99)]
                                    .owner));
-        textList.createText(
+        shapes.createText(
             gvars::topLeft.x + 2, gvars::topLeft.y + (hudz++) * 11, 11,
             sf::Color::White, "FactionPower: ", "",
             factionPower(worldMap[math::clamp(
@@ -3653,7 +3679,7 @@ void handlePhase()
                 99)][math::clamp(abs(gvars::mousePos.y / 20), 0, 99)]
                              .owner));
 
-        textList.createText(gvars::topLeft.x + 2,
+        shapes.createText(gvars::topLeft.x + 2,
                             gvars::topLeft.y + (hudz++) * 11, 11,
                             sf::Color::White, "AimedPos(DELETEME): ", "",
                             abs(gvars::mousePos.x / 20), "/", "",
@@ -3725,15 +3751,15 @@ void handlePhase()
     { //=======================================================*Main Menu*============================================================================
         gCtrl.buildMainMenu();
         gvars::view1.setCenter(HALF_SIZE.x, HALF_SIZE.y);
-        textList.createText(500, 0, 25, sf::Color::White, "Welcome!", "",
+        shapes.createText(500, 0, 25, sf::Color::White, "Welcome!", "",
                             -6698, "", "", -6698, "", "", -6698, 1, 0);
-        textList.createText(
+        shapes.createText(
             450, 25, 11, sf::Color::Red,
             "Take this 'game' with a grain of salt, It's not done yet");
-        textList.createText(450, 45, 11, gvars::cycleGreen,
+        shapes.createText(450, 45, 11, gvars::cycleGreen,
                             "Design Your Squad");
 
-        textList.createText(450, 60, 11, sf::Color::Red,
+        shapes.createText(450, 60, 11, sf::Color::Red,
                             "Press 'm' to view MicroPather basic test");
 
         // TODO: Simply add cText.CreateText for the Button Text, Or at least make it an option, Since sButtonText is designed for text 'on' the button.
@@ -3746,20 +3772,19 @@ void handlePhase()
         var.sButtonText = "Howdy";
         vSquareButtonList.push_back(var);
 
-        textList.createText(450, 75, 11, sf::Color::Red,
+        shapes.createText(450, 75, 11, sf::Color::Red,
                             "Press r to turn on the "
                             "debugger, If it slows down the "
                             "game, Minimize the console.");
-        textList.createText(395, 755, 10, sf::Color::White,
+        shapes.createText(395, 755, 10, sf::Color::White,
                             "Pathfinding: MicroPather by Lee Thomason");
-        /* textList.createText(gvars::mousePos.x,gvars::mousePos.y-10,10,sf::Color::White,"X: "+std::to_string(gvars::mousePos.x)+" Y: "+std::to_string(gvars::mousePos.y)); */
 
-        if (inputState.key[Key::M] && !network::chatting)
-        {
-            gCtrl.phase = "MicroPatherTest";
-            gvars::currentx = 14;
-            gvars::currenty = 14;
-        }
+
+
+
+
+
+
 
         if (squareButtonClicked(var.id))
         {
@@ -3857,6 +3882,9 @@ void handlePhase()
                 squady.squad.push_back(var);
             }
         }
+
+
+
         if (inputState.key[Key::Comma] && !network::chatting)
         {
             if (gvars::debug)
@@ -3879,7 +3907,7 @@ void handlePhase()
         }
     } //=============================================================================*End of Main Menu*========================================================================
 
-
+        */
 
 }
 
@@ -3969,8 +3997,8 @@ void drawBeams()
 
         shapes.createLine(beam.startPos.x,beam.startPos.y,beam.endPos.x,beam.endPos.y,3,color);
         int angle = beam.angle;
-        textList.createText(beam.startPos.x,beam.startPos.y,10,color,std::to_string(angle));
-        textList.createText(beam.endPos.x,beam.endPos.y,10,color,std::to_string(angle));
+        shapes.createText(beam.startPos.x,beam.startPos.y,10,color,std::to_string(angle));
+        shapes.createText(beam.endPos.x,beam.endPos.y,10,color,std::to_string(angle));
 
 
     }
@@ -4077,12 +4105,12 @@ void beamTestLoop()
                             int angle = math::constrainAngle( math::angleDiff(beam.angle,otherbeam.angle));
                             angle = math::constrainAngle(beam.angle + (angle/2) );
 
-                            textList.createText(trail[i].x,trail[i].y,10,color,std::to_string(angle));
+                            shapes.createText(trail[i].x,trail[i].y,10,color,std::to_string(angle));
                             sf::Vector2f xxPos(trail[i].x,trail[i].y);
                             sf::Vector2f vPos = math::angleCalc(xxPos,math::constrainAngle(angle),100);
                             shapes.createCircle(vPos.x,vPos.y,10,color);
                             std::string outPut = std::to_string(beam.id) + ": a: " + std::to_string(angle);
-                            textList.createText(vPos.x,vPos.y,10,color,outPut);
+                            shapes.createText(vPos.x,vPos.y,10,color,outPut);
                             shapes.createLine(trail[i].x,trail[i].y,vPos.x,vPos.y,3,color);
 
                             if(inputState.key[Key::Z])
@@ -4420,7 +4448,9 @@ void pauseMenu()
         window.setView(gvars::hudView);
 
         sf::Vector2f tSize(screen.x()/2-100,screen.y()/2);
-        textList.createText(tSize,20,sf::Color::White,"Game Paused, Press P to resume.",gvars::hudView);
+        shapes.createText(tSize,20,sf::Color::White,"Game Paused, Press P to resume.",&gvars::hudView);
+        shapes.drawShapes();
+
         textList.drawTextz();
         window.display();
 
