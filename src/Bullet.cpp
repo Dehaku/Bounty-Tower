@@ -172,7 +172,13 @@ void Bullet::moveBullet()
 
     //shapes.createCircle(pos.x,pos.y,3,sf::Color(150,150,150),1,sf::Color(0,0,0));
     int newAngle = angle;
-    createImageButton(sf::Vector2f(pos.x,pos.y),*tex,"",newAngle+90);
+    int bulletButt = shapes.createImageButton(sf::Vector2f(pos.x,pos.y),*tex,"",newAngle+90);
+    if(shapes.shapeHovered(bulletButt) && inputState.lmbTime == 1)
+    {
+        //TODO: Meta Profile Achievement
+        toDelete = true;
+        chatBox.addChat("Unholy goddess! You clicked a bullet out of the air! Nice.", sf::Color::White);
+    }
 
     bool hitSomething = false;
     for(int i = 0; i != speed; i++)
