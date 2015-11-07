@@ -1534,6 +1534,7 @@ void renderEscapeMenu(baseMenu &menu)
     textPos.y += screen.y()/8;
     buttonPos = textPos;
     shapes.createText(textPos,10,sf::Color::White,"Music: " + str(gvars::musicVolume),&gvars::hudView);
+    shapes.shapes.back().layer = 15075;
     buttonPos.x += 90;
     buttonPos.y += 15;
     int decreaseMusicButt = shapes.createImageButton(buttonPos,texturemanager.getTexture("ArrowButton.png"),"",-90,&gvars::hudView);

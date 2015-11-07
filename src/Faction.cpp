@@ -4759,9 +4759,15 @@ void drawSelectedCritterHUD()
                 if(mouseItem == nullptr || mouseItem != nullptr && mouseItem->id != slotItem->id)
                     window.draw(SP);
 
-                sf::Vector2f uPos(vPos.x-20,vPos.y+20);
+                sf::Vector2f uPos(vPos.x-20,vPos.y+5);
                 int amount = slotItem->amount;
-                std::string outPut = slotItem->name;
+                sf::Vector2f worldPos = window.mapPixelToCoords(sf::Mouse::getPosition(window), gvars::hudView);
+
+                if(math::closeish(worldPos,vPos) <= 15)
+                    shapes.createText(gvars::mousePos,10,sf::Color::White,"    " + slotItem->name);
+
+
+                std::string outPut;// = slotItem->name;
                 if(amount > 1)
                     outPut.append("\n" + std::to_string(amount));
 
@@ -4776,9 +4782,10 @@ void drawSelectedCritterHUD()
                     outPut.append("\n("+str(curAmmo)+"/"+str(maxAmmo)+")");
 
                     sf::Vector2f buttPos(uPos);
-                    buttPos.y -= 50;
+                    buttPos.y -= 25;
+
                     int reloadButt = shapes.createImageButton(buttPos,texturemanager.getTexture("ArrowButton.png"),"",0,&gvars::hudView);
-                    buttPos.x += 20;
+                    buttPos.x += 40;
                     int unloadButt = shapes.createImageButton(buttPos,texturemanager.getTexture("ArrowButton.png"),"",180,&gvars::hudView);
 
                     if(slotItem->user->isSquaddie && shapes.shapeHovered(reloadButt))
@@ -4809,7 +4816,7 @@ void drawSelectedCritterHUD()
                 { // Playing with Medical Supplies
                     outPut.append("\n(" + str(slotItem->healAmount) + ")");
                     sf::Vector2f buttPos(uPos);
-                    buttPos.y -= 50;
+                    buttPos.y -= 25;
                     int healButt = shapes.createImageButton(buttPos,texturemanager.getTexture("ArrowButton.png"),"",0,&gvars::hudView);
 
                     if(shapes.shapeHovered(healButt))
