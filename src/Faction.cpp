@@ -2194,6 +2194,10 @@ void dirMove(sf::Vector2f tar)
 
 void Npc::dirMove(sf::Vector2f tar)
 {
+    if(!canmove)
+        return;
+
+
     sf::Vector2f oldPos(xpos,ypos);
 
     sf::Vector2f pos(xpos,ypos);
