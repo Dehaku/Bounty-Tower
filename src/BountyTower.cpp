@@ -740,14 +740,17 @@ dynamicVariable * baseMenu::getVar(std::string varName)
 }
 
 void renderSkillMenu(baseMenu &menu)
-{
+{ // Layer 17000
     selectedNPCs.clear();
-
+    int layer = 17000;
 
     shapes.createSquare(100,100,screen.x()-100,screen.y()-100,sf::Color(sf::Color(150,150,0)),5,sf::Color::White,&gvars::hudView);
+    shapes.shapes.back().layer = layer+0;
     //shapes.shapes.back().layer = 10;
     //Close Button
     int exitButt = shapes.createImageButton(sf::Vector2f(screen.x()-100,100),texturemanager.getTexture("ExitButton.png"),"",0,&gvars::hudView);
+    shapes.shapes.back().layer = layer+50;
+
     if(shapes.shapeClicked(exitButt))
         menu.toDelete = true;
 
@@ -756,10 +759,9 @@ void renderSkillMenu(baseMenu &menu)
 
     Npc *npc = menu.npc;
 
-    if(inputState.key[Key::Space])
-        shapes.createText(sf::Vector2f(105,100),20,sf::Color(100,100,100),"Name: " + npc->name,&gvars::hudView);
-    else
-        shapes.createText(sf::Vector2f(105,100),20,sf::Color(100,100,100),"Name: " + npc->name,&gvars::hudView);
+
+    shapes.createText(sf::Vector2f(105,100),20,sf::Color(100,100,100),"Name: " + npc->name,&gvars::hudView);
+    shapes.shapes.back().layer = layer+75;
 
 
 
@@ -770,9 +772,14 @@ void renderSkillMenu(baseMenu &menu)
     else
         shapes.createText(sf::Vector2f(636,102),15,sf::Color::White,"Skills   SP Remaining: " + str(npc->skillpoints),&gvars::hudView);
 
+    shapes.shapes.back().layer = layer+75;
+
+
 
     shapes.createSquare(300,invPos.y-10,1150,invPos.y+(screen.y()/2),sf::Color::Transparent,2,sf::Color::Black,&gvars::hudView);
+    shapes.shapes.back().layer = layer+25;
     shapes.createSquare(300,invPos.y+(screen.y()/2),1150,invPos.y+(screen.y()/2)+110,sf::Color::Black,0,sf::Color::Black,&gvars::hudView);
+    shapes.shapes.back().layer = layer+25;
 
     dynamicVariable * currentSkill = menu.getVar("currentSkill");
 
@@ -799,8 +806,10 @@ void renderSkillMenu(baseMenu &menu)
 
             sf::Vector2f drawPos(120,150+(yOffset*60));
             int skillTreeButt = shapes.createImageButton(drawPos,texturemanager.getTexture("Skills"+skill.tree+".png"),"",0,&gvars::hudView);
+            shapes.shapes.back().layer = layer+75;
             sf::Vector2f textPos(drawPos.x+40, drawPos.y);
             shapes.createText(textPos,10,sf::Color::White,skill.tree,&gvars::hudView);
+            shapes.shapes.back().layer = layer+75;
 
             bool isParagon = (skill.tree == "Paragon");
 
@@ -808,6 +817,7 @@ void renderSkillMenu(baseMenu &menu)
             if(isParagon && !bountytower::gameBeaten && shapes.shapeHovered(skillTreeButt))
             {
                 shapes.createText(gvars::mousePos,10,sf::Color::White,"   You must beat the game to unlock the Paragon tree! (Demo: Beat the tower)");
+                shapes.shapes.back().layer = layer+75;
             }
             if(shapes.shapeClicked(skillTreeButt))
             {
@@ -873,29 +883,37 @@ void renderSkillMenu(baseMenu &menu)
         else
             shapes.createSquare(drawPos.x-30,drawPos.y-30,drawPos.x+30,drawPos.y+30,sf::Color::Black,0,sf::Color::White,&gvars::hudView);
 
+        shapes.shapes.back().layer = layer+25;
+
         //shapes.createSquare(drawPos.x-30,drawPos.y-30,drawPos.x+30,drawPos.y+30,sf::Color::Black,0,sf::Color::White,&&gvars::hudView);
         int skillButt = shapes.createImageButton(drawPos,texturemanager.getTexture("Skills"+skill.tree+".png"),"",0,&gvars::hudView);
+        shapes.shapes.back().layer = layer+50;
 
         sf::Vector2f skillNamePos(drawPos.x-30,drawPos.y-40);
         shapes.createText(skillNamePos,8,sf::Color::White,skill.name,&gvars::hudView);
+        shapes.shapes.back().layer = layer+75;
 
         sf::Vector2f skillRankPos(drawPos.x-30,drawPos.y-30);
         shapes.createText(skillRankPos,8,sf::Color::White,str(skill.ranks),&gvars::hudView);
+        shapes.shapes.back().layer = layer+75;
 
         if(shapes.shapeHovered(skillButt))
         {
             sf::Vector2f textPos(305,invPos.y+(screen.y()/2));
             sf::Vector2f mouseConvPos(gvars::mousePos.x+10,gvars::mousePos.y);
             shapes.createText(textPos,15,sf::Color::White,skill.name,&gvars::hudView);
+            shapes.shapes.back().layer = layer+75;
 
             textPos.y += 15;
             std::string outPut = "Ranks: (" + str(skill.ranks) + "/" + str(skill.ranksmax) + ")";
             shapes.createText(textPos,15,sf::Color::White,outPut,&gvars::hudView);
+            shapes.shapes.back().layer = layer+75;
             textPos.y += 15;
             if(skill.active)
             { // Cooldown
                 outPut = "Cooldown: " + str(skill.cooldownint/60) + " sec."; // Dividing by 60 to give seconds.
                 shapes.createText(textPos,15,sf::Color::White,outPut,&gvars::hudView);
+                shapes.shapes.back().layer = layer+75;
             }
 
             textPos.y += 15;
@@ -903,6 +921,7 @@ void renderSkillMenu(baseMenu &menu)
             { // Duration
                 outPut = "Duration: " + str(skill.durationint);
                 shapes.createText(textPos,15,sf::Color::White,outPut,&gvars::hudView);
+                shapes.shapes.back().layer = layer+75;
             }
 
 
@@ -910,6 +929,7 @@ void renderSkillMenu(baseMenu &menu)
             textPos.y += 15;
             outPut = skill.desc;
             shapes.createText(textPos,15,sf::Color::White,outPut,&gvars::hudView);
+            shapes.shapes.back().layer = layer+75;
 
 
             if(inputState.rmbTime == 1 && skill.ranks > 0 && menu.age > 30)
@@ -935,7 +955,9 @@ void renderSkillMenu(baseMenu &menu)
     }
 
     int squaddieNSkillButt = shapes.createImageButton(sf::Vector2f(110+30,490+30),texturemanager.getTexture("blankButton.png"),"",0,&gvars::hudView);
+    shapes.shapes.back().layer = layer+50;
     textList.createText(sf::Vector2f(110+5,490+25),9,sf::Color::White,"Overview",gvars::hudView);
+    shapes.shapes.back().layer = layer+75;
     if(menu.age > 15 && shapes.shapeClicked(squaddieNSkillButt))
     {
         menu.toDelete = true;
@@ -1424,21 +1446,27 @@ void renderTowerMenu(baseMenu &menu)
 
 
 void renderEscapeMenu(baseMenu &menu)
-{
+{ // Layer 15000
+    // Backpanel 15000, Buttons 15050, shapes 15025, text 15075;
     shapes.createSquare(100,100,screen.x()-100,screen.y()-100,sf::Color(sf::Color(150,150,0)),5,sf::Color::White,&gvars::hudView);
+    shapes.shapes.back().layer = 15000;
     //Close Button
     int exitButt = shapes.createImageButton(sf::Vector2f(screen.x()-100,100),texturemanager.getTexture("ExitButton.png"),"",0,&gvars::hudView);
+    shapes.shapes.back().layer = 15050;
     if(shapes.shapeClicked(exitButt))
         menu.toDelete = true;
 
     sf::Vector2f textPos( (screen.x()/2) - 50,110);
     sf::Vector2f buttonPos(textPos);
     shapes.createText(textPos,10,sf::Color::White,"Sound: " + str(gvars::soundVolume),&gvars::hudView);
+    shapes.shapes.back().layer = 15075;
     buttonPos.x += 90;
     buttonPos.y += 15;
     int decreaseSoundButt = shapes.createImageButton(buttonPos,texturemanager.getTexture("ArrowButton.png"),"",-90,&gvars::hudView);
+    shapes.shapes.back().layer = 15050;
     buttonPos.x += 30;
     int increaseSoundButt = shapes.createImageButton(buttonPos,texturemanager.getTexture("ArrowButton.png"),"",90,&gvars::hudView);
+    shapes.shapes.back().layer = 15050;
 
 
 
@@ -1448,8 +1476,10 @@ void renderEscapeMenu(baseMenu &menu)
     buttonPos.x += 90;
     buttonPos.y += 15;
     int decreaseMusicButt = shapes.createImageButton(buttonPos,texturemanager.getTexture("ArrowButton.png"),"",-90,&gvars::hudView);
+    shapes.shapes.back().layer = 15050;
     buttonPos.x += 30;
     int increaseMusicButt = shapes.createImageButton(buttonPos,texturemanager.getTexture("ArrowButton.png"),"",90,&gvars::hudView);
+    shapes.shapes.back().layer = 15050;
 
     textPos.y += screen.y()/8;
     buttonPos = textPos;
@@ -1459,22 +1489,30 @@ void renderEscapeMenu(baseMenu &menu)
                         +": "+std::to_string(resolution.resolutions[resolution.currentRes].bitsPerPixel)
                         +"\n \n \nFullscreen: " + str(resolution.fullscreen)
                         ,&gvars::hudView);
+    shapes.shapes.back().layer = 15075;
+
     buttonPos.x += 90;
     buttonPos.y += 20;
     int decreaseResolution = shapes.createImageButton(buttonPos,texturemanager.getTexture("ArrowButton.png"),"",-90,&gvars::hudView);
+    shapes.shapes.back().layer = 15050;
     buttonPos.x += 30;
     int increaseResolution = shapes.createImageButton(buttonPos,texturemanager.getTexture("ArrowButton.png"),"",90,&gvars::hudView);
+    shapes.shapes.back().layer = 15050;
     buttonPos.x += 30;
     int applyResolution = shapes.createImageButton(buttonPos,texturemanager.getTexture("ArrowButton.png"),"",180,&gvars::hudView);
+    shapes.shapes.back().layer = 15050;
 
     buttonPos.y += 20;
     int toggleFullscreen = shapes.createImageButton(buttonPos,texturemanager.getTexture("ArrowButton.png"),"",180,&gvars::hudView);
+    shapes.shapes.back().layer = 15050;
 
 
     sf::Vector2f exitPos((screen.x()/2), screen.y()-150);
     int exitGameButt = shapes.createImageButton(exitPos,texturemanager.getTexture("blankButton.png"),"",0,&gvars::hudView);
+    shapes.shapes.back().layer = 15050;
     exitPos.x -= 31;
     textList.createText(exitPos,9,sf::Color::White,"Exit Game",gvars::hudView);
+    shapes.shapes.back().layer = 15075;
 
 
 
@@ -1489,6 +1527,7 @@ void renderEscapeMenu(baseMenu &menu)
     if(menu.age > 30 && shapes.shapeHovered(toggleFullscreen))
     {
         shapes.createText(gvars::mousePos,9,sf::Color::White,"Toggle fullscreen");
+        shapes.shapes.back().layer = 15075;
         if((inputState.lmbTime == 1))
             toggle(resolution.fullscreen);
     }
@@ -1497,6 +1536,7 @@ void renderEscapeMenu(baseMenu &menu)
     if(menu.age > 30 && shapes.shapeHovered(applyResolution))
     {
         shapes.createText(gvars::mousePos,9,sf::Color::White,"Apply the Resolution!");
+        shapes.shapes.back().layer = 15075;
 
         if(inputState.lmbTime == 1)
         {
