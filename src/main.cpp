@@ -1886,7 +1886,7 @@ void drawSquadHud()
             shapes.shapes.back().layer += 1;
             spritePos.y += 10;
             shapes.createText(spritePos,10,sf::Color::White,"Health: " + str(static_cast<int>(npc.health)) + "/" + str(static_cast<int>(npc.getMaxHealth())), &gvars::hudView);
-            shapes.shapes.back().layer += 1;
+            shapes.shapes.back().layer += 2;
             spritePos.y += 1;
 
 
@@ -1894,16 +1894,17 @@ void drawSquadHud()
             float remainingHealth = npc.health / npc.getMaxHealth();
             shapes.createSquare(spritePos.x,spritePos.y+1,spritePos.x+150,spritePos.y+9,sf::Color(0,0,0),1,sf::Color::White,&gvars::hudView);
             shapes.createSquare(spritePos.x,spritePos.y+1,spritePos.x+(150*remainingHealth),spritePos.y+9,sf::Color(255,0,0),0,highlightColor,&gvars::hudView);
+            shapes.shapes.back().layer += 1;
 
             // Level-o-meter!
             spritePos.y += 10;
             shapes.createText(spritePos,10,sf::Color::White,"Level "+str(npc.level) + ", XP: " + str(npc.xp) + "/" +str(nextLevelXpRequired(npc.level)), &gvars::hudView);
-            shapes.shapes.back().layer += 1;
+            shapes.shapes.back().layer += 2;
             spritePos.y += 1;
             float remainingXP = static_cast<float>(npc.xp) / static_cast<float>(nextLevelXpRequired(npc.level));
             shapes.createSquare(spritePos.x,spritePos.y+1,spritePos.x+150,spritePos.y+9,sf::Color(0,0,0),1,sf::Color::White,&gvars::hudView);
             shapes.createSquare(spritePos.x,spritePos.y+1,spritePos.x+(150*remainingXP),spritePos.y+9,sf::Color::Yellow,0,highlightColor,&gvars::hudView);
-
+            shapes.shapes.back().layer += 1;
 
             // ???-o-meter!
             spritePos.y += 10;
