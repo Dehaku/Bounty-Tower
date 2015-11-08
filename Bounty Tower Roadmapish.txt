@@ -1,0 +1,314 @@
+Reserved
+Immense Growth, Creature grows to twice their size, doubling strength, slower move speed.
+Rot, Poisons all nearby hostiles.
+Telekinetic, Constantly pushes and throws the squad.
+
+
+
+
+Towers
+
+=Fantasy Modern Tower 
+Theme: Dark, run downed, cob webbed tower.
+
+Traps: Spider webs, pit traps, spike traps.
+
+Minions
+,Brawler Goblin, uses a bat with an arc, with some knockback.
+,Pistolier Kobold, Uses a low quality pistol for ranged engagements, Uses a poisoned knife if approached.
+,Brute Orc, Explosive Weaponry(Grenade launcher? RPG? Throws grenades?), Carrys a shield for protection/bashing.
+,Elite Troll, Fast moving, Claw swinging, Health regenning, powerhouse of death.
+
+Death: 10 second Coup de Grace that is interuptted from any damage.
+
+Bounty: Trifecta
+, Bill(Kobold) & Ted(Troll)
+,, Bill's Machinegun, Rapidly fires bullets in a spray and pray manner.
+,, Upon Dying, Bill is dead, Ted begins rampaging around.
+, Pyro(Orc)
+,, Flamethrower, Sprays in a cycling arc with no care for friend or foe.
+, Indiana(Goblin)
+,, Spear and Lasso, Ropes nearby squaddies, slowing and dragging them to him, Spears nearby squaddies, including lasso'd ones.
+
+
+
+
+=Technology Powerhouse::Bounty, Terminator-esque/GlaDoS-esque
+Theme: White/Clean, Wires visible through panels, Power sockets on every wall.
+
+Traps: Wires, Fans, Pipes
+Minions
+,Spider Bots, Fast, Small, Latches onto Squaddies, slowing and hurting them.
+,, Small cat sized robot with a small red light on it's back
+,Cyborg, Uses random weapons, Explodes on death.
+,,Humanoid robot that drips blood
+,Hover Drone, Fast, Fires small caliber machine gun, Constantly strafes, Occasionally drops Spider Bots.
+,,Dog sized robot with four propellers around it's body, with a gun extending from it's body.
+,Tank Bot, Slow treads, fires explosive shells, Explodes on death.
+,, Large sloped block of metal with a cannon sticking out of it, Tracks on the sides.
+
+Death: Dragged downstairs, returns 30 seconds later as a Cyborg.
+
+
+=Necromancer Tower::Bounty, Necromancer
+Theme: Dark boney walls, Fleshy elevator shaft, Purple magic wisps as lamps
+
+Traps: Skeletal Hands, Cages
+Minions
+,Zombies, Slow, Grabs and slows units, Bites and poisons.
+,Skeletons, Fast, Fragile, Hard to hit with ranged weapons, Uses random weapons.
+,Bile Brutes, Large slow enemies that spew poisonious goo.
+,Abomination, Large, Fast, Powerful, Smashes through minions and walls alike to get to the Squaddies, Insane Knockback
+,, Massive humanoid of flesh with multiple stray limbs hanging out of various parts, walks on four bulky legs.
+,Undead base races, Various base races that uses random weapons, Slower than their normal counterparts, harder to kill.
+
+Death: Dragged downstairs, Returns 30 seconds later as an undead.
+
+Bounty: Necromancer
+,Summons bone walls to protect himself
+,Revives fallen minions with an AoE burst
+,Shoots bone missiles and blobs of toxic exploding flesh 
+,25% or lower health, Turns himself into an Abomination with vein tentacles.
+
+=Druidic Tower::Bounty, Druid
+Theme: Earthly and wooden structure, leaves and vines prominent
+
+Traps: Entangling Roots
+Minions
+,Elemental Monkeys, Small, Weak, Grabs and drags a Squaddy towards the stairwells, occasionally hitting them with their element.
+,Cameleon Panther, Occasionally goes invisible, immense cutting and pierce damage, very fast.
+,Stoneskin Rhino, Charges squaddies and minions alike in a line until it hits a wall, has alot of health and armor.
+,Creeping Serpent : Potent Poison
+
+Bounty: Druid
+, Has two forms
+, First form, Grizzly form, Sweeping attacks, powerful but vunerable.
+, Second form, Water elemental, floods the room, slowing all squaddies, slowly damaging all machines, launchs conal tidal waves that pushback and smash, Summons Electric Eels?
+
+
+=Atlantean Tower
+Theme: Blue and Gold decorated walls, Coral and kelp line the floors, Most tiles are submerged except directly near the Elevator, sandy beach against elevator.
+Challenge: Squaddies will require special equipment to breath in water, or slowly drown, Machines take constant damage in water.
+Traps: Tesla Pylons, Pylons(chance to make Dryzones, Summon epic Minions)
+Minions
+, Atlantean Golem : Humanoid golem that uses a variety of laser and melee weapons.
+, Electric Eel : Aquatic being that cannot enter the dry zone, but will oft fire into it from the fringes.
+, Merman : Semi-aquatic being that's slow on land, uses nets to slow and drag squaddies into the water.
+, Tidal Wisps : Non-combatant that spreads a wet aura, attempting to drown allies, and aid aquatics in movement.
+, Wall-energy turret : Slides along walls, firing at the Squaddies.
+
+
+
+Bounty: Siren
+,Constantly sings, gives good regeneration to all minions, halves Squaddies speed.
+,Shrieks, Cone of sonic damage.
+,Tempt, Temporarily stuns and draws a squaddy to her, usually into danger of other minions.
+,Tesla Pylons, Four pylons surround her throne, all arc and fry any squaddies that get close.
+
+=Star Tower
+Theme: Giant Rocketship landed, filled with aliens and foreign technology.
+
+Traps: Electrified Floors, Popout Turrets, Random Explosive Charges
+Minions
+, Alien, Uses an assortment of foreign advanced weaponry, mostly Plasma.
+, Mutant, Appears to be a random buldging and rampaging playable race, with massive claws.
+, Tank, Slow moving, slow firing, heavy damage shells, with a small plasma machine gun on it.
+, Service Robot, Quick dodgy robot that either attempts to disarm enemies, or repair nearby machines.
+, Mechas, Tank with Legs, Half size, Uses explosive rounds and has decent mobility.
+
+Miniboss: Chief Engineer
+,Runs around and places mini turrets.
+,Occasionally places a large turret.
+,Provides an Aura of Repair on his nearby turrets.
+
+Miniboss: Chief Medical Officer
+,Uses a rapid fire, low damage dart gun that deals poison and random debuffs.
+,Has a large speed buff aura.
+,Has a medium defense buff aura.
+,Has a small office buff aura.
+,10% minions in his defense aura are instantly revived on death, playing a zapping noise.
+
+Miniboss: Commander
+,Pilots a heavy armored Mecha.
+,Fires volleys of explosive weapons in a cone.
+,Releases a burst of Plasma in an area around him.
+,Rapid fires small calibre armor piercing rounds. 
+
+Bounty: Smuggler Captian
+,Uses two rapid fire pistols with richochet emphasis, Possesses the Golden Bullet skill.
+,Teleports between four points on the floor, reloads, then fires the entire volley, teleporting immediately afterwards.
+
+
+Floors 1-5; Engineering: Aliens and turrets
+Floor 6; Miniboss 'Chief Engineer' Uses a set of turrets.
+Floors 7-12; Medical: More aliens and medical experimental mutants, most are mutants of creatures from this planet.
+Floor 13; Miniboss 'Chief Medical Officer', Produces heavy buffs and debuffs, surrounded by elite mutants.
+Floor 14-19; Security: Heavily armed aliens with tanks and heavy weapons.
+Floor 20; Commander piloting a Mecha.
+Floor 21-25; Crew Quarters: Unarmed aliens that rush for armories, Service Robots that attempt to disarm.
+Floor 26; Miniboss 'Helpful AI' Central AI Column, surrounded by turrets, magic flinging Holograms, and more service bots(That can repair turrets)
+Floor 27-30; Command Deck, Heavy Security Personal, Mechas, Solid Doors, Electrified Floors
+Floor 31; Boss/Bounty 'Smuggler Captian', Dual Pistolier, Heavy Golden Bullet Specilization, Four Teleport Locations for Volleys, Richochet Preference.
+
+Equipment
+
+Lasso, Ropes a unit to be dragged around, Unit can no longer move of their own will.
+
+Accessories
+,Battery Pack, Raises maximum mana.
+,Lightning Rod, Gains Mana from being hit by Electrical Damage.
+
+Spare Battery, On use, drains the battery to fill users mana, Recharges after the tower run.
+
+PDA/Spellbook
+
+
+Equipment Aspects
+
+Mages
+PDA/Spellbooks
+,Harddrive/Pages, Amount of Spells
+,Processor/???, Casting Speed
+,Graphics Card/Cover, Spell Colors/Partical Effects
+,Battery/???, Mana Storage
+,SolarPanel/???, Mana Regeneration
+,Antenna/???, Spell Range
+
+
+Artifact Orbitals
+Blocks shots
+Harms things it touches
+Heals wielder for half of recieved damage
+Chance to cast random weak offensive spell upon wielder getting hit ( 200 mana shield, 3 arc lightning, 200 range AoE, ect.)
+Chance to charm whoever harmed the wielder
+
+=Races
+*Humanoid Shape
+-Human(Average)
+--Racial: Wolf in sheeps clothing, 40% Additional Experience
+--Racial: Ideal Command : +10% EXP for the entire squad.
+
+-Fae(Frail, Charismatic, Faintly glowing winged humanoid, Random attribute specialization)
+--Racial: Permanent : Upon death, Revive missing 25% of all stats. (Attributes, Skillpoints, XP, Levels, ect. (Though a balance will be needed) )
+--Racial: Reactive : When hit, Small chance to deal damage back to source for an equal amount.
+
+-Changelings(Greenish Grayish winged humanoids with a long dexterious pointed tail)
+--Racial: Can poke corpses to gain attributes temporarily
+--Racial: Trap Resistence : Take less damage from traps and hazards(Drowning/Lava/Electrocution)
+
+-Brobots/Robros(Friendly Bulky Humanoid Robots)
+--Racial: 25% Mana Regen(Computational Matrix Interface)
+--Racial: Beerspray : Confuses targets in a cone
+--Racial: Barbrawl : Confuses and Enrages targets in an area
+--Racial: Scoreboard : Drops a machine that gives you information of how many enemies are left, and of what type, with a small chance of payout on each kill.
+
+-Catfolk
+--Racial: Nine lives! A 9% chance that an otherwise fatal blow heals them instead.
+--Racial: Double Dexterity Scores || No damage due to momentum based events(Getting charged, explosion knockback)
+
+*Bulky Shape
+
+-Rockkid(Slow, Powerful, Intelligent) 
+--Racial: Causes a small earthquake, dealing AoE damage.
+--Racial: 'Rock-ette' : Stomps the ground, creating two short-ranged volcanic spire turrets.
+
+-Noirves(A race of short, hairless hulk-like people) || Antiorves(A race of short, scaley, hulk-like people with claws (Kinda koboldish))
+--Racial: Free inventory space ranks
+--Racial: Pocket Picker : 5% chance to gain a random small item whenever hitting an enemy in melee
+
+
+*??? Shape
+
+-Turtliar(Upright Turtle species, A Dumb, but happy species)
+--Racial: Retracts into shell and zips around rapidly, dealing damage.
+--Racial: Retracts into shell, reflecting all projectiles.
+
+-Psylins(Telekinetic Slime Beings)
+--Racial: Telekinetic Pulse, Throws all enemies away, dealing damage.
+--Racial: Fisson, Splits into smaller versions, dividing health evenly
+--Racial: Mind Bullet : (Active) Weapons create their own ammo for the duration of the ability, having no cost.
+
+
+
+
+
+-Last Ditch(In order of desirableness to add)
+
+-Weholdings (Beholders with hands instead of eyes, Football shaped bodies, Two eyes OR Naga style, with multiple arms.) 
+--Racial: Can use every weapon in their inventory at once.
+-Azabullians
+--Racial: -50% Experience, +25% Attribute Growth, 50% Paragon Discount
+
+-Bonesculpters(Humanoids that can manipulate their bone structure at will, forming armor/weapons)
+--Appearance, Usually smooth cone-like arms ending with saw-like teeth, Slick and smoothed back heads ending in points.
+
+-Bone Pile(Spirit inhabiting bones, Humanoid upper body, bone pile below)
+-- Increased health and similar stats, slow speed
+--Racial:  'Corpse teleportation' Teleport to any corpse. (Basically, they'll be near-stationaries, but with unique ambush potential.)
+--Racial: Animate, Turn a corpse into a skeleton/Blank body.
+
+
+
+
+=Random Finds
+
+Weapon Caches
+,Single use, Gives a high powered weapon/charges of weapons to the user for the duration of the current floor, If left unopened and taken to the lobby, Adds weaker version to the shop, pays you for the box.
+,, Turret parts, medical tools, miniguns, specialized weapons, grenades, C4, Upgrades current weapon.
+
+Capture Collar
+,Single use, on a dead/unconscious Minion, Upon dragging them to the elevator after the wave, they are added to your roster.
+
+Plant Hub
+, A particularly wild area that bursts open in a floor, and spews out extra minions until destroyed, as kind of a 'random event'
+
+
+Features:
+V - Fame
+3:55 PM - Dehaku: New feature, Fame.
+3:56 PM - Dehaku: As you successfully acquire bounties... you'll gain Fame.
+3:56 PM - Dehaku: The higher your fame, you may be allowed to acquire some neat stuff from certain events or NPC's in the lobby...
+3:56 PM - Dehaku: But the main reason I want Fame?
+3:56 PM - Dehaku: Is so that if your fame is low enough...
+3:56 PM - Dehaku: You could walk into the first floor of a tower, and no one goes hostile until you shoot, some minions might even sleep on chairs and such in your presence.
+3:57 PM - Dehaku: But as you gain fame, they'll start recognizing you as a threat.
+3:57 PM - Dehaku: Could even make Fame a modifer in equipment.
+3:57 PM - Dehaku: Things like power armor and plasma cannons would raise your current Fame, as in... You're obviously a threat...
+3:58 PM - Dehaku: And things like generic masks and civilian clothes would reduce your current fame, I.E. Disguises.
+4:00 PM - Dehaku: Pluuuus...
+4:00 PM - Dehaku: If you raise your fame and fame modifier high enough... wouldn't it be nice to see Minions drop to their knees and beg for their life? Or even simply run away!
+4:01 PM - Dehaku: Or heck, if it's high enough on the first floor, The minions will call in heavier support for a later floor.
+
+V - Balconies
+Balconies are a source of the outside, as well as potential events.
+Such things that can occur; 
+	Higher tower insertion, Pay someone to air lift and deploy your people above the tower into a specific floor with a balcony.
+	Receive Supplies, Radio home base to get medkits, ammo, ect, though at an increased price.
+	Mystery Events, Certain invaders can appear in the tower through balconies at random to spice things up.
+	
+V - Religion
+Being based on the Galaxy universe, there is a plethora of potential for divine influence.
+While assaulting a tower, you may occasionally find small alters or statues dedicated to various beings in the offices or storage rooms.
+
+V - Rescue
+Since you're hunting criminals of the highest caliber, it wouldn't be a surprise to find hostages bound in the buildings.
+Releasing the hostages can grant various benefits, from getting a discount on an item in the shop, to being rewarded with stolen supplies
+to even a possible new agent in your home squad reserve.
+
+V - Traitor
+Occasionally you'll encounter a minion who doesn't really care for the cause, this can lead to useful situations...
+	The coward, The last surviving individual of a floor may beg for their life, in return, they will head up and claim that your team has been killed, causing everyone on the next floor to be unaware of your incoming assault.
+	The mercenary, Usually hanging out in an office room, ignoring the fighting on the floor, He was going to be hired by the minions for some job, but you've cleared them away, He offers to kill off about half of the next floor for you, for a reasonable fee, of course. (You did kind of ruin his potential job.)
+	The doctor, The minions apparently have decent healthcare here, but this guy doesn't really care whether he heals or harms, Pay him a decent fee, and all the minions on the next floor will start off poisoned due to improper healthcare.
+	The roid rager, Upon taking this unique fellow down in a fight, he'll scream incoherient things, he'll run up to the next floor through the staircase... Once you arrive on the next floor, you'll find him somewhere on the floor fighting the residents of the tower, What was this guys deal?
+	The IT, This guy is sick of his job, He'll offer to reprogram the next floors security to swap their target priorities in your favor, His price? He just wants to watch you slaughter these people, He'll sit at the elevator on the next floor.
+
+V - Radiation Weaponry
+10:47 PM - Dehaku: Also, I'm thinking of adding Radiation weaponry.
+10:47 PM - Dehaku: Ontop of that...
+10:47 PM - Dehaku: Their damage? Will be rated by Bananas.
+10:48 PM - Dehaku: Ontop of that, Weight will also be rated by Bananas.
+10:50 PM - Dehaku: So your standard Radiation Pistol, the weakest you'd find... would do about 200 mBanana's of damage.
+10:50 PM - Dehaku: The pistol itself? Would weigh two bananas.
+
+

@@ -1,0 +1,96 @@
+Required for Each Tower
+-Icon Image for Menus (100x100)
+Doesn't have to match the actual gameplay tower at all, Just the theme.
+
+-Two Wall Tiles(60x60)
+They should be similar.
+-One Fake Wall Tile(60x60)
+Likely a previous wall tile that's a little lighter or some such, Leads to secret areas when blown up.
+-Destroyed Wall Tile(60x60)
+
+-Four floor tiles(60x60)
+
+-One floor tile with an array of holes for traps
+
+-One Up/Down Stairway(60x60)
+
+-One (Two Staged) Trigger tile(60x60)
+One tile for Off, one tile for On. Can be a Lever, Switchboard, Circuit Panel, Ect, Must fit the theme.
+
+-One Themed Door(10x60)
+No need for animation, I'll handle it in code, The whole image should be 60x60, but only 10x60 pixels used for the door.
+
+-One Chest/Desk/Bookcase/Locker or some other type of container that's theme appropriote.
+Closed state only, the chest will simply vanish once opened.
+
+Total Image Per Tower Count: 15
+
+Fifteen Towers, 225 Total Base Images.
+=================================
+
+=1st Tower: Fantasy Modern Tower 
+Theme: Dark stone, run downed, cob webbed tower.
+
+=2nd Tower: Technology Powerhouse
+Theme: White&Grey/Clean, Wires visible through panels, Power sockets common on walls.
+White & Grey floor tiles, With a metalic great that you can see wires through, Trigger tile could be a blue console screen or some such.
+
+=3rd Tower: Lava Tower
+Theme: Floors are dark obsidian lined with faintly glowing lines of lava, Walls may simply be dark obsidian.
+Additionally: Two lava tiles, Maybe more if you're into making it animated, though I could simply scale up and down it's brightness.
+
+=4th Tower: Atlantean Tower
+Theme: Blue and Gold decorated walls, Coral and kelp line the floors, sandy beach against elevator.
+Additionally: Two water tiles, Don't worry about transparency, I can do that in code.
+
+=5th Tower: Necromancer Tower
+Theme: Dark boney walls, Fleshy floor, Bulb of flesh for the chest, Perhaps a box of sinew and bone for the trigger tile?
+
+
+
+=6th Tower: Factory Tower
+Theme: Gritty Metalic industrial building, Dark and rusty.
+Additionally: Two frames of a conveyer belt(Just one direction will do), And two frames of a factory machine, both 60x60
+
+=7th Tower: Druidic Tower
+Theme: Earthly and wooden structure, leaves and vines prominent
+Floor would likely be dirt/leaves/undergrowth, Walls would be wooden/vines
+
+=8th Tower: Business Tower
+Theme: Beige carpet floor, thin dull walls, Obscued glass wall(Can't really see through, but still glass), Filing Cabinet Chest or some such.
+
+=9th Tower: Grassland Hill
+Theme: Upright hollowed out hill cover in flora, Pretty grass floors with flowers, Dirt walls, light brown wheat-like doors.
+
+=10th Tower: Spaceship Tower
+Theme: Grey and Red walls, Grey floor with yellow hollow squares, Bulky and Space-like chests.
+Yellow Squares should not touch the edges of the tile.
+This tower will also need the following;
+Medical room floor and walls, (Two walls, One fake, Four floor tiles.)
+Preferably white with blue trim theme, to constrast the normal Red and Yellow.
+
+
+
+=11th Tower: Wizards Tower
+Theme: Floors glow with runes, walls hum with an orange light, Doors are magical force shields.
+
+=12th Tower: Hotel Tower
+Theme: Dark red carpet with gold trim, beige walls
+Additionally: A bed, Perhaps a TV on a stand or some such.
+
+=13th Tower: Mountain Face
+Theme: Cold dark grey stone, with small puddles, mossy walls, Heavy stone door, Flip lever trigger tile.
+
+=14th Tower: Skycloud Tower
+Theme: Magically reinforced clouds stiffed together to make solid surfaces
+Different shades of cloud make the various floor, walls and furniture, Lil puddles for detail, if plain clouds are too bland for the floor, Golden puffs of cloud for chests.
+
+=15th Tower: Grey Goo Tower
+Theme: Extremely simply dark grey with a slight shine, Walls, Floor, Simple dark grey.
+Walls should be a little darker, without any shine, to allow easier differination of the floor.
+=================================
+
+Total Images: 225 Base + 10 Additional: 235 Images, Once the base tower and additionals are met, you can make any extra tiles for them you desire.
+
+P.S.: I'd appreciate if the tower icon's would be done first, so the menu looks better.
+P.P.S.: The towers can be done in any order.
