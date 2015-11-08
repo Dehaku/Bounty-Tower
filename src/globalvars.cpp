@@ -162,7 +162,7 @@ void assignSlotPos()
 
     */
 
-    for( int i = 0; i != 20; i++)
+    for( int i = 0; i != 22; i++)
     {
         sf::Vector2f vPos;
             //Left slots
@@ -195,25 +195,26 @@ void assignSlotPos()
 
             // Right slots
             if(i == 3)
-                vPos = sf::Vector2f(730, 629);
+                vPos = sf::Vector2f(732, 629);
             if(i == 5)
-                vPos = sf::Vector2f(730, 689);
+                vPos = sf::Vector2f(732, 689);
             if(i == 7)
-                vPos = sf::Vector2f(793, 629);
+                vPos = sf::Vector2f(795, 629);
             if(i == 9)
-                vPos = sf::Vector2f(793, 689);
+                vPos = sf::Vector2f(795, 689);
             if(i == 11)
                 vPos = sf::Vector2f(858, 629);
             if(i == 13)
                 vPos = sf::Vector2f(858, 689);
             if(i == 15)
-                vPos = sf::Vector2f(919, 629);
+                vPos = sf::Vector2f(921, 629);
             if(i == 17)
-                vPos = sf::Vector2f(919, 689);
+                vPos = sf::Vector2f(921, 689);
             if(i == 19)
-                vPos = sf::Vector2f(982, 629);
+                vPos = sf::Vector2f(984, 629);
             if(i == 21)
-                vPos = sf::Vector2f(982, 689);
+                vPos = sf::Vector2f(984, 689);
+
         gvars::slotPos.push_back(vPos);
     }
 

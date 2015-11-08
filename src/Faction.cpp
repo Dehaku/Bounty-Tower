@@ -2744,6 +2744,8 @@ int Npc::getInventoryMax()
         return 10;
     */
 
+    //return 8;
+
     return 20;
 }
 
@@ -4738,11 +4740,21 @@ void drawSelectedCritterHUD()
 
         window.draw(CIH);
 
+        sf::Texture * slotTex = &texturemanager.getTexture("BeltSlot.png");
+        sf::Sprite slotSprite;
+        slotSprite.setTexture(*slotTex);
 
-
-        for (int i = 0; i != 20; i++)
+        for (int i = 0; i != selectedNPCs[0]->getInventoryMax(); i++)
         {
             sf::Vector2f vPos = gvars::slotPos[i];
+            if(i > 1)
+            {
+                slotSprite.setPosition(vPos.x-(slotTex->getSize().x/2),vPos.y-(slotTex->getSize().y/2) );
+                window.draw(slotSprite);
+            }
+
+
+
 
             Item * slotItem = selectedNPCs[0]->invSlots[i];
             if(slotItem != nullptr)

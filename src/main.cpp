@@ -1704,7 +1704,7 @@ void hoverItemHUD()
     sf::Vector2f pixelPos = window.mapPixelToCoords(sf::Mouse::getPosition(window), gvars::hudView);
 
     if(!selectedNPCs.empty() && bountytower::bountytower)
-        for (int i = 0; i != 20; i++)
+        for (int i = 0; i != selectedNPCs[0]->getInventoryMax(); i++)
     {
         bool isSecondSlot = false;
         if(selectedNPCs[0]->invSlots[i] != nullptr && selectedNPCs[0]->invSlots[i]->size > 1)

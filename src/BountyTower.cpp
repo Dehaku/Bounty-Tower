@@ -2700,7 +2700,7 @@ void newSlotWorkMethod()
         return;
 
     int slotCount;
-    slotCount = 6;
+    slotCount = 0;
     if(inputState.key[Key::Z])
         slotCount = 8;
     if(inputState.key[Key::X])
