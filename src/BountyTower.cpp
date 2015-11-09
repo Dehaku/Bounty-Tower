@@ -65,6 +65,8 @@ void equipStarters()
 
         member.chasePriority = "Hold Position";
 
+        member.health = member.getMaxHealth();
+
         member.ypos = 4040;
 
         if(random(1,2) == 1)
@@ -633,12 +635,9 @@ void recruiterMenu(Vec3f creationPos)
         for(int i = 0; i != 8; i++)
         {
             Npc recruit = *getGlobalCritter(recruitList.getRandomName());
-            recruit.attributes.strength = random(recruit.attributes.strengthMin,recruit.attributes.strengthMax);
-            recruit.attributes.perception = random(recruit.attributes.perceptionMin,recruit.attributes.perceptionMax);
-            recruit.attributes.intelligence = random(recruit.attributes.intelligenceMin,recruit.attributes.intelligenceMax);
-            recruit.attributes.charisma = random(recruit.attributes.charismaMin,recruit.attributes.charismaMax);
-            recruit.attributes.endurance = random(recruit.attributes.enduranceMin,recruit.attributes.enduranceMax);
-            recruit.attributes.dexterity = random(recruit.attributes.dexterityMin,recruit.attributes.dexterityMax);
+
+
+            recruit.attributes.randomizeAttributes();
 
             int sum_of_attributes = 0;
             sum_of_attributes += recruit.attributes.strength;
@@ -1792,7 +1791,7 @@ void loadTavern()
 
     Npc barPatron = *getGlobalCritter("BTHuman");
     barPatron.maxhealth = 100000;
-    barPatron.health = 100000;
+    barPatron.health = barPatron.getMaxHealth();
     barPatron.canmove = false;
     barPatron.moverate = 0;
     barPatron.name = "The Tender";
@@ -1966,6 +1965,10 @@ void spawnEnemies()
         member.zpos = (gvars::currentz*GRID_SIZE);
         member.id = gvars::globalid++;
         member.level = getFloorDifficulty(gvars::currentz,bountytower::currentTower->floors,bountytower::currentTower->difficulty);
+
+        member.attributes.randomizeAttributes();
+
+        member.health = member.getMaxHealth();
 
 
         std::string equipmentResult = equipmentSet.getRandomName();

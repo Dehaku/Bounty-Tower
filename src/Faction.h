@@ -404,6 +404,8 @@ public:
         int getAgility();
         int getWisdom();
 
+        void randomizeAttributes();
+
 
         void Train(std::string skill, int amount = 1, int skillgain = 1);
     };

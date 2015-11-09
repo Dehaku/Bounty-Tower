@@ -1863,6 +1863,13 @@ float Npc::getMaxHealth()
     if(perfectHealth != nullptr)
         modifiedMaxHealth += modifiedMaxHealth*(perfectHealth->ranks*0.1);
 
+
+
+    float endPercent = attributes.getEndurance() * 0.01;
+    modifiedMaxHealth += modifiedMaxHealth * endPercent;
+
+
+
     return modifiedMaxHealth;
 }
 
@@ -1916,6 +1923,16 @@ void Npc::blankSkills()
     regentimer = regentimerint;
     regenrate = attributes.endurance / 10;
     health = maxhealth;
+}
+
+void Npc::Attribute::randomizeAttributes()
+{
+    strength = random(strengthMin,strengthMax);
+    perception = random(perceptionMin,perceptionMax);
+    intelligence = random(intelligenceMin,intelligenceMax);
+    charisma = random(charismaMin,charismaMax);
+    endurance = random(enduranceMin,enduranceMax);
+    dexterity = random(dexterityMin,dexterityMax);
 }
 
 npcPtrVector Npc::getEnemies()
