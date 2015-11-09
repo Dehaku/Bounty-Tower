@@ -1778,6 +1778,8 @@ void loadTavern()
         npc.momentum = sf::Vector2f(0,0);
 
     Npc barPatron = *getGlobalCritter("BTHuman");
+    barPatron.maxhealth = 100000;
+    barPatron.health = 100000;
     barPatron.canmove = false;
     barPatron.moverate = 0;
     barPatron.name = "The Tender";

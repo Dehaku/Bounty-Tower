@@ -23,3 +23,4 @@
 [name:Cash][Pickupable:true][stackSize:250][image:FaceonMoney.png][type:12][baseid:636636][produces:false]
 [name:Healing Juices][Pickupable:true][image:healingJuices.png][type:42][baseid:623623][HealAmount:100][value:30]
 [name:Super Healing Juices][Pickupable:true][image:healingJuicesSuper.png][type:42][baseid:623624][HealAmount:1000][value:500]
+[name:Inventory Slot Unlocker][Pickupable:true][image:InventorySlotUpgrade.png][type:69][baseid:623669][value:1000]

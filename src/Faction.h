@@ -124,6 +124,7 @@ public:
 
     std::list<Item> inventory;
     int getInventoryMax();
+    int additionalSlots;
     std::list<Item> equipped;
 
     float getMaxHealth();
@@ -157,7 +158,7 @@ public:
     Item * graspItemLeft;
     Item * graspItemRight;
 
-    Item * invSlots[20];
+    Item * invSlots[22];
 
     std::vector<Tile *> storedPath;
 

@@ -1676,6 +1676,8 @@ Npc::Npc()
     value = 0;
     rarity = -1;
 
+    additionalSlots = 0;
+
     deadFrames = 0;
 
     graspItemLeft = nullptr;
@@ -1686,7 +1688,7 @@ Npc::Npc()
     hasPath = false;
     needsPath = false;
 
-    for (int i = 0; i != 20; i++)
+    for (int i = 0; i != 22; i++)
     {
         invSlots[i] = nullptr;
     }
@@ -2744,9 +2746,16 @@ int Npc::getInventoryMax()
         return 10;
     */
 
-    //return 8;
+    int defaultSlots = 6; // This seems wasteful.
+    int totalSlots = defaultSlots;
 
-    return 20;
+    totalSlots += additionalSlots;
+
+    if(totalSlots > 22)
+        totalSlots = 22;
+
+    return totalSlots;
+    //return 22;
 }
 
 void Npc::printConsoleInfo()
@@ -4825,9 +4834,7 @@ void drawSelectedCritterHUD()
                         if(inputState.lmbTime == 1)
                         {
                             unloadAmmo(slotItem, &slotItem->user->inventory);
-
                         }
-
                     }
 
 
@@ -4855,6 +4862,38 @@ void drawSelectedCritterHUD()
                             {
                                 chatBox.addChat(slotItem->user->name + " used " + slotItem->name + "!", sf::Color::Green);
                                 slotItem->user->modhealth(slotItem->healAmount);
+                                slotItem->remove();
+                            }
+                        }
+                    }
+
+                }
+
+                if(slotItem->type == 69)
+                { // Inventory Upgrade Item!
+                    outPut.append("\n(2 Slots)");
+                    sf::Vector2f buttPos(uPos);
+                    buttPos.y -= 25;
+                    int invButt = shapes.createImageButton(buttPos,texturemanager.getTexture("ArrowButton.png"),"",0,&gvars::hudView);
+
+                    if(shapes.shapeHovered(invButt))
+                    {
+                        textList.createText(gvars::mousePos.x+10,gvars::mousePos.y,10,sf::Color::White,"Gain 2 Slots(22 Maximum)");
+                        gvars::hovering = true;
+                        if(inputState.lmbTime == 1)
+                        {
+                            if(slotItem->user->alive == false)
+                                chatBox.addChat("He's dead, Jim.", sf::Color::Green);
+                            else if(slotItem->user->getInventoryMax() >= 22)
+                            {
+                                chatBox.addChat(slotItem->user->name + " is cannot have anymore slots!", sf::Color::Green);
+                                chatBox.addChat("Get another workhorse! Maybe a Noirve?", sf::Color::Green);
+                            }
+                            else
+                            {
+                                chatBox.addChat(slotItem->user->name + " used " + slotItem->name + "!", sf::Color::Green);
+                                slotItem->user->additionalSlots += 2;
+                                chatBox.addChat(slotItem->user->name + " now has " + str(slotItem->user->getInventoryMax()) + " slots!", sf::Color::Green);
                                 slotItem->remove();
                             }
                         }
