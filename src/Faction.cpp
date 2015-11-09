@@ -2874,7 +2874,7 @@ std::string Npc::onDeath(Npc *attacker, Item *weapon, float amount, critScore *c
         chatBox.addChat(name + " has died",sf::Color::White);
     alive = false;
     if(attacker != nullptr)
-    {
+    { // Experience.
         float extraExperience = 0;
 
         for(auto &npc : *attacker->container)
@@ -2884,6 +2884,9 @@ std::string Npc::onDeath(Npc *attacker, Item *weapon, float amount, critScore *c
 
         for(auto &npc : *attacker->container)
         {
+            if(!npc.alive)
+                continue;
+
             float expGain = level*10;
             expGain += expGain*extraExperience;
 
@@ -3092,7 +3095,15 @@ std::string Npc::dealDamage(Npc *victim, Item *weapon, float amount)
 
     int totalDamage = amount;
     if(weapon != nullptr)
+    {
         totalDamage = random(weapon->getMinDamage(),weapon->getMaxDamage());
+
+        if(weapon->type == 1)
+        { // Each point of strength makes melee weapons deal 10% more damage.
+            totalDamage += totalDamage * (attributes.getStrength()*0.1);
+        }
+    }
+
 
     { // undeadDread Skill
         Skill * undeadDread = skills.getSkill("Undead Dread");
@@ -3104,6 +3115,8 @@ std::string Npc::dealDamage(Npc *victim, Item *weapon, float amount)
             totalDamage += totalDamage*(missingHealth*undeadDread->ranks);
         }
     }
+
+
 
     outPut = victim->takeDamage(this,weapon,totalDamage);
 
