@@ -1131,6 +1131,19 @@ void renderSquaddieMenu(baseMenu &menu)
 
 }
 
+int getSquadDiscount(int originalValue)
+{
+    float totalCharisma = 0;
+    for(auto &squaddie : Squaddies)
+    {
+        totalCharisma += squaddie->attributes.getCharisma();
+    }
+
+    int newValue = originalValue - (originalValue * (totalCharisma*0.01));
+
+    return newValue;
+}
+
 void renderMerchantMenu(baseMenu &menu)
 { // Layer 19000
     int layer = 19000;
@@ -1177,7 +1190,7 @@ void renderMerchantMenu(baseMenu &menu)
         shapes.createText(vPos,15,highlightColor,outPut,&gvars::hudView);
         shapes.shapes.back().layer = layer+Text;
         vPos.y += 15;
-        shapes.createText(vPos,10,highlightColor,"$" + str(item.value),&gvars::hudView);
+        shapes.createText(vPos,10,highlightColor,"$" + str(getSquadDiscount(item.value)),&gvars::hudView);
         shapes.shapes.back().layer = layer+Text;
         vPos.y += 15;
         std::string stats = "Dam: " + str(item.mindam) + "/" + str(item.maxdam);
@@ -1218,11 +1231,11 @@ void renderMerchantMenu(baseMenu &menu)
 
         if(shapes.shapeClicked(itemButt) && menu.age > 30)
         {
-            if(conFact->credits < item.value)
+            if(conFact->credits < getSquadDiscount(item.value))
                 chatBox.addChat("You do not have enough cash for "+item.name+"!", sf::Color::White);
             else
             {
-                conFact->credits -= item.value;
+                conFact->credits -= getSquadDiscount(item.value);
                 Item soldItem = item;
                 soldItem.id = gvars::globalid++;
                 soldItem.xpos = menu.makePos.x+(randz(-90,90));
@@ -1235,7 +1248,7 @@ void renderMerchantMenu(baseMenu &menu)
                 int soundRan = random(1,3);
                 soundmanager.playSound("CashPickup"+str(soundRan)+".ogg");
 
-                chatBox.addChat("You purchased a "+item.name+" for "+str(item.value)+"!", sf::Color::White);
+                chatBox.addChat("You purchased a "+item.name+" for "+str(getSquadDiscount(item.value))+"!", sf::Color::White);
             }
         }
 
@@ -1308,7 +1321,7 @@ void renderRecruiterMenu(baseMenu &menu)
         shapes.createText(vPos,15,highlightColor,npc.race+": "+npc.name,&gvars::hudView);
         shapes.shapes.back().layer = layer+Text;
         vPos.y += 15;
-        shapes.createText(vPos,10,highlightColor,"$" + str(critterCost),&gvars::hudView);
+        shapes.createText(vPos,10,highlightColor,"$" + str(getSquadDiscount(critterCost) ),&gvars::hudView);
         shapes.shapes.back().layer = layer+Text;
         vPos.y += 10;
         std::string outPut = "Speed: " + str(static_cast<int>(npc.moverate) );
@@ -1344,11 +1357,11 @@ void renderRecruiterMenu(baseMenu &menu)
         {
             if(Squaddies.size() >= 4)
                 chatBox.addChat("You already have a full squad!", sf::Color::White);
-            else if(conFact->credits < critterCost)
+            else if(conFact->credits < getSquadDiscount(critterCost))
                 chatBox.addChat("You do not have enough cash for "+npc.name+"!", sf::Color::White);
             else
             {
-                conFact->credits -= critterCost;
+                conFact->credits -= getSquadDiscount(critterCost);
                 Npc soldNpc = npc;
                 soldNpc.id = gvars::globalid++;
                 soldNpc.xpos = menu.makePos.x+(randz(-30,30));
@@ -1374,7 +1387,7 @@ void renderRecruiterMenu(baseMenu &menu)
                 soundmanager.playSound("CashPickup"+str(soundRan)+".ogg");
 
 
-                chatBox.addChat("You purchased a "+npc.name+" for "+str(critterCost)+"!", sf::Color::White);
+                chatBox.addChat("You purchased a "+npc.name+" for "+str(getSquadDiscount(critterCost))+"!", sf::Color::White);
                 setupSquadHotKeySelection();
             }
         }
@@ -2439,11 +2452,12 @@ void layHints()
             if(shapes.shapeHovered(tutBook4))
             {
                 textPos = sf::Vector2f(textPos.x+20,textPos.y-10);
-                shapes.createSquare(textPos.x-5,textPos.y,textPos.x+850,textPos.y+100,sf::Color::Black,3,sf::Color::Cyan);
+                shapes.createSquare(textPos.x-5,textPos.y,textPos.x+850,textPos.y+120,sf::Color::Black,3,sf::Color::Cyan);
                 shapes.createText(textPos,15,sf::Color::Red,"You can have up to a total of 4 Squad members at once.\n"
                                 "A critters stats is represented as S.P.I.C.E.D., \n"
                                 "Strength, Perception, Intelligence, Charisma, Endurance, Dexterity\n"
-                                "Intelligence affects your switch working speed \n"
+                                "Intelligence affects your switch working speed. \n"
+                                "Charisma gives a percentage discount on prices. \n"
                                 "Dexterity affects your dodge chance. \n"
                                 );
             }

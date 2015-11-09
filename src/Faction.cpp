@@ -2789,6 +2789,55 @@ void Npc::printBloodContent()
     cout << bloodcontent << endl;
 }
 
+int Npc::Attribute::getStrength()
+{
+    int returnAttribute = strength;
+
+    return returnAttribute;
+}
+int Npc::Attribute::getPerception()
+{
+    int returnAttribute = perception;
+
+    return returnAttribute;
+}
+int Npc::Attribute::getIntelligence()
+{
+    int returnAttribute = intelligence;
+
+    return returnAttribute;
+}
+int Npc::Attribute::getCharisma()
+{
+    int returnAttribute = charisma;
+
+    return returnAttribute;
+}
+int Npc::Attribute::getEndurance()
+{
+    int returnAttribute = endurance;
+
+    return returnAttribute;
+}
+int Npc::Attribute::getDexterity()
+{
+    int returnAttribute = dexterity;
+
+    return returnAttribute;
+}
+int Npc::Attribute::getAgility()
+{
+    int returnAttribute = agility;
+
+    return returnAttribute;
+}
+int Npc::Attribute::getWisdom()
+{
+    int returnAttribute = wisdom;
+
+    return returnAttribute;
+}
+
 bool Npc::operator<(const Npc &other) const
 {
     return other.id > id;
@@ -4898,7 +4947,6 @@ void drawSelectedCritterHUD()
                             }
                         }
                     }
-
                 }
 
                 window.draw(drawText(uPos,outPut));

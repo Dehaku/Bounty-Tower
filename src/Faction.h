@@ -395,6 +395,16 @@ public:
         int perceptionxp;
         int agilityxp;
 
+        int getStrength();
+        int getPerception();
+        int getIntelligence();
+        int getCharisma();
+        int getEndurance();
+        int getDexterity();
+        int getAgility();
+        int getWisdom();
+
+
         void Train(std::string skill, int amount = 1, int skillgain = 1);
     };
     Attribute attributes;
