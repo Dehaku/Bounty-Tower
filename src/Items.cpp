@@ -518,6 +518,15 @@ int Item::getSpread()
             returns += itemptr->spread;
     }
     debug(name + " getSpread() done");
+
+
+
+    if(user != nullptr)
+    {
+        returns -= user->attributes.getPerception();
+    }
+
+
     if(returns < 0)
         returns = 0;
 

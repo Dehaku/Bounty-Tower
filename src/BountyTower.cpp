@@ -2455,12 +2455,14 @@ void layHints()
             if(shapes.shapeHovered(tutBook4))
             {
                 textPos = sf::Vector2f(textPos.x+20,textPos.y-10);
-                shapes.createSquare(textPos.x-5,textPos.y,textPos.x+850,textPos.y+120,sf::Color::Black,3,sf::Color::Cyan);
+                shapes.createSquare(textPos.x-5,textPos.y,textPos.x+850,textPos.y+160,sf::Color::Black,3,sf::Color::Cyan);
                 shapes.createText(textPos,15,sf::Color::Red,"You can have up to a total of 4 Squad members at once.\n"
                                 "A critters stats is represented as S.P.I.C.E.D., \n"
                                 "Strength, Perception, Intelligence, Charisma, Endurance, Dexterity\n"
+                                "Perception reduces ranged weapon spread. \n"
                                 "Intelligence affects your switch working speed. \n"
                                 "Charisma gives a percentage discount on prices. \n"
+                                "Endurance gives more health percentage. \n"
                                 "Dexterity affects your dodge chance. \n"
                                 );
             }
