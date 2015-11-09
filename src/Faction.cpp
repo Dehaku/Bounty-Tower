@@ -3041,7 +3041,7 @@ std::string Npc::dealDamage(Npc *victim, Item *weapon, float amount)
         if(randz(0,100) <= 5)
         {
             Item loot;
-            int ranNum = randz(1,4);
+            int ranNum = randz(1,5);
             if(ranNum == 1)
                 loot = *getGlobalItem("Cash");
             if(ranNum == 2)
@@ -3050,8 +3050,15 @@ std::string Npc::dealDamage(Npc *victim, Item *weapon, float amount)
                 loot = *getGlobalItem("Bullet: Standard");
             if(ranNum == 4)
                 loot = *getGlobalItem("Shell: Slug");
+            if(ranNum == 5)
+                loot = *getGlobalItem("Healing Juices");
 
-            loot.amount = random(5,loot.stackSize);
+
+            if(loot.stackSize == 1)
+                loot.amount = 1;
+            else
+                loot.amount = random(5,loot.stackSize);
+
             loot.xpos = xpos;
             loot.ypos = ypos;
             loot.zpos = zpos;
