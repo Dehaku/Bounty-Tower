@@ -5408,10 +5408,10 @@ void Npc::handleStatusEffects()
         shapes.shapes.back().layer = 9000;
         int total_elements = 0;
 
-        for(auto &condition : statusEffects)
+        for(auto &status : statusEffects)
         {
             std::string outPut;
-            outPut.append("[" + condition.name + ", Potency: " + str(condition.potency) + ", Duration: " + str(condition.duration/60) + "]");
+            outPut.append("[" + status.name + ", Duration: " + str(status.duration/60) + "]");
 
             shapes.createText(sf::Vector2f(drawPos.x,drawPos.y+(20*total_elements)),15,sf::Color::Cyan,outPut);
             shapes.shapes.back().layer = 9001; // IT'S OVER NINE THO-
@@ -5423,20 +5423,20 @@ void Npc::handleStatusEffects()
 
     }
 
-    for(auto &condition : statusEffects)
+    for(auto &status: statusEffects)
     {
-        if(condition.critterEffect != nullptr)
+        if(status.critterEffect != nullptr)
         { // Drawing status overlay on critter.
-            shapes.createImageButton(getPos2d(),*condition.critterEffect,"",0);
+            shapes.createImageButton(getPos2d(),*status.critterEffect,"",0);
             shapes.shapes.back().layer = 10;
         }
 
 
 
 
-        condition.duration--;
-        if(condition.duration <= 0)
-            condition.toDelete = true;
+        status.duration--;
+        if(status.duration <= 0)
+            status.toDelete = true;
     }
 
     AnyDeletes(statusEffects);

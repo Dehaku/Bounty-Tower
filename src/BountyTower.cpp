@@ -2865,6 +2865,7 @@ void testStatusEffects()
     StatusEffect fireStatus;
     fireStatus.name = "On Fire";
     fireStatus.critterEffect = &texturemanager.getTexture("LilFire.png");
+    fireStatus.addAspect(StatusAspect::AffectHealth,-1);
 
 
     if(inputState.key[Key::LShift] && inputState.key[Key::F].time == 1)
@@ -2872,7 +2873,7 @@ void testStatusEffects()
         for(auto &npc : npclist)
         {
             fireStatus.duration = random(30,600);
-            fireStatus.potency = random(10,50);
+            //fireStatus.potency = random(10,50);
             npc.statusEffects.push_back(fireStatus);
         }
     }
