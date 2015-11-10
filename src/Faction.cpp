@@ -5423,7 +5423,7 @@ void Npc::handleStatusEffects()
 
     }
 
-    for(auto &status: statusEffects)
+    for(auto &status : statusEffects)
     {
         if(status.critterEffect != nullptr)
         { // Drawing status overlay on critter.
@@ -5431,8 +5431,11 @@ void Npc::handleStatusEffects()
             shapes.shapes.back().layer = 10;
         }
 
-
-
+        for(auto &aspect : status.aspects)
+        {
+            if(aspect.name == aspect.AffectHealth)
+                modhealth(aspect.potency);
+        }
 
         status.duration--;
         if(status.duration <= 0)
