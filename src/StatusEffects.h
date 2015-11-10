@@ -75,8 +75,10 @@ public:
         // Potency indicates amount of stack to spawn, Does not over rule Stacksize.
         RevivesOnDeath,
         // Potency acts as a lives counter.
-        DisableDeath
+        DisableDeath,
         // Potency, Simply acts as an On/Off.
+        AutoDodge // Type: Damages. This aspect causes the carrier to automatically avoid a source of damage equal to it's type.
+        // Potency, Acts as a counter, 5 Potency, Five automatic dodges.
 
 
 

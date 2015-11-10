@@ -70,6 +70,8 @@ void insertAspects()
     aspectNum.push_back(aspectName);
     aspectName = "DisableDeath";
     aspectNum.push_back(aspectName);
+    aspectName = "AutoDodge";
+    aspectNum.push_back(aspectName);
 }
 
 int getAspectNum(std::string aspect)
@@ -131,7 +133,13 @@ void GlobalStatusEffects::initializeStatusEffects()
         for(auto &aspect : aspects)
         {
             std::cout << "Found: " << aspect << std::endl;
+            std::vector<std::string> components = stringFindElements(aspect,":");
+            for(auto &component : components)
+            {
+                std::cout << component << std::endl;
+            }
         }
+
 
 
 

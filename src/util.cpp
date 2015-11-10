@@ -294,11 +294,13 @@ std::vector<std::string> stringFindElements(std::string source,
     std::vector<std::string> returns;
     bool firstRun = true;
 
+    size_t tStart = 0;
+    size_t tEnd = 0;
+
     bool whileBreaker = false;
     while (whileBreaker == false)
     {
-        size_t tStart = 0;
-        size_t tEnd = 0;
+
         tEnd = source.find(seperater, tStart + 1);
 
         std::string element;
@@ -316,6 +318,8 @@ std::vector<std::string> stringFindElements(std::string source,
             element.append(source, tStart + 1, tEnd - tStart - 1);
 
         returns.push_back(element);
+
+        tStart = tEnd;
 
         if (tEnd >= std::string::npos)
         {
