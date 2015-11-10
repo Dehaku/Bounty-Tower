@@ -7,6 +7,9 @@
 #include "util.h"
 #include "Textures.h"
 
+extern std::vector<std::string> aspectNum;
+int getAspectNum(std::string aspect);
+
 class StatusAspect
 {
 public:
@@ -35,7 +38,9 @@ public:
         Stun,
         // Disables Item Usage. (This includes attacking/casting)
         ManaRegen,
-        //Potency directly applies to variable.
+        // Potency acts as Percentage.
+        ManaBurn,
+        // Potency directly applies to variable.
         Attribute, // Type: Critter Attributes.
         // Potency directly applies to variable.
         Thorns, // Type: Damages.

@@ -126,7 +126,7 @@ std::string stringFindChaos(std::string stringy, std::string term,
                             std::string ending);
 std::set<std::string> stringFindSetChaos(std::string stringy, std::string term,
                                          std::string ending);
-std::vector<std::string> stringFindVectorChaos(std::string stringy, std::string term,
+std::vector<std::string> stringFindVectorChaos(std::string source, std::string term,
                                          std::string ending);
 float percentIs(float value, float percentage);
 

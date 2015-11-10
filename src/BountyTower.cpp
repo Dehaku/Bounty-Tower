@@ -2860,6 +2860,8 @@ void layerTest(int newThings)
     }
 }
 
+
+
 void testStatusEffects()
 {
     StatusEffect fireStatus;
@@ -2870,7 +2872,7 @@ void testStatusEffects()
     }
     //fireStatus.name = "On Fire";
     //fireStatus.critterEffect = &texturemanager.getTexture("LilFire.png");
-    fireStatus.addAspect(StatusAspect::AffectHealth,-1);
+    fireStatus.addAspect(getAspectNum("AffectHealth"),-1);
 
 
     if(inputState.key[Key::LShift] && inputState.key[Key::F].time == 1)
@@ -2881,7 +2883,27 @@ void testStatusEffects()
             //fireStatus.potency = random(10,50);
             npc.statusEffects.push_back(fireStatus);
         }
+
+
+        std::string testString = "[Name:On Fire][Duration: 180][OverlayImage:LilFire.png][Aspect:AffectHealth:-1][Aspect:Immunity:1:Cold][Aspect:Mark:1:Monkey][Aspect:AmmoCost:500][Aspect:SpawnCreatureOnDeath:2:BTRockkid]";
+
+        sf::Clock clock;
+        sf::Time timer = clock.restart();
+        std::vector<std::string> aspectContainer = stringFindVectorChaos(testString,"[Aspect:","]");
+        timer = clock.restart();
+        std::cout << "Newstring test: " << timer.asMicroseconds() << std::endl;
+
+        for(auto &strings : aspectContainer)
+        {
+            std::cout << "New Elements: " << strings << std::endl;
+        }
+
+
     }
+
+
+
+
 
 }
 
