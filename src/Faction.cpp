@@ -1488,8 +1488,8 @@ sf::Vector2f Npc::getPos2d()
 
 Npc::Npc()
     : body{},
-      isPlayer{}, hasSpawned{}, grappling{}, cbaseid{}, id2{},
-      surname{}, alive{}, stillalive{}, ticksalive{}, useditem{}, canmove{},
+      isPlayer{}, hasSpawned{}, grappling{}, cbaseid{},
+      alive{}, ticksalive{}, canmove{},
       age{},
       gypos{}, gxpos{}, planet{}, ypos{}, xpos{},
       rypos{}, rxpos{}, mana{}, credits{},
@@ -1517,11 +1517,6 @@ Npc::Npc()
     additionalSlots = 0;
 
     deadFrames = 0;
-
-    graspItemLeft = nullptr;
-    graspItemRight = nullptr;
-    graspNpcLeft = nullptr;
-    graspNpcRight = nullptr;
 
     hasPath = false;
     needsPath = false;
@@ -2078,49 +2073,6 @@ void Npc::momMove()
         momentum.y = 0;
 }
 
-void Npc::moveNorth()
-{
-    ypos -= moverate;
-}
-
-void Npc::moveNorthEast()
-{
-    ypos -= moverate;
-    xpos += moverate;
-}
-
-void Npc::moveEast()
-{
-    xpos += moverate;
-}
-
-void Npc::moveSouthEast()
-{
-    ypos += moverate;
-    xpos += moverate;
-}
-
-void Npc::moveSouth()
-{
-    ypos += moverate;
-}
-
-void Npc::moveSouthWest()
-{
-    ypos += moverate;
-    xpos -= moverate;
-}
-
-void Npc::moveWest()
-{
-    xpos -= moverate;
-}
-
-void Npc::moveNorthWest()
-{
-    ypos -= moverate;
-    xpos -= moverate;
-}
 
 bool Npc::isHungry()
 {

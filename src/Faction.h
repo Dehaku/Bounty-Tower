@@ -156,11 +156,6 @@ public:
     Item * getRightHandItem();
     Item * getItemTypeInHands(int type);
 
-    Npc * graspNpcLeft;
-    Npc * graspNpcRight;
-    Item * graspItemLeft;
-    Item * graspItemRight;
-
     Item * invSlots[22];
 
     std::vector<Tile *> storedPath;
@@ -175,6 +170,7 @@ public:
     Vec3 pathGrid;
     Vec3 endPos;
     Vec3 startPos;
+
     Vec3f getPos();
     sf::Vector2f getPos2d();
 
@@ -224,15 +220,11 @@ public:
 
     int cbaseid;
     int id;
-    int id2;
     std::string name;
-    char surname;
 
     bool alive;
-    bool stillalive;
     unsigned int ticksalive;
 
-    bool useditem;
     bool canmove;
 
     short regenrate;
@@ -369,14 +361,6 @@ public:
     void dirMove(sf::Vector2f tar);
     void momMove();
     void angMove(float ang);
-    void moveNorth();
-    void moveNorthEast();
-    void moveEast();
-    void moveSouthEast();
-    void moveSouth();
-    void moveSouthWest();
-    void moveWest();
-    void moveNorthWest();
 
     bool isHungry();
     bool isThirsty();

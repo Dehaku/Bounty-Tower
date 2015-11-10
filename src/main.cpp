@@ -4494,6 +4494,8 @@ void onStart()
     int currentFloor = 4;
     std::cout << "currentFloor/towerFloors/towerDiff: " << currentFloor << "/" << towerFloors << "/" << towerDiff << std::endl;
     std::cout << "Floor Difficulty: " << getFloorDifficulty(currentFloor,towerFloors,towerDiff) << std::endl;
+
+    std::cout << "Npc: SizeOf()" << sizeof(Npc) << std::endl;
 }
 
 
