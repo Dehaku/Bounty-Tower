@@ -1396,166 +1396,7 @@ void Npc::BodyDefinition::bodyPartFind(std::string part, int amount)
     }
 }
 
-std::set<int> Npc::melee(int /*min*/, int /*max*/, int range,
-                         std::set<int> /*exception*/)
-{
-    std::set<int> tar;
-    if (firstStrike == false)
-    {
-        degrees =
-            math::angleBetweenVectors(sf::Vector2f(xpos, ypos), targetPos) - 90;
-        firstStrike = true;
-    }
-    for (int i = 0; i != 30; i++)
-    {
-        xxx = xpos + cosf(degrees * PI / 180) * range;
-        yyy = ypos + sinf(degrees * PI / 180) * range;
-        degrees += 1;
-        shapes.createLine(xpos, ypos, xxx, yyy, 2, sf::Color::Blue);
-        tar = npcTrace(xpos, ypos, xxx, yyy, id, std::set<int>());
-    }
-    std::list<Item>::iterator inv;
-    for (inv = inventory.begin(); inv != inventory.end(); ++inv)
-    {
-        if (inv->name == "Sword")
-        {
-        }
-    }
-    if (degrees >=
-        math::angleBetweenVectors(sf::Vector2f(xpos, ypos), targetPos) + 90)
-    {
-        attacking = false;
-        firstStrike = false;
-    }
-    return tar;
-}
 
-void Npc::PathFinding::endMem()
-{
-    free(mypathBank[0]);
-}
-
-void Npc::PathFinding::myFindPath(int sx, int sy, int ex, int ey)
-{
-    xPa.clear();
-    yPa.clear();
-    debug("Pathfind status");
-
-    try
-    {
-        mypathStatus = astar::findPath(1, sx, sy, ex, ey);
-    }
-    catch (std::exception &e)
-    {
-        std::cout << " Find Path done messed up\n";
-        fSleep(60);
-    }
-
-    mypathLocation = astar::pathLocation[1];
-
-    mypathLength = astar::pathLength[1];
-    //MypathBank[1] = (int*) realloc (pathBank[1],pathLength[1]*8);
-
-    for (int i = 0; i != mypathLength; ++i)
-    {
-
-        yPa.push_back(astar::pathBank[1][i * 2 - 1]);
-        xPa.push_back(astar::pathBank[1][i * 2 - 2]);
-    }
-}
-
-int Npc::PathFinding::myReadPathX(int /*pathfinderID*/, int xpathLocation)
-{
-    if (xpathLocation <= mypathLength)
-    {
-        //Read coordinate from bank
-        //x = MypathBank[pathfinderID] [xpathLocation*2-2];
-        //Like... Yo bo... Ty this instead.
-        int x = xPa.at(xpathLocation);
-        //Adjust the coordinates so they align with the center
-        //of the path square (optional). This assumes that you are using
-        //sprites that are centered -- i.e., with the midHandle command.
-        //Otherwise you will want to adjust this.
-        x = astar::TILE_SIZE * x + .5 * astar::TILE_SIZE;
-        return x;
-    }
-    throw std::runtime_error(
-        "MyReadPathX: Couldn't return a meaningful value!");
-}
-
-int Npc::PathFinding::myReadPathY(int /*pathfinderID*/, int ypathLocation)
-{
-    if (ypathLocation <= mypathLength)
-    {
-        //Read coordinate from bank
-        //y = MypathBank[pathfinderID] [ypathLocation*2-1];
-        int y = yPa.at(ypathLocation);
-        //Adjust the coordinates so they align with the center
-        //of the path square (optional). This assumes that you are using
-        //sprites that are centered -- i.e., with the midHandle command.
-        //Otherwise you will want to adjust this.
-        y = astar::TILE_SIZE * y + .5 * astar::TILE_SIZE;
-        return y;
-    }
-    throw std::runtime_error(
-        "MyReadPathY: Couldn't return a meaningful value!");
-}
-
-void Npc::PathFinding::myReadPath(int /*pathfinderID*/, int currentX,
-                                  int currentY, int pixelsPerFrame)
-{
-    //If a path has been found for the pathfinder	...
-    if (mypathStatus == astar::FOUND)
-    {
-        //If path finder is just starting a new path or has reached the
-        //center of the current path square (and the end of the path
-        //hasn't been reached), look up the next path square.
-        if (mypathLocation < mypathLength)
-        {
-            //if just starting or if close enough to center of square
-            if (mypathLocation == 0 ||
-                (abs(currentX - myxPath) < pixelsPerFrame &&
-                 abs(currentY - myyPath) < pixelsPerFrame))
-                mypathLocation = mypathLocation + 1;
-        }
-        //Read the path data.
-        try
-        {
-            const int id = 1;
-            myxPath = myReadPathX(id, mypathLocation);
-            myyPath = myReadPathY(id, mypathLocation);
-        }
-        catch (std::exception const &ex)
-        {
-            // Log the exception and bail out of this function
-            std::cerr << "NPC::PathFinding: " << ex.what();
-            return;
-        }
-
-        //If the center of the last path square on the path has been
-        //reached then reset.
-        if (mypathLocation == mypathLength)
-        {
-            if (abs(currentX - myxPath) < pixelsPerFrame &&
-                abs(currentY - myyPath) <
-                    pixelsPerFrame) //if close enough to center of square
-                mypathStatus = astar::NOT_STARTED;
-        }
-    }
-    //If there is no path for this pathfinder, simply stay in the current
-    //location.
-    else
-    {
-        myxPath = currentX;
-        myyPath = currentY;
-    }
-}
-
-void Npc::effectStats()
-{
-    maxhealth = attributes.endurance * 0.8;
-    regenrate = attributes.endurance / 10;
-}
 
 void Npc::Attribute::Train(std::string skill, int amount, int skillgain)
 {
@@ -1646,16 +1487,13 @@ sf::Vector2f Npc::getPos2d()
 }
 
 Npc::Npc()
-    : attacking{}, firstStrike{}, imgRotates{}, prone{}, body{}, rot{}, xxx{},
-      yyy{}, degrees{}, pathFinding{}, imgstrx{}, imgstry{}, imgendx{},
-      imgendy{}, isPlayer{}, hasSpawned{}, grappling{}, cbaseid{}, id2{},
+    : body{},
+      isPlayer{}, hasSpawned{}, grappling{}, cbaseid{}, id2{},
       surname{}, alive{}, stillalive{}, ticksalive{}, useditem{}, canmove{},
-      breathrate{}, breathtimer{}, breathtimerint{}, age{}, ageType{},
-      direction{}, worshippers{}, gypos{}, gxpos{}, planet{}, ypos{}, xpos{},
-      rypos{}, rxpos{}, mana{}, reginterntemp{}, interntemp{}, regtemp{},
-      temp{}, breathmax{}, nutrition{}, maxstamina{}, stamina{}, credits{},
-      size{}, minmeleedamage{}, maxmeleedamage{}, minrangeddamage{},
-      maxrangeddamage{}, dirgrid{}, valuegrid{}, followgrid{}
+      age{},
+      gypos{}, gxpos{}, planet{}, ypos{}, xpos{},
+      rypos{}, rxpos{}, mana{}, credits{},
+      size{}
 {
     hasJob = false;
     jobPtr = nullptr;
@@ -1701,17 +1539,13 @@ Npc::Npc()
     id = gvars::globalid++;
     needsFood = true;
     needsWater = true;
-    targetVectorId = -1;
-    targetId = -1;
+
     angle = 1;
     turnSpeed = 1;
     allowedDrink = true;
     allowedFood = true;
     allowedMove = true;
-    atTarget = false;
-    hasTarget = false;
-    target = "Food";
-    action = "Act";
+
     moverateint = 1;
     moverate = moverateint;
     movetimerint = 1000;
@@ -2040,102 +1874,6 @@ void Npc::drawImg()
     window.draw(img);
 }
 
-void Npc::move(sf::Vector2f tar)
-{
-    bool above = false;
-    bool right = false;
-    bool atTargetx = false;
-    bool atTargety = false;
-    if (tar.x < xpos)
-    {
-        right = false;
-    }
-    else if (tar.x == xpos)
-    {
-        atTargetx = true;
-    }
-    else
-    {
-        right = true;
-    }
-
-    if (tar.y < ypos)
-    {
-        above = true;
-    }
-    else if (tar.y == ypos)
-    {
-        atTargety = true;
-    }
-    else
-    {
-        above = false;
-    }
-
-    if (atTargetx == true && atTargety == true)
-    {
-        atTarget = true;
-    }
-    else
-    {
-        if (atTargety == true)
-        {
-        }
-        else if (above == true)
-        {
-            int numz = math::closeishS(tar.y, ypos);
-            if (numz < moverate)
-            {
-                ypos += numz;
-            }
-            else
-            {
-                ypos += moverate;
-            }
-        }
-        else
-        {
-            int numz = math::closeishS(tar.y, ypos);
-            if (numz < moverate)
-            {
-                ypos -= numz;
-            }
-            else
-            {
-                ypos -= moverate;
-            }
-        }
-
-        if (atTargetx == true)
-        {
-        }
-        else if (right == true)
-        {
-            int numz = math::closeishS(tar.x, xpos);
-            if (numz < moverate)
-            {
-                xpos += numz;
-            }
-            else
-            {
-                xpos += moverate;
-            }
-        }
-        else
-        {
-            int numz = math::closeishS(tar.x, xpos);
-            if (numz < moverate)
-            {
-                xpos -= numz;
-            }
-            else
-            {
-                xpos -= moverate;
-            }
-        }
-    }
-    angle = (180 / PI) * (atan2f(xpos - tar.x, ypos - tar.y));
-}
 
 /*
 
@@ -2795,8 +2533,6 @@ void Npc::printConsoleInfo()
     cout << "Hunger: " << hunger << endl;
     cout << "Thirst: " << thirst << endl;
     cout << "Kill Count: " << killcount << endl;
-    cout << "Target is " << target << " at:" << targetPos.x << ","
-         << targetPos.y << endl;
 }
 
 void Npc::printBloodContent()
@@ -3402,7 +3138,7 @@ void NpcManager::initializeCritters()
             critter.cbaseid = stringFindNumber(line, "[BaseId:");
             critter.id = gvars::globalid++;
 
-            critter.target = stringFindString(line, "[Target:");
+            //critter.target = stringFindString(line, "[Target:");
             critter.needsFood =
                 booleanize(stringFindNumber(line, "[NeedsFood:"));
             critter.allowedFood =
@@ -3421,7 +3157,7 @@ void NpcManager::initializeCritters()
             critter.maxthirst = stringFindNumber(line, "[MaxThirst:");
             critter.regentimerint = stringFindNumber(line, "[RegenRate:");
 
-            critter.breathtimerint = stringFindNumber(line, "[BreathTimerInt:");
+            //critter.breathtimerint = stringFindNumber(line, "[BreathTimerInt:");
             critter.hungertimerint = stringFindNumber(line, "[HungerTimerInt:");
             critter.thirsttimerint = stringFindNumber(line, "[ThirstTimerInt:");
 
@@ -3531,7 +3267,7 @@ void NpcManager::initializeCritters()
 
             /*===================================================*/
 
-            critter.action = "Act";
+            //critter.action = "Act";
             critter.alive = true;
             critter.hasSpawned = true;
             critter.movetimerint = 1000;
@@ -3550,7 +3286,7 @@ void NpcManager::initializeCritters()
                 critter.attributes.endurance /
                 10; // TODO: Have Skill based values update in the Train() function, So that stuff like Regen doesn't fall behind.
 
-            critter.breathtimer = critter.breathtimerint;
+            //critter.breathtimer = critter.breathtimerint;
             critter.hungertimer = critter.hungertimerint;
             critter.thirsttimer = critter.thirsttimerint;
             critter.needsPath = false;
@@ -3801,7 +3537,7 @@ void saveNPC(int planet, sf::Vector2i region, Npc &critter)
              << "[dexterity:" << critter.attributes.dexterity << "]"
              << "[agility:" << critter.attributes.agility << "]"
              << "[health:" << critter.health << "]"
-             << "[action:" << critter.action << "]"
+             //<< "[action:" << critter.action << "]"
              << "[angle:" << critter.angle << "]"
              << "[thirst:" << critter.thirst << "]"
              << "[hunger:" << critter.hunger << "]"
@@ -3865,7 +3601,7 @@ void saveNPC(int planet, sf::Vector2i region, Npc &critter)
                    << "[dexterity:" << critter.attributes.dexterity << "]"
                    << "[agility:" << critter.attributes.agility << "]"
                    << "[health:" << critter.health << "]"
-                   << "[action:" << critter.action << "]"
+                   //<< "[action:" << critter.action << "]"
                    << "[angle:" << critter.angle << "]"
                    << "[thirst:" << critter.thirst << "]"
                    << "[hunger:" << critter.hunger << "]"
@@ -4206,7 +3942,7 @@ std::string loadCritters(sf::Vector2i worldPos, std::string direction,
             critter.ypos = stringFindNumber(line, "[ypos:");
             critter.health = stringFindNumber(line, "[health:");
             critter.maxhealth = stringFindNumber(line, "[maxhealth:");
-            critter.action = stringFindString(line, "[action:");
+            //critter.action = stringFindString(line, "[action:");
             critter.angle = stringFindNumber(line, "[angle:");
             critter.thirst = stringFindNumber(line, "[thirst:");
             critter.hunger = stringFindNumber(line, "[hunger:");
@@ -4356,7 +4092,7 @@ void squadHud()
                     gvars::topLeft.y + 20 + (20 * iterNum), sf::Color::Black);
 
                 std::string output =
-                    i.name + i.action + i.target;
+                    i.name;
                 textList.createText(gvars::topLeft.x + 20 + (20),
                                     gvars::topLeft.y + (20 * iterNum), 12,
                                     sf::Color::White, output);
@@ -4630,25 +4366,6 @@ void selectedNPCprocess()
 
     }
 
-
-    if (bountytower::bountytower == false)
-    {
-        int mouseX = abs_to_index(gvars::mousePos.x / GRID_SIZE);
-        int mouseY = abs_to_index(gvars::mousePos.y / GRID_SIZE);
-
-        if (inputState.rmb &&
-            tiles[mouseX][mouseY][gvars::currentz].id != 1010)
-        {
-            sf::Lock lock(mutex::npcList);
-
-            for(auto &selected : selectedNPCs)
-            {
-                selected->targetPos = sf::Vector2f(gvars::mousePos);
-                selected->action = "Orders";
-            }
-        }
-    }
-
 }
 
 void drawInventory(sf::Vector2f vPos, std::list<Item> &inventory)
@@ -4682,143 +4399,6 @@ void drawInventory(sf::Vector2f vPos, std::list<Item> &inventory)
 
 void drawSelectedCritterHUD()
 {
-    if (!selectedNPCs.empty() && !bountytower::bountytower)
-    {
-        int nxpos = gvars::topLeft.x+5;
-        int nypos = gvars::topLeft.y + (screen.y() / 2);
-
-        textList.createText(nxpos+5,nypos-20-13,10,sf::Color::Cyan,"<Inventory>");
-        drawInventory(sf::Vector2f(nxpos,nypos), selectedNPCs[0]->inventory);
-
-
-
-
-        shapes.createSquare(nxpos, nypos, nxpos + 65, nypos + 70,
-                                     sf::Color(0, 0, 0, 100));
-
-        textList.createText(nxpos, nypos, 11, sf::Color::Red, "Health:",
-                                    "", selectedNPCs[0]->health, "",
-                                    "(", selectedNPCs[0]->maxhealth,
-                                    ")", "", -6698, 1, 0);
-
-        textList.createText(nxpos, nypos + 10, 11, BROWN, "Hunger:", "",
-                                    selectedNPCs[0]->hunger, "", "",
-                                    -6698, "", "", -6698, 1, 0);
-        textList.createText(nxpos, nypos + 20, 11, sf::Color::Cyan,
-                                    "Thirst:", "",
-                                    selectedNPCs[0]->thirst, "", "",
-                                    -6698, "", "", -6698, 1, 0);
-
-        std::string textOut;
-        if(selectedNPCs[0]->factionPtr != nullptr)
-                    textOut = "Name:" + selectedNPCs[0]->name + ", Faction: " + selectedNPCs[0]->factionPtr->name;
-        else
-                    textOut = "Name:" + selectedNPCs[0]->name + ", Faction: None";
-
-        textList.createText(nxpos, nypos + 30, 11, sf::Color::White, textOut);
-
-        textList.createText(nxpos, nypos + 30, 11, sf::Color::White,
-                                    "Name:", selectedNPCs[0]->name);
-        textList.createText(nxpos, nypos + 40, 11, sf::Color::White,
-                                    "Id:", "", selectedNPCs[0]->id,
-                                    "", "", -6698, "", "", -6698, 1, 0);
-        if (selectedNPCs[0]->needsPath == false)
-        {
-            textList.createText(nxpos, nypos + 50, 11, sf::Color::Red,
-                                        "Action:",
-                                        selectedNPCs[0]->action);
-        }
-        else
-        {
-            textList.createText(nxpos, nypos + 50, 11, sf::Color::Blue,
-                                        "Action:",
-                                        selectedNPCs[0]->action);
-        }
-        textList.createText(
-                    nxpos, nypos + 60, 11, sf::Color::Red, "Target:",
-                    selectedNPCs[0]->target,
-                    selectedNPCs[0]->targetPos.x, ":", "",
-                    selectedNPCs[0]->targetPos.y, " Angle:", "",
-                    selectedNPCs[0]->angle);
-
-        shapes.createSquare(nxpos, nypos + 70, nxpos + 130,
-                                     nypos + 150, sf::Color(0, 0, 0, 200));
-        int y = 7;
-        int v = 1;
-        textList.createText(
-                    nxpos + v, nypos + (y++ * 10), 11, sf::Color::White,
-                    "Strength:", "",
-                    selectedNPCs[0]->attributes.strength, " : ", "",
-                    selectedNPCs[0]->attributes.strengthxp);
-        textList.createText(
-                    nxpos + v, nypos + (y++ * 10), 11, sf::Color::White,
-                    "Perception:", "",
-                    selectedNPCs[0]->attributes.perception, " : ", "",
-                    selectedNPCs[0]->attributes.perceptionxp);
-        textList.createText(
-                    nxpos + v, nypos + (y++ * 10), 11, sf::Color::White,
-                    "Intelligence:", "",
-                    selectedNPCs[0]->attributes.intelligence, " : ", "",
-                    selectedNPCs[0]->attributes.intelligencexp);
-        textList.createText(
-                    nxpos + v, nypos + (y++ * 10), 11, sf::Color::White,
-                    "Charisma:", "",
-                    selectedNPCs[0]->attributes.charisma, " : ", "",
-                    selectedNPCs[0]->attributes.charismaxp);
-        textList.createText(
-                    nxpos + v, nypos + (y++ * 10), 11, sf::Color::White,
-                    "Endurance:", "",
-                    selectedNPCs[0]->attributes.endurance, " : ", "",
-                    selectedNPCs[0]->attributes.endurancexp);
-        textList.createText(
-                    nxpos + v, nypos + (y++ * 10), 11, sf::Color::White,
-                    "Dexterity:", "",
-                    selectedNPCs[0]->attributes.dexterity, " : ", "",
-                    selectedNPCs[0]->attributes.dexterityxp);
-        textList.createText(
-                    nxpos + v, nypos + (y++ * 10), 11, sf::Color::White,
-                    "Agility:", "", selectedNPCs[0]->attributes.agility,
-                    " : ", "", selectedNPCs[0]->attributes.agilityxp);
-        textList.createText(nxpos + v, nypos + (y++ * 10), 11,
-                                    sf::Color::White, "Tags:",
-                                    selectedNPCs[0]->tags);
-
-        if (selectedNPCs[0]->inventory.size() != 0 ||
-                    selectedNPCs[0]->bloodcontent != "")
-        {
-            shapes.createSquare(nxpos, nypos, nxpos + 230, nypos + 70,
-                                         sf::Color(0, 0, 0, 100));
-            int yv = nypos;
-            for (auto const &item :
-                         selectedNPCs[0]->inventory)
-            { // Listing all the current items from this critters inventory.
-                if (item.insidePart.size() == 0)
-                {
-                    textList.createText(nxpos + 165, yv, 11,
-                                                sf::Color::White, item.name,
-                                                ": ", item.amount);
-                    yv += 10;
-                }
-            }
-
-            for (auto const &item :
-                         selectedNPCs[0]->inventory)
-            { // Listing all items from 'inside' the critter.
-                if (item.insidePart.size() != 0)
-                {
-                    textList.createText(
-                                nxpos + 65, yv, 11, sf::Color(255, 200, 200),
-                                "Inside " + item.insidePart + " :",
-                                item.name + " :", item.amount);
-                            yv += 10;
-                }
-            }
-            textList.createText(
-                        nxpos + 85, yv, 11, sf::Color(255, 150, 150),
-                        "Blood: " + selectedNPCs[0]->bloodcontent);
-        }
-    }
-
     if(!selectedNPCs.empty() && bountytower::bountytower)
     {
         // restore the default view

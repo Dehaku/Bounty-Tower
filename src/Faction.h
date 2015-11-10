@@ -182,15 +182,11 @@ public:
 
     Skills skills;
 
-    bool attacking;
-    bool firstStrike;
-    bool imgRotates;
     float angle;
     float turnSpeed;
-    sf::Vector2f speed;
-    sf::Vector2f shootPos;
+
+
     sf::Vector2f desiredViewAngle;
-    bool prone;
     bool toDelete;
 
     bool hasJob;
@@ -207,125 +203,62 @@ public:
         std::string bodyParts;
 
         void bodyPartFind(std::string part, int amount);
-
-        int head;
-        int eyes;  // Mask = Eyes+Mouth
-        int mouth; // Mask = Eyes+Mouth
-        int neck;
-        int chest;
-        int back;
-        int waist;
-        int legs;
-        int rightupperarm; // int rua
-        int rightlowerarm; // int rla
-        int righthand;     // rh
-        int rightgrasp;    // rg
-        int leftupperarm;  // int lua
-        int leftlowerarm;  // int lla
-        int lefthand;      // lh
-        int leftgrasp;     // lg
-        int rightupperleg; // rul
-        int rightlowerleg; // rll
-        int rightfoot;     // rf
-        int leftupperleg;  // lul
-        int leftlowerleg;  // lll
-        int leftfoot;      // lf
     };
     BodyDefinition body;
 
     std::list<partGrasp> graspers;
 
 
-    float rot;
-    float xxx;
-    float yyy;
-    float degrees;
-    std::vector<int> exceptions;
-
-    std::set<int> melee(int min, int max, int range,
-                        std::set<int> exception = std::set<int>());
-
-    class PathFinding
-    {
-    public:
-        int *mypathBank[1];
-        // stores length of the found path for critter
-        int mypathLength;
-        // stores current position along the chosen path for critter
-        int mypathLocation;
-        int mypathStatus;
-        int myxPath;
-        int myyPath;
-        std::vector<int> xPa;
-        std::vector<int> yPa;
-        void endMem();
-        void myFindPath(int sx, int sy, int ex, int ey);
-        int myReadPathX(int pathfinderID, int xpathLocation);
-        int myReadPathY(int pathfinderID, int ypathLocation);
-        void myReadPath(int pathfinderID, int currentX, int currentY,
-                        int pixelsPerFrame);
-    };
-    PathFinding pathFinding;
-
-    short imgstrx;
-    short imgstry;
-    short imgendx;
-    short imgendy;
     bool isPlayer;
     bool isNPC;
     bool isSquaddie;
     bool isBoss;
     bool hasSpawned;
+
     bool needsFood;
     bool allowedFood;
     bool needsWater;
     bool allowedDrink;
     bool allowedMove;
     bool grappling;
+
     int cbaseid;
     int id;
     int id2;
     std::string name;
     char surname;
+
     bool alive;
     bool stillalive;
     unsigned int ticksalive;
+
     bool useditem;
     bool canmove;
-    std::string target;
-    sf::Vector2f targetPos;
-    int targetId;
-    int targetVectorId;
-    bool atTarget;
-    bool hasTarget;
-    std::string action;
+
     short regenrate;
     short regentimer;
     short regentimerint;
+
     float moverateint;
     float moverate;
     float movetimer;
     float movetimerint;
     float movetimerrate;
+
     float attacktimer;
     float attacktimerint;
+
     short hungerrate;
     short hungertimer;
     short hungertimerint;
     short thirstrate;
     short thirsttimer;
     short thirsttimerint;
-    short breathrate; // not needed?
-    short breathtimer;
-    short breathtimerint;
+
     std::string race;
     int age;
-    // 1 = Babeh, 2 = Child, 3 = Teenager, 4 = Young Adult,
-    // 5 = Aged Adult, 6 = Elder
-    int ageType;
     std::string gender;
-    char direction;
-    int worshippers;
+
     int gypos;
     int gxpos;
     int planet;
@@ -334,21 +267,15 @@ public:
     float zpos;
     int rypos;
     int rxpos;
+
     float maxhealth;
     float health;
+
     short mana;
-    short reginterntemp;
-    short interntemp;
-    short regtemp;
-    short temp;
-    short breathmax;
     long maxhunger;
     float hunger;
-    short nutrition;
     long maxthirst;
     float thirst;
-    short maxstamina;
-    short stamina;
     int credits;
 
     sf::Vector2f tentArm1;
@@ -359,8 +286,6 @@ public:
     bool consumeFlesh;
     bool consumeVeggy;
     bool consumeWater;
-
-    void effectStats();
 
     class Attribute
     {
@@ -440,7 +365,7 @@ public:
     Item *getItemType(int type);
     bool hasItemType(int type);
     void drawImg();
-    void move(sf::Vector2f tar);
+
     void dirMove(sf::Vector2f tar);
     void momMove();
     void angMove(float ang);
@@ -452,6 +377,7 @@ public:
     void moveSouthWest();
     void moveWest();
     void moveNorthWest();
+
     bool isHungry();
     bool isThirsty();
     bool isHurt();
@@ -473,15 +399,6 @@ public:
     std::string takeDamage(Npc *attacker, Item *weapon = nullptr, float amount = 0, critScore *crit = nullptr);
     std::string dealDamage(Npc *victim, Item *weapon = nullptr, float amount = 0);
     std::string onDeath(Npc *attacker, Item *weapon = nullptr, float amount = 0, critScore *crit = nullptr);
-
-    short minmeleedamage;
-    short maxmeleedamage;
-    short minrangeddamage;
-    short maxrangeddamage;
-
-    unsigned char dirgrid[GRID_Y][GRID_X];
-    unsigned char valuegrid[GRID_Y][GRID_X];
-    unsigned char followgrid[GRID_Y][GRID_X];
 
     void printConsoleInfo();
     void printBloodContent();

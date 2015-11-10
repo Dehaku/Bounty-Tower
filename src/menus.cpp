@@ -1521,39 +1521,11 @@ void menuPopUp()
                     sf::Color::Black, 1, sf::Color::Yellow);
                 textList.createText(gCtrl.menuPos.x,
                                     gCtrl.menuPos.y + (iY * 11), 11,
-                                    sf::Color::Cyan, "PickUp");
+                                    sf::Color::Cyan, "PickUp Outdated");
                 int butt =
                     createButton(math::Vec2f(gCtrl.menuPos.x + 90,
                                              (gCtrl.menuPos.y + (iY * 11)) + 5),
                                  5, sf::Color::Red);
-                if (buttonClicked(butt))
-                {
-
-                    std::list<Item>::iterator item;
-                    for (item = worlditems.begin(); item != worlditems.end();
-                         item++)
-                    {
-                        if (math::closeish(gCtrl.menuPos.x, gCtrl.menuPos.y,
-                                           item->xpos, item->ypos) <= 10)
-                        {
-                            if (item->pickupable == true)
-                            {
-                                sf::Lock lock(mutex::npcList);
-                                //for (auto &i : npclist)
-                                selectedNPCs[0]->action = "Pickup";
-                                selectedNPCs[0]->target = item->name;
-                                selectedNPCs[0]->targetId = item->id;
-                                selectedNPCs[0]->targetPos =
-                                    sf::Vector2f(item->xpos, item->ypos);
-                                gCtrl.menuPos = sf::Vector2f(-10000, -10000);
-                                gCtrl.menuType = "NULL";
-                            }
-                        }
-                    }
-
-                    fSleep(0.2);
-                    break;
-                }
             }
 
             iY++;

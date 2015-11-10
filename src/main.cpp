@@ -2843,7 +2843,6 @@ void handlePhase()
                 for (auto &i : npclist)
                 {
                     i.ypos += -640;
-                    i.targetPos.y += -640;
                 }
             }
 
@@ -2891,7 +2890,6 @@ void handlePhase()
                 for (auto &i : npclist)
                 {
                     i.ypos += 640;
-                    i.targetPos.y += 640;
                 }
             }
 
@@ -2941,7 +2939,6 @@ void handlePhase()
             for (auto &i : npclist)
             {
                 i.xpos += -640;
-                i.targetPos.x += -640;
             }
 
             }
@@ -2993,7 +2990,6 @@ void handlePhase()
             for (auto &i : npclist)
             {
                 i.xpos += 640;
-                i.targetPos.x += 640;
             }
 
             }
