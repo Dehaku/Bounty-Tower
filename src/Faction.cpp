@@ -5425,6 +5425,14 @@ void Npc::handleStatusEffects()
 
     for(auto &condition : statusEffects)
     {
+        if(condition.critterEffect != nullptr)
+        { // Drawing status overlay on critter.
+            shapes.createImageButton(getPos2d(),*condition.critterEffect,"",0);
+            shapes.shapes.back().layer = 10;
+        }
+
+
+
 
         condition.duration--;
         if(condition.duration <= 0)

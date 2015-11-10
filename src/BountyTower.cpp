@@ -2864,6 +2864,7 @@ void testStatusEffects()
 {
     StatusEffect fireStatus;
     fireStatus.name = "On Fire";
+    fireStatus.critterEffect = &texturemanager.getTexture("LilFire.png");
 
 
     if(inputState.key[Key::LShift] && inputState.key[Key::F].time == 1)
