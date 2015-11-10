@@ -1109,9 +1109,7 @@ void overheadOverlay(Npc &npc)
         float healthCap = 1000;
         float healthPercent = healthLow / healthCap;
         shapes.createSquare(npc.xpos-40,npc.ypos-40, npc.xpos+40, npc.ypos-40+10,sf::Color::Black);
-        shapes.shapes.back().layer = 20;
         shapes.createSquare(npc.xpos-(40*healthPercent),npc.ypos-40, npc.xpos+(40*healthPercent), npc.ypos-40+8,sf::Color::Red,1,sf::Color::Black);
-        shapes.shapes.back().layer = 21;
     }
     if(npc.health != npc.getMaxHealth() && npc.health > 1000) //1k - 10k Yellow bar
     {
@@ -1120,7 +1118,6 @@ void overheadOverlay(Npc &npc)
         float healthPercent = healthLow / healthCap;
 
         shapes.createSquare(npc.xpos-(40*healthPercent),npc.ypos-40, npc.xpos+(40*healthPercent), npc.ypos-40+8,sf::Color::Yellow,1,sf::Color::Black);
-        shapes.shapes.back().layer = 22;
     }
     if(npc.health != npc.getMaxHealth() && npc.health > 10000) //10k - 100k Green bar
     {
@@ -1129,7 +1126,6 @@ void overheadOverlay(Npc &npc)
         float healthPercent = healthLow / healthCap;
 
         shapes.createSquare(npc.xpos-(40*healthPercent),npc.ypos-40, npc.xpos+(40*healthPercent), npc.ypos-40+8,sf::Color::Green,1,sf::Color::Black);
-        shapes.shapes.back().layer = 23;
     }
     if(npc.health != npc.getMaxHealth() && npc.health > 100000) //100k - 1m Blue bar
     {
@@ -1138,7 +1134,6 @@ void overheadOverlay(Npc &npc)
         float healthPercent = healthLow / healthCap;
 
         shapes.createSquare(npc.xpos-(40*healthPercent),npc.ypos-40, npc.xpos+(40*healthPercent), npc.ypos-40+8,sf::Color::Blue,1,sf::Color::Black);
-        shapes.shapes.back().layer = 24;
     }
 
     /*

@@ -43,8 +43,6 @@ public:
         // Potency directly applies to variable. Item Spread, in this case.
         Immunity, // Type: Damages, Momentum.
         // Potency, Simply acts as an On/Off
-        StatusEffectImmunity, // Type: Status Effect Name.
-        // Potency, Simply acts as an On/Off.
         ApplyMomentum, // Only works as Aura or on Weapon.
         // Potency pushes when positive, pulls when negitive.
         MomentumSensitivity,
@@ -63,13 +61,8 @@ public:
         // Potency, Simply acts as an On/Off.
         SpawnCreatureOnDeath, // Type: Direct Race Name. Creatures will be hostile to Everyone.
         // Potency indicates amount of creatures to spawn.
-        SpawnItemOnDeath, // Type: Direct Item Name.
+        SpawnItemOnDeath // Type: Direct Item Name.
         // Potency indicates amount of stack to spawn, Does not over rule Stacksize.
-        RevivesOnDeath,
-        // Potency acts as a lives counter.
-        DisableDeath
-        // Potency, Simply acts as an On/Off.
-
 
 
 
@@ -84,8 +77,7 @@ public:
     std::string name;
     int duration;
     int auraRadius; // This, When above 0, Doesn't affect the carrier, but applies it to everyone within it's radius, for 1 duration, and with 0 auraRadius.
-    bool AffectsCarrierFaction;
-    bool AffectsCarrierEnemies;
+
 
 
     std::vector<StatusAspect> aspects;

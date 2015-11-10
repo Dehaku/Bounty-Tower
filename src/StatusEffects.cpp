@@ -4,8 +4,6 @@
 StatusEffect::StatusEffect()
 {
     duration = 0;
-    AffectsCarrierFaction = false;
-    AffectsCarrierEnemies = false;
     //potency = 0;
 
     toDelete = false;
