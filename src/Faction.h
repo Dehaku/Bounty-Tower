@@ -149,6 +149,9 @@ public:
 
     unsigned int deadFrames;
 
+    std::list<StatusEffect> statusEffects;
+    void handleStatusEffects();
+
     Item * getLeftHandItem();
     Item * getRightHandItem();
     Item * getItemTypeInHands(int type);

@@ -5394,6 +5394,46 @@ void Npc::setupAnimations()
     }
 }
 
+void Npc::handleStatusEffects()
+{
+    if(statusEffects.empty())
+        return;
+
+    bool mouseHovering = (math::closeish(getPos2d(),gvars::mousePos) <= 20);
+    if(mouseHovering)
+    { // Drawing a display of all status effects.
+        sf::Vector2f drawPos = gvars::mousePos;
+        drawPos.x += 15;
+        shapes.createSquare(drawPos.x,drawPos.y,drawPos.x+500,drawPos.y+(statusEffects.size()*20),sf::Color::Black,1,sf::Color::Cyan);
+        shapes.shapes.back().layer = 9000;
+        int total_elements = 0;
+
+        for(auto &condition : statusEffects)
+        {
+            std::string outPut;
+            outPut.append("[" + condition.name + ", Potency: " + str(condition.potency) + ", Duration: " + str(condition.duration/60) + "]");
+
+            shapes.createText(sf::Vector2f(drawPos.x,drawPos.y+(20*total_elements)),15,sf::Color::Cyan,outPut);
+            shapes.shapes.back().layer = 9001; // IT'S OVER NINE THO-
+
+            total_elements++;
+        }
+
+
+
+    }
+
+    for(auto &condition : statusEffects)
+    {
+
+        condition.duration--;
+        if(condition.duration <= 0)
+            condition.toDelete = true;
+    }
+
+    AnyDeletes(statusEffects);
+}
+
 AnimationHolder * aniHold = nullptr;
 
 void drawNPCs(std::list<Npc> &container)

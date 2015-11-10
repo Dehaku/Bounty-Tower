@@ -6,6 +6,7 @@
 #include <SFML/Graphics.hpp>
 #include "Text.h"
 #include "defs.h"
+#include "StatusEffects.h"
 
 
 class Npc;
@@ -52,6 +53,9 @@ public:
     int value;
 
     int healAmount;
+
+    std::list<StatusEffect> statusEffects;
+    void handleStatusEffects();
 
     sf::Vector2f targetPos;
     float xpos;

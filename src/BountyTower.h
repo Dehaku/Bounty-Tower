@@ -11,8 +11,10 @@
 #include "menus.h"
 #include "Camera.h"
 #include "math.h"
+#include "StatusEffects.h"
 #include "Tiles.h"
 #include "Faction.h"
+
 
 extern sf::RenderWindow window;
 

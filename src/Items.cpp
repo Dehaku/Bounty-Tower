@@ -1282,6 +1282,11 @@ void Item::remove()
     }
 }
 
+void Item::handleStatusEffects()
+{
+
+}
+
 void explosion(Vec3f vPos, int radius, float damage, Npc *attacker, std::vector<Npc*> *victims)
 {
     sf::Vector2f gfxPos(vPos.x,vPos.y);

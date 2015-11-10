@@ -1231,6 +1231,9 @@ void critterBrain(Npc &npc, std::list<Npc> &container)
     //Applying momentum movement to critter
     npc.momMove();
 
+    npc.handleStatusEffects();
+
+    // All functions before this point will run whether dead or alive.
     if(!npc.alive)
         return;
 
@@ -1241,14 +1244,17 @@ void critterBrain(Npc &npc, std::list<Npc> &container)
     critterLevelUp(npc,container);
 
 
+
+
     if((gvars::framesPassed % 60) == 0)
     {
         float hpRegen = npc.getMaxHealth()*(npc.skills.getRanks("Feral Regeneration")*0.002);
         npc.modhealth(hpRegen);
     }
 
-
     npc.container = &container;
+
+
 
     int moveSpeed = npc.moverate;
 
