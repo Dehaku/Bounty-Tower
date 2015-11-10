@@ -2863,8 +2863,13 @@ void layerTest(int newThings)
 void testStatusEffects()
 {
     StatusEffect fireStatus;
-    fireStatus.name = "On Fire";
-    fireStatus.critterEffect = &texturemanager.getTexture("LilFire.png");
+    for(auto &status : globalStatusEffects.statusEffects)
+    {
+        if(status.name == "On Fire")
+            fireStatus = status;
+    }
+    //fireStatus.name = "On Fire";
+    //fireStatus.critterEffect = &texturemanager.getTexture("LilFire.png");
     fireStatus.addAspect(StatusAspect::AffectHealth,-1);
 
 
@@ -2872,7 +2877,7 @@ void testStatusEffects()
     {
         for(auto &npc : npclist)
         {
-            fireStatus.duration = random(30,600);
+            //fireStatus.duration = random(30,600);
             //fireStatus.potency = random(10,50);
             npc.statusEffects.push_back(fireStatus);
         }

@@ -4518,6 +4518,8 @@ int main()
     itemmanager.initializeItems();
     npcmanager.initializeCritters();
 
+    globalStatusEffects.initializeStatusEffects();
+
 
     galaxySetup();
     bountyTowerSetup();

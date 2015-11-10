@@ -1,0 +1,10 @@
+Name, Unique Identifer.
+Duration, How long it lasts in frames(Divide by 60 for rough second counter)
+AuraRadius, Default 0, When set to 0, It affects the carrier, If above 0, It affects those in range instead, based on the following auras.
+AuraAllies, Affects all friendly units within range, including the carrier.
+AuraEnemies, Affects all hostile units within range.
+AuraNeutrals, Affects all units do not fit the previous two catagories. (For example, Hostages, Merchants, ect. Probably shouldn't be used in most cases.)
+IconImage, filename.png, Little icon image that will float next to Squaddie huds.
+OverlayImage, filename.png, If this is added to a status effect, the image will be drawn ontop of the carrier, i.e. On Fire's fire graphic.
+
+[Name:On Fire][Duration: 180][OverlayImage:LilFire.png]

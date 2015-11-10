@@ -4,6 +4,9 @@
 #include <string>
 #include <SFML/Graphics.hpp>
 
+#include "util.h"
+#include "Textures.h"
+
 class StatusAspect
 {
 public:
@@ -83,21 +86,33 @@ class StatusEffect
 public:
     std::string name;
     int duration;
-    int auraRadius; // This, When above 0, Doesn't affect the carrier, but applies it to everyone within it's radius, for 1 duration, and with 0 auraRadius.
-    bool AffectsCarrierFaction;
-    bool AffectsCarrierEnemies;
 
+    int auraRadius; // This, When above 0, Doesn't affect the carrier, but applies it to everyone within it's radius, for 1 duration, and with 0 auraRadius.
+    bool auraAffectsAllies;
+    bool auraAffectsEnemies;
+    bool auraAffectsNeutrals;
+
+
+    sf::Color color;
+    sf::Texture const * icon;
+    sf::Texture const * critterEffect;
 
     std::vector<StatusAspect> aspects;
     void addAspect(int name, int potency, std::string type = "");
-
-    sf::Color color;
-    sf::Texture * icon;
-    sf::Texture * critterEffect;
 
     bool toDelete;
 
     StatusEffect();
 };
+
+class GlobalStatusEffects
+{
+public:
+    std::vector<StatusEffect> statusEffects;
+
+    void initializeStatusEffects();
+};
+
+extern GlobalStatusEffects globalStatusEffects;
 
 #endif // STATUSEFFECTS_H_INCLUDED
