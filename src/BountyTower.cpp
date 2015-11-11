@@ -372,10 +372,12 @@ void debugTileMode()
     }
 
 
+    /*
     if(inputState.key[Key::G].time == 10)
     {
         tileWipe();
     }
+    */
 
     int wallButt = shapes.createImageButton(sf::Vector2f(menuEdgeL+30,menuEdgeU+30),texturemanager.getTexture("FMTwallcheat2.png"));
     if(shapes.shapeClicked(wallButt))
@@ -2867,20 +2869,29 @@ void testStatusEffects()
     StatusEffect fireStatus;
     for(auto &status : globalStatusEffects.statusEffects)
     {
-        if(status.name == "Pointless Healing")
+        if(status.name == "Flame Aura")
             fireStatus = status;
     }
     //fireStatus.name = "On Fire";
     //fireStatus.critterEffect = &texturemanager.getTexture("LilFire.png");
     //fireStatus.addAspect(getAspectNum("AffectHealth"),-1);
 
+    if(inputState.key[Key::LShift] && inputState.key[Key::G].time == 1)
+    {
+        StatusEffect testStatus;
+        for(auto &status : globalStatusEffects.statusEffects)
+            if(status.name == "Healing Aura")
+                testStatus = status;
+
+        for(auto &npc : Squaddies)
+            npc->statusEffects.push_back(testStatus);
+    }
 
     if(inputState.key[Key::LShift] && inputState.key[Key::F].time == 1)
     {
         for(auto &npc : Squaddies)
         {
-            //fireStatus.duration = random(30,600);
-            //fireStatus.potency = random(10,50);
+
             npc->statusEffects.push_back(fireStatus);
         }
         /*
@@ -3119,6 +3130,8 @@ void bountyTowerLoop()
     }
 
 
+    /*
+
     if(inputState.key[Key::G].time == 1 && inputState.key[Key::LShift])
     { // Renew Menu Towers
         towers.clear();
@@ -3129,6 +3142,8 @@ void bountyTowerLoop()
             towers.push_back(tower);
         }
     }
+
+    */
 
     if (gCtrl.menuType != "NULL")
     { // Menu Code

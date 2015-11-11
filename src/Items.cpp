@@ -12,6 +12,50 @@
 
 extern sf::RenderWindow window;
 
+DamageTypes damageTypes;
+int DamageTypes::getNum(std::string name)
+{
+    for(int i = 0; i != TypeStrings.size(); i++)
+    {
+        if(TypeStrings[i] == name)
+            return i;
+    }
+    return 0;
+}
+std::string DamageTypes::getString(int num)
+{
+    for(int i = 0; i != TypeStrings.size(); i++)
+    {
+        if(i == num)
+            return TypeStrings[i];
+    }
+    return "None";
+}
+
+DamageTypes::DamageTypes()
+{ // WARNING, THESE MUST BE IN THE SAME ORDER AS 'enum Type'
+    std::string entry;
+    entry = "None";
+    TypeStrings.push_back(entry);
+    entry = "Blunt";
+    TypeStrings.push_back(entry);
+    entry = "Pierce";
+    TypeStrings.push_back(entry);
+    entry = "Slash";
+    TypeStrings.push_back(entry);
+    entry = "Fire";
+    TypeStrings.push_back(entry);
+    entry = "Cold";
+    TypeStrings.push_back(entry);
+    entry = "Poison";
+    TypeStrings.push_back(entry);
+    entry = "Electric";
+    TypeStrings.push_back(entry);
+    entry = "Acid";
+    TypeStrings.push_back(entry);
+    entry = "Energy";
+}
+
 void clearBullets()
 {
     bullets.clear();

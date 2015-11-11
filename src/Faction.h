@@ -230,6 +230,8 @@ public:
         int disableDeathMod;
         std::vector<StringFloat> autoDodgeMod;
 
+        void clearAll();
+
 
     };
     Modifiers modifiers;
@@ -425,9 +427,9 @@ public:
     bool closeToTarget(int distance, sf::Vector2f Tar);
     void addItem(std::string const &itemname, int amount);
     std::string addItem(Item &item);
-    std::string takeDamage(Npc *attacker, Item *weapon = nullptr, float amount = 0, critScore *crit = nullptr);
-    std::string dealDamage(Npc *victim, Item *weapon = nullptr, float amount = 0);
-    std::string onDeath(Npc *attacker, Item *weapon = nullptr, float amount = 0, critScore *crit = nullptr);
+    std::string takeDamage(Npc *attacker, Item *weapon = nullptr, float amount = 0, int damageType = 0, critScore *crit = nullptr);
+    std::string dealDamage(Npc *victim, Item *weapon = nullptr, float amount = 0, int damageType = 0);
+    std::string onDeath(Npc *attacker, Item *weapon = nullptr, float amount = 0, int damageType = 0, critScore *crit = nullptr);
 
     void printConsoleInfo();
     void printBloodContent();

@@ -9,7 +9,7 @@ OverlayImage, filename.png, If this is added to a status effect, the image will 
 // Any Aspect declared BEFORE a condition aspect, will run whether that condition is true. Only aspects after the condition will depend on the condition.
 
 [Name:On Fire][Duration:180][OverlayImage:LilFire.png][Aspect:AffectHealth:-1:Fire][Aspect:Immunity:1:Cold]
-[Name:Flame Aura][Duration:600][AuraRadius:120][AuraEnemies:1][OverlayImage:LilFire.png][Aspect:AffectHealth:5:Fire][Aspect:Immunity:1:Cold]
+[Name:Flame Aura][Duration:600][AuraRadius:120][AuraEnemies:1][OverlayImage:LilFire.png][Aspect:AffectHealth:-1:Fire][Aspect:Immunity:1:Cold]
 [Name:Healing Aura][Duration:600][AuraRadius:120][AuraNeutrals:1][AuraAllies:1][Aspect:AffectHealth:1:Energy]
 [Name:Burning Stablization][Duration:3600][Aspect:AffectHealth:-1:Fire][Aspect:ConditionHealth:50:Below][Aspect:AffectHealth:3:Energy]
 [Name:Pointless Healing][Duration:3600][Aspect:ConditionLife:1:Dead][Aspect:AffectHealth:3:Energy]

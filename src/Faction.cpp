@@ -2543,6 +2543,37 @@ int Npc::Attribute::getWisdom()
     return returnAttribute;
 }
 
+void Npc::Modifiers::clearAll()
+{
+    attackSpeedMod = 0;
+    castSpeedMod = 0;
+    reloadSpeedMod = 0;
+    switchWorkSpeedMod = 0;
+    moveSpeedMod = 0;
+    affectDamageMod = 0;
+    armorMod = 0;
+    manaRegenMod = 0;
+    strMod = 0;
+    perMod = 0;
+    intMod = 0;
+    chaMod = 0;
+    endMod = 0;
+    dexMod = 0;
+    applyMomentumMod = 0;
+    momentumSensitivityMod = 0;
+    itemDropRateMod = 0;
+    xpModifierMod = 0;
+    revivesOnDeathMod = 0;
+    disableDeathMod = 0;
+
+    immunity.clear(); // The damage string should be turned into a damage enum eventually.
+    causeExplosionOnItemUseMod.clear(); // should be turned into a conditional somehow.
+    causeDamageOnItemUseMod.clear(); // should be turned into a conditional somehow.
+    spawnCreatureOnDeathMod.clear();
+    spawnItemOnDeathMod.clear();
+    autoDodgeMod.clear();
+}
+
 bool Npc::operator<(const Npc &other) const
 {
     return other.id > id;
@@ -2553,7 +2584,7 @@ double critDamage(float damage, critScore crit)
     throw std::runtime_error("Unimplemented.");
 }
 
-std::string Npc::onDeath(Npc *attacker, Item *weapon, float amount, critScore *crit)
+std::string Npc::onDeath(Npc *attacker, Item *weapon, float amount, int damageType, critScore *crit)
 {
     if(!alive)
         return "";
@@ -2648,12 +2679,12 @@ std::string Npc::onDeath(Npc *attacker, Item *weapon, float amount, critScore *c
     return "";
 }
 
-std::string Npc::takeDamage(Npc *attacker, Item *weapon, float amount, critScore *crit)
+std::string Npc::takeDamage(Npc *attacker, Item *weapon, float amount, int damageType, critScore *crit)
 {
 
     int dodgeChance = (attributes.dexterity*2);
     int dodgeRoll = random(0,100);
-    if(dodgeRoll <= dodgeChance)
+    if(dodgeRoll <= dodgeChance && amount > 0)
     {
         if(attacker != nullptr)
             std::cout << name << " dodged " << attacker->name << "'s attack! (" << dodgeRoll << "/" << dodgeChance << ")" << std::endl;
@@ -2679,12 +2710,12 @@ std::string Npc::takeDamage(Npc *attacker, Item *weapon, float amount, critScore
         return "Dodged";
     }
 
-    if(racialAbility == "Rock Steady")
+    if(racialAbility == "Rock Steady" && amount > 0)
     {
         amount -= amount*0.2;
     }
 
-    if(skills.getRanks("Feral Body") > 0)
+    if(skills.getRanks("Feral Body") > 0 && amount > 0)
     {
         int reduction = amount*(skills.getRanks("Feral Body")*0.1);
         amount = amount-reduction;
@@ -2719,7 +2750,7 @@ std::string Npc::takeDamage(Npc *attacker, Item *weapon, float amount, critScore
             momentum += compared;
     }
 
-
+    if(amount > 0)
     {// Sound code
         if(race.find("Human") != race.npos)
         {
@@ -2745,7 +2776,7 @@ std::string Npc::takeDamage(Npc *attacker, Item *weapon, float amount, critScore
 
     }
 
-    if(attacker != nullptr)
+    if(attacker != nullptr && amount > 0)
     { // Vampirism Skill
         Skill * vamp = attacker->skills.getSkill("Vampirism");
         if(vamp != nullptr && vamp->ranks > 0)
@@ -2755,6 +2786,7 @@ std::string Npc::takeDamage(Npc *attacker, Item *weapon, float amount, critScore
         }
     }
 
+    if(amount > 0)
     {// Damage Popup Code
         Shape text;
         text.shape = text.Text;
@@ -2764,17 +2796,17 @@ std::string Npc::takeDamage(Npc *attacker, Item *weapon, float amount, critScore
         text.size = 20;
         sf::Vector2f textPos(xpos-15,(ypos-50)-random(0,50));
         text.startPos = textPos;
-        text.text = "-"+str(static_cast<int>(amount));
+        text.text = "-"+str(static_cast<int>(amount))+" "+damageTypes.TypeStrings[damageType];
         shapes.shapes.push_back(text);
     }
 
     if(modhealth(-amount) == false) // modhealth returns false on death.
-        onDeath(attacker, weapon, amount, crit);
+        onDeath(attacker, weapon, amount, damageType, crit);
 
     return "Hit";
 }
 
-std::string Npc::dealDamage(Npc *victim, Item *weapon, float amount)
+std::string Npc::dealDamage(Npc *victim, Item *weapon, float amount, int damageType)
 {
     critScore pass;
     std::string outPut;
@@ -2806,7 +2838,7 @@ std::string Npc::dealDamage(Npc *victim, Item *weapon, float amount)
 
 
 
-    outPut = victim->takeDamage(this,weapon,totalDamage);
+    outPut = victim->takeDamage(this,weapon,totalDamage, damageType);
 
     //outPut = victim->takeDamage(this,weapon,amount);
 
@@ -4928,6 +4960,8 @@ void Npc::setupAnimations()
 
 void Npc::handleStatusEffects()
 {
+    modifiers.clearAll();
+
     if(statusEffects.empty())
         return;
 
@@ -4944,6 +4978,11 @@ void Npc::handleStatusEffects()
         {
             std::string outPut;
             outPut.append("[" + status.name + ", Duration: " + str(status.duration/60) + "]");
+            if(inputState.key[Key::LShift])
+                for(auto &aspect : status.aspects)
+            {
+                outPut.append("[" + aspectNum[aspect.name] + ", Potency: " + str(aspect.potency) + ", Type: " + aspect.type + "]");
+            }
 
             shapes.createText(sf::Vector2f(drawPos.x,drawPos.y+(20*total_elements)),15,sf::Color::Cyan,outPut);
             shapes.shapes.back().layer = 9001; // IT'S OVER NINE THO-
@@ -5029,9 +5068,15 @@ void Npc::handleStatusEffects()
                     if(aspect.type == "Dead" && alive)
                         break;
                 }
-
+                //std::cout << "Aspect:" << aspectNum[aspect.name] << ", " << StatusAspect::AffectHealth << "/" << aspect.name << " \n";
                 if(aspect.name == aspect.AffectHealth)
-                    modhealth(aspect.potency);
+                {
+                    //std::cout << "Taking Damage! \n";
+                    takeDamage(nullptr,nullptr,-aspect.potency,damageTypes.getNum(aspect.type));
+                }
+
+                    //modhealth(aspect.potency);
+
 
             }
         }

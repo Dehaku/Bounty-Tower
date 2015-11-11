@@ -21,6 +21,8 @@ void insertAspects()
     aspectNum.push_back(aspectName);
     aspectName = "ConditionNearbyUnit";
     aspectNum.push_back(aspectName);
+    aspectName = "ConditionUnitCount";
+    aspectNum.push_back(aspectName);
     aspectName = "ActionSpeed";
     aspectNum.push_back(aspectName);
     aspectName = "AffectDamage";

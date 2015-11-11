@@ -9,9 +9,34 @@
 #include "StatusEffects.h"
 
 
+
 class Npc;
 
 void clearBullets();
+
+class DamageTypes
+{
+public:
+    enum Type
+    { // WARNING, THESE MUST BE IN THE SAME ORDER AS 'TypeStrings'
+        None,
+        Blunt,
+        Pierce,
+        Slash,
+        Fire,
+        Cold,
+        Poison,
+        Electric,
+        Acid,
+        Energy
+    };
+    std::vector<std::string> TypeStrings;
+    int getNum(std::string name);
+    std::string getString(int num);
+
+    DamageTypes();
+};
+extern DamageTypes damageTypes;
 
 class Item
 {
