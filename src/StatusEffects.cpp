@@ -162,6 +162,8 @@ void GlobalStatusEffects::initializeStatusEffects()
                 if(i == 2)
                     SA.type = components[i];
             }
+
+            status.aspects.push_back(SA);
             std::cout << "New Aspect: " << aspectNum[SA.name] << ": " << SA.name << ", Pot: " << SA.potency << ", Type: " << SA.type << std::endl;
 
         }

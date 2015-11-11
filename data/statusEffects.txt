@@ -7,4 +7,5 @@ AuraNeutrals, Affects all units do not fit the previous two catagories. (For exa
 IconImage, filename.png, Little icon image that will float next to Squaddie huds.
 OverlayImage, filename.png, If this is added to a status effect, the image will be drawn ontop of the carrier, i.e. On Fire's fire graphic.
 
-[Name:On Fire][Duration: 180][OverlayImage:LilFire.png][Aspect:AffectHealth:-1][Aspect:Immunity:1:Cold]
+[Name:On Fire][Duration:180][OverlayImage:LilFire.png][Aspect:AffectHealth:-1:Fire][Aspect:Immunity:1:Cold]
+[Name:Flame Aura][Duration:600][AuraRadius:120][AuraNeutrals:1][AuraAllies:1][OverlayImage:LilFire.png][Aspect:AffectHealth:5:Fire][Aspect:Immunity:1:Cold]

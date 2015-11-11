@@ -4957,17 +4957,64 @@ void Npc::handleStatusEffects()
 
     for(auto &status : statusEffects)
     {
+
         if(status.critterEffect != nullptr)
         { // Drawing status overlay on critter.
             shapes.createImageButton(getPos2d(),*status.critterEffect,"",0);
             shapes.shapes.back().layer = 10;
         }
 
-        for(auto &aspect : status.aspects)
+        if(status.auraRadius > 0)
         {
-            if(aspect.name == aspect.AffectHealth)
-                modhealth(aspect.potency);
+            shapes.createCircle(xpos,ypos,status.auraRadius,sf::Color(255,255,255,100));
+            shapes.shapes.back().layer = 15;
+            for(auto &npc : npclist)
+            {
+                if(!npc.alive)
+                    continue;
+
+
+
+                int distance = math::distance(getPos(),npc.getPos());
+                if(distance > status.auraRadius)
+                    continue;
+
+
+
+
+                StatusEffect deliverStatus = status;
+                deliverStatus.auraRadius = 0;
+                deliverStatus.duration = 1;
+
+                if(status.auraAffectsAllies && npc.faction == faction)
+                { // Deliver Aura Allies
+                    npc.statusEffects.push_back(deliverStatus);
+                    continue;
+                }
+                bool isEnemy = (factionPtr->getFactionRelations(npc.faction) <= -1000);
+                if(status.auraAffectsEnemies && isEnemy)
+                { // Deliver Aura Enemies
+                    npc.statusEffects.push_back(deliverStatus);
+                    continue;
+                }
+
+                if(status.auraAffectsNeutrals && npc.faction != faction && !isEnemy)
+                { // Deliver Aura Neutrals.
+                    npc.statusEffects.push_back(deliverStatus);
+                    continue;
+                }
+            }
         }
+
+        if(status.auraRadius == 0)
+        {
+            for(auto &aspect : status.aspects)
+            {
+                if(aspect.name == aspect.AffectHealth)
+                    modhealth(aspect.potency);
+            }
+        }
+
 
         status.duration--;
         if(status.duration <= 0)

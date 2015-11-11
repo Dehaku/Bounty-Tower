@@ -2867,23 +2867,23 @@ void testStatusEffects()
     StatusEffect fireStatus;
     for(auto &status : globalStatusEffects.statusEffects)
     {
-        if(status.name == "On Fire")
+        if(status.name == "Flame Aura")
             fireStatus = status;
     }
     //fireStatus.name = "On Fire";
     //fireStatus.critterEffect = &texturemanager.getTexture("LilFire.png");
-    fireStatus.addAspect(getAspectNum("AffectHealth"),-1);
+    //fireStatus.addAspect(getAspectNum("AffectHealth"),-1);
 
 
     if(inputState.key[Key::LShift] && inputState.key[Key::F].time == 1)
     {
-        for(auto &npc : npclist)
+        for(auto &npc : Squaddies)
         {
             //fireStatus.duration = random(30,600);
             //fireStatus.potency = random(10,50);
-            npc.statusEffects.push_back(fireStatus);
+            npc->statusEffects.push_back(fireStatus);
         }
-
+        /*
 
         std::string testString = "[Name:On Fire][Duration: 180][OverlayImage:LilFire.png][Aspect:AffectHealth:-1][Aspect:Immunity:1:Cold][Aspect:Mark:1:Monkey][Aspect:AmmoCost:500][Aspect:SpawnCreatureOnDeath:2:BTRockkid]";
 
@@ -2897,6 +2897,8 @@ void testStatusEffects()
         {
             std::cout << "New Elements: " << strings << std::endl;
         }
+
+        */
 
 
     }
