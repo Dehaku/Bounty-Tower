@@ -18,9 +18,19 @@ public:
     float potency;
     bool damageAffectsPotency; // All damage taken directly affects Potency 1:1
     enum AspectTypes
-    {
+    { // WARNING, THESE MUST BE IN THE SAME ORDER AS THE DEFINITIONS IN 'void insertAspects()' OR THE FILE WILL GIVE BROKEN EFFECTS.
         // Carrier = Entity/Critter/Item this aspect resides on.
         // Damages: Blunt, Pierce, Slash, Fire, Poison, Cold, Electricity, Energy(Positive/Negitive Inclusive)
+        ConditionHealth, // Type: Above, Below
+        // Potency acts as Percentage. This status effect will only apply if it's (Type) the carrier's health value.
+        ConditionLife, // Type: Dead, Alive.
+        // Potency, Simply acts as On/Off. This status effect will only apply if the carrier is (Type).
+        ConditionMana, // Type: Above, Below
+        // Potency acts as Percentage. This status effect will only apply if it's (Type) the carrier's mana value.
+        ConditionNearbyUnit, // Type: Ally, Enemy, Neutral.
+        // Potency defines the range they must be within.
+        ConditionUnitCount, // Type: Ally, Enemy, Neutral.
+        // Potency defines the amount of units that must exist of this type.
         ActionSpeed, // Type: Attack, Cast, Reload, Switch Work.
         // Potency acts as Percentage.
         AffectDamage,
@@ -57,9 +67,9 @@ public:
         // Potency pushes when positive, pulls when negitive.
         MomentumSensitivity,
         // Potency acts as Percentage.
-        CauseExplosionOnItemUse, //Type: Item Type.
+        CauseExplosionOnItemUse, // Type: Item Type. // should be turned into a conditional somehow.
         // Potency is damage applied. This hurts everyone, Even Carrier.
-        CauseDamageOnItemUse,  //Type: Item Type.
+        CauseDamageOnItemUse,  // Type: Item Type. // should be turned into a conditional somehow.
         // Potency is damage applied.
         AffectVisionRange,
         // Potency directly applies to variable.

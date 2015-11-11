@@ -2867,7 +2867,7 @@ void testStatusEffects()
     StatusEffect fireStatus;
     for(auto &status : globalStatusEffects.statusEffects)
     {
-        if(status.name == "Flame Aura")
+        if(status.name == "Pointless Healing")
             fireStatus = status;
     }
     //fireStatus.name = "On Fire";

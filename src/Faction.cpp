@@ -5010,8 +5010,29 @@ void Npc::handleStatusEffects()
         {
             for(auto &aspect : status.aspects)
             {
+                if(aspect.name == aspect.ConditionHealth)
+                {
+                    float aspectPercent = aspect.potency*0.01;
+                    float healthCheck = getMaxHealth()*aspectPercent;
+                    bool aboveHealth = (health >= healthCheck);
+                    bool belowHealth = (health <= healthCheck);
+
+                    if(aspect.type == "Above" && belowHealth)
+                        break;
+                    if(aspect.type == "Below" && aboveHealth)
+                        break;
+                }
+                if(aspect.name == aspect.ConditionLife)
+                {
+                    if(aspect.type == "Alive" && !alive)
+                        break;
+                    if(aspect.type == "Dead" && alive)
+                        break;
+                }
+
                 if(aspect.name == aspect.AffectHealth)
                     modhealth(aspect.potency);
+
             }
         }
 

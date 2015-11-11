@@ -11,8 +11,16 @@ std::vector<std::string> aspectNum;
 GlobalStatusEffects globalStatusEffects;
 
 void insertAspects()
-{
+{ // WARNING, THESE MUST BE IN THE SAME ORDER AS THE DEFINITIONS IN 'enum AspectTypes' OR THE FILE WILL GIVE BROKEN EFFECTS.
     std::string aspectName;
+    aspectName = "ConditionHealth";
+    aspectNum.push_back(aspectName);
+    aspectName = "ConditionLife";
+    aspectNum.push_back(aspectName);
+    aspectName = "ConditionMana";
+    aspectNum.push_back(aspectName);
+    aspectName = "ConditionNearbyUnit";
+    aspectNum.push_back(aspectName);
     aspectName = "ActionSpeed";
     aspectNum.push_back(aspectName);
     aspectName = "AffectDamage";
