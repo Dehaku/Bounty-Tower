@@ -1546,6 +1546,7 @@ Npc::Npc()
     allowedFood = true;
     allowedMove = true;
 
+    moveSpeed = 1;
     moverateint = 1;
     moverate = moverateint;
     movetimerint = 1000;
@@ -1958,7 +1959,7 @@ void Npc::dirMove(sf::Vector2f tar)
     sf::Vector2f oldPos(xpos,ypos);
 
     sf::Vector2f pos(xpos,ypos);
-    if(math::closeish(pos.x,pos.y,tar.x,tar.y) <= moverate)
+    if(math::closeish(pos.x,pos.y,tar.x,tar.y) <= getMoveSpeed())
     {
         xpos = tar.x;
         ypos = tar.y;
@@ -1974,8 +1975,8 @@ void Npc::dirMove(sf::Vector2f tar)
                     xpos - tar.x,
                     ypos -
                         tar.y)); //To be honest, I spent alot of time with trial and error to get this part to work.
-        xx = cosf((tempangle)*PI / 180) * moverate;
-        yy = sinf((tempangle)*PI / 180) * moverate;
+        xx = cosf((tempangle)*PI / 180) * getMoveSpeed();
+        yy = sinf((tempangle)*PI / 180) * getMoveSpeed();
         xpos -= xx;
         ypos -= yy;
     }
@@ -2562,6 +2563,9 @@ void Modifiers::clearAllMods()
     reloadSpeedMod = 0;
     switchWorkSpeedMod = 0;
     moveSpeedMod = 0;
+    freezeMod = 0;
+    sleepMod = 0;
+    stunMod = 0;
     affectDamageMod.clear();
     armorMod.clear();
     manaRegenMod = 0;
@@ -2931,6 +2935,16 @@ Item * Npc::getItemTypeInHands(int type)
     return nullptr;
 }
 
+float Npc::getMoveSpeed()
+{
+    float totalMoveSpeed = moveSpeed;
+    totalMoveSpeed += mods.moveSpeedMod;
+    // Don't want critters walking backwards.
+    if(totalMoveSpeed < 0)
+        totalMoveSpeed = 0;
+    return totalMoveSpeed;
+}
+
 float Npc::getMomentumMagnitude()
 { // I doubt this is a proper magnitude function, but I needed something to roughly gauge how strong the momentum was.
     float returns;
@@ -3174,7 +3188,7 @@ void NpcManager::initializeCritters()
             critter.value = stringFindNumber(line, "[Value:");
             critter.rarity = stringFindNumber(line, "[Rarity:");
 
-            critter.moverateint = stringFindNumber(line, "[MoveSpeed:");
+            critter.moveSpeed = stringFindNumber(line, "[MoveSpeed:");
             critter.turnSpeed = stringFindNumber(line, "[TurnSpeed:");
             critter.movetimerrate = stringFindNumber(line, "[MoveRate:");
             critter.viewangle = stringFindNumber(line, "[ViewAngle:");
@@ -5074,7 +5088,7 @@ void Npc::handleStatusEffects()
         {
             for(auto &aspect : status.aspects)
             {
-                if(aspect.name == aspect.ConditionHealth)
+                if(aspect.name == StatusAspect::ConditionHealth)
                 {
                     float aspectPercent = aspect.potency*0.01;
                     float healthCheck = getMaxHealth()*aspectPercent;
@@ -5086,7 +5100,7 @@ void Npc::handleStatusEffects()
                     if(aspect.type == "Below" && aboveHealth)
                         break;
                 }
-                if(aspect.name == aspect.ConditionLife)
+                if(aspect.name == StatusAspect::ConditionLife)
                 {
                     if(aspect.type == "Alive" && !alive)
                         break;
@@ -5094,7 +5108,7 @@ void Npc::handleStatusEffects()
                         break;
                 }
                 //std::cout << "Aspect:" << aspectNum[aspect.name] << ", " << StatusAspect::AffectHealth << "/" << aspect.name << " \n";
-                if(aspect.name == aspect.AffectHealth) // TODO: Add a pointer to Npc Source of status effect, with a check on floor change to set it to null, so XP can be credited for kills.
+                if(aspect.name == StatusAspect::AffectHealth) // TODO: Add a pointer to Npc Source of status effect, with a check on floor change to set it to null, so XP can be credited for kills.
                     takeDamage(nullptr,nullptr,-aspect.potency,damageTypes.getNum(aspect.type));
 
 
@@ -5107,7 +5121,7 @@ void Npc::handleStatusEffects()
                 if(aspect.name == StatusAspect::Armor)
                     mods.armorMod.push_back(StringFloat(aspect.type,aspect.potency));
 
-                if(aspect.name == aspect.Attribute)
+                if(aspect.name == StatusAspect::Attribute)
                 {
                     if(aspect.type == "Strength")
                         mods.strMod += aspect.potency;
@@ -5123,7 +5137,17 @@ void Npc::handleStatusEffects()
                         mods.dexMod += aspect.potency;
                 }
 
+                if(aspect.name == StatusAspect::MoveSpeed)
+                    mods.moveSpeedMod += aspect.potency;
 
+                if(aspect.name == StatusAspect::Freeze)
+                    mods.freezeMod += aspect.potency;
+
+                if(aspect.name == StatusAspect::Sleep)
+                    mods.sleepMod += aspect.potency;
+
+                if(aspect.name == StatusAspect::Stun)
+                    mods.stunMod += aspect.potency;
 
 
             }

@@ -2870,7 +2870,7 @@ void testStatusEffects()
     {
         StatusEffect testStatus;
         for(auto &status : globalStatusEffects.statusEffects)
-            if(status.name == "Test Defense")
+            if(status.name == "Test One")
                 testStatus = status;
 
         for(auto &npc : Squaddies)
@@ -2899,7 +2899,7 @@ void testStatusEffects()
     {
         StatusEffect testStatus;
         for(auto &status : globalStatusEffects.statusEffects)
-            if(status.name == "Berzerking")
+            if(status.name == "Test Two")
                 testStatus = status;
 
         for(auto &npc : Squaddies)

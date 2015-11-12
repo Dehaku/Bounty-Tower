@@ -124,6 +124,9 @@ public:
     float reloadSpeedMod;
     float switchWorkSpeedMod;
     float moveSpeedMod;
+    float freezeMod;
+    float sleepMod;
+    float stunMod;
     std::vector<StringFloat> affectDamageMod;
     std::vector<StringFloat> armorMod;
     float manaRegenMod;
@@ -285,6 +288,8 @@ public:
     float movetimer;
     float movetimerint;
     float movetimerrate;
+    float moveSpeed;
+    float getMoveSpeed();
 
     float attacktimer;
     float attacktimerint;

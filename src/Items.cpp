@@ -1035,6 +1035,9 @@ std::string Item::activate(Vec3f vPos) // Returns a string declaring the problem
     if(user == nullptr)
             return "No Owner";
 
+    if(user->mods.stunMod > 0)
+        return "Stunned";
+
     if(type == 1)
     { // Melee weapons
 

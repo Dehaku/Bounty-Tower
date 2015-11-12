@@ -1242,6 +1242,12 @@ void critterBrain(Npc &npc, std::list<Npc> &container)
     if(!npc.alive)
         return;
 
+    if(npc.mods.freezeMod > 0)
+        return;
+
+    if(npc.mods.sleepMod > 0)
+        return;
+
     assignItemsUser(npc, container);
 
     critterSkillRefresh(npc,container);

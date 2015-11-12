@@ -21,6 +21,15 @@ Armor modifies the damage the carrier takes of DamageType, acting as a multiplie
 [Aspect:Attribute:Amount:AttributeName]
 Attribute grants a direct effect to the specified attribute(With AttributeName), Negitive numbers will reduce the attribute.
 
+[Aspect:MoveSpeed:Amount]
+MoveSpeed directly applies it's Amount to movement, if you must, do this in small amounts, speed can be a hell of a drug.
 
+[Aspect:Freeze:Amount]
+Freeze completely disables the creature from all actions, Amount needs to be at least 1.
 
+[Aspect:Sleep:Amount]
+Sleep completely disables the creature from all actions, Amount needs to be at least 1.
+
+[Aspect:Stun:Amount]
+Sleep disables the use of items, Amount needs to be at least 1.
 
