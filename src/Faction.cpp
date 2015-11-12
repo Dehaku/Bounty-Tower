@@ -2729,6 +2729,11 @@ std::string Npc::takeDamage(Npc *attacker, Item *weapon, float amount, int damag
     }
 
 
+    // Armor Status Effect
+    amount -= amount*(mods.armorMod*0.01);
+
+    // All damage modifications must be done above this line.
+
     {// Knockback Code
         int knockbackAmount = 0;
         sf::Vector2f AtkerPos;
@@ -2843,7 +2848,8 @@ std::string Npc::dealDamage(Npc *victim, Item *weapon, float amount, int damageT
         }
     }
 
-
+    // AffectDamage Status Effect.
+    totalDamage += totalDamage*(mods.affectDamageMod*0.01);
 
     outPut = victim->takeDamage(this,weapon,totalDamage, damageType);
 
@@ -5079,6 +5085,16 @@ void Npc::handleStatusEffects()
                 if(aspect.name == aspect.AffectHealth)
                     takeDamage(nullptr,nullptr,-aspect.potency,damageTypes.getNum(aspect.type));
 
+
+
+
+
+                if(aspect.name == StatusAspect::AffectDamage)
+                    mods.affectDamageMod += aspect.potency;
+
+                if(aspect.name == StatusAspect::Armor)
+                    mods.armorMod += aspect.potency;
+
                 if(aspect.name == aspect.Attribute)
                 {
                     if(aspect.type == "Strength")
@@ -5094,6 +5110,8 @@ void Npc::handleStatusEffects()
                     if(aspect.type == "Dexterity")
                         mods.dexMod += aspect.potency;
                 }
+
+
 
 
             }

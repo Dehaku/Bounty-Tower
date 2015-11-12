@@ -2870,7 +2870,7 @@ void testStatusEffects()
     {
         StatusEffect testStatus;
         for(auto &status : globalStatusEffects.statusEffects)
-            if(status.name == "Taste of Paragon")
+            if(status.name == "Defensive Stance")
                 testStatus = status;
 
         for(auto &npc : Squaddies)
@@ -2899,7 +2899,7 @@ void testStatusEffects()
     {
         StatusEffect testStatus;
         for(auto &status : globalStatusEffects.statusEffects)
-            if(status.name == "On Fire")
+            if(status.name == "Berzerking")
                 testStatus = status;
 
         for(auto &npc : Squaddies)
