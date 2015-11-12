@@ -2568,6 +2568,7 @@ void Modifiers::clearAllMods()
     stunMod = 0;
     affectDamageMod.clear();
     armorMod.clear();
+    thornsMod.clear();
     manaRegenMod = 0;
     strMod = 0;
     perMod = 0;
@@ -2724,6 +2725,14 @@ std::string Npc::takeDamage(Npc *attacker, Item *weapon, float amount, int damag
         }
 
         return "Dodged";
+    }
+
+    // All dodge modifications must be done above this line.
+
+    if(attacker != nullptr && weapon != nullptr && weapon->type == 1)
+    { // Thorns Status Effect
+        for(auto &thorns : mods.thornsMod)
+            attacker->takeDamage(this,nullptr,thorns.num,damageTypes.getNum(thorns.str) );
     }
 
     if(racialAbility == "Rock Steady" && amount > 0)
@@ -5162,6 +5171,9 @@ void Npc::handleStatusEffects()
 
                 if(aspect.name == StatusAspect::Stun)
                     mods.stunMod += aspect.potency;
+
+                if(aspect.name == StatusAspect::Thorns)
+                    mods.thornsMod.push_back(StringFloat(aspect.type,aspect.potency));
 
 
             }

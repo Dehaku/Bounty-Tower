@@ -17,5 +17,6 @@ OverlayImage, filename.png, If this is added to a status effect, the image will 
 [Name:Taste of Paragon][Duration:1800][Aspect:Attribute:25:Strength][Aspect:Attribute:25:Perception][Aspect:Attribute:25:Intelligence][Aspect:Attribute:25:Charisma][Aspect:Attribute:25:Endurance][Aspect:Attribute:25:Dexterity]
 [Name:Berzerking][Duration:600][Aspect:AffectDamage:50:None][Aspect:Armor:-50:None]
 [Name:Defensive Stance][Duration:600][Aspect:AffectDamage:-50:None][Aspect:Armor:50:None]
+[Name:Thorns][Duration:1800][Aspect:Thorns:25:Pierce]
 [Name:Test One][Duration:600][OverlayImage:Frozen.png][Aspect:Freeze:100]
-[Name:Test Two][Duration:600][Aspect:Sleep:2]
+[Name:Test Two][Duration:600][Aspect:Thorns:500:Pierce]

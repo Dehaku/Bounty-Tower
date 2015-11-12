@@ -111,6 +111,7 @@ void GlobalStatusEffects::initializeStatusEffects()
         StatusEffect status;
 
         status.critterEffect = nullptr;
+        status.icon = nullptr;
 
         status.name = "Debuggery";
         std::string statusName = stringFindString(line, "[Name:");

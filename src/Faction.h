@@ -133,7 +133,9 @@ public:
 
     float applyMomentumMod;
     float momentumSensitivityMod;
-    std::vector<std::string> immunityMod; // The damage string should be turned into a damage enum eventually.
+    std::vector<std::string> immunityMod;
+
+    std::vector<StringFloat> thornsMod;
 
     std::vector<StringFloat> causeExplosionOnItemUseMod; // should be turned into a conditional somehow.
     std::vector<StringFloat> causeDamageOnItemUseMod; // should be turned into a conditional somehow.
