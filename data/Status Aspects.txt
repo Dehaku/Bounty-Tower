@@ -1,0 +1,11 @@
+This is the list for aspects to use in Status Effect definition, statusEffects.txt
+
+Format: [Aspect:AspectName:Potency:Type]
+'Potency' only accepts integers(Numbers with no decimal places)
+'Type' can be any string of characters appropriote to the aspect type.
+
+Example Usage: [Aspect:AffectHealth:-1:Fire], AffectHealth is the AspectName, -1 is the potency, dealing 1 damage per frame, Fire is the type, The type of damage dealt.
+
+Aspects
+
+

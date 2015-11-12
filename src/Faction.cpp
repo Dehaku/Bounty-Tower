@@ -2497,6 +2497,7 @@ void Npc::printBloodContent()
 int Npc::Attribute::getStrength()
 {
     int returnAttribute = strength;
+    returnAttribute += strMod;
 
     return returnAttribute;
 }
@@ -2543,7 +2544,7 @@ int Npc::Attribute::getWisdom()
     return returnAttribute;
 }
 
-void Npc::Modifiers::clearAll()
+void Npc::clearAllMods()
 {
     attackSpeedMod = 0;
     castSpeedMod = 0;
@@ -2553,12 +2554,12 @@ void Npc::Modifiers::clearAll()
     affectDamageMod = 0;
     armorMod = 0;
     manaRegenMod = 0;
-    strMod = 0;
-    perMod = 0;
-    intMod = 0;
-    chaMod = 0;
-    endMod = 0;
-    dexMod = 0;
+    attributes.strMod = 0;
+    attributes.perMod = 0;
+    attributes.intMod = 0;
+    attributes.chaMod = 0;
+    attributes.endMod = 0;
+    attributes.dexMod = 0;
     applyMomentumMod = 0;
     momentumSensitivityMod = 0;
     itemDropRateMod = 0;
@@ -2566,7 +2567,7 @@ void Npc::Modifiers::clearAll()
     revivesOnDeathMod = 0;
     disableDeathMod = 0;
 
-    immunity.clear(); // The damage string should be turned into a damage enum eventually.
+    immunityMod.clear(); // The damage string should be turned into a damage enum eventually.
     causeExplosionOnItemUseMod.clear(); // should be turned into a conditional somehow.
     causeDamageOnItemUseMod.clear(); // should be turned into a conditional somehow.
     spawnCreatureOnDeathMod.clear();
@@ -4960,7 +4961,7 @@ void Npc::setupAnimations()
 
 void Npc::handleStatusEffects()
 {
-    modifiers.clearAll();
+    clearAllMods();
 
     if(statusEffects.empty())
         return;
@@ -5070,12 +5071,13 @@ void Npc::handleStatusEffects()
                 }
                 //std::cout << "Aspect:" << aspectNum[aspect.name] << ", " << StatusAspect::AffectHealth << "/" << aspect.name << " \n";
                 if(aspect.name == aspect.AffectHealth)
-                {
-                    //std::cout << "Taking Damage! \n";
                     takeDamage(nullptr,nullptr,-aspect.potency,damageTypes.getNum(aspect.type));
-                }
 
-                    //modhealth(aspect.potency);
+                if(aspect.name == aspect.Attribute)
+                {
+                    if(aspect.type == "Strength")
+                        attributes.strMod += aspect.potency;
+                }
 
 
             }

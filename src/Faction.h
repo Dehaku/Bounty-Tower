@@ -114,7 +114,6 @@ struct StringFloat
     float num;
 };
 
-
 class Npc
 {
 public:
@@ -197,44 +196,7 @@ public:
 
     sf::Vector2f momentum;
 
-    class Modifiers
-    {
-    public:
-        float attackSpeedMod;
-        float castSpeedMod;
-        float reloadSpeedMod;
-        float switchWorkSpeedMod;
-        float moveSpeedMod;
-        float affectDamageMod;
-        float armorMod;
-        float manaRegenMod;
-        int strMod;
-        int perMod;
-        int intMod;
-        int chaMod;
-        int endMod;
-        int dexMod;
-        float applyMomentumMod;
-        float momentumSensitivityMod;
-        std::vector<std::string> immunity; // The damage string should be turned into a damage enum eventually.
 
-        std::vector<StringFloat> causeExplosionOnItemUseMod; // should be turned into a conditional somehow.
-        std::vector<StringFloat> causeDamageOnItemUseMod; // should be turned into a conditional somehow.
-        float itemDropRateMod;
-        float xpModifierMod;
-
-        std::vector<StringFloat> spawnCreatureOnDeathMod;
-        std::vector<StringFloat> spawnItemOnDeathMod;
-
-        int revivesOnDeathMod;
-        int disableDeathMod;
-        std::vector<StringFloat> autoDodgeMod;
-
-        void clearAll();
-
-
-    };
-    Modifiers modifiers;
 
 
     class BodyDefinition
@@ -326,6 +288,40 @@ public:
     bool consumeVeggy;
     bool consumeWater;
 
+    // ==== This section is for Status Effect Carrying
+
+    float attackSpeedMod;
+    float castSpeedMod;
+    float reloadSpeedMod;
+    float switchWorkSpeedMod;
+    float moveSpeedMod;
+    float affectDamageMod;
+    float armorMod;
+    float manaRegenMod;
+
+    float applyMomentumMod;
+    float momentumSensitivityMod;
+    std::vector<std::string> immunityMod; // The damage string should be turned into a damage enum eventually.
+
+    std::vector<StringFloat> causeExplosionOnItemUseMod; // should be turned into a conditional somehow.
+    std::vector<StringFloat> causeDamageOnItemUseMod; // should be turned into a conditional somehow.
+    float itemDropRateMod;
+    float xpModifierMod;
+
+    std::vector<StringFloat> spawnCreatureOnDeathMod;
+    std::vector<StringFloat> spawnItemOnDeathMod;
+
+    int revivesOnDeathMod;
+    int disableDeathMod;
+    std::vector<StringFloat> autoDodgeMod;
+
+    void clearAllMods();
+
+
+
+
+    // ====
+
     class Attribute
     {
     public:
@@ -362,6 +358,13 @@ public:
         int perceptionxp;
         int agilityxp;
 
+        int strMod;
+        int perMod;
+        int intMod;
+        int chaMod;
+        int endMod;
+        int dexMod;
+
         int getStrength();
         int getPerception();
         int getIntelligence();
@@ -377,6 +380,9 @@ public:
         void Train(std::string skill, int amount = 1, int skillgain = 1);
     };
     Attribute attributes;
+
+
+
 
     class TargetInfo
     {

@@ -2866,34 +2866,16 @@ void layerTest(int newThings)
 
 void testStatusEffects()
 {
-    StatusEffect fireStatus;
-    for(auto &status : globalStatusEffects.statusEffects)
-    {
-        if(status.name == "Flame Aura")
-            fireStatus = status;
-    }
-    //fireStatus.name = "On Fire";
-    //fireStatus.critterEffect = &texturemanager.getTexture("LilFire.png");
-    //fireStatus.addAspect(getAspectNum("AffectHealth"),-1);
-
     if(inputState.key[Key::LShift] && inputState.key[Key::G].time == 1)
     {
         StatusEffect testStatus;
         for(auto &status : globalStatusEffects.statusEffects)
-            if(status.name == "Healing Aura")
+            if(status.name == "Hulk Strength")
                 testStatus = status;
 
         for(auto &npc : Squaddies)
             npc->statusEffects.push_back(testStatus);
-    }
 
-    if(inputState.key[Key::LShift] && inputState.key[Key::F].time == 1)
-    {
-        for(auto &npc : Squaddies)
-        {
-
-            npc->statusEffects.push_back(fireStatus);
-        }
         /*
 
         std::string testString = "[Name:On Fire][Duration: 180][OverlayImage:LilFire.png][Aspect:AffectHealth:-1][Aspect:Immunity:1:Cold][Aspect:Mark:1:Monkey][Aspect:AmmoCost:500][Aspect:SpawnCreatureOnDeath:2:BTRockkid]";
@@ -2911,7 +2893,17 @@ void testStatusEffects()
 
         */
 
+    }
 
+    if(inputState.key[Key::LShift] && inputState.key[Key::F].time == 1)
+    {
+        StatusEffect testStatus;
+        for(auto &status : globalStatusEffects.statusEffects)
+            if(status.name == "On Fire")
+                testStatus = status;
+
+        for(auto &npc : Squaddies)
+            npc->statusEffects.push_back(testStatus);
     }
 
 

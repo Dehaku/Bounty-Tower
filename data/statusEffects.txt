@@ -13,3 +13,4 @@ OverlayImage, filename.png, If this is added to a status effect, the image will 
 [Name:Healing Aura][Duration:600][AuraRadius:120][AuraNeutrals:1][AuraAllies:1][Aspect:AffectHealth:1:Energy]
 [Name:Burning Stablization][Duration:3600][Aspect:AffectHealth:-1:Fire][Aspect:ConditionHealth:50:Below][Aspect:AffectHealth:3:Energy]
 [Name:Pointless Healing][Duration:3600][Aspect:ConditionLife:1:Dead][Aspect:AffectHealth:3:Energy]
+[Name:Hulk Strength][Duration:1800][Aspect:Attribute:50:Strength]
