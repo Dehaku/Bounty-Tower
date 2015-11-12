@@ -1016,12 +1016,12 @@ void renderSquaddieMenu(baseMenu &menu)
     //Attributes! SPICED
     std::string AttributeLine;
     AttributeLine.append("S.P.I.C.E.D. \n");
-    AttributeLine.append("Strength: " + std::to_string(npc->attributes.strength) + "\n");
-    AttributeLine.append("Perception: " + std::to_string(npc->attributes.perception) + "\n");
-    AttributeLine.append("Intelligence: " + std::to_string(npc->attributes.intelligence) + "\n");
-    AttributeLine.append("Charisma: " + std::to_string(npc->attributes.charisma) + "\n");
-    AttributeLine.append("Endurance: " + std::to_string(npc->attributes.endurance) + "\n");
-    AttributeLine.append("Dexterity: " + std::to_string(npc->attributes.dexterity) + "\n");
+    AttributeLine.append("Strength: " + str(npc->attributes.strength)+"("+str(npc->getStr())+")\n");
+    AttributeLine.append("Perception: " + str(npc->attributes.perception)+"("+str(npc->getPer())+")\n");
+    AttributeLine.append("Intelligence: " + str(npc->attributes.intelligence)+"("+str(npc->getInt())+")\n");
+    AttributeLine.append("Charisma: " + str(npc->attributes.charisma)+"("+str(npc->getCha())+")\n");
+    AttributeLine.append("Endurance: " + str(npc->attributes.endurance)+"("+str(npc->getEnd())+")\n");
+    AttributeLine.append("Dexterity: " + str(npc->attributes.dexterity)+"("+str(npc->getDex())+")\n");
     shapes.createText(sf::Vector2f(105,170),20,sf::Color::White,AttributeLine,&gvars::hudView);
     shapes.shapes.back().layer = layer+Text;
 
@@ -1137,7 +1137,7 @@ int getSquadDiscount(int originalValue)
     float totalCharisma = 0;
     for(auto &squaddie : Squaddies)
     {
-        totalCharisma += squaddie->attributes.getCharisma();
+        totalCharisma += squaddie->getCha();
     }
 
     int newValue = originalValue - (originalValue * (totalCharisma*0.01));

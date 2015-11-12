@@ -567,7 +567,7 @@ int Item::getSpread()
 
     if(user != nullptr)
     {
-        returns -= user->attributes.getPerception();
+        returns -= user->getPer();
     }
 
 

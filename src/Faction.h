@@ -114,6 +114,44 @@ struct StringFloat
     float num;
 };
 
+class Modifiers
+{
+public:
+    float attackSpeedMod;
+    float castSpeedMod;
+    float reloadSpeedMod;
+    float switchWorkSpeedMod;
+    float moveSpeedMod;
+    float affectDamageMod;
+    float armorMod;
+    float manaRegenMod;
+
+    float applyMomentumMod;
+    float momentumSensitivityMod;
+    std::vector<std::string> immunityMod; // The damage string should be turned into a damage enum eventually.
+
+    std::vector<StringFloat> causeExplosionOnItemUseMod; // should be turned into a conditional somehow.
+    std::vector<StringFloat> causeDamageOnItemUseMod; // should be turned into a conditional somehow.
+    float itemDropRateMod;
+    float xpModifierMod;
+
+    int strMod;
+    int perMod;
+    int intMod;
+    int chaMod;
+    int endMod;
+    int dexMod;
+
+    std::vector<StringFloat> spawnCreatureOnDeathMod;
+    std::vector<StringFloat> spawnItemOnDeathMod;
+
+    int revivesOnDeathMod;
+    int disableDeathMod;
+    std::vector<StringFloat> autoDodgeMod;
+
+    void clearAllMods();
+};
+
 class Npc
 {
 public:
@@ -290,32 +328,7 @@ public:
 
     // ==== This section is for Status Effect Carrying
 
-    float attackSpeedMod;
-    float castSpeedMod;
-    float reloadSpeedMod;
-    float switchWorkSpeedMod;
-    float moveSpeedMod;
-    float affectDamageMod;
-    float armorMod;
-    float manaRegenMod;
-
-    float applyMomentumMod;
-    float momentumSensitivityMod;
-    std::vector<std::string> immunityMod; // The damage string should be turned into a damage enum eventually.
-
-    std::vector<StringFloat> causeExplosionOnItemUseMod; // should be turned into a conditional somehow.
-    std::vector<StringFloat> causeDamageOnItemUseMod; // should be turned into a conditional somehow.
-    float itemDropRateMod;
-    float xpModifierMod;
-
-    std::vector<StringFloat> spawnCreatureOnDeathMod;
-    std::vector<StringFloat> spawnItemOnDeathMod;
-
-    int revivesOnDeathMod;
-    int disableDeathMod;
-    std::vector<StringFloat> autoDodgeMod;
-
-    void clearAllMods();
+    Modifiers mods;
 
 
 
@@ -357,23 +370,6 @@ public:
         int wisdomxp;
         int perceptionxp;
         int agilityxp;
-
-        int strMod;
-        int perMod;
-        int intMod;
-        int chaMod;
-        int endMod;
-        int dexMod;
-
-        int getStrength();
-        int getPerception();
-        int getIntelligence();
-        int getCharisma();
-        int getEndurance();
-        int getDexterity();
-        int getAgility();
-        int getWisdom();
-
         void randomizeAttributes();
 
 
@@ -381,6 +377,14 @@ public:
     };
     Attribute attributes;
 
+    int getStr();
+    int getPer();
+    int getInt();
+    int getCha();
+    int getEnd();
+    int getDex();
+    int getAgi();
+    int getWis();
 
 
 

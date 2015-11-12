@@ -1694,7 +1694,7 @@ float Npc::getMaxHealth()
 
 
 
-    float endPercent = attributes.getEndurance() * 0.01;
+    float endPercent = getEnd() * 0.01;
     modifiedMaxHealth += modifiedMaxHealth * endPercent;
 
 
@@ -2494,57 +2494,63 @@ void Npc::printBloodContent()
     cout << bloodcontent << endl;
 }
 
-int Npc::Attribute::getStrength()
+
+int Npc::getStr()
 {
-    int returnAttribute = strength;
-    returnAttribute += strMod;
+    int returnAttribute = attributes.strength;
+    returnAttribute += mods.strMod;
 
     return returnAttribute;
 }
-int Npc::Attribute::getPerception()
+int Npc::getPer()
 {
-    int returnAttribute = perception;
+    int returnAttribute = attributes.perception;
+    returnAttribute += mods.perMod;
 
     return returnAttribute;
 }
-int Npc::Attribute::getIntelligence()
+int Npc::getInt()
 {
-    int returnAttribute = intelligence;
+    int returnAttribute = attributes.intelligence;
+    returnAttribute += mods.intMod;
 
     return returnAttribute;
 }
-int Npc::Attribute::getCharisma()
+int Npc::getCha()
 {
-    int returnAttribute = charisma;
+    int returnAttribute = attributes.charisma;
+    returnAttribute += mods.chaMod;
 
     return returnAttribute;
 }
-int Npc::Attribute::getEndurance()
+int Npc::getEnd()
 {
-    int returnAttribute = endurance;
+    int returnAttribute = attributes.endurance;
+    returnAttribute += mods.endMod;
 
     return returnAttribute;
 }
-int Npc::Attribute::getDexterity()
+int Npc::getDex()
 {
-    int returnAttribute = dexterity;
+    int returnAttribute = attributes.dexterity;
+    returnAttribute += mods.dexMod;
 
     return returnAttribute;
 }
-int Npc::Attribute::getAgility()
+int Npc::getAgi()
 {
-    int returnAttribute = agility;
+    int returnAttribute = attributes.agility;
 
     return returnAttribute;
 }
-int Npc::Attribute::getWisdom()
+int Npc::getWis()
 {
-    int returnAttribute = wisdom;
+    int returnAttribute = attributes.wisdom;
 
     return returnAttribute;
 }
 
-void Npc::clearAllMods()
+void Modifiers::clearAllMods()
 {
     attackSpeedMod = 0;
     castSpeedMod = 0;
@@ -2554,12 +2560,12 @@ void Npc::clearAllMods()
     affectDamageMod = 0;
     armorMod = 0;
     manaRegenMod = 0;
-    attributes.strMod = 0;
-    attributes.perMod = 0;
-    attributes.intMod = 0;
-    attributes.chaMod = 0;
-    attributes.endMod = 0;
-    attributes.dexMod = 0;
+    strMod = 0;
+    perMod = 0;
+    intMod = 0;
+    chaMod = 0;
+    endMod = 0;
+    dexMod = 0;
     applyMomentumMod = 0;
     momentumSensitivityMod = 0;
     itemDropRateMod = 0;
@@ -2821,7 +2827,7 @@ std::string Npc::dealDamage(Npc *victim, Item *weapon, float amount, int damageT
 
         if(weapon->type == 1)
         { // Each point of strength makes melee weapons deal 10% more damage.
-            totalDamage += totalDamage * (attributes.getStrength()*0.1);
+            totalDamage += totalDamage * (getStr()*0.1);
         }
     }
 
@@ -4961,7 +4967,7 @@ void Npc::setupAnimations()
 
 void Npc::handleStatusEffects()
 {
-    clearAllMods();
+    mods.clearAllMods();
 
     if(statusEffects.empty())
         return;
@@ -5076,7 +5082,7 @@ void Npc::handleStatusEffects()
                 if(aspect.name == aspect.Attribute)
                 {
                     if(aspect.type == "Strength")
-                        attributes.strMod += aspect.potency;
+                        mods.strMod += aspect.potency;
                 }
 
 
@@ -5289,48 +5295,4 @@ void drawNPCs(std::list<Npc> &container)
         }
     }
     debug("Done drawing NPCs");
-}
-
-
-void setTestage()
-{
-    std::set<Npc> testSet;
-    for (int n = 0; n != 500; n++)
-    {
-        Npc npc;
-        testSet.insert(npc);
-    }
-    int sJohns = 0;
-    for (const auto &npc : testSet)
-    {
-        if (npc.name == "John")
-        {
-            sJohns++;
-        }
-        if (npc.id == 10)
-        {
-            //sJohns++;
-        }
-        if (npc.health == 10)
-        {
-            //sJohns++;
-        }
-        if (npc.id == 10)
-        {
-            //sJohns++;
-        }
-        if (npc.health == 10)
-        {
-            //sJohns++;
-        }
-        if (npc.id == 10)
-        {
-            //sJohns++;
-        }
-        if (npc.health == 10)
-        {
-            //sJohns++;
-        }
-        //else Con(it->name);
-    }
 }
