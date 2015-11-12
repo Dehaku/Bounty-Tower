@@ -22,6 +22,11 @@ extern sf::RenderWindow window;
 
 std::vector<Npc*> selectedNPCs;
 
+StringFloat::StringFloat(std::string theString, float theFloat)
+{
+    str = theString;
+    num = theFloat;
+}
 
 skillKeepInfo::skillKeepInfo()
 {
@@ -2557,8 +2562,8 @@ void Modifiers::clearAllMods()
     reloadSpeedMod = 0;
     switchWorkSpeedMod = 0;
     moveSpeedMod = 0;
-    affectDamageMod = 0;
-    armorMod = 0;
+    affectDamageMod.clear();
+    armorMod.clear();
     manaRegenMod = 0;
     strMod = 0;
     perMod = 0;
@@ -2730,7 +2735,11 @@ std::string Npc::takeDamage(Npc *attacker, Item *weapon, float amount, int damag
 
 
     // Armor Status Effect
-    amount -= amount*(mods.armorMod*0.01);
+    for(auto &armor : mods.armorMod)
+        if(armor.str == damageTypes.TypeStrings[damageType])
+            amount -= amount*(armor.num*0.01);
+
+
 
     // All damage modifications must be done above this line.
 
@@ -2849,7 +2858,10 @@ std::string Npc::dealDamage(Npc *victim, Item *weapon, float amount, int damageT
     }
 
     // AffectDamage Status Effect.
-    totalDamage += totalDamage*(mods.affectDamageMod*0.01);
+    for(auto &damage : mods.affectDamageMod)
+        if(damage.str == damageTypes.TypeStrings[damageType])
+            totalDamage += totalDamage*(damage.num*0.01);
+
 
     outPut = victim->takeDamage(this,weapon,totalDamage, damageType);
 
@@ -5082,7 +5094,7 @@ void Npc::handleStatusEffects()
                         break;
                 }
                 //std::cout << "Aspect:" << aspectNum[aspect.name] << ", " << StatusAspect::AffectHealth << "/" << aspect.name << " \n";
-                if(aspect.name == aspect.AffectHealth)
+                if(aspect.name == aspect.AffectHealth) // TODO: Add a pointer to Npc Source of status effect, with a check on floor change to set it to null, so XP can be credited for kills.
                     takeDamage(nullptr,nullptr,-aspect.potency,damageTypes.getNum(aspect.type));
 
 
@@ -5090,10 +5102,10 @@ void Npc::handleStatusEffects()
 
 
                 if(aspect.name == StatusAspect::AffectDamage)
-                    mods.affectDamageMod += aspect.potency;
+                    mods.affectDamageMod.push_back(StringFloat(aspect.type,aspect.potency));
 
                 if(aspect.name == StatusAspect::Armor)
-                    mods.armorMod += aspect.potency;
+                    mods.armorMod.push_back(StringFloat(aspect.type,aspect.potency));
 
                 if(aspect.name == aspect.Attribute)
                 {

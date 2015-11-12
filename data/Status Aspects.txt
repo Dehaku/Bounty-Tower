@@ -6,6 +6,21 @@ Format: [Aspect:AspectName:Potency:Type]
 
 Example Usage: [Aspect:AffectHealth:-1:Fire], AffectHealth is the AspectName, -1 is the potency, dealing 1 damage per frame, Fire is the type, The type of damage dealt.
 
+Damage Types: None,Blunt,Pierce,Slash,Fire,Cold,Poison,Electric,Acid,Energy
+
 Aspects
+[Aspect:AffectHealth:Amount:DamageType]
+AffectHealth directly modifies the health of the carrier by the Amount every frame, This can be used for healing if positive, or harming if negitive.
+
+[Aspect:AffectDamage:Amount:DamageType]
+AffectDamage applies to the damage the carrier does of DamageType, acting as a multiplier. 25 Amount, adds 25% more damage. (Negitives reduce damage dealt), Warning, Multiple instances of this aspect has a compounding effect, not a stacking one.
+
+[Aspect:Armor:Amount:DamageType]
+Armor modifies the damage the carrier takes of DamageType, acting as a multiplier. 25 amount, reduces damage by 25%. (Negitives enhance damage taken.), Warning, Multiple instances of this aspect has a compounding effect, not a stacking one.
+
+[Aspect:Attribute:Amount:AttributeName]
+Attribute grants a direct effect to the specified attribute(With AttributeName), Negitive numbers will reduce the attribute.
+
+
 
 

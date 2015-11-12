@@ -33,7 +33,7 @@ public:
         // Potency defines the amount of units that must exist of this type.
         ActionSpeed, // Type: Attack, Cast, Reload, Switch Work.
         // Potency acts as Percentage.
-        AffectDamage,
+        AffectDamage, // Type: Damages
         // Potency acts as Percentage.
         AffectHealth, // Type: Damages
         // Potency heals in the positives, harms in the negitives.

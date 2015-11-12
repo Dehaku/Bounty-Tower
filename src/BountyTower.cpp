@@ -2870,7 +2870,7 @@ void testStatusEffects()
     {
         StatusEffect testStatus;
         for(auto &status : globalStatusEffects.statusEffects)
-            if(status.name == "Defensive Stance")
+            if(status.name == "Test Defense")
                 testStatus = status;
 
         for(auto &npc : Squaddies)

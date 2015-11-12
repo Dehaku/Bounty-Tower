@@ -112,6 +112,8 @@ struct StringFloat
 {
     std::string str;
     float num;
+
+    StringFloat(std::string theString, float theFloat);
 };
 
 class Modifiers
@@ -122,8 +124,8 @@ public:
     float reloadSpeedMod;
     float switchWorkSpeedMod;
     float moveSpeedMod;
-    float affectDamageMod;
-    float armorMod;
+    std::vector<StringFloat> affectDamageMod;
+    std::vector<StringFloat> armorMod;
     float manaRegenMod;
 
     float applyMomentumMod;

@@ -15,5 +15,6 @@ OverlayImage, filename.png, If this is added to a status effect, the image will 
 [Name:Pointless Healing][Duration:3600][Aspect:ConditionLife:1:Dead][Aspect:AffectHealth:3:Energy]
 [Name:Hulk Strength][Duration:300][Aspect:Attribute:50:Strength]
 [Name:Taste of Paragon][Duration:1800][Aspect:Attribute:25:Strength][Aspect:Attribute:25:Perception][Aspect:Attribute:25:Intelligence][Aspect:Attribute:25:Charisma][Aspect:Attribute:25:Endurance][Aspect:Attribute:25:Dexterity]
-[Name:Berzerking][Duration:600][Aspect:AffectDamage:50][Aspect:Armor:-50]
-[Name:Defensive Stance][Duration:600][Aspect:AffectDamage:-50][Aspect:Armor:50]
+[Name:Berzerking][Duration:600][Aspect:AffectDamage:50:None][Aspect:Armor:-50:None]
+[Name:Defensive Stance][Duration:600][Aspect:AffectDamage:-50:None][Aspect:Armor:50:None]
+[Name:Test Defense][Duration:600][Aspect:AffectDamage:90:None]
