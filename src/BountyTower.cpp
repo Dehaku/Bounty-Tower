@@ -2904,6 +2904,10 @@ void testStatusEffects()
 
         for(auto &npc : Squaddies)
             npc->statusEffects.push_back(testStatus);
+
+
+
+
     }
 
 

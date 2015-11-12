@@ -2036,7 +2036,7 @@ void Npc::momMove()
                 chatBox.addChat(name + " slammed into the wall, but is immune!",sf::Color::White);
             else
             {
-                takeDamage(nullptr,nullptr,(momSpeed/2) );
+                takeDamage(nullptr,nullptr,(momSpeed/2),DamageTypes::Momentum);
                 chatBox.addChat(name + " slammed into the wall with " + str(momSpeed) + " force!",sf::Color::White);
             }
 
@@ -2701,6 +2701,7 @@ std::string Npc::takeDamage(Npc *attacker, Item *weapon, float amount, int damag
 
     // Immunity Status Effect
     for(auto &immunity : mods.immunityMod)
+    {
         if(immunity.str == damageTypes.TypeStrings[damageType])
         {
             {// Dodge Popup Code
@@ -2717,6 +2718,8 @@ std::string Npc::takeDamage(Npc *attacker, Item *weapon, float amount, int damag
             }
             return "Immune";
         }
+    }
+
 
 
     int dodgeChance = (attributes.dexterity*2);

@@ -23,4 +23,4 @@ OverlayImage, filename.png, If this is added to a status effect, the image will 
 [Name:Thorns][Duration:1800][Aspect:Thorns:25:Pierce]
 [Name:Fire Immunity][Duration:3600][Aspect:Immunity:1:Fire]
 [Name:Test One][Duration:600][Aspect:Immunity:1:None]
-[Name:Test Two][Duration:600][Aspect:Immunity:1:Fire]
+[Name:Test Two][Duration:600][Aspect:Immunity:1:Momentum]
