@@ -28,7 +28,8 @@ public:
         Poison,
         Electric,
         Acid,
-        Energy
+        Energy,
+        Momentum
     };
     std::vector<std::string> TypeStrings;
     int getNum(std::string name);

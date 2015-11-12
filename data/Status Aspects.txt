@@ -38,3 +38,6 @@ Sleep disables the use of items, Amount needs to be at least 1.
 [Aspect:Thorns:Amount:DamageType]
 Thorns causes anyone who attacks the carrier(*With A Melee Weapon*) to take a flat Amount of damage of DamageType, This is not enhanced by the carrier by any means, though the carrier is credited for damage dealt to others. (Allowing XP to be claimed)
 
+[Aspect:Immunity:Amount:DamageType]
+Immunity causes the carrier to take no effects from an attack of DamageType.
+

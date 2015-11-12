@@ -2699,6 +2699,26 @@ std::string Npc::onDeath(Npc *attacker, Item *weapon, float amount, int damageTy
 std::string Npc::takeDamage(Npc *attacker, Item *weapon, float amount, int damageType, critScore *crit)
 {
 
+    // Immunity Status Effect
+    for(auto &immunity : mods.immunityMod)
+        if(immunity.str == damageTypes.TypeStrings[damageType])
+        {
+            {// Dodge Popup Code
+                Shape text;
+                text.shape = text.Text;
+                text.duration = 60;
+                text.fades = true;
+                text.maincolor = sf::Color::White;
+                text.size = 20;
+                sf::Vector2f textPos(xpos-15,(ypos-50)-random(0,50));
+                text.startPos = textPos;
+                text.text = immunity.str + " Immunity";
+                shapes.shapes.push_back(text);
+            }
+            return "Immune";
+        }
+
+
     int dodgeChance = (attributes.dexterity*2);
     int dodgeRoll = random(0,100);
     if(dodgeRoll <= dodgeChance && amount > 0)
@@ -5174,6 +5194,9 @@ void Npc::handleStatusEffects()
 
                 if(aspect.name == StatusAspect::Thorns)
                     mods.thornsMod.push_back(StringFloat(aspect.type,aspect.potency));
+
+                if(aspect.name == StatusAspect::Immunity)
+                    mods.immunityMod.push_back(StringFloat(aspect.type,aspect.potency));
 
 
             }

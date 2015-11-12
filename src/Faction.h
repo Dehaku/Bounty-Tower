@@ -133,7 +133,7 @@ public:
 
     float applyMomentumMod;
     float momentumSensitivityMod;
-    std::vector<std::string> immunityMod;
+    std::vector<StringFloat> immunityMod;
 
     std::vector<StringFloat> thornsMod;
 
