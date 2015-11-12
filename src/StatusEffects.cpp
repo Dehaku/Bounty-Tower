@@ -109,6 +109,9 @@ void GlobalStatusEffects::initializeStatusEffects()
         std::string line;
         getline(input, line);
         StatusEffect status;
+
+        status.critterEffect = nullptr;
+
         status.name = "Debuggery";
         std::string statusName = stringFindString(line, "[Name:");
         if(statusName == "")
@@ -133,10 +136,9 @@ void GlobalStatusEffects::initializeStatusEffects()
 
         std::string overlayName = stringFindString(line, "[OverlayImage:");
         if(overlayName != "")
-            for (auto const &image : texturemanager.textures)
+            for (auto &image : texturemanager.textures)
                 if (image.name == overlayName)
                     status.critterEffect = &image.texture;
-
 
         std::vector<std::string> aspects = stringFindVectorChaos(line,"[Aspect:","]");
 

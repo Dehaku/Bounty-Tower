@@ -8,14 +8,14 @@ IconImage, filename.png, Little icon image that will float next to Squaddie huds
 OverlayImage, filename.png, If this is added to a status effect, the image will be drawn ontop of the carrier, i.e. On Fire's fire graphic.
 // Any Aspect declared BEFORE a condition aspect, will run whether that condition is true. Only aspects after the condition will depend on the condition.
 
-[Name:On Fire][Duration:180][OverlayImage:LilFire.png][Aspect:AffectHealth:-1:Fire][Aspect:Immunity:1:Cold]
-[Name:Flame Aura][Duration:600][AuraRadius:120][AuraEnemies:1][OverlayImage:LilFire.png][Aspect:AffectHealth:-1:Fire][Aspect:Immunity:1:Cold]
+[Name:On Fire][OverlayImage:LilFire.png][Duration:180][Aspect:AffectHealth:-1:Fire][Aspect:Immunity:1:Cold]
+[Name:Flame Aura][OverlayImage:LilFire.png][Duration:600][AuraRadius:120][AuraEnemies:1][OverlayImage:LilFire.png][Aspect:AffectHealth:-1:Fire][Aspect:Immunity:1:Cold]
 [Name:Healing Aura][Duration:600][AuraRadius:120][AuraNeutrals:1][AuraAllies:1][Aspect:AffectHealth:1:Energy]
-[Name:Burning Stablization][Duration:3600][Aspect:AffectHealth:-1:Fire][Aspect:ConditionHealth:50:Below][Aspect:AffectHealth:3:Energy]
+[Name:Burning Stablization][OverlayImage:LilFire.png][Duration:3600][Aspect:AffectHealth:-1:Fire][Aspect:ConditionHealth:50:Below][Aspect:AffectHealth:3:Energy]
 [Name:Pointless Healing][Duration:3600][Aspect:ConditionLife:1:Dead][Aspect:AffectHealth:3:Energy]
 [Name:Hulk Strength][Duration:300][Aspect:Attribute:50:Strength]
 [Name:Taste of Paragon][Duration:1800][Aspect:Attribute:25:Strength][Aspect:Attribute:25:Perception][Aspect:Attribute:25:Intelligence][Aspect:Attribute:25:Charisma][Aspect:Attribute:25:Endurance][Aspect:Attribute:25:Dexterity]
 [Name:Berzerking][Duration:600][Aspect:AffectDamage:50:None][Aspect:Armor:-50:None]
 [Name:Defensive Stance][Duration:600][Aspect:AffectDamage:-50:None][Aspect:Armor:50:None]
-[Name:Test One][Duration:600][Aspect:Freeze:100]
+[Name:Test One][Duration:600][OverlayImage:Frozen.png][Aspect:Freeze:100]
 [Name:Test Two][Duration:600][Aspect:Sleep:2]
