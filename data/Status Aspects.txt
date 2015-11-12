@@ -25,10 +25,12 @@ Attribute grants a direct effect to the specified attribute(With AttributeName),
 MoveSpeed directly applies it's Amount to movement, if you must, do this in small amounts, speed can be a hell of a drug.
 
 [Aspect:Freeze:Amount]
-Freeze completely disables the creature from all actions, Amount needs to be at least 1.
+Freeze completely disables the creature from all actions, Amount is essentially the health of this aspect. Taking damage directly lowers this potency(to 0.), If potency is at 0 or less, It no longer has any effect. (ALL instances of this aspect take the same damage from a hit, multiple instances do not provide additional freeze health)
+Due to how this aspect works, an Aura projecting a Freeze aspect will likely be unbreakable by damage. This can be unbalancing.
 
 [Aspect:Sleep:Amount]
-Sleep completely disables the creature from all actions, Amount needs to be at least 1.
+Sleep completely disables the creature from all actions, Amount needs to be at least 1, If the carrier takes any damage, they're awoken instantly.
+Due to how this aspect works, an Aura projecting a Sleep aspect will likely be unwakable. This can be unbalancing.
 
 [Aspect:Stun:Amount]
 Sleep disables the use of items, Amount needs to be at least 1.

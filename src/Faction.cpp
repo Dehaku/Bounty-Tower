@@ -2747,6 +2747,20 @@ std::string Npc::takeDamage(Npc *attacker, Item *weapon, float amount, int damag
 
     // All damage modifications must be done above this line.
 
+    for(auto &status : statusEffects)
+        if(status.auraRadius == 0)
+            for(auto &aspect : status.aspects)
+                if(aspect.name == StatusAspect::Freeze)
+                    aspect.potency = math::clamp(aspect.potency-amount,0,9999999);
+
+    for(auto &status : statusEffects)
+        if(status.auraRadius == 0)
+            for(auto &aspect : status.aspects)
+                if(aspect.name == StatusAspect::Sleep)
+                    aspect.potency = 0;
+
+
+
     {// Knockback Code
         int knockbackAmount = 0;
         sf::Vector2f AtkerPos;
