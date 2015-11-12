@@ -2870,7 +2870,7 @@ void testStatusEffects()
     {
         StatusEffect testStatus;
         for(auto &status : globalStatusEffects.statusEffects)
-            if(status.name == "Hulk Strength")
+            if(status.name == "Taste of Paragon")
                 testStatus = status;
 
         for(auto &npc : Squaddies)

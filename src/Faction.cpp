@@ -5083,6 +5083,16 @@ void Npc::handleStatusEffects()
                 {
                     if(aspect.type == "Strength")
                         mods.strMod += aspect.potency;
+                    if(aspect.type == "Perception")
+                        mods.perMod += aspect.potency;
+                    if(aspect.type == "Intelligence")
+                        mods.intMod += aspect.potency;
+                    if(aspect.type == "Charisma")
+                        mods.chaMod += aspect.potency;
+                    if(aspect.type == "Endurance")
+                        mods.endMod += aspect.potency;
+                    if(aspect.type == "Dexterity")
+                        mods.dexMod += aspect.potency;
                 }
 
 
