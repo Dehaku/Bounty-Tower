@@ -211,6 +211,7 @@ public:
     int rarity;
 
     unsigned int deadFrames;
+    unsigned int lastHitFrames;
 
     std::list<StatusEffect> statusEffects;
     void handleStatusEffects();

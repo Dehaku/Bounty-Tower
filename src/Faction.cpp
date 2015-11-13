@@ -2759,7 +2759,7 @@ std::string Npc::takeDamage(Npc *attacker, Item *weapon, float amount, int damag
     {
         if(attacker != nullptr)
             std::cout << name << " dodged " << attacker->name << "'s attack! (" << dodgeRoll << "/" << dodgeChance << ")" << std::endl;
-
+        if(lastHitFrames > 30)
         {// Dodge Popup Code
             Shape text;
             text.shape = text.Text;
@@ -2773,6 +2773,7 @@ std::string Npc::takeDamage(Npc *attacker, Item *weapon, float amount, int damag
             shapes.shapes.push_back(text);
         }
 
+        if(lastHitFrames > 30)
         {// Dodge Sound Code
             int soundRan = random(1,6);
             soundmanager.playSound("Woosh"+str(soundRan)+".ogg");
@@ -2855,7 +2856,7 @@ std::string Npc::takeDamage(Npc *attacker, Item *weapon, float amount, int damag
             momentum += compared;
     }
 
-    if(amount > 0)
+    if(amount > 0 && lastHitFrames > 30)
     {// Sound code
         if(race.find("Human") != race.npos)
         {
@@ -2891,7 +2892,7 @@ std::string Npc::takeDamage(Npc *attacker, Item *weapon, float amount, int damag
         }
     }
 
-    if(amount > 0)
+    if(amount > 0 && lastHitFrames > 30)
     {// Damage Popup Code
         Shape text;
         text.shape = text.Text;
@@ -2908,6 +2909,8 @@ std::string Npc::takeDamage(Npc *attacker, Item *weapon, float amount, int damag
     if(modhealth(-amount) == false) // modhealth returns false on death.
         onDeath(attacker, weapon, amount, damageType, crit);
 
+    if(lastHitFrames > 30)
+        lastHitFrames = 0;
     return "Hit";
 }
 

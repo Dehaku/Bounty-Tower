@@ -1610,6 +1610,9 @@ ReDesire:
 
     //Setting our movespeed back to normal from Debug speedster hax.
     npc.moverate = moveSpeed;
+
+    // This is to help with overlay Spam.
+    npc.lastHitFrames++;
 }
 
 void critterBrain(std::list<Npc> &npcs)
