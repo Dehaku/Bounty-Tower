@@ -27,6 +27,16 @@ public:
         // Potency, Simply acts as On/Off. This status effect will only apply if the carrier is (Type).
         ConditionMana, // Type: Above, Below
         // Potency acts as Percentage. This status effect will only apply if it's (Type) the carrier's mana value.
+        ConditionOnItemUse, // Type: Type of item used.
+        // Potency, Simply acts as an On/Off
+        ConditionOnDeath, //
+        // Potency, Simply acts as an On/Off
+        ConditionOnHit, //
+        // Potency, Simply acts as an On/Off
+        ConditionOnHitByType, // Type: Damages
+        // Potency, Simply acts as an On/Off
+        ConditionTimeDelay, //
+        // Potency, The amount of frames must pass before this Condition is true.
         ConditionNearbyUnit, // Type: Ally, Enemy, Neutral.
         // Potency defines the range they must be within.
         ConditionUnitCount, // Type: Ally, Enemy, Neutral.

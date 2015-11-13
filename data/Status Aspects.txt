@@ -2,13 +2,15 @@ This is the list for aspects to use in Status Effect definition, statusEffects.t
 
 Format: [Aspect:AspectName:Potency:Type]
 'Potency' only accepts integers(Numbers with no decimal places)
-'Type' can be any string of characters appropriote to the aspect type.
+'Type' can be any string of characters appropriote to the aspect type. (And sometimes numbers, If specified)
 
 Example Usage: [Aspect:AffectHealth:-1:Fire], AffectHealth is the AspectName, -1 is the potency, dealing 1 damage per frame, Fire is the type, The type of damage dealt.
 
 Damage Types: None,Blunt,Pierce,Slash,Fire,Cold,Poison,Electric,Acid,Energy
 
-Aspects
+
+Aspects - The meat and potatos of status effects, mmm, I'm hungry now.
+
 [Aspect:AffectHealth:Amount:DamageType]
 AffectHealth directly modifies the health of the carrier by the Amount every frame, This can be used for healing if positive, or harming if negitive.
 
@@ -36,7 +38,7 @@ Due to how this aspect works, an Aura projecting a Sleep aspect will likely be u
 Sleep disables the use of items, Amount needs to be at least 1.
 
 [Aspect:Thorns:Amount:DamageType]
-Thorns causes anyone who attacks the carrier(*With A Melee Weapon*) to take a flat Amount of damage of DamageType, This is not enhanced by the carrier by any means, though the carrier is credited for damage dealt to others. (Allowing XP to be claimed)
+Thorns causes anyone who attacks the carrier(*With A Melee Weapon*) to take a flat Amount of damage of DamageType, This is not enhanced by the carrier by any means, though the carrier is credited for damage dealt to others. (Allowing XP to be claimed). I don't recommend adding a OnHitByType conditional to this, since it's already restricted to melee attacks. Doubt it'll work, but do as you want.
 
 [Aspect:Immunity:Amount:DamageType]
 Immunity causes the carrier to take no effects from an attack of DamageType.
@@ -52,4 +54,32 @@ ItemFind increases the rolled item chance by 'Amount', Raising odds of getting i
 
 [Aspect:ItemDropRate:Amount]
 ItemDropRate increases the odds of dropping items by 'Amount' percent.
+
+
+
+
+
+Conditional Aspects - These don't do anything for the carrier, they simply restrict the status effect for more variety and interesting flavors, Like adding gravy to your potatos, or chili... now I'm drooling.
+Please keep in mind that status effects are read left to right, and as soon as a condition is not met, all further aspects are ignored.
+Example: [Name:Test][Duration:600][AffectHealth:1:Energy][Aspect:ConditionOnHit:1][Aspect:AffectHealth:500:Energy]
+The carrier will always be healed for 1 health per frame, but the massive 500 only occurs on the frame that they are hit.
+Multiple conditions can be used, and at any point in the status effect.
+
+[Aspect:ConditionHealth:Percentage:Above/Below]
+ConditionHealth requires the carriers health to either be above, or below the defined percentage, of their max health, [Aspect:ConditionHealth:50:Below] means all further aspects will only trigger if the carrier is below half health.
+
+[Aspect:ConditionLife:Unused:Dead/Alive]
+ConditionLife requires the carrier to be in the specified state of either Dead or Alive, Example: [Name:Pointless Healing][Duration:3600][Aspect:ConditionLife:1:Dead][Aspect:AffectHealth:3:Energy] This will heal the carrier for 3 health per frame while they are dead. (This will not revive the carrier.)
+
+[Aspect:ConditionOnItemUse:Unused:ItemTypeNumber]
+This condition allows further aspects to work on the frame the specified item type is used. (Sorry folks, ItemType is a number, 1 = Melee Weapons, 2 = Ranged Weapons, 23 = PDA, 42 = Potions, 69 = Inventory Slot Upgrade), Example: [Name:Heal On Melee][Duration:600][Aspect:ConditionOnItemUse:1:1][Aspect:AffectHealth:250:Energy]
+
+[Aspect:ConditionOnDeath:1]
+ConditionOnDeath allows further aspects to trigger on the frame of the carriers death. (Good for explosions, revivals or other silly tidbits.)
+
+[Aspect:ConditionOnHit:1]
+ConditionOnHit allows further aspects to trigger on the frame of being hit from any damage source.
+
+[Aspect:ConditionOnHitByType:1:DamageType]
+ConditionOnHitByTime is similar to ConditionOnHit, Except it only allows further aspects to trigger if the hit was of DamageType. (Do not put two of these in the same status effect, unless they are of the same damage type, even then, that's redundent. Two different ones cannot work together.)
 

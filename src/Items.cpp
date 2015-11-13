@@ -1041,6 +1041,9 @@ std::string Item::activate(Vec3f vPos) // Returns a string declaring the problem
     if(user->mods.stunMod > 0)
         return "Stunned";
 
+    user->mods.onItemUse = true;
+    user->mods.onItemUseType = type;
+
     if(type == 1)
     { // Melee weapons
 

@@ -2556,6 +2556,12 @@ int Npc::getWis()
     return returnAttribute;
 }
 
+Modifiers::Modifiers()
+{
+    clearAllMods();
+    clearAllPostConditions();
+}
+
 void Modifiers::clearAllMods()
 {
     attackSpeedMod = 0;
@@ -2593,6 +2599,15 @@ void Modifiers::clearAllMods()
     autoDodgeMod.clear();
 }
 
+void Modifiers::clearAllPostConditions()
+{
+    onDeath = false;
+    onItemUse = false;
+    onItemUseType = -1;
+    onHit = false;
+    onHitType = 0;
+}
+
 bool Npc::operator<(const Npc &other) const
 {
     return other.id > id;
@@ -2607,6 +2622,8 @@ std::string Npc::onDeath(Npc *attacker, Item *weapon, float amount, int damageTy
 {
     if(!alive)
         return "";
+
+    mods.onDeath = true;
 
     if(faction == "The Titanium Grip")
         chatBox.addChat(name + " has died",sf::Color::White);
@@ -2765,6 +2782,9 @@ std::string Npc::takeDamage(Npc *attacker, Item *weapon, float amount, int damag
     }
 
     // All dodge modifications must be done above this line.
+
+    mods.onHit = true;
+    mods.onHitType = damageType;
 
     if(attacker != nullptr && weapon != nullptr && weapon->type == 1)
     { // Thorns Status Effect
@@ -5059,10 +5079,22 @@ void Npc::setupAnimations()
 
 void Npc::handleStatusEffects()
 {
+    if(statusEffects.empty())
+    {
+        mods.clearAllPostConditions();
+        return;
+    }
+
     mods.clearAllMods();
 
-    if(statusEffects.empty())
-        return;
+    if(mods.onDeath)
+        std::cout << name << " just died! STATUS EFFECT GO! \n";
+
+    if(mods.onItemUse)
+        std::cout << name << " used a " << mods.onItemUseType << " \n";
+
+    if(mods.onHit)
+        std::cout << name << " was hit by damage type: " << mods.onHitType << " \n";
 
     bool mouseHovering = (math::closeish(getPos2d(),gvars::mousePos) <= 20);
     if(mouseHovering)
@@ -5167,6 +5199,29 @@ void Npc::handleStatusEffects()
                     if(aspect.type == "Dead" && alive)
                         break;
                 }
+                if(aspect.name == StatusAspect::ConditionOnItemUse)
+                {
+                    if(!mods.onItemUse)
+                        break;
+                    if(mods.onItemUseType != std::stoi(aspect.type))
+                        break;
+                }
+                if(aspect.name == StatusAspect::ConditionOnDeath)
+                    if(!mods.onDeath)
+                        break;
+                if(aspect.name == StatusAspect::ConditionOnHit)
+                    if(!mods.onHit)
+                        break;
+                if(aspect.name == StatusAspect::ConditionOnHitByType)
+                {
+                    if(!mods.onHit)
+                        break;
+                    if(mods.onHitType != damageTypes.getNum(aspect.type))
+                        break;
+                }
+
+
+
                 //std::cout << "Aspect:" << aspectNum[aspect.name] << ", " << StatusAspect::AffectHealth << "/" << aspect.name << " \n";
                 if(aspect.name == StatusAspect::AffectHealth) // TODO: Add a pointer to Npc Source of status effect, with a check on floor change to set it to null, so XP can be credited for kills.
                     takeDamage(nullptr,nullptr,-aspect.potency,damageTypes.getNum(aspect.type));
@@ -5239,6 +5294,7 @@ void Npc::handleStatusEffects()
     }
 
     AnyDeletes(statusEffects);
+    mods.clearAllPostConditions();
 }
 
 AnimationHolder * aniHold = nullptr;

@@ -119,6 +119,13 @@ struct StringFloat
 class Modifiers
 {
 public:
+    bool onDeath;
+    bool onItemUse;
+    int onItemUseType;
+    bool onHit;
+    int onHitType;
+
+
     float attackSpeedMod;
     float castSpeedMod;
     float reloadSpeedMod;
@@ -158,7 +165,10 @@ public:
     int disableDeathMod;
     std::vector<StringFloat> autoDodgeMod;
 
+    Modifiers();
+
     void clearAllMods();
+    void clearAllPostConditions();
 };
 
 class Npc

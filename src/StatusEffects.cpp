@@ -19,6 +19,18 @@ void insertAspects()
     aspectNum.push_back(aspectName);
     aspectName = "ConditionMana";
     aspectNum.push_back(aspectName);
+
+    aspectName = "ConditionOnItemUse";
+    aspectNum.push_back(aspectName);
+    aspectName = "ConditionOnDeath";
+    aspectNum.push_back(aspectName);
+    aspectName = "ConditionOnHit";
+    aspectNum.push_back(aspectName);
+    aspectName = "ConditionOnHitByType";
+    aspectNum.push_back(aspectName);
+    aspectName = "ConditionTimeDelay";
+    aspectNum.push_back(aspectName);
+
     aspectName = "ConditionNearbyUnit";
     aspectNum.push_back(aspectName);
     aspectName = "ConditionUnitCount";
