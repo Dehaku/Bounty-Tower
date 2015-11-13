@@ -35,6 +35,8 @@ public:
         // Potency, Simply acts as an On/Off
         ConditionOnHitByType, // Type: Damages
         // Potency, Simply acts as an On/Off
+        ConditionReceivedDamage, // Type: Damages. (Leave Blank for All)
+        // Potency, Acts as health, Once it hits 0, this condition is true.
         ConditionTimeDelay, //
         // Potency, The amount of frames must pass before this Condition is true.
         ConditionNearbyUnit, // Type: Ally, Enemy, Neutral.
@@ -93,16 +95,18 @@ public:
         // Potency acts as Percentage.
         Mark, // Type: (Phoenix, Dragon, Monkey, Eagle, Mole)
         // Potency, Simply acts as an On/Off.
-        SpawnCreatureOnDeath, // Type: Direct Race Name. Creatures will be hostile to Everyone.
-        // Potency indicates amount of creatures to spawn.
-        SpawnItemOnDeath, // Type: Direct Item Name.
+        SpawnCreature, // Type: Direct Race Name. Creatures will be hostile to Everyone.
+        // Potency ???
+        SpawnItem, // Type: Direct Item Name.
         // Potency indicates amount of stack to spawn, Does not over rule Stacksize.
         RevivesOnDeath,
         // Potency acts as a lives counter.
         DisableDeath,
         // Potency, Simply acts as an On/Off.
-        AutoDodge // Type: Damages. This aspect causes the carrier to automatically avoid a source of damage equal to it's type.
+        AutoDodge, // Type: Damages. This aspect causes the carrier to automatically avoid a source of damage equal to it's type.
         // Potency, Acts as a counter, 5 Potency, Five automatic dodges.
+        ChangeRace // Type: Direct Race Name.
+        // Potency, Acts as a duration, If set to -1, It lasts for the duration of the status effect.
 
 
 

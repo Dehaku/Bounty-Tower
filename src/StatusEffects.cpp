@@ -28,6 +28,8 @@ void insertAspects()
     aspectNum.push_back(aspectName);
     aspectName = "ConditionOnHitByType";
     aspectNum.push_back(aspectName);
+    aspectName = "ConditionReceivedDamage";
+    aspectNum.push_back(aspectName);
     aspectName = "ConditionTimeDelay";
     aspectNum.push_back(aspectName);
 
@@ -88,15 +90,17 @@ void insertAspects()
     aspectNum.push_back(aspectName);
     aspectName = "Mark";
     aspectNum.push_back(aspectName);
-    aspectName = "SpawnCreatureOnDeath";
+    aspectName = "SpawnCreature";
     aspectNum.push_back(aspectName);
-    aspectName = "SpawnItemOnDeath";
+    aspectName = "SpawnItem";
     aspectNum.push_back(aspectName);
     aspectName = "RevivesOnDeath";
     aspectNum.push_back(aspectName);
     aspectName = "DisableDeath";
     aspectNum.push_back(aspectName);
     aspectName = "AutoDodge";
+    aspectNum.push_back(aspectName);
+    aspectName = "ChangeRace";
     aspectNum.push_back(aspectName);
 }
 

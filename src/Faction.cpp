@@ -5316,6 +5316,38 @@ void Npc::handleStatusEffects()
                 if(aspect.name == StatusAspect::DeathXPModifier)
                     mods.deathXpModifierMod += aspect.potency;
 
+                if(aspect.name == StatusAspect::SpawnCreature)
+                {
+                    Npc spawn;
+                    spawn = *getGlobalCritter(aspect.type);
+                    spawn.xpos = xpos;
+                    spawn.ypos = ypos;
+                    spawn.zpos = zpos;
+                    spawn.faction = "Wild";
+                    for(auto &faction : uniFact)
+                        if(faction.name == spawn.faction)
+                            spawn.factionPtr = &faction;
+                    Item nautralWeapon = *getGlobalItem("Baton");
+                    // if(spawn.race == BTInfectionRace), nautralWeapon.statusEffectsInflict.push_back(infection status effect)
+                    spawn.inventory.push_back(nautralWeapon);
+
+                    npclist.push_back(spawn);
+                }
+
+                if(aspect.name == StatusAspect::SpawnItem)
+                {
+                    Item spawn;
+                    spawn = *getGlobalItem(aspect.type);
+                    spawn.xpos = xpos;
+                    spawn.ypos = ypos;
+                    spawn.zpos = zpos;
+                    spawn.amount = aspect.potency;
+                    if(spawn.amount > spawn.stackSize)
+                        spawn.amount = spawn.stackSize;
+                    worlditems.push_back(spawn);
+                }
+
+
 
 
             }

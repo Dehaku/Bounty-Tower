@@ -55,6 +55,12 @@ ItemFind increases the rolled item chance by 'Amount', Raising odds of getting i
 [Aspect:ItemDropRate:Amount]
 ItemDropRate increases the odds of dropping items by 'Amount' percent.
 
+[Aspect:SpawnCreature:1:Race]
+SpawnCreature simply spawns a wild version of whatever Race is specified(As listed in npcs.txt), Wild means they will be hostile to 'everyone'. Be warned this will trigger every frame, this is best on 1 duration status effects, or rare conditions. (Like OnDeath)
+
+[Aspect:SpawnItem:Amount:Item]
+SpawnItem simply spawns the specified item(As listed in items.txt) with an amount equal to 'Amount'(This will not overrule stackSizes)  Be warned this will trigger every frame, this is best on 1 duration status effects, or rare conditions. (Like OnDeath)
+WARNING: The specified Item cannot have any colons in it's name. " : ", This will cause a crash if attempted to spawn.
 
 
 

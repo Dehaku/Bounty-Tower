@@ -210,6 +210,8 @@ void bountyTowerSetup()
     factR.appeal = -1337;
 
     conFact->factRelations.push_back(factR);
+    factR.faction = "Wild";
+    conFact->factRelations.push_back(factR);
 
     conFact->credits = 750*2;
 
@@ -219,6 +221,16 @@ void bountyTowerSetup()
 
     FactPtr = addFaction("Towerlings");
     std::cout << FactPtr->name << " added. \n";
+
+    FactPtr->factRelations.push_back(factR); // Still on "Wild" faction.
+    factR.faction = "The Titanium Grip";
+    FactPtr->factRelations.push_back(factR);
+
+    FactPtr = addFaction("Wild");
+    std::cout << FactPtr->name << " added. \n";
+
+    factR.faction = "Towerlings";
+    FactPtr->factRelations.push_back(factR); // Still on "Wild" faction.
     factR.faction = "The Titanium Grip";
     FactPtr->factRelations.push_back(factR);
 
