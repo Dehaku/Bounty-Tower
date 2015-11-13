@@ -5203,6 +5203,7 @@ void Npc::handleStatusEffects()
                 {
                     if(!mods.onItemUse)
                         break;
+
                     int ItemType;
                     if(aspect.type != "")
                         ItemType = std::stoi(aspect.type);
@@ -5214,11 +5215,15 @@ void Npc::handleStatusEffects()
                             break;
                 }
                 if(aspect.name == StatusAspect::ConditionOnDeath)
+                {
                     if(!mods.onDeath)
                         break;
+                }
                 if(aspect.name == StatusAspect::ConditionOnHit)
+                {
                     if(!mods.onHit)
                         break;
+                }
                 if(aspect.name == StatusAspect::ConditionOnHitByType)
                 {
                     if(!mods.onHit)
@@ -5226,7 +5231,14 @@ void Npc::handleStatusEffects()
                     if(mods.onHitType != damageTypes.getNum(aspect.type))
                         break;
                 }
-
+                if(aspect.name == StatusAspect::ConditionTimeDelay)
+                {
+                    if(aspect.potency > 0)
+                    {
+                        aspect.potency--;
+                        break;
+                    }
+                }
 
 
                 //std::cout << "Aspect:" << aspectNum[aspect.name] << ", " << StatusAspect::AffectHealth << "/" << aspect.name << " \n";

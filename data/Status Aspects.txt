@@ -84,3 +84,5 @@ ConditionOnHit allows further aspects to trigger on the frame of being hit from 
 [Aspect:ConditionOnHitByType:1:DamageType]
 ConditionOnHitByTime is similar to ConditionOnHit, Except it only allows further aspects to trigger if the hit was of DamageType. (Do not put two of these in the same status effect, unless they are of the same damage type, even then, that's redundent. Two different ones cannot work together.)
 
+[Aspect:ConditionTimeDelay:Amount]
+ConditionTimeDelay simply reduces it's amount by 1 per frame, Once it's at 0 or below, It allows further aspects to trigger. Please be sure the initial 'Amount' is more than the Status Effect's duration, Otherwise it'll never trigger. Oh, and don't use this on an Aura status effect.
