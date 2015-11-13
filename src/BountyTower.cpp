@@ -2947,7 +2947,7 @@ void testStatusEffects()
     {
         StatusEffect testStatus;
         for(auto &status : globalStatusEffects.statusEffects)
-            if(status.name == "Haste")
+            if(status.name == "Infider Infection")
                 testStatus = status;
 
         Item statusItem = *getGlobalItem("Gun");
@@ -2955,10 +2955,10 @@ void testStatusEffects()
         statusItem.ypos = gvars::mousePos.y;
         statusItem.zpos = gvars::currentz*GRID_SIZE;
 
-        testStatus.duration = 1; // Doing this here so it's a one time process, rather than every time it's tossed on someone.
-        statusItem.statusEffects.push_back(testStatus);
+        //testStatus.duration = 1; // Doing this here so it's a one time process, rather than every time it's tossed on someone.
+        statusItem.statusEffectsInflict.push_back(testStatus);
 
-        statusItem.name = "Haste Gun";
+        statusItem.name = "Horror Gun";
 
         worlditems.push_back(statusItem);
     }

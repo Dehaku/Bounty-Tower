@@ -222,6 +222,9 @@ StatusEffect GlobalStatusEffects::getStatusEffect(std::string statusEffect)
 
 StatusEffect::StatusEffect()
 {
+    critterEffect = nullptr;
+    icon = nullptr;
+
     duration = 0;
     auraRadius = 0;
 

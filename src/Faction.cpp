@@ -5127,7 +5127,7 @@ void Npc::handleStatusEffects()
             if(inputState.key[Key::LShift])
                 for(auto &aspect : status.aspects)
             {
-                outPut.append("[" + aspectNum[aspect.name] + ", Potency: " + str(aspect.potency) + ", Type: " + aspect.type + "]");
+                outPut.append("[" + aspectNum[aspect.name] + ", Potency: " + str(static_cast<int>(aspect.potency)) + ", Type: " + aspect.type + "]");
             }
 
             shapes.createText(sf::Vector2f(drawPos.x,drawPos.y+(20*total_elements)),15,sf::Color::Cyan,outPut);
@@ -5328,6 +5328,9 @@ void Npc::handleStatusEffects()
                         if(faction.name == spawn.faction)
                             spawn.factionPtr = &faction;
                     Item nautralWeapon = *getGlobalItem("Baton");
+                    for(auto &globalStatus : globalStatusEffects.statusEffects)
+                        if(spawn.tags.find(globalStatus.name) != std::string::npos)
+                            nautralWeapon.statusEffectsInflict.push_back(globalStatusEffects.getStatusEffect(globalStatus.name));
                     // if(spawn.race == BTInfectionRace), nautralWeapon.statusEffectsInflict.push_back(infection status effect)
                     spawn.inventory.push_back(nautralWeapon);
 
