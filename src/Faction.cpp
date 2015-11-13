@@ -2006,6 +2006,9 @@ void Npc::angMove(float ang)
 
 void Npc::momMove()
 {
+    if(momentum.x == 0 && momentum.y == 0)
+        return;
+
     sf::Vector2f oldPos(xpos,ypos);
 
     xpos += (momentum.x / size);
@@ -2711,9 +2714,7 @@ std::string Npc::onDeath(Npc *attacker, Item *weapon, float amount, int damageTy
         int bloodNum = random(1,8);
         splatter.texture = &texturemanager.getTexture("Blood"+str(bloodNum)+".png");
         shapes.shapes.push_back(splatter);
-        bloodNum = random(1,8);
-        splatter.texture = &texturemanager.getTexture("Blood"+str(bloodNum)+".png");
-        shapes.shapes.push_back(splatter);
+        shapes.shapes.back().layer += random(1,100);
 
         img.setColor(sf::Color(255,255,255,255));
         img.setRotation(0);

@@ -2358,7 +2358,7 @@ void layHints()
                 if(shapes.shapeHovered(tutBook2))
                 {
                     textPos = sf::Vector2f(textPos.x+20,textPos.y-10);
-                    shapes.createSquare(textPos.x-5,textPos.y,textPos.x+900,textPos.y+40,sf::Color::Black,3,sf::Color::Cyan);
+                    shapes.createSquare(textPos.x-5,textPos.y,textPos.x+900,textPos.y+60,sf::Color::Black,3,sf::Color::Cyan);
                     shapes.createText(textPos,15,sf::Color::Red,"Stand squaddies on switches to activate them, enabling the elevator. \n"
                             "Intelligence is the main factor for activating switches! Use Smart People! \n"
                             "Be sure to get everyone on the elevator before you try to leave, Or you'll abandon them!");
@@ -2593,6 +2593,7 @@ void makeBlood()
     //splatter.rotation = random(1,360);
 
     shapes.shapes.push_back(splatter);
+    shapes.shapes.back().layer += random(1,100);
 }
 
 void corpsesBleed()
