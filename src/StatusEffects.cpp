@@ -66,9 +66,13 @@ void insertAspects()
     aspectNum.push_back(aspectName);
     aspectName = "AffectVisionRange";
     aspectNum.push_back(aspectName);
+    aspectName = "ItemFind";
+    aspectNum.push_back(aspectName);
     aspectName = "ItemDropRate";
     aspectNum.push_back(aspectName);
     aspectName = "XPModifier";
+    aspectNum.push_back(aspectName);
+    aspectName = "DeathXPModifier";
     aspectNum.push_back(aspectName);
     aspectName = "Mark";
     aspectNum.push_back(aspectName);

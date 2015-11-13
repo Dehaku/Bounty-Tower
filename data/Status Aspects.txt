@@ -41,3 +41,15 @@ Thorns causes anyone who attacks the carrier(*With A Melee Weapon*) to take a fl
 [Aspect:Immunity:Amount:DamageType]
 Immunity causes the carrier to take no effects from an attack of DamageType.
 
+[Aspect:XPModifier:Amount]
+XPModifier modifies the amount of XP the carrier receives from all sources, by 'amount' percent.
+
+[Aspect:DeathXPModifier:Amount]
+DeathXPModifier modifies the amount of XP the carrier gives out to their killer, by 'amount' percent.
+
+[Aspect:ItemFind:Amount]
+ItemFind increases the rolled item chance by 'Amount', Raising odds of getting items.
+
+[Aspect:ItemDropRate:Amount]
+ItemDropRate increases the odds of dropping items by 'Amount' percent.
+

@@ -139,8 +139,10 @@ public:
 
     std::vector<StringFloat> causeExplosionOnItemUseMod; // should be turned into a conditional somehow.
     std::vector<StringFloat> causeDamageOnItemUseMod; // should be turned into a conditional somehow.
+    float itemFindMod;
     float itemDropRateMod;
     float xpModifierMod;
+    float deathXpModifierMod;
 
     int strMod;
     int perMod;

@@ -73,9 +73,13 @@ public:
         // Potency is damage applied.
         AffectVisionRange,
         // Potency directly applies to variable.
+        ItemFind,
+        // Potency acts as Percentage.
         ItemDropRate,
         // Potency acts as Percentage.
-        XPModifier, // This is applied to the XP given out when the Carrier dies.
+        XPModifier, // This is applied to all XP the carrier receives.
+        // Potency acts as Percentage.
+        DeathXPModifier, // This is applied to the XP given out when the Carrier dies.
         // Potency acts as Percentage.
         Mark, // Type: (Phoenix, Dragon, Monkey, Eagle, Mole)
         // Potency, Simply acts as an On/Off.

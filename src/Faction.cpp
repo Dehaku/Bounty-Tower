@@ -2036,7 +2036,7 @@ void Npc::momMove()
                 chatBox.addChat(name + " slammed into the wall, but is immune!",sf::Color::White);
             else
             {
-                takeDamage(nullptr,nullptr,(momSpeed/2),DamageTypes::Momentum);
+                takeDamage(nullptr,nullptr,(momSpeed/2),DamageTypes::Blunt);
                 chatBox.addChat(name + " slammed into the wall with " + str(momSpeed) + " force!",sf::Color::White);
             }
 
@@ -2578,8 +2578,10 @@ void Modifiers::clearAllMods()
     dexMod = 0;
     applyMomentumMod = 0;
     momentumSensitivityMod = 0;
+    itemFindMod = 0;
     itemDropRateMod = 0;
     xpModifierMod = 0;
+    deathXpModifierMod = 0;
     revivesOnDeathMod = 0;
     disableDeathMod = 0;
 
@@ -2622,12 +2624,18 @@ std::string Npc::onDeath(Npc *attacker, Item *weapon, float amount, int damageTy
         {
             if(!npc.alive)
                 continue;
+            if(npc.faction != attacker->faction)
+                continue;
 
             float expGain = level*10;
             expGain += expGain*extraExperience;
 
-            if(npc.faction == attacker->faction)
-                npc.xp += expGain;
+            expGain += expGain*(mods.deathXpModifierMod*0.01);
+
+            expGain += expGain*(attacker->mods.xpModifierMod*0.01);
+
+
+            npc.xp += expGain;
         }
     }
 
@@ -2635,9 +2643,15 @@ std::string Npc::onDeath(Npc *attacker, Item *weapon, float amount, int damageTy
     {
 
 
-        int dropRate = random(0,5);
+        int dropRate = random(0,100);
+
+        dropRate += dropRate*(mods.itemDropRateMod*0.01);
+
+        if(attacker != nullptr)
+            dropRate += dropRate*(attacker->mods.itemFindMod*0.01);
+
         std::cout << " Droprate: " << dropRate << std::endl;
-        if(dropRate == 1)
+        if(dropRate > 90)
         {
             int scrapAmount = random(0,5);
             for(int i = 0; i != scrapAmount; i++)
@@ -5200,6 +5214,19 @@ void Npc::handleStatusEffects()
 
                 if(aspect.name == StatusAspect::Immunity)
                     mods.immunityMod.push_back(StringFloat(aspect.type,aspect.potency));
+
+                if(aspect.name == StatusAspect::ItemFind)
+                    mods.itemFindMod += aspect.potency;
+
+                if(aspect.name == StatusAspect::ItemDropRate)
+                    mods.itemDropRateMod += aspect.potency;
+
+                if(aspect.name == StatusAspect::XPModifier)
+                    mods.xpModifierMod += aspect.potency;
+
+                if(aspect.name == StatusAspect::DeathXPModifier)
+                    mods.deathXpModifierMod += aspect.potency;
+
 
 
             }
