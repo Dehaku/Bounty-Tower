@@ -15,8 +15,17 @@ std::string hitTarget(Bullet &bullet)
         {
 
             std::string atkStatus = bullet.owner->dealDamage(i,&bullet.weapon,bullet.damage);
-            if(atkStatus == "Hit")
+            if(atkStatus == "Hit" || atkStatus == "Immune")
             {
+                if(atkStatus == "Hit") // Immune to the weapon means it can't affect you enough to deliver the goodness.
+                {
+                    for(auto &status : bullet.weapon.statusEffectsInflict)
+                        i->statusEffects.push_back(status);
+                    for(auto &status : bullet.ammo.statusEffectsInflict)
+                        i->statusEffects.push_back(status);
+                }
+
+
                 hitSomething = true;
                 bullet.penetration--;
                 if(bullet.penetration < 0)

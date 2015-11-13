@@ -20,6 +20,7 @@ public:
     int maxrichochet;
 
     Item weapon;
+    Item ammo;
 
     float damage;
     int radius;

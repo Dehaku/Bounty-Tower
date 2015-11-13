@@ -2917,7 +2917,7 @@ void testStatusEffects()
             if(status.name == "On Fire")
                 testStatus = status;
 
-        Item statusItem = *getGlobalItem("Gun");
+        Item statusItem = *getGlobalItem("Bullet: Incinderary");
         statusItem.xpos = gvars::mousePos.x;
         statusItem.ypos = gvars::mousePos.y;
         statusItem.zpos = gvars::currentz*GRID_SIZE;
@@ -2925,7 +2925,8 @@ void testStatusEffects()
         //testStatus.duration = 1; // Doing this here so it's a one time process, rather than every time it's tossed on someone.
         statusItem.statusEffectsInflict.push_back(testStatus);
 
-        statusItem.name = "Fire Gun";
+        //statusItem.name = "Fire Gun";
+        statusItem.amount = 30;
 
         worlditems.push_back(statusItem);
     }

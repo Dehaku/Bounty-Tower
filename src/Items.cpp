@@ -1145,6 +1145,7 @@ std::string Item::activate(Vec3f vPos) // Returns a string declaring the problem
         boolet.owner = user;
         boolet.parent = this;
         boolet.weapon = *this;
+        boolet.ammo = *itemptr;
         boolet.pos = muzzlePos;
         boolet.positions.push_back(boolet.pos);
         boolet.angle = math::angleBetweenVectors(muzzlePosV2f,vPosV2f);
