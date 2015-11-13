@@ -5203,8 +5203,15 @@ void Npc::handleStatusEffects()
                 {
                     if(!mods.onItemUse)
                         break;
-                    if(mods.onItemUseType != std::stoi(aspect.type))
-                        break;
+                    int ItemType;
+                    if(aspect.type != "")
+                        ItemType = std::stoi(aspect.type);
+                    else
+                        ItemType = 0;
+
+                    if(ItemType != 0)
+                        if(mods.onItemUseType != ItemType)
+                            break;
                 }
                 if(aspect.name == StatusAspect::ConditionOnDeath)
                     if(!mods.onDeath)

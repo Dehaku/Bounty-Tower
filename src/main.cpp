@@ -4502,6 +4502,11 @@ void onStart()
     std::cout << "Floor Difficulty: " << getFloorDifficulty(currentFloor,towerFloors,towerDiff) << std::endl;
 
     std::cout << "Npc: SizeOf()" << sizeof(Npc) << std::endl;
+
+    std::cout << "Stoi: ";
+    std::cout << std::stoi(" 50 ");
+    //std::cout << ", " << std::stoi("fifty");
+    //std::cout << ", " << std::stoi("") << std::endl;
 }
 
 
