@@ -2910,7 +2910,41 @@ void testStatusEffects()
 
     }
 
+    if(inputState.key[Key::LShift] && inputState.key[Key::H].time == 1)
+    {
+        StatusEffect testStatus;
+        for(auto &status : globalStatusEffects.statusEffects)
+            if(status.name == "Flame Aura")
+                testStatus = status;
 
+        Item statusItem = *getGlobalItem("Sword");
+        statusItem.xpos = gvars::mousePos.x;
+        statusItem.ypos = gvars::mousePos.y;
+        statusItem.zpos = gvars::currentz*GRID_SIZE;
+
+        testStatus.duration = 1; // Doing this here so it's a one time process, rather than every time it's tossed on someone.
+        statusItem.statusEffects.push_back(testStatus);
+
+        worlditems.push_back(statusItem);
+    }
+
+    if(inputState.key[Key::LShift] && inputState.key[Key::J].time == 1)
+    {
+        StatusEffect testStatus;
+        for(auto &status : globalStatusEffects.statusEffects)
+            if(status.name == "Haste")
+                testStatus = status;
+
+        Item statusItem = *getGlobalItem("Sword");
+        statusItem.xpos = gvars::mousePos.x;
+        statusItem.ypos = gvars::mousePos.y;
+        statusItem.zpos = gvars::currentz*GRID_SIZE;
+
+        testStatus.duration = 1; // Doing this here so it's a one time process, rather than every time it's tossed on someone.
+        statusItem.statusEffects.push_back(testStatus);
+
+        worlditems.push_back(statusItem);
+    }
 
 
 

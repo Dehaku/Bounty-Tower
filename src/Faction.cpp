@@ -5079,22 +5079,37 @@ void Npc::setupAnimations()
 
 void Npc::handleStatusEffects()
 {
+    Item * heldItem;
+    for(int i = 0; i != 2; i++)
+    {
+        if(deadFrames > 5)
+            continue;
+
+        if(i == 0)
+            heldItem = getLeftHandItem();
+        else if(i == 1)
+            heldItem = getRightHandItem();
+
+        if(heldItem == nullptr)
+            continue;
+        if(heldItem->statusEffects.empty())
+            continue;
+
+        for(auto &status : heldItem->statusEffects)
+            statusEffects.push_back(status);
+    }
+
+
+    mods.clearAllMods(); // TODO: Whenever performance becomes an issue, Put a single bool on Npc to check if we've gone one frame without any status effects, If so, then call this once.
+
     if(statusEffects.empty())
     {
         mods.clearAllPostConditions();
         return;
     }
 
-    mods.clearAllMods();
 
-    if(mods.onDeath)
-        std::cout << name << " just died! STATUS EFFECT GO! \n";
 
-    if(mods.onItemUse)
-        std::cout << name << " used a " << mods.onItemUseType << " \n";
-
-    if(mods.onHit)
-        std::cout << name << " was hit by damage type: " << mods.onHitType << " \n";
 
     bool mouseHovering = (math::closeish(getPos2d(),gvars::mousePos) <= 20);
     if(mouseHovering)

@@ -9,6 +9,8 @@ OverlayImage, filename.png, If this is added to a status effect, the image will 
 // Any Aspect declared BEFORE a condition aspect, will run whether that condition is true. Only aspects after the condition will depend on the condition.
 
 [Name:On Fire][OverlayImage:LilFire.png][Duration:180][Aspect:AffectHealth:-1:Fire][Aspect:Immunity:1:Cold]
+[Name:Dumb Poison][Duration:3600][Aspect:ConditionHealth:1:Above][Aspect:AffectHealth:2:Poison]
+[Name:Lethal Poison][Duration:3600][Aspect:AffectHealth:2:Poison]
 [Name:Flame Aura][OverlayImage:LilFire.png][Duration:600][AuraRadius:120][AuraEnemies:1][OverlayImage:LilFire.png][Aspect:AffectHealth:-1:Fire][Aspect:Immunity:1:Cold]
 [Name:Healing Aura][Duration:600][AuraRadius:120][AuraNeutrals:1][AuraAllies:1][Aspect:AffectHealth:1:Energy]
 [Name:Burning Stablization][OverlayImage:LilFire.png][Duration:3600][Aspect:AffectHealth:-1:Fire][Aspect:ConditionHealth:50:Below][Aspect:AffectHealth:3:Energy]
@@ -24,5 +26,6 @@ OverlayImage, filename.png, If this is added to a status effect, the image will 
 [Name:Fire Immunity][Duration:3600][Aspect:Immunity:1:Fire]
 [Name:Magic Find][Duration:3600][Aspect:ItemDropRate:100]
 [Name:Students Drive][Duration:3600][Aspect:XPModifier:50]
+[Name:Delayed Healing][Duration:600][Aspect:ConditionTimeDelay:300][Aspect:AffectHealth:5:Energy]
 [Name:Test One][Duration:600][Aspect:ConditionTimeDelay:300][Aspect:AffectHealth:5:Energy]
 [Name:Test Two][Duration:600][Aspect:ConditionOnItemUse:1:2][Aspect:AffectHealth:-50:Energy]

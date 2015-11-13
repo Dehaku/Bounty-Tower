@@ -80,6 +80,7 @@ public:
 
     int healAmount;
 
+    std::list<StatusEffect> statusEffectsInflict;
     std::list<StatusEffect> statusEffects;
     void handleStatusEffects();
 
