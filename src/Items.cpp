@@ -1073,7 +1073,12 @@ std::string Item::activate(Vec3f vPos) // Returns a string declaring the problem
 
                 std::string atkStatus = user->dealDamage(&npc,this);
                 if(atkStatus == "Hit")
+                {
+                    for(auto &status : statusEffectsInflict)
+                        npc.statusEffects.push_back(status);
                     Struck = true;
+                }
+
 
                 Skill * cleave = user->skills.getSkill("Cleave");
                 if(cleave == nullptr)
@@ -1105,7 +1110,13 @@ std::string Item::activate(Vec3f vPos) // Returns a string declaring the problem
                             //Found someone within range! STRIKING!
                             std::cout << npcCleave.id << "; Someone was hit by the Cleave! \n";
                             int cleaveDamage = this->maxdam*(0.75+(cleave->ranks*0.25));
-                            user->dealDamage(&npcCleave,this,cleaveDamage);
+                            std::string cleaveAtkStatus = user->dealDamage(&npcCleave,this,cleaveDamage);
+                            if(cleaveAtkStatus == "Hit")
+                                for(auto &status : statusEffectsInflict)
+                                    npc.statusEffects.push_back(status);
+
+
+
                         }
                     }
                 }
