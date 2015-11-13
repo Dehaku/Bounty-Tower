@@ -141,6 +141,8 @@ class GlobalStatusEffects
 public:
     std::vector<StatusEffect> statusEffects;
 
+    StatusEffect getStatusEffect(std::string statusEffect);
+
     void initializeStatusEffects();
 };
 

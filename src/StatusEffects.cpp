@@ -207,6 +207,15 @@ void GlobalStatusEffects::initializeStatusEffects()
     }
 }
 
+StatusEffect GlobalStatusEffects::getStatusEffect(std::string statusEffect)
+{
+    for(auto &status : statusEffects)
+        if(status.name == statusEffect)
+            return status;
+
+    throw std::runtime_error("There is no " + statusEffect + ".");
+}
+
 StatusEffect::StatusEffect()
 {
     duration = 0;

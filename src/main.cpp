@@ -4526,10 +4526,12 @@ int main()
     animationmanager.init();
     shadermanager.setupShaders();
 
+    globalStatusEffects.initializeStatusEffects();
+
     itemmanager.initializeItems();
     npcmanager.initializeCritters();
 
-    globalStatusEffects.initializeStatusEffects();
+
 
 
     galaxySetup();

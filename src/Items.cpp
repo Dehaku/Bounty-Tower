@@ -799,6 +799,27 @@ void ItemManager::initializeItems()
             item.activaterategrowth = stringFindNumber(line, "[activaterategrowth:");
             item.activateratemax = stringFindNumber(line, "[activateratemax:");
             item.isWeapon = booleanize(stringFindNumber(line, "[IsWeapon:"));
+
+            std::vector<std::string> statusEffects = stringFindVectorChaos(line,"[InflictStatusEffect:","]");
+            if(!statusEffects.empty())
+                for(auto &status : statusEffects)
+                    item.statusEffectsInflict.push_back(globalStatusEffects.getStatusEffect(status));
+
+            statusEffects.clear();
+            statusEffects = stringFindVectorChaos(line,"[StatusEffect:","]");
+            if(!statusEffects.empty())
+                for(auto &status : statusEffects)
+                {
+                    StatusEffect actualStatus = globalStatusEffects.getStatusEffect(status);
+                    actualStatus.duration = 1;
+                    item.statusEffects.push_back(actualStatus);
+                }
+
+
+
+
+
+
             std::string imagery = stringFindString(line, "[image:");
             for (auto const &image : texturemanager.textures)
             {
