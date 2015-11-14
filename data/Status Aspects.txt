@@ -66,6 +66,9 @@ WARNING: The specified Item cannot have any colons in it's name. " : ", This wil
 Revive instantly brings the carrier back to life at max health, 'Amount' can act as a lives counter, Example... [Aspect:Revive:9] will cause the carrier to revive nine times. (Assuming the status effect this aspect belongs to lasts that long.)
 WARNING: DO NOT PUT THIS ON AN ITEM(Unless with some heavy conditions), It literally makes it impossible to die, Hah. Gamebreaking, yo.
 
+[Aspect:AutoDodge:Amount:DamageType]
+AutoDodge is quite wonderful, It forces a dodge of DamageType automatically, up to 'Amount' of times. You can also leave DamageType blank to allow for dodging ALL types. [Aspect:AutoDodge:3] (Will dodge the next 3 damage sources.)
+
 
 
 

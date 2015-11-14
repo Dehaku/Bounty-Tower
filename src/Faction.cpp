@@ -2754,6 +2754,51 @@ std::string Npc::takeDamage(Npc *attacker, Item *weapon, float amount, int damag
 
 
 
+    for(auto &status : statusEffects)
+        if(status.auraRadius == 0)
+            for(auto &aspect : status.aspects)
+                if(aspect.name == StatusAspect::AutoDodge && aspect.potency > 0)
+    {
+        if(aspect.type == "")
+        {
+            aspect.potency--;
+            if(lastHitFrames > 30)
+            {// Dodge Popup Code
+                Shape text;
+                text.shape = text.Text;
+                text.duration = 60;
+                text.fades = true;
+                text.maincolor = sf::Color::White;
+                text.size = 20;
+                sf::Vector2f textPos(xpos-15,(ypos-50)-random(0,50));
+                text.startPos = textPos;
+                text.text = "*Auto Dodged*";
+                shapes.shapes.push_back(text);
+            }
+            return "Dodged";
+        }
+        else if(aspect.type == damageTypes.TypeStrings[damageType])
+        {
+            aspect.potency--;
+            if(lastHitFrames > 30)
+            {// Dodge Popup Code
+                Shape text;
+                text.shape = text.Text;
+                text.duration = 60;
+                text.fades = true;
+                text.maincolor = sf::Color::White;
+                text.size = 20;
+                sf::Vector2f textPos(xpos-15,(ypos-50)-random(0,50));
+                text.startPos = textPos;
+                text.text = "*Auto Dodged*";
+                shapes.shapes.push_back(text);
+            }
+            return "Dodged";
+        }
+    }
+
+
+
     int dodgeChance = (attributes.dexterity*2);
     int dodgeRoll = random(0,100);
     if(dodgeRoll <= dodgeChance && amount > 0)
@@ -5361,6 +5406,9 @@ void Npc::handleStatusEffects()
                     health = getMaxHealth();
                     img = getGlobalCritter(race)->img;
                 }
+
+                if(aspect.name == StatusAspect::AutoDodge)
+                    mods.autoDodgeMod.push_back(StringFloat(aspect.type,aspect.potency));
 
 
 
