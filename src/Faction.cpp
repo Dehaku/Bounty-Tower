@@ -2559,6 +2559,21 @@ int Npc::getWis()
     return returnAttribute;
 }
 
+std::string Npc::getRace()
+{
+
+
+    return race;
+}
+
+std::string Npc::getRacialAbility()
+{
+
+
+
+    return racialAbility;
+}
+
 Modifiers::Modifiers()
 {
     clearAllMods();
@@ -2758,7 +2773,7 @@ std::string Npc::takeDamage(Npc *attacker, Item *weapon, float amount, int damag
         if(status.auraRadius == 0)
             for(auto &aspect : status.aspects)
                 if(aspect.name == StatusAspect::AutoDodge && aspect.potency > 0)
-    {
+    { // AutoDodge Status Effects. (Can't use mods for this, since AutoDodge has a limited amount of dodges.
         if(aspect.type == "")
         {
             aspect.potency--;
@@ -3274,6 +3289,7 @@ void NpcManager::initializeCritters()
             critter.name = "Debuggery";
 
             critter.racialAbility = stringFindString(line, "[RacialAbility:");
+            critter.originalRacialAbility = critter.racialAbility;
 
             //hungerrate = 1; // TODO: Should these be modded? Or only effected by Diseases/Bionics ect.
             //thirstrate = 1;
@@ -3281,6 +3297,7 @@ void NpcManager::initializeCritters()
             critter.name = stringFindString(line, "[Name:");
             std::cout << "Added: " << critter.name << std::endl;
             critter.race = critter.name;
+            critter.originalRace = critter.race;
             if (critter.name == "Zombie")
                 critter.race = "Zombie";
             if (gvars::debug)
@@ -5189,6 +5206,11 @@ void Npc::handleStatusEffects()
 
     }
 
+    { // This is done to simplify conditions of returning to normal form.
+        race = originalRace;
+        racialAbility = originalRacialAbility;
+    }
+
     for(auto &status : statusEffects)
     {
 
@@ -5408,8 +5430,30 @@ void Npc::handleStatusEffects()
                 }
 
                 if(aspect.name == StatusAspect::AutoDodge)
-                    mods.autoDodgeMod.push_back(StringFloat(aspect.type,aspect.potency));
+                {
+                    //mods.autoDodgeMod.push_back(StringFloat(aspect.type,aspect.potency));
+                }
 
+                if(aspect.name == StatusAspect::ChangeRace)
+                {
+                    if(aspect.potency == 0)
+                    {
+                        //race = originalRace;
+                        //racialAbility = originalRacialAbility;
+                        continue;
+                    }
+
+
+                    Npc * changed = getGlobalCritter(aspect.type);
+                    if(changed != nullptr)
+                    {
+                        race = changed->race;
+                        racialAbility = changed->racialAbility;
+                    }
+
+                    if(aspect.potency > 0)
+                        aspect.potency--;
+                }
 
 
             }
@@ -5418,7 +5462,19 @@ void Npc::handleStatusEffects()
 
         status.duration--;
         if(status.duration <= 0)
+        {
             status.toDelete = true;
+            for(auto &status : statusEffects)
+            if(status.auraRadius == 0)
+                for(auto &aspect : status.aspects)
+                    if(aspect.name == StatusAspect::ChangeRace)
+            { // This is done to simplify conditions of returning to normal form.
+                race = originalRace;
+                racialAbility = originalRacialAbility;
+            }
+        }
+
+
     }
 
     AnyDeletes(statusEffects);

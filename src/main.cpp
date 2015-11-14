@@ -1167,7 +1167,7 @@ void overheadOverlay(Npc &npc)
     //Overhead Name
 
     std::string testString;
-    if(npc.name != npc.race)
+    if(npc.name != npc.getRace())
         testString.append(npc.name);
 
     if(inputState.key[Key::LAlt])
@@ -1342,7 +1342,7 @@ void critterBrain(Npc &npc, std::list<Npc> &container)
     npc.img.setScale(gvars::scalex, gvars::scaley);
     npc.img.setOrigin(npc.img.getTextureRect().width / 2,
     npc.img.getTextureRect().height / 2);
-    if (npc.race == "Human")
+    if (npc.getRace() == "Human")
     {
         npc.img.setScale(0.5, 0.5);
     }

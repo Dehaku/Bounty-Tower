@@ -194,7 +194,10 @@ public:
 
 
 
+    std::string originalRacialAbility;
     std::string racialAbility;
+    std::string getRacialAbility();
+
 
     int level;
     int xp;
@@ -316,7 +319,10 @@ public:
     short thirsttimer;
     short thirsttimerint;
 
+
     std::string race;
+    std::string originalRace;
+    std::string getRace();
     int age;
     std::string gender;
 

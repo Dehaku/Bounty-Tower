@@ -645,7 +645,7 @@ void recruiterMenu(Vec3f creationPos)
         for(auto &npc : npcmanager.globalCritter)
             if(npc.recruitable)
         {
-            recruitList.addEntry(npc.race,npc.rarity);
+            recruitList.addEntry(npc.getRace(),npc.rarity);
         }
 
         for(int i = 0; i != 8; i++)
@@ -1373,7 +1373,7 @@ void renderRecruiterMenu(baseMenu &menu)
             continue;
         int critterCost = 100;
 
-        if(npc.race == "BTRockkid")
+        if(npc.getRace() == "BTRockkid")
             critterCost = 1000;
 
         critterCost = npc.value;
@@ -1387,7 +1387,7 @@ void renderRecruiterMenu(baseMenu &menu)
 
         sf::Vector2f vPos(posX,posY);
 
-        int npcButt = shapes.createImageButton(vPos,texturemanager.getTexture("SpriteSheet"+npc.race+"Frame.png"),"",0,&gvars::hudView);
+        int npcButt = shapes.createImageButton(vPos,texturemanager.getTexture("SpriteSheet"+npc.getRace()+"Frame.png"),"",0,&gvars::hudView);
         shapes.shapes.back().layer = layer+Button;
         // hehe... npc butt.
         sf::Color highlightColor = sf::Color::White;
@@ -1396,7 +1396,7 @@ void renderRecruiterMenu(baseMenu &menu)
 
         vPos.y -= 30;
         vPos.x += 30;
-        shapes.createText(vPos,15,highlightColor,npc.race+": "+npc.name,&gvars::hudView);
+        shapes.createText(vPos,15,highlightColor,npc.getRace()+": "+npc.name,&gvars::hudView);
         shapes.shapes.back().layer = layer+Text;
         vPos.y += 15;
         shapes.createText(vPos,10,highlightColor,"$" + str(getSquadDiscount(critterCost) ),&gvars::hudView);
@@ -2675,7 +2675,7 @@ void corpsesBleed()
             continue;
 
         //Robot? Get outta here!
-        if(npc.race == "BTTurret")
+        if(npc.getRace() == "BTTurret")
             continue;
         //Too soon? Get outta here!
         if((gvars::framesPassed % 5) != 0)

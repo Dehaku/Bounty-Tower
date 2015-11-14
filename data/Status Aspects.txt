@@ -69,6 +69,8 @@ WARNING: DO NOT PUT THIS ON AN ITEM(Unless with some heavy conditions), It liter
 [Aspect:AutoDodge:Amount:DamageType]
 AutoDodge is quite wonderful, It forces a dodge of DamageType automatically, up to 'Amount' of times. You can also leave DamageType blank to allow for dodging ALL types. [Aspect:AutoDodge:3] (Will dodge the next 3 damage sources.)
 
+[Aspect:ChangeRace:Duration:Race]
+ChangeRace causes the carrier to take on the traits of the specified 'Race' for 'Duration' frames. Side Note: Duration can be set to -1 for permanent race change(For as long as the status effect lasts, at least.)
 
 
 

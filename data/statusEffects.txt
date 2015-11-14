@@ -28,5 +28,6 @@ OverlayImage, filename.png, If this is added to a status effect, the image will 
 [Name:Students Drive][Duration:3600][Aspect:XPModifier:50]
 [Name:Delayed Healing][Duration:600][Aspect:ConditionTimeDelay:300][Aspect:AffectHealth:5:Energy]
 [Name:Infider Infection][Duration:1200][Aspect:ConditionTimeDelay:600][Aspect:AffectHealth:-2:Poison][Aspect:ConditionTimeDelay:599][Aspect:ConditionLife:1:Dead][Aspect:SpawnCreature:1:BTInfider]
-[Name:Test One][Duration:1200][Aspect:AutoDodge:3:Blunt]
-[Name:Test Two][Duration:1200][Aspect:AutoDodge:3:None]
+[Name:Rockanthropy][Duration:36000][Aspect:ConditionHealth:50:Below][Aspect:ChangeRace:-1:BTRockkid][Aspect:Attribute:20:Endurance][Aspect:Attribute:20:Strength]
+[Name:Test One][Duration:1200][Aspect:ChangeRace:120:BTPsylin]
+[Name:Test Two][Duration:1200][Aspect:ConditionHealth:75:Below][Aspect:ChangeRace:-1:BTRockkid]
