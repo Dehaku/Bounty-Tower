@@ -62,6 +62,10 @@ SpawnCreature simply spawns a wild version of whatever Race is specified(As list
 SpawnItem simply spawns the specified item(As listed in items.txt) with an amount equal to 'Amount'(This will not overrule stackSizes)  Be warned this will trigger every frame, this is best on 1 duration status effects, or rare conditions. (Like OnDeath)
 WARNING: The specified Item cannot have any colons in it's name. " : ", This will cause a crash if attempted to spawn.
 
+[Aspect:Revive:Amount]
+Revive instantly brings the carrier back to life at max health, 'Amount' can act as a lives counter, Example... [Aspect:Revive:9] will cause the carrier to revive nine times. (Assuming the status effect this aspect belongs to lasts that long.)
+WARNING: DO NOT PUT THIS ON AN ITEM(Unless with some heavy conditions), It literally makes it impossible to die, Hah. Gamebreaking, yo.
+
 
 
 

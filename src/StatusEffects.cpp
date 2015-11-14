@@ -74,9 +74,7 @@ void insertAspects()
     aspectNum.push_back(aspectName);
     aspectName = "MomentumSensitivity";
     aspectNum.push_back(aspectName);
-    aspectName = "CauseExplosionOnItemUse";
-    aspectNum.push_back(aspectName);
-    aspectName = "CauseDamageOnItemUse";
+    aspectName = "CauseExplosion";
     aspectNum.push_back(aspectName);
     aspectName = "AffectVisionRange";
     aspectNum.push_back(aspectName);
@@ -94,7 +92,7 @@ void insertAspects()
     aspectNum.push_back(aspectName);
     aspectName = "SpawnItem";
     aspectNum.push_back(aspectName);
-    aspectName = "RevivesOnDeath";
+    aspectName = "Revive";
     aspectNum.push_back(aspectName);
     aspectName = "DisableDeath";
     aspectNum.push_back(aspectName);

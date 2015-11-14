@@ -79,10 +79,8 @@ public:
         // Potency pushes when positive, pulls when negitive.
         MomentumSensitivity,
         // Potency acts as Percentage.
-        CauseExplosionOnItemUse, // Type: Item Type. // should be turned into a conditional somehow.
+        CauseExplosion, // Type: Item Type. // should be turned into a conditional somehow.
         // Potency is damage applied. This hurts everyone, Even Carrier.
-        CauseDamageOnItemUse,  // Type: Item Type. // should be turned into a conditional somehow.
-        // Potency is damage applied.
         AffectVisionRange,
         // Potency directly applies to variable.
         ItemFind,
@@ -99,7 +97,7 @@ public:
         // Potency ???
         SpawnItem, // Type: Direct Item Name.
         // Potency indicates amount of stack to spawn, Does not over rule Stacksize.
-        RevivesOnDeath,
+        Revive,
         // Potency acts as a lives counter.
         DisableDeath,
         // Potency, Simply acts as an On/Off.
