@@ -226,6 +226,15 @@ float percentPos(float position, float lowerPos, float higherPos)
     return difference;
 }
 
+float getPercentPos(float position, float lowerPos, float higherPos)
+{ // TODO: I don't know how to do this function.
+    float difference = higherPos - lowerPos;
+    difference = difference*(position*0.01);
+    difference += lowerPos;
+
+    return difference;
+}
+
 int stringFindNumber(std::string stringy, std::string term)
 {
     size_t tStart;

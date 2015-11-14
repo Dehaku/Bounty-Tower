@@ -116,6 +116,7 @@ template <typename T> size_t abs_to_index(T value)
 }
 
 float percentPos(float position, float lowerPos, float higherPos);
+float getPercentPos(float position, float lowerPos, float higherPos);
 
 int stringFindNumber(std::string stringy, std::string term);
 std::string stringFindString(std::string stringy, std::string term);

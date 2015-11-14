@@ -71,6 +71,9 @@ public:
     Vec3f makePos;
     Npc *npc;
 
+    float scrollOne;
+    float scrollTwo;
+
     std::vector<dynamicVariable> vars;
 
     bool hasVar(std::string varName);

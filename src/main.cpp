@@ -2447,22 +2447,42 @@ void handleEvents()
             {
                 if (event.mouseWheel.delta > 0)
                 {
-                    std::cout << "Zoom Out \n";
-                    if (gvars::cameraZoom < 2)
+
+                    if(menus.empty())
                     {
-                        gvars::cameraZoom = gvars::cameraZoom / 0.5;
-                        //CameraSize
-                        gvars::view1.zoom(0.5);
+                        std::cout << "Zoom Out \n";
+                        if (gvars::cameraZoom < 2)
+                        {
+                            gvars::cameraZoom = gvars::cameraZoom / 0.5;
+                            //CameraSize
+                            gvars::view1.zoom(0.5);
+                        }
                     }
+                    else
+                        for(auto &menu : menus)
+                        {
+                            menu.scrollOne += event.mouseWheel.delta;
+                            if(menu.scrollOne > 0)
+                                menu.scrollOne = 0;
+                        }
+
+
                 }
                 if (event.mouseWheel.delta < 0)
                 {
-                    std::cout << "Zoom In \n";
-                    if (gvars::cameraZoom > 0.5)
+                    if(menus.empty())
                     {
-                        gvars::cameraZoom = gvars::cameraZoom / 2;
-                        gvars::view1.zoom(2);
+                       std::cout << "Zoom In \n";
+                        if (gvars::cameraZoom > 0.5)
+                        {
+                            gvars::cameraZoom = gvars::cameraZoom / 2;
+                            gvars::view1.zoom(2);
+                        }
                     }
+                    else
+                        for(auto &menu : menus)
+                            menu.scrollOne += event.mouseWheel.delta;
+
                 }
 
                 //Develop the scaling camera, Probably using .setsize instead of zoom.

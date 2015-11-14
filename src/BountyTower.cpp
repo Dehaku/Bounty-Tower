@@ -588,6 +588,8 @@ void towerMenu()
 
 baseMenu::baseMenu()
 {
+    scrollOne = 0;
+    scrollTwo = 0;
     age = 0;
     toDelete = false;
 }
@@ -1165,16 +1167,62 @@ void renderMerchantMenu(baseMenu &menu)
         BackPanel,
         Shapes,
         Button,
-        Text
+        Text,
+        FrontPanel
     };
 
-    shapes.createSquare(100,100,screen.x()-100,screen.y()-100,sf::Color(sf::Color(150,150,0)),5,sf::Color::White,&gvars::hudView);
+    sf::Vector2f menuStartPos(100,100);
+    sf::Vector2f menuEndPos(screen.x()-100,screen.y()-100);
+    sf::Color menuColor(150,150,0);
+
+    shapes.createSquare(menuStartPos.x,menuStartPos.y,menuEndPos.x,menuEndPos.y,menuColor,5,sf::Color::White,&gvars::hudView);
     shapes.shapes.back().layer = layer+BackPanel;
+
+    shapes.createSquare(menuStartPos.x,menuStartPos.y,menuEndPos.x,menuStartPos.y+60,menuColor,0,sf::Color::White,&gvars::hudView);
+    shapes.shapes.back().layer = layer+FrontPanel;
+
+    shapes.createSquare(menuStartPos.x,menuEndPos.y-60,menuEndPos.x,menuEndPos.y,menuColor,0,sf::Color::White,&gvars::hudView);
+    shapes.shapes.back().layer = layer+FrontPanel;
     //Close Button
     int exitButt = shapes.createImageButton(sf::Vector2f(screen.x()-100,100),texturemanager.getTexture("ExitButton.png"),"",0,&gvars::hudView);
-    shapes.shapes.back().layer = layer+Button;
+    shapes.shapes.back().layer = layer+FrontPanel+1;
     if(shapes.shapeClicked(exitButt))
         menu.toDelete = true;
+
+
+    sf::Event event;
+    while (window.pollEvent(event))
+        if (event.type == sf::Event::MouseWheelMoved)
+    {
+        if (event.mouseWheel.delta > 0)
+        { // down
+            menu.scrollOne += 1;
+        }
+        if (event.mouseWheel.delta < 0)
+        { // up
+
+            menu.scrollOne -= 1;
+            if(menu.scrollOne < 0)
+                menu.scrollOne = 0;
+        }
+    }
+
+    sf::Vector2f upScrollButtPos(percentPos(1,menuStartPos.x,menuEndPos.x),percentPos(15,menuStartPos.y,menuEndPos.y));
+    sf::Vector2f downScrollButtPos(percentPos(1,menuStartPos.x,menuEndPos.x),percentPos(25,menuStartPos.y,menuEndPos.y));
+    int upScrollButt = shapes.createImageButton(upScrollButtPos,texturemanager.getTexture("ArrowButton.png"),"",0,&gvars::hudView);
+    shapes.shapes.back().layer = layer+Button;
+    int downScrollButt = shapes.createImageButton(downScrollButtPos,texturemanager.getTexture("ArrowButton.png"),"",180,&gvars::hudView);
+    shapes.shapes.back().layer = layer+Button;
+
+    if(shapes.shapeClicked(upScrollButt))
+    {
+        menu.scrollOne++;
+        if(menu.scrollOne > 0)
+            menu.scrollOne = 0;
+    }
+
+    if(shapes.shapeClicked(downScrollButt))
+        menu.scrollOne--;
 
     int xOffset = 0;
     int yOffset = 0;
@@ -1184,6 +1232,23 @@ void renderMerchantMenu(baseMenu &menu)
             continue;
         int posX = 150+(xOffset*300);
         int posY = 150+(yOffset*60);
+
+        posY += (menu.scrollOne+3)*15;
+
+        if(posY < menuStartPos.y+30 || posY > menuEndPos.y-30 )
+        {
+            xOffset++;
+            if(xOffset > 1)
+            {
+                xOffset = 0;
+                yOffset++;
+            }
+            continue;
+        }
+
+
+
+
         shapes.createSquare(posX-30,posY-30,posX+30,posY+30,sf::Color::Black,0,sf::Color::Cyan, &gvars::hudView);
         shapes.shapes.back().layer = layer+Shapes;
 
@@ -1267,11 +1332,11 @@ void renderMerchantMenu(baseMenu &menu)
 
 
 
-        yOffset++;
-        if(yOffset > 7)
+        xOffset++;
+        if(xOffset > 1)
         {
-            yOffset = 0;
-            xOffset++;
+            xOffset = 0;
+            yOffset++;
         }
     }
 }
@@ -2970,6 +3035,8 @@ void testStatusEffects()
 
 void testNewMenu()
 {
+    /*
+
     sf::Vector2f menuStart(900,100);
     sf::Vector2f menuEnd(800,600);
     shapes.createCircle(menuStart.x,menuStart.y,10,sf::Color::Red);
@@ -2982,6 +3049,8 @@ void testNewMenu()
     sf::Vector2f objectPos(percentPos(100*timePass,menuStart.x,menuEnd.x),percentPos(100,menuStart.y,menuEnd.y));
 
     shapes.createCircle(objectPos.x,objectPos.y,10,sf::Color::Green);
+
+    */
 
 }
 
