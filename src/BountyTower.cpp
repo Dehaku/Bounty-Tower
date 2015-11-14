@@ -2968,6 +2968,23 @@ void testStatusEffects()
 
 }
 
+void testNewMenu()
+{
+    sf::Vector2f menuStart(900,100);
+    sf::Vector2f menuEnd(800,600);
+    shapes.createCircle(menuStart.x,menuStart.y,10,sf::Color::Red);
+    shapes.createCircle(menuEnd.x,menuEnd.y,10,sf::Color::Blue);
+
+    float timePass = cos(fpsKeeper.startTime.getElapsedTime().asSeconds());
+    timePass += 1;
+    timePass = timePass/2;
+
+    sf::Vector2f objectPos(percentPos(100*timePass,menuStart.x,menuEnd.x),percentPos(100,menuStart.y,menuEnd.y));
+
+    shapes.createCircle(objectPos.x,objectPos.y,10,sf::Color::Green);
+
+}
+
 void bountyTowerLoop()
 { // Game Loop
     hotkeySquaddieSelect();
@@ -2982,7 +2999,7 @@ void bountyTowerLoop()
     //newSlotWorkMethod();
 
     testStatusEffects();
-
+    testNewMenu();
 
 
 

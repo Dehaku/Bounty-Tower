@@ -217,6 +217,15 @@ bool aabb(sf::Vector2i point, int left, int right, int up, int down)
     return false;
 }
 
+float percentPos(float position, float lowerPos, float higherPos)
+{
+    float difference = higherPos - lowerPos;
+    difference = difference*(position*0.01);
+    difference += lowerPos;
+
+    return difference;
+}
+
 int stringFindNumber(std::string stringy, std::string term)
 {
     size_t tStart;

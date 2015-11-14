@@ -33,3 +33,10 @@ When an individual dies, depending on the spiritfavor of the region, They will o
 In the positive numbers, sometimes you'll have a crafter appear and make random trinkets and items in the dead of the night, farmers returning to tend fields for short durations...
 In the negitives, You'll have warriors return to slaughter creatures, butchers return to dissect creatures, gluttonous spirits appear and eat from your foodstocks.
 
+
+Galaxy Magic
+Mana will be channeled into spells to increase their power, Each Npc will have a Mana Conduit type variable that controls how fast they absorb mana.
+Random event to have a grand elder appear, making it known that an Npc is an Epic Conduit, increasing their Mana Intake by 9000%
+
+
+

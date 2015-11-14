@@ -115,6 +115,8 @@ template <typename T> size_t abs_to_index(T value)
     return static_cast<size_t>(std::abs(value));
 }
 
+float percentPos(float position, float lowerPos, float higherPos);
+
 int stringFindNumber(std::string stringy, std::string term);
 std::string stringFindString(std::string stringy, std::string term);
 std::string stringFindStringNpos(std::string stringy, std::string term);
