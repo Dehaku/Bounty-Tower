@@ -1734,7 +1734,11 @@ void renderEscapeMenu(baseMenu &menu)
 
 
     if(menu.age > 30 && shapes.shapeClicked(saveGameButt))
+    {
         saveGame("Profile1");
+        soundmanager.playSound("Startup.wav");
+    }
+
 
     if(menu.age > 30 && shapes.shapeClicked(exitGameButt))
         window.close();
@@ -2304,9 +2308,14 @@ void bountyTowerMainMenu()
     if(shapes.shapeClicked(startBut))
         loadTavern();
 
-    int loadButt = shapes.createImageButton(sf::Vector2f(screen.x()/2,screen.y()/2+30),texturemanager.getTexture("BlankButton.png"));
+    sf::Vector2f exitPos(screen.x()/2,screen.y()/2+30);
+    int loadButt = shapes.createImageButton(exitPos,texturemanager.getTexture("blankButton.png"),"",0,&gvars::hudView);
+    shapes.shapes.back().layer = 15050;
+    exitPos.x -= 31;
+    textList.createText(exitPos,9,sf::Color::White,"Load Game",gvars::hudView);
+    shapes.shapes.back().layer = 15075;
 
-    if(shapes.shapeClicked(startBut))
+    if(shapes.shapeClicked(loadButt))
         loadGame("Profile1");
 }
 

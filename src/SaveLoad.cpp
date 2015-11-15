@@ -5,30 +5,64 @@ void saveGame(std::string profileName)
 {
 
     std::string line("data/saves/" + profileName);
-    std::stringstream convert;
-    //convert << planet;
-    line.append(convert.str());
-    convert.clear();
+
     galaxy_mkdir(line);
-    line.append("/npc");
-    convert << "x";
-    //convert << region.x;
-    convert << "y";
-    //convert << region.y;
-    line.append(convert.str());
-    std::string ending(".crit");
-    line.append(ending);
+    line.append("/save");
+    line.append(".crit");
+
+    std::ofstream outputFile(line.c_str());
+    for(auto squaddie : Squaddies)
+    {
+        Npc critter = *squaddie;
+
+        outputFile << "[name:" << critter.name << "]"
+               << "[race:" << critter.race << "]"
+               << "[xpos:" << critter.xpos << "]"
+               << "[ypos:" << critter.ypos << "]"
+               << "[strength:" << critter.attributes.strength << "]"
+               << "[perception:" << critter.attributes.perception << "]"
+               << "[intelligence:" << critter.attributes.intelligence << "]"
+               << "[charisma:" << critter.attributes.charisma << "]"
+               << "[endurance:" << critter.attributes.endurance << "]"
+               << "[dexterity:" << critter.attributes.dexterity << "]"
+               << "[agility:" << critter.attributes.agility << "]"
+               << "[health:" << critter.health << "]"
+               //<< "[action:" << critter.action << "]"
+               << "[angle:" << critter.angle << "]"
+               << "[thirst:" << critter.thirst << "]"
+               << "[hunger:" << critter.hunger << "]"
+               << "[strengthxp:" << critter.attributes.strengthxp << "]"
+               << "[perceptionxp:" << critter.attributes.perceptionxp << "]"
+               << "[intelligencexp:" << critter.attributes.intelligencexp << "]"
+               << "[charismaxp:" << critter.attributes.charismaxp << "]"
+               << "[endurancexp:" << critter.attributes.endurancexp << "]"
+               << "[dexterityxp:" << critter.attributes.dexterityxp << "]"
+               << "[agilityxp:" << critter.attributes.agilityxp << "]"
+               << "[cbaseid:" << critter.cbaseid << "]"
+               << "[maxhealth:" << critter.maxhealth << "]"
+               << "{Tags:" << critter.tags << "}"
+               << "{Blood:" << critter.bloodcontent << "}"
+               << "{Items:";
+        for (auto i = critter.inventory.begin(); i != critter.inventory.end();
+             i++)
+        {
+            outputFile << "[" << (*i).name << "]";
+        }
+        outputFile << "}";
+        outputFile << std::endl;
+    }
+
+
+
+
+
+    /*
 
     std::ofstream file;
-    file.open(line.c_str(), std::fstream::in | std::fstream::ate);
     con("looking for file...");
-
-    Npc critter;
-
+    file.open(line.c_str(), std::fstream::in | std::fstream::ate);
     if (file.is_open())
     {
-        //File << std::endl;
-        file << std::endl;
         con("Problem? 3");
         file << "[name:" << critter.name << "]"
              << "[race:" << critter.race << "]"
@@ -67,12 +101,14 @@ void saveGame(std::string profileName)
             file << "[" << (*i).name << "]";
         }
         file << "}";
+        file << std::endl;
         con("Problem? 5");
         //Con("Added", false);
         //Con(object.name);
         file.close();
     } // End to Load Map
 
+    */
     /*debug("v-Adding Tags-v");
                 debug(StringFindChaos(line,"{Tags:","}"));
                 debug("^-Added Tags-^");
@@ -90,45 +126,6 @@ void saveGame(std::string profileName)
                     if(Debug){ std::cout << "*Post Critter.AddItem* \n";}
                 }*/
 
-    else
-    {
-        std::ofstream outputFile(line.c_str());
-
-        outputFile << "[name:" << critter.name << "]"
-                   << "[race:" << critter.race << "]"
-                   << "[xpos:" << critter.xpos << "]"
-                   << "[ypos:" << critter.ypos << "]"
-                   << "[strength:" << critter.attributes.strength << "]"
-                   << "[perception:" << critter.attributes.perception << "]"
-                   << "[intelligence:" << critter.attributes.intelligence << "]"
-                   << "[charisma:" << critter.attributes.charisma << "]"
-                   << "[endurance:" << critter.attributes.endurance << "]"
-                   << "[dexterity:" << critter.attributes.dexterity << "]"
-                   << "[agility:" << critter.attributes.agility << "]"
-                   << "[health:" << critter.health << "]"
-                   //<< "[action:" << critter.action << "]"
-                   << "[angle:" << critter.angle << "]"
-                   << "[thirst:" << critter.thirst << "]"
-                   << "[hunger:" << critter.hunger << "]"
-                   << "[strengthxp:" << critter.attributes.strengthxp << "]"
-                   << "[perceptionxp:" << critter.attributes.perceptionxp << "]"
-                   << "[intelligencexp:" << critter.attributes.intelligencexp << "]"
-                   << "[charismaxp:" << critter.attributes.charismaxp << "]"
-                   << "[endurancexp:" << critter.attributes.endurancexp << "]"
-                   << "[dexterityxp:" << critter.attributes.dexterityxp << "]"
-                   << "[agilityxp:" << critter.attributes.agilityxp << "]"
-                   << "[cbaseid:" << critter.cbaseid << "]"
-                   << "[maxhealth:" << critter.maxhealth << "]"
-                   << "{Tags:" << critter.tags << "}"
-                   << "{Blood:" << critter.bloodcontent << "}"
-                   << "{Items:";
-        for (auto i = critter.inventory.begin(); i != critter.inventory.begin();
-             i++)
-        {
-            outputFile << "[" << (*i).name << "]";
-        }
-        outputFile << "}";
-    }
 }
 
 void loadGame(std::string profileName)
