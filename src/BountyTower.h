@@ -14,6 +14,7 @@
 #include "StatusEffects.h"
 #include "Tiles.h"
 #include "Faction.h"
+#include "SaveLoad.h"
 
 
 extern sf::RenderWindow window;
