@@ -207,6 +207,8 @@ void GlobalStatusEffects::initializeStatusEffects()
         std::cout << "Adding Status Effect: " << status.name << std::endl;
         statusEffects.push_back(status);
     }
+
+
 }
 
 StatusEffect GlobalStatusEffects::getStatusEffect(std::string statusEffect)

@@ -3094,6 +3094,13 @@ void bountyTowerLoop()
     testStatusEffects();
     testNewMenu();
 
+    if(inputState.key[Key::F9].time == 1)
+    {
+        soundmanager.playSound("Startup.wav");
+        loadGame("Profile1");
+    }
+
+
 
 
 

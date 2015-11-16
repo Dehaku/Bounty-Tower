@@ -24,6 +24,7 @@ void saveGame(std::string profileName)
                << "[race:" << critter.race << "]"
                << "[xpos:" << critter.xpos << "]"
                << "[ypos:" << critter.ypos << "]"
+               << "[zpos:" << critter.zpos << "]"
                << "[strength:" << critter.attributes.strength << "]"
                << "[perception:" << critter.attributes.perception << "]"
                << "[intelligence:" << critter.attributes.intelligence << "]"
@@ -225,5 +226,109 @@ void saveGame(std::string profileName)
 
 void loadGame(std::string profileName)
 {
+    for(auto squaddie : Squaddies)
+        squaddie->toDelete = true;
+
+    Squaddies.clear();
+
+    std::cout << "Loading Game Profile: " + profileName + "!\n";
+    std::ifstream input("data/saves/" + profileName + "/save.crit");
+    if (!input.is_open())
+        return;
+
+    con("File is open.");
+
+    while (input.good())
+    {
+        std::string line;
+        getline(input, line);
+        Npc critter;
+
+        critter.name = "Debuggery";
+        std::string critterName = stringFindString(line, "[name:");
+        if(critterName == "")
+        { // This is an invalid line, Next!
+            std::cout << "This line doesn't have a name! Invalid. \n";
+            continue;
+        }
+        critter.race = stringFindString(line, "[race:");
+
+        // This should save some manual work.
+        critter = *getGlobalCritter(critter.race);
+        critter.name = critterName;
+        critter.skillpoints = stringFindNumber(line, "[skillpoints:");
+        critter.xpos = stringFindNumber(line, "[xpos:");
+        critter.ypos = stringFindNumber(line, "[ypos:");
+        critter.zpos = stringFindNumber(line, "[zpos:");
+        critter.attributes.strength = stringFindNumber(line, "[strength:");
+        critter.attributes.perception = stringFindNumber(line, "[perception:");
+        critter.attributes.intelligence = stringFindNumber(line, "[intelligence:");
+        critter.attributes.charisma = stringFindNumber(line, "[charisma:");
+        critter.attributes.endurance = stringFindNumber(line, "[endurance:");
+        critter.attributes.dexterity = stringFindNumber(line, "[dexterity:");
+        critter.cbaseid = stringFindNumber(line, "[cbaseid:");
+        critter.tags = stringFindChaos(line,"{Tags:","}");
+        std::cout << "Tags: " << critter.tags << std::endl;
+        //status.auraAffectsAllies = booleanize(stringFindNumber(line, "[AuraAllies:"));
+
+
+
+        /*
+        std::vector<std::string> aspects = stringFindVectorChaos(line,"[Aspect:","]");
+
+        for(auto &aspect : aspects)
+        {
+            std::cout << "Found: " << aspect << std::endl;
+            std::vector<std::string> components = stringFindElements(aspect,":");
+            for(int i = 0; i != components.size(); i++)
+            {
+                if(i == 0)
+                    std::cout << "Name: " << components[i] << std::endl;
+                if(i == 1)
+                    std::cout << "Potency: " << components[i] << std::endl;
+                if(i == 2)
+                    std::cout << "Type: " << components[i] << std::endl;
+            }
+
+            StatusAspect SA;
+            for(int i = 0; i != components.size(); i++)
+            {
+                if(i == 0)
+                {
+                    for(int t = 0; t != aspectNum.size(); t++)
+                    {
+                        if(aspectNum[t] != components[i])
+                            continue;
+                        SA.name = t;
+                        break;
+                    }
+                }
+                if(i == 1)
+                    SA.potency = std::stoi(components[i]);
+                if(i == 2)
+                    SA.type = components[i];
+            }
+
+            status.aspects.push_back(SA);
+            std::cout << "New Aspect: " << aspectNum[SA.name] << ": " << SA.name << ", Pot: " << SA.potency << ", Type: " << SA.type << std::endl;
+
+        }
+
+        std::cout << "Adding Status Effect: " << status.name << std::endl;
+        statusEffects.push_back(status);
+        */
+
+        critter.isSquaddie = true;
+        critter.faction = conFact->name;
+        critter.factionPtr = conFact;
+        std::cout << "Loaded " << critter.name << " the " << critter.race << std::endl;
+        npclist.push_back(critter);
+        //setupSquadHotKeySelection();
+
+    }
+    Squaddies.clear();
+    for(auto &npc : npclist)
+        if(npc.faction == "The Titanium Grip" && npc.isSquaddie)
+            Squaddies.push_back(&npc);
 
 }
