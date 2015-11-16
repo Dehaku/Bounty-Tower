@@ -25,6 +25,8 @@ void saveGame(std::string profileName)
                << "[xpos:" << critter.xpos << "]"
                << "[ypos:" << critter.ypos << "]"
                << "[zpos:" << critter.zpos << "]"
+               << "[level:" << critter.level << "]"
+               << "[xp:" << critter.xp << "]"
                << "[strength:" << critter.attributes.strength << "]"
                << "[perception:" << critter.attributes.perception << "]"
                << "[intelligence:" << critter.attributes.intelligence << "]"
@@ -165,6 +167,8 @@ void loadGame(std::string profileName)
         critter.xpos = stringFindNumber(line, "[xpos:");
         critter.ypos = stringFindNumber(line, "[ypos:");
         critter.zpos = stringFindNumber(line, "[zpos:");
+        critter.level = stringFindNumber(line, "[level:");
+        critter.xp = stringFindNumber(line, "[xp:");
         critter.attributes.strength = stringFindNumber(line, "[strength:");
         critter.attributes.perception = stringFindNumber(line, "[perception:");
         critter.attributes.intelligence = stringFindNumber(line, "[intelligence:");
@@ -174,7 +178,6 @@ void loadGame(std::string profileName)
         critter.cbaseid = stringFindNumber(line, "[cbaseid:");
         critter.tags = stringFindChaos(line,"{Tags:","}");
         std::cout << "Tags: " << critter.tags << std::endl;
-        critter.health = critter.getMaxHealth();
         //status.auraAffectsAllies = booleanize(stringFindNumber(line, "[AuraAllies:"));
 
         con("Loading Skills");
@@ -187,6 +190,7 @@ void loadGame(std::string profileName)
                     skill.ranks = std::stoi(skillBits[1]);
         }
 
+        critter.health = critter.getMaxHealth();
         critter.isSquaddie = true;
         critter.faction = conFact->name;
         critter.factionPtr = conFact;
