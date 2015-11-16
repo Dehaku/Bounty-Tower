@@ -2734,6 +2734,7 @@ void chasePriorityFunction()
 
     for(auto &npc : Squaddies)
     {
+        con("Squaddies: " + std::to_string(Squaddies.size()));
         sf::Texture * arrowButt = &texturemanager.getTexture("ArrowButton.png");
 
         //Multiplying by Boolean, BOOYAH!

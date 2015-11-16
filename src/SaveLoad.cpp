@@ -322,11 +322,14 @@ void loadGame(std::string profileName)
         critter.isSquaddie = true;
         critter.faction = conFact->name;
         critter.factionPtr = conFact;
+        critter.chasePriority = "Hold Position";
         std::cout << "Loaded " << critter.name << " the " << critter.race << std::endl;
         npclist.push_back(critter);
         //setupSquadHotKeySelection();
 
     }
+
+    AnyDeletes(npclist);
     Squaddies.clear();
     for(auto &npc : npclist)
         if(npc.faction == "The Titanium Grip" && npc.isSquaddie)
@@ -360,7 +363,6 @@ void loadGame(std::string profileName)
         con("Status Effects");
         for(auto &statusString : statusEffects)
         {
-            con(statusString);
             StatusEffect status;
             status.name = stringFindString(statusString, "[Name:");
             status.duration = stringFindNumber(statusString, "[Duration:");
@@ -371,7 +373,6 @@ void loadGame(std::string profileName)
             std::vector<std::string> aspectStrings = stringFindVectorChaos(statusString, "[Aspect:","]");
             for(auto &aspectString : aspectStrings)
             {
-                con(aspectString);
                 StatusAspect aspect;
 
                 std::vector<std::string> aspectBits = stringFindElements(aspectString);
@@ -393,7 +394,6 @@ void loadGame(std::string profileName)
         con("Status Effect Inflicting");
         for(auto &statusString : statusEffectInflicts)
         {
-            con(statusString);
             StatusEffect status;
             status.name = stringFindString(statusString, "[Name:");
             status.duration = stringFindNumber(statusString, "[Duration:");
@@ -404,7 +404,6 @@ void loadGame(std::string profileName)
             std::vector<std::string> aspectStrings = stringFindVectorChaos(statusString, "[Aspect:","]");
             for(auto &aspectString : aspectStrings)
             {
-                con(aspectString);
                 StatusAspect aspect;
 
                 std::vector<std::string> aspectBits = stringFindElements(aspectString);
@@ -441,5 +440,5 @@ void loadGame(std::string profileName)
         }
     }
 
-
+    con("Game's loaded, You're good to go recollect some bounties!");
 }
