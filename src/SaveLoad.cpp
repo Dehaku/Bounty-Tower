@@ -32,20 +32,19 @@ void saveGame(std::string profileName)
                << "[dexterity:" << critter.attributes.dexterity << "]"
                << "[agility:" << critter.attributes.agility << "]"
                << "[health:" << critter.health << "]"
-               //<< "[action:" << critter.action << "]"
                << "[angle:" << critter.angle << "]"
-               << "[thirst:" << critter.thirst << "]"
-               << "[hunger:" << critter.hunger << "]"
-               << "[strengthxp:" << critter.attributes.strengthxp << "]"
-               << "[perceptionxp:" << critter.attributes.perceptionxp << "]"
-               << "[intelligencexp:" << critter.attributes.intelligencexp << "]"
-               << "[charismaxp:" << critter.attributes.charismaxp << "]"
-               << "[endurancexp:" << critter.attributes.endurancexp << "]"
-               << "[dexterityxp:" << critter.attributes.dexterityxp << "]"
-               << "[agilityxp:" << critter.attributes.agilityxp << "]"
                << "[cbaseid:" << critter.cbaseid << "]"
                << "[maxhealth:" << critter.maxhealth << "]"
+               << "[skillpoints:" << critter.skillpoints << "]"
                << "{Tags:" << critter.tags << "}";
+
+               for(auto skill : critter.skills.list)
+               {
+                    if(skill.ranks == 0)
+                        continue;
+                    outputFile << "[Skill:" << skill.name << ":" << skill.ranks << "]";
+               }
+
                outputFile << std::endl;
 
         if(critter.inventory.empty())
@@ -89,6 +88,41 @@ void saveGame(std::string profileName)
                     file << "}";
                 }
                 file << std::endl;
+                for(auto invItem : item.internalitems)
+                {
+                    file << "[InternalItem]"
+                    "[name:" << invItem.name << "]"
+                    "[amount:" << invItem.amount << "]";
+                    for(auto status : invItem.statusEffects)
+                    {
+                        file << "{StatusEffect:"
+                        << "[Name:" << status.name << "]"
+                        << "[Duration:" << status.duration << "]"
+                        << "[AuraRadius:" << status.auraRadius << "]"
+
+                        << "[AuraAllies:" << status.auraAffectsAllies << "]"
+                        << "[AuraEnemies:" << status.auraAffectsEnemies << "]"
+                        << "[AuraNeutrals:" << status.auraAffectsNeutrals << "]";
+                        for(auto aspect : status.aspects)
+                            file << "[Aspect:" << aspect.name << ":" << aspect.potency << ":" << aspect.type << "]" ;
+                        file << "}";
+                    }
+                    for(auto status : invItem.statusEffectsInflict)
+                    {
+                        file << "{StatusEffectInflict:"
+                        << "[Name:" << status.name << "]"
+                        << "[Duration:" << status.duration << "]"
+                        << "[AuraRadius:" << status.auraRadius << "]"
+
+                        << "[AuraAllies:" << status.auraAffectsAllies << "]"
+                        << "[AuraEnemies:" << status.auraAffectsEnemies << "]"
+                        << "[AuraNeutrals:" << status.auraAffectsNeutrals << "]";
+                        for(auto aspect : status.aspects)
+                            file << "[Aspect:" << aspect.name << ":" << aspect.potency << ":" << aspect.type << "]" ;
+                        file << "}";
+                    }
+                    file << std::endl;
+                }
             }
         }
 
