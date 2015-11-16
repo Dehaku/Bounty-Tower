@@ -354,24 +354,89 @@ void loadGame(std::string profileName)
         item = *getGlobalItem(itemName);
         item.amount = stringFindNumber(line, "[amount:");
 
+        std::vector<std::string> statusEffects = stringFindVectorChaos(line,"{StatusEffect:","}");
+        std::vector<std::string> statusEffectInflicts = stringFindVectorChaos(line,"{StatusEffectInflict:","}");
+
+        con("Status Effects");
+        for(auto &statusString : statusEffects)
+        {
+            con(statusString);
+            StatusEffect status;
+            status.name = stringFindString(statusString, "[Name:");
+            status.duration = stringFindNumber(statusString, "[Duration:");
+            status.auraAffectsAllies = booleanize(stringFindNumber(statusString, "[AuraAllies:"));
+            status.auraAffectsEnemies = booleanize(stringFindNumber(statusString, "[AuraEnemies:"));
+            status.auraAffectsNeutrals = booleanize(stringFindNumber(statusString, "[AuraNeutrals:"));
+
+            std::vector<std::string> aspectStrings = stringFindVectorChaos(statusString, "[Aspect:","]");
+            for(auto &aspectString : aspectStrings)
+            {
+                con(aspectString);
+                StatusAspect aspect;
+
+                std::vector<std::string> aspectBits = stringFindElements(aspectString);
+                for(int i = 0; i != 3; i++)
+                {
+                    if(i == 0)
+                        aspect.name = std::stoi(aspectBits[i]);
+                    if(i == 1)
+                        aspect.potency = std::stoi(aspectBits[i]);
+                    if(i == 2)
+                        aspect.type = aspectBits[i];
+                }
+                status.aspects.push_back(aspect);
+            }
+            con(item.name + " is infused with " + status.name + "!");
+            item.statusEffects.push_back(status);
+        }
+
+        con("Status Effect Inflicting");
+        for(auto &statusString : statusEffectInflicts)
+        {
+            con(statusString);
+            StatusEffect status;
+            status.name = stringFindString(statusString, "[Name:");
+            status.duration = stringFindNumber(statusString, "[Duration:");
+            status.auraAffectsAllies = booleanize(stringFindNumber(statusString, "[AuraAllies:"));
+            status.auraAffectsEnemies = booleanize(stringFindNumber(statusString, "[AuraEnemies:"));
+            status.auraAffectsNeutrals = booleanize(stringFindNumber(statusString, "[AuraNeutrals:"));
+
+            std::vector<std::string> aspectStrings = stringFindVectorChaos(statusString, "[Aspect:","]");
+            for(auto &aspectString : aspectStrings)
+            {
+                con(aspectString);
+                StatusAspect aspect;
+
+                std::vector<std::string> aspectBits = stringFindElements(aspectString);
+                for(int i = 0; i != 3; i++)
+                {
+                    if(i == 0)
+                        aspect.name = std::stoi(aspectBits[i]);
+                    if(i == 1)
+                        aspect.potency = std::stoi(aspectBits[i]);
+                    if(i == 2)
+                        aspect.type = aspectBits[i];
+                }
+                status.aspects.push_back(aspect);
+            }
+            con(item.name + " is infused with inflicting " + status.name + "!");
+            item.statusEffectsInflict.push_back(status);
+        }
+
 
 
 
         std::string itemOwner = stringFindString(line, "[owner:");
-
         if(itemOwner != "")
         {
             con("Looking for " + itemOwner);
             for(auto &squaddie : Squaddies)
             {
-                con(itemOwner + "/" + squaddie->name);
                 if(squaddie->name == itemOwner)
                 {
                     con(itemOwner + " found, adding " + item.name);
                     squaddie->inventory.push_back(item);
                 }
-                else
-                    con(squaddie->name + " isn't it. ");
             }
         }
     }
