@@ -16,7 +16,6 @@ public:
     int name;
     std::string type;
     float potency;
-    bool damageAffectsPotency; // All damage taken directly affects Potency 1:1
     enum AspectTypes
     { // WARNING, THESE MUST BE IN THE SAME ORDER AS THE DEFINITIONS IN 'void insertAspects()' OR THE FILE WILL GIVE BROKEN EFFECTS.
         // Carrier = Entity/Critter/Item this aspect resides on.

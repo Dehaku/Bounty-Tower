@@ -10,6 +10,11 @@ void saveGame(std::string profileName)
     line.append("/save");
     line.append(".crit");
 
+    std::string invLine("data/saves/" + profileName);
+    invLine.append("/save");
+    invLine.append(".inv");
+    std::ofstream outputFileItems(invLine.c_str());
+
     std::ofstream outputFile(line.c_str());
     for(auto squaddie : Squaddies)
     {
@@ -40,16 +45,72 @@ void saveGame(std::string profileName)
                << "[agilityxp:" << critter.attributes.agilityxp << "]"
                << "[cbaseid:" << critter.cbaseid << "]"
                << "[maxhealth:" << critter.maxhealth << "]"
-               << "{Tags:" << critter.tags << "}"
-               << "{Blood:" << critter.bloodcontent << "}"
-               << "{Items:";
+               << "{Tags:" << critter.tags << "}";
+               outputFile << std::endl;
+
+        if(critter.inventory.empty())
+            continue;
+
+        std::ofstream file;
+        file.open(invLine.c_str(), std::fstream::in | std::fstream::ate);
+        if(file.is_open())
+        {
+            for(auto item : critter.inventory)
+            {
+                file << "[owner:" << critter.name << "]"
+                "[name:" << item.name << "]"
+                "[amount:" << item.amount << "]";
+                for(auto status : item.statusEffects)
+                {
+                    file << "{StatusEffect:"
+                    << "[Name:" << status.name << "]"
+                    << "[Duration:" << status.duration << "]"
+                    << "[AuraRadius:" << status.auraRadius << "]"
+
+                    << "[AuraAllies:" << status.auraAffectsAllies << "]"
+                    << "[AuraEnemies:" << status.auraAffectsEnemies << "]"
+                    << "[AuraNeutrals:" << status.auraAffectsNeutrals << "]";
+                    for(auto aspect : status.aspects)
+                        file << "[Aspect:" << aspect.name << ":" << aspect.potency << ":" << aspect.type << "]" ;
+                    file << "}";
+                }
+                for(auto status : item.statusEffectsInflict)
+                {
+                    file << "{StatusEffectInflict:"
+                    << "[Name:" << status.name << "]"
+                    << "[Duration:" << status.duration << "]"
+                    << "[AuraRadius:" << status.auraRadius << "]"
+
+                    << "[AuraAllies:" << status.auraAffectsAllies << "]"
+                    << "[AuraEnemies:" << status.auraAffectsEnemies << "]"
+                    << "[AuraNeutrals:" << status.auraAffectsNeutrals << "]";
+                    for(auto aspect : status.aspects)
+                        file << "[Aspect:" << aspect.name << ":" << aspect.potency << ":" << aspect.type << "]" ;
+                    file << "}";
+                }
+                file << std::endl;
+            }
+        }
+
+
+
+
+
+
+
+
+        /*
+        std::ofstream outputFileItems(invLine.c_str());
+
         for (auto i = critter.inventory.begin(); i != critter.inventory.end();
              i++)
         {
             outputFile << "[" << (*i).name << "]";
         }
-        outputFile << "}";
-        outputFile << std::endl;
+        outputFile << "";
+
+        */
+
     }
 
 
