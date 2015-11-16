@@ -236,7 +236,7 @@ void loadGame(std::string profileName)
     if (!input.is_open())
         return;
 
-    con("File is open.");
+    con("Critter File is open.");
 
     while (input.good())
     {
@@ -269,6 +269,7 @@ void loadGame(std::string profileName)
         critter.cbaseid = stringFindNumber(line, "[cbaseid:");
         critter.tags = stringFindChaos(line,"{Tags:","}");
         std::cout << "Tags: " << critter.tags << std::endl;
+        critter.health = critter.getMaxHealth();
         //status.auraAffectsAllies = booleanize(stringFindNumber(line, "[AuraAllies:"));
 
 
@@ -330,5 +331,50 @@ void loadGame(std::string profileName)
     for(auto &npc : npclist)
         if(npc.faction == "The Titanium Grip" && npc.isSquaddie)
             Squaddies.push_back(&npc);
+
+    std::ifstream itemInput("data/saves/" + profileName + "/save.inv");
+    if (!itemInput.is_open())
+        return;
+
+    while (itemInput.good())
+    {
+        std::string line;
+        getline(itemInput, line);
+
+        Item item;
+
+        item.name = "Debuggery";
+        std::string itemName = stringFindString(line, "[name:");
+        if(itemName == "")
+        { // This is an invalid line, Next!
+            std::cout << "This line doesn't have a name! Invalid. \n";
+            continue;
+        }
+        con("Getting item: " + itemName);
+        item = *getGlobalItem(itemName);
+        item.amount = stringFindNumber(line, "[amount:");
+
+
+
+
+        std::string itemOwner = stringFindString(line, "[owner:");
+
+        if(itemOwner != "")
+        {
+            con("Looking for " + itemOwner);
+            for(auto &squaddie : Squaddies)
+            {
+                con(itemOwner + "/" + squaddie->name);
+                if(squaddie->name == itemOwner)
+                {
+                    con(itemOwner + " found, adding " + item.name);
+                    squaddie->inventory.push_back(item);
+                }
+                else
+                    con(squaddie->name + " isn't it. ");
+            }
+        }
+    }
+
 
 }
