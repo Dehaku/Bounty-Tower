@@ -339,6 +339,7 @@ void loadGame(std::string profileName)
     if (!itemInput.is_open())
         return;
 
+    Item * lastItem;
     while (itemInput.good())
     {
         std::string line;
@@ -435,8 +436,15 @@ void loadGame(std::string profileName)
                 {
                     con(itemOwner + " found, adding " + item.name);
                     squaddie->inventory.push_back(item);
+                    lastItem = &squaddie->inventory.back();
                 }
             }
+        }
+
+        if(line.find("[InternalItem]") != std::string::npos)
+        {
+            con("Internal Item, Shoving into " + lastItem->name);
+            lastItem->internalitems.push_back(item);
         }
     }
 
