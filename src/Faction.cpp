@@ -5147,7 +5147,7 @@ void Npc::handleStatusEffects()
 {
     Item * heldItem;
     for(int i = 0; i != 2; i++)
-    {
+    { // Applying held item status effects to the carrier.
         if(deadFrames > 5)
             continue;
 
@@ -5165,6 +5165,72 @@ void Npc::handleStatusEffects()
             statusEffects.push_back(status);
     }
 
+
+    if(!selectedNPCs.empty() && id == selectedNPCs[0]->id)
+    { // Drawing a display of inventory status effects.
+        for(int i = 0; i != getInventoryMax(); i++)
+        {
+            if(invSlots[i] == nullptr)
+                continue;
+
+
+            if(invSlots[i]->statusEffects.empty() && invSlots[i]->statusEffectsInflict.empty())
+                continue;
+
+            sf::Vector2f mousePos = window.mapPixelToCoords(sf::Mouse::getPosition(window), gvars::hudView);
+            bool mouseHovering = (math::closeish(gvars::slotPos[i],mousePos) <= 20);
+
+            if(!mouseHovering)
+                continue;
+
+            std::cout << "Hovering on " << invSlots[i]->name << std::endl;
+            std::cout << "" << invSlots[i]->name << " has status effects! " << std::endl;
+
+            sf::Vector2f mainDrawPos(percentPos(40,0,screen.x()),percentPos(80,0,screen.y()));
+
+            sf::Vector2f drawPos = mainDrawPos;
+            drawPos.x += 15;
+            shapes.createSquare(drawPos.x,drawPos.y,drawPos.x+500,drawPos.y+(invSlots[i]->statusEffects.size()*20)+(invSlots[i]->statusEffectsInflict.size()*20),sf::Color::Black,1,sf::Color::Cyan,&gvars::hudView);
+            shapes.shapes.back().layer = 9000;
+            int total_elements = 0;
+
+            for(auto &status : invSlots[i]->statusEffects)
+            {
+                std::string outPut;
+                outPut.append("[" + status.name + ", Duration: " + str(status.duration/60) + "]");
+                if(inputState.key[Key::LShift])
+                    for(auto &aspect : status.aspects)
+                {
+                    outPut.append("[" + aspectNum[aspect.name] + ", Potency: " + str(static_cast<int>(aspect.potency)) + ", Type: " + aspect.type + "]");
+                }
+
+                shapes.createText(sf::Vector2f(drawPos.x,drawPos.y+(20*total_elements)),15,sf::Color::Cyan,outPut,&gvars::hudView);
+                shapes.shapes.back().layer = 9001; // IT'S OVER NINE THO-
+
+                total_elements++;
+            }
+            for(auto &status : invSlots[i]->statusEffectsInflict)
+            {
+                std::string outPut;
+                outPut.append("Inflict:[" + status.name + ", Duration: " + str(status.duration/60) + "]");
+                if(inputState.key[Key::LShift])
+                    for(auto &aspect : status.aspects)
+                {
+                    outPut.append("[" + aspectNum[aspect.name] + ", Potency: " + str(static_cast<int>(aspect.potency)) + ", Type: " + aspect.type + "]");
+                }
+
+                shapes.createText(sf::Vector2f(drawPos.x,drawPos.y+(20*total_elements)),15,sf::Color::Cyan,outPut,&gvars::hudView);
+                shapes.shapes.back().layer = 9001; // IT'S OVER NINE THO-
+
+                total_elements++;
+            }
+
+
+
+
+        }
+
+    }
 
     mods.clearAllMods(); // TODO: Whenever performance becomes an issue, Put a single bool on Npc to check if we've gone one frame without any status effects, If so, then call this once.
 

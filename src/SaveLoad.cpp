@@ -255,6 +255,8 @@ void loadGame(std::string profileName)
         }
         con("Getting item: " + itemName);
         item = *getGlobalItem(itemName);
+        item.statusEffects.clear();
+        item.statusEffectsInflict.clear();
         item.amount = stringFindNumber(line, "[amount:");
 
         std::vector<std::string> statusEffects = stringFindVectorChaos(line,"{StatusEffect:","}");
