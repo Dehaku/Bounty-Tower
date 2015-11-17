@@ -10,6 +10,8 @@ std::vector<std::string> aspectNum;
 
 GlobalStatusEffects globalStatusEffects;
 
+// Item Aspect: Regenerating Ammo, Runs once a second, Run it on a critter's hands once every 60 frames, checking for that aspect, increase ammo by 1 till stackSize. (Also check current amount vs stacksize, before checking aspects)
+
 void insertAspects()
 { // WARNING, THESE MUST BE IN THE SAME ORDER AS THE DEFINITIONS IN 'enum AspectTypes' OR THE FILE WILL GIVE BROKEN EFFECTS.
     std::string aspectName;

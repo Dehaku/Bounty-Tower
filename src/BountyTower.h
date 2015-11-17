@@ -75,7 +75,7 @@ public:
     float scrollOne;
     float scrollTwo;
 
-    std::vector<dynamicVariable> vars;
+    std::list<dynamicVariable> vars;
 
     bool hasVar(std::string varName);
     dynamicVariable * getVar(std::string varName);
