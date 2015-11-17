@@ -1190,25 +1190,11 @@ void renderMerchantMenu(baseMenu &menu)
         menu.toDelete = true;
 
 
-    sf::Event event;
-    while (window.pollEvent(event))
-        if (event.type == sf::Event::MouseWheelMoved)
-    {
-        if (event.mouseWheel.delta > 0)
-        { // down
-            menu.scrollOne += 1;
-        }
-        if (event.mouseWheel.delta < 0)
-        { // up
+    shapes.createText(menuStartPos,10,sf::Color::White,"Squad Charisma Discount: %" + str(100-getSquadDiscount(100)),&gvars::hudView);
+    shapes.shapes.back().layer = layer+FrontPanel+1;
 
-            menu.scrollOne -= 1;
-            if(menu.scrollOne < 0)
-                menu.scrollOne = 0;
-        }
-    }
-
-    sf::Vector2f upScrollButtPos(percentPos(1,menuStartPos.x,menuEndPos.x),percentPos(15,menuStartPos.y,menuEndPos.y));
-    sf::Vector2f downScrollButtPos(percentPos(1,menuStartPos.x,menuEndPos.x),percentPos(25,menuStartPos.y,menuEndPos.y));
+    sf::Vector2f upScrollButtPos(percentPos(10,menuStartPos.x,menuEndPos.x),percentPos(75,menuStartPos.y,menuEndPos.y));
+    sf::Vector2f downScrollButtPos(percentPos(10,menuStartPos.x,menuEndPos.x),percentPos(85,menuStartPos.y,menuEndPos.y));
     int upScrollButt = shapes.createImageButton(upScrollButtPos,texturemanager.getTexture("ArrowButton.png"),"",0,&gvars::hudView);
     shapes.shapes.back().layer = layer+Button;
     int downScrollButt = shapes.createImageButton(downScrollButtPos,texturemanager.getTexture("ArrowButton.png"),"",180,&gvars::hudView);
@@ -1224,13 +1210,99 @@ void renderMerchantMenu(baseMenu &menu)
     if(shapes.shapeClicked(downScrollButt))
         menu.scrollOne--;
 
+
+    dynamicVariable * currentType = menu.getVar("currentType");
+    { // Current Skill Tree Selection
+        if(!menu.hasVar("currentType"))
+        {
+            dynamicVariable var;
+            var.name = "currentType";
+            var.varString = "All";
+
+            menu.vars.push_back(var);
+        }
+        std::cout << "Menu: " << menu.name << " has " << menu.vars.size() << " dynamic vars. \n";
+        int yOffset = 0;
+
+
+        // Types: All, Weapons, Ammo, Aid, Misc
+        int totalTypes = 7;
+        std::string types[totalTypes] = {"All", "Weapons", "Ammo", "Magic", "Engineer", "Aid", "Misc"};
+
+        for(int i = 0; i != totalTypes; i++)
+        {
+            sf::Vector2f drawPos(120,150+(yOffset*60));
+            int skillTreeButt = shapes.createImageButton(drawPos,texturemanager.getTexture("InventorySlotUpgrade.png"),"",0,&gvars::hudView);
+            shapes.shapes.back().layer = layer+75;
+
+
+            if(shapes.shapeClicked(skillTreeButt))
+            {
+                menu.scrollOne = 0;
+                if(currentType != nullptr)
+                    currentType->varString = types[i];
+            }
+            sf::Color highlightColor = sf::Color::White;
+            if(shapes.shapeHovered(skillTreeButt))
+                highlightColor = sf::Color::Cyan;
+
+            sf::Vector2f textPos(drawPos.x+40, drawPos.y);
+            shapes.createText(textPos,10,highlightColor,types[i],&gvars::hudView);
+            shapes.shapes.back().layer = layer+75;
+
+            yOffset++;
+        }
+    }
+
+
     int xOffset = 0;
     int yOffset = 0;
     for(auto item : itemmanager.globalItems)
     {
         if(item.value == -1)
             continue;
-        int posX = 150+(xOffset*300);
+        if(currentType == nullptr)
+            continue;
+
+        if(currentType->varString != "All")
+        {
+            if(item.type == 1 || item.type == 2)
+            {
+                if(currentType->varString != "Weapons")
+                    continue;
+            }
+            else if(item.type == 3 || item.type == 4 || item.type == 5)
+            {
+                if(currentType->varString != "Ammo")
+                    continue;
+            }
+            else if(item.type == 23)
+            {
+                if(currentType->varString != "Magic")
+                    continue;
+            }
+            else if(item.type == 12)
+            {
+                if(currentType->varString != "Engineer")
+                    continue;
+            }
+            else if(item.type == 42)
+            {
+                if(currentType->varString != "Aid")
+                    continue;
+            }
+            else if(item.type == 69)
+            {
+                if(currentType->varString != "Misc")
+                    continue;
+            }
+            else
+                continue;
+
+        }
+
+
+        int posX = 250+(xOffset*300);
         int posY = 150+(yOffset*60);
 
         posY += (menu.scrollOne+3)*15;
