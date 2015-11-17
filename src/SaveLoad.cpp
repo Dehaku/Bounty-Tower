@@ -15,6 +15,19 @@ void saveGame(std::string profileName)
     invLine.append(".inv");
     std::ofstream outputFileItems(invLine.c_str());
 
+
+    { // General/Misc data.
+        std::string miscLine("data/saves/" + profileName);
+        miscLine.append("/save");
+        miscLine.append(".misc");
+        std::ofstream outputFileMisc(miscLine.c_str());
+
+        outputFileMisc << "[Cash:" << conFact->credits << "]"
+        << "[GameBeaten:" << bountytower::gameBeaten << "]";
+    }
+
+
+
     std::ofstream outputFile(line.c_str());
     for(auto squaddie : Squaddies)
     {
@@ -133,12 +146,28 @@ void saveGame(std::string profileName)
 
 void loadGame(std::string profileName)
 {
+    std::cout << "Loading Game Profile: " + profileName + "!\n";
+
+    { // Loading generic/misc data.
+        std::ifstream input("data/saves/" + profileName + "/save.misc");
+        if (!input.is_open())
+            return;
+
+        con("Misc file is open.");
+
+        while (input.good())
+        {
+            std::string line;
+            getline(input, line);
+            conFact->credits = stringFindNumber(line,"Cash:");
+            bountytower::gameBeaten = booleanize(stringFindNumber(line, "[GameBeaten:"));
+        }
+    }
+
     for(auto squaddie : Squaddies)
         squaddie->toDelete = true;
-
     Squaddies.clear();
 
-    std::cout << "Loading Game Profile: " + profileName + "!\n";
     std::ifstream input("data/saves/" + profileName + "/save.crit");
     if (!input.is_open())
         return;

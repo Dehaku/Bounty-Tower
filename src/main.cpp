@@ -1647,6 +1647,8 @@ void displayChat(sf::Vector2f position)
     // restore the default view
     window.setView(gvars::hudView);
 
+    if(bountytower::currentTower == nullptr)
+        return;
 
     //sf::View * view = &window.getView();
     //view = window.getView();
@@ -2441,6 +2443,7 @@ void handleEvents()
             inputState.updateFromEvent(event);
             if (event.type == sf::Event::Closed)
             {
+                saveGame("Profile1");
                 window.close();
             }
             if (event.type == sf::Event::MouseWheelMoved)

@@ -1741,7 +1741,11 @@ void renderEscapeMenu(baseMenu &menu)
 
 
     if(menu.age > 30 && shapes.shapeClicked(exitGameButt))
+    {
+        saveGame("Profile1");
         window.close();
+    }
+
 
 }
 
@@ -2299,24 +2303,43 @@ void bossLoop()
 void bountyTowerMainMenu()
 {
     int startBut = shapes.createImageButton(sf::Vector2f(screen.x()/2,screen.y()/2),texturemanager.getTexture("Fortune Fortress Title.png"));
-    shapes.createText(gvars::mousePos,10,sf::Color::White,"Click to begin!");
+    //shapes.createText(gvars::mousePos,10,sf::Color::White,"Click to begin!");
 
     shapes.createText(10,screen.y()-80,10,sf::Color(255,255,255),"Made by Johnny Fojtik(Dehaku Zedon)");
     shapes.createText(10,screen.y()-60,10,sf::Color(255,255,255),"Contact: dehakuzedon@gmail.com  or reddit.com/r/bountytower");
     shapes.createText(10,screen.y()-40,10,sf::Color(255,255,255),"Can't stand some of the art in this game? \nCan you do better? Contact me! I'm looking for an artist!");
 
-    if(shapes.shapeClicked(startBut))
-        loadTavern();
+    //if(shapes.shapeClicked(startBut))
+    //    loadTavern();
 
-    sf::Vector2f exitPos(screen.x()/2,screen.y()/2+30);
-    int loadButt = shapes.createImageButton(exitPos,texturemanager.getTexture("blankButton.png"),"",0,&gvars::hudView);
+
+    sf::Vector2f newPos(screen.x()/2,screen.y()/2);
+    int newButt = shapes.createImageButton(newPos,texturemanager.getTexture("blankButton.png"),"",0,&gvars::hudView);
     shapes.shapes.back().layer = 15050;
-    exitPos.x -= 31;
-    textList.createText(exitPos,9,sf::Color::White,"Load Game",gvars::hudView);
+    newPos.x -= 31;
+    textList.createText(newPos,9,sf::Color::White,"New Game",gvars::hudView);
     shapes.shapes.back().layer = 15075;
 
+    sf::Vector2f loadPos(screen.x()/2,screen.y()/2+30);
+    int loadButt = shapes.createImageButton(loadPos,texturemanager.getTexture("blankButton.png"),"",0,&gvars::hudView);
+    shapes.shapes.back().layer = 15050;
+    loadPos.x -= 31;
+    textList.createText(loadPos,9,sf::Color::White,"Load Game",gvars::hudView);
+    shapes.shapes.back().layer = 15075;
+
+    if(shapes.shapeClicked(newButt))
+    {
+        soundmanager.playSound("Startup.wav");
+        loadTavern();
+    }
+
+
     if(shapes.shapeClicked(loadButt))
+    {
+        soundmanager.playSound("Startup.wav");
         loadGame("Profile1");
+        loadTavern();
+    }
 }
 
 void tavernButtons()
