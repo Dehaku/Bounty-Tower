@@ -55,8 +55,6 @@ DamageTypes::DamageTypes()
     TypeStrings.push_back(entry);
     entry = "Energy";
     TypeStrings.push_back(entry);
-    entry = "Momentum";
-    TypeStrings.push_back(entry);
 }
 
 void clearBullets()

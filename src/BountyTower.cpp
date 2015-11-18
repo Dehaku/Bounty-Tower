@@ -784,7 +784,7 @@ Each Status Effect will be...
 1 Potent Aspect(Since it's quite unlikely for two random conditionals to ever be met, this could be wonderful.)
 */
     StatusEffect status;
-    status.name = "Chaos " + generateName();
+
     RandomWeightList rankList;
     { // Fill Rank List
         rankList.addEntry("Alpha",1000000);
@@ -897,12 +897,19 @@ Each Status Effect will be...
         int minRandom = 1;
         int maxRandom = 5;
         bool ableFlipped = true;
+        if(aspectString == "AffectHealth")
+            aspect.type = damageList.getRandomName();
         if(aspectString == "AffectDamage")
         {
-            minRandom = 1;
-            maxRandom = 5;
+            minRandom = 5;
+            maxRandom = 20;
             aspect.type = damageList.getRandomName();
-            //ableFlipped = false;
+        }
+        if(aspectString == "Armor")
+        {
+            minRandom = 5;
+            maxRandom = 20;
+            aspect.type = damageList.getRandomName();
         }
         if(aspectString == "Freeze")
         {
@@ -1043,12 +1050,44 @@ Each Status Effect will be...
             }
         }
 
+        if(aspectString == "ConditionLife")
+        {
+            if(random(0,1) == 0)
+                aspect.type = "Dead";
+            else
+                aspect.type = "Alive";
+            aspect.potency = 1;
+        }
+
+        if(aspectString == "ConditionOnItemUse")
+        {
+            aspect.potency = 1;
+            RandomWeightList itemTypes;
+            for(auto itemType : itemmanager.globalItems)
+                itemTypes.addEntry(str(itemType.type),10);
+            aspect.type = std::stoi(itemTypes.getRandomName());
+        }
+        if(aspectString == "ConditionTimeDelay")
+            aspect.potency = random(60,180);
+        if(aspectString == "ConditionOnDeath")
+            aspect.potency = 1;
+        if(aspectString == "ConditionOnHit")
+            aspect.potency = 1;
+        if(aspectString == "ConditionOnHitByType")
+        {
+            aspect.potency = 1;
+            aspect.type = damageList.getRandomName();
+        }
+
+
+
 
         std::cout << ", Final Potency: " << aspect.potency << std::endl;
         status.aspects.push_back(aspect);
     }
 
 
+    status.name = status.rank + " Chaos " + generateName(2,3);
 
     return status;
 }
@@ -2544,12 +2583,21 @@ void renderEnchantMenu(baseMenu &menu)
                     chatBox.addChat("You do not have enough money!",sf::Color::White);
                 else
                 {
+                    soundmanager.playSound("enchantSound.ogg");
                     conFact->credits -= randomEnchantCost;
                     StatusEffect status = generateRandomStatusEffect(1);
                     if(random(0,1) == 0)
+                    {
+                        status.duration = 1;
                         item->statusEffects.push_back(status);
+                    }
+
                     else
+                    {
+                        status.duration = 180;
                         item->statusEffectsInflict.push_back(status);
+                    }
+
                 }
             }
         }
@@ -2617,9 +2665,75 @@ void renderEnchantMenu(baseMenu &menu)
             }
         }
     }
+    {   // Swap Last Self Enchant
+        sf::Vector2f randomEnchantPos(percentPos(33,menuStartPos.x,menuEndPos.x), percentPos(62,menuStartPos.y,menuEndPos.y));
+        int randomEnchantButt = shapes.createImageButton(randomEnchantPos,texturemanager.getTexture("blankButton.png"),"",0,&gvars::hudView);
+        shapes.shapes.back().layer = layer+FrontPanel+Button;
+        randomEnchantPos.x -= 28;
+        randomEnchantPos.y -= 10;
+        textList.createText(randomEnchantPos,9,sf::Color::White,"Swap \nSelf",gvars::hudView);
+        shapes.shapes.back().layer = layer+FrontPanel+Text;
+
+        if(shapes.shapeHovered(randomEnchantButt))
+        {
+            int removeEnchantCost = getSquadDiscount(250);
+            textList.createText(gvars::mousePos,10,sf::Color::White,"   $"+str(removeEnchantCost)+", Turns last Self enchant into an Inflict enchant.");
+            shapes.shapes.back().layer = 99999999;
+
+            if(inputState.lmbTime == 1)
+            {
+                if(item->statusEffects.empty())
+                    chatBox.addChat("There's no Self Enchants to move!",sf::Color::White);
+                else if(conFact->credits < removeEnchantCost)
+                    chatBox.addChat("You do not have enough money!",sf::Color::White);
+                else
+                {
+                    conFact->credits -= removeEnchantCost;
+                    item->statusEffectsInflict.push_back(item->statusEffects.back());
+                    item->statusEffectsInflict.back().duration = 180;
+                    item->statusEffects.back().toDelete = true;
+                    AnyDeletes(item->statusEffects);
+
+                }
+            }
+        }
+    }
+    {   // Swap Last Inflict Enchant
+        sf::Vector2f randomEnchantPos(percentPos(39,menuStartPos.x,menuEndPos.x), percentPos(62,menuStartPos.y,menuEndPos.y));
+        int randomEnchantButt = shapes.createImageButton(randomEnchantPos,texturemanager.getTexture("blankButton.png"),"",0,&gvars::hudView);
+        shapes.shapes.back().layer = layer+FrontPanel+Button;
+        randomEnchantPos.x -= 28;
+        randomEnchantPos.y -= 10;
+        textList.createText(randomEnchantPos,9,sf::Color::White,"Swap \nInflict",gvars::hudView);
+        shapes.shapes.back().layer = layer+FrontPanel+Text;
+
+        if(shapes.shapeHovered(randomEnchantButt))
+        {
+            int removeEnchantCost = getSquadDiscount(250);
+            textList.createText(gvars::mousePos,10,sf::Color::White,"   $"+str(removeEnchantCost)+", Turns last Inflict enchant into a self enchant.");
+            shapes.shapes.back().layer = 99999999;
+
+            if(inputState.lmbTime == 1)
+            {
+                if(item->statusEffectsInflict.empty())
+                    chatBox.addChat("There's no Inflict Enchants to remove!",sf::Color::White);
+                else if(conFact->credits < removeEnchantCost)
+                    chatBox.addChat("You do not have enough money!",sf::Color::White);
+                else
+                {
+                    conFact->credits -= removeEnchantCost;
+                    item->statusEffects.push_back(item->statusEffectsInflict.back());
+                    item->statusEffects.back().duration = 1;
+                    item->statusEffectsInflict.back().toDelete = true;
+                    AnyDeletes(item->statusEffectsInflict);
+
+                }
+            }
+        }
+    }
 
     {   // Transfer Status Effect
-        sf::Vector2f randomEnchantPos(percentPos(36,menuStartPos.x,menuEndPos.x), percentPos(62,menuStartPos.y,menuEndPos.y));
+        sf::Vector2f randomEnchantPos(percentPos(45,menuStartPos.x,menuEndPos.x), percentPos(62,menuStartPos.y,menuEndPos.y));
         int randomEnchantButt = shapes.createImageButton(randomEnchantPos,texturemanager.getTexture("blankButton.png"),"",0,&gvars::hudView);
         shapes.shapes.back().layer = layer+FrontPanel+Button;
         randomEnchantPos.x -= 28;
@@ -2658,9 +2772,11 @@ void renderEnchantMenu(baseMenu &menu)
     for(auto &status : item->statusEffects)
     {
         std::string outPut = "Self:";
-        outPut.append("[" + status.name + ", Duration: " + str(status.duration/60) + "]");
+        outPut.append("[" + status.name + ", Duration: " + str(status.duration) + "f]");
         for(auto &aspect : status.aspects)
         {
+            if(aspectNum[aspect.name].find("Condition") != std::string::npos)
+                outPut.append("\n   ");
             outPut.append("[" + aspectNum[aspect.name] + ",Potency:" + str(static_cast<int>(aspect.potency)));
             if(aspect.type != "")
                 outPut.append(",Type:" + aspect.type);
@@ -2669,18 +2785,22 @@ void renderEnchantMenu(baseMenu &menu)
 
         sf::Vector2f vPos = statusPos;
         vPos.y += 10*yOffset;
-        shapes.createText(vPos,8,sf::Color::White,outPut,&gvars::hudView);
+        shapes.createText(vPos,8,sf::Color::Cyan,outPut,&gvars::hudView);
         shapes.shapes.back().layer = layer+FrontPanel+1;
 
+        yOffset++;
+        yOffset++;
         yOffset++;
     }
     for(auto &status : item->statusEffectsInflict)
     {
         std::string outPut = "Inflict:";
 
-        outPut.append("[" + status.name + ", Duration: " + str(status.duration/60) + "]");
+        outPut.append("[" + status.name + ", Duration: " + str(status.duration) + "f]");
         for(auto &aspect : status.aspects)
         {
+            if(aspectNum[aspect.name].find("Condition") != std::string::npos)
+                outPut.append("\n   ");
             outPut.append("[" + aspectNum[aspect.name] + ",Potency:" + str(static_cast<int>(aspect.potency)));
             if(aspect.type != "")
                 outPut.append(",Type:" + aspect.type);
@@ -2689,9 +2809,11 @@ void renderEnchantMenu(baseMenu &menu)
 
         sf::Vector2f vPos = statusPos;
         vPos.y += 10*yOffset;
-        shapes.createText(vPos,8,sf::Color::White,outPut,&gvars::hudView);
+        shapes.createText(vPos,8,sf::Color(255,150,150),outPut,&gvars::hudView);
         shapes.shapes.back().layer = layer+FrontPanel+1;
 
+        yOffset++;
+        yOffset++;
         yOffset++;
     }
 
