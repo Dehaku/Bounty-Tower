@@ -769,9 +769,9 @@ void escapeMenu(Vec3f creationPos)
     menus.push_back(sMenu);
 }
 
-void generateRandomStatusEffect(int potency)
+StatusEffect generateRandomStatusEffect(int potency)
 {
-
+    return globalStatusEffects.getStatusEffect("On Fire");
 }
 
 Item generateRandomItem(RandomWeightList equipmentSet)
@@ -1952,7 +1952,7 @@ void renderEnchantMenu(baseMenu &menu)
     shapes.createSquare(menuStartPos.x,menuStartPos.y,menuEndPos.x,menuStartPos.y+60,menuColor,0,sf::Color::White,&gvars::hudView);
     shapes.shapes.back().layer = layer+FrontPanel;
 
-    shapes.createSquare(percentPos(12,menuStartPos.x,menuEndPos.x),menuEndPos.y-180,menuEndPos.x,menuEndPos.y,sf::Color::Black,0,sf::Color::White,&gvars::hudView);
+    shapes.createSquare(percentPos(12,menuStartPos.x,menuEndPos.x),percentPos(60,menuStartPos.y,menuEndPos.y),menuEndPos.x,menuEndPos.y,sf::Color::Black,0,sf::Color::White,&gvars::hudView);
     shapes.shapes.back().layer = layer+FrontPanel;
     //Close Button
     int exitButt = shapes.createImageButton(sf::Vector2f(screen.x()-100,100),texturemanager.getTexture("ExitButton.png"),"",0,&gvars::hudView);
@@ -1960,6 +1960,7 @@ void renderEnchantMenu(baseMenu &menu)
     if(shapes.shapeClicked(exitButt))
         menu.toDelete = true;
 
+    /*
     int renewButt = shapes.createImageButton(sf::Vector2f(screen.x()-200,150),texturemanager.getTexture("ExitButton.png"),"",0,&gvars::hudView);
     shapes.shapes.back().layer = layer+FrontPanel+1;
     if(shapes.shapeClicked(renewButt))
@@ -1967,6 +1968,7 @@ void renderEnchantMenu(baseMenu &menu)
         enchantedItems.clear();
         generateEnchantedItems();
     }
+    */
 
 
 
@@ -2244,12 +2246,183 @@ void renderEnchantMenu(baseMenu &menu)
 
     Item * item = selectedItem->varItemPtr;
 
-    //percentPos(12,menuStartPos.x,menuEndPos.x),menuEndPos.y-180,menuEndPos.x,menuEndPos.y
-
-    sf::Vector2f statusPos(percentPos(12,menuStartPos.x,menuEndPos.x),percentPos(70,menuStartPos.y,menuEndPos.y));
-    shapes.createText(statusPos,10,sf::Color::White,item->name + " Status Effects: " + std::to_string(item->statusEffects.size()+item->statusEffectsInflict.size()),&gvars::hudView);
-
+    sf::Vector2f statusPos(percentPos(12,menuStartPos.x,menuEndPos.x),percentPos(65,menuStartPos.y,menuEndPos.y));
+    shapes.createText(statusPos,10,sf::Color::White,item->name + ", Total Status Effects: " + std::to_string(item->statusEffects.size()+item->statusEffectsInflict.size()),&gvars::hudView);
     shapes.shapes.back().layer = layer+FrontPanel+1;
+
+
+
+    { // Random Enchant Button
+        sf::Vector2f randomEnchantPos(percentPos(15,menuStartPos.x,menuEndPos.x), percentPos(62,menuStartPos.y,menuEndPos.y));
+        int randomEnchantButt = shapes.createImageButton(randomEnchantPos,texturemanager.getTexture("blankButton.png"),"",0,&gvars::hudView);
+        shapes.shapes.back().layer = layer+FrontPanel+Button;
+        randomEnchantPos.x -= 28;
+        randomEnchantPos.y -= 10;
+        textList.createText(randomEnchantPos,9,sf::Color::White,"Random \nEnchant",gvars::hudView);
+        shapes.shapes.back().layer = layer+FrontPanel+Text;
+
+        if(shapes.shapeHovered(randomEnchantButt))
+        {
+            int randomEnchantCost = getSquadDiscount(500);
+            textList.createText(gvars::mousePos,10,sf::Color::White,"   $"+str(randomEnchantCost)+", Adds a randomized status effect to the item.");
+            shapes.shapes.back().layer = 99999999;
+
+            if(inputState.lmbTime == 1)
+            {
+                if(conFact->credits < randomEnchantCost)
+                    chatBox.addChat("You do not have enough money!",sf::Color::White);
+                else
+                {
+                    conFact->credits -= randomEnchantCost;
+                    StatusEffect status = generateRandomStatusEffect(1);
+                    if(random(0,1) == 0)
+                        item->statusEffects.push_back(status);
+                    else
+                        item->statusEffectsInflict.push_back(status);
+                }
+            }
+        }
+    }
+    {   // Remove Last Status Effect
+        sf::Vector2f randomEnchantPos(percentPos(21,menuStartPos.x,menuEndPos.x), percentPos(62,menuStartPos.y,menuEndPos.y));
+        int randomEnchantButt = shapes.createImageButton(randomEnchantPos,texturemanager.getTexture("blankButton.png"),"",0,&gvars::hudView);
+        shapes.shapes.back().layer = layer+FrontPanel+Button;
+        randomEnchantPos.x -= 28;
+        randomEnchantPos.y -= 10;
+        textList.createText(randomEnchantPos,9,sf::Color::White,"Remove \nSelf",gvars::hudView);
+        shapes.shapes.back().layer = layer+FrontPanel+Text;
+
+        if(shapes.shapeHovered(randomEnchantButt))
+        {
+            int removeEnchantCost = getSquadDiscount(250);
+            textList.createText(gvars::mousePos,10,sf::Color::White,"   $"+str(removeEnchantCost)+", Removes the last Self Enchant on the item.");
+            shapes.shapes.back().layer = 99999999;
+
+            if(inputState.lmbTime == 1)
+            {
+                if(item->statusEffects.empty())
+                    chatBox.addChat("There's no Self Enchants to remove!",sf::Color::White);
+                else if(conFact->credits < removeEnchantCost)
+                    chatBox.addChat("You do not have enough money!",sf::Color::White);
+                else
+                {
+                    conFact->credits -= removeEnchantCost;
+                    item->statusEffects.back().toDelete = true;
+                    AnyDeletes(item->statusEffects);
+
+
+                }
+            }
+        }
+    }
+    {   // Remove Last Status Effect Inflict
+        sf::Vector2f randomEnchantPos(percentPos(27,menuStartPos.x,menuEndPos.x), percentPos(62,menuStartPos.y,menuEndPos.y));
+        int randomEnchantButt = shapes.createImageButton(randomEnchantPos,texturemanager.getTexture("blankButton.png"),"",0,&gvars::hudView);
+        shapes.shapes.back().layer = layer+FrontPanel+Button;
+        randomEnchantPos.x -= 28;
+        randomEnchantPos.y -= 10;
+        textList.createText(randomEnchantPos,9,sf::Color::White,"Remove \nInflict",gvars::hudView);
+        shapes.shapes.back().layer = layer+FrontPanel+Text;
+
+        if(shapes.shapeHovered(randomEnchantButt))
+        {
+            int removeEnchantCost = getSquadDiscount(250);
+            textList.createText(gvars::mousePos,10,sf::Color::White,"   $"+str(removeEnchantCost)+", Removes the last Inflict Enchant on the item.");
+            shapes.shapes.back().layer = 99999999;
+
+            if(inputState.lmbTime == 1)
+            {
+                if(item->statusEffectsInflict.empty())
+                    chatBox.addChat("There's no Inflict Enchants to remove!",sf::Color::White);
+                else if(conFact->credits < removeEnchantCost)
+                    chatBox.addChat("You do not have enough money!",sf::Color::White);
+                else
+                {
+                    conFact->credits -= removeEnchantCost;
+                    item->statusEffectsInflict.back().toDelete = true;
+                    AnyDeletes(item->statusEffectsInflict);
+
+                }
+            }
+        }
+    }
+
+    {   // Transfer Status Effect
+        sf::Vector2f randomEnchantPos(percentPos(36,menuStartPos.x,menuEndPos.x), percentPos(62,menuStartPos.y,menuEndPos.y));
+        int randomEnchantButt = shapes.createImageButton(randomEnchantPos,texturemanager.getTexture("blankButton.png"),"",0,&gvars::hudView);
+        shapes.shapes.back().layer = layer+FrontPanel+Button;
+        randomEnchantPos.x -= 28;
+        randomEnchantPos.y -= 10;
+        textList.createText(randomEnchantPos,9,sf::Color::White,"Transfer \nLast",gvars::hudView);
+        shapes.shapes.back().layer = layer+FrontPanel+Text;
+
+        if(shapes.shapeHovered(randomEnchantButt))
+        {
+            int enchantCost = getSquadDiscount(2000);
+            textList.createText(gvars::mousePos,10,sf::Color::White,"   $"+str(enchantCost)+", Moves status from one item to another. \n NOT IMPLEMENTED");
+            shapes.shapes.back().layer = 99999999;
+
+            if(inputState.lmbTime == 1)
+            {
+                if(true == true)
+                {
+                    chatBox.addChat("I... I said it's not implemented...",sf::Color::White);
+                    chatBox.addChat("I'm taking a dollar anyways, Arsehole.",sf::Color::Green);
+                    conFact->credits -= 1;
+                    if(conFact->credits < 0)
+                        chatBox.addChat("Enjoy Debt, You nosey git! TODO: Meta Achievement",sf::Color::Red);
+                }
+                //else if(conFact->credits < enchantCost)
+                //    chatBox.addChat("You do not have enough money!",sf::Color::White);
+                else
+                {
+                    conFact->credits -= enchantCost;
+                }
+            }
+        }
+    }
+
+
+    yOffset = 1;
+    for(auto &status : item->statusEffects)
+    {
+        std::string outPut = "Self:";
+        outPut.append("[" + status.name + ", Duration: " + str(status.duration/60) + "]");
+        for(auto &aspect : status.aspects)
+        {
+            outPut.append("[" + aspectNum[aspect.name] + ",Potency:" + str(static_cast<int>(aspect.potency)));
+            if(aspect.type != "")
+                outPut.append(",Type:" + aspect.type);
+            outPut.append("]");
+        }
+
+        sf::Vector2f vPos = statusPos;
+        vPos.y += 10*yOffset;
+        shapes.createText(vPos,8,sf::Color::White,outPut,&gvars::hudView);
+        shapes.shapes.back().layer = layer+FrontPanel+1;
+
+        yOffset++;
+    }
+    for(auto &status : item->statusEffectsInflict)
+    {
+        std::string outPut = "Inflict:";
+
+        outPut.append("[" + status.name + ", Duration: " + str(status.duration/60) + "]");
+        for(auto &aspect : status.aspects)
+        {
+            outPut.append("[" + aspectNum[aspect.name] + ",Potency:" + str(static_cast<int>(aspect.potency)));
+            if(aspect.type != "")
+                outPut.append(",Type:" + aspect.type);
+            outPut.append("]");
+        }
+
+        sf::Vector2f vPos = statusPos;
+        vPos.y += 10*yOffset;
+        shapes.createText(vPos,8,sf::Color::White,outPut,&gvars::hudView);
+        shapes.shapes.back().layer = layer+FrontPanel+1;
+
+        yOffset++;
+    }
 
 }
 
