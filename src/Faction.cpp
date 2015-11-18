@@ -5435,6 +5435,9 @@ void Npc::handleStatusEffects()
                 if(aspect.name == StatusAspect::Immunity)
                     mods.immunityMod.push_back(StringFloat(aspect.type,aspect.potency));
 
+                if(aspect.name == StatusAspect::CauseExplosion)
+                    explosion(getPos(),aspect.potency*2,aspect.potency);
+
                 if(aspect.name == StatusAspect::ItemFind)
                     mods.itemFindMod += aspect.potency;
 

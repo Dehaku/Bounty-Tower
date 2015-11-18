@@ -1417,7 +1417,7 @@ void explosion(Vec3f vPos, int radius, float damage, Npc *attacker, std::vector<
                 chatBox.addChat(i->name + " was hit by an explosion!",sf::Color::Red);
 
                 if(attacker != nullptr)
-                    std::string atkStatus = attacker->dealDamage(i,nullptr,damage);
+                    std::string atkStatus = attacker->dealDamage(i,nullptr,damage,damageTypes.getNum("Blunt"));
                 else
                     i->takeDamage(nullptr, nullptr, damage);
 
@@ -1448,7 +1448,7 @@ void explosion(Vec3f vPos, int radius, float damage, Npc *attacker, std::vector<
                 chatBox.addChat(i.name + " was hit by an explosion!",sf::Color::Red);
 
                 if(attacker != nullptr)
-                    std::string atkStatus = attacker->dealDamage(&i,nullptr,damage);
+                    std::string atkStatus = attacker->dealDamage(&i,nullptr,damage,damageTypes.getNum("Blunt"));
                 else
                     i.takeDamage(nullptr, nullptr, damage);
 

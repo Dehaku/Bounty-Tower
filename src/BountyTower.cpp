@@ -2625,6 +2625,7 @@ void renderEnchantMenu(baseMenu &menu)
                     chatBox.addChat("You do not have enough money!",sf::Color::White);
                 else
                 {
+                    soundmanager.playSound("enchantSound.ogg");
                     conFact->credits -= removeEnchantCost;
                     item->statusEffects.back().toDelete = true;
                     AnyDeletes(item->statusEffects);
@@ -2657,6 +2658,7 @@ void renderEnchantMenu(baseMenu &menu)
                     chatBox.addChat("You do not have enough money!",sf::Color::White);
                 else
                 {
+                    soundmanager.playSound("enchantSound.ogg");
                     conFact->credits -= removeEnchantCost;
                     item->statusEffectsInflict.back().toDelete = true;
                     AnyDeletes(item->statusEffectsInflict);
@@ -2688,6 +2690,7 @@ void renderEnchantMenu(baseMenu &menu)
                     chatBox.addChat("You do not have enough money!",sf::Color::White);
                 else
                 {
+
                     conFact->credits -= removeEnchantCost;
                     item->statusEffectsInflict.push_back(item->statusEffects.back());
                     item->statusEffectsInflict.back().duration = 180;
