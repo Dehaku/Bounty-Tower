@@ -117,6 +117,7 @@ class StatusEffect
 {
 public:
     std::string name;
+    std::string rank;
     int duration;
 
     int auraRadius; // This, When above 0, Doesn't affect the carrier, but applies it to everyone within it's radius, for 1 duration, and with 0 auraRadius.

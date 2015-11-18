@@ -35,7 +35,7 @@ Sleep completely disables the creature from all actions, Amount needs to be at l
 Due to how this aspect works, an Aura projecting a Sleep aspect will likely be unwakable. This can be unbalancing.
 
 [Aspect:Stun:Amount]
-Sleep disables the use of items, Amount needs to be at least 1.
+Stun disables the use of items, Amount needs to be at least 1.
 
 [Aspect:Thorns:Amount:DamageType]
 Thorns causes anyone who attacks the carrier(*With A Melee Weapon*) to take a flat Amount of damage of DamageType, This is not enhanced by the carrier by any means, though the carrier is credited for damage dealt to others. (Allowing XP to be claimed). I don't recommend adding a OnHitByType conditional to this, since it's already restricted to melee attacks. Doubt it'll work, but do as you want.

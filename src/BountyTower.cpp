@@ -771,12 +771,7 @@ void escapeMenu(Vec3f creationPos)
 
 StatusEffect generateRandomStatusEffect(int potency)
 {
-    return globalStatusEffects.getStatusEffect("On Fire");
-}
-
-Item generateRandomItem(RandomWeightList equipmentSet)
-{
-    /*
+/*
 Weapon Status Effect Generation
 Order of Logic
 Common, Uncommon, Rare, Legendary weighted list. This will govern the potency of Aspects. (Have an option to pay coin to force a generation of one of these)
@@ -787,7 +782,280 @@ Each Status Effect will be...
 1-2 Aspects.
 1 Conditional
 1 Potent Aspect(Since it's quite unlikely for two random conditionals to ever be met, this could be wonderful.)
-    */
+*/
+    StatusEffect status;
+    status.name = "Chaos " + generateName();
+    RandomWeightList rankList;
+    { // Fill Rank List
+        rankList.addEntry("Alpha",1000000);
+        rankList.addEntry("Beta",100000);
+        rankList.addEntry("Gamma",10000);
+        rankList.addEntry("Delta",1000);
+        rankList.addEntry("Epsilon",100);
+        rankList.addEntry("Zeta",10);
+        rankList.addEntry("Eta",1);
+    }
+    RandomWeightList aspectList;
+    { // Get Appropriote and Implemented aspects.
+        for(auto &aspect : aspectNum)
+        {
+            if(aspect.find("Condition") != std::string::npos)
+                continue;
+            else if(aspect.find("Mana") != std::string::npos)
+                continue;
+            else if(aspect == "ConditionNearbyUnit")
+                continue;
+            else if(aspect == "ConditionUnitCount")
+                continue;
+            else if(aspect == "ConditionReceivedDamage")
+                continue;
+            else if(aspect == "ActionSpeed")
+                continue;
+            else if(aspect == "AmmoCost")
+                continue;
+            else if(aspect == "Accuracy")
+                continue;
+            else if(aspect == "StatusEffectImmunity")
+                continue;
+            else if(aspect == "ApplyMomentum")
+                continue;
+            else if(aspect == "MomentumSensitivity")
+                continue;
+            else if(aspect == "AffectVisionRange")
+                continue;
+            else if(aspect == "Mark")
+                continue;
+            else if(aspect == "DisableDeath")
+                continue;
+
+            aspectList.addEntry(aspect,10000);
+
+        }
+    }
+    aspectList.printEntries();
+    RandomWeightList conditionList;
+    { // Get implemented conditions.
+        for(auto &aspect : aspectNum)
+        {
+            if( !(aspect.find("Condition") != std::string::npos))
+                continue;
+            else if(aspect.find("Mana") != std::string::npos)
+                continue;
+            else if(aspect == "ConditionNearbyUnit")
+                continue;
+            else if(aspect == "ConditionUnitCount")
+                continue;
+            else if(aspect == "ConditionReceivedDamage")
+                continue;
+
+            conditionList.addEntry(aspect,10000);
+
+        }
+    }
+    conditionList.printEntries();
+    RandomWeightList damageList;
+    {
+        for(auto damString : damageTypes.TypeStrings)
+            if(damString != "None")
+                damageList.addEntry(damString,10000);
+    }
+    damageList.printEntries();
+
+    int rankNum = rankList.getRandomSlot();
+    status.rank = rankList.entries[rankNum].name;
+    std::cout << "Generated Rank: " << status.rank << std::endl;
+
+    std::vector<std::string> aspects;
+    { // We generate the aspects and condition's to be put into the status effect...
+        int firstSet = random(1,2);
+        for(int i = 0; i != firstSet; i++)
+        {
+            aspects.push_back(aspectList.getRandomName());
+            std::cout << "Aspect: " << aspects.back() << std::endl;
+        }
+        aspects.push_back(conditionList.getRandomName());
+        std::cout << "Condition: " << aspects.back() << std::endl;
+        int secondSet = random(1,2);
+        for(int i = 0; i != secondSet; i++)
+        {
+            aspects.push_back(aspectList.getRandomName());
+            std::cout << "Aspect: " << aspects.back() << std::endl;
+        }
+        aspects.push_back(conditionList.getRandomName());
+        std::cout << "Condition: " << aspects.back() << std::endl;
+        aspects.push_back(aspectList.getRandomName());
+        std::cout << "Final Aspect: " << aspects.back() << std::endl;
+    }
+
+    int multipliers[10] = {1,2,4,8,12,16,20,24,28,32};
+    for(auto aspectString : aspects)
+    {
+        std::cout << "Building Aspect: " << aspectString;
+        StatusAspect aspect;
+        aspect.potency = 0;
+        aspect.name = getAspectNum(aspectString);
+        int minRandom = 1;
+        int maxRandom = 5;
+        bool ableFlipped = true;
+        if(aspectString == "AffectDamage")
+        {
+            minRandom = 1;
+            maxRandom = 5;
+            aspect.type = damageList.getRandomName();
+            //ableFlipped = false;
+        }
+        if(aspectString == "Freeze")
+        {
+            minRandom = 100;
+            maxRandom = 500;
+            ableFlipped = false;
+        }
+        if(aspectString == "Sleep")
+        {
+            minRandom = 100;
+            maxRandom = 500;
+            ableFlipped = false;
+        }
+        if(aspectString == "Stun")
+        {
+            minRandom = 1;
+            maxRandom = 1;
+            ableFlipped = false;
+        }
+        if(aspectString == "Thorns")
+        {
+            minRandom = 10;
+            maxRandom = 50;
+            ableFlipped = false;
+            aspect.type = damageList.getRandomName();
+        }
+        if(aspectString == "Immunity")
+        {
+            minRandom = 1;
+            maxRandom = 1;
+            ableFlipped = false;
+            aspect.type = damageList.getRandomName();
+        }
+        if(aspectString == "SpawnCreature")
+        {
+            minRandom = 1;
+            maxRandom = 2;
+            ableFlipped = false;
+            RandomWeightList raceList;
+            {
+                for(auto npc : npcmanager.globalCritter)
+                    if(npc.race != "BTTurret")
+                        raceList.addEntry(npc.race,10000);
+            }
+            aspect.type = raceList.getRandomName();
+        }
+        if(aspectString == "SpawnItem")
+        {
+            minRandom = 1;
+            maxRandom = 2;
+            ableFlipped = false;
+            aspect.type = damageList.getRandomName();
+            RandomWeightList itemList;
+            {
+                for(auto item : itemmanager.globalItems)
+                    itemList.addEntry(item.name,10000);
+            }
+            aspect.type = itemList.getRandomName();
+        }
+        if(aspectString == "Revive")
+        {
+            minRandom = 1;
+            maxRandom = 1;
+            ableFlipped = false;
+        }
+        if(aspectString == "AutoDodge")
+        {
+            minRandom = 1;
+            maxRandom = 1;
+            ableFlipped = false;
+            aspect.type = damageList.getRandomName();
+        }
+        if(aspectString == "ChangeRace")
+        {
+            minRandom = 100;
+            maxRandom = 500;
+            ableFlipped = false;
+            RandomWeightList raceList;
+            {
+                for(auto npc : npcmanager.globalCritter)
+                    if(npc.race != "BTTurret")
+                        raceList.addEntry(npc.race,10000);
+            }
+            aspect.type = raceList.getRandomName();
+        }
+        if(aspectString == "Attribute")
+        {
+            RandomWeightList attributeList;
+            {
+                attributeList.addEntry("Strength",10000);
+                attributeList.addEntry("Perception",10000);
+                attributeList.addEntry("Intelligence",10000);
+                attributeList.addEntry("Charisma",10000);
+                attributeList.addEntry("Endurance",10000);
+                attributeList.addEntry("Dexterity",10000);
+            }
+            aspect.type = attributeList.getRandomName();
+        }
+
+
+
+
+
+
+
+        for(int i = 0; i != multipliers[rankNum]; i++)
+            aspect.potency += random(minRandom,maxRandom);
+
+        if(ableFlipped)
+        {
+            if(random(0,1) == 0)
+                aspect.potency = -aspect.potency;
+        }
+
+
+
+
+
+
+        if(aspectString == "ConditionHealth")
+        {
+            if(random(0,1) == 0)
+            {
+                aspect.type = "Below";
+                for(int i = 0; i != multipliers[rankNum]; i++)
+                    aspect.potency += 10;
+                if(aspect.potency > 100)
+                    aspect.potency = 100;
+            }
+            else
+            {
+                aspect.type = "Above";
+                aspect.potency = 100;
+                for(int i = 0; i != multipliers[rankNum]; i++)
+                    aspect.potency -= 10;
+                if(aspect.potency < 0)
+                    aspect.potency = 0;
+            }
+        }
+
+
+        std::cout << ", Final Potency: " << aspect.potency << std::endl;
+        status.aspects.push_back(aspect);
+    }
+
+
+
+    return status;
+}
+
+Item generateRandomItem(RandomWeightList equipmentSet)
+{
+
 
     std::vector<Item> ammoBullet = itemmanager.getAllofType(3);
     std::vector<Item> ammoShell = itemmanager.getAllofType(4);
@@ -929,7 +1197,8 @@ void renderSkillMenu(baseMenu &menu)
 
             menu.vars.push_back(var);
         }
-        std::cout << "Menu: " << menu.name << " has " << menu.vars.size() << " dynamic vars. \n";
+        if(inputState.key[Key::LShift])
+            std::cout << "Menu: " << menu.name << " has " << menu.vars.size() << " dynamic vars. \n";
         int yOffset = 0;
 
 
@@ -1330,7 +1599,8 @@ void renderMerchantMenu(baseMenu &menu)
 
             menu.vars.push_back(var);
         }
-        std::cout << "Menu: " << menu.name << " has " << menu.vars.size() << " dynamic vars. \n";
+        if(inputState.key[Key::LShift])
+            std::cout << "Menu: " << menu.name << " has " << menu.vars.size() << " dynamic vars. \n";
         int yOffset = 0;
 
 
@@ -2003,7 +2273,8 @@ void renderEnchantMenu(baseMenu &menu)
 
             menu.vars.push_back(var);
         }
-        std::cout << "Menu: " << menu.name << " has " << menu.vars.size() << " dynamic vars. \n";
+        if(inputState.key[Key::LShift])
+            std::cout << "Menu: " << menu.name << " has " << menu.vars.size() << " dynamic vars. \n";
         int yOffset = 0;
 
 
