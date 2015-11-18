@@ -529,18 +529,14 @@ std::string useHealItem()
         if(squadClose && mouseClose)
         {
             sf::Vector2f vPos(gvars::mousePos.x,gvars::mousePos.y+15);
-            textList.createText(vPos,15,sf::Color::White,"RMB: Heal " + squaddie->name,gvars::view1);
+            textList.createText(vPos,15,sf::Color::White,"RMB: Use Potion On " + squaddie->name,gvars::view1);
 
             if(inputState.rmbTime == 1)
             {
-                if(squaddie->health == squaddie->getMaxHealth())
                 {
-                    chatBox.addChat(squaddie->name + " is fully healed!", sf::Color::Green);
-                    return "Full Health";
-                }
-                else
-                {
-                    squaddie->modhealth(mouseItem->healAmount);
+                    for(auto &status : mouseItem->statusEffectsInflict)
+                        squaddie->statusEffects.push_back(status);
+
                     chatBox.addChat(npc.name + " used " + mouseItem->name + " on " + squaddie->name, sf::Color::Green);
                     mouseItem->remove();
                     AnyDeletes(mouseItem->user->inventory);
@@ -4678,18 +4674,16 @@ void drawSelectedCritterHUD()
 
                     if(shapes.shapeHovered(healButt))
                     {
-                        textList.createText(gvars::mousePos.x+10,gvars::mousePos.y,10,sf::Color::White,"Heal Self");
+                        textList.createText(gvars::mousePos.x+10,gvars::mousePos.y,10,sf::Color::White,"Drink Juices");
                         gvars::hovering = true;
                         if(inputState.lmbTime == 1)
                         {
                             if(slotItem->user->alive == false)
                                 chatBox.addChat("He's dead, Jim.", sf::Color::Green);
-                            else if(slotItem->user->health == slotItem->user->getMaxHealth())
-                                chatBox.addChat(slotItem->user->name + " is fully healed!", sf::Color::Green);
                             else
                             {
+                                slotItem->activate(slotItem->user->getPos());
                                 chatBox.addChat(slotItem->user->name + " used " + slotItem->name + "!", sf::Color::Green);
-                                slotItem->user->modhealth(slotItem->healAmount);
                                 slotItem->remove();
                             }
                         }

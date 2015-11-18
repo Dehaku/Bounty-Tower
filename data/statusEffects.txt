@@ -12,6 +12,8 @@ OverlayImage, filename.png, If this is added to a status effect, the image will 
 [Name:Dumb Poison][Duration:3600][Aspect:ConditionHealth:1:Above][Aspect:AffectHealth:-2:Poison]
 [Name:Lethal Poison][Duration:3600][Aspect:AffectHealth:-2:Poison]
 [Name:Flame Aura][OverlayImage:LilFire.png][Duration:600][AuraRadius:120][AuraEnemies:1][Aspect:AffectHealth:-1:Fire][Aspect:Immunity:1:Cold]
+[Name:Mini Healing Surge][Duration:1][Aspect:AffectHealth:100:Energy]
+[Name:Healing Surge][Duration:1][Aspect:AffectHealth:1000:Energy]
 [Name:Healing Aura][Duration:600][AuraRadius:120][AuraNeutrals:1][AuraAllies:1][Aspect:AffectHealth:1:Energy]
 [Name:Burning Stablization][OverlayImage:LilFire.png][Duration:3600][Aspect:AffectHealth:-1:Fire][Aspect:ConditionHealth:50:Below][Aspect:AffectHealth:3:Energy]
 [Name:Pointless Healing][Duration:3600][Aspect:ConditionLife:1:Dead][Aspect:AffectHealth:3:Energy]

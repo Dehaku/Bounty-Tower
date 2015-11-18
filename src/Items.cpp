@@ -1319,6 +1319,14 @@ std::string Item::activate(Vec3f vPos) // Returns a string declaring the problem
         }
     }
 
+    if(type == 42)
+    { // Potions.
+        for(auto &status : statusEffectsInflict)
+            user->statusEffects.push_back(status);
+
+        return "Success";
+    }
+
     return "Failed";
 }
 
