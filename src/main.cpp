@@ -4463,6 +4463,38 @@ int weightChance()
 void pauseMenu()
 {
 
+    if(inputState.key[Key::LShift].time == 1)
+    {
+        RandomWeightList rankList;
+        {
+                rankList.addEntry("Alpha",0);
+                rankList.addEntry("Beta",0);
+                rankList.addEntry("Gamma",10000);
+                rankList.addEntry("Delta",1000);
+                rankList.addEntry("Epsilon",100);
+                rankList.addEntry("Zeta",10);
+                rankList.addEntry("Eta",1);
+        }
+
+        StatusEffect status = generateRandomStatusEffect(rankList);
+    }
+    if(inputState.key[Key::RShift].time == 1)
+    {
+        RandomWeightList rankList;
+        {
+                rankList.addEntry("Alpha",1000000);
+                rankList.addEntry("Beta",100000);
+                rankList.addEntry("Gamma",10000);
+                rankList.addEntry("Delta",1000);
+                rankList.addEntry("Epsilon",100);
+                rankList.addEntry("Zeta",10);
+                rankList.addEntry("Eta",1);
+        }
+
+        StatusEffect status = generateRandomStatusEffect(rankList);
+    }
+
+
     if(inputState.key[Key::R].time == 1)
     {
         //int itemChosen = weightChance();
@@ -4547,10 +4579,16 @@ void onStart()
 
     std::cout << "Npc: SizeOf()" << sizeof(Npc) << std::endl;
 
-    std::cout << "Stoi: ";
-    std::cout << std::stoi(" 50 ");
     //std::cout << ", " << std::stoi("fifty");
     //std::cout << ", " << std::stoi("") << std::endl;
+    int multipliers[10] = {1,2,4,8,12,16,20,24,28,32};
+    for(int i = 0; i != multipliers[6]; i++)
+        std::cout << i << ": " << multipliers[6] << std::endl;
+
+
+
+
+
 }
 
 

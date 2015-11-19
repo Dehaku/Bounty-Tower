@@ -31,7 +31,10 @@ void saveGame(std::string profileName)
     std::ofstream outputFile(line.c_str());
     for(auto squaddie : Squaddies)
     {
+
         Npc critter = *squaddie;
+        if(!critter.alive)
+            continue;
 
         outputFile << "[name:" << critter.name << "]"
                << "[race:" << critter.race << "]"

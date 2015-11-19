@@ -1015,9 +1015,15 @@ Each Status Effect will be...
 
 
 
-
         for(int i = 0; i != multipliers[rankNum]; i++)
-            aspect.potency += random(minRandom,maxRandom);
+        {
+            int randomPotency = random(minRandom,maxRandom);
+            std::cout << "Adding Potency: " << randomPotency << std::endl;
+            aspect.potency += randomPotency;
+        }
+
+
+
 
         if(ableFlipped)
         {
