@@ -67,6 +67,7 @@ void Orb::drawOrb(int totalOrbs = 1)
 
 Shape::Shape()
 {
+    offscreenRender = false;
     layer = 1000;
     shape = Circle;
     size = 0;
@@ -430,7 +431,15 @@ void Shapes::drawShapes()
         sf::View oldView = window.getView();
         window.setView(*shape.drawView);
 
+        shape.duration--;
+        if(shape.duration <= 0)
+            shape.toDelete = true;
 
+        if(!shape.offscreenRender && shape.drawView == &gvars::view1)
+        {
+            if(!onScreen(shape.startPos) && !onScreen(shape.endPos))
+                continue;
+        }
 
         if(shape.shape == shape.Square)
         {
@@ -452,15 +461,7 @@ void Shapes::drawShapes()
             if(shape.texture != nullptr)
                 rectangle.setTexture(shape.texture);
 
-            // An attempt to help performance, but is all the boundry checks faster than drawing things off screen?
-            // I hope so.
-            if(shape.drawView == &gvars::view1)
-            {
-                if(onScreen(shape.startPos) || onScreen(shape.endPos))
-                    window.draw(rectangle);
-            }
-            else
-                window.draw(rectangle);
+            window.draw(rectangle);
 
 
         }
@@ -485,13 +486,7 @@ void Shapes::drawShapes()
             if(shape.texture != nullptr)
                 circle.setTexture(shape.texture);
 
-            if(shape.drawView == &gvars::view1)
-            {
-                if(onScreen(shape.startPos) || onScreen(shape.endPos))
-                    window.draw(circle);
-            }
-            else
-                window.draw(circle);
+            window.draw(circle);
         }
         else if(shape.shape == shape.Line)
         {
@@ -522,13 +517,7 @@ void Shapes::drawShapes()
             if(shape.texture != nullptr)
                 rectangle.setTexture(shape.texture);
 
-            if(shape.drawView == &gvars::view1)
-            {
-                if(onScreen(shape.startPos) || onScreen(shape.endPos))
-                    window.draw(rectangle);
-            }
-            else
-                window.draw(rectangle);
+            window.draw(rectangle);
         }
         else if(shape.shape == shape.Text)
         {
@@ -550,14 +539,7 @@ void Shapes::drawShapes()
             //shapeText.setScale()
             shapeText.setString(shape.text);
 
-
-            if(shape.drawView == &gvars::view1)
-            {
-                if(onScreen(shape.startPos) || onScreen(shape.endPos))
-                    window.draw(shapeText);
-            }
-            else
-                window.draw(shapeText);
+            window.draw(shapeText);
         }
         else if(shape.shape == shape.Button)
         {
@@ -583,21 +565,13 @@ void Shapes::drawShapes()
             if(shape.texture != nullptr)
                 rectangle.setTexture(shape.texture);
 
-            if(shape.drawView == &gvars::view1)
-            {
-                if(onScreen(shape.startPos) || onScreen(shape.endPos))
-                    window.draw(rectangle);
-            }
-            else
-                window.draw(rectangle);
+            window.draw(rectangle);
 
 
         }
 
         window.setView(oldView);
-        shape.duration--;
-        if(shape.duration <= 0)
-            shape.toDelete = true;
+
     }
     for (auto &elem : polygons)
     {

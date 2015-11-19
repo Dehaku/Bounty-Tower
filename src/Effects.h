@@ -27,6 +27,8 @@ public:
     const sf::Texture * texture;
     std::string text;
 
+    bool offscreenRender;
+
     sf::Vector2f startPos;
     sf::Vector2f endPos;
     int size;

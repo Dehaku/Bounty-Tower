@@ -712,11 +712,23 @@ void handsOffense(Npc &npc, std::list<Npc> &container, Npc * closEnmy, bool &has
         if(inputState.key[Key::LAlt] && !selectedNPCs.empty() && npc.id == selectedNPCs[0]->id)
         { // Setting up radiuses so we can see how far our weapon can strike.
             if(weapon->type == 2)
+            {
                 shapes.createCircle(npc.xpos,npc.ypos,weapon->getRange(),sf::Color(255,0,0,50),2,sf::Color::Red);
+                shapes.shapes.back().offscreenRender = true;
+            }
+
             if(weapon->type == 1)
+            {
                 shapes.createCircle(npc.xpos,npc.ypos,weapon->getRange(),sf::Color(0,0,255,50),2,sf::Color::Blue);
+                shapes.shapes.back().offscreenRender = true;
+            }
+
             if(weapon->type == 23)
+            {
                 shapes.createCircle(npc.xpos,npc.ypos,weapon->getRange(),sf::Color(0,255,0,50),2,sf::Color::Green);
+                shapes.shapes.back().offscreenRender = true;
+            }
+
         }
 
         // We check if the target is within range of the current weapon, and if we can actually directly see them.
