@@ -102,7 +102,9 @@ public:
 
 void bountyBrain(Npc &npc, std::list<Npc> &container);
 
+StatusEffect generateRandomStatusEffect(int potency);
 
+Item generateRandomItem(RandomWeightList equipmentSet);
 
 
 

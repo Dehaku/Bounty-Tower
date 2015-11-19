@@ -142,6 +142,7 @@ void GlobalStatusEffects::initializeStatusEffects()
         }
 
         status.name = statusName;
+        status.rank = stringFindString(line, "[Rank:");
         status.duration = stringFindNumber(line, "[Duration:");
 
         status.auraRadius = stringFindNumber(line, "[AuraRadius:");

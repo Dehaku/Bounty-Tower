@@ -2637,6 +2637,8 @@ std::string Npc::onDeath(Npc *attacker, Item *weapon, float amount, int damageTy
     if(!alive)
         return "";
 
+
+
     mods.onDeath = true;
 
     if(faction == "The Titanium Grip")
@@ -2682,7 +2684,7 @@ std::string Npc::onDeath(Npc *attacker, Item *weapon, float amount, int damageTy
             dropRate += dropRate*(attacker->mods.itemFindMod*0.01);
 
         std::cout << " Droprate: " << dropRate << std::endl;
-        if(dropRate > 90)
+        if(dropRate > 50)
         {
             int scrapAmount = random(0,5);
             for(int i = 0; i != scrapAmount; i++)
@@ -2695,6 +2697,23 @@ std::string Npc::onDeath(Npc *attacker, Item *weapon, float amount, int damageTy
                 scrap.amount = 1;
                 worlditems.push_back(scrap);
             }
+        }
+        if(dropRate > 90)
+        {
+            RandomWeightList equipmentSet;
+            equipmentSet.addEntry("Melee",100);
+            equipmentSet.addEntry("Ranged",50);
+
+            Item lootItem = generateRandomItem(equipmentSet);
+
+            lootItem.statusEffects.push_back(generateRandomStatusEffect(100));
+            lootItem.statusEffectsInflict.push_back(generateRandomStatusEffect(100));
+
+            lootItem.xpos = xpos+random(0,30);
+            lootItem.ypos = ypos+random(0,30);
+            lootItem.zpos = zpos;
+
+            worlditems.push_back(lootItem);
         }
     }
 
@@ -5176,9 +5195,6 @@ void Npc::handleStatusEffects()
 
             if(!mouseHovering)
                 continue;
-
-            std::cout << "Hovering on " << invSlots[i]->name << std::endl;
-            std::cout << "" << invSlots[i]->name << " has status effects! " << std::endl;
 
             sf::Vector2f mainDrawPos(percentPos(40,0,screen.x()),percentPos(80,0,screen.y()));
 

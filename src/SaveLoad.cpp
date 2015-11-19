@@ -79,6 +79,7 @@ void saveGame(std::string profileName)
                 {
                     file << "{StatusEffect:"
                     << "[Name:" << status.name << "]"
+                    << "[Rank:" << status.rank << "]"
                     << "[Duration:" << status.duration << "]"
                     << "[AuraRadius:" << status.auraRadius << "]"
 
@@ -93,6 +94,7 @@ void saveGame(std::string profileName)
                 {
                     file << "{StatusEffectInflict:"
                     << "[Name:" << status.name << "]"
+                    << "[Rank:" << status.rank << "]"
                     << "[Duration:" << status.duration << "]"
                     << "[AuraRadius:" << status.auraRadius << "]"
 
@@ -113,6 +115,7 @@ void saveGame(std::string profileName)
                     {
                         file << "{StatusEffect:"
                         << "[Name:" << status.name << "]"
+                        << "[Rank:" << status.rank << "]"
                         << "[Duration:" << status.duration << "]"
                         << "[AuraRadius:" << status.auraRadius << "]"
 
@@ -127,6 +130,7 @@ void saveGame(std::string profileName)
                     {
                         file << "{StatusEffectInflict:"
                         << "[Name:" << status.name << "]"
+                        << "[Rank:" << status.rank << "]"
                         << "[Duration:" << status.duration << "]"
                         << "[AuraRadius:" << status.auraRadius << "]"
 
@@ -267,6 +271,7 @@ void loadGame(std::string profileName)
         {
             StatusEffect status;
             status.name = stringFindString(statusString, "[Name:");
+            status.rank = stringFindString(statusString, "[Rank:");
             status.duration = stringFindNumber(statusString, "[Duration:");
             status.auraAffectsAllies = booleanize(stringFindNumber(statusString, "[AuraAllies:"));
             status.auraAffectsEnemies = booleanize(stringFindNumber(statusString, "[AuraEnemies:"));
@@ -298,6 +303,7 @@ void loadGame(std::string profileName)
         {
             StatusEffect status;
             status.name = stringFindString(statusString, "[Name:");
+            status.rank = stringFindString(statusString, "[Rank:");
             status.duration = stringFindNumber(statusString, "[Duration:");
             status.auraAffectsAllies = booleanize(stringFindNumber(statusString, "[AuraAllies:"));
             status.auraAffectsEnemies = booleanize(stringFindNumber(statusString, "[AuraEnemies:"));

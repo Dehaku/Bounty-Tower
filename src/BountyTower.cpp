@@ -4193,6 +4193,53 @@ void testNewMenu()
 
 }
 
+void enchantGlow()
+{
+    float cosWave = cos(fpsKeeper.startTime.getElapsedTime().asSeconds());
+    cosWave = 1 - cosWave;
+    for(auto item : worlditems)
+    {
+        if(item.statusEffects.empty() && item.statusEffectsInflict.empty())
+            continue;
+        for(auto status : item.statusEffects)
+        {
+            int aspects = 0;
+            sf::Color circleColor;
+            for(auto aspect : status.aspects)
+                aspects++;
+            if(status.rank == "Alpha")
+                circleColor = sf::Color::Blue;
+            else if(status.rank == "Beta")
+                circleColor = sf::Color::Green;
+            else if(status.rank == "Gamma")
+                circleColor = sf::Color::Red;
+            else
+                circleColor = sf::Color::Yellow;
+
+            shapes.createCircle(item.xpos,item.ypos,(10*aspects)*cosWave,sf::Color::Transparent,1,circleColor);
+            shapes.shapes.back().layer = 11;
+        }
+        for(auto status : item.statusEffectsInflict)
+        {
+            int aspects = 0;
+            sf::Color circleColor;
+            for(auto aspect : status.aspects)
+                aspects++;
+            if(status.rank == "Alpha")
+                circleColor = sf::Color::Blue;
+            else if(status.rank == "Beta")
+                circleColor = sf::Color::Green;
+            else if(status.rank == "Gamma")
+                circleColor = sf::Color::Red;
+            else
+                circleColor = sf::Color::Yellow;
+
+            shapes.createCircle(item.xpos,item.ypos,(10*aspects)*cosWave,sf::Color::Transparent,1,circleColor);
+            shapes.shapes.back().layer = 11;
+        }
+    }
+}
+
 void bountyTowerLoop()
 { // Game Loop
     hotkeySquaddieSelect();
@@ -4203,6 +4250,8 @@ void bountyTowerLoop()
     corpsesBleed();
     chasePriorityFunction();
     showItemProgressCone();
+
+    enchantGlow();
 
     //newSlotWorkMethod();
 
