@@ -82,7 +82,7 @@ void equipStarters()
             item = *getGlobalItem("Shotgun");
             //member.inventory.push_back(item);
 
-            item = *getGlobalItem("Shell: Spread");
+            item = *getGlobalItem("Shell Spread");
             item.amount = 30;
             //member.inventory.push_back(item);
         }
@@ -104,7 +104,7 @@ void equipStarters()
         {
             Item item = *getGlobalItem("Gun");
             Item bullet;
-            bullet = *getGlobalItem("Bullet: Standard");
+            bullet = *getGlobalItem("Bullet Standard");
             bullet.amount = 30;
 
             member.inventory.push_back(item);
@@ -115,7 +115,7 @@ void equipStarters()
         {
             Item item = *getGlobalItem("Sniper");
             Item bullet;
-            bullet = *getGlobalItem("Bullet: Armor Piercing");
+            bullet = *getGlobalItem("Bullet Armor Piercing");
             bullet.amount = 30;
 
             member.inventory.push_back(item);
@@ -1063,9 +1063,12 @@ Each Status Effect will be...
         {
             aspect.potency = 1;
             RandomWeightList itemTypes;
-            for(auto itemType : itemmanager.globalItems)
-                itemTypes.addEntry(str(itemType.type),10);
-            aspect.type = std::stoi(itemTypes.getRandomName());
+            itemTypes.addEntry(str(1),10);
+            itemTypes.addEntry(str(2),10);
+            itemTypes.addEntry(str(23),10);
+            itemTypes.addEntry(str(42),10);
+            itemTypes.addEntry(str(69),10);
+            aspect.type = itemTypes.getRandomName();
         }
         if(aspectString == "ConditionTimeDelay")
             aspect.potency = random(60,180);
@@ -2919,7 +2922,7 @@ void spawnBoss()
     boss.factionPtr = &listAt(uniFact,2);
 
     Item weaponry = *getGlobalItem("Shotgun");
-    Item ammo = *getGlobalItem("Shell: Spread");
+    Item ammo = *getGlobalItem("Shell Spread");
     ammo.amount = 10000;
     weaponry.internalitems.push_back(ammo);
 
@@ -4134,7 +4137,7 @@ void testStatusEffects()
             if(status.name == "On Fire")
                 testStatus = status;
 
-        Item statusItem = *getGlobalItem("Bullet: Incinderary");
+        Item statusItem = *getGlobalItem("Bullet Incinderary");
         statusItem.xpos = gvars::mousePos.x;
         statusItem.ypos = gvars::mousePos.y;
         statusItem.zpos = gvars::currentz*GRID_SIZE;
@@ -4387,7 +4390,7 @@ void bountyTowerLoop()
         boss.factionPtr = &listAt(uniFact,2);
 
         Item weaponry = *getGlobalItem("Minigun");
-        Item ammo = *getGlobalItem("Bullet: Standard");
+        Item ammo = *getGlobalItem("Bullet Standard");
         ammo.amount = 10000;
         weaponry.internalitems.push_back(ammo);
 
@@ -4450,7 +4453,7 @@ void bountyTowerLoop()
 
     if(inputState.key[Key::N].time == 1 && inputState.key[Key::LShift])
     { // Spawn Ammo
-        Item item = *getGlobalItem("Bullet: Standard");
+        Item item = *getGlobalItem("Bullet Standard");
         item.amount = random(5,10);
         item.xpos = gvars::mousePos.x;
         item.ypos = gvars::mousePos.y;

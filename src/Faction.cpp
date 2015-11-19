@@ -655,7 +655,7 @@ void scrapPickup(Npc &npc, std::list<Npc> &container)
                         }
                         if(coinFlip == 2)
                         {
-                            Item Ammo = *getGlobalItem("Bullet: Standard");
+                            Item Ammo = *getGlobalItem("Bullet Standard");
                             Ammo.amount = random(1,5);
                             Ammo.xpos = npc.xpos;
                             Ammo.ypos = npc.ypos;
@@ -916,7 +916,7 @@ void buildTurret(Npc &npc, std::list<Npc> &container)
 
 
 
-                Item ammo = *getGlobalItem("Bullet: Standard");
+                Item ammo = *getGlobalItem("Bullet Standard");
                 ammo.amount = 100;
 
                 Item gun = *getGlobalItem("Gun");
@@ -995,7 +995,7 @@ void craftAmmo(Npc &npc, std::list<Npc> &container)
                 }
 
                 //Get the default generic bullet.
-                Item ammo = *getGlobalItem("Bullet: Standard");
+                Item ammo = *getGlobalItem("Bullet Standard");
 
                 //Acquire hands items.
                 Item * leftItem = npc.getLeftHandItem();
@@ -3043,9 +3043,9 @@ std::string Npc::dealDamage(Npc *victim, Item *weapon, float amount, int damageT
             if(ranNum == 2)
                 loot = *getGlobalItem("Scrap");
             if(ranNum == 3)
-                loot = *getGlobalItem("Bullet: Standard");
+                loot = *getGlobalItem("Bullet Standard");
             if(ranNum == 4)
-                loot = *getGlobalItem("Shell: Slug");
+                loot = *getGlobalItem("Shell Slug");
             if(ranNum == 5)
                 loot = *getGlobalItem("Healing Juices");
 
