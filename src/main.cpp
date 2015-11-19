@@ -1245,6 +1245,14 @@ Npc * critterDetectNearestEnemy(Npc &npc, std::list<Npc> &container)
 void critterBrain(Npc &npc, std::list<Npc> &container)
 {
 
+    if(onScreen(npc.getPos2d()))
+        overheadOverlay(npc);
+
+    if(!menus.empty())
+        for(auto menu : menus)
+            if(menu.name == "Escape Menu")
+                return;
+
     //Applying momentum movement to critter
     npc.momMove();
 
@@ -1366,8 +1374,7 @@ void critterBrain(Npc &npc, std::list<Npc> &container)
 
     npc.img.setRotation(npc.angle);
 
-    if(onScreen(npc.getPos2d()))
-        overheadOverlay(npc);
+
 
     runCritterBody(npc);
     debug("Ending Part Loop");
@@ -2455,7 +2462,6 @@ void handleEvents()
             inputState.updateFromEvent(event);
             if (event.type == sf::Event::Closed)
             {
-                saveGame("Profile1");
                 window.close();
             }
             if (event.type == sf::Event::MouseWheelMoved)

@@ -2698,7 +2698,7 @@ std::string Npc::onDeath(Npc *attacker, Item *weapon, float amount, int damageTy
                 worlditems.push_back(scrap);
             }
         }
-        if(dropRate > 90)
+        if(dropRate > 90 || isBoss)
         {
             RandomWeightList equipmentSet;
             equipmentSet.addEntry("Melee",100);
@@ -2706,8 +2706,24 @@ std::string Npc::onDeath(Npc *attacker, Item *weapon, float amount, int damageTy
 
             Item lootItem = generateRandomItem(equipmentSet);
 
-            lootItem.statusEffects.push_back(generateRandomStatusEffect(100));
-            lootItem.statusEffectsInflict.push_back(generateRandomStatusEffect(100));
+            RandomWeightList rankList;
+            if(isBoss)
+            {
+                rankList.addEntry("Alpha",0);
+                rankList.addEntry("Beta",0);
+                rankList.addEntry("Gamma",10000);
+                rankList.addEntry("Delta",1000);
+                rankList.addEntry("Epsilon",100);
+                rankList.addEntry("Zeta",10);
+                rankList.addEntry("Eta",1);
+            }
+
+            StatusEffect status = generateRandomStatusEffect(rankList);
+            status.duration = 1;
+            lootItem.statusEffects.push_back(status);
+            status = generateRandomStatusEffect(rankList);
+            status.duration = 180;
+            lootItem.statusEffectsInflict.push_back(status);
 
             lootItem.xpos = xpos+random(0,30);
             lootItem.ypos = ypos+random(0,30);

@@ -769,7 +769,7 @@ void escapeMenu(Vec3f creationPos)
     menus.push_back(sMenu);
 }
 
-StatusEffect generateRandomStatusEffect(int potency)
+StatusEffect generateRandomStatusEffect(RandomWeightList rankList)
 {
 /*
 Weapon Status Effect Generation
@@ -785,7 +785,8 @@ Each Status Effect will be...
 */
     StatusEffect status;
 
-    RandomWeightList rankList;
+    //RandomWeightList rankList;
+    if(rankList.entries.empty())
     { // Fill Rank List
         rankList.addEntry("Alpha",1000000);
         rankList.addEntry("Beta",100000);
@@ -2588,7 +2589,7 @@ void renderEnchantMenu(baseMenu &menu)
                 {
                     soundmanager.playSound("enchantSound.ogg");
                     conFact->credits -= randomEnchantCost;
-                    StatusEffect status = generateRandomStatusEffect(1);
+                    StatusEffect status = generateRandomStatusEffect();
                     if(random(0,1) == 0)
                     {
                         status.duration = 1;
@@ -3079,6 +3080,11 @@ void spawnEnemies()
         return;
     if(bountytower::pausewaves)
         return;
+
+    if(!menus.empty())
+        for(auto menu : menus)
+            if(menu.name == "Escape Menu")
+                return;
 
 
 
@@ -4245,6 +4251,7 @@ void enchantGlow()
 
 void bountyTowerLoop()
 { // Game Loop
+
     hotkeySquaddieSelect();
     bossLoop();
     checkDoors();
