@@ -3596,6 +3596,7 @@ void layHints()
                     shapes.createSquare(textPos.x-5,textPos.y,textPos.x+900,textPos.y+40,sf::Color::Black,3,sf::Color::Cyan);
                     shapes.createText(textPos,15,sf::Color::Red,"Passing through doors will alert enemies to your presence on the floor! \n"
                             " They will flood from the stairs until they're sufficiently scared!");
+                    shapes.shapes.back().layer += 1;
                 }
 
                 textPos = sf::Vector2f(3030,2790);
@@ -3607,6 +3608,7 @@ void layHints()
                     shapes.createText(textPos,15,sf::Color::Red,"Stand squaddies on switches to activate them, enabling the elevator. \n"
                             "Intelligence is the main factor for activating switches! Use Smart People! \n"
                             "Be sure to get everyone on the elevator before you try to leave, Or you'll abandon them!");
+                    shapes.shapes.back().layer += 1;
                 }
 
                 textPos = sf::Vector2f(2790,3920);
@@ -3617,6 +3619,7 @@ void layHints()
                     shapes.createSquare(textPos.x-5,textPos.y,textPos.x+400,textPos.y+60,sf::Color::Black,3,sf::Color::Cyan);
                     shapes.createText(textPos,15,sf::Color::Red,"Your goal? Fix the elevator! \n"
                             "(White Tiles in the Middle) \nFind Switches, then head up!");
+                    shapes.shapes.back().layer += 1;
                 }
             }
 
@@ -3636,6 +3639,7 @@ void layHints()
                                                                 "You can change the radius they protect with the two buttons below the main three passive orders. \n"
                                                                 "Hold Position: This unit will not willingly move unless you tell them to, They will still attack enemies they see."
                                         );
+                    shapes.shapes.back().layer += 1;
                 }
             }
 
@@ -3652,6 +3656,7 @@ void layHints()
                     shapes.createSquare(textPos.x-5,textPos.y,textPos.x+450,textPos.y+40,sf::Color::Black,3,sf::Color::Cyan);
                     shapes.createText(textPos,15,sf::Color::Red,"Your bounty is waiting for you upstairs! \n"
                                                                 "Be prepared for a fight.");
+                    shapes.shapes.back().layer += 1;
                 }
             }
             else if(gvars::currentz == 5)
@@ -3667,6 +3672,7 @@ void layHints()
                     shapes.createSquare(textPos.x-5,textPos.y,textPos.x+800,textPos.y+40,sf::Color::Black,3,sf::Color::Cyan);
                     shapes.createText(textPos,15,sf::Color::Red,"Using the elevator from here will return you to the tavern. \n"
                                                                 "Are you up to the challenge, or are you a blank body coward?!");
+                    shapes.shapes.back().layer += 1;
                 }
             }
         }
@@ -3688,6 +3694,7 @@ void layHints()
                             "You start with a simple magitech PDA, though you will likely want better weapons. \n"
                             "The bartender will provide you with the means to go after your first bounty."
                             );
+                shapes.shapes.back().layer += 1;
             }
 
             textPos = sf::Vector2f(1950,3210);
@@ -3700,6 +3707,7 @@ void layHints()
                                 "Range Check: Press and hold Alt with squaddies selected to see their held item's attack ranges. \nRed for guns,  Green for magic, Blue for melee.\n"
                                 "Squaddies have two hand slots, and can dual wield any two items! \n"
                                 "You can manage their hand slots with a squaddie selected at the bottom of the screen.");
+                shapes.shapes.back().layer += 1;
             }
 
             textPos = sf::Vector2f(2250,2970);
@@ -3710,6 +3718,7 @@ void layHints()
                 shapes.createSquare(textPos.x-5,textPos.y,textPos.x+850,textPos.y+50,sf::Color::Black,3,sf::Color::Cyan);
                 shapes.createText(textPos,15,sf::Color::Red,"Right Click to pickup items with a selected squaddie(Must be near item.) \n"
                                 "You can also drop items by right clicking near the squaddie with an item from their hotbar.");
+                shapes.shapes.back().layer += 1;
             }
 
             textPos = sf::Vector2f(3390,3270);
@@ -3728,6 +3737,7 @@ void layHints()
                                 "Endurance, gives 1% more health, per point. \n"
                                 "Dexterity, gives 1% dodge chance, per point.\n"
                                 );
+                shapes.shapes.back().layer += 1;
             }
 
         }

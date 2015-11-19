@@ -1315,6 +1315,8 @@ void critterBrain(Npc &npc, std::list<Npc> &container)
 
 
         shapes.createCircle(npc.xpos,npc.ypos,fieldRange,sf::Color(100,0,100,25));
+        shapes.shapes.back().layer = 11;
+        shapes.shapes.back().offscreenRender = true;
 
 
         for(auto &enemy : npclist)
