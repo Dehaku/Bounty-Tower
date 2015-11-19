@@ -255,6 +255,14 @@ int elevateElevatorInhabitants()
             AmountRaised++;
         }
     }
+    for(auto &item : worlditems)
+    {
+        if(tiles[abs_to_index(item.xpos/GRID_SIZE)][abs_to_index(item.ypos/GRID_SIZE)][gvars::currentz].id == 3202)
+        {
+            item.zpos += GRID_SIZE;
+        }
+    }
+
 
     std::cout << "Arrisen: " << AmountRaised << std::endl;
     return AmountRaised;
@@ -3034,6 +3042,11 @@ void nextFloorTransition()
             npc.toDelete = true;
         }
     }
+    for(auto &item : worlditems)
+        if(gvars::currentz != abs_to_index(item.zpos/GRID_SIZE))
+            item.toDelete = true;
+
+
 
     clearBullets();
     shapes.shapes.clear();
@@ -3285,18 +3298,32 @@ void spawnEnemies()
 
 
 void towerVictory()
-{
+{ // Layer 13000
+    int layer = 13000;
+    enum
+    {
+        BackPanel,
+        Shapes,
+        Button,
+        Text,
+        FrontPanel
+    };
     shapes.createSquare(0,0,screen.x(),screen.y(),sf::Color(0,0,0,100),0,sf::Color::Transparent,&gvars::hudView);
+    shapes.shapes.back().layer = layer+BackPanel;
     sf::Vector2f textPos(screen.x()/2,50);
     shapes.createText(textPos,10,sf::Color::Yellow,"$ Bounty Killed! $ \n $ Time to collect! $",&gvars::hudView);
+    shapes.shapes.back().layer = layer+Text;
     textPos.y += 30;
     shapes.createText(textPos,10,sf::Color::White,"The people who got in your way.",&gvars::hudView);
+    shapes.shapes.back().layer = layer+Text;
 
     textPos.x -= 100;
 
     int returnButt = shapes.createImageButton(textPos,texturemanager.getTexture("returnButton.png"),"",0,&gvars::hudView);
+    shapes.shapes.back().layer = layer+Button;
     if(shapes.shapeClicked(returnButt))
     {
+        saveGame("Profile1");
         bountytower::towerVictory = false;
         loadTavern();
     }
@@ -3732,7 +3759,9 @@ void useElevator()
 
     nextFloorTransition();
     AnyDeletes(npclist);
+    AnyDeletes(worlditems);
     setupSquadHotKeySelection();
+    saveGame("Profile1");
 }
 
 void checkFloorCleared()

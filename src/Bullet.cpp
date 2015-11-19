@@ -14,7 +14,7 @@ std::string hitTarget(Bullet &bullet)
         if(dist <= i->size/2 && !alreadyHit && i->alive)
         {
 
-            std::string atkStatus = bullet.owner->dealDamage(i,&bullet.weapon,bullet.damage);
+            std::string atkStatus = bullet.owner->dealDamage(i,&bullet.weapon,bullet.damage,bullet.ammo.damageType);
             if(atkStatus == "Hit" || atkStatus == "Immune")
             {
                 if(atkStatus == "Hit") // Immune to the weapon means it can't affect you enough to deliver the goodness.

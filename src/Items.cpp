@@ -658,6 +658,7 @@ Item::Item()
     penetration = 0;
     richochets = 0;
     knockback = 0;
+    damageType = 0;
 
     healAmount = 0;
 
@@ -767,6 +768,10 @@ void ItemManager::initializeItems()
             item.richochets = stringFindNumber(line, "[richochets:");
             item.knockback = stringFindNumber(line, "[knockback:");
             item.healAmount = stringFindNumber(line, "[HealAmount:");
+            std::string damageString = stringFindString(line, "[DamageType:");
+            if(damageString != "")
+                item.damageType = damageTypes.getNum(damageString);
+
 
 
             item.massGlass = stringFindNumber(line, "[MassGlass:");
@@ -1090,7 +1095,7 @@ std::string Item::activate(Vec3f vPos) // Returns a string declaring the problem
                 outString.append(user->name + " has struck " + npc.name + " for " + std::to_string(maxdam) );
                 //chatBox.addChat(outString,sf::Color::Red);
 
-                std::string atkStatus = user->dealDamage(&npc,this);
+                std::string atkStatus = user->dealDamage(&npc,this,maxdam,damageType);
                 if(atkStatus == "Hit")
                 {
                     for(auto &status : statusEffectsInflict)
@@ -1129,7 +1134,7 @@ std::string Item::activate(Vec3f vPos) // Returns a string declaring the problem
                             //Found someone within range! STRIKING!
                             std::cout << npcCleave.id << "; Someone was hit by the Cleave! \n";
                             int cleaveDamage = this->maxdam*(0.75+(cleave->ranks*0.25));
-                            std::string cleaveAtkStatus = user->dealDamage(&npcCleave,this,cleaveDamage);
+                            std::string cleaveAtkStatus = user->dealDamage(&npcCleave,this,cleaveDamage,damageType);
                             if(cleaveAtkStatus == "Hit")
                                 for(auto &status : statusEffectsInflict)
                                     npc.statusEffects.push_back(status);
@@ -1313,7 +1318,7 @@ std::string Item::activate(Vec3f vPos) // Returns a string declaring the problem
         {
             int dist = math::distance(npc->getPos(),vPos);
             if(dist <= 20)
-                user->dealDamage(npc,this,69);
+                user->dealDamage(npc,this,69,damageType);
         }
     }
 

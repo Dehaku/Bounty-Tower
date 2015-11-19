@@ -4463,37 +4463,6 @@ int weightChance()
 void pauseMenu()
 {
 
-    if(inputState.key[Key::LShift].time == 1)
-    {
-        RandomWeightList rankList;
-        {
-                rankList.addEntry("Alpha",0);
-                rankList.addEntry("Beta",0);
-                rankList.addEntry("Gamma",10000);
-                rankList.addEntry("Delta",1000);
-                rankList.addEntry("Epsilon",100);
-                rankList.addEntry("Zeta",10);
-                rankList.addEntry("Eta",1);
-        }
-
-        StatusEffect status = generateRandomStatusEffect(rankList);
-    }
-    if(inputState.key[Key::RShift].time == 1)
-    {
-        RandomWeightList rankList;
-        {
-                rankList.addEntry("Alpha",1000000);
-                rankList.addEntry("Beta",100000);
-                rankList.addEntry("Gamma",10000);
-                rankList.addEntry("Delta",1000);
-                rankList.addEntry("Epsilon",100);
-                rankList.addEntry("Zeta",10);
-                rankList.addEntry("Eta",1);
-        }
-
-        StatusEffect status = generateRandomStatusEffect(rankList);
-    }
-
 
     if(inputState.key[Key::R].time == 1)
     {

@@ -149,6 +149,7 @@ void saveGame(std::string profileName)
             }
         }
     }
+    chatBox.addChat("(Profile1) Game Saved!",sf::Color::White);
 }
 
 void loadGame(std::string profileName)
@@ -359,4 +360,5 @@ void loadGame(std::string profileName)
     }
 
     con("Game's loaded, You're good to go recollect some bounties!");
+    //chatBox.addChat(" Game's loaded, You're good to go recollect some bounties",sf::Color::White);
 }

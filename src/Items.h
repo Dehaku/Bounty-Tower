@@ -77,6 +77,8 @@ public:
     int weight;
     int value;
 
+    int damageType;
+
     int healAmount;
 
     std::list<StatusEffect> statusEffectsInflict;

@@ -49,6 +49,9 @@ XPModifier modifies the amount of XP the carrier receives from all sources, by '
 [Aspect:DeathXPModifier:Amount]
 DeathXPModifier modifies the amount of XP the carrier gives out to their killer, by 'amount' percent.
 
+[Aspect:CauseExplosion:Power]
+CauseExplosion creates an explosion that harms all within range, including the carrier. Damage is equal to 'Power', Distance is 'Power' doubled. (Explosions do blunt damage)
+
 [Aspect:ItemFind:Amount]
 ItemFind increases the rolled item chance by 'Amount', Raising odds of getting items.
 
