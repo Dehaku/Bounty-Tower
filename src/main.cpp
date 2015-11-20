@@ -1305,15 +1305,6 @@ void critterBrain(Npc &npc, std::list<Npc> &container)
         int fieldStrength = 4;
         fieldStrength += cos(fpsKeeper.startTime.getElapsedTime().asSeconds());
 
-        /*
-        if(inputState.key[Key::Z])
-            fieldStrength += cos(fpsKeeper.startTime.getElapsedTime().asMicroseconds());
-        else if(inputState.key[Key::X])
-            fieldStrength += cos(fpsKeeper.startTime.getElapsedTime().asMilliseconds());
-        else if(inputState.key[Key::C])
-            */
-
-
         shapes.createCircle(npc.xpos,npc.ypos,fieldRange,sf::Color(100,0,100,25));
         shapes.shapes.back().layer = 11;
         shapes.shapes.back().offscreenRender = true;
