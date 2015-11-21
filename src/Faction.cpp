@@ -5194,6 +5194,23 @@ void Npc::handleStatusEffects()
             statusEffects.push_back(status);
     }
 
+    Item * carriedItem;
+    for(int i = 0; i != getInventoryMax(); i++)
+    { // Applying held item status effects to the carrier.
+        if(deadFrames > 5)
+            continue;
+
+        carriedItem = invSlots[i];
+
+        if(carriedItem == nullptr)
+            continue;
+        if(carriedItem->statusEffectsCarried.empty())
+            continue;
+
+        for(auto &status : carriedItem->statusEffectsCarried)
+            statusEffects.push_back(status);
+    }
+
 
     if(!selectedNPCs.empty() && id == selectedNPCs[0]->id)
     { // Drawing a display of inventory status effects.

@@ -4185,7 +4185,7 @@ void testStatusEffects()
     {
         StatusEffect testStatus;
         for(auto &status : globalStatusEffects.statusEffects)
-            if(status.name == "On Fire")
+            if(status.name == "Haste")
                 testStatus = status;
 
         Item statusItem = *getGlobalItem("Bullet Incinderary");
@@ -4193,11 +4193,11 @@ void testStatusEffects()
         statusItem.ypos = gvars::mousePos.y;
         statusItem.zpos = gvars::currentz*GRID_SIZE;
 
-        //testStatus.duration = 1; // Doing this here so it's a one time process, rather than every time it's tossed on someone.
-        statusItem.statusEffectsInflict.push_back(testStatus);
+        testStatus.duration = 1; // Doing this here so it's a one time process, rather than every time it's tossed on someone.
+        statusItem.statusEffectsCarried.push_back(testStatus);
 
         //statusItem.name = "Fire Gun";
-        statusItem.amount = 30;
+        statusItem.amount = 1;
 
         worlditems.push_back(statusItem);
     }

@@ -81,8 +81,10 @@ public:
 
     int healAmount;
 
+    std::list<StatusEffect> statusEffectsCarried;
     std::list<StatusEffect> statusEffectsInflict;
     std::list<StatusEffect> statusEffects;
+
     void handleStatusEffects();
 
     sf::Vector2f targetPos;
