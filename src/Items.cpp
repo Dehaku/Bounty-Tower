@@ -808,6 +808,7 @@ void ItemManager::initializeItems()
                 for(auto &status : statusEffects)
                     item.statusEffectsInflict.push_back(globalStatusEffects.getStatusEffect(status));
 
+
             statusEffects.clear();
             statusEffects = stringFindVectorChaos(line,"[StatusEffect:","]");
             if(!statusEffects.empty())

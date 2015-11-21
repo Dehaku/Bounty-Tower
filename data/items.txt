@@ -28,6 +28,6 @@
 [name:Hermes Sweat][Pickupable:true][image:healingJuices.png][type:42][DamageType:Blunt][baseid:623629][value:500][InflictStatusEffect:Haste]
 [name:Healing Spores][Pickupable:true][image:healingJuices.png][type:42][DamageType:Blunt][baseid:623631][value:500][InflictStatusEffect:Healing Aura]
 [name:Phoenix Urine][Pickupable:true][image:healingJuices.png][type:42][DamageType:Blunt][baseid:623630][value:500][InflictStatusEffect:Phoenix Urine Flame][InflictStatusEffect:Phoenix Urine Revive]
-[name:Taste of Paragon][Pickupable:true][image:healingJuices.png][type:42][DamageType:Blunt][baseid:623625][value:2000][InflictStatusEffect:Taste Of Paragon]
+[name:Taste of Paragon][Pickupable:true][image:healingJuices.png][type:42][DamageType:Blunt][baseid:623625][value:2000][InflictStatusEffect:Taste of Paragon]
 [name:Rockanthropy][Pickupable:true][image:healingJuices.png][type:42][DamageType:Blunt][baseid:623626][value:1000][InflictStatusEffect:Rockanthropy]
 [name:Inventory Slot Unlocker][Pickupable:true][image:InventorySlotUpgrade.png][type:69][DamageType:Blunt][baseid:623669][value:1000]
