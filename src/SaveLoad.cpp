@@ -108,6 +108,23 @@ void saveGame(std::string profileName)
                         file << "[Aspect:" << aspect.name << ":" << aspect.potency << ":" << aspect.type << "]" ;
                     file << "}";
                 }
+                for(auto status : item.statusEffectsCarried)
+                {
+                    file << "{StatusEffectCarried:"
+                    << "[Name:" << status.name << "]"
+                    << "[Rank:" << status.rank << "]"
+                    << "[Duration:" << status.duration << "]"
+                    << "[AuraRadius:" << status.auraRadius << "]"
+
+                    << "[AuraAllies:" << status.auraAffectsAllies << "]"
+                    << "[AuraEnemies:" << status.auraAffectsEnemies << "]"
+                    << "[AuraNeutrals:" << status.auraAffectsNeutrals << "]";
+                    for(auto aspect : status.aspects)
+                        file << "[Aspect:" << aspect.name << ":" << aspect.potency << ":" << aspect.type << "]" ;
+                    file << "}";
+                }
+
+
                 file << std::endl;
                 for(auto invItem : item.internalitems)
                 {
@@ -269,6 +286,7 @@ void loadGame(std::string profileName)
 
         std::vector<std::string> statusEffects = stringFindVectorChaos(line,"{StatusEffect:","}");
         std::vector<std::string> statusEffectInflicts = stringFindVectorChaos(line,"{StatusEffectInflict:","}");
+        std::vector<std::string> statusEffectCarried = stringFindVectorChaos(line,"{StatusEffectCarried:","}");
 
         con("Status Effects");
         for(auto &statusString : statusEffects)
@@ -332,6 +350,38 @@ void loadGame(std::string profileName)
             }
             con(item.name + " is infused with inflicting " + status.name + "!");
             item.statusEffectsInflict.push_back(status);
+        }
+
+        con("Status Effect Carried");
+        for(auto &statusString : statusEffectCarried)
+        {
+            StatusEffect status;
+            status.name = stringFindString(statusString, "[Name:");
+            status.rank = stringFindString(statusString, "[Rank:");
+            status.duration = stringFindNumber(statusString, "[Duration:");
+            status.auraAffectsAllies = booleanize(stringFindNumber(statusString, "[AuraAllies:"));
+            status.auraAffectsEnemies = booleanize(stringFindNumber(statusString, "[AuraEnemies:"));
+            status.auraAffectsNeutrals = booleanize(stringFindNumber(statusString, "[AuraNeutrals:"));
+
+            std::vector<std::string> aspectStrings = stringFindVectorChaos(statusString, "[Aspect:","]");
+            for(auto &aspectString : aspectStrings)
+            {
+                StatusAspect aspect;
+
+                std::vector<std::string> aspectBits = stringFindElements(aspectString);
+                for(int i = 0; i != 3; i++)
+                {
+                    if(i == 0)
+                        aspect.name = std::stoi(aspectBits[i]);
+                    if(i == 1)
+                        aspect.potency = std::stoi(aspectBits[i]);
+                    if(i == 2)
+                        aspect.type = aspectBits[i];
+                }
+                status.aspects.push_back(aspect);
+            }
+            con(item.name + " is infused with carrying " + status.name + "!");
+            item.statusEffectsCarried.push_back(status);
         }
 
 
