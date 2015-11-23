@@ -5233,14 +5233,14 @@ void Npc::handleStatusEffects()
 
             sf::Vector2f drawPos = mainDrawPos;
             drawPos.x += 15;
-            shapes.createSquare(drawPos.x,drawPos.y,drawPos.x+500,drawPos.y+(invSlots[i]->statusEffects.size()*20)+(invSlots[i]->statusEffectsInflict.size()*20),sf::Color::Black,1,sf::Color::Cyan,&gvars::hudView);
+            shapes.createSquare(drawPos.x,drawPos.y,drawPos.x+500,drawPos.y+(invSlots[i]->statusEffects.size()*20)+(invSlots[i]->statusEffectsInflict.size()*20)+(invSlots[i]->statusEffectsCarried.size()*20),sf::Color::Black,1,sf::Color::Cyan,&gvars::hudView);
             shapes.shapes.back().layer = 9000;
             int total_elements = 0;
 
             for(auto &status : invSlots[i]->statusEffects)
             {
                 std::string outPut;
-                outPut.append("[" + status.name + ", Duration: " + str(status.duration/60) + "]");
+                outPut.append("Equip:[" + status.name + ", Duration: " + str(status.duration/60) + "]");
                 if(inputState.key[Key::LShift])
                     for(auto &aspect : status.aspects)
                 {
@@ -5256,6 +5256,21 @@ void Npc::handleStatusEffects()
             {
                 std::string outPut;
                 outPut.append("Inflict:[" + status.name + ", Duration: " + str(status.duration/60) + "]");
+                if(inputState.key[Key::LShift])
+                    for(auto &aspect : status.aspects)
+                {
+                    outPut.append("[" + aspectNum[aspect.name] + ", Potency: " + str(static_cast<int>(aspect.potency)) + ", Type: " + aspect.type + "]");
+                }
+
+                shapes.createText(sf::Vector2f(drawPos.x,drawPos.y+(20*total_elements)),15,sf::Color::Cyan,outPut,&gvars::hudView);
+                shapes.shapes.back().layer = 9001; // IT'S OVER NINE THO-
+
+                total_elements++;
+            }
+            for(auto &status : invSlots[i]->statusEffectsCarried)
+            {
+                std::string outPut;
+                outPut.append("Carry:[" + status.name + ", Duration: " + str(status.duration/60) + "]");
                 if(inputState.key[Key::LShift])
                     for(auto &aspect : status.aspects)
                 {

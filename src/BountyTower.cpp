@@ -2575,7 +2575,7 @@ void renderEnchantMenu(baseMenu &menu)
     Item * item = selectedItem->varItemPtr;
 
     sf::Vector2f statusPos(percentPos(12,menuStartPos.x,menuEndPos.x),percentPos(65,menuStartPos.y,menuEndPos.y));
-    shapes.createText(statusPos,10,sf::Color::White,item->name + ", Total Status Effects: " + std::to_string(item->statusEffects.size()+item->statusEffectsInflict.size()),&gvars::hudView);
+    shapes.createText(statusPos,10,sf::Color::White,item->name + ", Total Status Effects: " + std::to_string(item->statusEffects.size()+item->statusEffectsInflict.size()+item->statusEffectsCarried.size()),&gvars::hudView);
     shapes.shapes.back().layer = layer+FrontPanel+1;
 
 
@@ -2792,7 +2792,7 @@ void renderEnchantMenu(baseMenu &menu)
     yOffset = 1;
     for(auto &status : item->statusEffects)
     {
-        std::string outPut = "Self:";
+        std::string outPut = "Equip:";
         outPut.append("[" + status.name + ", Duration: " + str(status.duration) + "f]");
         for(auto &aspect : status.aspects)
         {
@@ -2837,7 +2837,30 @@ void renderEnchantMenu(baseMenu &menu)
         yOffset++;
         yOffset++;
     }
+    for(auto &status : item->statusEffectsCarried)
+    {
+        std::string outPut = "Carry:";
 
+        outPut.append("[" + status.name + ", Duration: " + str(status.duration) + "f]");
+        for(auto &aspect : status.aspects)
+        {
+            if(aspectNum[aspect.name].find("Condition") != std::string::npos)
+                outPut.append("\n   ");
+            outPut.append("[" + aspectNum[aspect.name] + ",Potency:" + str(static_cast<int>(aspect.potency)));
+            if(aspect.type != "")
+                outPut.append(",Type:" + aspect.type);
+            outPut.append("]");
+        }
+
+        sf::Vector2f vPos = statusPos;
+        vPos.y += 10*yOffset;
+        shapes.createText(vPos,8,sf::Color::Yellow,outPut,&gvars::hudView);
+        shapes.shapes.back().layer = layer+FrontPanel+1;
+
+        yOffset++;
+        yOffset++;
+        yOffset++;
+    }
 }
 
 
