@@ -43,6 +43,7 @@ void saveGame(std::string profileName)
                << "[zpos:" << critter.zpos << "]"
                << "[level:" << critter.level << "]"
                << "[xp:" << critter.xp << "]"
+               << "[slots:" << critter.additionalSlots << "]"
                << "[strength:" << critter.attributes.strength << "]"
                << "[perception:" << critter.attributes.perception << "]"
                << "[intelligence:" << critter.attributes.intelligence << "]"
@@ -223,6 +224,7 @@ void loadGame(std::string profileName)
         critter.zpos = stringFindNumber(line, "[zpos:");
         critter.level = stringFindNumber(line, "[level:");
         critter.xp = stringFindNumber(line, "[xp:");
+        critter.additionalSlots = stringFindNumber(line, "[slots:");
         critter.attributes.strength = stringFindNumber(line, "[strength:");
         critter.attributes.perception = stringFindNumber(line, "[perception:");
         critter.attributes.intelligence = stringFindNumber(line, "[intelligence:");
