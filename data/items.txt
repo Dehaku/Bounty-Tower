@@ -31,3 +31,4 @@
 [name:Taste of Paragon][Pickupable:true][image:healingJuices.png][type:42][DamageType:Blunt][baseid:623625][value:2000][InflictStatusEffect:Taste of Paragon]
 [name:Rockanthropy][Pickupable:true][image:healingJuices.png][type:42][DamageType:Blunt][baseid:623626][value:1000][InflictStatusEffect:Rockanthropy]
 [name:Inventory Slot Unlocker][Pickupable:true][image:InventorySlotUpgrade.png][type:69][DamageType:Blunt][baseid:623669][value:1000]
+[name:Charm][Pickupable:true][image:Charm.png][type:12][DamageType:Blunt][baseid:800000][CarryStatusEffect:Taste of Paragon][value:5]

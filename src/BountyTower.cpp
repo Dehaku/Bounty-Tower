@@ -777,6 +777,70 @@ void escapeMenu(Vec3f creationPos)
     menus.push_back(sMenu);
 }
 
+std::string generateRandomStatusAspectConstant()
+{
+    RandomWeightList aspectList;
+    { // Get Appropriote and Implemented aspects.
+        std::string aspectName;
+
+        aspectName = "AffectDamage";
+        aspectList.addEntry(aspectName,10000);
+        aspectName = "AffectHealth";
+        aspectList.addEntry(aspectName,10000);
+        aspectName = "Armor";
+        aspectList.addEntry(aspectName,10000);
+        aspectName = "Freeze";
+        aspectList.addEntry(aspectName,10000);
+        aspectName = "MoveSpeed";
+        aspectList.addEntry(aspectName,10000);
+        aspectName = "Sleep";
+        aspectList.addEntry(aspectName,10000);
+        aspectName = "Stun";
+        aspectList.addEntry(aspectName,10000);
+        aspectName = "Attribute";
+        aspectList.addEntry(aspectName,10000);
+        aspectName = "Thorns";
+        aspectList.addEntry(aspectName,10000);
+        aspectName = "Immunity";
+        aspectList.addEntry(aspectName,10000);
+        //aspectName = "StatusEffectImmunity";
+        //aspectList.addEntry(aspectName,10000);
+        aspectName = "ItemFind";
+        aspectList.addEntry(aspectName,10000);
+        aspectName = "ItemDropRate";
+        aspectList.addEntry(aspectName,10000);
+        aspectName = "XPModifier";
+        aspectList.addEntry(aspectName,10000);
+        aspectName = "DeathXPModifier";
+        aspectList.addEntry(aspectName,10000);
+        aspectName = "AutoDodge";
+        aspectList.addEntry(aspectName,10000);
+        aspectName = "ChangeRace";
+        aspectList.addEntry(aspectName,10000);
+    }
+    return aspectList.getRandomName();
+}
+
+std::string generateRandomStatusAspectOneUse()
+{
+    RandomWeightList aspectList;
+    {
+        std::string aspectName;
+
+        aspectName = "CauseExplosion";
+        aspectList.addEntry(aspectName,10000);
+        aspectName = "Revive";
+        aspectList.addEntry(aspectName,10000);
+        aspectName = "SpawnCreature";
+        aspectList.addEntry(aspectName,10000);
+        aspectName = "SpawnItem";
+        aspectList.addEntry(aspectName,10000);
+    }
+    return aspectList.getRandomName();
+
+}
+
+
 StatusEffect generateRandomStatusEffect(RandomWeightList rankList)
 {
 /*

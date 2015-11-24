@@ -803,7 +803,18 @@ void ItemManager::initializeItems()
             item.activateratemax = stringFindNumber(line, "[activateratemax:");
             item.isWeapon = booleanize(stringFindNumber(line, "[IsWeapon:"));
 
-            std::vector<std::string> statusEffects = stringFindVectorChaos(line,"[InflictStatusEffect:","]");
+            std::vector<std::string> statusEffects = stringFindVectorChaos(line,"[CarryStatusEffect:","]");
+            if(!statusEffects.empty())
+                for(auto &status : statusEffects)
+                {
+                    StatusEffect actualStatus = globalStatusEffects.getStatusEffect(status);
+                    actualStatus.duration = 1;
+                    item.statusEffectsCarried.push_back(actualStatus);
+                }
+
+
+            statusEffects.clear();
+            statusEffects = stringFindVectorChaos(line,"[InflictStatusEffect:","]");
             if(!statusEffects.empty())
                 for(auto &status : statusEffects)
                     item.statusEffectsInflict.push_back(globalStatusEffects.getStatusEffect(status));
@@ -842,6 +853,7 @@ void ItemManager::initializeItems()
             }
             if (item.name != "Debuggery")
             {
+                con("Adding Item: " + item.name);
                 globalItems.push_back(item);
             }
         }
