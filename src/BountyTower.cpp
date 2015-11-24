@@ -777,15 +777,25 @@ void escapeMenu(Vec3f creationPos)
     menus.push_back(sMenu);
 }
 
-std::string generateRandomStatusAspectConstant()
+StatusAspect generateRandomStatusAspectConstant(int rankNum)
 {
+    int multipliers[10] = {1,2,4,8,12,16,20,24,28,32};
+    RandomWeightList damageList;
+    {
+        for(auto damString : damageTypes.TypeStrings)
+            if(damString != "None")
+                damageList.addEntry(damString,10000);
+    }
+
+
+    StatusAspect aspect;
     RandomWeightList aspectList;
     { // Get Appropriote and Implemented aspects.
         std::string aspectName;
 
         aspectName = "AffectDamage";
         aspectList.addEntry(aspectName,10000);
-        aspectName = "AffectHealth";
+        aspectName = "AffectHealth"; // Small amount.
         aspectList.addEntry(aspectName,10000);
         aspectName = "Armor";
         aspectList.addEntry(aspectName,10000);
@@ -818,15 +828,131 @@ std::string generateRandomStatusAspectConstant()
         aspectName = "ChangeRace";
         aspectList.addEntry(aspectName,10000);
     }
-    return aspectList.getRandomName();
+    std::string aspectString = aspectList.getRandomName();
+    std::cout << "Building Aspect: " << aspectString;
+
+    aspect.potency = 0;
+    aspect.name = getAspectNum(aspectString);
+    int minRandom = 1;
+    int maxRandom = 5;
+    bool ableFlipped = true;
+
+
+    if(aspectString == "AffectDamage")
+    {
+        minRandom = 5;
+        maxRandom = 20;
+        aspect.type = damageList.getRandomName();
+    }
+    if(aspectString == "Armor")
+    {
+        minRandom = 5;
+        maxRandom = 20;
+        aspect.type = damageList.getRandomName();
+    }
+    if(aspectString == "Freeze")
+    {
+        minRandom = 100;
+        maxRandom = 500;
+        ableFlipped = false;
+    }
+    if(aspectString == "Sleep")
+    {
+        minRandom = 100;
+        maxRandom = 500;
+        ableFlipped = false;
+    }
+    if(aspectString == "Stun")
+    {
+        minRandom = 1;
+        maxRandom = 1;
+        ableFlipped = false;
+    }
+    if(aspectString == "Thorns")
+    {
+        minRandom = 10;
+        maxRandom = 50;
+        ableFlipped = false;
+        aspect.type = damageList.getRandomName();
+    }
+    if(aspectString == "Immunity")
+    {
+        minRandom = 1;
+        maxRandom = 1;
+        ableFlipped = false;
+        aspect.type = damageList.getRandomName();
+    }
+    if(aspectString == "AutoDodge")
+    {
+        minRandom = 1;
+        maxRandom = 1;
+        ableFlipped = false;
+        aspect.type = damageList.getRandomName();
+    }
+    if(aspectString == "ChangeRace")
+    {
+        minRandom = 100;
+        maxRandom = 500;
+        ableFlipped = false;
+        RandomWeightList raceList;
+        {
+            for(auto npc : npcmanager.globalCritter)
+                if(npc.race != "BTTurret")
+                    raceList.addEntry(npc.race,10000);
+        }
+        aspect.type = raceList.getRandomName();
+    }
+    if(aspectString == "Attribute")
+    {
+        RandomWeightList attributeList;
+        {
+            attributeList.addEntry("Strength",10000);
+            attributeList.addEntry("Perception",10000);
+            attributeList.addEntry("Intelligence",10000);
+            attributeList.addEntry("Charisma",10000);
+            attributeList.addEntry("Endurance",10000);
+            attributeList.addEntry("Dexterity",10000);
+        }
+        aspect.type = attributeList.getRandomName();
+    }
+
+
+
+    for(int i = 0; i != multipliers[rankNum]; i++)
+    {
+        int randomPotency = random(minRandom,maxRandom);
+        std::cout << "Adding Potency: " << randomPotency << std::endl;
+        aspect.potency += randomPotency;
+    }
+    if(ableFlipped)
+    {
+        if(random(0,1) == 0)
+            aspect.potency = -aspect.potency;
+    }
+
+    if(aspectString == "AffectHealth")
+    {
+        if(aspect.potency > 0)
+            aspect.type = "Energy";
+        else
+            aspect.type = damageList.getRandomName();
+    }
+
+
+
+    return aspect;
 }
 
-std::string generateRandomStatusAspectOneUse()
+StatusAspect generateRandomStatusAspectOneUse()
 {
+    StatusAspect aspect;
     RandomWeightList aspectList;
     {
         std::string aspectName;
 
+
+        aspectName = "AffectHealth"; // Massive amount.
+        aspectList.addEntry(aspectName,10000);
         aspectName = "CauseExplosion";
         aspectList.addEntry(aspectName,10000);
         aspectName = "Revive";
@@ -836,12 +962,12 @@ std::string generateRandomStatusAspectOneUse()
         aspectName = "SpawnItem";
         aspectList.addEntry(aspectName,10000);
     }
-    return aspectList.getRandomName();
+    return aspect;
 
 }
 
 
-StatusEffect generateRandomStatusEffect(RandomWeightList rankList)
+StatusEffect generateRandomStatusEffectOld(RandomWeightList rankList)
 {
 /*
 Weapon Status Effect Generation
@@ -1168,6 +1294,136 @@ Each Status Effect will be...
         status.aspects.push_back(aspect);
     }
 
+
+    status.name = status.rank + " Chaos " + generateName(2,3);
+
+    return status;
+}
+
+StatusEffect generateRandomStatusEffect(RandomWeightList rankList)
+{
+/*
+Weapon Status Effect Generation
+Order of Logic
+Common, Uncommon, Rare, Legendary weighted list. This will govern the potency of Aspects. (Have an option to pay coin to force a generation of one of these)
+1-10 Status Effects, on a Weighted List.
+Each Status Effect will be...
+1-2 Aspects
+1 Conditional (If a ConditionHealth, Have a Weighted List to determin whether to have multiple conditions to keep amping up further aspects)
+1-2 Aspects.
+1 Conditional
+1 Potent Aspect(Since it's quite unlikely for two random conditionals to ever be met, this could be wonderful.)
+*/
+    StatusEffect status;
+
+    //RandomWeightList rankList;
+    if(rankList.entries.empty())
+    { // Fill Rank List
+        rankList.addEntry("Alpha",1000000);
+        rankList.addEntry("Beta",100000);
+        rankList.addEntry("Gamma",10000);
+        rankList.addEntry("Delta",1000);
+        rankList.addEntry("Epsilon",100);
+        rankList.addEntry("Zeta",10);
+        rankList.addEntry("Eta",1);
+    }
+    RandomWeightList aspectList;
+    { // Get Appropriote and Implemented aspects.
+        for(auto &aspect : aspectNum)
+        {
+            if(aspect.find("Condition") != std::string::npos)
+                continue;
+            else if(aspect.find("Mana") != std::string::npos)
+                continue;
+            else if(aspect == "ConditionNearbyUnit")
+                continue;
+            else if(aspect == "ConditionUnitCount")
+                continue;
+            else if(aspect == "ConditionReceivedDamage")
+                continue;
+            else if(aspect == "ActionSpeed")
+                continue;
+            else if(aspect == "AmmoCost")
+                continue;
+            else if(aspect == "Accuracy")
+                continue;
+            else if(aspect == "StatusEffectImmunity")
+                continue;
+            else if(aspect == "ApplyMomentum")
+                continue;
+            else if(aspect == "MomentumSensitivity")
+                continue;
+            else if(aspect == "AffectVisionRange")
+                continue;
+            else if(aspect == "Mark")
+                continue;
+            else if(aspect == "DisableDeath")
+                continue;
+
+            aspectList.addEntry(aspect,10000);
+
+        }
+    }
+    aspectList.printEntries();
+    RandomWeightList conditionList;
+    { // Get implemented conditions.
+        for(auto &aspect : aspectNum)
+        {
+            if( !(aspect.find("Condition") != std::string::npos))
+                continue;
+            else if(aspect.find("Mana") != std::string::npos)
+                continue;
+            else if(aspect == "ConditionNearbyUnit")
+                continue;
+            else if(aspect == "ConditionUnitCount")
+                continue;
+            else if(aspect == "ConditionReceivedDamage")
+                continue;
+
+            conditionList.addEntry(aspect,10000);
+
+        }
+    }
+    conditionList.printEntries();
+    RandomWeightList damageList;
+    {
+        for(auto damString : damageTypes.TypeStrings)
+            if(damString != "None")
+                damageList.addEntry(damString,10000);
+    }
+    damageList.printEntries();
+
+    int rankNum = rankList.getRandomSlot();
+    status.rank = rankList.entries[rankNum].name;
+    std::cout << "Generated Rank: " << status.rank << std::endl;
+
+    std::vector<std::string> aspects;
+    { // We generate the aspects and condition's to be put into the status effect...
+        int firstSet = random(1,2);
+        for(int i = 0; i != firstSet; i++)
+        {
+            aspects.push_back(aspectList.getRandomName());
+            std::cout << "Aspect: " << aspects.back() << std::endl;
+        }
+        aspects.push_back(conditionList.getRandomName());
+        std::cout << "Condition: " << aspects.back() << std::endl;
+        int secondSet = random(1,2);
+        for(int i = 0; i != secondSet; i++)
+        {
+            aspects.push_back(aspectList.getRandomName());
+            std::cout << "Aspect: " << aspects.back() << std::endl;
+        }
+        aspects.push_back(conditionList.getRandomName());
+        std::cout << "Condition: " << aspects.back() << std::endl;
+        aspects.push_back(aspectList.getRandomName());
+        std::cout << "Final Aspect: " << aspects.back() << std::endl;
+    }
+
+    { // Generation of status's aspects and conditions.
+        int firstSet = random(1,2);
+        for(int i = 0; i != firstSet; i++)
+            status.aspects.push_back(generateRandomStatusAspectConstant(rankNum));
+    }
 
     status.name = status.rank + " Chaos " + generateName(2,3);
 
