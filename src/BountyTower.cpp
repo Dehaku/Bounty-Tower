@@ -777,6 +777,137 @@ void escapeMenu(Vec3f creationPos)
     menus.push_back(sMenu);
 }
 
+StatusAspect generateRandomStatusAspectConditionOnce(int rankNum)
+{
+    int multipliers[10] = {1,2,4,8,12,16,20,24,28,32};
+    RandomWeightList damageList;
+    {
+        for(auto damString : damageTypes.TypeStrings)
+            if(damString != "None")
+                damageList.addEntry(damString,10000);
+    }
+
+
+    StatusAspect aspect;
+    RandomWeightList aspectList;
+    { // Get Appropriote and Implemented aspects.
+        std::string aspectName;
+
+        aspectName = "ConditionOnItemUse";
+        aspectList.addEntry(aspectName,10000);
+        aspectName = "ConditionOnDeath";
+        aspectList.addEntry(aspectName,10000);
+        aspectName = "ConditionOnHit";
+        aspectList.addEntry(aspectName,10000);
+        aspectName = "ConditionOnHitByType";
+        aspectList.addEntry(aspectName,10000);
+
+    }
+    std::string aspectString = aspectList.getRandomName();
+    std::cout << "Building Aspect: " << aspectString;
+
+    aspect.potency = 0;
+    aspect.name = getAspectNum(aspectString);
+    int minRandom = 1;
+    int maxRandom = 5;
+    bool ableFlipped = true;
+
+
+
+    if(aspectString == "ConditionOnItemUse")
+    {
+        aspect.potency = 1;
+        RandomWeightList itemTypes;
+        itemTypes.addEntry(str(1),10);
+        itemTypes.addEntry(str(2),10);
+        itemTypes.addEntry(str(23),10);
+        itemTypes.addEntry(str(42),10);
+        itemTypes.addEntry(str(69),10);
+        aspect.type = itemTypes.getRandomName();
+    }
+    if(aspectString == "ConditionOnDeath")
+        aspect.potency = 1;
+    if(aspectString == "ConditionOnHit")
+        aspect.potency = 1;
+    if(aspectString == "ConditionOnHitByType")
+    {
+        aspect.potency = 1;
+        aspect.type = damageList.getRandomName();
+    }
+
+    return aspect;
+}
+
+StatusAspect generateRandomStatusAspectConditionConstant(int rankNum)
+{
+    int multipliers[10] = {1,2,4,8,12,16,20,24,28,32};
+    RandomWeightList damageList;
+    {
+        for(auto damString : damageTypes.TypeStrings)
+            if(damString != "None")
+                damageList.addEntry(damString,10000);
+    }
+
+
+    StatusAspect aspect;
+    RandomWeightList aspectList;
+    { // Get Appropriote and Implemented aspects.
+        std::string aspectName;
+
+        aspectName = "ConditionHealth";
+        aspectList.addEntry(aspectName,10000);
+        aspectName = "ConditionLife";
+        aspectList.addEntry(aspectName,10000);
+        aspectName = "ConditionTimeDelay";
+        aspectList.addEntry(aspectName,10000);
+
+    }
+    std::string aspectString = aspectList.getRandomName();
+    std::cout << "Building Aspect: " << aspectString;
+
+    aspect.potency = 0;
+    aspect.name = getAspectNum(aspectString);
+    int minRandom = 1;
+    int maxRandom = 5;
+    bool ableFlipped = true;
+
+
+    if(aspectString == "ConditionHealth")
+    {
+        if(random(0,1) == 0)
+        {
+            aspect.type = "Below";
+            for(int i = 0; i != multipliers[rankNum]; i++)
+                aspect.potency += 10;
+            if(aspect.potency > 100)
+                aspect.potency = 100;
+        }
+        else
+        {
+            aspect.type = "Above";
+            aspect.potency = 100;
+            for(int i = 0; i != multipliers[rankNum]; i++)
+                aspect.potency -= 10;
+            if(aspect.potency < 0)
+                aspect.potency = 0;
+        }
+    }
+
+    if(aspectString == "ConditionLife")
+    {
+        if(random(0,1) == 0)
+            aspect.type = "Dead";
+        else
+            aspect.type = "Alive";
+        aspect.potency = 1;
+    }
+
+    if(aspectString == "ConditionTimeDelay")
+        aspect.potency = random(60,180);
+
+    return aspect;
+}
+
 StatusAspect generateRandomStatusAspectConstant(int rankNum)
 {
     int multipliers[10] = {1,2,4,8,12,16,20,24,28,32};
@@ -943,8 +1074,17 @@ StatusAspect generateRandomStatusAspectConstant(int rankNum)
     return aspect;
 }
 
-StatusAspect generateRandomStatusAspectOneUse()
+StatusAspect generateRandomStatusAspectOnce(int rankNum)
 {
+    int multipliers[10] = {1,2,4,8,12,16,20,24,28,32};
+    RandomWeightList damageList;
+    {
+        for(auto damString : damageTypes.TypeStrings)
+            if(damString != "None")
+                damageList.addEntry(damString,10000);
+    }
+
+
     StatusAspect aspect;
     RandomWeightList aspectList;
     {
@@ -962,6 +1102,83 @@ StatusAspect generateRandomStatusAspectOneUse()
         aspectName = "SpawnItem";
         aspectList.addEntry(aspectName,10000);
     }
+
+
+    std::string aspectString = aspectList.getRandomName();
+    std::cout << "Building Aspect: " << aspectString;
+
+    aspect.potency = 0;
+    aspect.name = getAspectNum(aspectString);
+    int minRandom = 1;
+    int maxRandom = 5;
+    bool ableFlipped = true;
+
+
+
+
+    if(aspectString == "AffectHealth")
+    {
+        minRandom = 100;
+        maxRandom = 500;
+        aspect.type = damageList.getRandomName();
+    }
+    if(aspectString == "SpawnCreature")
+    {
+        minRandom = 1;
+        maxRandom = 2;
+        ableFlipped = false;
+        RandomWeightList raceList;
+        {
+            for(auto npc : npcmanager.globalCritter)
+                if(npc.race != "BTTurret")
+                    raceList.addEntry(npc.race,10000);
+        }
+        aspect.type = raceList.getRandomName();
+    }
+    if(aspectString == "SpawnItem")
+    {
+        minRandom = 1;
+        maxRandom = 2;
+        ableFlipped = false;
+        RandomWeightList itemList;
+        {
+            for(auto item : itemmanager.globalItems)
+                itemList.addEntry(item.name,10000);
+        }
+        aspect.type = itemList.getRandomName();
+    }
+    if(aspectString == "Revive")
+    {
+        minRandom = 1;
+        maxRandom = 1;
+        ableFlipped = false;
+    }
+
+
+
+
+    for(int i = 0; i != multipliers[rankNum]; i++)
+    {
+        int randomPotency = random(minRandom,maxRandom);
+        std::cout << "Adding Potency: " << randomPotency << std::endl;
+        aspect.potency += randomPotency;
+    }
+    if(ableFlipped)
+    {
+        if(random(0,1) == 0)
+            aspect.potency = -aspect.potency;
+    }
+
+    if(aspectString == "AffectHealth")
+    {
+        if(aspect.potency > 0)
+            aspect.type = "Energy";
+    }
+
+
+
+
+
     return aspect;
 
 }
@@ -1423,6 +1640,13 @@ Each Status Effect will be...
         int firstSet = random(1,2);
         for(int i = 0; i != firstSet; i++)
             status.aspects.push_back(generateRandomStatusAspectConstant(rankNum));
+        status.aspects.push_back(generateRandomStatusAspectConditionConstant(rankNum));
+        int secondSet = random(1,2);
+        for(int i = 0; i != secondSet; i++)
+            status.aspects.push_back(generateRandomStatusAspectConstant(rankNum));
+        status.aspects.push_back(generateRandomStatusAspectConditionOnce(rankNum));
+        status.aspects.push_back(generateRandomStatusAspectOnce(rankNum));
+
     }
 
     status.name = status.rank + " Chaos " + generateName(2,3);
