@@ -282,8 +282,12 @@ void loadGame(std::string profileName)
         }
         con("Getting item: " + itemName);
         item = *getGlobalItem(itemName);
+
+        //Clearing status effects so that loading a preexisting item doesn't dupe the statuses.
         item.statusEffects.clear();
         item.statusEffectsInflict.clear();
+        item.statusEffectsCarried.clear();
+
         item.amount = stringFindNumber(line, "[amount:");
 
         std::vector<std::string> statusEffects = stringFindVectorChaos(line,"{StatusEffect:","}");

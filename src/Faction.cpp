@@ -5220,7 +5220,7 @@ void Npc::handleStatusEffects()
                 continue;
 
 
-            if(invSlots[i]->statusEffects.empty() && invSlots[i]->statusEffectsInflict.empty())
+            if(invSlots[i]->statusEffects.empty() && invSlots[i]->statusEffectsInflict.empty() && invSlots[i]->statusEffectsCarried.empty())
                 continue;
 
             sf::Vector2f mousePos = window.mapPixelToCoords(sf::Mouse::getPosition(window), gvars::hudView);
