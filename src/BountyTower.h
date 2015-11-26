@@ -102,6 +102,11 @@ public:
 
 void bountyBrain(Npc &npc, std::list<Npc> &container);
 
+StatusAspect generateRandomStatusAspectConditionOnce(int rankNum);
+StatusAspect generateRandomStatusAspectConditionConstant(int rankNum);
+StatusAspect generateRandomStatusAspectConstant(int rankNum);
+StatusAspect generateRandomStatusAspectOnce(int rankNum);
+
 StatusEffect generateRandomStatusEffect(RandomWeightList rankList = RandomWeightList());
 
 Item generateRandomItem(RandomWeightList equipmentSet);

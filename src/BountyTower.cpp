@@ -1705,6 +1705,8 @@ Item generateRandomItem(RandomWeightList equipmentSet)
         returnItem = *getGlobalItem(shellList.getRandomName());
     if(equipmentResult == "Missile")
         returnItem = *getGlobalItem(missileList.getRandomName());
+    if(equipmentResult == "Charm")
+        returnItem = *getGlobalItem("Charm");
 
     return returnItem;
 }

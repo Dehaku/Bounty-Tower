@@ -2703,6 +2703,7 @@ std::string Npc::onDeath(Npc *attacker, Item *weapon, float amount, int damageTy
             RandomWeightList equipmentSet;
             equipmentSet.addEntry("Melee",100);
             equipmentSet.addEntry("Ranged",50);
+            equipmentSet.addEntry("Charm",10);
 
             Item lootItem = generateRandomItem(equipmentSet);
 
@@ -2724,6 +2725,27 @@ std::string Npc::onDeath(Npc *attacker, Item *weapon, float amount, int damageTy
             status = generateRandomStatusEffect(rankList);
             status.duration = 180;
             lootItem.statusEffectsInflict.push_back(status);
+
+            if(lootItem.name == "Charm")
+            {
+                lootItem.statusEffects.clear();
+                lootItem.statusEffectsInflict.clear();
+
+                status = generateRandomStatusEffect(rankList);
+                StatusEffect charmStatus;
+
+                int randomSlot = rankList.getRandomSlot();
+                charmStatus.rank = rankList.entries[randomSlot].name;
+                charmStatus.aspects.push_back(generateRandomStatusAspectConditionConstant(randomSlot));
+
+                charmStatus.name = charmStatus.rank + " Chaos " + generateName(2,3);
+                charmStatus.duration = 1;
+
+
+
+                status.duration = 1;
+                lootItem.statusEffectsCarried.push_back(charmStatus);
+            }
 
             lootItem.xpos = xpos+random(0,30);
             lootItem.ypos = ypos+random(0,30);
