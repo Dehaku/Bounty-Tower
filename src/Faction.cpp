@@ -2728,6 +2728,16 @@ std::string Npc::onDeath(Npc *attacker, Item *weapon, float amount, int damageTy
 
             if(lootItem.name == "Charm")
             {
+                if(!isBoss)
+                {
+                    rankList.addEntry("Alpha",1000000);
+                    rankList.addEntry("Beta",100000);
+                    rankList.addEntry("Gamma",10000);
+                    rankList.addEntry("Delta",1000);
+                    rankList.addEntry("Epsilon",100);
+                    rankList.addEntry("Zeta",10);
+                    rankList.addEntry("Eta",1);
+                }
                 lootItem.statusEffects.clear();
                 lootItem.statusEffectsInflict.clear();
 
@@ -2735,8 +2745,10 @@ std::string Npc::onDeath(Npc *attacker, Item *weapon, float amount, int damageTy
                 StatusEffect charmStatus;
 
                 int randomSlot = rankList.getRandomSlot();
+                con("Rolled: " + str(randomSlot) );
+                con("Slots: " + std::to_string(rankList.entries.size()));
                 charmStatus.rank = rankList.entries[randomSlot].name;
-                charmStatus.aspects.push_back(generateRandomStatusAspectConditionConstant(randomSlot));
+                charmStatus.aspects.push_back(generateRandomStatusAspectConstant(randomSlot));
 
                 charmStatus.name = charmStatus.rank + " Chaos " + generateName(2,3);
                 charmStatus.duration = 1;
