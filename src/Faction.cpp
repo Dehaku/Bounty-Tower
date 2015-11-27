@@ -2839,42 +2839,52 @@ std::string Npc::takeDamage(Npc *attacker, Item *weapon, float amount, int damag
             for(auto &aspect : status.aspects)
                 if(aspect.name == StatusAspect::AutoDodge && aspect.potency > 0)
     { // AutoDodge Status Effects. (Can't use mods for this, since AutoDodge has a limited amount of dodges.
-        if(aspect.type == "")
-        {
-            aspect.potency--;
-            if(lastHitFrames > 30)
-            {// Dodge Popup Code
-                Shape text;
-                text.shape = text.Text;
-                text.duration = 60;
-                text.fades = true;
-                text.maincolor = sf::Color::White;
-                text.size = 20;
-                sf::Vector2f textPos(xpos-15,(ypos-50)-random(0,50));
-                text.startPos = textPos;
-                text.text = "*Auto Dodged*";
-                shapes.shapes.push_back(text);
-            }
-            return "Dodged";
+
+        if(amount > 0 && damageType == damageTypes.getNum("Energy"))
+        { // This checks if it's healing energy, No one wants to dodge being healed! ((Except maybe undead))
+
         }
-        else if(aspect.type == damageTypes.TypeStrings[damageType])
+        else
         {
-            aspect.potency--;
-            if(lastHitFrames > 30)
-            {// Dodge Popup Code
-                Shape text;
-                text.shape = text.Text;
-                text.duration = 60;
-                text.fades = true;
-                text.maincolor = sf::Color::White;
-                text.size = 20;
-                sf::Vector2f textPos(xpos-15,(ypos-50)-random(0,50));
-                text.startPos = textPos;
-                text.text = "*Auto Dodged*";
-                shapes.shapes.push_back(text);
+            if(aspect.type == "")
+            {
+                aspect.potency--;
+                if(lastHitFrames > 30)
+                {// Dodge Popup Code
+                    Shape text;
+                    text.shape = text.Text;
+                    text.duration = 60;
+                    text.fades = true;
+                    text.maincolor = sf::Color::White;
+                    text.size = 20;
+                    sf::Vector2f textPos(xpos-15,(ypos-50)-random(0,50));
+                    text.startPos = textPos;
+                    text.text = "*Auto Dodged*";
+                    shapes.shapes.push_back(text);
+                }
+                return "Dodged";
             }
-            return "Dodged";
+            else if(aspect.type == damageTypes.TypeStrings[damageType])
+            {
+                aspect.potency--;
+                if(lastHitFrames > 30)
+                {// Dodge Popup Code
+                    Shape text;
+                    text.shape = text.Text;
+                    text.duration = 60;
+                    text.fades = true;
+                    text.maincolor = sf::Color::White;
+                    text.size = 20;
+                    sf::Vector2f textPos(xpos-15,(ypos-50)-random(0,50));
+                    text.startPos = textPos;
+                    text.text = "*Auto Dodged*";
+                    shapes.shapes.push_back(text);
+                }
+                return "Dodged";
+            }
+
         }
+
     }
 
 
