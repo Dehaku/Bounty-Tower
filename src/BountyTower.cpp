@@ -4863,6 +4863,25 @@ void enchantGlow()
     }
 }
 
+void setTileImages(std::string towerName)
+{
+    for(int x = 0; x != GRIDS; x++)
+        for(int y = 0; y != GRIDS; y++)
+            for(int z = 0; z != CHUNK_SIZE; z++)
+    {
+        if(tiles[x][y][z].id == 3007)
+        {
+            tiles[x][y][z].img.setTexture(texturemanager.getTexture("FanWall1.png"));
+        }
+        else if(tiles[x][y][z].id == 2010)
+        {
+            tiles[x][y][z].img.setTexture(texturemanager.getTexture("FanFloor.png"));
+        }
+    }
+
+
+}
+
 void bountyTowerLoop()
 { // Game Loop
 
@@ -4889,7 +4908,10 @@ void bountyTowerLoop()
     }
 
 
-
+    if(inputState.key[Key::F3])
+    {
+        setTileImages("New Tower");
+    }
 
 
     /*
