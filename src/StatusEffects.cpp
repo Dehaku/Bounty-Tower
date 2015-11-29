@@ -166,17 +166,7 @@ void GlobalStatusEffects::initializeStatusEffects()
 
         for(auto &aspect : aspects)
         {
-            std::cout << "Found: " << aspect << std::endl;
             std::vector<std::string> components = stringFindElements(aspect,":");
-            for(int i = 0; i != components.size(); i++)
-            {
-                if(i == 0)
-                    std::cout << "Name: " << components[i] << std::endl;
-                if(i == 1)
-                    std::cout << "Potency: " << components[i] << std::endl;
-                if(i == 2)
-                    std::cout << "Type: " << components[i] << std::endl;
-            }
 
             StatusAspect SA;
             for(int i = 0; i != components.size(); i++)
@@ -198,14 +188,7 @@ void GlobalStatusEffects::initializeStatusEffects()
             }
 
             status.aspects.push_back(SA);
-            std::cout << "New Aspect: " << aspectNum[SA.name] << ": " << SA.name << ", Pot: " << SA.potency << ", Type: " << SA.type << std::endl;
-
         }
-
-
-
-
-
 
         std::cout << "Adding Status Effect: " << status.name << std::endl;
         statusEffects.push_back(status);

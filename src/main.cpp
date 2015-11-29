@@ -4543,13 +4543,6 @@ void onStart()
 
     //std::cout << ", " << std::stoi("fifty");
     //std::cout << ", " << std::stoi("") << std::endl;
-    int multipliers[10] = {1,2,4,8,12,16,20,24,28,32};
-    for(int i = 0; i != multipliers[6]; i++)
-        std::cout << i << ": " << multipliers[6] << std::endl;
-
-
-
-
 
 }
 
