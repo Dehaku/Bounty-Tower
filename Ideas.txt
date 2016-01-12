@@ -1,5 +1,12 @@
 Galaxy, the Simulation of Life, the Universe, and Everything.
 
+Top Priority!
+When making the engine, Land and Air vehicles are a top priority!
+Roads, Garages and Airports will need to be of the first buildings made for this!
+Vehicles also need to be able to wham through buildings when their driving is hostile.
+Vehicle Pathfinding is also extremely important!
+
+
 
 Critter Abilities
 Vision Evasion Invisibility - Whenever this creature is within a specific degree of angle of vision, they turn invisible
@@ -11,6 +18,8 @@ Workshops produce various waste types
 Workshops will need to be upgradable in various ways
 Workshops will be critter powered at low tech, Later upgrades will allow it to automate production with various power inputs
 Perhaps have robits or other forms of mechanical means to transfer items from buildings?
+
+
 
 Immovable Object Power Generator
 	This material, when supplied with a power connection, locks it's position with the nearest celestial body, All momentum(damage)
@@ -38,5 +47,111 @@ Galaxy Magic
 Mana will be channeled into spells to increase their power, Each Npc will have a Mana Conduit type variable that controls how fast they absorb mana.
 Random event to have a grand elder appear, making it known that an Npc is an Epic Conduit, increasing their Mana Intake by 9000%
 
+Galaxy Building Weardown
+As time goes on, Buildings/machines will slowly lose condition(durability/quality), They can be maintained with oil and spare parts.
+If the condition is above half, it only needs oil/lubrication.
+If the condition is below half, It will need spare parts to raise the condition, and the building/machine will take damage over time.
+
+
+
+
+Galaxy Genetics
+Creatures will be built up by Genes, each gene will possess information and stats of a body part, with special traits.
+
+
+=Traits
+-Attributes
+
+-Qualities
+Venom
+Sharpness
+Weight
+Genetic Line(See, Cross Species Breeding)
+Tool Use
+
+
+-Weapons
+Range
+Projectiles
+Shot Pattern (Fractals)
+
+-Intelligence
+Bravery: Fight or Flight
+Competitiveness: Cooperative(Ants), Helpful(Cats), Aggressive(Dogs)
+Pack/Loner/Herd: Flocking from 'The Nature of Code'
+
+
+=Intake
+-Eating/Drinking
+Carnivore
+Herbivore
+Metalivore
+Bloodivore
+
+
+-Breathing
+Air type(Oxygen, Water, Methane, Ect)
+Breathing Methods
+ In/Out(Humans)
+ Cyclinical(Birds)
+ Tunnel(Ramjet Engines)
+
+
+
+=Reproducing
+
+
+*Methods
+Mating, Planting, Eggs, Mitosis
+Fertilized/Unfertilized
+Some situations can lead to Unfertilized(Asexual) reproduction, but they will have alot less varience, and will not benefit from a wider selection of genes due to fertilization(cross breeding).
+
+
+*Mating Attraction
+The creature will have various scores attributed to it, all for the purpose of social/mate attraction.
+The targeted mate will have their own preferences for each attraction, and weigh them against the creature.
+-Attractions
+Speed
+Strength
+Vocal
+Coordination
+Creativity
+Appearence
+Intimidation(Usually overrides most others, and can crop up as a trait to ignore attraction ratings, though more likely to be assaulted by others.)
+^Mating Attraction could also be used as 'distractions' to stun, or 'lure' in prey, Example(Spider-Tail Horned Viper, Sirens, Carnivorous Plants)
+
+
+*Planting (May be incorporated into Eggs)
+Creatures could sprout offspring from their bodies in the form of seeds, or branchlings, and bury them while they grow from the ground.
+Fertilization would occur through mixing seeds, spores, or branches, and thus combining in the early stages.
+
+*Eggs
+Creatures will lay eggs, protected shells, that allow the young to grow without draining the parent directly.
+Early egg laying stages will require some form of energy to grow, either heat, motion, or magic, This will lead to creatures laying on their eggs, or implanting eggs in other creatures.
+Fertilization could occur before or after laying, depending on traits.
+Evolutionary Traits could lead to stronger shells, nutritous shells for an inital food boost, growth speed, food requirements, outside energy requirements (Heat, Motion, Magic)
+
+*Mitosis
+Creatures will go into a state of Mitosis once sufficently old enough, and fed enough, and will split into two or more younger, smaller creatures.
+Evolutionary Traits could lead to protective cacoons, speed, food requirements, outside energy requirements. (Heat, Motion, Magic)
+
+
+*Cross Species Breeding
+Each creature will have a long string of characters known as it's Genetic Line(Further refered to as Line), This Line represents the varience in species as they split.
+This Line is what determines how capatible two creatures are with eachother, Each difference in letter, and amount of letters, increases the difficulty of successful cross breeding.
+Some innately magical creatures will possess a gene that allows them to ignore a portion of difficulty to spread their genes. (Changelings, Dragons, Fae, Ect)
+Each generation will do one of two things to their genetic line, Modifying a random character in the line, or far less likely, adding, or removing a character.
+
+
+=End Goals
+*Changeling DNA copying/storing/selecting.
+-Perhaps adding an 'active/repressed' bool to genes, and changelings can turn those on and off? (Hotkeys will be required, as well as percentage of success, and Genetic Damage(Freeradicals?) Ala Dreamscape)
+-Nomming creatures will give a small set of their genetics as repressed genes.
+-Changelings will also need 'sets' of genetic codes, along with hotkeys for individual genes, for mass changes.
+-Potential Variables, DNA-Damage, Gene Manifest Time, Recovery Time, Damage caused by usage(Like Sinfection Traits)
+*Species that can reproduce rapidly.
+*Species that can use other species to grow their own.
+*Differences in Species causing mating to be difficult, the further apart.
+*Small chance of 'magic' infused genes allowing huge numbers, or rare qualities. (Like 10x strength, ignoring DNA difference for mating, Or electric generation)
 
 

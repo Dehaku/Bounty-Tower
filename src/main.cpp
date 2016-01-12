@@ -1365,7 +1365,11 @@ void critterBrain(Npc &npc, std::list<Npc> &container)
         soundmanager.playSound("AngryWallabee.ogg");
 
 
-    npc.img.setRotation(npc.angle);
+
+    if(npc.name != "BTTurret")
+        npc.img.setRotation(0);
+    else
+        npc.img.setRotation(npc.angle);
 
 
 
@@ -4541,6 +4545,14 @@ void onStart()
 
     std::cout << "Npc: SizeOf()" << sizeof(Npc) << std::endl;
 
+    for(int i = 0; i != 10; i++)
+        std::cout << "\n";
+    float test = 0.0f;
+    float cardOdds = test+(13/52);
+
+    float Odds = static_cast<float>(cardOdds * cardOdds * cardOdds * cardOdds);
+    std::cout << test << "Odds of Four of a Kind: " << 13/52 << static_cast<float>(Odds) << std::endl;
+
     //std::cout << ", " << std::stoi("fifty");
     //std::cout << ", " << std::stoi("") << std::endl;
 
@@ -4550,7 +4562,7 @@ void onStart()
 
 
 int main()
-{
+{ // TODO: New racial that checks all squaddies guns, if above 1 bullet, and below max, gain a few bullets. Could also be a charm or some such.
     //srand(clock());
     srand(time(NULL));
 

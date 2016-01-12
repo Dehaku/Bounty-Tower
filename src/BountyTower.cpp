@@ -3733,7 +3733,16 @@ void spawnEnemies()
 
         Npc member;
         debug("V");
-        member = *getGlobalCritter("BTBlankBody");
+
+        RandomWeightList RandomEnemy;
+        RandomEnemy.addEntry("BTBlankBody",10000);
+        RandomEnemy.addEntry("BTOgre",2500);
+        RandomEnemy.addEntry("BTArmoredOgre",1000);
+        RandomEnemy.addEntry("BTGoblin",10000);
+        RandomEnemy.addEntry("BTSkeleton",2500);
+        member = *getGlobalCritter(RandomEnemy.getRandomName());
+
+        //member = *getGlobalCritter("BTBlankBody");
         debug("X");
         member.faction = "Towerlings";
         debug("Y");
