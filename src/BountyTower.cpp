@@ -174,6 +174,20 @@ void setupTowers()
         necroTower.tex = &texturemanager.getTexture("Scroll.png");
     }
     towers.push_back(necroTower);
+
+    Tower powerTower;
+    {
+        powerTower.mapID = 638;
+        powerTower.bountyPay = 5000;
+        powerTower.bountyTarget = "Cyborg Psuedo Diety, Mega Dron";
+        powerTower.floors = 5;
+        powerTower.difficulty = 20;
+        powerTower.minioncount = 600;
+        powerTower.name = "Powerhouse Tower";
+        //fantasyTower.tex = &texturemanager.getTexture("FantasyModern.png");
+        powerTower.tex = &texturemanager.getTexture("Scroll.png");
+    }
+    towers.push_back(powerTower);
 }
 
 void positionSquaddies()
@@ -370,7 +384,7 @@ void debugTileMode()
         currentMap++;
     if(inputState.key[Key::LShift] && inputState.key[Key::LControl] && inputState.key[Key::Left].time == 1)
         currentMap--;
-    std::cout << "Current Map: " << currentMap << std::endl;
+    std::cout << "Current Map: " << currentMap+636 << std::endl;
 
 
 
@@ -2608,7 +2622,7 @@ void renderTowerMenu(baseMenu &menu)
         towerPos.push_back(vInsert);
         vInsert = sf::Vector2f(150,300);
         towerPos.push_back(vInsert);
-        vInsert = sf::Vector2f((-xMinus)+xPart*3,(-yMinus)+yPart);
+        vInsert = sf::Vector2f(150,450);
         towerPos.push_back(vInsert);
         vInsert = sf::Vector2f((-xMinus)+xPart*4,(-yMinus)+yPart);
         towerPos.push_back(vInsert);
@@ -2709,11 +2723,51 @@ void renderTowerMenu(baseMenu &menu)
         //"\n Minions: " + std::to_string(towers[1].minioncount) +
         "\n Target: " + towers[2].bountyTarget +
         "\n Bounty: $" + str(towers[2].bountyPay) +
-        "\n Difficulty: " + std::to_string(towers[1].difficulty);
+        "\n Difficulty: " + std::to_string(towers[2].difficulty);
         sf::Vector2f textPos(towerPos[1].x+50,towerPos[1].y-25);
         shapes.createText(textPos,15,sf::Color::White,textOut,&gvars::hudView);
         shapes.shapes.back().layer = layer+Text;
     }
+
+    int powerTowButt = shapes.createImageButton(towerPos[2],*towers[3].tex,"",0,&gvars::hudView);
+    shapes.shapes.back().layer = layer+Button;
+    if(shapes.shapeClicked(powerTowButt))
+    {
+        menu.toDelete = true;
+        bountytower::pausewaves = true;
+        bountytower::towerLoaded = towers[3].name;
+        bountytower::currentTower = &towers[3];
+        gCtrl.phase = "Lobby";
+        //buildTower(towers[1].name);
+
+        loadMap(towers[3].mapID,0,0,50,50);
+
+        int xview = (96*60)/20;
+        gvars::currentx = xview/2;
+        gvars::currenty = xview/1.4;
+
+        towerTransition();
+
+
+        positionSquaddies();
+
+        playMusic("KerriOverblowEcho.ogg");
+
+    }
+
+    //Draw some info about the thing.
+    {
+        std::string textOut = " Tower: " + towers[3].name +
+        //"\n Minions: " + std::to_string(towers[1].minioncount) +
+        "\n Target: " + towers[3].bountyTarget +
+        "\n Bounty: $" + str(towers[3].bountyPay) +
+        "\n Difficulty: " + std::to_string(towers[3].difficulty);
+        sf::Vector2f textPos(towerPos[2].x+50,towerPos[2].y-25);
+        shapes.createText(textPos,15,sf::Color::White,textOut,&gvars::hudView);
+        shapes.shapes.back().layer = layer+Text;
+    }
+
+
 
 }
 
