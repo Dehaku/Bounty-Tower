@@ -3598,7 +3598,70 @@ int getFloorFactionMemberCount(int floor, std::string faction)
 
 void spawnBoss()
 {
-    Npc boss = *getGlobalCritter("BTRockkid");
+    Npc boss;
+
+    if(bountytower::currentTower->name == "FantasyModern")
+    {
+        boss = *getGlobalCritter("BTRockkid");
+        //Stats
+        boss.level = 10;
+        boss.maxhealth = 10000;
+        boss.health = 10000;
+        boss.name = "The Hardened Criminal";
+        //Equipment
+        Item weaponry = *getGlobalItem("Shotgun");
+        Item ammo = *getGlobalItem("Shell Spread");
+        ammo.amount = 10000;
+        weaponry.internalitems.push_back(ammo);
+
+        boss.inventory.push_back(weaponry);
+        boss.inventory.push_back(weaponry);
+
+        //Skills
+        boss.skills.getSkill("Feral Body")->ranks = 2;
+    }
+
+    if(bountytower::currentTower->name == "Necromancer Tower")
+    {
+        boss = *getGlobalCritter("BTSamurai");
+        //Stats
+        boss.level = 10;
+        boss.maxhealth = 10000;
+        boss.health = 10000;
+        boss.name = "Necromancer Samurai";
+        //Equipment
+        Item weaponry = *getGlobalItem("Sword");
+
+        boss.inventory.push_back(weaponry);
+        boss.inventory.push_back(weaponry);
+
+        //Skills
+        boss.skills.getSkill("Vampirism")->ranks = 5;
+        boss.skills.getSkill("Undead Dread")->ranks = 5;
+        boss.skills.getSkill("Cleave")->ranks = 5;
+    }
+
+    if(bountytower::currentTower->name == "Powerhouse Tower")
+    {
+        boss = *getGlobalCritter("BTPsylin");
+        //Stats
+        boss.level = 10;
+        boss.maxhealth = 10000;
+        boss.health = 10000;
+        boss.name = "Cyborg Mega Dron";
+        //Equipment
+        Item weaponry = *getGlobalItem("Sniper");
+        Item ammo = *getGlobalItem("Bullet Armor Piercing");
+        ammo.amount = 10000;
+        weaponry.internalitems.push_back(ammo);
+
+        boss.inventory.push_back(weaponry);
+
+        //Skills
+        boss.skills.getSkill("Snipe Shot")->ranks = 2;
+        boss.skills.getSkill("Feral Regeneration")->ranks = 5;
+    }
+
 
     boss.isBoss = true;
 
@@ -3620,24 +3683,13 @@ void spawnBoss()
     }
 
     boss.id = gvars::globalid++;
-    boss.level = 10;
-    boss.maxhealth = 10000;
-    boss.health = 10000;
-    boss.name = "The Hardened Criminal";
+
 
 
     boss.faction = "Towerlings";
     boss.factionPtr = &listAt(uniFact,2);
 
-    Item weaponry = *getGlobalItem("Shotgun");
-    Item ammo = *getGlobalItem("Shell Spread");
-    ammo.amount = 10000;
-    weaponry.internalitems.push_back(ammo);
 
-    boss.inventory.push_back(weaponry);
-    boss.inventory.push_back(weaponry);
-
-    boss.skills.getSkill("Feral Body")->ranks = 2;
 
     npclist.push_back(boss);
 }
