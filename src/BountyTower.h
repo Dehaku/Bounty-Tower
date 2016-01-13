@@ -102,6 +102,8 @@ public:
 
 void bountyBrain(Npc &npc, std::list<Npc> &container);
 
+void setTileImages(std::string towerName);
+
 StatusAspect generateRandomStatusAspectConditionOnce(int rankNum);
 StatusAspect generateRandomStatusAspectConditionConstant(int rankNum);
 StatusAspect generateRandomStatusAspectConstant(int rankNum);

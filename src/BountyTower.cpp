@@ -504,6 +504,7 @@ void towerTransition()
     resetPathingController();
 
 
+
     for(auto &npc : npclist)
     {
         npc.storedPath.clear();
@@ -588,6 +589,7 @@ void towerMenu()
         gvars::currenty = xview/1.4;
 
         towerTransition();
+
 
 
         positionSquaddies();
@@ -2671,6 +2673,7 @@ void renderTowerMenu(baseMenu &menu)
         gvars::currenty = xview/1.4;
 
         towerTransition();
+        setTileImages(towers[1].name);
 
 
         positionSquaddies();
@@ -2709,6 +2712,7 @@ void renderTowerMenu(baseMenu &menu)
         gvars::currenty = xview/1.4;
 
         towerTransition();
+        setTileImages(towers[2].name);
 
 
         positionSquaddies();
@@ -2747,6 +2751,7 @@ void renderTowerMenu(baseMenu &menu)
         gvars::currenty = xview/1.4;
 
         towerTransition();
+        setTileImages(towers[3].name);
 
 
         positionSquaddies();
@@ -4993,18 +4998,19 @@ void enchantGlow()
 
 void setTileImages(std::string towerName)
 {
+    std::cout << "Looking for " + towerName + " tiles. \n";
     for(int x = 0; x != GRIDS; x++)
         for(int y = 0; y != GRIDS; y++)
             for(int z = 0; z != CHUNK_SIZE; z++)
     {
         if(tiles[x][y][z].id == 3007)
-        {
-            tiles[x][y][z].img.setTexture(texturemanager.getTexture("FanWall1.png"));
-        }
+            tiles[x][y][z].img.setTexture(texturemanager.getTexture(towerName+"Floor"+str(randz(1,3))+".png"));
         else if(tiles[x][y][z].id == 2010)
-        {
-            tiles[x][y][z].img.setTexture(texturemanager.getTexture("FanFloor.png"));
-        }
+            tiles[x][y][z].img.setTexture(texturemanager.getTexture(towerName+"Wall.png"));
+        else if(tiles[x][y][z].id == 2012)
+            tiles[x][y][z].img.setTexture(texturemanager.getTexture(towerName+"WallBreakable.png"));
+
+
     }
 
 
@@ -5038,7 +5044,7 @@ void bountyTowerLoop()
 
     if(inputState.key[Key::F3])
     {
-        setTileImages("New Tower");
+        setTileImages("Necromancer");
     }
 
 

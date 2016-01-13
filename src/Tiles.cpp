@@ -1388,22 +1388,22 @@ void Tile::BTstone()
     walkable = true;
     int rannum = randz(1,3);
     if(rannum == 1)
-        img.setTexture(texturemanager.getTexture("FMTtile1.png"));
+        img.setTexture(texturemanager.getTexture("FantasyModernFloor1.png"));
     if(rannum == 2)
-        img.setTexture(texturemanager.getTexture("FMTtile2.png"));
+        img.setTexture(texturemanager.getTexture("FantasyModernFloor2.png"));
     /*
     if(rannum == 3)
         img.setTexture(texturemanager.getTexture("FMTtile3.png"));
     */
     if(rannum == 3)
-        img.setTexture(texturemanager.getTexture("FMTtile4.png"));
+        img.setTexture(texturemanager.getTexture("FantasyModernFloor3.png"));
 }
 
 void Tile::BTwall()
 { // 2010
     id = 2010;
     worldColor = sf::Color(100, 100, 100);
-    img.setTexture(texturemanager.getTexture("FMTwallcheat2.png"));
+    img.setTexture(texturemanager.getTexture("FantasyModernWall.png"));
     transparent = false;
     health = 200;
     deathID = 1007;
@@ -1414,7 +1414,7 @@ void Tile::BTwallFake()
 { // 2012
     id = 2012;
     worldColor = sf::Color(100, 100, 100);
-    img.setTexture(texturemanager.getTexture("FMTwallcheat.png"));
+    img.setTexture(texturemanager.getTexture("FantasyModernWallBreakable.png"));
     transparent = false;
     health = 10;
     deathID = 3007;
