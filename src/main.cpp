@@ -4459,7 +4459,7 @@ int weightChance()
 
 void pauseMenu()
 {
-
+    return;
 
     if(inputState.key[Key::R].time == 1)
     {

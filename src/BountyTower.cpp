@@ -159,6 +159,21 @@ void setupTowers()
         fantasyTower.tex = &texturemanager.getTexture("Scroll.png");
     }
     towers.push_back(fantasyTower);
+
+    //Build the necromancer tower.
+    Tower necroTower;
+    {
+        necroTower.mapID = 637;
+        necroTower.bountyPay = 5000;
+        necroTower.bountyTarget = "Necromancer, Dabbles in Swordsmanship";
+        necroTower.floors = 5;
+        necroTower.difficulty = 10;
+        necroTower.minioncount = 400;
+        necroTower.name = "Necromancer Tower";
+        //fantasyTower.tex = &texturemanager.getTexture("FantasyModern.png");
+        necroTower.tex = &texturemanager.getTexture("Scroll.png");
+    }
+    towers.push_back(necroTower);
 }
 
 void positionSquaddies()
@@ -345,6 +360,20 @@ void debugTileMode()
         << std::endl;
     }
 
+    static int currentMap = 0;
+    if(currentMap < 0)
+        currentMap = 0;
+    if(currentMap > 15)
+        currentMap = 15;
+
+    if(inputState.key[Key::LShift] && inputState.key[Key::LControl] && inputState.key[Key::Right].time == 1)
+        currentMap++;
+    if(inputState.key[Key::LShift] && inputState.key[Key::LControl] && inputState.key[Key::Left].time == 1)
+        currentMap--;
+    std::cout << "Current Map: " << currentMap << std::endl;
+
+
+
     if(inputState.key[Key::LShift] && inputState.key[Key::LControl] && inputState.key[Key::O])
     { // Saves map
         if(inputState.key[Key::O].time == 30)
@@ -360,7 +389,7 @@ void debugTileMode()
         }
         if(inputState.key[Key::O].time == 300)
         {
-            saveMap(636,0,0,50,50);
+            saveMap(636+currentMap,0,0,50,50);
             soundmanager.playSound("Startup.wav");
             std::string outPut = "The current map has been saved! \n";
             std::cout << outPut;
@@ -384,7 +413,7 @@ void debugTileMode()
         if(inputState.key[Key::P].time == 300)
         {
             tileWipe();
-            loadMap(636,0,0,50,50);
+            loadMap(636+currentMap,0,0,50,50);
             soundmanager.playSound("Startup.wav");
             std::string outPut = "The current map has been loaded! \n";
             std::cout << outPut;
@@ -2577,7 +2606,7 @@ void renderTowerMenu(baseMenu &menu)
         sf::Vector2f vInsert;
         vInsert = sf::Vector2f(150,150);
         towerPos.push_back(vInsert);
-        vInsert = sf::Vector2f((-xMinus)+xPart*2,(-yMinus)+yPart);
+        vInsert = sf::Vector2f(150,300);
         towerPos.push_back(vInsert);
         vInsert = sf::Vector2f((-xMinus)+xPart*3,(-yMinus)+yPart);
         towerPos.push_back(vInsert);
@@ -2648,7 +2677,43 @@ void renderTowerMenu(baseMenu &menu)
         shapes.shapes.back().layer = layer+Text;
     }
 
+    int necroTowButt = shapes.createImageButton(towerPos[1],*towers[2].tex,"",0,&gvars::hudView);
+    shapes.shapes.back().layer = layer+Button;
+    if(shapes.shapeClicked(necroTowButt))
+    {
+        menu.toDelete = true;
+        bountytower::pausewaves = true;
+        bountytower::towerLoaded = towers[2].name;
+        bountytower::currentTower = &towers[2];
+        gCtrl.phase = "Lobby";
+        //buildTower(towers[1].name);
 
+        loadMap(towers[2].mapID,0,0,50,50);
+
+        int xview = (96*60)/20;
+        gvars::currentx = xview/2;
+        gvars::currenty = xview/1.4;
+
+        towerTransition();
+
+
+        positionSquaddies();
+
+        playMusic("KerriOverblowEcho.ogg");
+
+    }
+
+    //Draw some info about the thing.
+    {
+        std::string textOut = " Tower: " + towers[2].name +
+        //"\n Minions: " + std::to_string(towers[1].minioncount) +
+        "\n Target: " + towers[2].bountyTarget +
+        "\n Bounty: $" + str(towers[2].bountyPay) +
+        "\n Difficulty: " + std::to_string(towers[1].difficulty);
+        sf::Vector2f textPos(towerPos[1].x+50,towerPos[1].y-25);
+        shapes.createText(textPos,15,sf::Color::White,textOut,&gvars::hudView);
+        shapes.shapes.back().layer = layer+Text;
+    }
 
 }
 
@@ -5027,7 +5092,7 @@ void bountyTowerLoop()
     }
 
 
-    if(inputState.key[Key::T].time == 1 && inputState.key[Key::LShift])
+    if(inputState.key[Key::T].time == 10 && inputState.key[Key::LShift])
     {
         Npc boss = *getGlobalCritter("BTRockkid");
         boss.xpos = gvars::mousePos.x;
@@ -5056,6 +5121,8 @@ void bountyTowerLoop()
 
     drawMenus();
 
+    if(inputState.key[Key::LShift] && inputState.key[Key::LControl] && inputState.key[Key::T].time == 1)
+        toggle(gvars::tileEdit);
 
     if(gvars::tileEdit)
     {
