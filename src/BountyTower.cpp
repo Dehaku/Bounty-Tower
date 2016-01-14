@@ -3930,6 +3930,21 @@ void spawnEnemies()
         member.id = gvars::globalid++;
         member.level = getFloorDifficulty(gvars::currentz,bountytower::currentTower->floors,bountytower::currentTower->difficulty);
 
+        { // Skills.
+            int totalCount = member.level; // We copy the number seperately so we can keep iterating later on in case of a max skill.
+            for(int i = 0; i != totalCount; i++)
+            {
+                int randomSkill = randz(0,member.skills.list.size()-1);
+                Skill & npcSkill = listAt(member.skills.list,randomSkill);
+                if(npcSkill.ranks >= npcSkill.ranksmax)
+                { // Max skill detected, Looping once more instead.
+                    totalCount++;
+                    continue;
+                }
+                npcSkill.ranks++;
+            }
+        }
+
         member.attributes.randomizeAttributes();
 
         member.health = member.getMaxHealth();
