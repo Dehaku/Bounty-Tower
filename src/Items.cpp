@@ -1508,6 +1508,16 @@ void explosion(Vec3f vPos, int radius, float damage, Npc *attacker, std::vector<
             }
         }
 
+    for(int x = 0; x != GRIDS; x++)
+        for(int y = 0; y != GRIDS; y++)
+    {
+        if(tiles[x][y][gvars::currentz].id == 2012)
+            if(math::closeish(vPos.x,vPos.y,x*GRID_SIZE,y*GRID_SIZE) <= radius)
+            {
+                tiles[x][y][gvars::currentz].BTstone();
+            }
+
+    }
 }
 
 
