@@ -1116,12 +1116,27 @@ std::string Item::activate(Vec3f vPos) // Returns a string declaring the problem
                     Struck = true;
                 }
 
+                Skill * hamstringSkill = user->skills.getSkill("Hamstring");
+                if(hamstringSkill == nullptr)
+                {
+
+                }
+                else if(hamstringSkill->ranks > 0 && hamstringSkill->cooldown <= 0 && hamstringSkill->autouse && atkStatus == "Hit")
+                {
+                    hamstringSkill->cooldown = hamstringSkill->cooldownint;
+                    StatusEffect hamStatus = globalStatusEffects.getStatusEffect("Hamstring");
+                    hamStatus.duration = 600*hamstringSkill->ranks;
+                    npc.statusEffects.push_back(hamStatus);
+
+
+                }
 
                 Skill * cleave = user->skills.getSkill("Cleave");
                 if(cleave == nullptr)
-                    continue;
+                {
 
-                if(cleave->ranks > 0 && cleave->cooldown <= 0 && cleave->autouse)
+                }
+                else if(cleave->ranks > 0 && cleave->cooldown <= 0 && cleave->autouse)
                 {
                     cleave->cooldown = cleave->cooldownint;
 
@@ -1157,6 +1172,8 @@ std::string Item::activate(Vec3f vPos) // Returns a string declaring the problem
                         }
                     }
                 }
+
+
             }
         }
 

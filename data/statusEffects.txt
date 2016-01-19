@@ -24,6 +24,8 @@ OverlayImage, filename.png, If this is added to a status effect, the image will 
 [Name:Haste][Rank:Alpha][Duration:3600][Aspect:MoveSpeed:3]
 [Name:Frozen][Rank:Alpha][Duration:300][OverlayImage:Frozen.png][Aspect:Freeze:300]
 [Name:Asleep][Rank:Alpha][Duration:600][Aspect:Sleep:1]
+[Name:Hamstring][Rank:Alpha][Duration:600][Aspect:MoveSpeed:-30]
+[Name:Stun][Rank:Alpha][Duration:60][Aspect:Stun:1]
 [Name:Thorns][Rank:Alpha][Duration:1800][Aspect:Thorns:25:Pierce]
 [Name:Fire Immunity][Rank:Alpha][Duration:3600][Aspect:Immunity:1:Fire]
 [Name:Magic Find][Rank:Alpha][Duration:3600][Aspect:ItemDropRate:100]

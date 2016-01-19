@@ -34,8 +34,15 @@ Skills::Skills()
 
     skill.name = "Sunder";
     skill.desc = "Passive - 20% chance per rank to destroy an opponents held weapon, "
-    "\n Max ranks causes the item to be dropped on the floor. (Does not work on Bosses)";
+    "\n(Does not work on Bosses)";
+    skill.level = 1;
     skill.active = false;
+    list.push_back(skill);
+
+    skill.name = "Hamstring";
+    skill.desc = "Active - Perform an attack that immobalizes the target for ten seconds per rank.";
+    skill.level = 1;
+    skill.active = true;
     list.push_back(skill);
 
 
@@ -469,15 +476,13 @@ Skills::Skills()
     skill.active = false;
     list.push_back(skill);
 
+
+
+    /*
+
     skill.name = "Redirection";
     skill.desc = "Passive - Automatically reflect a projectile back where it came from, once every (30 - ranks) seconds.";
     skill.level = 0;
-    skill.active = false;
-    list.push_back(skill);
-
-    /*
-    skill.name = "Perfect Health";
-    skill.desc = "Passive - Gain 10% base health per rank.";
     skill.active = false;
     list.push_back(skill);
 
