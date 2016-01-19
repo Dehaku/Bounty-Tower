@@ -1040,10 +1040,94 @@ void craftAmmo(Npc &npc, std::list<Npc> &container)
     }
 }
 
+void placeExplosive(Npc &npc, std::list<Npc> &container)
+{
+    skillKeepInfo * sKI;
+    sKI = getSkillKeep();
+    if(sKI != nullptr && sKI->user->id == npc.id && sKI->skillName == "Explosives Construction")
+    {
+        Skill * turretSkill = npc.skills.getSkill("Explosives Construction");
+        if(turretSkill != nullptr && turretSkill->ranks > 0 && turretSkill->cooldown <= 0)
+        {
+            int sX = (abs_to_index(sKI->usePos.x/GRID_SIZE)*GRID_SIZE);
+            int sY = (abs_to_index(sKI->usePos.y/GRID_SIZE)*GRID_SIZE);
+            int eX = (abs_to_index(sKI->usePos.x/GRID_SIZE)*GRID_SIZE)+(GRID_SIZE);
+            int eY = (abs_to_index(sKI->usePos.y/GRID_SIZE)*GRID_SIZE)+(GRID_SIZE);
+
+
+
+            int scrapCost = 30;
+            int buildDist = math::closeish(npc.getPos2d(),sKI->usePos);
+            bool canBuild = false;
+            bool tileBuildable = false;
+            bool enoughScrap = false;
+            Item * scrapPtr = nullptr;
+
+            for(auto &item : npc.inventory)
+            {
+                if(item.name == "Scrap" && item.amount >= scrapCost)
+                {
+                    enoughScrap = true;
+                    scrapPtr = &item;
+                }
+            }
+
+            if(enoughScrap)
+                textList.createText(sf::Vector2f(sKI->usePos.x,sKI->usePos.y+10),15,sf::Color::Cyan,std::to_string(scrapCost) + " Scrap Required");
+            else
+                textList.createText(sf::Vector2f(sKI->usePos.x,sKI->usePos.y+10),15,sf::Color::Red,std::to_string(scrapCost) + " Scrap Required");
+
+
+
+            if(isInBounds(sKI->usePos) && tiles[abs_to_index(sKI->usePos.x/GRID_SIZE)][abs_to_index(sKI->usePos.y/GRID_SIZE)][gvars::currentz].walkable)
+                tileBuildable = true;
+
+            if(buildDist <= 120 && tileBuildable && enoughScrap)
+            {
+                canBuild = true;
+                shapes.createSquare(sX,sY,eX,eY,sf::Color::Transparent,1,sf::Color::Cyan);
+                shapes.createCircle(npc.xpos,npc.ypos,120,sf::Color::Transparent,1,sf::Color::Cyan);
+            }
+            else
+            {
+                shapes.createSquare(sX,sY,eX,eY,sf::Color::Transparent,1,sf::Color::Red);
+                shapes.createCircle(npc.xpos,npc.ypos,120,sf::Color::Transparent,1,sf::Color::Red);
+            }
+
+
+            if(inputState.lmbTime == 1 && canBuild)
+            {
+                turretSkill->cooldown = turretSkill->cooldownint;
+
+                if(scrapPtr != nullptr)
+                {
+                    scrapPtr->amount -= scrapCost;
+                    if(scrapPtr->amount <= 0)
+                        scrapPtr->remove();
+                }
+
+
+                Npc turret = *getGlobalCritter("BTTurret");
+                turret.xpos = sX+(GRID_SIZE/2);
+                turret.ypos = sY+(GRID_SIZE/2);
+                turret.zpos = npc.zpos;
+                turret.name = "Da Bomb";
+                turret.maxhealth = 1;
+                turret.health = 1;
+                turret.tags.append("[DeleteOnDeath:1]");
+
+                turret.statusEffects.push_back(globalStatusEffects.getStatusEffect("Bomb Skill Explosion"));
+
+                npclist.push_back(turret);
+            }
+        }
+    }
+}
 void activeSkills(Npc &npc, std::list<Npc> &container)
 {
     buildTurret(npc,container);
     craftAmmo(npc,container);
+    placeExplosive(npc,container);
 }
 
 void workDesire(Npc &npc, std::list<Npc> &container, Vec3 &endPos, bool &hasPath, bool &inComplete, Desire * highestDesire )
@@ -2804,7 +2888,8 @@ std::string Npc::onDeath(Npc *attacker, Item *weapon, float amount, int damageTy
         img.setTexture(texturemanager.getTexture("MeatCorpsev2.png"));
     }
 
-
+    if(tags.find("[DeleteOnDeath:1]") != std::string::npos)
+        toDelete = true;
     return "";
 }
 

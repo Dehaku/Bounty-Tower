@@ -311,6 +311,15 @@ Skills::Skills()
     skill.autouse = true;
     list.push_back(skill);
 
+    skill.name = "Explosives Construction";
+    skill.desc = "Active - For 30 scrap, You can place an active timebomb that will blow up in ten seconds. \n Great at finding secrets.";
+    skill.level = 1;
+    skill.ranksmax = 1;
+    skill.active = true;
+    skill.autouse = false;
+    list.push_back(skill);
+    skill.ranksmax = 5;
+
     skill.name = "Explosive Deconstruction";
     skill.ranksmax = 1;
     skill.desc = "Passive - Upon constructions death, detonates with a scaled explosion based on \nconstructions health and cost.";
