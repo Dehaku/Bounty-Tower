@@ -3124,6 +3124,29 @@ std::string Npc::dealDamage(Npc *victim, Item *weapon, float amount, int damageT
         }
     }
 
+    if(weapon != nullptr && weapon->type == 1 && outPut == "Hit" && victim->isBoss == false)
+    { // Sunder Skill
+        Skill * sunderSkill = skills.getSkill("Sunder");
+        if(sunderSkill != nullptr && sunderSkill->ranks > 0)
+        {
+            int sunderOdds = random(0,100);
+            if(sunderOdds < (sunderSkill->ranks * 20))
+            {
+                Item * victimWeapon = victim->getLeftHandItem();
+                if(victimWeapon == nullptr)
+                    victimWeapon = victim->getRightHandItem();
+                if(victimWeapon == nullptr)
+                {
+
+                }
+                else
+                {
+                    victimWeapon->remove();
+                }
+            }
+        }
+    }
+
     if(outPut == "Hit")
     {
         return outPut;
