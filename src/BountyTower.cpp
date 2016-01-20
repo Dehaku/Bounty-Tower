@@ -4048,10 +4048,27 @@ void spawnEnemies()
 
         RandomWeightList RandomEnemy;
         RandomEnemy.addEntry("BTBlankBody",10000);
-        RandomEnemy.addEntry("BTOgre",2500);
-        RandomEnemy.addEntry("BTArmoredOgre",1000);
-        RandomEnemy.addEntry("BTGoblin",10000);
-        RandomEnemy.addEntry("BTSkeleton",2500);
+        if(bountytower::currentTower->name == "FantasyModern")
+        {
+            RandomEnemy.addEntry("BTOgre",2500);
+            RandomEnemy.addEntry("BTArmoredOgre",1000);
+            RandomEnemy.addEntry("BTGoblin",10000);
+        }
+        if(bountytower::currentTower->name == "Necromancer Tower")
+        {
+            RandomEnemy.addEntry("BTSkeleton",2500);
+            RandomEnemy.addEntry("BTSkeletonArmored",1000);
+            RandomEnemy.addEntry("BTRat",5000);
+        }
+        if(bountytower::currentTower->name == "Powerhouse Tower")
+        {
+            RandomEnemy.addEntry("BTSimpleRobot",2500);
+            RandomEnemy.addEntry("BTDroneHover",1000);
+            RandomEnemy.addEntry("BTDroneSpider",2500);
+            RandomEnemy.addEntry("BTDroneTank",100);
+        }
+
+
         member = *getGlobalCritter(RandomEnemy.getRandomName());
 
         //member = *getGlobalCritter("BTBlankBody");
@@ -4159,10 +4176,14 @@ void spawnEnemies()
 
         */
 
-        if(random(1,5) == 1)
-            member.tags.append("[WearsBoots:1]");
-        if(random(1,5) == 1)
-            member.tags.append("[WearsGloves:1]");
+        if(member.tags.find("Humanoid:1") != std::string::npos)
+        {
+            if(random(1,5) == 1)
+                member.tags.append("[WearsBoots:1]");
+            if(random(1,5) == 1)
+                member.tags.append("[WearsGloves:1]");
+        }
+
 
         std::cout << "Member: " << member.id;
         printItems(member.inventory);
