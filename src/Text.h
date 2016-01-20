@@ -56,7 +56,7 @@ public:
 
     std::vector<ChatLine> chatStorage;
 
-    void addChat(std::string text, sf::Color color);
+    void addChat(std::string text, sf::Color color = sf::Color::White);
 
     void displayChat(sf::Vector2f position);
 };

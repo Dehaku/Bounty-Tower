@@ -131,4 +131,6 @@ namespace bountytower
 
 extern std::vector<Tower> towers;
 
+void loadTavern();
+
 #endif // BOUNTYTOWER_H_INCLUDED

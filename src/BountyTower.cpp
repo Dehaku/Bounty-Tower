@@ -324,7 +324,7 @@ void generateHiddenGoodies()
     for(int x = 0; x != GRIDS; x++)
         for(int y = 0; y != GRIDS; y++)
             if(tiles[x][y][gvars::currentz].id == 3750)
-                if(random(1,4) > 1)
+                if(random(1,2) == 1)
     {
         //tiles[x][y][gvars::currentz].BTstone();
         int xPos = (x * GRID_SIZE) + GRID_SIZE/2;
@@ -337,7 +337,7 @@ void generateHiddenGoodies()
         RandomWeightList goodieType;
         goodieType.addEntry("Cash",1000);
         goodieType.addEntry("Equipment",1000);
-        goodieType.addEntry("Event",1000);
+        goodieType.addEntry("Event",10);
 
         std::string goodie = goodieType.getRandomName();
 
@@ -2971,6 +2971,15 @@ void renderEscapeMenu(baseMenu &menu)
     textList.createText(exitPos,9,sf::Color::White,"Save Game",gvars::hudView);
     shapes.shapes.back().layer = 15075;
 
+    exitPos.x += 31;
+    exitPos.y -= 40;
+
+    int homeGameButt = shapes.createImageButton(exitPos,texturemanager.getTexture("blankButton.png"),"",0,&gvars::hudView);
+    shapes.shapes.back().layer = 15050;
+    exitPos.x -= 31;
+    textList.createText(exitPos,9,sf::Color::White,"Return Home",gvars::hudView);
+    shapes.shapes.back().layer = 15075;
+
 
 
     //Warning, the increase and decrease resolution buttons are backwards, since the videomode put the highest res in first, and the smallest last.
@@ -3031,6 +3040,16 @@ void renderEscapeMenu(baseMenu &menu)
     {
         saveGame("Profile1");
         soundmanager.playSound("Startup.wav");
+    }
+
+    if(menu.age > 30 && shapes.shapeClicked(homeGameButt))
+    {
+        chatBox.addChat("Weren't up to the task, I see.");
+        chatBox.addChat("Your next performance better be interesting!");
+        saveGame("Profile1");
+        soundmanager.playSound("Startup.wav");
+        loadTavern();
+        menu.toDelete = true;
     }
 
 
@@ -3821,6 +3840,7 @@ void clearSlots(Npc &npc)
 void loadTavern()
 {
     recruitables.clear();
+    worlditems.clear();
     towerTransition();
 
     gvars::currentz = 1;
@@ -4555,8 +4575,8 @@ void layHints()
                     textPos = sf::Vector2f(textPos.x+20,textPos.y-10);
                     textPos = sf::Vector2f(textPos.x+10,textPos.y+10);
                     shapes.createSquare(textPos.x-5,textPos.y,textPos.x+800,textPos.y+40,sf::Color::Black,3,sf::Color::Cyan);
-                    shapes.createText(textPos,15,sf::Color::Red,"Using the elevator from here will return you to the tavern. \n"
-                                                                "Are you up to the challenge, or are you a blank body coward?!");
+                    shapes.createText(textPos,15,sf::Color::Red,"At any time you can use the escape menu to return to the tavern. \n"
+                                                                "The boss is right there though, You wouldn't disappoint me, Right?");
                     shapes.shapes.back().layer += 1;
                 }
             }
