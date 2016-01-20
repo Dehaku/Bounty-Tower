@@ -4068,8 +4068,36 @@ void spawnEnemies()
             RandomEnemy.addEntry("BTDroneTank",100);
         }
 
+        std::string chosenRace = RandomEnemy.getRandomName();
+        member = *getGlobalCritter(chosenRace);
 
-        member = *getGlobalCritter(RandomEnemy.getRandomName());
+        { // Status Effects/Templates
+            StatusEffect status;
+            status.duration = 1000000000;
+            if(chosenRace == "BTSkeleton" || chosenRace == "BTSkeletonArmored")
+            {
+                status.name = "Skeleton Template";
+                status.addAspect(StatusAspect::Armor,75,"Pierce");
+                status.addAspect(StatusAspect::Armor,200,"Energy");
+                status.addAspect(StatusAspect::Armor,100,"Poison");
+                status.addAspect(StatusAspect::Armor,100,"Cold");
+            }
+            if(chosenRace == "BTSkeletonArmored" || chosenRace == "BTArmoredOgre")
+            {
+                status.addAspect(StatusAspect::Armor,50,"Blunt");
+            }
+
+            if(chosenRace == "BTDroneHover" || chosenRace == "BTDroneSpider" || chosenRace == "BTDroneTank" || chosenRace == "BTSimpleRobot")
+            {
+                status.name = "Drone Template";
+                status.addAspect(StatusAspect::Armor,-100,"Electricity");
+                status.addAspect(StatusAspect::Armor,50,"Pierce");
+                status.addAspect(StatusAspect::ConditionOnDeath,1,"");
+                status.addAspect(StatusAspect::CauseExplosion,100,"");
+
+            }
+            member.statusEffects.push_back(status);
+        }
 
         //member = *getGlobalCritter("BTBlankBody");
         debug("X");
