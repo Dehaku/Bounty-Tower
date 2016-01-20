@@ -1508,6 +1508,14 @@ void Tile::BTswitch()
     workProgress = 0;
 }
 
+void Tile::BTgoodietile()
+{ // 3750
+    id = 3750;
+    worldColor = sf::Color(150, 0, 0);
+    img.setTexture(texturemanager.getTexture("BTGoodieTile.png"));
+    transparent = true;
+    walkable = true;
+}
 
 
 void Tile::BTsky()
@@ -1571,6 +1579,9 @@ void Tile::setTilebyID(int ID)
         BTswitch();
     else if(ID == 2700)
         BTsky();
+    else if(ID == 3750)
+        BTgoodietile();
+
 
 
     else

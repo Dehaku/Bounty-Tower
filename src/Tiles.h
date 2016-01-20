@@ -92,6 +92,7 @@ public:
     void BTswitch();
     void setTilebyID(int ID);
     void teleportPad(Vec3 teleportPosition);
+    void BTgoodietile();
     Tile();
 };
 

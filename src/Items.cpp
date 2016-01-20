@@ -1443,7 +1443,7 @@ void explosion(Vec3f vPos, int radius, float damage, Npc *attacker, std::vector<
 
     screenShake(5);
 
-    if(victims != nullptr)
+    if(victims != nullptr) // TODO: Add a vision/wall check so you can hide behind walls from explosions.
         for(auto &i : *victims)
         {
             int distance = math::distance(i->getPos(),vPos);

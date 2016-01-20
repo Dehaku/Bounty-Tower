@@ -319,6 +319,121 @@ void tileWipe()
     }
 }
 
+void generateHiddenGoodies()
+{
+    for(int x = 0; x != GRIDS; x++)
+        for(int y = 0; y != GRIDS; y++)
+            if(tiles[x][y][gvars::currentz].id == 3750)
+                if(random(1,4) > 1)
+    {
+        //tiles[x][y][gvars::currentz].BTstone();
+        int xPos = (x * GRID_SIZE) + GRID_SIZE/2;
+        int yPos = (y * GRID_SIZE) + GRID_SIZE/2;
+        int zPos = gvars::currentz * GRID_SIZE;
+
+        int difficulty = bountytower::currentTower->difficulty;
+
+
+        RandomWeightList goodieType;
+        goodieType.addEntry("Cash",1000);
+        goodieType.addEntry("Equipment",1000);
+        goodieType.addEntry("Event",1000);
+
+        std::string goodie = goodieType.getRandomName();
+
+        if(goodie == "Cash")
+        {
+            int cashAmount = random(0,5);
+            for(int i = 0; i != cashAmount; i++)
+            {
+                Item cash = *getGlobalItem("Cash");
+                cash.xpos = xPos+random(0,30);
+                cash.ypos = yPos+random(0,30);
+                cash.zpos = zPos;
+
+                cash.amount = random(10*difficulty,100*difficulty);
+                worlditems.push_back(cash);
+            }
+        }
+        else if(goodie == "Equipment")
+        {
+
+            RandomWeightList equipmentSet;
+            equipmentSet.addEntry("Melee",100);
+            equipmentSet.addEntry("Ranged",50);
+            equipmentSet.addEntry("Charm",10);
+
+            Item lootItem = generateRandomItem(equipmentSet);
+
+            RandomWeightList rankList;
+            {
+                rankList.addEntry("Alpha",0);
+                rankList.addEntry("Beta",100000);
+                rankList.addEntry("Gamma",10000);
+                rankList.addEntry("Delta",1000);
+                rankList.addEntry("Epsilon",100);
+                rankList.addEntry("Zeta",10);
+                rankList.addEntry("Eta",1);
+            }
+
+            StatusEffect status = generateRandomStatusEffect(rankList);
+            status.duration = 1;
+            lootItem.statusEffects.push_back(status);
+            status = generateRandomStatusEffect(rankList);
+            status.duration = 180;
+            lootItem.statusEffectsInflict.push_back(status);
+
+            if(lootItem.name == "Charm")
+            {
+                lootItem.statusEffects.clear();
+                lootItem.statusEffectsInflict.clear();
+
+                status = generateRandomStatusEffect(rankList);
+                StatusEffect charmStatus;
+
+                int randomSlot = rankList.getRandomSlot();
+                con("Rolled: " + str(randomSlot) );
+                con("Slots: " + std::to_string(rankList.entries.size()));
+                charmStatus.rank = rankList.entries[randomSlot].name;
+                charmStatus.aspects.push_back(generateRandomStatusAspectConstant(randomSlot));
+
+                charmStatus.name = charmStatus.rank + " Chaos " + generateName(2,3);
+                charmStatus.duration = 1;
+
+                status.duration = 1;
+                lootItem.statusEffectsCarried.push_back(charmStatus);
+            }
+
+            lootItem.xpos = xPos+random(0,30);
+            lootItem.ypos = yPos+random(0,30);
+            lootItem.zpos = zPos;
+
+            worlditems.push_back(lootItem);
+        }
+        else if(goodie == "Event")
+        {
+            Npc spawn;
+            spawn = *getGlobalCritter("BTInfider");
+            spawn.xpos = xPos;
+            spawn.ypos = yPos;
+            spawn.zpos = zPos;
+
+            spawn.faction = "Wild";
+            for(auto &faction : uniFact)
+                if(faction.name == spawn.faction)
+                    spawn.factionPtr = &faction;
+            Item naturalWeapon = *getGlobalItem("Baton");
+            for(auto &globalStatus : globalStatusEffects.statusEffects)
+                if(spawn.tags.find(globalStatus.name) != std::string::npos)
+                    naturalWeapon.statusEffectsInflict.push_back(globalStatusEffects.getStatusEffect(globalStatus.name));
+            spawn.inventory.push_back(naturalWeapon);
+
+            npclist.push_back(spawn);
+        }
+
+    }
+}
+
 void debugTileMode()
 {
     int menuEdgeL = gvars::centerScreen.x+300;
@@ -443,15 +558,15 @@ void debugTileMode()
     }
     */
 
-    int wallButt = shapes.createImageButton(sf::Vector2f(menuEdgeL+30,menuEdgeU+30),texturemanager.getTexture("FMTwallcheat2.png"));
+    int wallButt = shapes.createImageButton(sf::Vector2f(menuEdgeL+30,menuEdgeU+30),texturemanager.getTexture("FantasyModernWall.png"));
     if(shapes.shapeClicked(wallButt))
         debugTileKeeper.useTile.BTwall();
 
-    int floorButt = shapes.createImageButton(sf::Vector2f(menuEdgeL+90,menuEdgeU+30),texturemanager.getTexture("FMTtile1.png"));
+    int floorButt = shapes.createImageButton(sf::Vector2f(menuEdgeL+90,menuEdgeU+30),texturemanager.getTexture("FantasyModernFloor1.png"));
     if(shapes.shapeClicked(floorButt))
         debugTileKeeper.useTile.BTstone();
 
-    int fakewallButt = shapes.createImageButton(sf::Vector2f(menuEdgeL+30+60+60,menuEdgeU+30),texturemanager.getTexture("FMTwallcheat.png"));
+    int fakewallButt = shapes.createImageButton(sf::Vector2f(menuEdgeL+30+60+60,menuEdgeU+30),texturemanager.getTexture("FantasyModernWallBreakable.png"));
     if(shapes.shapeClicked(fakewallButt))
         debugTileKeeper.useTile.BTwallFake();
 
@@ -470,7 +585,7 @@ void debugTileMode()
     if(shapes.shapeClicked(switchButt))
         debugTileKeeper.useTile.BTswitch();
 
-    int stairButt = shapes.createImageButton(sf::Vector2f(menuEdgeL+30+60,menuEdgeU+30+60+60),texturemanager.getTexture("Stairs.png"));
+    int stairButt = shapes.createImageButton(sf::Vector2f(menuEdgeL+30+60,menuEdgeU+30+60+60),texturemanager.getTexture("CautionTile.png"));
     if(shapes.shapeClicked(stairButt))
         debugTileKeeper.useTile.BTstairs();
 
@@ -490,8 +605,9 @@ void debugTileMode()
     if(shapes.shapeClicked(bossrugButt))
         debugTileKeeper.useTile.BTbossrug();
 
-
-
+    int goodietileButt = shapes.createImageButton(sf::Vector2f(menuEdgeL+30+60+60+60,menuEdgeU+30+60+60+60+60),texturemanager.getTexture("BTGoodieTile.png"));
+    if(shapes.shapeClicked(goodietileButt))
+        debugTileKeeper.useTile.BTgoodietile();
 
 }
 
@@ -517,7 +633,7 @@ void towerTransition()
         if(!npc.isSquaddie)
             npc.toDelete = true;
     }
-
+    generateHiddenGoodies();
 }
 
 void towerMenu()
@@ -4525,6 +4641,8 @@ void debugTeleportSquaddies(Vec3 telePos)
     }
 }
 
+
+
 void useElevator()
 {
     chatBox.addChat("You progress to the next floor!", sf::Color::Blue);
@@ -4541,6 +4659,7 @@ void useElevator()
     AnyDeletes(worlditems);
     setupSquadHotKeySelection();
     saveGame("Profile1");
+    generateHiddenGoodies();
 }
 
 void checkFloorCleared()
