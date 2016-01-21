@@ -2617,7 +2617,7 @@ void renderRecruiterMenu(baseMenu &menu)
         shapes.createText(vPos,10,highlightColor,"$" + str(getSquadDiscount(critterCost) ),&gvars::hudView);
         shapes.shapes.back().layer = layer+Text;
         vPos.y += 10;
-        std::string outPut = "Speed: " + str(static_cast<int>(npc.moverate) );
+        std::string outPut = "Speed: " + str(static_cast<int>(npc.moveSpeed) );
         outPut.append("\nS.P.I.C.E.D. : ");
         outPut.append(str(npc.attributes.strength) + ",");
         outPut.append(str(npc.attributes.perception) + ",");
