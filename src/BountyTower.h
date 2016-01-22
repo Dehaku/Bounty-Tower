@@ -113,7 +113,12 @@ StatusEffect generateRandomStatusEffect(RandomWeightList rankList = RandomWeight
 
 Item generateRandomItem(RandomWeightList equipmentSet);
 
-
+void skillMenu(Npc &npc);
+void squaddieMenu(Npc &npc);
+void merchantMenu(Vec3f creationPos);
+void recruiterMenu(Vec3f creationPos);
+void towerMenu(Vec3f creationPos);
+void escapeMenu(Vec3f creationPos);
 
 namespace bountytower
 {

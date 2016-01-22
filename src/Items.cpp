@@ -1423,13 +1423,13 @@ void explosion(Vec3f vPos, int radius, float damage, Npc *attacker, std::vector<
     shape.shape = shape.Circle;
     shape.duration = 15;
     shape.startPos = gfxPos;
-    shape.size = 120;
+    shape.size = radius;
     shape.maincolor = sf::Color::White;
     shape.fades = true;
     shape.texture = &texturemanager.getTexture("Explosion2.png");
     shapes.shapes.push_back(shape);
     shape.duration = 30;
-    shape.size = 60;
+    shape.size = radius/2;
     shape.texture = &texturemanager.getTexture("Explosion1.png");
     shapes.shapes.push_back(shape);
 

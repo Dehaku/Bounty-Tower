@@ -1258,8 +1258,8 @@ StatusAspect generateRandomStatusAspectOnce(int rankNum)
         aspectList.addEntry(aspectName,10000);
         aspectName = "Revive";
         aspectList.addEntry(aspectName,10000);
-        aspectName = "SpawnCreature";
-        aspectList.addEntry(aspectName,10000);
+        //aspectName = "SpawnCreature";
+        //aspectList.addEntry(aspectName,10000);
         aspectName = "SpawnItem";
         aspectList.addEntry(aspectName,10000);
     }
@@ -1986,7 +1986,7 @@ void renderSkillMenu(baseMenu &menu)
 
             if(isParagon && !bountytower::gameBeaten && shapes.shapeHovered(skillTreeButt))
             {
-                shapes.createText(gvars::mousePos,10,sf::Color::White,"   You must beat the game to unlock the Paragon tree! (Demo: Beat the tower)");
+                shapes.createText(gvars::mousePos,10,sf::Color::White,"   You must beat the game to unlock the Paragon tree! (Demo: Beat a tower)");
                 shapes.shapes.back().layer = layer+75;
             }
             if(shapes.shapeClicked(skillTreeButt))

@@ -4993,6 +4993,20 @@ void drawSelectedCritterHUD()
             }
         }
 
+        int invButt = shapes.createImageButton(sf::Vector2f(600,590),texturemanager.getTexture("InventorySlotUpgrade.png"),"",0,&gvars::hudView);
+        int skillButt = shapes.createImageButton(sf::Vector2f(680,590),texturemanager.getTexture("SkillsMonster.png"),"",0,&gvars::hudView);
+
+
+
+        if(shapes.shapeClicked(invButt))
+            squaddieMenu(*selectedNPCs[0]);
+        if(shapes.shapeHovered(invButt))
+            shapes.createText(gvars::mousePos.x+10,gvars::mousePos.y,10,sf::Color::White,"Overview (i)");
+        if(shapes.shapeClicked(skillButt))
+            skillMenu(*selectedNPCs[0]);
+        if(shapes.shapeHovered(skillButt))
+            shapes.createText(gvars::mousePos.x+10,gvars::mousePos.y,10,sf::Color::White,"Skills (u)");
+
         window.setView(gvars::view1);
     }
 }
