@@ -2574,6 +2574,22 @@ void renderRecruiterMenu(baseMenu &menu)
     if(shapes.shapeClicked(exitButt))
         menu.toDelete = true;
 
+    sf::Vector2f rerollPos(screen.x()-200,200);
+    int rerollButt = shapes.createImageButton(rerollPos,texturemanager.getTexture("blankButton.png"),"",0,&gvars::hudView);
+    shapes.shapes.back().layer = layer+Button;
+    rerollPos.x -= 31;
+    textList.createText(rerollPos,9,sf::Color::White,"Restock",gvars::hudView);
+    shapes.shapes.back().layer = layer+Text;
+
+    if(shapes.shapeClicked(rerollButt))
+    {
+        menu.toDelete = true;
+        recruitables.clear();
+        recruiterMenu(menu.makePos);
+    }
+
+
+
     int xOffset = 0;
     int yOffset = 0;
 
@@ -4038,9 +4054,14 @@ void spawnEnemies()
     //There made it also get Offswitches for me, Efficiency!
     for(auto &stair : stairs)
     {
-        //Add a 25% chance for a critter to spawn.
-        if(randz(1,4) != 1)
-            continue;
+        if(bountytower::currentTower->name == "FantasyModern")
+        { //Add a 12.5% chance for a critter to spawn on the first tower.
+            if(randz(1,16) != 1)
+                continue;
+        }
+        else if(randz(1,4) != 1)
+            continue; //Add a 25% chance for a critter to spawn.
+
 
 
         Npc member;
