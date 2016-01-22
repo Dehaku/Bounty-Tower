@@ -1128,6 +1128,8 @@ std::string Item::activate(Vec3f vPos) // Returns a string declaring the problem
                     hamStatus.duration = 600*hamstringSkill->ranks;
                     npc.statusEffects.push_back(hamStatus);
 
+                    chatBox.addChat("* " + user->name + " Hamstringed " + npc.name + "!",sf::Color::White);
+
 
                 }
 

@@ -3303,6 +3303,7 @@ std::string Npc::dealDamage(Npc *victim, Item *weapon, float amount, int damageT
                 }
                 else
                 {
+                    chatBox.addChat("* " + name + " sundered " + victim->name + "'s " + victimWeapon->name + "!",sf::Color::White);
                     victimWeapon->remove();
                 }
             }
