@@ -632,6 +632,9 @@ void towerTransition()
 
         if(!npc.isSquaddie)
             npc.toDelete = true;
+        if(!npc.alive)
+            npc.toDelete = true;
+
     }
 }
 
