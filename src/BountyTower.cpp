@@ -4095,8 +4095,10 @@ void spawnEnemies()
         { // Status Effects/Templates
             StatusEffect status;
             status.duration = 1000000000;
+            bool giveTemplate = false;
             if(chosenRace == "BTSkeleton" || chosenRace == "BTSkeletonArmored")
             {
+                giveTemplate = true;
                 status.name = "Skeleton Template";
                 status.addAspect(StatusAspect::Armor,75,"Pierce");
                 status.addAspect(StatusAspect::Armor,200,"Energy");
@@ -4105,11 +4107,13 @@ void spawnEnemies()
             }
             if(chosenRace == "BTSkeletonArmored" || chosenRace == "BTArmoredOgre")
             {
+                giveTemplate = true;
                 status.addAspect(StatusAspect::Armor,50,"Blunt");
             }
 
             if(chosenRace == "BTDroneHover" || chosenRace == "BTDroneSpider" || chosenRace == "BTDroneTank" || chosenRace == "BTSimpleRobot")
             {
+                giveTemplate = true;
                 status.name = "Drone Template";
                 status.addAspect(StatusAspect::Armor,-100,"Electricity");
                 status.addAspect(StatusAspect::Armor,50,"Pierce");
@@ -4117,7 +4121,8 @@ void spawnEnemies()
                 status.addAspect(StatusAspect::CauseExplosion,100,"");
 
             }
-            member.statusEffects.push_back(status);
+            if(giveTemplate)
+                member.statusEffects.push_back(status);
         }
 
         //member = *getGlobalCritter("BTBlankBody");
