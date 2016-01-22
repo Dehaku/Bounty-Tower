@@ -1449,6 +1449,10 @@ void explosion(Vec3f vPos, int radius, float damage, Npc *attacker, std::vector<
             int distance = math::distance(i->getPos(),vPos);
             if(distance <= radius)
             {
+                if(!canSeeBetweenTiled(vPos,i->getPos()))
+                    continue;
+
+
                 chatBox.addChat(i->name + " was hit by an explosion!",sf::Color::Red);
 
                 if(attacker != nullptr)
@@ -1480,6 +1484,9 @@ void explosion(Vec3f vPos, int radius, float damage, Npc *attacker, std::vector<
             int distance = math::distance(i.getPos(),vPos);
             if(distance <= radius)
             {
+                if(!canSeeBetweenTiled(vPos,i.getPos()))
+                    continue;
+
                 chatBox.addChat(i.name + " was hit by an explosion!",sf::Color::Red);
 
                 if(attacker != nullptr)

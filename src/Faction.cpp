@@ -145,6 +145,83 @@ bool canSeeNpc(Npc &ori, Npc &target)
 }
 
 
+bool canSeeBetweenTiled(Vec3f ori, Vec3f target)
+{
+    bool foundTarget = false;
+    bool foundOri = false;
+    float x1 = abs_to_index(ori.x/GRID_SIZE), y1 = abs_to_index(ori.y/GRID_SIZE), x2 = abs_to_index(target.x/GRID_SIZE), y2 = abs_to_index(target.y/GRID_SIZE);
+    int zFloor = ori.z/GRID_SIZE;
+    // Bresenham's line algorithm
+    const bool steep = (fabs(y2 - y1) > fabs(x2 - x1));
+    if(steep)
+    {
+        std::swap(x1, y1);
+        std::swap(x2, y2);
+    }
+
+    if(x1 > x2)
+    {
+        std::swap(x1, x2);
+        std::swap(y1, y2);
+    }
+
+    const float dx = x2 - x1;
+    const float dy = fabs(y2 - y1);
+
+    float error = dx / 2.0f;
+    const int ystep = (y1 < y2) ? 1 : -1;
+    int y = (int)y1;
+
+    const int maxX = (int)x2;
+
+    for(int x=(int)x1; x<maxX; x++)
+    {
+        if(steep)
+        {
+
+            if(tiles[abs_to_index(y)][abs_to_index(x)][zFloor].walkable)
+            {
+
+            }
+            else
+            {
+                // Hit a wall!
+                return false;
+            }
+        }
+        else
+        {
+            if(tiles[abs_to_index(x)][abs_to_index(y)][zFloor].walkable)
+            {
+
+            }
+            else
+            {
+                // Hit a wall!
+                return false;
+            }
+        }
+
+        error -= dy;
+        if(error < 0)
+        {
+            y += ystep;
+            error += dx;
+        }
+    }
+    if(foundOri && foundTarget) // This is done due to Bresenham's line automatically using the topleft most coordinate. (Half cases start trace on target.)
+    {
+            std::cout << "Returning true. \n";
+            return true;
+    }
+
+    //This can only run if it didn't hit any walls.
+    return true;
+}
+
+
+
+
 bool canSeeNpcv2(Npc &ori, Npc &target)
 {
     bool foundTarget = false;

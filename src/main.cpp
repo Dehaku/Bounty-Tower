@@ -1214,7 +1214,7 @@ Npc * critterDetectNearestEnemy(Npc &npc, std::list<Npc> &container)
         {
             if(npc.isSquaddie)
             {
-                bool canSee = canSeeNpcv2(npc,*enemy);
+                bool canSee = canSeeBetweenTiled(npc.getPos(),enemy->getPos());
 
                 if(closEnmy == nullptr)
                     closEnmy = enemy;
