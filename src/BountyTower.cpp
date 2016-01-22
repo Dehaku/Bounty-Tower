@@ -633,7 +633,6 @@ void towerTransition()
         if(!npc.isSquaddie)
             npc.toDelete = true;
     }
-    generateHiddenGoodies();
 }
 
 void towerMenu()
@@ -2805,6 +2804,7 @@ void renderTowerMenu(baseMenu &menu)
         gvars::currenty = xview/1.4;
 
         towerTransition();
+        generateHiddenGoodies();
         setTileImages(towers[1].name);
 
 
@@ -2844,6 +2844,7 @@ void renderTowerMenu(baseMenu &menu)
         gvars::currenty = xview/1.4;
 
         towerTransition();
+        generateHiddenGoodies();
         setTileImages(towers[2].name);
 
 
@@ -2883,10 +2884,13 @@ void renderTowerMenu(baseMenu &menu)
         gvars::currenty = xview/1.4;
 
         towerTransition();
+        generateHiddenGoodies();
         setTileImages(towers[3].name);
 
 
         positionSquaddies();
+
+
 
         playMusic("KerriOverblowEcho.ogg");
 
