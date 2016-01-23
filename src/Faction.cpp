@@ -2803,8 +2803,11 @@ std::string Npc::onDeath(Npc *attacker, Item *weapon, float amount, int damageTy
     mods.onDeath = true;
 
     if(faction == "The Titanium Grip")
-        chatBox.addChat(name + " has died",sf::Color::White);
+        chatBox.addChat(name + " has died!",sf::Color::White);
     alive = false;
+
+
+    /*
     if(attacker != nullptr)
     { // Experience.
         float extraExperience = 0;
@@ -2832,6 +2835,39 @@ std::string Npc::onDeath(Npc *attacker, Item *weapon, float amount, int damageTy
             npc.xp += expGain;
         }
     }
+
+    */
+
+
+    if(faction == "Towerlings")
+    { // Experience.
+        float extraExperience = 0;
+
+        for(auto &npc : npclist)
+            if(npc.faction == conFact->name)
+                if(npc.racialAbility == "Ideal Command")
+                    extraExperience += 0.1;
+
+        for(auto &npc : npclist)
+        {
+            if(!npc.alive)
+                continue;
+            if(npc.faction != conFact->name)
+                continue;
+
+            float expGain = level*10;
+            expGain += expGain*extraExperience;
+
+            expGain += expGain*(mods.deathXpModifierMod*0.01);
+
+            if(attacker != nullptr)
+                expGain += expGain*(attacker->mods.xpModifierMod*0.01);
+
+
+            npc.xp += expGain;
+        }
+    }
+
 
     if(faction == "Towerlings")
     {

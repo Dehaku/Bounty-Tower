@@ -5332,7 +5332,7 @@ void bountyTowerLoop()
 
     if(inputState.key[Key::F3])
     {
-        setTileImages("Necromancer");
+        //setTileImages("Necromancer");
     }
 
 

@@ -1941,7 +1941,7 @@ void drawSquadHud()
             spritePos.y += 1;
             float remainingXP = static_cast<float>(npc.xp) / static_cast<float>(nextLevelXpRequired(npc.level));
             shapes.createSquare(spritePos.x,spritePos.y+1,spritePos.x+150,spritePos.y+9,sf::Color(0,0,0),1,sf::Color::White,&gvars::hudView);
-            shapes.createSquare(spritePos.x,spritePos.y+1,spritePos.x+(150*remainingXP),spritePos.y+9,sf::Color::Yellow,0,highlightColor,&gvars::hudView);
+            shapes.createSquare(spritePos.x,spritePos.y+1,spritePos.x+(150*remainingXP),spritePos.y+9,sf::Color(100,100,0),0,highlightColor,&gvars::hudView);
             shapes.shapes.back().layer += 1;
 
             // ???-o-meter!
