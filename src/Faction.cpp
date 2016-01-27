@@ -2806,6 +2806,49 @@ std::string Npc::onDeath(Npc *attacker, Item *weapon, float amount, int damageTy
         chatBox.addChat(name + " has died!",sf::Color::White);
     alive = false;
 
+    if(attacker != nullptr && attacker->skills.getSkill("Demonic Bounty")->ranks > 0)
+    {
+        StatusEffect demonBounty;
+        demonBounty.name = "Demonic Bounty Buff(";
+
+        int randomAspect = random(1,3);
+        if(randomAspect == 1)
+        { // Attribute
+            RandomWeightList butes;
+            butes.addEntry("Strength",100);
+            butes.addEntry("Perception",100);
+            butes.addEntry("Intelligence",100);
+            butes.addEntry("Charisma",100);
+            butes.addEntry("Endurance",100);
+            butes.addEntry("Dexterity",100);
+            std::string chosenBute = butes.getRandomName();
+            demonBounty.addAspect(StatusAspect::Attribute,random(1,5),chosenBute);
+            demonBounty.name.append("Attribute:"+chosenBute+")");
+        }
+        else if(randomAspect == 2)
+        { // Damage
+            RandomWeightList butes;
+            butes.addEntry("Pierce",100);
+            butes.addEntry("Slash",100);
+            butes.addEntry("Blunt",100);
+            std::string chosenBute = butes.getRandomName();
+            demonBounty.addAspect(StatusAspect::AffectDamage,random(10,20),chosenBute);
+            demonBounty.name.append("Damage:"+chosenBute+")");
+        }
+        else if (randomAspect == 3)
+        { // Armor
+            RandomWeightList butes;
+            butes.addEntry("Pierce",100);
+            butes.addEntry("Slash",100);
+            butes.addEntry("Blunt",100);
+            std::string chosenBute = butes.getRandomName();
+            demonBounty.addAspect(StatusAspect::Armor,random(10,20),chosenBute);
+            demonBounty.name.append("Armor:"+chosenBute+")");
+        }
+
+        demonBounty.duration = 600;
+        attacker->statusEffects.push_back(demonBounty);
+    }
 
     /*
     if(attacker != nullptr)

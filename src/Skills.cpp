@@ -440,6 +440,14 @@ Skills::Skills()
     skill.active = false;
     list.push_back(skill);
 
+    skill.name = "Demonic Bounty";
+    skill.desc = "Passive - Each kill will grant you a small attribute, damage, or armor bonus \n for a short time.";
+    skill.level = 2;
+    skill.active = false;
+    skill.ranksmax = 1;
+    list.push_back(skill);
+    skill.ranksmax = 5;
+
 
 
 

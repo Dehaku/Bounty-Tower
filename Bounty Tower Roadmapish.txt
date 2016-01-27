@@ -3,6 +3,12 @@ Immense Growth, Creature grows to twice their size, doubling strength, slower mo
 Rot, Poisons all nearby hostiles.
 Telekinetic, Constantly pushes and throws the squad.
 
+Traps:
+Web traps : Block vision, entangle if hit, flammable..
+And Sticky Strands : Begins dragging target upward (Visually), stunning them for a brief time, and if not stopped..  Pulling them to the next floor, where they'll be found tied up once the rest of the team catches up
+
+
+
 
 
 
@@ -50,6 +56,10 @@ Minions
 Death: Dragged downstairs, returns 30 seconds later as a Cyborg.
 
 
+
+
+
+
 =Necromancer Tower::Bounty, Necromancer
 Theme: Dark boney walls, Fleshy elevator shaft, Purple magic wisps as lamps
 
@@ -70,6 +80,12 @@ Bounty: Necromancer
 ,Shoots bone missiles and blobs of toxic exploding flesh 
 ,25% or lower health, Turns himself into an Abomination with vein tentacles.
 
+
+
+
+
+
+
 =Druidic Tower::Bounty, Druid
 Theme: Earthly and wooden structure, leaves and vines prominent
 
@@ -84,6 +100,12 @@ Bounty: Druid
 , Has two forms
 , First form, Grizzly form, Sweeping attacks, powerful but vunerable.
 , Second form, Water elemental, floods the room, slowing all squaddies, slowly damaging all machines, launchs conal tidal waves that pushback and smash, Summons Electric Eels?
+
+
+
+
+
+
 
 
 =Atlantean Tower
@@ -104,6 +126,11 @@ Bounty: Siren
 ,Shrieks, Cone of sonic damage.
 ,Tempt, Temporarily stuns and draws a squaddy to her, usually into danger of other minions.
 ,Tesla Pylons, Four pylons surround her throne, all arc and fry any squaddies that get close.
+
+
+
+
+
 
 =Star Tower
 Theme: Giant Rocketship landed, filled with aliens and foreign technology.
@@ -149,6 +176,40 @@ Floor 21-25; Crew Quarters: Unarmed aliens that rush for armories, Service Robot
 Floor 26; Miniboss 'Helpful AI' Central AI Column, surrounded by turrets, magic flinging Holograms, and more service bots(That can repair turrets)
 Floor 27-30; Command Deck, Heavy Security Personal, Mechas, Solid Doors, Electrified Floors
 Floor 31; Boss/Bounty 'Smuggler Captian', Dual Pistolier, Heavy Golden Bullet Specilization, Four Teleport Locations for Volleys, Richochet Preference.
+
+
+
+
+
+
+
+
+
+=Hive Tower
+Theme: Wasps, Hornets, Bees, A giant nest.
+
+Traps: Honey Trap, Slows and gives weapon a misfire chance. Egg Traps, Explodes into hostile hornets.
+
+Minions
+, Warriors, Wasp-like creatures with stingers, venom, and natural armor.
+, Loyalists, Human-like, Fast, use high tech weaponry.
+, Bees, ???, Uses low-tech guns.
+, Wingless, Workers that use melee weapons and engineer crafts.
+, Drones, Distraction critters, Stuns squaddies and repels bullets.
+
+Bounty: Wasp Queen
+, Extremely Fast, Venomous.
+, Uses one Armor Piercing Pistol, and one Laser Shotgun.
+, Proficient Natural Attacks.
+, Occasionally calls out a swarm of weak minions from the honey comb walls.
+, Occasionally lays egg traps.
+
+
+
+
+
+
+
 
 Equipment
 
