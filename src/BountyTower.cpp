@@ -1,7 +1,16 @@
 #include "BountyTower.h"
 
+/*
 
+static int tempOffset = 0;
+        if(inputState.key[Key::Right].time == 1)
+            tempOffset++;
+        if(inputState.key[Key::Left].time == 1)
+            tempOffset--;
+        if(inputState.key[Key::Up].time == 1)
+            std::cout << "temptOffset: " << tempOffset << std::endl;
 
+*/
 
 std::vector<Npc*> Squaddies;
 std::list<Npc> leftBehind;
@@ -2374,10 +2383,11 @@ void renderMerchantMenu(baseMenu &menu)
         int totalTypes = 7;
         std::string types[totalTypes] = {"All", "Weapons", "Ammo", "Magic", "Engineer", "Aid", "Misc"};
 
+
         for(int i = 0; i != totalTypes; i++)
         {
-            sf::Vector2f drawPos(120,150+(yOffset*60));
-            int skillTreeButt = shapes.createImageButton(drawPos,texturemanager.getTexture("InventorySlotUpgrade.png"),"",0,&gvars::hudView);
+            sf::Vector2f drawPos(152,150+(yOffset*60));
+            int skillTreeButt = shapes.createImageButton(drawPos,texturemanager.getTexture("blankLargeButton.png"),"",0,&gvars::hudView);
             shapes.shapes.back().layer = layer+75;
 
 
@@ -2391,9 +2401,9 @@ void renderMerchantMenu(baseMenu &menu)
             if(shapes.shapeHovered(skillTreeButt))
                 highlightColor = sf::Color::Cyan;
 
-            sf::Vector2f textPos(drawPos.x+40, drawPos.y);
+            sf::Vector2f textPos(drawPos.x-45, drawPos.y);
             shapes.createText(textPos,10,highlightColor,types[i],&gvars::hudView);
-            shapes.shapes.back().layer = layer+75;
+            shapes.shapes.back().layer = layer+76;
 
             yOffset++;
         }
@@ -3169,8 +3179,8 @@ void renderEnchantMenu(baseMenu &menu)
 
         for(int i = 0; i != totalTypes; i++)
         {
-            sf::Vector2f drawPos(120,150+(yOffset*60));
-            int skillTreeButt = shapes.createImageButton(drawPos,texturemanager.getTexture("InventorySlotUpgrade.png"),"",0,&gvars::hudView);
+            sf::Vector2f drawPos(152,150+(yOffset*60));
+            int skillTreeButt = shapes.createImageButton(drawPos,texturemanager.getTexture("blankLargeButton.png"),"",0,&gvars::hudView);
             shapes.shapes.back().layer = layer+75;
 
 
@@ -3184,9 +3194,9 @@ void renderEnchantMenu(baseMenu &menu)
             if(shapes.shapeHovered(skillTreeButt))
                 highlightColor = sf::Color::Cyan;
 
-            sf::Vector2f textPos(drawPos.x+40, drawPos.y);
+            sf::Vector2f textPos(drawPos.x-45, drawPos.y);
             shapes.createText(textPos,10,highlightColor,types[i],&gvars::hudView);
-            shapes.shapes.back().layer = layer+75;
+            shapes.shapes.back().layer = layer+76;
 
             yOffset++;
         }

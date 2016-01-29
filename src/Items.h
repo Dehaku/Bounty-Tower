@@ -105,8 +105,36 @@ public:
     float activaterategrowth;
     float activateratemax;
 
+
+    // *---v Gun Variables
     int projectiles;
     int spread;
+
+    int barrelCount;
+    float damageMultiplier;
+
+    float dispersion;
+    float aimTime;
+    float recoil;
+    float recoilReduction;
+
+    float fireRate;
+    int fireMode; // Semi, Burst, Automatic.
+
+
+//-Fire Rate
+//-Fire Mode, Semi, Burst, Auto.
+
+//-Ammo Capacity
+//-Reload Speed
+//-Reload Amount
+
+
+    // *---^ Gun Variables
+
+
+
+
 
     // 0 = none, 1 = melee weapon, 2 = ranged weapon,
     // 3 = thrown weapon, 4 = food, 5 = water, 6 = cell, 7 = Ore,
