@@ -441,36 +441,6 @@ Item *findClosestItemPtr(int orix, int oriy, std::string tarItem, int /*Gxpos*/,
         return nullptr;
 }
 
-void Item::chargecell(int amount)
-{
-    cellcharge += amount;
-}
-
-void Item::soulcell(int soultype)
-{
-    chargecell(soultype * 10);
-}
-
-bool Item::getid(int idz)
-{
-    if (idz == id)
-    {
-        return true;
-    }
-    else
-    {
-        return false;
-    }
-}
-
-bool Item::boolname(char *cakezebra)
-{
-    if (cakezebra == name)
-    {
-        return true;
-    }
-    return false;
-}
 
 void Item::printInfo()
 {
@@ -479,14 +449,6 @@ void Item::printInfo()
     cout << "Name: " << name.c_str() << " (" << id << ") " << endl;
     cout << "Weight: " << weight << endl;
     cout << "Value: " << value << endl;
-    if (useCell == true)
-    {
-        cout << "celltype is: " << celltype << endl;
-    }
-    if (useCell == true)
-    {
-        cout << "cellcharge is: " << cellcharge << endl;
-    }
     if (ammotype > 0)
     {
         cout << "MaxClip: " << maxclip << endl;
@@ -497,10 +459,6 @@ void Item::printInfo()
     }
     cout << "Min Damage: " << mindam << endl;
     cout << "Max Damage: " << maxdam << endl;
-    if (isMagic == true)
-    {
-        cout << " *Magical* " << endl;
-    }
 }
 
 void Item::drawImg()
@@ -510,17 +468,6 @@ void Item::drawImg()
     window.draw(img);
 }
 
-void Item::spawn(int /*gposx*/, int /*gposy*/, int /*rposx*/, int /*rposy*/,
-                 int posx, int posy, int posz)
-{
-    gxpos = 100;
-    gypos = 100;
-    rxpos = 100;
-    rypos = 100;
-    xpos = posx;
-    ypos = posy;
-    zpos = posz;
-}
 
 void Item::printConsoleInfo()
 {
@@ -635,8 +582,7 @@ Vec3f Item::getPos()
 Item::Item()
     : cbaseid{}, range{}, xpos{}, ypos{}, zpos{30*20}, rxpos{}, rypos{}, gxpos{},
       gypos{}, imgstrx{}, imgstry{}, imgendx{}, imgendy{}, isWeapon{},
-      tillrot{}, prodrate{}, prodratetimer{}, timerdecon{}, liquidContainMax{},
-      objectContainMax{}, containAmount{}
+    prodrate{}, prodratetimer{}
 {
     firstPickup = true;
     toDelete = false;
@@ -652,8 +598,34 @@ Item::Item()
 
     rarity = 0;
 
+    // *---Gun Variables
     projectiles = 0;
     spread = 0;
+
+    barrelCount = 0;
+    damageMultiplier = 1;
+
+    dispersion = 0;
+    aimTime = 0;
+    recoil = 0;
+    recoilReduction = 0;
+
+    fireRate = 0;
+    fireMode = 0;
+    burstCount = 0;
+
+    reloadTime = 0;
+    reloadAmount = 0;
+
+    bulletSpeedMultiplier = 1;
+
+    durability = 1;
+    durabilityCost = 0;
+
+
+    // *---Gun Variables
+
+
     radius = 0;
     penetration = 0;
     richochets = 0;
@@ -678,16 +650,10 @@ Item::Item()
     massVeggy = 0;
     massWater = 0;
 
-    hasCell = false;
-    useCell = false;
 
     pickupable = true;
 
-    celltype = 0;
-    cellcharge = 0;
-    cellcost = 0;
 
-    isMagic = false;
     stackSize = 1;
     //stacks = false;
 
@@ -698,28 +664,127 @@ Item::Item()
     mindam = 1;
     maxdam = 2;
 
-    hasCell = false;
-    useCell = false;
-    isMagic = false;
     stackSize = 1;
-    rotten = false;
-    isLiquidContainer = false;
-    isObjectContainer = false;
-    pushable = false;
-    blocksmovement = false;
-    collectssolar = false;
-    collectsheat = false;
-    makeslight = false;
-    needspower = false;
     produces = false;
-    needmatprod = false;
-    deconstrutionauto = false;
-    buried = false;
-    hidden = false;
-    ProdOn = false;
-    IsOn = false;
-    Sleepable = false;
 }
+
+int Item::getBarrelCount()
+{
+    int returns = barrelCount;
+    for(auto internals : internalitems)
+        returns += internals.barrelCount;
+
+    return returns;
+}
+
+float Item::getDamageMultiplier()
+{
+    float returns = damageMultiplier;
+    for(auto internals : internalitems)
+        returns += internals.damageMultiplier;
+
+    return returns;
+}
+
+float Item::getDispersion()
+{
+    float returns = dispersion;
+    for(auto internals : internalitems)
+        returns += internals.dispersion;
+
+    return returns;
+}
+
+float Item::getAimTime()
+{
+    float returns = aimTime;
+    for(auto internals : internalitems)
+        returns += internals.aimTime;
+
+    return returns;
+}
+
+float Item::getRecoil()
+{
+    float returns = recoil;
+    for(auto internals : internalitems)
+        returns += internals.recoil;
+
+    return returns;
+}
+
+float Item::getRecoilReduction()
+{
+    float returns = recoilReduction;
+    for(auto internals : internalitems)
+        returns += internals.recoilReduction;
+
+    return returns;
+}
+
+float Item::getFireRate()
+{
+    float returns = fireRate;
+    for(auto internals : internalitems)
+        returns += internals.fireRate;
+
+    return returns;
+}
+
+int Item::getBurstCount()
+{
+    int returns = burstCount;
+    for(auto internals : internalitems)
+        returns += internals.burstCount;
+
+    return returns;
+}
+
+float Item::getReloadTime()
+{
+    float returns = reloadTime;
+    for(auto internals : internalitems)
+        returns += internals.reloadTime;
+
+    return returns;
+}
+
+int Item::getReloadAmount()
+{
+    int returns = reloadAmount;
+    for(auto internals : internalitems)
+        returns += internals.reloadAmount;
+
+    return returns;
+}
+
+float Item::getBulletSpeedMultiplier()
+{
+    float returns = bulletSpeedMultiplier;
+    for(auto internals : internalitems)
+        returns += internals.bulletSpeedMultiplier;
+
+    return returns;
+}
+
+float Item::getDurability()
+{
+    float returns = durability;
+    for(auto internals : internalitems)
+        returns += internals.durability;
+
+    return returns;
+}
+
+float Item::getDurabilityCost()
+{
+    float returns = durabilityCost;
+    for(auto internals : internalitems)
+        returns += internals.durabilityCost;
+
+    return returns;
+}
+
 
 void ItemManager::addItems()
 {
@@ -1454,8 +1519,8 @@ void explosion(Vec3f vPos, int radius, float damage, Npc *attacker, std::vector<
                 if(!canSeeBetweenTiled(vPos,i->getPos()))
                     continue;
 
-
-                chatBox.addChat(i->name + " was hit by an explosion!",sf::Color::Red);
+                if(i->faction == conFact->name)
+                    chatBox.addChat(i->name + " was hit by an explosion!",sf::Color::Red);
 
                 if(attacker != nullptr)
                     std::string atkStatus = attacker->dealDamage(i,nullptr,damage,damageTypes.getNum("Blunt"));
@@ -1489,7 +1554,8 @@ void explosion(Vec3f vPos, int radius, float damage, Npc *attacker, std::vector<
                 if(!canSeeBetweenTiled(vPos,i.getPos()))
                     continue;
 
-                chatBox.addChat(i.name + " was hit by an explosion!",sf::Color::Red);
+                if(i.faction == conFact->name)
+                    chatBox.addChat(i.name + " was hit by an explosion!",sf::Color::Red);
 
                 if(attacker != nullptr)
                     std::string atkStatus = attacker->dealDamage(&i,nullptr,damage,damageTypes.getNum("Blunt"));

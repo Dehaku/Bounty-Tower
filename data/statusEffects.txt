@@ -38,3 +38,4 @@ OverlayImage, filename.png, If this is added to a status effect, the image will 
 [Name:Bomb Skill Explosion][Rank:Alpha][Duration:601][Aspect:ConditionTimeDelay:600][Aspect:CauseExplosion:200]
 [Name:Test One][Rank:Gamma][Duration:1200][Aspect:ChangeRace:120:BTPsylin]
 [Name:Test Two][Rank:Gamma][Duration:1200][Aspect:ConditionHealth:75:Below][Aspect:ChangeRace:-1:BTRockkid]
+[Name:Fireball][Rank:Alpha][Duration:1][Aspect:CauseExplosion:200]

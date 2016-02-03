@@ -1,5 +1,7 @@
 #include "BountyTower.h"
 
+#include <iomanip>
+
 /*
 
 static int tempOffset = 0;
@@ -1919,6 +1921,24 @@ void enchantMenu(Vec3f creationPos)
     menus.push_back(sMenu);
 }
 
+void gunModMenu(Item * item)
+{
+    for(auto menu : menus)
+        if(menu.name == "Gun Mod Menu")
+            return;
+
+    baseMenu sMenu;
+    sMenu.name = "Gun Mod Menu";
+    sMenu.Pos = sf::Vector2f(screen.x()/2,screen.y()/2);
+
+    dynamicVariable itemCarry;
+    itemCarry.name = "Item";
+    itemCarry.varItemPtr = item;
+
+    sMenu.vars.push_back(itemCarry);
+    menus.push_back(sMenu);
+}
+
 void renderSkillMenu(baseMenu &menu)
 { // Layer 17000
     selectedNPCs.clear();
@@ -3591,40 +3611,6 @@ void renderEnchantMenu(baseMenu &menu)
         }
     }
 
-    {   // Transfer Status Effect
-        sf::Vector2f randomEnchantPos(percentPos(45,menuStartPos.x,menuEndPos.x), percentPos(62,menuStartPos.y,menuEndPos.y));
-        int randomEnchantButt = shapes.createImageButton(randomEnchantPos,texturemanager.getTexture("blankButton.png"),"",0,&gvars::hudView);
-        shapes.shapes.back().layer = layer+FrontPanel+Button;
-        randomEnchantPos.x -= 28;
-        randomEnchantPos.y -= 10;
-        textList.createText(randomEnchantPos,9,sf::Color::White,"Transfer \nLast",gvars::hudView);
-        shapes.shapes.back().layer = layer+FrontPanel+Text;
-
-        if(shapes.shapeHovered(randomEnchantButt))
-        {
-            int enchantCost = getSquadDiscount(2000);
-            textList.createText(gvars::mousePos,10,sf::Color::White,"   $"+str(enchantCost)+", Moves status from one item to another. \n NOT IMPLEMENTED");
-            shapes.shapes.back().layer = 99999999;
-
-            if(inputState.lmbTime == 1)
-            {
-                if(true == true)
-                {
-                    chatBox.addChat("I... I said it's not implemented...",sf::Color::White);
-                    chatBox.addChat("I'm taking a dollar anyways, Arsehole.",sf::Color::Green);
-                    conFact->credits -= 1;
-                    if(conFact->credits < 0)
-                        chatBox.addChat("Enjoy Debt, You nosey git! TODO: Meta Achievement",sf::Color::Red);
-                }
-                //else if(conFact->credits < enchantCost)
-                //    chatBox.addChat("You do not have enough money!",sf::Color::White);
-                else
-                {
-                    conFact->credits -= enchantCost;
-                }
-            }
-        }
-    }
 
 
     yOffset = 1;
@@ -3701,6 +3687,157 @@ void renderEnchantMenu(baseMenu &menu)
     }
 }
 
+void renderGunModMenu(baseMenu &menu)
+{ // Layer 23000
+    int layer = 23000;
+    enum
+    {
+        BackPanel,
+        Shapes,
+        Button,
+        Text,
+        FrontPanel
+    };
+
+    sf::Vector2f menuStartPos(100,100);
+    sf::Vector2f menuEndPos(screen.x()-100,screen.y()-100);
+    sf::Color menuColor(150,150,0);
+
+    shapes.createSquare(menuStartPos.x,menuStartPos.y,menuEndPos.x,menuEndPos.y,menuColor,5,sf::Color::White,&gvars::hudView);
+    shapes.shapes.back().layer = layer+BackPanel;
+
+    shapes.createSquare(menuStartPos.x,menuStartPos.y,menuEndPos.x,menuStartPos.y+60,menuColor,0,sf::Color::White,&gvars::hudView);
+    shapes.shapes.back().layer = layer+FrontPanel;
+
+    shapes.createSquare(percentPos(12,menuStartPos.x,menuEndPos.x),percentPos(60,menuStartPos.y,menuEndPos.y),menuEndPos.x,menuEndPos.y,sf::Color::Black,0,sf::Color::White,&gvars::hudView);
+    shapes.shapes.back().layer = layer+FrontPanel;
+    //Close Button
+    int exitButt = shapes.createImageButton(sf::Vector2f(screen.x()-100,100),texturemanager.getTexture("ExitButton.png"),"",0,&gvars::hudView);
+    shapes.shapes.back().layer = layer+FrontPanel+1;
+    if(shapes.shapeClicked(exitButt))
+        menu.toDelete = true;
+
+
+
+    shapes.createText(menuStartPos,10,sf::Color::White,"Squad Charisma Discount: %" + str(100-getSquadDiscount(100)),&gvars::hudView);
+    shapes.shapes.back().layer = layer+FrontPanel+1;
+
+    sf::Vector2f upScrollButtPos(percentPos(10,menuStartPos.x,menuEndPos.x),percentPos(75,menuStartPos.y,menuEndPos.y));
+    sf::Vector2f downScrollButtPos(percentPos(10,menuStartPos.x,menuEndPos.x),percentPos(85,menuStartPos.y,menuEndPos.y));
+    int upScrollButt = shapes.createImageButton(upScrollButtPos,texturemanager.getTexture("ArrowButton.png"),"",0,&gvars::hudView);
+    shapes.shapes.back().layer = layer+Button;
+    int downScrollButt = shapes.createImageButton(downScrollButtPos,texturemanager.getTexture("ArrowButton.png"),"",180,&gvars::hudView);
+    shapes.shapes.back().layer = layer+Button;
+
+    if(shapes.shapeClicked(upScrollButt))
+    {
+        menu.scrollOne++;
+        if(menu.scrollOne > 0)
+            menu.scrollOne = 0;
+    }
+
+    if(shapes.shapeClicked(downScrollButt))
+        menu.scrollOne--;
+
+
+    dynamicVariable * currentType = menu.getVar("currentType");
+    { // Current Item Type Selection
+        if(!menu.hasVar("currentType"))
+        {
+            dynamicVariable var;
+            var.name = "currentType";
+            var.varString = "All";
+
+            menu.vars.push_back(var);
+        }
+        if(inputState.key[Key::LShift])
+            std::cout << "Menu: " << menu.name << " has " << menu.vars.size() << " dynamic vars. \n";
+        int yOffset = 0;
+
+
+        // Types: All, Weapons, Ammo, Aid, Misc
+        int totalTypes = 7;
+        std::string types[totalTypes] = {"All", "Weapons", "Ammo", "Magic", "Engineer", "Aid", "Misc"};
+
+        for(int i = 0; i != totalTypes; i++)
+        {
+            sf::Vector2f drawPos(152,150+(yOffset*60));
+            int skillTreeButt = shapes.createImageButton(drawPos,texturemanager.getTexture("blankLargeButton.png"),"",0,&gvars::hudView);
+            shapes.shapes.back().layer = layer+75;
+
+
+            if(shapes.shapeClicked(skillTreeButt))
+            {
+                menu.scrollOne = 0;
+                if(currentType != nullptr)
+                    currentType->varString = types[i];
+            }
+            sf::Color highlightColor = sf::Color::White;
+            if(shapes.shapeHovered(skillTreeButt))
+                highlightColor = sf::Color::Cyan;
+
+            sf::Vector2f textPos(drawPos.x-45, drawPos.y);
+            shapes.createText(textPos,10,highlightColor,types[i],&gvars::hudView);
+            shapes.shapes.back().layer = layer+76;
+
+            yOffset++;
+        }
+    }
+
+    dynamicVariable * selectedItem = menu.getVar("Item");
+
+    int xOffset = 0;
+    int yOffset = 0;
+
+    Item & weapon = *selectedItem->varItemPtr;
+
+    yOffset = 1;
+    {
+
+        std::ostringstream num;
+        num << std::setprecision(2) << weapon.getBarrelCount();
+        std::string outPut = "Barrel Count: " + num.str() + "\n";
+        num.str("");
+        num << weapon.getDamageMultiplier();
+        outPut.append("Damage Multiplier: " + num.str() + "\n");
+        num.clear();
+        num << weapon.getDispersion();
+        outPut.append("Dispersion: " + num.str() + "\n");
+        outPut.append("Aim Time: " + str(weapon.getAimTime()) + "\n");
+        outPut.append("Recoil: " + str(weapon.getRecoil()) + "\n");
+        outPut.append("Recoil Reduction: " + str(weapon.getRecoilReduction()) + "\n");
+        outPut.append("Fire Rate: " + str(weapon.getFireRate()) + "\n");
+        outPut.append("Burst Count: " + str(weapon.getBurstCount()) + "\n");
+        outPut.append("Reload Time: " + str(weapon.getReloadTime()) + "\n");
+        outPut.append("Reload Amount: " + str(weapon.getReloadAmount()) + "\n");
+        outPut.append("Bullet Speed Multiplier: " + str(weapon.getBulletSpeedMultiplier()) + "\n");
+        outPut.append("Durability: " + str(weapon.getDurability()) + "\n");
+        outPut.append("Durability Cost: " + str(weapon.getDurabilityCost()) + "\n");
+
+        /*
+        for(auto &aspect : status.aspects)
+        {
+            if(aspectNum[aspect.name].find("Condition") != std::string::npos)
+                outPut.append("\n   ");
+            outPut.append("[" + aspectNum[aspect.name] + ",Potency:" + str(static_cast<int>(aspect.potency)));
+            if(aspect.type != "")
+                outPut.append(",Type:" + aspect.type);
+            outPut.append("]");
+        }
+        */
+
+        sf::Vector2f vPos(250,420);
+        vPos.y += 10*yOffset;
+        shapes.createText(vPos,8,sf::Color::Cyan,outPut,&gvars::hudView);
+        shapes.shapes.back().layer = layer+FrontPanel+1;
+
+        yOffset++;
+        yOffset++;
+        yOffset++;
+    }
+}
+
+
 
 void drawMenus()
 {
@@ -3727,6 +3864,8 @@ void drawMenus()
             renderEscapeMenu(menu);
         if(menu.name == "Enchant Menu")
             renderEnchantMenu(menu);
+        if(menu.name == "Gun Mod Menu")
+            renderGunModMenu(menu);
 
         if(inputState.key[Key::Escape] && menu.age > 30)
             menu.toDelete = true;
@@ -5314,6 +5453,51 @@ void setTileImages(std::string towerName)
 
 }
 
+void castSpell()
+{
+    Npc spell;
+    spell.xpos = gvars::mousePos.x;
+    spell.ypos = gvars::mousePos.y;
+    spell.zpos = gvars::currentz*GRID_SIZE;
+    //spell.tags.append("[DeleteOnDeath:1]");
+    spell.alive = true;
+    spell.health = 10000000;
+    spell.maxhealth = 10000000;
+    spell.hasSpawned = true;
+    spell.toDelete = true;
+
+
+
+    spell.statusEffects.push_back(globalStatusEffects.getStatusEffect("Fireball"));
+
+
+
+    npclist.push_back(spell);
+}
+
+void spawnModWeapon()
+{
+    Item weapon;
+
+    weapon.xpos = gvars::mousePos.x;
+    weapon.ypos = gvars::mousePos.y;
+    weapon.zpos = gvars::currentz*GRID_SIZE;
+    weapon.img.setTexture(texturemanager.getTexture("ChainMagnum.png"));
+    weapon.type = 2;
+    weapon.name = "Mod Weapon";
+
+    Item mod;
+    mod.barrelCount = 2;
+    mod.name = "Barrel Doubler";
+
+    weapon.internalitems.push_back(mod);
+
+    mod.barrelCount = 1;
+    weapon.internalitems.push_back(mod);
+
+    worlditems.push_back(weapon);
+}
+
 void bountyTowerLoop()
 { // Game Loop
 
@@ -5328,7 +5512,13 @@ void bountyTowerLoop()
 
     enchantGlow();
 
+    if(inputState.key[Key::RShift] && inputState.lmbTime == 1)
+        castSpell();
+
     //newSlotWorkMethod();
+
+    if(inputState.key[Key::Y].time == 1)
+        spawnModWeapon();
 
     testStatusEffects();
     testNewMenu();
@@ -5344,6 +5534,7 @@ void bountyTowerLoop()
     {
         //setTileImages("Necromancer");
     }
+
 
 
     /*
@@ -5820,3 +6011,4 @@ namespace bountytower
     bool floorCleared = false;
     bool gameBeaten = false;
 }
+

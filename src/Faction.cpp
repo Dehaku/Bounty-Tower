@@ -4986,6 +4986,9 @@ void drawSelectedCritterHUD()
                     int reloadButt = shapes.createImageButton(buttPos,texturemanager.getTexture("ArrowButton.png"),"",0,&gvars::hudView);
                     buttPos.x += 40;
                     int unloadButt = shapes.createImageButton(buttPos,texturemanager.getTexture("ArrowButton.png"),"",180,&gvars::hudView);
+                    buttPos.x -= 20;
+                    buttPos.y -= 20;
+                    int modButt = shapes.createImageButton(buttPos,texturemanager.getTexture("ArrowButton.png"),"",180,&gvars::hudView);
 
                     if(slotItem->user->isSquaddie && shapes.shapeHovered(reloadButt))
                     {
@@ -5002,6 +5005,17 @@ void drawSelectedCritterHUD()
                         if(inputState.lmbTime == 1)
                         {
                             unloadAmmo(slotItem, &slotItem->user->inventory);
+                        }
+                    }
+
+                    if(slotItem->user->isSquaddie && shapes.shapeHovered(modButt))
+                    {
+                        textList.createText(gvars::mousePos.x+10,gvars::mousePos.y,10,sf::Color::White,"Mod Weapon");
+                        gvars::hovering = true;
+                        if(inputState.lmbTime == 1)
+                        {
+                            gunModMenu(slotItem);
+                            //unloadAmmo(slotItem, &slotItem->user->inventory);
                         }
                     }
 

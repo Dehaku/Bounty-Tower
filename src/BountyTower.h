@@ -1,6 +1,7 @@
 #ifndef BOUNTYTOWER_H_INCLUDED
 #define BOUNTYTOWER_H_INCLUDED
 
+
 #include <SFML/Graphics.hpp>
 #include "Sounds.h"
 #include "Textures.h"
@@ -119,6 +120,7 @@ void merchantMenu(Vec3f creationPos);
 void recruiterMenu(Vec3f creationPos);
 void towerMenu(Vec3f creationPos);
 void escapeMenu(Vec3f creationPos);
+void gunModMenu(Item* item);
 
 namespace bountytower
 {

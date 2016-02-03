@@ -85,6 +85,9 @@ public:
     std::list<StatusEffect> statusEffectsInflict;
     std::list<StatusEffect> statusEffects;
 
+
+    std::list<StatusEffect> spells;
+
     void handleStatusEffects();
 
     sf::Vector2f targetPos;
@@ -111,44 +114,56 @@ public:
     int spread;
 
     int barrelCount;
+    int getBarrelCount();
+
     float damageMultiplier;
+    float getDamageMultiplier();
 
     float dispersion;
+    float getDispersion();
+
     float aimTime;
+    float getAimTime();
+
     float recoil;
+    float getRecoil();
+
     float recoilReduction;
+    float getRecoilReduction();
 
     float fireRate;
+    float getFireRate();
+
     int fireMode; // Semi, Burst, Automatic.
 
+    int burstCount;
+    int getBurstCount();
 
-//-Fire Rate
-//-Fire Mode, Semi, Burst, Auto.
+    float reloadTime;
+    float getReloadTime();
 
-//-Ammo Capacity
-//-Reload Speed
-//-Reload Amount
+    int reloadAmount;
+    int getReloadAmount();
+
+
+    float bulletSpeedMultiplier;
+    float getBulletSpeedMultiplier();
+
+    float durability;
+    float getDurability();
+
+    float durabilityCost;
+    float getDurabilityCost();
 
 
     // *---^ Gun Variables
 
 
 
-
-
-    // 0 = none, 1 = melee weapon, 2 = ranged weapon,
-    // 3 = thrown weapon, 4 = food, 5 = water, 6 = cell, 7 = Ore,
-    // 8 = Digging Tool, 9 = Cutting Tool, 10 = Fishing Tool,
-    // 11 = Liquid Container, 12 = Plant, 13 = ?
     int type;
-    // 0 = none, 1 = hand gun, 2 = rifle, 3 = slash, 4 = blunt, 5 = pierce
+    // 0 = none, 1 = Melee, 2 = Gun, 3 = Ammo Bullet, 4 = Ammo Shell, 5 = Ammo Rocket, 12 = Pickupable/Misc, 42 = Consumable/Potion, 69 = InventoryUpgradeSlot,
     std::string usedskill;
     int amount;
-    // 0 None 1 Chem 2 Solar 3 Nuclear 4 Soul 5 Magic
-    int celltype;
-    int cellcharge;
-    int cellcost;
-    int tillrot;
 
     int hungervalue;
     int massMetal;
@@ -165,42 +180,18 @@ public:
     int ammotype;
     int maxclip;
     int currentclip;
-    bool hasCell;
-    bool useCell;
-    bool isMagic;
+
     int stackSize;
-    bool rotten;
-    bool isLiquidContainer;
-    bool isObjectContainer;
-    bool pushable;
-    bool blocksmovement;
-    bool collectssolar;
-    bool collectsheat;
-    bool makeslight;
-    bool needspower;
+
+
     bool produces;
     int prodrate;
     int prodratetimer;
     std::string produce;
-    std::string matreqprod;
-    bool needmatprod;
-    bool deconstrutionauto;
-    int timerdecon;
-    bool buried;
-    bool hidden;
-    bool ProdOn;
-    bool IsOn;
-    bool Sleepable;
-    int liquidContainMax;
-    int objectContainMax;
+
     int containAmount;
-    void chargecell(int amount);
-    void soulcell(int soultype);
-    bool getid(int idz);
-    bool boolname(char *cakezebra);
     void printInfo();
     void drawImg();
-    void spawn(int gposx, int gposy, int rposx, int rposy, int posx, int posy, int posz);
     void printConsoleInfo();
     int getRange();
     int getSpread();

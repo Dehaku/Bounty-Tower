@@ -80,6 +80,12 @@ Bravery: Fight or Flight
 Competitiveness: Cooperative(Ants), Helpful(Cats), Aggressive(Dogs)
 Pack/Loner/Herd: Flocking from 'The Nature of Code'
 
+-Misc
+Along with positive traits/qualities of a part, There should also be negitive ones that can arise.
+Such as a part being poisonious or degrading over time, such as the apendix in humans. Age dependent parts that cause damage to the system via poison or other methods.
+
+Additionally, Parts should have inner and outer layers, providing vunerabilities and strengths for important parts, like organs, and rib cages.
+
 
 =Intake
 -Eating/Drinking
