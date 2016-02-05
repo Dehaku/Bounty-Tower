@@ -12,12 +12,28 @@ static int tempOffset = 0;
         if(inputState.key[Key::Up].time == 1)
             std::cout << "temptOffset: " << tempOffset << std::endl;
 
+
+
+        static int tempOffset = 0;
+        static int tempOffset2 = 0;
+        if(inputState.key[Key::Right].time == 1 || inputState.key[Key::Right].time > 30)
+            tempOffset++;
+        if(inputState.key[Key::Left].time == 1 || inputState.key[Key::Left].time > 30)
+            tempOffset--;
+        if(inputState.key[Key::Down].time == 1 || inputState.key[Key::Down].time > 30)
+            tempOffset2++;
+        if(inputState.key[Key::Up].time == 1 || inputState.key[Key::Up].time > 30)
+            tempOffset2--;
+        if(inputState.key[Key::LShift].time == 1)
+            std::cout << "temptOffset: " << tempOffset << std::endl << "temptOffset2: " << tempOffset2 << std::endl;
+
 */
 
 std::vector<Npc*> Squaddies;
 std::list<Npc> leftBehind;
 std::list<Npc> recruitables;
 std::list<Item> enchantedItems;
+std::list<Item> itemStorage;
 
 bool onScreen(sf::Vector2f vPos)
 {
@@ -50,6 +66,33 @@ void renderScreenShake()
     gvars::view1.setCenter(screenPos);
 
     gvars::screenShake = math::clamp(gvars::screenShake - 0.5,0,100);
+}
+
+void setupItemStorage()
+{
+    {
+        Item mod;
+        mod.name = "Duckfoot Barrel";
+        mod.barrelCount = 5;
+        mod.dispersion = 180;
+        itemStorage.push_back(mod);
+    }
+
+    {
+        Item mod;
+        mod.name = "Rotary Fire Mechanism";
+        mod.damageMultiplier = -0.50;
+        mod.fireRate = 300;
+        itemStorage.push_back(mod);
+    }
+
+    {
+        Item mod;
+        mod.name = "Portal Magazine";
+        mod.reloadAmount = 50;
+        mod.reloadTime = -50;
+        itemStorage.push_back(mod);
+    }
 }
 
 int gridIt(int num)
@@ -277,10 +320,15 @@ void bountyTowerSetup()
 
     setupTowers();
 
+    setupItemStorage();
+
     //gCtrl.menuType = "BTTowers";
     //menuPopUp();
 
     //gvars::debug = true;
+
+
+
 }
 
 int elevateElevatorInhabitants()
@@ -1934,8 +1982,12 @@ void gunModMenu(Item * item)
     dynamicVariable itemCarry;
     itemCarry.name = "Item";
     itemCarry.varItemPtr = item;
-
     sMenu.vars.push_back(itemCarry);
+
+    itemCarry.name = "Original Item";
+    sMenu.vars.push_back(itemCarry);
+
+
     menus.push_back(sMenu);
 }
 
@@ -3739,7 +3791,7 @@ void renderGunModMenu(baseMenu &menu)
     if(shapes.shapeClicked(downScrollButt))
         menu.scrollOne--;
 
-
+    /*
     dynamicVariable * currentType = menu.getVar("currentType");
     { // Current Item Type Selection
         if(!menu.hasVar("currentType"))
@@ -3784,57 +3836,159 @@ void renderGunModMenu(baseMenu &menu)
         }
     }
 
+
+    */
     dynamicVariable * selectedItem = menu.getVar("Item");
 
     int xOffset = 0;
     int yOffset = 0;
 
-    Item & weapon = *selectedItem->varItemPtr;
+    Item * weapon = selectedItem->varItemPtr;
 
-    yOffset = 1;
-    {
+
+    { // Current Item Display
+        std::string outPut = "";
 
         std::ostringstream num;
-        num << std::setprecision(2) << weapon.getBarrelCount();
-        std::string outPut = "Barrel Count: " + num.str() + "\n";
-        num.str("");
-        num << weapon.getDamageMultiplier();
-        outPut.append("Damage Multiplier: " + num.str() + "\n");
+        num << std::setprecision(5);
+        num << weapon->getBarrelCount();
+        outPut.append("Barrel Count: " + num.str() + "\n");
+        num.str(std::string());
         num.clear();
-        num << weapon.getDispersion();
-        outPut.append("Dispersion: " + num.str() + "\n");
-        outPut.append("Aim Time: " + str(weapon.getAimTime()) + "\n");
-        outPut.append("Recoil: " + str(weapon.getRecoil()) + "\n");
-        outPut.append("Recoil Reduction: " + str(weapon.getRecoilReduction()) + "\n");
-        outPut.append("Fire Rate: " + str(weapon.getFireRate()) + "\n");
-        outPut.append("Burst Count: " + str(weapon.getBurstCount()) + "\n");
-        outPut.append("Reload Time: " + str(weapon.getReloadTime()) + "\n");
-        outPut.append("Reload Amount: " + str(weapon.getReloadAmount()) + "\n");
-        outPut.append("Bullet Speed Multiplier: " + str(weapon.getBulletSpeedMultiplier()) + "\n");
-        outPut.append("Durability: " + str(weapon.getDurability()) + "\n");
-        outPut.append("Durability Cost: " + str(weapon.getDurabilityCost()) + "\n");
 
-        /*
-        for(auto &aspect : status.aspects)
-        {
-            if(aspectNum[aspect.name].find("Condition") != std::string::npos)
-                outPut.append("\n   ");
-            outPut.append("[" + aspectNum[aspect.name] + ",Potency:" + str(static_cast<int>(aspect.potency)));
-            if(aspect.type != "")
-                outPut.append(",Type:" + aspect.type);
-            outPut.append("]");
-        }
-        */
+        num << weapon->getDamageMultiplier();
+        outPut.append("Damage Multiplier: " + num.str() + "\n");
+        num.str(std::string());
+        num.clear();
+
+        num << weapon->getDispersion();
+        outPut.append("Dispersion: " + num.str() + "\n");
+        num.str(std::string());
+        num.clear();
+
+        num << weapon->getAimTime();
+        outPut.append("Aim Time: " + num.str() + "\n");
+        num.str(std::string());
+        num.clear();
+
+        num << weapon->getRecoil();
+        outPut.append("Recoil: " + num.str() + "\n");
+        num.str(std::string());
+        num.clear();
+
+        num << weapon->getRecoilReduction();
+        outPut.append("Recoil Reduction: " + num.str() + "\n");
+        num.str(std::string());
+        num.clear();
+
+        num << weapon->getFireRate();
+        outPut.append("Fire Rate: " + num.str() + "\n");
+        num.str(std::string());
+        num.clear();
+
+        num << weapon->getBurstCount();
+        outPut.append("Burst Count: " + num.str() + "\n");
+        num.str(std::string());
+        num.clear();
+
+        num << weapon->getReloadTime();
+        outPut.append("Reload Time: " + num.str() + "\n");
+        num.str(std::string());
+        num.clear();
+
+        num << weapon->getReloadAmount();
+        outPut.append("Reload Amount: " + num.str() + "\n");
+        num.str(std::string());
+        num.clear();
+
+        num << weapon->getBulletSpeedMultiplier();
+        outPut.append("Bullet Speed Multiplier: " + num.str() + "\n");
+        num.str(std::string());
+        num.clear();
+
+        num << weapon->getDurability();
+        outPut.append("Durability: " + num.str() + "\n");
+        num.str(std::string());
+        num.clear();
+
+        num << weapon->getDurabilityCost();
+        outPut.append("Durability Cost: " + num.str() + "\n");
+        num.str(std::string());
+        num.clear();
+
 
         sf::Vector2f vPos(250,420);
-        vPos.y += 10*yOffset;
         shapes.createText(vPos,8,sf::Color::Cyan,outPut,&gvars::hudView);
         shapes.shapes.back().layer = layer+FrontPanel+1;
 
-        yOffset++;
-        yOffset++;
-        yOffset++;
     }
+
+    { // Gun's Internal Parts.
+        sf::Vector2f vDrawPos(102,126);
+
+        std::string mainoutPut = "     " + menu.getVar("Original Item")->varItemPtr->name;
+        shapes.createText(vDrawPos,8,sf::Color::Red,mainoutPut,&gvars::hudView);
+        shapes.shapes.back().layer = layer+FrontPanel+1;
+
+        int mainitemButt = shapes.createImageButton(vDrawPos,texturemanager.getTexture("ArrowButton.png"),"",0,&gvars::hudView);
+        shapes.shapes.back().layer = layer+FrontPanel+2;
+
+        if(shapes.shapeClicked(mainitemButt))
+            selectedItem->varItemPtr = menu.getVar("Original Item")->varItemPtr;
+
+        yOffset = 2;
+
+        for(auto & modPart : weapon->internalitems)
+        {
+            sf::Vector2f vPos = vDrawPos;
+
+            std::string outPut = "";
+            outPut.append("     " + modPart.name + "\n");
+            vPos.y += 20*yOffset;
+            shapes.createText(vPos,8,sf::Color::Cyan,outPut,&gvars::hudView);
+            shapes.shapes.back().layer = layer+FrontPanel+1;
+
+            int itemButt = shapes.createImageButton(vPos,texturemanager.getTexture("ArrowButton.png"),"",0,&gvars::hudView);
+            shapes.shapes.back().layer = layer+FrontPanel+2;
+
+            if(shapes.shapeClicked(itemButt))
+            {
+                menu.getVar("Item")->varItemPtr = &modPart;
+                break;
+            }
+
+
+            yOffset++;
+        }
+
+        yOffset++;
+
+        for(auto & modPart : itemStorage)
+        {
+            sf::Vector2f vPos = vDrawPos;
+
+            std::string outPut = "";
+            outPut.append("     " + modPart.name + "\n");
+            vPos.y += 20*yOffset;
+            shapes.createText(vPos,8,sf::Color::White,outPut,&gvars::hudView);
+            shapes.shapes.back().layer = layer+FrontPanel+1;
+
+            int itemButt = shapes.createImageButton(vPos,texturemanager.getTexture("ArrowButton.png"),"",0,&gvars::hudView);
+            shapes.shapes.back().layer = layer+FrontPanel+2;
+
+            if(shapes.shapeClicked(itemButt))
+            {
+                menu.getVar("Item")->varItemPtr = &modPart;
+                break;
+            }
+
+            yOffset++;
+        }
+
+    }
+
+
+
 }
 
 
@@ -5486,14 +5640,28 @@ void spawnModWeapon()
     weapon.type = 2;
     weapon.name = "Mod Weapon";
 
-    Item mod;
-    mod.barrelCount = 2;
-    mod.name = "Barrel Doubler";
+    {
+        Item mod;
+        mod.name = "Barrel Doubler";
+        mod.barrelCount = 2;
+        weapon.internalitems.push_back(mod);
+    }
 
-    weapon.internalitems.push_back(mod);
+    {
+        Item mod;
+        mod.name = "Burst Enhancer";
+        mod.damageMultiplier = 0.73;
+        mod.burstCount = 3;
+        weapon.internalitems.push_back(mod);
+    }
 
-    mod.barrelCount = 1;
-    weapon.internalitems.push_back(mod);
+    {
+        Item mod;
+        mod.name = "Sniper Scope";
+        mod.aimTime = 2.3;
+        mod.dispersion - 30;
+        weapon.internalitems.push_back(mod);
+    }
 
     worlditems.push_back(weapon);
 }

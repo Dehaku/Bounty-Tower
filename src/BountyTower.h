@@ -27,6 +27,8 @@ extern void resetPathingController();
 
 extern std::vector<Npc*> Squaddies;
 
+extern std::list<Item> itemStorage;
+
 bool onScreen(sf::Vector2f vPos);
 
 void screenShake(float intensity);

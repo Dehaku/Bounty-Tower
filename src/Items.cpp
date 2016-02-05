@@ -603,7 +603,7 @@ Item::Item()
     spread = 0;
 
     barrelCount = 0;
-    damageMultiplier = 1;
+    damageMultiplier = 0;
 
     dispersion = 0;
     aimTime = 0;
@@ -617,7 +617,7 @@ Item::Item()
     reloadTime = 0;
     reloadAmount = 0;
 
-    bulletSpeedMultiplier = 1;
+    bulletSpeedMultiplier = 0;
 
     durability = 1;
     durabilityCost = 0;
