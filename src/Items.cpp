@@ -62,6 +62,7 @@ void clearBullets()
     bullets.clear();
 }
 
+
 Item * mouseItem = nullptr;
 
 std::list<Item> worlditems;
@@ -616,6 +617,7 @@ Item::Item()
 
     reloadTime = 0;
     reloadAmount = 0;
+    ammoCapacity = 0;
 
     bulletSpeedMultiplier = 0;
 

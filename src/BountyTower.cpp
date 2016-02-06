@@ -96,6 +96,14 @@ void setupItemStorage()
         mod.reloadTime = -50;
         itemStorage.push_back(mod);
     }
+
+    {
+        Item mod;
+        mod.name = "Rail Laser Sight";
+        mod.type = itemTypes.PartAccessory;
+        mod.aimTime = -5;
+        itemStorage.push_back(mod);
+    }
 }
 
 int gridIt(int num)
@@ -4051,12 +4059,38 @@ void renderGunModMenu(baseMenu &menu)
 
             if(shapes.shapeClicked(equipSwapButt))
             {
-                //menu.getVar("Item")->varItemPtr = &modPart;
-                menu.getVar("Original Item")->varItemPtr->internalitems.push_back(modPart);
-                modPart.toDelete = true;
-                AnyDeletes(itemStorage);
-                selectedItem->varItemPtr = menu.getVar("Original Item")->varItemPtr;
-                break;
+                bool partAllowed = true;
+                int accessoryCount = 0;
+                for(auto compare : menu.getVar("Original Item")->varItemPtr->internalitems)
+                {
+                    if(compare.type == itemTypes.PartAccessory)
+                        accessoryCount++;
+
+                    if(modPart.type != itemTypes.PartAccessory && compare.type == modPart.type)
+                    {
+                        partAllowed = false;
+                        chatBox.addChat("This item already has a part in this slot!");
+                    }
+                }
+
+                if(accessoryCount >= 4 && modPart.type == itemTypes.PartAccessory)
+                {
+                    partAllowed = false;
+                    chatBox.addChat("This item has too many accessories!");
+                    if(random(1,4) == 1)
+                        chatBox.addChat("Such fabulousness.", sf::Color::Green);
+                }
+
+
+
+                if(partAllowed)
+                {
+                    menu.getVar("Original Item")->varItemPtr->internalitems.push_back(modPart);
+                    modPart.toDelete = true;
+                    AnyDeletes(itemStorage);
+                    selectedItem->varItemPtr = menu.getVar("Original Item")->varItemPtr;
+                    break;
+                }
             }
             if(shapes.shapeHovered(equipSwapButt))
             {
