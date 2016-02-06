@@ -758,6 +758,15 @@ int Item::getReloadAmount()
     return returns;
 }
 
+int Item::getAmmoCapacity()
+{
+    int returns = ammoCapacity;
+    for(auto internals : internalitems)
+        returns += internals.ammoCapacity;
+
+    return returns;
+}
+
 float Item::getBulletSpeedMultiplier()
 {
     float returns = bulletSpeedMultiplier;

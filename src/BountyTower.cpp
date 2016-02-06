@@ -73,6 +73,7 @@ void setupItemStorage()
     {
         Item mod;
         mod.name = "Duckfoot Barrel";
+        mod.type = itemTypes.PartBarrel;
         mod.barrelCount = 5;
         mod.dispersion = 180;
         itemStorage.push_back(mod);
@@ -80,6 +81,7 @@ void setupItemStorage()
 
     {
         Item mod;
+        mod.type = itemTypes.PartFiringMechanism;
         mod.name = "Rotary Fire Mechanism";
         mod.damageMultiplier = -0.50;
         mod.fireRate = 300;
@@ -89,6 +91,7 @@ void setupItemStorage()
     {
         Item mod;
         mod.name = "Portal Magazine";
+        mod.type = itemTypes.PartMagazine;
         mod.reloadAmount = 50;
         mod.reloadTime = -50;
         itemStorage.push_back(mod);
@@ -3891,6 +3894,11 @@ void renderGunModMenu(baseMenu &menu)
         num.str(std::string());
         num.clear();
 
+        num << weapon->getAmmoCapacity();
+        outPut.append("Ammo Capacity: " + num.str() + "\n");
+        num.str(std::string());
+        num.clear();
+
         num << weapon->getReloadTime();
         outPut.append("Reload Time: " + num.str() + "\n");
         num.str(std::string());
@@ -3936,9 +3944,17 @@ void renderGunModMenu(baseMenu &menu)
         if(shapes.shapeClicked(mainitemButt))
             selectedItem->varItemPtr = menu.getVar("Original Item")->varItemPtr;
 
+        if(shapes.shapeHovered(mainitemButt))
+        {
+            shapes.createText(sf::Vector2f(gvars::mousePos.x,gvars::mousePos.y-20),10,sf::Color::White,"Examine Weapon");
+            shapes.shapes.back().layer = layer+FrontPanel+3;
+        }
+
+
+
         yOffset = 2;
 
-        std::string outPutInternal = "     Internal Items";
+        std::string outPutInternal = "        Internal Items";
         sf::Vector2f vPosX = vDrawPos;
         vPosX.y += 20*yOffset;
         shapes.createText(vPosX,8,sf::Color::Cyan,outPutInternal,&gvars::hudView);
@@ -3950,7 +3966,7 @@ void renderGunModMenu(baseMenu &menu)
             sf::Vector2f vPos = vDrawPos;
 
             std::string outPut = "";
-            outPut.append("     " + modPart.name + "\n");
+            outPut.append("        " + modPart.name + "\n");
             vPos.y += 20*yOffset;
             shapes.createText(vPos,8,sf::Color::Cyan,outPut,&gvars::hudView);
             shapes.shapes.back().layer = layer+FrontPanel+1;
@@ -3961,6 +3977,11 @@ void renderGunModMenu(baseMenu &menu)
             if(shapes.shapeClicked(itemButt))
             {
                 menu.getVar("Item")->varItemPtr = &modPart;
+            }
+            if(shapes.shapeHovered(itemButt))
+            {
+                shapes.createText(sf::Vector2f(gvars::mousePos.x,gvars::mousePos.y-20),10,sf::Color::White,"Examine Part");
+                shapes.shapes.back().layer = layer+FrontPanel+3;
             }
 
 
@@ -3979,6 +4000,11 @@ void renderGunModMenu(baseMenu &menu)
                 selectedItem->varItemPtr = menu.getVar("Original Item")->varItemPtr;
                 break;
             }
+            if(shapes.shapeHovered(equipSwapButt))
+            {
+                shapes.createText(sf::Vector2f(gvars::mousePos.x,gvars::mousePos.y-20),10,sf::Color::White,"Remove Part");
+                shapes.shapes.back().layer = layer+FrontPanel+3;
+            }
 
 
             yOffset++;
@@ -3986,7 +4012,7 @@ void renderGunModMenu(baseMenu &menu)
 
 
         yOffset++;
-        std::string outPutStorage = "     Items In Storage";
+        std::string outPutStorage = "        Items In Storage";
         sf::Vector2f vPosStorage = vDrawPos;
         vPosStorage.y += 20*yOffset;
         shapes.createText(vPosStorage,8,sf::Color::White,outPutStorage,&gvars::hudView);
@@ -3998,7 +4024,7 @@ void renderGunModMenu(baseMenu &menu)
             sf::Vector2f vPos = vDrawPos;
 
             std::string outPut = "";
-            outPut.append("     " + modPart.name + "\n");
+            outPut.append("        " + modPart.name + "\n");
             vPos.y += 20*yOffset;
             shapes.createText(vPos,8,sf::Color::White,outPut,&gvars::hudView);
             shapes.shapes.back().layer = layer+FrontPanel+1;
@@ -4009,6 +4035,11 @@ void renderGunModMenu(baseMenu &menu)
             if(shapes.shapeClicked(itemButt))
             {
                 menu.getVar("Item")->varItemPtr = &modPart;
+            }
+            if(shapes.shapeHovered(itemButt))
+            {
+                shapes.createText(sf::Vector2f(gvars::mousePos.x,gvars::mousePos.y-20),10,sf::Color::White,"Examine Part");
+                shapes.shapes.back().layer = layer+FrontPanel+3;
             }
 
 
@@ -4026,6 +4057,11 @@ void renderGunModMenu(baseMenu &menu)
                 AnyDeletes(itemStorage);
                 selectedItem->varItemPtr = menu.getVar("Original Item")->varItemPtr;
                 break;
+            }
+            if(shapes.shapeHovered(equipSwapButt))
+            {
+                shapes.createText(sf::Vector2f(gvars::mousePos.x,gvars::mousePos.y-20),10,sf::Color::White,"Install Part");
+                shapes.shapes.back().layer = layer+FrontPanel+3;
             }
 
 
@@ -5689,24 +5725,76 @@ void spawnModWeapon()
 
     {
         Item mod;
-        mod.name = "Barrel Doubler";
+        mod.name = "Double Barrel";
+        mod.type = itemTypes.PartBarrel;
         mod.barrelCount = 2;
+        mod.damageMultiplier = 3;
+        mod.dispersion = 5;
+        mod.recoil = 5;
+        mod.bulletSpeedMultiplier = 2.3;
         weapon.internalitems.push_back(mod);
     }
 
     {
         Item mod;
-        mod.name = "Burst Enhancer";
-        mod.damageMultiplier = 0.73;
+        mod.name = "Rapid Fire Body";
+        mod.type = itemTypes.PartBody;
+
+        mod.damageMultiplier = -0.25;
+        mod.fireMode = mod.Burst;
         mod.burstCount = 3;
+        mod.fireRate = 10;
+        mod.recoil = 15;
+        mod.recoilReduction = 1;
+
+        mod.durability = 5000;
+        mod.durabilityCost = 50;
+
         weapon.internalitems.push_back(mod);
     }
 
     {
         Item mod;
-        mod.name = "Sniper Scope";
+        mod.name = "Simple Iron Sights";
+        mod.type = itemTypes.PartSight;
+
         mod.aimTime = 2.3;
-        mod.dispersion - 30;
+        mod.dispersion = -30;
+
+        weapon.internalitems.push_back(mod);
+    }
+
+    {
+        Item mod;
+        mod.name = "Stock Magazine";
+        mod.type = itemTypes.PartMagazine;
+
+        mod.ammoCapacity = 8;
+        mod.reloadAmount = 2;
+        mod.reloadTime = 15;
+
+        weapon.internalitems.push_back(mod);
+    }
+
+    {
+        Item mod;
+        mod.name = "Rifle Stock";
+        mod.type = itemTypes.PartStock;
+
+        mod.recoil = -10;
+        mod.recoilReduction = 5;
+        mod.reloadTime = 5;
+
+        weapon.internalitems.push_back(mod);
+    }
+
+    {
+        Item mod;
+        mod.name = "Stock Grip";
+        mod.type = itemTypes.PartGrip;
+
+        mod.recoilReduction = 5;
+
         weapon.internalitems.push_back(mod);
     }
 

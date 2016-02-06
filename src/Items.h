@@ -38,6 +38,40 @@ public:
 };
 extern DamageTypes damageTypes;
 
+class ItemTypes
+{
+public:
+    enum Type
+    { // WARNING, THESE MUST BE IN THE SAME ORDER AS 'TypeStrings'
+        None,
+        Melee,
+        Gun,
+        Bullet,
+        Shell,
+        Missile,
+        Pickups = 12,
+        Magic = 23,
+        Consumable = 42,
+        InventorySlotUnlocker = 69,
+        PartBody = 100,
+        PartBarrel,
+        PartMagazine,
+        PartFiringMechanism,
+        PartGrip,
+        PartSight,
+        PartStock,
+        PartAccessory
+
+    };
+
+    std::vector<std::string> TypeStrings;
+    int getNum(std::string name);
+    std::string getString(int num);
+
+    ItemTypes();
+};
+extern ItemTypes itemTypes;
+
 class Item
 {
 public:
@@ -54,6 +88,14 @@ public:
     std::string name;
     std::string inventor;
     std::string contains;
+    enum fireMode
+    {
+        None,
+        Semi,
+        Burst,
+        Auto
+    };
+
     // This is to only be filled with a part name if it is put inside
     // a creature, otherwise, it is to be left blank. This item is
     // meant to be put inside a critters inventory,
@@ -144,6 +186,9 @@ public:
 
     int reloadAmount;
     int getReloadAmount();
+
+    int ammoCapacity;
+    int getAmmoCapacity();
 
 
     float bulletSpeedMultiplier;
