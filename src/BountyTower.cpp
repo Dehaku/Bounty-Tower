@@ -3938,6 +3938,13 @@ void renderGunModMenu(baseMenu &menu)
 
         yOffset = 2;
 
+        std::string outPutInternal = "     Internal Items";
+        sf::Vector2f vPosX = vDrawPos;
+        vPosX.y += 20*yOffset;
+        shapes.createText(vPosX,8,sf::Color::Cyan,outPutInternal,&gvars::hudView);
+        shapes.shapes.back().layer = layer+FrontPanel+1;
+        yOffset++;
+
         for(auto & modPart : menu.getVar("Original Item")->varItemPtr->internalitems)
         {
             sf::Vector2f vPos = vDrawPos;
@@ -3954,13 +3961,19 @@ void renderGunModMenu(baseMenu &menu)
             if(shapes.shapeClicked(itemButt))
             {
                 menu.getVar("Item")->varItemPtr = &modPart;
-                break;
             }
 
 
             yOffset++;
         }
 
+
+        yOffset++;
+        std::string outPutStorage = "     Items In Storage";
+        sf::Vector2f vPosStorage = vDrawPos;
+        vPosStorage.y += 20*yOffset;
+        shapes.createText(vPosStorage,8,sf::Color::White,outPutStorage,&gvars::hudView);
+        shapes.shapes.back().layer = layer+FrontPanel+1;
         yOffset++;
 
         for(auto & modPart : itemStorage)
@@ -3979,7 +3992,6 @@ void renderGunModMenu(baseMenu &menu)
             if(shapes.shapeClicked(itemButt))
             {
                 menu.getVar("Item")->varItemPtr = &modPart;
-                break;
             }
 
             yOffset++;
