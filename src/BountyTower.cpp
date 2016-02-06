@@ -3964,6 +3964,22 @@ void renderGunModMenu(baseMenu &menu)
             }
 
 
+
+            vPos.x += 20;
+            int equipSwapButt = shapes.createImageButton(vPos,texturemanager.getTexture("ArrowButton.png"),"",0,&gvars::hudView);
+            vPos.x -= 20;
+            shapes.shapes.back().layer = layer+FrontPanel+2;
+
+            if(shapes.shapeClicked(equipSwapButt))
+            {
+                //menu.getVar("Item")->varItemPtr = &modPart;
+                itemStorage.push_back(modPart);
+                modPart.toDelete = true;
+                AnyDeletes(menu.getVar("Original Item")->varItemPtr->internalitems);
+                break;
+            }
+
+
             yOffset++;
         }
 
