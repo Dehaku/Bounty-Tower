@@ -3938,7 +3938,7 @@ void renderGunModMenu(baseMenu &menu)
 
         yOffset = 2;
 
-        for(auto & modPart : weapon->internalitems)
+        for(auto & modPart : menu.getVar("Original Item")->varItemPtr->internalitems)
         {
             sf::Vector2f vPos = vDrawPos;
 
