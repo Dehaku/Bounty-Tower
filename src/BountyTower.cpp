@@ -2592,7 +2592,7 @@ void renderMerchantMenu(baseMenu &menu)
 
         if(item.type == 2)
         {
-            stats.append(", Mag: " + str(item.maxclip));
+            stats.append(", Mag: " + str(item.getAmmoCapacity()));
             if(item.ammotype == 3)
                 stats.append(", Bullet");
             if(item.ammotype == 4)
@@ -3411,7 +3411,7 @@ void renderEnchantMenu(baseMenu &menu)
 
         if(item.type == 2)
         {
-            stats.append(", Mag: " + str(item.maxclip));
+            stats.append(", Mag: " + str(item.getAmmoCapacity()));
             if(item.ammotype == 3)
                 stats.append(", Bullet");
             if(item.ammotype == 4)
@@ -5756,6 +5756,8 @@ void spawnModWeapon()
     weapon.img.setTexture(texturemanager.getTexture("ChainMagnum.png"));
     weapon.type = 2;
     weapon.name = "Mod Weapon";
+    weapon.ammotype = itemTypes.Bullet;
+    weapon.size = 1;
 
     {
         Item mod;

@@ -223,8 +223,6 @@ public:
     int mindam;
     int maxdam;
     int ammotype;
-    int maxclip;
-    int currentclip;
 
     int stackSize;
 

@@ -450,14 +450,6 @@ void Item::printInfo()
     cout << "Name: " << name.c_str() << " (" << id << ") " << endl;
     cout << "Weight: " << weight << endl;
     cout << "Value: " << value << endl;
-    if (ammotype > 0)
-    {
-        cout << "MaxClip: " << maxclip << endl;
-    }
-    if (ammotype > 0)
-    {
-        cout << "Current Clip: " << currentclip << endl;
-    }
     cout << "Min Damage: " << mindam << endl;
     cout << "Max Damage: " << maxdam << endl;
 }
@@ -661,8 +653,6 @@ Item::Item()
 
     // 0 = none/melee, 6 = small bullet, 7 = large bullet
     ammotype = 0;
-    maxclip = 0;
-    currentclip = 0;
     mindam = 1;
     maxdam = 2;
 
@@ -857,7 +847,7 @@ void ItemManager::initializeItems()
             item.massPlastic = stringFindNumber(line, "[MassPlastic:");
             item.massVeggy = stringFindNumber(line, "[MassVeggy:");
             item.massWater = stringFindNumber(line, "[MassWater:");
-            item.maxclip = stringFindNumber(line, "[MaxClip:");
+            item.ammoCapacity = stringFindNumber(line, "[AmmoCapacity:");
 
             item.size = 0;
             item.size = stringFindNumber(line, "[Size:");
@@ -1295,7 +1285,7 @@ std::string Item::activate(Vec3f vPos) // Returns a string declaring the problem
         boolet.damage = random(getMinDamage(),getMaxDamage());
         int bulletDamage = boolet.damage;
 
-        if(user->skills.getRanks("Bronze Bullet") > 0 && itemptr->amount == maxclip)
+        if(user->skills.getRanks("Bronze Bullet") > 0 && itemptr->amount == getAmmoCapacity())
         { // Bronze Bullet
             std::cout << "Bronzing Bullet: " << boolet.damage;
             int bronzemultiplier = user->skills.getRanks("Bronze Bullet")*10;
@@ -1303,7 +1293,7 @@ std::string Item::activate(Vec3f vPos) // Returns a string declaring the problem
             std::cout << " to " << boolet.damage << std::endl;
         }
 
-        int halfclip = maxclip/2;
+        int halfclip = getAmmoCapacity()/2;
         if(user->skills.getRanks("Silver Bullet") > 0 && itemptr->amount == halfclip)
         { // Silver Bullet
             std::cout << "Silvering Bullet: " << boolet.damage;

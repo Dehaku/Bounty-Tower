@@ -1973,7 +1973,7 @@ void drawSquadHud()
                 if(ammoLeft != nullptr)
                     ammoCount = ammoLeft->amount;
 
-                float ammoRemaining = static_cast<float>(ammoCount) / static_cast<float>(leftHand->maxclip);
+                float ammoRemaining = static_cast<float>(ammoCount) / static_cast<float>(leftHand->getAmmoCapacity());
 
                 // LeftHanded Ammo Remaining
                 spritePos.x += 1;
@@ -1999,7 +1999,7 @@ void drawSquadHud()
                 if(ammoLeft != nullptr)
                     ammoCount = ammoLeft->amount;
 
-                float ammoRemaining = static_cast<float>(ammoCount) / static_cast<float>(rightHand->maxclip);
+                float ammoRemaining = static_cast<float>(ammoCount) / static_cast<float>(rightHand->getAmmoCapacity());
 
 
                 spritePos.x += 21;

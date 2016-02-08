@@ -818,7 +818,7 @@ void checkAmmo(Npc &npc, std::list<Npc> &container, Item * rangewep, bool forceR
 
     //Making sure the weapon isn't full, No point in reloading then.
     if(!weaponEmpty)
-        if(currentAmmo->amount >= rangewep->maxclip)
+        if(currentAmmo->amount >= rangewep->getAmmoCapacity())
             isFull = true;
 
     for(auto &item : rangewep->internalitems)
@@ -843,14 +843,14 @@ void checkAmmo(Npc &npc, std::list<Npc> &container, Item * rangewep, bool forceR
                     continue;
 
                 //Defining how much ammo needs to be put into the weapon.
-                int ammoMissingFromClip = rangewep->maxclip;
+                int ammoMissingFromClip = rangewep->getAmmoCapacity();
                 ammoMissingFromClip -= currentAmmo->amount;
                 int loadAmount = currentAmmo->amount;
 
                 if(newAmmo->amount > ammoMissingFromClip)
                 {//We have too much ammo, So we simply set loadAmount to max, reduce newAmount by ammoMissing.
                     newAmmo->amount -= ammoMissingFromClip;
-                    loadAmount = rangewep->maxclip;
+                    loadAmount = rangewep->getAmmoCapacity();
                 }
                 else
                 {//Not enough ammo to go over the cap, We'll add it up, then delete the empty ammo.
@@ -864,7 +864,7 @@ void checkAmmo(Npc &npc, std::list<Npc> &container, Item * rangewep, bool forceR
             }
             else
             {//Gun's empty! This should be easy.
-                int ammoMissingFromClip = rangewep->maxclip;
+                int ammoMissingFromClip = rangewep->getAmmoCapacity();
 
                 Item loadingAmmo = *newAmmo;
                 int loadAmount = 0;
@@ -4973,7 +4973,7 @@ void drawSelectedCritterHUD()
                 if(slotItem->type == 2)
                 { // Checking and display ammo count/max.
                     int curAmmo = 0;
-                    int maxAmmo = slotItem->maxclip;
+                    int maxAmmo = slotItem->getAmmoCapacity();
                     Item * itemAmmo = getItemType(slotItem->internalitems,slotItem->ammotype);
                     if(itemAmmo != nullptr)
                         curAmmo = itemAmmo->amount;
