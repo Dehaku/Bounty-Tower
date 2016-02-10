@@ -4575,6 +4575,11 @@ void spawnEnemies()
                     totalCount++;
                     continue;
                 }
+                if(npcSkill.name == "Sunder")
+                { // Disallow NPC's to have Sunder.
+                    totalCount++;
+                    continue;
+                }
                 npcSkill.ranks++;
             }
         }
