@@ -903,6 +903,38 @@ void handsOffense(Npc &npc, std::list<Npc> &container, Npc * closEnmy, bool &has
 
 void assaultDesire(Npc &npc, std::list<Npc> &container, Npc * closEnmy, bool &hasPath, Vec3 &endPos)
 {
+    if(inputState.key[Key::RControl])
+    {
+        Vec3f aimPos(gvars::mousePos.x,gvars::mousePos.y,gvars::currentz*GRID_SIZE);
+        if(npc.getLeftHandItem() != nullptr)
+        {
+            npc.getLeftHandItem()->user = &npc;
+            if(!npc.getLeftHandItem()->isReady())
+                npc.getLeftHandItem()->trigger();
+            else
+            {
+                npc.getLeftHandItem()->trigger();
+                npc.getLeftHandItem()->activate(aimPos);
+            }
+
+
+        }
+
+        if(npc.getRightHandItem() != nullptr)
+        {
+            npc.getRightHandItem()->user = &npc;
+            if(!npc.getRightHandItem()->isReady())
+                npc.getRightHandItem()->trigger();
+            else
+            {
+                npc.getRightHandItem()->trigger();
+                npc.getRightHandItem()->activate(aimPos);
+            }
+
+        }
+    }
+
+
     if(closEnmy != nullptr && npc.chasePriority == "Assault")
     {
         hasPath = true;
