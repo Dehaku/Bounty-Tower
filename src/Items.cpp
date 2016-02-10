@@ -600,6 +600,7 @@ Item::Item()
 
     dispersion = 0;
     aimTime = 0;
+    aimTimeCounter = 0;
     recoil = 0;
     recoilReduction = 0;
 
@@ -689,6 +690,7 @@ float Item::getDispersion()
 
 float Item::getAimTime()
 {
+    std::cout << "Runnin. \n";
     float returns = aimTime;
     for(auto internals : internalitems)
         returns += internals.aimTime;
@@ -1134,6 +1136,151 @@ itemPtrVector randomEquipment(std::list<Item> &inventory)
 
     returns = makeItems(inventory,7);
     return returns;
+}
+
+std::string Item::gunThing(Vec3f vPos)
+{
+    if(user == nullptr)
+        return "No Owner";
+
+    if(user->mods.stunMod > 0)
+        return "Stunned";
+
+    Item * itemptr = getItemType(internalitems,ammotype);
+    if(itemptr == nullptr || itemptr->amount <= 0)
+        return "No Ammo";
+
+    { // Progress Cone
+        sf::Color coneColor;
+        if(type == 1)
+            coneColor = sf::Color::Blue;
+        if(type == 2)
+            coneColor = sf::Color::Red;
+        if(type == 3)
+            coneColor = sf::Color::Green;
+
+        std::cout << aimTimeCounter << "/" << getAimTime();
+        float remainingTime = aimTimeCounter / getAimTime();
+        std::cout << "Z \n";
+        remainingTime = 1 - remainingTime;
+
+
+        std::cout << "K \n";
+        int coneRadius = 180*(remainingTime);
+        if(coneRadius < 0)
+            coneRadius = 0;
+
+        shapes.createCone(user->getPos2d(),user->angle,coneRadius,20,coneColor);
+        std::cout << "X \n";
+    }
+
+    if(aimTimeCounter > 0)
+    {
+        aimTimeCounter--;
+        return "Aiming";
+    }
+
+
+    aimTimeCounter = getAimTime();
+
+    user->mods.onItemUse = true;
+    user->mods.onItemUseType = type;
+
+    {
+        Vec3f muzzlePos(user->xpos,user->ypos,user->zpos);
+        sf::Vector2f muzzlePosV2f(muzzlePos.x,muzzlePos.y);
+        sf::Vector2f vPosV2f(vPos.x,vPos.y);
+
+        Bullet boolet;
+        boolet.owner = user;
+        boolet.parent = this;
+        boolet.weapon = *this;
+        boolet.ammo = *itemptr;
+        boolet.pos = muzzlePos;
+        boolet.positions.push_back(boolet.pos);
+        boolet.angle = math::angleBetweenVectors(muzzlePosV2f,vPosV2f);
+        if(ammotype == 5)
+            boolet.tex = &texturemanager.getTexture("RocketBulletv2.png");
+        else
+            boolet.tex = &texturemanager.getTexture("NormalBullet.png");
+
+        boolet.radius = itemptr->radius;
+        boolet.maxrichochet = itemptr->richochets;
+        boolet.penetration = itemptr->penetration;
+
+
+
+        boolet.damage = random(getMinDamage(),getMaxDamage());
+        int bulletDamage = boolet.damage;
+
+        if(user->skills.getRanks("Bronze Bullet") > 0 && itemptr->amount == getAmmoCapacity())
+        { // Bronze Bullet
+            std::cout << "Bronzing Bullet: " << boolet.damage;
+            int bronzemultiplier = user->skills.getRanks("Bronze Bullet")*10;
+            boolet.damage += bulletDamage*(bronzemultiplier*0.01);
+            std::cout << " to " << boolet.damage << std::endl;
+        }
+
+        int halfclip = getAmmoCapacity()/2;
+        if(user->skills.getRanks("Silver Bullet") > 0 && itemptr->amount == halfclip)
+        { // Silver Bullet
+            std::cout << "Silvering Bullet: " << boolet.damage;
+            int silvermultiplier = user->skills.getRanks("Silver Bullet")*20;
+            boolet.damage += bulletDamage*(silvermultiplier*0.01);
+            std::cout << " to " << boolet.damage << std::endl;
+        }
+
+        if(user->skills.getRanks("Gold Bullet") > 0 && itemptr->amount == 1)
+        {// Gold Bullet
+            std::cout << "Golding Bullet: " << boolet.damage;
+            int goldmultiplier = user->skills.getRanks("Gold Bullet")*30;
+            boolet.damage += bulletDamage*(goldmultiplier*0.01);
+            std::cout << " to " << boolet.damage << std::endl;
+        }
+
+
+        boolet.targets = user->getEnemies();
+
+        boolet.speed = 30;
+        boolet.lifetime = 600;
+
+        for(int i = 0; i != itemptr->projectiles; i++)
+        {
+
+            if(randz(0,1) == 1)
+                boolet.angle += randz(0,getSpread());
+            else
+                boolet.angle -= randz(0,getSpread());
+
+            bullets.push_back(boolet);
+        }
+
+        int miscountRoll = randz(0,100);
+        if(miscountRoll < user->skills.getRanks("Miscounted Shot")*5)
+        {
+            std::cout << "Miscounted shot! " << miscountRoll << " vs " << user->skills.getRanks("Miscounted Shot")*5 << std::endl;
+            std::cout << "This critter possesses " << user->skills.getRanks("Miscounted Shot") << " ranks in miscounted Shot \n";
+        }
+        else
+            itemptr->amount--;
+
+        if(itemptr->amount <= 0)
+            itemptr->toDelete = true;
+
+        int ranNum = randz(1,4);
+        if(ranNum == 1)
+            soundmanager.playSound("m16_lensflare_1.ogg");
+        if(ranNum == 2)
+            soundmanager.playSound("m16_lensflare_2.ogg");
+        if(ranNum == 3)
+            soundmanager.playSound("m16_lensflare_3.ogg");
+        if(ranNum == 4)
+            soundmanager.playSound("m16_lensflare_4.ogg");
+        return "Success";
+    }
+
+
+    return "Nothing Happened.";
 }
 
 std::string Item::activate(Vec3f vPos) // Returns a string declaring the problem.

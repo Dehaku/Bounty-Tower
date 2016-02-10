@@ -106,6 +106,8 @@ public:
 
     Npc *user;
 
+
+
     void remove();
 
     int rarity;
@@ -164,8 +166,10 @@ public:
     float dispersion;
     float getDispersion();
 
+
     float aimTime;
     float getAimTime();
+    float aimTimeCounter;
 
     float recoil;
     float getRecoil();
@@ -241,6 +245,7 @@ public:
     int getKnockback();
     int getMinDamage();
     int getMaxDamage();
+    std::string gunThing(Vec3f vPos);
     std::string activate(Vec3f vPos);
     bool trigger();
     bool isReady();

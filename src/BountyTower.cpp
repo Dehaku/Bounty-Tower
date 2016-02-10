@@ -101,7 +101,7 @@ void setupItemStorage()
         Item mod;
         mod.name = "Rail Laser Sight";
         mod.type = itemTypes.PartAccessory;
-        mod.aimTime = -5;
+        mod.aimTime = -50;
         itemStorage.push_back(mod);
     }
 }
@@ -5787,6 +5787,7 @@ void spawnModWeapon()
         mod.fireRate = 10;
         mod.recoil = 15;
         mod.recoilReduction = 1;
+        mod.aimTime = 3*60;
 
         mod.durability = 5000;
         mod.durabilityCost = 50;
@@ -5799,7 +5800,7 @@ void spawnModWeapon()
         mod.name = "Simple Iron Sights";
         mod.type = itemTypes.PartSight;
 
-        mod.aimTime = 2.3;
+        mod.aimTime = -30;
         mod.dispersion = -30;
 
         weapon.internalitems.push_back(mod);

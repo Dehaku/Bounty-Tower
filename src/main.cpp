@@ -909,6 +909,13 @@ void assaultDesire(Npc &npc, std::list<Npc> &container, Npc * closEnmy, bool &ha
         if(npc.getLeftHandItem() != nullptr)
         {
             npc.getLeftHandItem()->user = &npc;
+
+            std::string result = npc.getLeftHandItem()->gunThing(aimPos);
+            std::cout << "gunThing(): " << result << std::endl;
+
+
+            /*
+
             if(!npc.getLeftHandItem()->isReady())
                 npc.getLeftHandItem()->trigger();
             else
@@ -917,12 +924,19 @@ void assaultDesire(Npc &npc, std::list<Npc> &container, Npc * closEnmy, bool &ha
                 npc.getLeftHandItem()->activate(aimPos);
             }
 
+            */
+
 
         }
 
         if(npc.getRightHandItem() != nullptr)
         {
             npc.getRightHandItem()->user = &npc;
+            std::string result = npc.getRightHandItem()->gunThing(aimPos);
+            std::cout << "gunThing(): " << result << std::endl;
+
+            /*
+
             if(!npc.getRightHandItem()->isReady())
                 npc.getRightHandItem()->trigger();
             else
@@ -930,6 +944,8 @@ void assaultDesire(Npc &npc, std::list<Npc> &container, Npc * closEnmy, bool &ha
                 npc.getRightHandItem()->trigger();
                 npc.getRightHandItem()->activate(aimPos);
             }
+
+            */
 
         }
     }
