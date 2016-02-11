@@ -84,7 +84,7 @@ void setupItemStorage()
         mod.type = itemTypes.PartFiringMechanism;
         mod.name = "Rotary Fire Mechanism";
         mod.damageMultiplier = -0.50;
-        mod.fireRate = 300;
+        mod.fireDelay = -15;
         itemStorage.push_back(mod);
     }
 
@@ -3893,8 +3893,8 @@ void renderGunModMenu(baseMenu &menu)
         num.str(std::string());
         num.clear();
 
-        num << weapon->getFireRate();
-        outPut.append("Fire Rate: " + num.str() + "\n");
+        num << weapon->getFireDelay();
+        outPut.append("Fire Delay: " + num.str() + "\n");
         num.str(std::string());
         num.clear();
 
@@ -5785,7 +5785,7 @@ void spawnModWeapon()
         mod.damageMultiplier = -0.25;
         mod.fireMode = mod.Burst;
         mod.burstCount = 3;
-        mod.fireRate = 10;
+        mod.fireDelay = 30;
         mod.recoil = 15;
         mod.recoilReduction = 1;
         mod.dispersion = 5;

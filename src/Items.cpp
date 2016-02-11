@@ -604,9 +604,11 @@ Item::Item()
     recoil = 0;
     recoilReduction = 0;
 
-    fireRate = 0;
+    fireDelay = 0;
+    fireDelayCounter = 0;
     fireMode = 0;
     burstCount = 0;
+    burstCounter = 0;
 
     reloadTime = 0;
     reloadAmount = 0;
@@ -616,6 +618,7 @@ Item::Item()
 
     durability = 1;
     durabilityCost = 0;
+    durabilityCounter = 1;
 
 
     // *---Gun Variables
@@ -716,11 +719,11 @@ float Item::getRecoilReduction()
     return returns;
 }
 
-float Item::getFireRate()
+float Item::getFireDelay()
 {
-    float returns = fireRate;
+    float returns = fireDelay;
     for(auto internals : internalitems)
-        returns += internals.fireRate;
+        returns += internals.fireDelay;
 
     return returns;
 }
@@ -1138,78 +1141,9 @@ itemPtrVector randomEquipment(std::list<Item> &inventory)
     return returns;
 }
 
-std::string Item::gunThing(Vec3f vPos)
+std::string Item::shootThing(Vec3f vPos, Item * itemptr)
 {
-    if(user == nullptr)
-        return "No Owner";
-
-    if(user->mods.stunMod > 0)
-        return "Stunned";
-
-    Item * itemptr = getItemType(internalitems,ammotype);
-    if(itemptr == nullptr || itemptr->amount <= 0)
-        return "No Ammo";
-
-    user->angle = math::angleBetweenVectors(user->getPos2d(),gvars::mousePos)-90;
-
-    { // Progress Cone
-        sf::Color coneColor;
-        if(type == 1)
-            coneColor = sf::Color::Blue;
-        if(type == 2)
-            coneColor = sf::Color::Red;
-        if(type == 3)
-            coneColor = sf::Color::Green;
-
-        std::cout << aimTimeCounter << "/" << getAimTime();
-        float remainingTime = aimTimeCounter / getAimTime();
-        std::cout << "Z \n";
-        //remainingTime = 0 + remainingTime;
-
-
-        std::cout << "K \n";
-        int coneRadius = 180*(remainingTime);
-        if(coneRadius < 0)
-            coneRadius = 0;
-
-        shapes.createCone(user->getPos2d(),user->angle,coneRadius,20,coneColor);
-        std::cout << "X \n";
-    }
-
-    { // Dispersion/Recoil Area
-        float totalDispersion = math::clamp(getDispersion(),0,9999999) + math::clamp(recoilCounter,0,9999999);
-        sf::Vector2f uPos = user->getPos2d();
-
-        int angle1 = user->angle - (totalDispersion/2)+90;
-        int angle2 = user->angle + (totalDispersion/2)+90;
-
-        sf::Vector2f leftAnglePos = math::angleCalc(uPos,angle1,40);
-        sf::Vector2f rightAnglePos = math::angleCalc(uPos,angle2,40);
-
-        shapes.createLine(uPos.x,uPos.y,leftAnglePos.x,leftAnglePos.y,1,sf::Color::Red);
-        shapes.createLine(uPos.x,uPos.y,rightAnglePos.x,rightAnglePos.y,1,sf::Color::Red);
-    }
-
-    { // Recoil Reduction
-        recoilCounter -= getRecoilReduction()/60;
-        if(recoilCounter < 0)
-            recoilCounter = 0;
-    }
-
-    if(aimTimeCounter > 0)
-    {
-        aimTimeCounter--;
-        return "Aiming";
-    }
-
-
-    aimTimeCounter = getAimTime();
-
-    user->mods.onItemUse = true;
-    user->mods.onItemUseType = type;
-
-    { // Shooty part.
-        Vec3f muzzlePos(user->xpos,user->ypos,user->zpos);
+    Vec3f muzzlePos(user->xpos,user->ypos,user->zpos);
         sf::Vector2f muzzlePosV2f(muzzlePos.x,muzzlePos.y);
         sf::Vector2f vPosV2f(vPos.x,vPos.y);
 
@@ -1316,7 +1250,143 @@ std::string Item::gunThing(Vec3f vPos)
         if(ranNum == 4)
             soundmanager.playSound("m16_lensflare_4.ogg");
         return "Success";
+}
+
+std::string Item::gunThing(Vec3f vPos)
+{
+    if(user == nullptr)
+        return "No Owner";
+
+    if(user->mods.stunMod > 0)
+        return "Stunned";
+
+    Item * itemptr = getItemType(internalitems,ammotype);
+    if(itemptr == nullptr || itemptr->amount <= 0)
+        return "No Ammo";
+
+    user->angle = math::angleBetweenVectors(user->getPos2d(),gvars::mousePos)-90;
+
+    { // Progress Cone
+        sf::Color coneColor;
+        if(type == 1)
+            coneColor = sf::Color::Blue;
+        if(type == 2)
+            coneColor = sf::Color::Red;
+        if(type == 3)
+            coneColor = sf::Color::Green;
+
+        std::cout << aimTimeCounter << "/" << getAimTime();
+        float remainingTime = aimTimeCounter / getAimTime();
+        std::cout << "Z \n";
+        //remainingTime = 0 + remainingTime;
+
+
+        std::cout << "K \n";
+        int coneRadius = 180*(remainingTime);
+        if(coneRadius < 0)
+            coneRadius = 0;
+
+        shapes.createCone(user->getPos2d(),user->angle,coneRadius,20,coneColor);
+        std::cout << "X \n";
     }
+
+    { // Dispersion/Recoil Area
+        float totalDispersion = math::clamp(getDispersion(),0,9999999) + math::clamp(recoilCounter,0,9999999);
+        sf::Vector2f uPos = user->getPos2d();
+
+        int angle1 = user->angle - (totalDispersion/2)+90;
+        int angle2 = user->angle + (totalDispersion/2)+90;
+
+        sf::Vector2f leftAnglePos = math::angleCalc(uPos,angle1,40);
+        sf::Vector2f rightAnglePos = math::angleCalc(uPos,angle2,40);
+
+        shapes.createLine(uPos.x,uPos.y,leftAnglePos.x,leftAnglePos.y,1,sf::Color::Red);
+        shapes.createLine(uPos.x,uPos.y,rightAnglePos.x,rightAnglePos.y,1,sf::Color::Red);
+    }
+
+    { // Recoil Reduction
+        recoilCounter -= getRecoilReduction()/60;
+        if(recoilCounter < 0)
+            recoilCounter = 0;
+    }
+
+    static int fireType = 0; // 0 = semi, 1 = burst, 2 = automatic.
+
+
+    if(inputState.key[Key::Num1])
+    {
+        fireType = 0;
+        chatBox.addChat("Semi!");
+    }
+
+    if(inputState.key[Key::Num2])
+    {
+        fireType = 1;
+        chatBox.addChat("Burst!");
+    }
+    if(inputState.key[Key::Num3])
+    {
+        fireType = 2;
+        chatBox.addChat("Auto!");
+    }
+
+
+    if(aimTimeCounter > 0)
+    {
+        aimTimeCounter--;
+        return "Aiming";
+    }
+
+        user->mods.onItemUse = true;
+        user->mods.onItemUseType = type;
+
+
+
+    if(fireType == 0)
+    {
+        shootThing(vPos,itemptr);
+        aimTimeCounter = getAimTime();
+    }
+
+    if(fireType == 1)
+    {
+        std::cout << "c/b: " << burstCounter << "/" << getBurstCount() << std::endl;
+        if(burstCounter >= getBurstCount())
+        {
+            aimTimeCounter = getAimTime();
+            burstCounter = 0;
+        }
+
+        if(fireDelayCounter <= 0)
+        {
+            burstCounter++;
+            shootThing(vPos,itemptr);
+            fireDelayCounter = getFireDelay();
+        }
+        fireDelayCounter--;
+
+    }
+
+    if(fireType == 2)
+    {
+        if(fireDelayCounter <= 0)
+        {
+            shootThing(vPos,itemptr);
+            fireDelayCounter = getFireDelay();
+        }
+        fireDelayCounter--;
+
+        //aimTimeCounter = getAimTime();
+    }
+
+
+
+
+    //aimTimeCounter = getAimTime();
+
+
+
+
 
 
     return "Nothing Happened.";

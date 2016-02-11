@@ -178,13 +178,15 @@ public:
     float recoilReduction;
     float getRecoilReduction();
 
-    float fireRate;
-    float getFireRate();
+    float fireDelay;
+    float getFireDelay();
+    float fireDelayCounter;
 
     int fireMode; // Semi, Burst, Automatic.
 
     int burstCount;
     int getBurstCount();
+    int burstCounter;
 
     float reloadTime;
     float getReloadTime();
@@ -202,6 +204,7 @@ public:
 
     float durability;
     float getDurability();
+    float durabilityCounter;
 
     float durabilityCost;
     float getDurabilityCost();
@@ -248,6 +251,7 @@ public:
     int getMinDamage();
     int getMaxDamage();
     std::string gunThing(Vec3f vPos);
+    std::string shootThing(Vec3f vPos, Item * itemptr);
     std::string activate(Vec3f vPos);
     bool trigger();
     bool isReady();
