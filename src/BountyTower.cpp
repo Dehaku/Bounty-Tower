@@ -75,7 +75,7 @@ void setupItemStorage()
         mod.name = "Duckfoot Barrel";
         mod.type = itemTypes.PartBarrel;
         mod.barrelCount = 5;
-        mod.dispersion = 180;
+        mod.dispersion = 90;
         itemStorage.push_back(mod);
     }
 
@@ -94,6 +94,7 @@ void setupItemStorage()
         mod.type = itemTypes.PartMagazine;
         mod.reloadAmount = 50;
         mod.reloadTime = -50;
+        mod.ammoCapacity = 50;
         itemStorage.push_back(mod);
     }
 
@@ -5787,6 +5788,7 @@ void spawnModWeapon()
         mod.fireRate = 10;
         mod.recoil = 15;
         mod.recoilReduction = 1;
+        mod.dispersion = 5;
         mod.aimTime = 3*60;
 
         mod.durability = 5000;
@@ -5801,7 +5803,7 @@ void spawnModWeapon()
         mod.type = itemTypes.PartSight;
 
         mod.aimTime = -30;
-        mod.dispersion = -30;
+        mod.dispersion = -5;
 
         weapon.internalitems.push_back(mod);
     }

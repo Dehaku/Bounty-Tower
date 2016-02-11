@@ -173,6 +173,7 @@ public:
 
     float recoil;
     float getRecoil();
+    float recoilCounter;
 
     float recoilReduction;
     float getRecoilReduction();
@@ -187,6 +188,7 @@ public:
 
     float reloadTime;
     float getReloadTime();
+    float reloadTimeCounter;
 
     int reloadAmount;
     int getReloadAmount();

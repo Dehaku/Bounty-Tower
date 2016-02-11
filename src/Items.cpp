@@ -1150,6 +1150,8 @@ std::string Item::gunThing(Vec3f vPos)
     if(itemptr == nullptr || itemptr->amount <= 0)
         return "No Ammo";
 
+    user->angle = math::angleBetweenVectors(user->getPos2d(),gvars::mousePos)-90;
+
     { // Progress Cone
         sf::Color coneColor;
         if(type == 1)
@@ -1162,7 +1164,7 @@ std::string Item::gunThing(Vec3f vPos)
         std::cout << aimTimeCounter << "/" << getAimTime();
         float remainingTime = aimTimeCounter / getAimTime();
         std::cout << "Z \n";
-        remainingTime = 1 - remainingTime;
+        //remainingTime = 0 + remainingTime;
 
 
         std::cout << "K \n";
@@ -1172,6 +1174,26 @@ std::string Item::gunThing(Vec3f vPos)
 
         shapes.createCone(user->getPos2d(),user->angle,coneRadius,20,coneColor);
         std::cout << "X \n";
+    }
+
+    { // Dispersion/Recoil Area
+        float totalDispersion = math::clamp(getDispersion(),0,9999999) + math::clamp(recoilCounter,0,9999999);
+        sf::Vector2f uPos = user->getPos2d();
+
+        int angle1 = user->angle - (totalDispersion/2)+90;
+        int angle2 = user->angle + (totalDispersion/2)+90;
+
+        sf::Vector2f leftAnglePos = math::angleCalc(uPos,angle1,40);
+        sf::Vector2f rightAnglePos = math::angleCalc(uPos,angle2,40);
+
+        shapes.createLine(uPos.x,uPos.y,leftAnglePos.x,leftAnglePos.y,1,sf::Color::Red);
+        shapes.createLine(uPos.x,uPos.y,rightAnglePos.x,rightAnglePos.y,1,sf::Color::Red);
+    }
+
+    { // Recoil Reduction
+        recoilCounter -= getRecoilReduction()/60;
+        if(recoilCounter < 0)
+            recoilCounter = 0;
     }
 
     if(aimTimeCounter > 0)
@@ -1186,7 +1208,7 @@ std::string Item::gunThing(Vec3f vPos)
     user->mods.onItemUse = true;
     user->mods.onItemUseType = type;
 
-    {
+    { // Shooty part.
         Vec3f muzzlePos(user->xpos,user->ypos,user->zpos);
         sf::Vector2f muzzlePosV2f(muzzlePos.x,muzzlePos.y);
         sf::Vector2f vPosV2f(vPos.x,vPos.y);
@@ -1244,16 +1266,33 @@ std::string Item::gunThing(Vec3f vPos)
         boolet.speed = 30;
         boolet.lifetime = 600;
 
-        for(int i = 0; i != itemptr->projectiles; i++)
+
+        float totalDispersion = math::clamp(getDispersion(),0,9999999) + math::clamp(recoilCounter,0,9999999);
+
+        int amountOfShots = 0;
+        if(itemptr->amount > getBarrelCount())
+            amountOfShots = getBarrelCount();
+        else
+            amountOfShots = itemptr->amount;
+
+        for(int shots = 0; shots != amountOfShots; shots++)
         {
+            for(int i = 0; i != itemptr->projectiles; i++)
+            {
 
-            if(randz(0,1) == 1)
-                boolet.angle += randz(0,getSpread());
-            else
-                boolet.angle -= randz(0,getSpread());
 
-            bullets.push_back(boolet);
+                if(randz(0,1) == 1)
+                    boolet.angle += randz(0,totalDispersion/2);
+                else
+                    boolet.angle -= randz(0,totalDispersion/2);
+
+                bullets.push_back(boolet);
+            }
+            recoilCounter += getRecoil();
         }
+
+
+
 
         int miscountRoll = randz(0,100);
         if(miscountRoll < user->skills.getRanks("Miscounted Shot")*5)
@@ -1262,7 +1301,7 @@ std::string Item::gunThing(Vec3f vPos)
             std::cout << "This critter possesses " << user->skills.getRanks("Miscounted Shot") << " ranks in miscounted Shot \n";
         }
         else
-            itemptr->amount--;
+            itemptr->amount -= amountOfShots;
 
         if(itemptr->amount <= 0)
             itemptr->toDelete = true;
