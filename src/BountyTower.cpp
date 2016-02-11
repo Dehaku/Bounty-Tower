@@ -1,5 +1,7 @@
 #include "BountyTower.h"
 
+#include "RichText.hpp"
+
 #include <iomanip>
 
 /*
@@ -3935,7 +3937,7 @@ void renderGunModMenu(baseMenu &menu)
 
 
         sf::Vector2f vPos(250,420);
-        shapes.createText(vPos,8,sf::Color::Cyan,outPut,&gvars::hudView);
+        shapes.createText(vPos,10,sf::Color::Cyan,outPut,&gvars::hudView);
         shapes.shapes.back().layer = layer+FrontPanel+1;
 
     }
@@ -5845,6 +5847,33 @@ void spawnModWeapon()
     worlditems.push_back(weapon);
 }
 
+void colorTest()
+{
+
+    if(inputState.key[Key::LControl] && inputState.key[Key::RControl])
+    {
+
+    }
+    else
+        return;
+
+    sfe::RichText text(gvars::defaultFont);
+    text << sf::Text::Bold       << sf::Color::Cyan  << "This "
+         << sf::Text::Italic     << sf::Color::White << "is\ncool\n"
+         << sf::Text::Regular    << sf::Color::Green << "mate"
+         << sf::Color::White     << ".\n"
+         << sf::Text::Underlined << "I wish I could lick it!";
+
+    if(inputState.key[Key::Space])
+        text << sf::Color::Yellow << "(I've Gone Super!)";
+
+    text.setCharacterSize(25);
+    text.setPosition(gvars::mousePos);
+    text.setOrigin(text.getGlobalBounds().width / 2.f, text.getGlobalBounds().height / 2.f);
+
+    window.draw(text);
+}
+
 void bountyTowerLoop()
 { // Game Loop
 
@@ -5859,10 +5888,10 @@ void bountyTowerLoop()
 
     enchantGlow();
 
+    colorTest();
+
     if(inputState.key[Key::RShift] && inputState.lmbTime == 1)
         castSpell();
-
-    //newSlotWorkMethod();
 
     if(inputState.key[Key::Y].time == 1)
         spawnModWeapon();

@@ -7,7 +7,6 @@
 #include "globalvars.h"
 #include "Shaders.h"
 
-
 class Shape
 {
 public:
@@ -26,7 +25,6 @@ public:
     int shape;
     const sf::Texture * texture;
     std::string text;
-
     bool offscreenRender;
 
     sf::Vector2f startPos;

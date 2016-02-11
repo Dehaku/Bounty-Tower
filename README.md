@@ -20,5 +20,4 @@ Sounds
 Elevator Ding, ding.wav - Corsica_S (freesound.org)
 Bones Breaking, VlatokoBlazek (freesound.org) https://www.freesound.org/people/VlatkoBlazek/sounds/189736/
 
-
-Todo: Add credits
+RichText, https://github.com/skyrpex/RichText

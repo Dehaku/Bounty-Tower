@@ -7,6 +7,8 @@
 #include <windows.h>
 #endif
 
+#include "RichText.hpp"
+
 #include "Shaders.h"
 #include "Items.h"
 #include "Faction.h"
@@ -2408,7 +2410,7 @@ void frames()
     if(gvars::framesPassed >= 4000000)
     {
         std::cout << "Congratulations, The game has ran for four million frames! Frame counter reset. \n";
-        std::cout << "Theoretically, The game is running at 30 fps, ";
+        std::cout << "Theoretically, The game is running at 60 fps, ";
         std::cout << "Using super computer math, That means the game has ran for at 'least' " << 4000000/60 << " Seconds! Holy shit! \n";
         std::cout << "Do not fear, the game will begin running again after 100 seconds, You can wait, trust me. \n";
         fSleep(100);
@@ -4603,6 +4605,10 @@ void onStart()
 
     //std::cout << ", " << std::stoi("fifty");
     //std::cout << ", " << std::stoi("") << std::endl;
+
+    std::cout << "sfe::RichText size: " << sizeof(sfe::RichText) << std::endl;
+    std::cout << "sf::Text size: " << sizeof(sf::Text) << std::endl;
+    std::cout << "Shape size: " << sizeof(Shape) << std::endl;
 
 
 }
