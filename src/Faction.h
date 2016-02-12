@@ -109,13 +109,7 @@ public:
     AnimatedSprite spriteUpWalk;
 };
 
-struct StringFloat
-{
-    std::string str;
-    float num;
 
-    StringFloat(std::string theString, float theFloat);
-};
 
 class Modifiers
 {

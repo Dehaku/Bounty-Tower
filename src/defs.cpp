@@ -13,6 +13,11 @@ int ResolutionManager::Y()
     return window.getSize().y;
 }
 
+StringFloat::StringFloat(std::string theString, float theFloat)
+{
+    str = theString;
+    num = theFloat;
+}
 
 ResolutionManager::ResolutionManager()
 {

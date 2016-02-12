@@ -33,7 +33,13 @@ public:
 };
 extern ResolutionManager resolution;
 
+struct StringFloat
+{
+    std::string str;
+    float num;
 
+    StringFloat(std::string theString, float theFloat);
+};
 
 struct Desire
 {

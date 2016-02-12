@@ -57,6 +57,69 @@ DamageTypes::DamageTypes()
     TypeStrings.push_back(entry);
 }
 
+ItemTypes::ItemTypes()
+{
+    list.push_back(StringFloat("None",0));
+    list.push_back(StringFloat("Melee",1));
+    list.push_back(StringFloat("Gun",2));
+    list.push_back(StringFloat("Bullet",3));
+    list.push_back(StringFloat("Shell",4));
+    list.push_back(StringFloat("Missile",5));
+    list.push_back(StringFloat("Pickups",12));
+    list.push_back(StringFloat("Magic",23));
+    list.push_back(StringFloat("Consumable",42));
+    list.push_back(StringFloat("InventorySlotUnlocker",69));
+    list.push_back(StringFloat("PartBody",100));
+    list.push_back(StringFloat("PartBarrel",101));
+    list.push_back(StringFloat("PartMagazine",102));
+    list.push_back(StringFloat("PartFiringMechanism",103));
+    list.push_back(StringFloat("PartGrip",104));
+    list.push_back(StringFloat("PartSight",105));
+    list.push_back(StringFloat("PartStock",106));
+    list.push_back(StringFloat("PartAccessory",107));
+
+    for(auto checker : list)
+    {
+        for(auto comparison : list)
+        {
+            if(checker.num == comparison.num)
+                if(checker.str != comparison.str)
+                {
+                    std::cout << "\n\n ITEM TYPE ID CONFLICT:" << checker.str << "/" << comparison.str << ":" << checker.num << "/" << comparison.num << "\n\n";
+                    fSleep(10);
+                }
+        }
+        for(auto comparison : list)
+        {
+            if(checker.str == comparison.str)
+                if(checker.num != comparison.num)
+                {
+                    std::cout << "\n\n ITEM TYPE NAME CONFLICT:" << checker.str << "/" << comparison.str << ":" << checker.num << "/" << comparison.num << "\n\n";
+                    fSleep(10);
+                }
+        }
+    }
+}
+
+StringFloat ItemTypes::getTypeID(int id)
+{
+    for(auto checker : list)
+        if(checker.num == id)
+            return checker;
+    throw std::runtime_error("Couldn't find Item Type Entry ID: " + id);
+}
+
+StringFloat ItemTypes::getTypeID(std::string name)
+{
+    for(auto checker : list)
+        if(checker.str == name)
+            return checker;
+    throw std::runtime_error("Couldn't find Item Type Entry Name: " + name);
+}
+
+
+ItemTypes itemTypes;
+
 void clearBullets()
 {
     bullets.clear();

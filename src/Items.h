@@ -41,32 +41,9 @@ extern DamageTypes damageTypes;
 class ItemTypes
 {
 public:
-    enum Type
-    { // WARNING, THESE MUST BE IN THE SAME ORDER AS 'TypeStrings'
-        None,
-        Melee,
-        Gun,
-        Bullet,
-        Shell,
-        Missile,
-        Pickups = 12,
-        Magic = 23,
-        Consumable = 42,
-        InventorySlotUnlocker = 69,
-        PartBody = 100,
-        PartBarrel,
-        PartMagazine,
-        PartFiringMechanism,
-        PartGrip,
-        PartSight,
-        PartStock,
-        PartAccessory
-
-    };
-
-    std::vector<std::string> TypeStrings;
-    int getNum(std::string name);
-    std::string getString(int num);
+    std::vector<StringFloat> list;
+    StringFloat getTypeID(int id);
+    StringFloat getTypeID(std::string name);
 
     ItemTypes();
 };

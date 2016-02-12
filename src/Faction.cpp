@@ -22,11 +22,7 @@ extern sf::RenderWindow window;
 
 std::vector<Npc*> selectedNPCs;
 
-StringFloat::StringFloat(std::string theString, float theFloat)
-{
-    str = theString;
-    num = theFloat;
-}
+
 
 skillKeepInfo::skillKeepInfo()
 {
