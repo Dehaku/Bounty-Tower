@@ -843,6 +843,24 @@ void ItemManager::initializeItems()
             if(damageString != "")
                 item.damageType = damageTypes.getNum(damageString);
 
+            item.fireMode = stringFindNumber(line, "[FireMode:");
+
+            item.barrelCount = stringFindNumber(line, "[BarrelCount:");
+            item.damageMultiplier = stringFindNumber(line, "[DamageMultiplier:");
+            item.dispersion = stringFindNumber(line, "[Dispersion:");
+            item.aimTime = stringFindNumber(line, "[AimTime:");
+            item.recoil = stringFindNumber(line, "[Recoil:");
+            item.recoilReduction = stringFindNumber(line, "[RecoilReduction:");
+            item.fireDelay = stringFindNumber(line, "[FireDelay:");
+            item.burstCount = stringFindNumber(line, "[BurstCount:");
+            item.reloadTime = stringFindNumber(line, "[ReloadTime:");
+            item.reloadAmount = stringFindNumber(line, "[ReloadAmount:");
+            item.ammoCapacity = stringFindNumber(line, "[AmmoCapacity:");
+            item.bulletSpeedMultiplier = stringFindNumber(line, "[BulletSpeedMutliplier:");
+            item.durability = stringFindNumber(line, "[Durability:");
+            item.durabilityCost = stringFindNumber(line, "[DurabilityCost:");
+
+
 
 
             item.massGlass = stringFindNumber(line, "[MassGlass:");

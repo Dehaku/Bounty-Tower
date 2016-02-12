@@ -241,7 +241,7 @@ float getPercentPos(float position, float lowerPos, float higherPos)
     return difference;
 }
 
-int stringFindNumber(std::string stringy, std::string term)
+float stringFindNumber(std::string stringy, std::string term)
 {
     size_t tStart;
     tStart = stringy.find(term);
@@ -254,7 +254,7 @@ int stringFindNumber(std::string stringy, std::string term)
         {
             int iLength = term.length();
             output.assign(stringy, tStart + iLength, tEnd - (tStart + iLength));
-            auto returns = atof(output.c_str());
+            float returns = atof(output.c_str());
             if (output == "true")
             {
                 returns = 1;
