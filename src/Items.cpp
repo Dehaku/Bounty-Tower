@@ -921,6 +921,18 @@ void ItemManager::initializeItems()
 
 
 
+            std::vector<std::string> internalItems = stringFindVectorChaos(line,"[InternalItem:","]");
+            if(!internalItems.empty())
+                for(auto &itemstr : internalItems)
+                {
+                    Item component = *getGlobalItem(itemstr);
+                    item.internalitems.push_back(component);
+                }
+
+
+
+
+
 
 
 
