@@ -921,13 +921,7 @@ void ItemManager::initializeItems()
 
 
 
-            std::vector<std::string> internalItems = stringFindVectorChaos(line,"[InternalItem:","]");
-            if(!internalItems.empty())
-                for(auto &itemstr : internalItems)
-                {
-                    Item component = *getGlobalItem(itemstr);
-                    item.internalitems.push_back(component);
-                }
+
 
 
 
@@ -959,6 +953,26 @@ void ItemManager::initializeItems()
             }
         }
     }
+
+    std::ifstream input2("data/items.txt");
+    if (input2.is_open())
+    {
+        while (input2.good())
+        {
+            std::string line;
+            getline(input2, line);
+            Item * item = getGlobalItem(stringFindString(line, "[name:"));
+
+            std::vector<std::string> internalItems = stringFindVectorChaos(line,"[InternalItem:","]");
+            if(!internalItems.empty())
+                for(auto &itemstr : internalItems)
+                {
+                    Item component = *getGlobalItem(itemstr);
+                    item->internalitems.push_back(component);
+                }
+        }
+    }
+
     for (size_t i = 0; i != globalItems.size(); i++)
     {
         for (size_t t = 0; t != globalItems.size(); t++)
