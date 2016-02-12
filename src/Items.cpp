@@ -588,6 +588,7 @@ Item::Item()
     type = 0;
     age = 0;
     amount = 1;
+    speed = 0;
 
     rarity = 0;
 
@@ -791,6 +792,15 @@ float Item::getDurabilityCost()
     return returns;
 }
 
+float Item::getSpeed()
+{
+    float returns = speed;
+    for(auto internals : internalitems)
+        returns += internals.speed;
+
+    return returns;
+}
+
 
 void ItemManager::addItems()
 {
@@ -859,6 +869,8 @@ void ItemManager::initializeItems()
             item.bulletSpeedMultiplier = stringFindNumber(line, "[BulletSpeedMutliplier:");
             item.durability = stringFindNumber(line, "[Durability:");
             item.durabilityCost = stringFindNumber(line, "[DurabilityCost:");
+
+            item.speed = stringFindNumber(line, "[Speed:");
 
 
 
@@ -1241,7 +1253,7 @@ std::string Item::shootThing(Vec3f vPos, Item * itemptr)
 
         boolet.targets = user->getEnemies();
 
-        boolet.speed = 30 * getBulletSpeedMultiplier();
+        boolet.speed = getSpeed() * getBulletSpeedMultiplier();
         boolet.lifetime = 600;
 
 
@@ -1293,6 +1305,8 @@ std::string Item::shootThing(Vec3f vPos, Item * itemptr)
             soundmanager.playSound("m16_lensflare_3.ogg");
         if(ranNum == 4)
             soundmanager.playSound("m16_lensflare_4.ogg");
+
+        AnyDeletes(internalitems); // This must be run last, Otherwise the ammo pointer could become null.
         return "Success";
 }
 

@@ -215,6 +215,8 @@ public:
 
 
     int type;
+    float speed;
+    float getSpeed();
     // 0 = none, 1 = Melee, 2 = Gun, 3 = Ammo Bullet, 4 = Ammo Shell, 5 = Ammo Rocket, 12 = Pickupable/Misc, 42 = Consumable/Potion, 69 = InventoryUpgradeSlot,
     std::string usedskill;
     int amount;
