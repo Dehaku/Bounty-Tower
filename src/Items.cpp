@@ -1210,7 +1210,7 @@ std::string Item::shootThing(Vec3f vPos, Item * itemptr)
 
 
 
-        boolet.damage = random(getMinDamage(),getMaxDamage());
+        boolet.damage = getMaxDamage()*getDamageMultiplier();
         int bulletDamage = boolet.damage;
 
         if(user->skills.getRanks("Bronze Bullet") > 0 && itemptr->amount == getAmmoCapacity())
@@ -1241,7 +1241,7 @@ std::string Item::shootThing(Vec3f vPos, Item * itemptr)
 
         boolet.targets = user->getEnemies();
 
-        boolet.speed = 30;
+        boolet.speed = 30 * getBulletSpeedMultiplier();
         boolet.lifetime = 600;
 
 
