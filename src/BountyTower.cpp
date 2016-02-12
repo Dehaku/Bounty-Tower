@@ -75,7 +75,7 @@ void setupItemStorage()
     {
         Item mod;
         mod.name = "Duckfoot Barrel";
-        mod.type = itemTypes.PartBarrel;
+        mod.type = itemTypes.getTypeID("PartBarrel").num;
         mod.barrelCount = 5;
         mod.dispersion = 90;
         itemStorage.push_back(mod);
@@ -83,7 +83,7 @@ void setupItemStorage()
 
     {
         Item mod;
-        mod.type = itemTypes.PartFiringMechanism;
+        mod.type = itemTypes.getTypeID("PartFiringMechanism").num;
         mod.name = "Rotary Fire Mechanism";
         mod.damageMultiplier = -0.50;
         mod.fireDelay = -15;
@@ -93,7 +93,7 @@ void setupItemStorage()
     {
         Item mod;
         mod.name = "Portal Magazine";
-        mod.type = itemTypes.PartMagazine;
+        mod.type = itemTypes.getTypeID("PartMagazine").num;
         mod.reloadAmount = 50;
         mod.reloadTime = -50;
         mod.ammoCapacity = 50;
@@ -103,7 +103,7 @@ void setupItemStorage()
     {
         Item mod;
         mod.name = "Rail Laser Sight";
-        mod.type = itemTypes.PartAccessory;
+        mod.type = itemTypes.getTypeID("PartAccessory").num;
         mod.aimTime = -50;
         itemStorage.push_back(mod);
     }
@@ -3858,7 +3858,7 @@ void renderGunModMenu(baseMenu &menu)
 
 
     { // Current Item Display
-        std::string outPut = "";
+        std::string outPut = itemTypes.getTypeID(weapon->type).str + ": " + weapon->name + "\n";
 
         std::ostringstream num;
         num << std::setprecision(5);
@@ -3974,7 +3974,7 @@ void renderGunModMenu(baseMenu &menu)
             sf::Vector2f vPos = vDrawPos;
 
             std::string outPut = "";
-            outPut.append("        " + modPart.name + "\n");
+            outPut.append("        " +itemTypes.getTypeID(modPart.type).str + ": "+ modPart.name + "\n");
             vPos.y += 20*yOffset;
             shapes.createText(vPos,8,sf::Color::Cyan,outPut,&gvars::hudView);
             shapes.shapes.back().layer = layer+FrontPanel+1;
@@ -4032,7 +4032,7 @@ void renderGunModMenu(baseMenu &menu)
             sf::Vector2f vPos = vDrawPos;
 
             std::string outPut = "";
-            outPut.append("        " + modPart.name + "\n");
+            outPut.append("        " + itemTypes.getTypeID(modPart.type).str + ": " + modPart.name + "\n");
             vPos.y += 20*yOffset;
             shapes.createText(vPos,8,sf::Color::White,outPut,&gvars::hudView);
             shapes.shapes.back().layer = layer+FrontPanel+1;
@@ -4063,17 +4063,17 @@ void renderGunModMenu(baseMenu &menu)
                 int accessoryCount = 0;
                 for(auto compare : menu.getVar("Original Item")->varItemPtr->internalitems)
                 {
-                    if(compare.type == itemTypes.PartAccessory)
+                    if(compare.type == itemTypes.getTypeID("PartAccessory").num)
                         accessoryCount++;
 
-                    if(modPart.type != itemTypes.PartAccessory && compare.type == modPart.type)
+                    if(modPart.type != itemTypes.getTypeID("PartAccessory").num && compare.type == modPart.type)
                     {
                         partAllowed = false;
                         chatBox.addChat("This item already has a part in this slot!");
                     }
                 }
 
-                if(accessoryCount >= 4 && modPart.type == itemTypes.PartAccessory)
+                if(accessoryCount >= 4 && modPart.type == itemTypes.getTypeID("PartAccessory").num)
                 {
                     partAllowed = false;
                     chatBox.addChat("This item has too many accessories!");
@@ -5761,13 +5761,13 @@ void spawnModWeapon()
     weapon.img.setTexture(texturemanager.getTexture("ChainMagnum.png"));
     weapon.type = 2;
     weapon.name = "Mod Weapon";
-    weapon.ammotype = itemTypes.Bullet;
+    weapon.ammotype = itemTypes.getTypeID("Bullet").num;
     weapon.size = 1;
 
     {
         Item mod;
         mod.name = "Double Barrel";
-        mod.type = itemTypes.PartBarrel;
+        mod.type = itemTypes.getTypeID("PartBarrel").num;
         mod.barrelCount = 2;
         mod.damageMultiplier = 3;
         mod.dispersion = 5;
@@ -5779,7 +5779,7 @@ void spawnModWeapon()
     {
         Item mod;
         mod.name = "Rapid Fire Body";
-        mod.type = itemTypes.PartBody;
+        mod.type = itemTypes.getTypeID("PartBody").num;
 
         mod.damageMultiplier = -0.25;
         mod.fireMode = mod.Burst;
@@ -5799,7 +5799,7 @@ void spawnModWeapon()
     {
         Item mod;
         mod.name = "Simple Iron Sights";
-        mod.type = itemTypes.PartSight;
+        mod.type = itemTypes.getTypeID("PartSight").num;
 
         mod.aimTime = -30;
         mod.dispersion = -5;
@@ -5810,7 +5810,7 @@ void spawnModWeapon()
     {
         Item mod;
         mod.name = "Stock Magazine";
-        mod.type = itemTypes.PartMagazine;
+        mod.type = itemTypes.getTypeID("PartMagazine").num;
 
         mod.ammoCapacity = 8;
         mod.reloadAmount = 2;
@@ -5822,7 +5822,7 @@ void spawnModWeapon()
     {
         Item mod;
         mod.name = "Rifle Stock";
-        mod.type = itemTypes.PartStock;
+        mod.type = itemTypes.getTypeID("PartStock").num;
 
         mod.recoil = -10;
         mod.recoilReduction = 5;
@@ -5834,7 +5834,7 @@ void spawnModWeapon()
     {
         Item mod;
         mod.name = "Stock Grip";
-        mod.type = itemTypes.PartGrip;
+        mod.type = itemTypes.getTypeID("PartGrip").num;
 
         mod.recoilReduction = 5;
 
