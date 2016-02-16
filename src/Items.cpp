@@ -952,7 +952,13 @@ void ItemManager::initializeItems()
 
             item.pickupable =
                 booleanize(stringFindNumber(line, "[Pickupable:"));
-            item.type = stringFindNumber(line, "[type:");
+
+            //item.type = stringFindNumber(line, "[type:");
+            std::string typeString = stringFindString(line, "[type:");
+            if(typeString != "")
+                item.type = itemTypes.getTypeID(typeString).num;
+
+
             item.ammotype = stringFindNumber(line, "[ammotype:");
             item.cbaseid = stringFindNumber(line, "[baseid:");
             item.produces = booleanize(stringFindNumber(line, "[produces:"));
