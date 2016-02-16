@@ -4580,6 +4580,11 @@ void spawnEnemies()
                     totalCount++;
                     continue;
                 }
+                if(npcSkill.name == "Hamstring")
+                { // Disallow NPC's to have Hamstring.
+                    totalCount++;
+                    continue;
+                }
                 npcSkill.ranks++;
             }
         }

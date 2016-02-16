@@ -786,7 +786,9 @@ void handsOffense(Npc &npc, std::list<Npc> &container, Npc * closEnmy, bool &has
             if(withinRange && canSee)
             {
                 // Making sure we're ready to strike.
-                if(weapon->isReady())
+                if(weapon->type == itemTypes.getTypeID("Gun").num)
+                    weapon->gunThing(Vec3f(closEnmy->xpos,closEnmy->ypos,closEnmy->zpos));
+                else if(weapon->isReady())
                 {
                     weapon->trigger();
                     std::string Status = weapon->activate(Vec3f(closEnmy->xpos,closEnmy->ypos,closEnmy->zpos));
