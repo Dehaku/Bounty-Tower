@@ -2718,7 +2718,7 @@ void renderRecruiterMenu(baseMenu &menu)
 
         sf::Vector2f vPos(posX,posY);
 
-        int npcButt = shapes.createImageButton(vPos,texturemanager.getTexture("SpriteSheet"+npc.getRace()+"Frame.png"),"",0,&gvars::hudView);
+        int npcButt = shapes.createImageButton(vPos,texturemanager.getTexture("Frame"+npc.getRace()+".png"),"",0,&gvars::hudView);
         shapes.shapes.back().layer = layer+Button;
         // hehe... npc butt.
         sf::Color highlightColor = sf::Color::White;
@@ -2816,12 +2816,6 @@ void renderRecruiterMenu(baseMenu &menu)
 
 
     AnyDeletes(recruitables);
-
-    for(auto &dudes : recruitables)
-    {
-        if(dudes.toDelete)
-            std::cout << dudes.name << " should be deleted! \n";
-    }
 }
 
 void renderTowerMenu(baseMenu &menu)
