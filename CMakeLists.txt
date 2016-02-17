@@ -34,6 +34,6 @@ find_package(SFML 2 COMPONENTS graphics window audio network system REQUIRED)
 include_directories(${SFML_INCLUDE_DIR})
 
 file(GLOB_RECURSE SOURCE_FILES src/*)
-add_executable(galaxy ${SOURCE_FILES})
+add_executable(bounty-tower ${SOURCE_FILES})
 
-target_link_libraries(galaxy ${SFML_LIBRARIES})
+target_link_libraries(bounty-tower ${SFML_LIBRARIES})
