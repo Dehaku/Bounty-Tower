@@ -109,7 +109,7 @@ void setupItemStorage()
     }
 
     for(auto gItem: itemmanager.globalItems)
-        if(gItem.type < 10000)
+        if(gItem.cbaseid < 10000)
             itemStorage.push_back(gItem);
 
 }
@@ -3860,7 +3860,58 @@ void renderGunModMenu(baseMenu &menu)
 
 
     { // Current Item Display
-        std::string outPut = itemTypes.getTypeID(weapon->type).str + ": " + weapon->name + "\n";
+
+
+        std::string outPut;
+        sf::Color textColor = sf::Color::Cyan;
+        bool hasAllParts = true;
+        bool hasBody = false;
+        bool hasBarrel = false;
+        bool hasGrip = false;
+        bool hasMagazine = false;
+        for(auto insidePart : weapon->internalitems)
+        {
+            if(insidePart.type == itemTypes.getTypeID("PartBody").num)
+                hasBody = true;
+            if(insidePart.type == itemTypes.getTypeID("PartBarrel").num)
+                hasBarrel = true;
+            if(insidePart.type == itemTypes.getTypeID("PartGrip").num)
+                hasGrip = true;
+            if(insidePart.type == itemTypes.getTypeID("PartMagazine").num)
+                hasMagazine = true;
+        }
+        if(hasBody && hasBarrel && hasGrip && hasMagazine)
+        {
+            hasAllParts = true;
+            textColor = sf::Color::Cyan;
+        }
+        else if(weapon->type == itemTypes.getTypeID("Gun").num)
+        {
+            textColor = sf::Color::Red;
+
+            outPut.append("**You are missing these:");
+            if(!hasBody)
+                outPut.append("|Body|");
+            if(!hasBarrel)
+                outPut.append("|Barrel|");
+            if(!hasGrip)
+                outPut.append("|Grip|");
+            if(!hasMagazine)
+                outPut.append("|Magazine|");
+
+            outPut.append("** \n");
+        }
+
+
+
+
+
+        if(hasAllParts == false)
+        {
+
+        }
+
+        outPut.append(itemTypes.getTypeID(weapon->type).str + ": " + weapon->name + "\n");
 
         std::ostringstream num;
         num << std::setprecision(5);
@@ -3935,8 +3986,11 @@ void renderGunModMenu(baseMenu &menu)
         num.clear();
 
 
+
+
+
         sf::Vector2f vPos(250,420);
-        shapes.createText(vPos,10,sf::Color::Cyan,outPut,&gvars::hudView);
+        shapes.createText(vPos,10,textColor,outPut,&gvars::hudView);
         shapes.shapes.back().layer = layer+FrontPanel+1;
 
     }
