@@ -2471,7 +2471,7 @@ void renderMerchantMenu(baseMenu &menu)
 
 
         // Types: All, Weapons, Ammo, Aid, Misc
-        int totalTypes = 7;
+        const int totalTypes = 7;
         std::string types[totalTypes] = {"All", "Weapons", "Ammo", "Magic", "Engineer", "Aid", "Misc"};
 
 
@@ -3262,7 +3262,7 @@ void renderEnchantMenu(baseMenu &menu)
 
 
         // Types: All, Weapons, Ammo, Aid, Misc
-        int totalTypes = 7;
+        const int totalTypes = 7;
         std::string types[totalTypes] = {"All", "Weapons", "Ammo", "Magic", "Engineer", "Aid", "Misc"};
 
         for(int i = 0; i != totalTypes; i++)
@@ -6437,4 +6437,3 @@ namespace bountytower
     bool floorCleared = false;
     bool gameBeaten = false;
 }
-
