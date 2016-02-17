@@ -798,7 +798,10 @@ void checkAmmo(Npc &npc, std::list<Npc> &container, Item * rangewep, bool forceR
         needsReload = true;
 
     if(inputState.key[Key::R].time == 1)
-        needsReload = true;
+    {
+        unloadAmmo(rangewep,&npc.inventory);
+        return;
+    }
 
     if(forceReload)
         needsReload = true;
@@ -826,8 +829,22 @@ void checkAmmo(Npc &npc, std::list<Npc> &container, Item * rangewep, bool forceR
 
     if(needsReload && hasSpareAmmo && !isFull)
     {//Conditions are right, Let's reload!
+        bool timeForReload = false;
+        if(rangewep->reloadTimeCounter <= 0)
+            timeForReload = true;
+        else
+        {
+            rangewep->reloadTimeCounter--;
+            float reloadPercent = rangewep->reloadTimeCounter / rangewep->getReloadTime();
+            float reloadRadius = 60 * reloadPercent;
+            shapes.createCircle(npc.xpos,npc.ypos,reloadRadius,sf::Color::Transparent,1,sf::Color::Yellow);
+        }
 
-        //for(int i = 0; i != ammoVector.ptrs.size(); i++)
+        if(timeForReload == false) // Cannot continue, Stuff isn't ready.
+            return;
+        else
+            rangewep->reloadTimeCounter = rangewep->getReloadTime();
+
         for(auto &newAmmo : ammoVector.ptrs)
         {
             if(currentAmmo != nullptr)

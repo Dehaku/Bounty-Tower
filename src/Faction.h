@@ -66,6 +66,7 @@ void critterWallCheck(Npc &npc, std::list<Npc> &container);
 void critterLevelUp(Npc &npc, std::list<Npc> &container);
 
 void checkAmmo(Npc &npc, std::list<Npc> &container, Item * rangewep, bool forceReload = false);
+void unloadAmmo(Item * rangewep, std::list<Item> * npcInv);
 
 void buildTurret(Npc &npc, std::list<Npc> &container);
 void craftAmmo(Npc &npc, std::list<Npc> &container);

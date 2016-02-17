@@ -3903,14 +3903,6 @@ void renderGunModMenu(baseMenu &menu)
         }
 
 
-
-
-
-        if(hasAllParts == false)
-        {
-
-        }
-
         outPut.append(itemTypes.getTypeID(weapon->type).str + ": " + weapon->name + "\n");
 
         std::ostringstream num;
@@ -3930,8 +3922,8 @@ void renderGunModMenu(baseMenu &menu)
         num.str(std::string());
         num.clear();
 
-        num << weapon->getAimTime();
-        outPut.append("Aim Time: " + num.str() + "\n");
+        num << weapon->getAimTime()/60;
+        outPut.append("Aim Time: " + num.str() + "s\n");
         num.str(std::string());
         num.clear();
 
@@ -3960,8 +3952,8 @@ void renderGunModMenu(baseMenu &menu)
         num.str(std::string());
         num.clear();
 
-        num << weapon->getReloadTime();
-        outPut.append("Reload Time: " + num.str() + "\n");
+        num << weapon->getReloadTime()/60;
+        outPut.append("Reload Time: " + num.str() + "s\n");
         num.str(std::string());
         num.clear();
 
