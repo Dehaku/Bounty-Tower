@@ -887,7 +887,9 @@ void ItemManager::initializeItems()
             getline(input, line);
             Item item;
             item.name = "Debuggery";
-            item.name = stringFindString(line, "[name:");
+            std::string itemName = stringFindString(line, "[name:");
+            if(itemName != "")
+                item.name = itemName;
 
             item.value = stringFindNumber(line, "[value:");
             if(item.value == 0)
