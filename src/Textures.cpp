@@ -90,6 +90,10 @@ void AnimationManager::init()
         if (file != "." && file != "..")
         {
             int pos = file.find("SpriteSheet");
+
+            if(file.find(".png") == std::string::npos)
+                continue;
+
             if(pos != file.npos)
             {
                 cout << file << endl;
