@@ -5979,7 +5979,6 @@ void drawNPCs(std::list<Npc> &container)
 
     for (auto &npc : container)
     {
-        if (npc.hasSpawned == true)
         {
             int CritterZ = npc.zpos/GRID_SIZE;
             bool withinField = aabb(npc.xpos,npc.ypos,gvars::topLeft.x,gvars::topRight.x,gvars::topLeft.y,gvars::bottomRight.y);
@@ -6031,6 +6030,7 @@ void drawNPCs(std::list<Npc> &container)
             if(performanceLowDueToAnimationIteration && npc.isSquaddie)
             { // TODO: This is for when adding in more clothing and races bloats the animiation loop too much.
 
+                /*
                 if(inputState.key[Key::H])
                 {
                     npc.bodyAnimation.aniDownWalk.setSpriteSheet(texturemanager.getTexture("SpriteSheetBTNoirves.png"));
@@ -6058,66 +6058,69 @@ void drawNPCs(std::list<Npc> &container)
                 spriteWalk->update(sf::milliseconds(10));
                 spriteWalk->setPosition(npc.getPos2d());
                 window.draw(*spriteWalk, &shadermanager.shockwaveShader);
+                */
             }
             bool hasAnimations = false;
             if(npc.alive)
-                for(auto &ani : animationmanager.animations)
             {
-                bool drawMe = false;
-                bool allowedHat = false;
-                if(npc.isSquaddie)
-                    allowedHat = true;
-                else if(npc.tags.find("[WearsHat:1]") != npc.tags.npos)
-                    allowedHat = true;
-
-                if(ani.name.find(Direction) != ani.name.npos)
+                for(auto &ani : animationmanager.animations)
                 {
-                    if(ani.name.find(npc.race) != ani.name.npos)
-                    {
-                        drawMe = true;
-                        hasAnimations = true;
-                    }
+                    bool drawMe = false;
+                    bool allowedHat = false;
+                    if(npc.isSquaddie)
+                        allowedHat = true;
+                    else if(npc.tags.find("[WearsHat:1]") != npc.tags.npos)
+                        allowedHat = true;
 
-                    if(ani.name.find("HatBasic") != ani.name.npos)
-                        if(npc.isSquaddie || npc.tags.find("[WearsHat:1]") != npc.tags.npos)
+                    if(ani.name.find(Direction) != ani.name.npos)
+                    {
+                        if(ani.name.find(npc.race) != ani.name.npos)
+                        {
                             drawMe = true;
-                    if(ani.name.find("BootsLeather") != ani.name.npos)
-                        if(npc.tags.find("[WearsBoots:1]") != npc.tags.npos)
-                            drawMe = true;
-                    if(ani.name.find("GlovesLeather") != ani.name.npos)
-                        if(npc.tags.find("[WearsGloves:1]") != npc.tags.npos)
-                            drawMe = true;
+                            hasAnimations = true;
+                        }
 
-                }
-                if(drawMe)
-                {
+                        if(ani.name.find("HatBasic") != ani.name.npos)
+                            if(npc.isSquaddie || npc.tags.find("[WearsHat:1]") != npc.tags.npos)
+                                drawMe = true;
+                        if(ani.name.find("BootsLeather") != ani.name.npos)
+                            if(npc.tags.find("[WearsBoots:1]") != npc.tags.npos)
+                                drawMe = true;
+                        if(ani.name.find("GlovesLeather") != ani.name.npos)
+                            if(npc.tags.find("[WearsGloves:1]") != npc.tags.npos)
+                                drawMe = true;
 
-
-                    if(npc.race == "BTNoirves")
-                    {
-                        ani.animation.setScale(0.75,0.75);
-
-                        if(ani.name.find("LeftWalk") != ani.name.npos)
-                            ani.animation.scale(-1,1);
                     }
-                    else if(npc.name == "The Hardened Criminal")
+                    if(drawMe)
                     {
-                        ani.animation.setScale(1.25,1.25);
 
-                        if(ani.name.find("LeftWalk") != ani.name.npos)
-                            ani.animation.scale(-1,1);
+
+                        if(npc.race == "BTNoirves")
+                        {
+                            ani.animation.setScale(0.75,0.75);
+
+                            if(ani.name.find("LeftWalk") != ani.name.npos)
+                                ani.animation.scale(-1,1);
+                        }
+                        else if(npc.name == "The Hardened Criminal")
+                        {
+                            ani.animation.setScale(1.25,1.25);
+
+                            if(ani.name.find("LeftWalk") != ani.name.npos)
+                                ani.animation.scale(-1,1);
+                        }
+                        else
+                        {
+                            ani.animation.setScale(1,1);
+
+                            if(ani.name.find("LeftWalk") != ani.name.npos)
+                                ani.animation.scale(-1,1);
+                        }
+
+
+                        ani.animation.setPosition(npc.xpos,npc.ypos);
+                        window.draw(ani.animation, &shadermanager.shockwaveShader);
                     }
-                    else
-                    {
-                        ani.animation.setScale(1,1);
-
-                        if(ani.name.find("LeftWalk") != ani.name.npos)
-                            ani.animation.scale(-1,1);
-                    }
-
-
-                    ani.animation.setPosition(npc.xpos,npc.ypos);
-                    window.draw(ani.animation, &shadermanager.shockwaveShader);
                 }
             }
             else if(!npc.alive)
@@ -6126,6 +6129,7 @@ void drawNPCs(std::list<Npc> &container)
             }
             if(!hasAnimations)
                 npc.drawImg();
+
 
             /*
             sf::Color shadow(255,50,50,50);

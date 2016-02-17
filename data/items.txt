@@ -32,3 +32,14 @@
 [name:Inventory Slot Unlocker][Pickupable:true][image:InventorySlotUpgrade.png][type:InventorySlotUnlocker][DamageType:Blunt][baseid:623669][value:1000]
 [name:Charm][Pickupable:true][image:Charm.png][type:Pickups][DamageType:Blunt][baseid:800000]
 
+[name:Simple Body][type:PartBody][AimTime:60][Durability:1000][DurabilityCost:5][FireDelay:20][DamageMultiplier:1][Recoil:10]	[Pickupable:true][image:GunPart.png][baseid:300][value:550]
+[name:Simple Barrel][type:PartBarrel][DurabilityCost:5][BarrelCount:1][Dispersion:5][DamageMultiplier:0.2][BulletSpeedMultiplier:1][Recoil:10]		[Pickupable:true][image:GunPart.png][baseid:400][value:550]
+[name:Simple Magazine][type:PartMagazine][AmmoCapacity:5][ReloadTime:30][ReloadAmount:5][Recoil:5]	[Pickupable:true][image:GunPart.png][baseid:500][value:550]
+[name:Simple Grip][type:PartGrip][RecoilReduction:15]	[Pickupable:true][image:GunPart.png][baseid:600][value:550]
+[name:Simple Stock][type:PartStock][RecoilReduction:10][Recoil:-10]	[Pickupable:true][image:GunPart.png][baseid:700][value:550]
+[name:Simple Sight][type:PartSight][AimTime:-10]	[Pickupable:true][image:GunPart.png][baseid:800][value:550]
+[name:Laser Attachment][type:PartAccessory][AimTime:-20]	[Pickupable:true][image:GunPart.png][baseid:900][value:550]
+
+[name:Simple Gun][type:Gun][ammotype:3][value:550]		[Pickupable:true][image:GunPart.png][baseid:80000][value:550][InternalItem:Simple Body][InternalItem:Simple Barrel][InternalItem:Simple Grip][InternalItem:Simple Magazine]
+
+

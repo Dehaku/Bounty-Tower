@@ -917,6 +917,7 @@ void ItemManager::initializeItems()
                 item.damageType = damageTypes.getNum(damageString);
 
             item.fireMode = stringFindNumber(line, "[FireMode:");
+            // Replace with canSemi canBurst canAuto, and have getSemi() getBurst() ect functions to check through the parts.
 
             item.barrelCount = stringFindNumber(line, "[BarrelCount:");
             item.damageMultiplier = stringFindNumber(line, "[DamageMultiplier:");
@@ -929,7 +930,7 @@ void ItemManager::initializeItems()
             item.reloadTime = stringFindNumber(line, "[ReloadTime:");
             item.reloadAmount = stringFindNumber(line, "[ReloadAmount:");
             item.ammoCapacity = stringFindNumber(line, "[AmmoCapacity:");
-            item.bulletSpeedMultiplier = stringFindNumber(line, "[BulletSpeedMutliplier:");
+            item.bulletSpeedMultiplier = stringFindNumber(line, "[BulletSpeedMultiplier:");
             item.durability = stringFindNumber(line, "[Durability:");
             item.durabilityCost = stringFindNumber(line, "[DurabilityCost:");
 

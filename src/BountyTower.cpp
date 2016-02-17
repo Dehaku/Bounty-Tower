@@ -83,7 +83,7 @@ void setupItemStorage()
 
     {
         Item mod;
-        mod.type = itemTypes.getTypeID("PartFiringMechanism").num;
+        mod.type = itemTypes.getTypeID("PartAccessory").num;
         mod.name = "Rotary Fire Mechanism";
         mod.damageMultiplier = -0.50;
         mod.fireDelay = -15;
@@ -108,7 +108,9 @@ void setupItemStorage()
         itemStorage.push_back(mod);
     }
 
-
+    for(auto gItem: itemmanager.globalItems)
+        if(gItem.type < 10000)
+            itemStorage.push_back(gItem);
 
 }
 
