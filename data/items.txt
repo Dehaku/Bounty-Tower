@@ -1,12 +1,13 @@
 [name:Sword][Rarity:10000][value:50][Pickupable:true][type:Melee][DamageType:Slash][image:BTSword.png][baseid:5515512][mindam:5][maxdam:30][range:75][IsWeapon:true][activaterategrowth:2][activateratemax:60][Size:1][knockback:10]
 [name:Baton][Rarity:15000][value:15][Pickupable:true][type:Melee][DamageType:Blunt][image:Clubbing.png][baseid:5575512][mindam:5][maxdam:30][range:75][IsWeapon:true][activaterategrowth:2][activateratemax:30][Size:1][knockback:10]
-[name:Gun][Rarity:10000][value:100][Pickupable:true][Spread:5][type:Gun][DamageType:Blunt][ammotype:3][AmmoCapacity:30][image:SimplisticRifle.png][baseid:5715712][mindam:5][maxdam:30][range:100][IsWeapon:true][activaterategrowth:2][activateratemax:30][Size:1]
-[name:Sniper][Rarity:2000][value:200][Pickupable:true][type:Gun][DamageType:Blunt][ammotype:3][Spread:1][AmmoCapacity:5][image:BoltBeam.png][baseid:9715702][mindam:30][maxdam:100][range:500][IsWeapon:true][activaterategrowth:1][activateratemax:50][Size:1]
-[name:Minigun][Rarity:500][value:1000][Pickupable:true][Spread:5][type:Gun][DamageType:Blunt][ammotype:3][AmmoCapacity:200][image:Minigun.png][baseid:5572192][mindam:1][maxdam:20][range:50][IsWeapon:true][activaterategrowth:10][activateratemax:30][Size:1]
-[name:DeathCannon][Rarity:500][value:1000][Pickupable:true][type:Gun][DamageType:Blunt][ammotype:3][Spread:1][AmmoCapacity:1][image:DeathCannon.png][baseid:5872122][mindam:100][maxdam:200][range:1000][IsWeapon:true][activaterategrowth:1][activateratemax:200][Size:1]
-[name:Shotgun][Rarity:10000][value:150][Pickupable:true][Spread:15][type:Gun][DamageType:Blunt][ammotype:4][AmmoCapacity:8][image:Shotty.png][baseid:5872792][mindam:10][maxdam:20][range:150][IsWeapon:true][activaterategrowth:1][activateratemax:30][Size:1]
-[name:Automatic Shotgun][Rarity:1000][value:600][Pickupable:true][Spread:25][type:Gun][DamageType:Blunt][ammotype:4][AmmoCapacity:30][AmmoCapacity:30][image:ShottyAuto.png][baseid:5872793][mindam:10][maxdam:20][range:200][IsWeapon:true][activaterategrowth:1][activateratemax:10][Size:1]
-[name:RocketLauncher][Rarity:500][value:1000][Pickupable:true][Spread:3][type:Gun][DamageType:Blunt][ammotype:5][AmmoCapacity:1][image:RailRifle.png][baseid:5676762][mindam:10][maxdam:15][range:250][IsWeapon:true][activaterategrowth:1][activateratemax:60][Size:1]
+
+[name:Gun][Rarity:10000][value:100][Pickupable:true][type:Gun][DamageType:Blunt][ammotype:3][image:SimplisticRifle.png][baseid:5715712][IsWeapon:true][activaterategrowth:2][activateratemax:30][Size:1][InternalItem:Tactical Body][InternalItem:Simple Barrel][InternalItem:Simple Grip][InternalItem:Simple Magazine][InternalItem:Simple Stock][InternalItem:Simple Sight]
+[name:Sniper][Rarity:2000][value:200][Pickupable:true][type:Gun][DamageType:Blunt][ammotype:3][image:BoltBeam.png][baseid:9715702][IsWeapon:true][activaterategrowth:1][activateratemax:50][Size:1][InternalItem:Simple Body][InternalItem:Long Rifled Barrel][InternalItem:Simple Grip][InternalItem:Simple Magazine][InternalItem:Simple Stock][InternalItem:10x Scope]
+[name:Minigun][Rarity:500][value:1000][Pickupable:true][type:Gun][DamageType:Blunt][ammotype:3][image:Minigun.png][baseid:5572192][IsWeapon:true][activaterategrowth:10][activateratemax:30][Size:1][InternalItem:Gatling Body][InternalItem:Octuple Barrel][InternalItem:Simple Grip][InternalItem:Belt Feed]
+[name:Shotgun][Rarity:10000][value:150][Pickupable:true][type:Gun][DamageType:Blunt][ammotype:4][image:Shotty.png][baseid:5872792][mindam:10][maxdam:20][IsWeapon:true][activaterategrowth:1][activateratemax:30][Size:1][InternalItem:Simple Body][InternalItem:Simple Barrel][InternalItem:Simple Grip][InternalItem:Pump Action Loader][InternalItem:Simple Stock]
+[name:Automatic Shotgun][Rarity:1000][value:600][Pickupable:true][type:Gun][DamageType:Blunt][ammotype:4][image:ShottyAuto.png][baseid:5872793][IsWeapon:true][activaterategrowth:1][activateratemax:10][Size:1][InternalItem:Automatic Fire Body][InternalItem:Simple Barrel][InternalItem:Simple Grip][InternalItem:Rotary Magazine][InternalItem:Simple Stock]
+[name:RocketLauncher][Rarity:500][value:1000][Pickupable:true][type:Gun][DamageType:Blunt][ammotype:5][image:RailRifle.png][baseid:5676762][IsWeapon:true][activaterategrowth:1][activateratemax:60][Size:1][InternalItem:Simple Body][InternalItem:Simple Barrel][InternalItem:Simple Grip][InternalItem:Breech Loader]
+
 [name:Bullet Standard][Speed:30][Rarity:10000][value:30][stackSize:30][DamageType:Pierce][Projectiles:1] [richochets:1][penetration:0] [Pickupable:true][type:Bullet][image:Bullets.png][baseid:5715720][mindam:25][maxdam:75][range:2500]
 [name:Bullet Box Standard][Speed:30][Rarity:900][value:500][stackSize:200][DamageType:Pierce][Projectiles:1] [richochets:1][penetration:0] [Pickupable:true][type:Bullet][image:BulletsBox.png][baseid:5715730][mindam:25][maxdam:75][range:2500]
 [name:Bullet Long Range][Speed:40][Rarity:5000][value:45][stackSize:30][DamageType:Pierce][Projectiles:1][richochets:1][penetration:1][Pickupable:true][type:Bullet][image:Bullets.png][baseid:5715721][mindam:25][maxdam:75][range:4500]
@@ -32,14 +33,36 @@
 [name:Inventory Slot Unlocker][Pickupable:true][image:InventorySlotUpgrade.png][type:InventorySlotUnlocker][DamageType:Blunt][baseid:623669][value:1000]
 [name:Charm][Pickupable:true][image:Charm.png][type:Pickups][DamageType:Blunt][baseid:800000]
 
-[name:Simple Body][type:PartBody][AimTime:60][Durability:1000][DurabilityCost:5][FireDelay:20][DamageMultiplier:1][Recoil:10]	[Pickupable:true][image:GunPart.png][baseid:300][value:550]
-[name:Simple Barrel][type:PartBarrel][DurabilityCost:5][BarrelCount:1][Dispersion:5][DamageMultiplier:0.2][BulletSpeedMultiplier:1][Recoil:10]		[Pickupable:true][image:GunPart.png][baseid:400][value:550]
-[name:Simple Magazine][type:PartMagazine][AmmoCapacity:5][ReloadTime:30][ReloadAmount:5][Recoil:5]	[Pickupable:true][image:GunPart.png][baseid:500][value:550]
-[name:Simple Grip][type:PartGrip][RecoilReduction:15]	[Pickupable:true][image:GunPart.png][baseid:600][value:550]
-[name:Simple Stock][type:PartStock][RecoilReduction:10][Recoil:-10]	[Pickupable:true][image:GunPart.png][baseid:700][value:550]
-[name:Simple Sight][type:PartSight][AimTime:-10]	[Pickupable:true][image:GunPart.png][baseid:800][value:550]
-[name:Laser Attachment][type:PartAccessory][AimTime:-20]	[Pickupable:true][image:GunPart.png][baseid:900][value:550]
+
+
+
+
 
 [name:Simple Gun][type:Gun][ammotype:3][value:550]		[Pickupable:true][image:GunPart.png][baseid:80000][value:550][InternalItem:Simple Body][InternalItem:Simple Barrel][InternalItem:Simple Grip][InternalItem:Simple Magazine]
 
 
+[name:Simple Body][type:PartBody][AimTime:60][Durability:10000][DurabilityCost:5][FireDelay:20][CanFireSemi:true][DamageMultiplier:1][Recoil:10]	[Pickupable:true][image:GunPart.png][baseid:300][value:550]
+[name:Automatic Fire Body][type:PartBody][AimTime:60][Durability:10000][DurabilityCost:20][FireDelay:10][BurstCount:5][CanFireSemi:true][CanFireBurst:true][CanFireAuto:true][DamageMultiplier:1][Recoil:10]	[Pickupable:true][image:GunPart.png][baseid:301][value:550]
+[name:Tactical Body][type:PartBody][AimTime:60][Durability:10000][DurabilityCost:15][FireDelay:5][BurstCount:3][CanFireSemi:true][CanFireBurst:true][DamageMultiplier:2][Recoil:5]	[Pickupable:true][image:GunPart.png][baseid:302][value:550]
+[name:Gatling Body][type:PartBody][AimTime:180][Durability:10000][DurabilityCost:20][FireDelay:5][CanFireAuto:true][DamageMultiplier:1][Recoil:0]	[Pickupable:true][image:GunPart.png][baseid:306][value:550]
+
+[name:Simple Barrel][type:PartBarrel][DurabilityCost:5][BarrelCount:1][Dispersion:5][DamageMultiplier:0.2][BulletSpeedMultiplier:1][Recoil:10]		[Pickupable:true][image:GunPart.png][baseid:400][value:550]
+[name:Long Rifled Barrel][type:PartBarrel][DurabilityCost:20][BarrelCount:1][Dispersion:5][DamageMultiplier:2][BulletSpeedMultiplier:5][Recoil:30]		[Pickupable:true][image:GunPart.png][baseid:401][value:550]
+[name:Octuple Barrel][type:PartBarrel][DurabilityCost:1][BarrelCount:8][Dispersion:5][DamageMultiplier:-0.5][BulletSpeedMultiplier:1][Recoil:0]		[Pickupable:true][image:GunPart.png][baseid:402][value:550]
+
+[name:Simple Magazine][type:PartMagazine][AmmoCapacity:10][ReloadTime:180][ReloadAmount:5][Recoil:5]	[Pickupable:true][image:GunPart.png][baseid:500][value:550]
+[name:Rotary Magazine][type:PartMagazine][AmmoCapacity:50][ReloadTime:300][ReloadAmount:50][Recoil:10]	[Pickupable:true][image:GunPart.png][baseid:501][value:550]
+[name:Pump Action Loader][type:PartMagazine][AmmoCapacity:8][ReloadTime:30][ReloadAmount:2][Recoil:0]	[Pickupable:true][image:GunPart.png][baseid:502][value:550]
+[name:Belt Feed][type:PartMagazine][AmmoCapacity:3][ReloadTime:0][ReloadAmount:3][Recoil:0]	[Pickupable:true][image:GunPart.png][baseid:503][value:550]
+[name:Breech Loader][type:PartMagazine][AmmoCapacity:1][ReloadTime:60][ReloadAmount:1][Recoil:0][Durability:10000]	[Pickupable:true][image:GunPart.png][baseid:504][value:550]
+//Breech Loader has increased durability, due to Missiles costing ALOT of durability
+
+[name:Simple Grip][type:PartGrip][RecoilReduction:15]	[Pickupable:true][image:GunPart.png][baseid:600][value:550]
+
+[name:Simple Stock][type:PartStock][RecoilReduction:10][Recoil:-10]	[Pickupable:true][image:GunPart.png][baseid:700][value:550]
+
+[name:Simple Sight][type:PartSight][AimTime:-10]	[Pickupable:true][image:GunPart.png][baseid:800][value:550]
+[name:10x Scope][type:PartSight][AimTime:180][DamageMultiplier:3]	[Pickupable:true][image:GunPart.png][baseid:801][value:550]
+
+[name:Laser Attachment][type:PartAccessory][AimTime:-20]	[Pickupable:true][image:GunPart.png][baseid:900][value:550]
+[name:Rotary Fire Exchange][type:PartAccessory][FireDelay:-5]	[Pickupable:true][image:GunPart.png][baseid:901][value:550]
