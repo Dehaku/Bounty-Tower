@@ -670,7 +670,11 @@ Item::Item()
 
     fireDelay = 0;
     fireDelayCounter = 0;
-    fireMode = 0;
+
+    canFireSemi = false;
+    canFireBurst = false;
+    canFireAuto = false;
+
     burstCount = 0;
     burstCounter = 0;
 
@@ -790,6 +794,36 @@ float Item::getFireDelay()
         returns += internals.fireDelay;
 
     return returns;
+}
+
+bool Item::getFireSemi()
+{
+    int returns = canFireSemi;
+    for(auto internals : internalitems)
+        returns += internals.canFireSemi;
+    if(returns > 0)
+        return true;
+    return false;
+}
+
+bool Item::getFireBurst()
+{
+    int returns = canFireBurst;
+    for(auto internals : internalitems)
+        returns += internals.canFireBurst;
+    if(returns > 0)
+        return true;
+    return false;
+}
+
+bool Item::getFireAuto()
+{
+    int returns = canFireAuto;
+    for(auto internals : internalitems)
+        returns += internals.canFireAuto;
+    if(returns > 0)
+        return true;
+    return false;
 }
 
 int Item::getBurstCount()
@@ -918,8 +952,10 @@ void ItemManager::initializeItems()
             if(damageString != "")
                 item.damageType = damageTypes.getNum(damageString);
 
-            item.fireMode = stringFindNumber(line, "[FireMode:");
-            // Replace with canSemi canBurst canAuto, and have getSemi() getBurst() ect functions to check through the parts.
+
+            item.canFireSemi = booleanize(stringFindNumber(line, "[CanFireSemi:"));
+            item.canFireBurst = booleanize(stringFindNumber(line, "[CanFireBurst:"));
+            item.canFireAuto = booleanize(stringFindNumber(line, "[CanFireAuto:"));
 
             item.barrelCount = stringFindNumber(line, "[BarrelCount:");
             item.damageMultiplier = stringFindNumber(line, "[DamageMultiplier:");
@@ -1351,6 +1387,7 @@ std::string Item::shootThing(Vec3f vPos, Item * itemptr)
                 bullets.push_back(boolet);
             }
             recoilCounter += getRecoil();
+            recoilCounter = math::clamp(recoilCounter,0,90); // Preventing the bullets from being TOO ridiculous.
         }
 
 

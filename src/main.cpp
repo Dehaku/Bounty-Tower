@@ -4583,7 +4583,18 @@ void pauseMenu()
     }
 }
 
-
+void testMultiplier(int amount)
+{
+    float totalValue = 100;
+    float currentValue = 100;
+    for(int i = 0; i != amount; i++)
+    {
+        currentValue = currentValue * 0.9;
+        totalValue += currentValue;
+        std::cout << i << ": " << currentValue << ", Bonus: " << totalValue*0.1 << std::endl;
+    }
+    std::cout << "Final Bonus: " << totalValue*0.1 << std::endl;
+}
 
 void onStart()
 {
@@ -4612,7 +4623,7 @@ void onStart()
     std::cout << "sf::Text size: " << sizeof(sf::Text) << std::endl;
     std::cout << "Shape size: " << sizeof(Shape) << std::endl;
 
-
+    testMultiplier(23);
 
 }
 

@@ -160,6 +160,12 @@ public:
     float fireDelayCounter;
 
     int fireMode; // Semi, Burst, Automatic.
+    bool canFireSemi;
+    bool canFireBurst;
+    bool canFireAuto;
+    bool getFireSemi();
+    bool getFireBurst();
+    bool getFireAuto();
 
     int burstCount;
     int getBurstCount();
