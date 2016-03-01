@@ -1717,7 +1717,7 @@ void rightMouseButtonContextMenu()
 
 
 
-        if(inBounds && isWalkable)
+        if(inBounds && isWalkable && gvars::hovering == 0)
         {
             for(auto &lilguy : selectedNPCs)
             {

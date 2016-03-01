@@ -2010,6 +2010,29 @@ void gunModMenu(Item * item)
     menus.push_back(sMenu);
 }
 
+void itemHotBarRMBMenu(Item* item)
+{
+    for(auto menu : menus)
+        if(menu.name == "Item Hotbar RMB Menu")
+            return;
+
+    baseMenu sMenu;
+    sMenu.name = "Item Hotbar RMB Menu";
+    sMenu.Pos = sf::Vector2f(screen.x()/2,screen.y()/2);
+
+    dynamicVariable itemCarry;
+    itemCarry.name = "Item";
+    itemCarry.varItemPtr = item;
+    sMenu.vars.push_back(itemCarry);
+
+    itemCarry.name = "Original Item";
+    sMenu.vars.push_back(itemCarry);
+
+
+    menus.push_back(sMenu);
+}
+
+
 void renderSkillMenu(baseMenu &menu)
 { // Layer 17000
     selectedNPCs.clear();
@@ -4152,6 +4175,91 @@ void renderGunModMenu(baseMenu &menu)
 
 }
 
+void renderItemHotBarRMBMenu(baseMenu &menu)
+{ // Layer 24000
+    int layer = 24000;
+    enum
+    {
+        BackPanel,
+        Shapes,
+        Button,
+        Text,
+        FrontPanel
+    };
+
+    sf::Vector2f menuStartPos(577,500);
+    sf::Vector2f menuEndPos(702,550);
+    sf::Color menuColor(100,100,100,100);
+
+
+    if(menu.age > 10 && inputState.rmbTime == 1)
+    { // Closing Menu Check
+
+        bool mouseOutsideMenu = true;
+
+
+        sf::Vector2f worldPos = window.mapPixelToCoords(sf::Mouse::getPosition(window), gvars::hudView);
+
+        if (
+            aabb(worldPos, menuStartPos.x,
+                 menuStartPos.x + menuEndPos.x - menuStartPos.x, //125
+                 menuStartPos.y,
+                 menuStartPos.y + menuEndPos.y - menuStartPos.y)
+            )
+            {
+                mouseOutsideMenu = true;
+            }
+
+
+        if(mouseOutsideMenu)
+        {
+            menu.toDelete = true;
+            return;
+        }
+    }
+
+
+
+
+
+
+
+
+
+    shapes.createSquare(menuStartPos.x,menuStartPos.y,menuEndPos.x,menuEndPos.y,menuColor,1,sf::Color::Black,&gvars::hudView);
+    shapes.shapes.back().layer = layer+BackPanel;
+
+
+
+    /*
+    sf::Vector2f upScrollButtPos(percentPos(10,menuStartPos.x,menuEndPos.x),percentPos(75,menuStartPos.y,menuEndPos.y));
+    sf::Vector2f downScrollButtPos(percentPos(10,menuStartPos.x,menuEndPos.x),percentPos(85,menuStartPos.y,menuEndPos.y));
+    int upScrollButt = shapes.createImageButton(upScrollButtPos,texturemanager.getTexture("ArrowButton.png"),"",0,&gvars::hudView);
+    shapes.shapes.back().layer = layer+Button;
+    int downScrollButt = shapes.createImageButton(downScrollButtPos,texturemanager.getTexture("ArrowButton.png"),"",180,&gvars::hudView);
+    shapes.shapes.back().layer = layer+Button;
+
+    if(shapes.shapeClicked(upScrollButt))
+    {
+        menu.scrollOne++;
+        if(menu.scrollOne > 0)
+            menu.scrollOne = 0;
+    }
+
+    if(shapes.shapeClicked(downScrollButt))
+        menu.scrollOne--;
+
+    */
+
+    dynamicVariable * selectedItem = menu.getVar("Item");
+
+    int xOffset = 0;
+    int yOffset = 0;
+
+    Item * weapon = selectedItem->varItemPtr;
+
+}
+
 
 
 void drawMenus()
@@ -4181,6 +4289,8 @@ void drawMenus()
             renderEnchantMenu(menu);
         if(menu.name == "Gun Mod Menu")
             renderGunModMenu(menu);
+        if(menu.name == "Item Hotbar RMB Menu")
+            renderItemHotBarRMBMenu(menu);
 
         if(inputState.key[Key::Escape] && menu.age > 30)
             menu.toDelete = true;

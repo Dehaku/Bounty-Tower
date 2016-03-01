@@ -5010,7 +5010,7 @@ void drawSelectedCritterHUD()
                     if(slotItem->user->isSquaddie && shapes.shapeHovered(reloadButt))
                     {
                         textList.createText(gvars::mousePos.x+10,gvars::mousePos.y,10,sf::Color::White,"Reload");
-                        gvars::hovering = true;
+                        gvars::hovering += 3;
                         if(inputState.lmbTime == 1)
                             checkAmmo(*slotItem->user, *slotItem->user->container, slotItem, true);
                     }
@@ -5018,7 +5018,7 @@ void drawSelectedCritterHUD()
                     if(slotItem->user->isSquaddie && shapes.shapeHovered(unloadButt))
                     {
                         textList.createText(gvars::mousePos.x+10,gvars::mousePos.y,10,sf::Color::White,"Unload");
-                        gvars::hovering = true;
+                        gvars::hovering += 3;
                         if(inputState.lmbTime == 1)
                         {
                             unloadAmmo(slotItem, &slotItem->user->inventory);
@@ -5028,7 +5028,7 @@ void drawSelectedCritterHUD()
                     if(slotItem->user->isSquaddie && shapes.shapeHovered(modButt))
                     {
                         textList.createText(gvars::mousePos.x+10,gvars::mousePos.y,10,sf::Color::White,"Mod Weapon");
-                        gvars::hovering = true;
+                        gvars::hovering += 3;
                         if(inputState.lmbTime == 1)
                         {
                             gunModMenu(slotItem);
@@ -5050,7 +5050,7 @@ void drawSelectedCritterHUD()
                     if(shapes.shapeHovered(healButt))
                     {
                         textList.createText(gvars::mousePos.x+10,gvars::mousePos.y,10,sf::Color::White,"Drink Juices");
-                        gvars::hovering = true;
+                        gvars::hovering += 3;
                         if(inputState.lmbTime == 1)
                         {
                             if(slotItem->user->alive == false)
@@ -5076,7 +5076,7 @@ void drawSelectedCritterHUD()
                     if(shapes.shapeHovered(invButt))
                     {
                         textList.createText(gvars::mousePos.x+10,gvars::mousePos.y,10,sf::Color::White,"Gain 2 Slots(22 Maximum)");
-                        gvars::hovering = true;
+                        gvars::hovering += 3;
                         if(inputState.lmbTime == 1)
                         {
                             if(slotItem->user->alive == false)

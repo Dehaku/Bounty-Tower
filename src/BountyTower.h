@@ -123,6 +123,7 @@ void recruiterMenu(Vec3f creationPos);
 void towerMenu(Vec3f creationPos);
 void escapeMenu(Vec3f creationPos);
 void gunModMenu(Item* item);
+void itemHotBarRMBMenu(Item* item);
 
 namespace bountytower
 {

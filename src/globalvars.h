@@ -48,7 +48,7 @@ namespace mutex
 
 namespace gvars
 {
-extern bool hovering;
+extern int hovering;
 extern std::vector<sf::Vector2f> slotPos;
 extern std::string version;
 extern unsigned int framesPassed;

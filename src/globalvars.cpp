@@ -224,7 +224,7 @@ void assignSlotPos()
 
 namespace gvars
 {
-bool hovering = false;
+int hovering = 0;
 std::vector<sf::Vector2f> slotPos;
 std::string version = "0.0.1.0";
 unsigned int framesPassed = 0;

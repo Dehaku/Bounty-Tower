@@ -1810,7 +1810,7 @@ void hoverItemHUD()
 
         if(onSlot)
         {
-            gvars::hovering = true;
+            gvars::hovering += 3;
 
             if(!isSecondSlot)
                 shapes.createCircle(vPos.x,vPos.y,10,sf::Color(255,255,255,100),0,sf::Color::White,&gvars::hudView);
@@ -1875,6 +1875,12 @@ void hoverItemHUD()
                 }
             }
         }
+
+        if(inputState.rmbTime == 1 && onSlot && !isSecondSlot)
+        {
+            std::cout << "Right Clicked: " << selectedNPCs[0]->invSlots[i]->name << std::endl;
+            itemHotBarRMBMenu(selectedNPCs[0]->invSlots[i]);
+        }
     }
     window.setView(gvars::view1);
 
@@ -1913,7 +1919,7 @@ void drawHudSkills(Npc &npc, sf::Vector2f spritePos)
 
             if(shapes.shapeHovered(skillButt))
             {
-                gvars::hovering = true;
+                gvars::hovering += 3;
                 shapes.createText(skillPos,15,sf::Color::White,skill.name,&gvars::hudView);
                 shapes.shapes.back().layer += 2;
 
@@ -2735,7 +2741,7 @@ void lmbPress()
     hoverItemHUD();
     bool foundOne = false;
     debug("Pre Mouse Based Functions");
-    if (inputState.lmb && gvars::hovering == false)
+    if (inputState.lmb && gvars::hovering == 0)
     {
         selectedNPCs.clear();
         sf::Lock lock(mutex::npcList);
@@ -4704,7 +4710,15 @@ int main()
         pauseMenu();
         fpsKeeper.calcFPS();
 
-        gvars::hovering = false;
+
+        if(gvars::hovering > 3)
+            gvars::hovering = 3;
+        gvars::hovering -= 1;
+        if(gvars::hovering < 0)
+            gvars::hovering = 0;
+
+
+
         if (inputState.key[Key::RControl] && inputState.key[Key::R].time == 1 && !network::chatting)
             toggle(gvars::debug);
 
