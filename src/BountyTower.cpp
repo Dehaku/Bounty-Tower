@@ -4219,15 +4219,16 @@ void renderItemHotBarRMBMenu(baseMenu &menu)
     }
 
 
-
-
-
-
-
-
-
     shapes.createSquare(menuStartPos.x,menuStartPos.y,menuEndPos.x,menuEndPos.y,menuColor,1,sf::Color::Black,&gvars::hudView);
     shapes.shapes.back().layer = layer+BackPanel;
+
+
+
+
+
+
+
+
 
 
 
@@ -4257,6 +4258,138 @@ void renderItemHotBarRMBMenu(baseMenu &menu)
     int yOffset = 0;
 
     Item * weapon = selectedItem->varItemPtr;
+
+
+    if(weapon->type == itemTypes.getTypeID("Gun").num)
+    {
+
+
+        sf::Vector2f reloadButtPos(menuStartPos.x+10,menuStartPos.y+10);
+        int reloadButt = shapes.createImageButton(reloadButtPos,texturemanager.getTexture("ArrowButton.png"),"",0,&gvars::hudView);
+        shapes.shapes.back().layer = layer+Button;
+
+        sf::Vector2f modButtPos(menuStartPos.x+31,menuStartPos.y+10);
+        int modButt = shapes.createImageButton(modButtPos,texturemanager.getTexture("ArrowButton.png"),"",0,&gvars::hudView);
+        shapes.shapes.back().layer = layer+Button;
+
+
+        // Next Row
+
+
+        sf::Vector2f unloadButtPos(menuStartPos.x+10,menuStartPos.y+40);
+        int unloadButt = shapes.createImageButton(unloadButtPos,texturemanager.getTexture("ArrowButton.png"),"",0,&gvars::hudView);
+        shapes.shapes.back().layer = layer+Button;
+
+
+
+        if(weapon->user->isSquaddie && shapes.shapeHovered(reloadButt))
+        {
+            textList.createText(gvars::mousePos.x+10,gvars::mousePos.y,10,sf::Color::White,"Reload");
+            gvars::hovering += 3;
+            if(inputState.lmbTime == 1)
+                checkAmmo(*weapon->user, *weapon->user->container, weapon, true);
+        }
+
+        if(weapon->user->isSquaddie && shapes.shapeHovered(unloadButt))
+        {
+            textList.createText(gvars::mousePos.x+10,gvars::mousePos.y,10,sf::Color::White,"Unload");
+            gvars::hovering += 3;
+            if(inputState.lmbTime == 1)
+            {
+                unloadAmmo(weapon, &weapon->user->inventory);
+            }
+        }
+
+        if(weapon->user->isSquaddie && shapes.shapeHovered(modButt))
+        {
+            textList.createText(gvars::mousePos.x+10,gvars::mousePos.y,10,sf::Color::White,"Mod Weapon");
+            gvars::hovering += 3;
+            if(inputState.lmbTime == 1)
+            {
+                gunModMenu(weapon);
+                menu.toDelete = true;
+                return;
+            }
+        }
+
+
+
+
+
+
+
+
+
+    }
+
+    if(weapon->type == itemTypes.getTypeID("Consumable").num)
+    {
+        sf::Vector2f healButtPos(menuStartPos.x+10,menuStartPos.y+10);
+        int healButt = shapes.createImageButton(healButtPos,texturemanager.getTexture("ArrowButton.png"),"",0,&gvars::hudView);
+        shapes.shapes.back().layer = layer+Button;
+
+        if(shapes.shapeHovered(healButt))
+        {
+            textList.createText(gvars::mousePos.x+10,gvars::mousePos.y,10,sf::Color::White,"Drink Juices");
+            gvars::hovering += 3;
+            if(inputState.lmbTime == 1)
+            {
+                if(weapon->user->alive == false)
+                    chatBox.addChat("He's dead, Jim.", sf::Color::Green);
+                else
+                {
+                    weapon->activate(weapon->user->getPos());
+                    chatBox.addChat(weapon->user->name + " used " + weapon->name + "!", sf::Color::Green);
+                    weapon->remove();
+                    menu.toDelete = true;
+                    return;
+                }
+            }
+        }
+
+
+    }
+
+    if(weapon->type == itemTypes.getTypeID("InventorySlotUnlocker").num)
+    {
+
+        sf::Vector2f invButtPos(menuStartPos.x+10,menuStartPos.y+10);
+        int invButt = shapes.createImageButton(invButtPos,texturemanager.getTexture("ArrowButton.png"),"",0,&gvars::hudView);
+        shapes.shapes.back().layer = layer+Button;
+
+        if(shapes.shapeHovered(invButt))
+        {
+            textList.createText(gvars::mousePos.x+10,gvars::mousePos.y,10,sf::Color::White,"Gain 2 Slots(22 Maximum)");
+            gvars::hovering += 3;
+            if(inputState.lmbTime == 1)
+            {
+                if(weapon->user->alive == false)
+                    chatBox.addChat("He's dead, Jim.", sf::Color::Green);
+                else if(weapon->user->getInventoryMax() >= 22)
+                {
+                    chatBox.addChat(weapon->user->name + " is cannot have anymore slots!", sf::Color::Green);
+                    chatBox.addChat("Get another workhorse! Maybe a Noirve?", sf::Color::Green);
+                }
+                else
+                {
+                    chatBox.addChat(weapon->user->name + " used " + weapon->name + "!", sf::Color::Green);
+                    weapon->user->additionalSlots += 2;
+                    chatBox.addChat(weapon->user->name + " now has " + str(weapon->user->getInventoryMax()) + " slots!", sf::Color::Green);
+                    weapon->remove();
+                    menu.toDelete = true;
+                    return;
+                }
+            }
+        }
+    }
+
+
+
+
+
+
+
+
 
 }
 

@@ -763,7 +763,6 @@ float Item::getDispersion()
 
 float Item::getAimTime()
 {
-    std::cout << "Runnin. \n";
     float returns = aimTime;
     for(auto internals : internalitems)
         returns += internals.aimTime;
