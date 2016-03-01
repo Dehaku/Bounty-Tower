@@ -335,6 +335,75 @@ std::string loadItems(sf::Vector2i worldPos, std::string direction, int planet)
     return line;
 }
 
+
+void unloadAmmo(Item * rangewep, std::list<Item> * npcInv)
+{
+    if(rangewep == nullptr)
+        return;
+    if(npcInv == nullptr)
+        return;
+    for(auto &item : rangewep->internalitems)
+    {
+        if(item.type == rangewep->ammotype)
+        {
+            item.currentSlot = nullptr;
+            item.slotted = false;
+            item.id = gvars::globalid++;
+
+            rangewep->user->addItem(item);
+            //npcInv->push_back(item);
+            item.toDelete = true;
+        }
+    }
+    AnyDeletes(rangewep->internalitems);
+}
+
+void cycleFireMode(Item * rangewep)
+{
+    if(rangewep == nullptr)
+        return;
+    bool canSemi = rangewep->getFireSemi();
+    bool canBurst = rangewep->getFireBurst();
+    bool canAuto = rangewep->getFireAuto();
+
+    std::cout << "Cycle: " << canSemi << "/" << canBurst << "/" << canAuto << std::endl;
+
+    if(rangewep->fireMode == 0)
+    {
+        if(canBurst)
+            rangewep->fireMode = 1;
+        else if(canAuto)
+            rangewep->fireMode = 2;
+    }
+
+    else if(rangewep->fireMode == 1)
+    {
+        if(canAuto)
+            rangewep->fireMode = 2;
+        else if(canSemi)
+            rangewep->fireMode = 0;
+    }
+
+    else if(rangewep->fireMode == 2)
+    {
+        if(canSemi)
+            rangewep->fireMode = 0;
+        else if(canBurst)
+            rangewep->fireMode = 1;
+    }
+
+    std::string modeText;
+    if(rangewep->fireMode == 0)
+        modeText = "Semi";
+    if(rangewep->fireMode == 1)
+        modeText = "Burst";
+    if(rangewep->fireMode == 2)
+        modeText = "Auto";
+
+    chatBox.addChat(rangewep->name + " set to " + modeText + ".");
+}
+
+
 void spawnItem(std::string object, int xpos, int ypos, int zpos)
 {
     if (gvars::debug)

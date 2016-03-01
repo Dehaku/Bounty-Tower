@@ -4191,8 +4191,9 @@ void renderItemHotBarRMBMenu(baseMenu &menu)
     sf::Vector2f menuEndPos(702,550);
     sf::Color menuColor(100,100,100,100);
 
-
-    if(menu.age > 10 && inputState.rmbTime == 1)
+    bool rmbCheck = (inputState.rmbTime == 1);
+    bool lmbCheck = (inputState.lmbTime == 1);
+    if( (menu.age > 10 && rmbCheck) || (menu.age > 10 && lmbCheck))
     { // Closing Menu Check
 
         bool mouseOutsideMenu = true;
@@ -4202,12 +4203,12 @@ void renderItemHotBarRMBMenu(baseMenu &menu)
 
         if (
             aabb(worldPos, menuStartPos.x,
-                 menuStartPos.x + menuEndPos.x - menuStartPos.x, //125
+                 menuStartPos.x + menuEndPos.x - menuStartPos.x,
                  menuStartPos.y,
                  menuStartPos.y + menuEndPos.y - menuStartPos.y)
             )
             {
-                mouseOutsideMenu = true;
+                mouseOutsideMenu = false;
             }
 
 
@@ -4221,16 +4222,6 @@ void renderItemHotBarRMBMenu(baseMenu &menu)
 
     shapes.createSquare(menuStartPos.x,menuStartPos.y,menuEndPos.x,menuEndPos.y,menuColor,1,sf::Color::Black,&gvars::hudView);
     shapes.shapes.back().layer = layer+BackPanel;
-
-
-
-
-
-
-
-
-
-
 
     /*
     sf::Vector2f upScrollButtPos(percentPos(10,menuStartPos.x,menuEndPos.x),percentPos(75,menuStartPos.y,menuEndPos.y));
@@ -4280,6 +4271,12 @@ void renderItemHotBarRMBMenu(baseMenu &menu)
         int unloadButt = shapes.createImageButton(unloadButtPos,texturemanager.getTexture("ArrowButton.png"),"",0,&gvars::hudView);
         shapes.shapes.back().layer = layer+Button;
 
+        // --
+
+        sf::Vector2f cycleButtPos(menuStartPos.x+52,menuStartPos.y+40);
+        int cycleButt = shapes.createImageButton(cycleButtPos,texturemanager.getTexture("ArrowButton.png"),"",0,&gvars::hudView);
+        shapes.shapes.back().layer = layer+Button;
+
 
 
         if(weapon->user->isSquaddie && shapes.shapeHovered(reloadButt))
@@ -4312,7 +4309,25 @@ void renderItemHotBarRMBMenu(baseMenu &menu)
             }
         }
 
+        if(weapon->user->isSquaddie && shapes.shapeHovered(cycleButt))
+        {
+            std::string modeText;
+            if(weapon->fireMode == 0)
+                modeText = "Semi";
+            if(weapon->fireMode == 1)
+                modeText = "Burst";
+            if(weapon->fireMode == 2)
+                modeText = "Auto";
 
+
+            textList.createText(gvars::mousePos.x+10,gvars::mousePos.y,10,sf::Color::White,"("+modeText+") Cycle Fire Mode");
+            gvars::hovering += 3;
+            if(inputState.lmbTime == 1)
+            {
+
+                cycleFireMode(weapon);
+            }
+        }
 
 
 

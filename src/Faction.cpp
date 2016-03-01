@@ -909,27 +909,7 @@ void checkAmmo(Npc &npc, std::list<Npc> &container, Item * rangewep, bool forceR
 
 }
 
-void unloadAmmo(Item * rangewep, std::list<Item> * npcInv)
-{
-    if(rangewep == nullptr)
-        return;
-    if(npcInv == nullptr)
-        return;
-    for(auto &item : rangewep->internalitems)
-    {
-        if(item.type == rangewep->ammotype)
-        {
-            item.currentSlot = nullptr;
-            item.slotted = false;
-            item.id = gvars::globalid++;
 
-            rangewep->user->addItem(item);
-            //npcInv->push_back(item);
-            item.toDelete = true;
-        }
-    }
-    AnyDeletes(rangewep->internalitems);
-}
 
 
 void buildTurret(Npc &npc, std::list<Npc> &container)

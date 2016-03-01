@@ -266,6 +266,10 @@ void zSaveItem(int planet, sf::Vector2i region, Item &object);
 void saveItem(int planet, sf::Vector2i region, Item &critter);
 std::string loadItems(sf::Vector2i worldPos, std::string direction,
                       int planet = 500);
+
+void unloadAmmo(Item * rangewep, std::list<Item> * npcInv);
+void cycleFireMode(Item * rangewep);
+
 void spawnItem(std::string object, int xpos, int ypos, int zpos = 30*20);
 void refreshImages();
 Item *getItemPtrFromVector(std::list<Item> &vector, std::string name);
