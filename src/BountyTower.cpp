@@ -3951,10 +3951,12 @@ void renderGunModMenu(baseMenu &menu)
         num.str(std::string());
         num.clear();
 
+        /*   Maybe one day
         num << weapon->getReloadAmount();
         outPut.append("Reload Amount: " + num.str() + "\n");
         num.str(std::string());
         num.clear();
+        */
 
         num << weapon->getBulletSpeedMultiplier();
         outPut.append("Bullet Speed Multiplier: " + num.str() + "\n");
