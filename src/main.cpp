@@ -1024,6 +1024,18 @@ void assaultDesire(Npc &npc, std::list<Npc> &container, Npc * closEnmy, bool &ha
     debug("4");
 }
 
+void heldRecoilReduction(Npc &npc)
+{
+
+    Item * leftHand = npc.getLeftHandItem();
+    if(leftHand != nullptr && leftHand->type == 2)
+        leftHand->recoilPass();
+
+    Item * rightHand = npc.getRightHandItem();
+    if(rightHand != nullptr && rightHand->type == 2)
+        rightHand->recoilPass();
+}
+
 void critterPathFind(Npc &npc, std::list<Npc> &container)
 {
     Vec3 startPos(npc.xpos/GRID_SIZE,npc.ypos/GRID_SIZE,npc.zpos/GRID_SIZE);
@@ -1326,6 +1338,7 @@ void critterBrain(Npc &npc, std::list<Npc> &container)
 
     critterLevelUp(npc,container);
 
+    heldRecoilReduction(npc);
 
 
 

@@ -152,8 +152,10 @@ public:
     float getRecoil();
     float recoilCounter;
 
+
     float recoilReduction;
     float getRecoilReduction();
+    void recoilPass();
 
     float fireDelay;
     float getFireDelay();

@@ -366,8 +366,6 @@ void cycleFireMode(Item * rangewep)
     bool canBurst = rangewep->getFireBurst();
     bool canAuto = rangewep->getFireAuto();
 
-    std::cout << "Cycle: " << canSemi << "/" << canBurst << "/" << canAuto << std::endl;
-
     if(rangewep->fireMode == 0)
     {
         if(canBurst)
@@ -1495,6 +1493,30 @@ std::string Item::shootThing(Vec3f vPos, Item * itemptr)
         return "Success";
 }
 
+void Item::recoilPass()
+{
+    { // Dispersion/Recoil Area
+        float totalDispersion = math::clamp(getDispersion(),0,9999999) + math::clamp(recoilCounter,0,9999999);
+        sf::Vector2f uPos = user->getPos2d();
+
+        int angle1 = user->angle - (totalDispersion/2)+90;
+        int angle2 = user->angle + (totalDispersion/2)+90;
+
+        sf::Vector2f leftAnglePos = math::angleCalc(uPos,angle1,40);
+        sf::Vector2f rightAnglePos = math::angleCalc(uPos,angle2,40);
+
+        shapes.createLine(uPos.x,uPos.y,leftAnglePos.x,leftAnglePos.y,1,sf::Color::Red);
+        shapes.createLine(uPos.x,uPos.y,rightAnglePos.x,rightAnglePos.y,1,sf::Color::Red);
+    }
+
+
+    { // Recoil Reduction
+        recoilCounter -= getRecoilReduction()/60;
+        if(recoilCounter < 0)
+            recoilCounter = 0;
+    }
+}
+
 std::string Item::gunThing(Vec3f vPos)
 {
     if(user == nullptr)
@@ -1544,25 +1566,6 @@ std::string Item::gunThing(Vec3f vPos)
         //std::cout << "X \n";
     }
 
-    { // Dispersion/Recoil Area
-        float totalDispersion = math::clamp(getDispersion(),0,9999999) + math::clamp(recoilCounter,0,9999999);
-        sf::Vector2f uPos = user->getPos2d();
-
-        int angle1 = user->angle - (totalDispersion/2)+90;
-        int angle2 = user->angle + (totalDispersion/2)+90;
-
-        sf::Vector2f leftAnglePos = math::angleCalc(uPos,angle1,40);
-        sf::Vector2f rightAnglePos = math::angleCalc(uPos,angle2,40);
-
-        shapes.createLine(uPos.x,uPos.y,leftAnglePos.x,leftAnglePos.y,1,sf::Color::Red);
-        shapes.createLine(uPos.x,uPos.y,rightAnglePos.x,rightAnglePos.y,1,sf::Color::Red);
-    }
-
-    { // Recoil Reduction
-        recoilCounter -= getRecoilReduction()/60;
-        if(recoilCounter < 0)
-            recoilCounter = 0;
-    }
 
     //static int fireType = 0; // 0 = semi, 1 = burst, 2 = automatic.
 
