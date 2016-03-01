@@ -627,8 +627,11 @@ std::string dropItem()
 {
     if(mouseItem != nullptr)
     {
+        sf::Color canDropColor = sf::Color::Red;
+        sf::Vector2f drawPos = mouseItem->user->getPos2d();
         if(math::closeish(gvars::mousePos,mouseItem->user->getPos2d()) <= 60)
         {
+            canDropColor = sf::Color::Green;
             sf::Vector2f vPos(gvars::mousePos.x,gvars::mousePos.y+15);
             textList.createText(vPos,15,sf::Color::White,"RMB: drop " + mouseItem->name,gvars::view1);
 
@@ -647,6 +650,7 @@ std::string dropItem()
 
             }
         }
+        shapes.createCircle(drawPos.x,drawPos.y,60,sf::Color::Transparent,1,canDropColor);
     }
     return "";
 }
