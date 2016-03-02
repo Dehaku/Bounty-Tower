@@ -723,6 +723,7 @@ Item::Item()
     rarity = 0;
 
     // *---Gun Variables
+    jammed = false;
     projectiles = 0;
     spread = 0;
 
@@ -755,7 +756,7 @@ Item::Item()
 
     durability = 1;
     durabilityCost = 0;
-    durabilityCounter = 1;
+    durabilityCounter = 1000000000;
 
 
     // *---Gun Variables
@@ -1379,6 +1380,34 @@ itemPtrVector randomEquipment(std::list<Item> &inventory)
     return returns;
 }
 
+void durabilityReduction(Item &item)
+{
+    if(item.durabilityCounter > item.getDurability())
+        item.durabilityCounter = item.getDurability();
+
+    item.durabilityCounter -= item.getDurabilityCost();
+
+    if(item.durabilityCounter < 0)
+        item.durabilityCounter = 0;
+
+    float percentHealth = item.durabilityCounter / item.getDurability();
+    std::cout << "Percent Health: " << percentHealth << std::endl;
+
+    if(percentHealth <= 0.5)
+    { // Perform a Jamming check if it's below half health.
+        float healthAmount = percentHealth*200;
+        float healthRoll = 100-healthAmount;
+
+        float jamCheck = random(0,healthRoll);
+        if(jamCheck > 70)
+        { // 30% chance at worst durability, per shot, to jam.
+            item.jammed = true;
+            chatBox.addChat(item.user->name + "'s " + item.name + " has jammed! Unloading weapon now...");
+        }
+    }
+
+}
+
 std::string Item::shootThing(Vec3f vPos, Item * itemptr)
 {
     Vec3f muzzlePos(user->xpos,user->ypos,user->zpos);
@@ -1488,6 +1517,8 @@ std::string Item::shootThing(Vec3f vPos, Item * itemptr)
             soundmanager.playSound("m16_lensflare_3.ogg");
         if(ranNum == 4)
             soundmanager.playSound("m16_lensflare_4.ogg");
+
+        durabilityReduction(*this);
 
         AnyDeletes(internalitems); // This must be run last, Otherwise the ammo pointer could become null.
         return "Success";

@@ -4283,7 +4283,7 @@ void renderItemHotBarRMBMenu(baseMenu &menu)
         {
             textList.createText(gvars::mousePos.x+10,gvars::mousePos.y,10,sf::Color::White,"Reload");
             gvars::hovering += 3;
-            if(inputState.lmbTime == 1)
+            if(inputState.lmbTime)
                 checkAmmo(*weapon->user, *weapon->user->container, weapon, true);
         }
 

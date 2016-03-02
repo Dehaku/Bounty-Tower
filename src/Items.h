@@ -129,6 +129,8 @@ public:
     float activaterategrowth;
     float activateratemax;
 
+    bool jammed;
+
 
     // *---v Gun Variables
     int projectiles;

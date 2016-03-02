@@ -4960,7 +4960,19 @@ void drawSelectedCritterHUD()
                 sf::Vector2f worldPos = window.mapPixelToCoords(sf::Mouse::getPosition(window), gvars::hudView);
 
                 if(math::closeish(worldPos,vPos) <= 15)
-                    shapes.createText(gvars::mousePos,10,sf::Color::White,"    " + slotItem->name);
+                {
+                    std::string additionalInfo;
+                    if(slotItem->type == 2)
+                    {
+                        int dur = slotItem->durabilityCounter;
+                        int totalDur = slotItem->getDurability();
+
+                        additionalInfo.append("\nDur:"+str(dur)+"/"+str(totalDur));
+                    }
+
+                    shapes.createText(gvars::mousePos,10,sf::Color::White,"      " + slotItem->name + additionalInfo);
+                }
+
 
 
                 std::string outPut;// = slotItem->name;
