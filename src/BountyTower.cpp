@@ -4277,6 +4277,10 @@ void renderItemHotBarRMBMenu(baseMenu &menu)
         int cycleButt = shapes.createImageButton(cycleButtPos,texturemanager.getTexture("ArrowButton.png"),"",0,&gvars::hudView);
         shapes.shapes.back().layer = layer+Button;
 
+        sf::Vector2f repairButtPos(menuStartPos.x+73,menuStartPos.y+40);
+        int repairButt = shapes.createImageButton(repairButtPos,texturemanager.getTexture("ArrowButton.png"),"",0,&gvars::hudView);
+        shapes.shapes.back().layer = layer+Button;
+
 
 
         if(weapon->user->isSquaddie && shapes.shapeHovered(reloadButt))
@@ -4329,6 +4333,58 @@ void renderItemHotBarRMBMenu(baseMenu &menu)
             }
         }
 
+        if(weapon->user->isSquaddie && shapes.shapeHovered(repairButt))
+        {
+            std::string modeText;
+
+
+
+            int scrapCost = 30; // TODO: Make a repair skill that cheapens this cost.
+            bool enoughScrap = false;
+            Item * scrapPtr = nullptr;
+
+            for(auto &item : weapon->user->inventory)
+            {
+                if(item.name == "Scrap" && item.amount >= scrapCost)
+                {
+                    enoughScrap = true;
+                    scrapPtr = &item;
+                }
+            }
+
+
+
+
+
+
+
+            textList.createText(gvars::mousePos.x+10,gvars::mousePos.y,10,sf::Color::White,"Repair Weapon: " + str(scrapCost) + " Scrap");
+            gvars::hovering += 3;
+            if(inputState.lmbTime == 1)
+            {
+
+                if(weapon->durabilityCounter >= weapon->getDurability())
+                {
+                    chatBox.addChat(weapon->name + " is fully repaired!");
+                }
+                else if(enoughScrap)
+                {
+
+                    if(scrapPtr != nullptr)
+                    {
+                        scrapPtr->amount -= scrapCost;
+                        if(scrapPtr->amount <= 0)
+                            scrapPtr->remove();
+                    }
+
+                    weapon->durabilityCounter = weapon->getDurability();
+                    chatBox.addChat(weapon->name + " has been fully repaired!");
+                }
+                else
+                    chatBox.addChat(weapon->user->name + " needs more scrap to fix " + weapon->name);
+
+            }
+        }
 
 
 
@@ -5314,7 +5370,7 @@ void layHints()
                     textPos = sf::Vector2f(textPos.x+20,textPos.y-10);
                     shapes.createSquare(textPos.x-5,textPos.y,textPos.x+900,textPos.y+40,sf::Color::Black,3,sf::Color::Cyan);
                     shapes.createText(textPos,15,sf::Color::Red,"Passing through doors will alert enemies to your presence on the floor! \n"
-                            " They will flood from the stairs until they're sufficiently scared!");
+                            " They will flood from the dropchutes until they're sufficiently scared!");
                     shapes.shapes.back().layer += 1;
                 }
 
@@ -5454,7 +5510,7 @@ void layHints()
                                 "Intelligence affects switch working speed. \n"
                                 "Charisma, gives a 1% discount on prices, per point. (All active squad members stack) \n"
                                 "Endurance, gives 1% more health, per point. \n"
-                                "Dexterity, gives 1% dodge chance, per point.\n"
+                                "Dexterity, gives 0.5% dodge chance, per point.\n"
                                 );
                 shapes.shapes.back().layer += 1;
             }

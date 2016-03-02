@@ -1742,8 +1742,8 @@ std::string Item::activate(Vec3f vPos) // Returns a string declaring the problem
 
             if(math::closeish(npcPos,muzzlePosV2f) <= range)
             {
-                std::string outString;
-                outString.append(user->name + " has struck " + npc.name + " for " + std::to_string(maxdam) );
+                //std::string outString;
+                //outString.append(user->name + " has struck " + npc.name + " for " + std::to_string(maxdam) );
                 //chatBox.addChat(outString,sf::Color::Red);
 
                 std::string atkStatus = user->dealDamage(&npc,this,maxdam,damageType);

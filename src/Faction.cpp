@@ -3127,7 +3127,7 @@ std::string Npc::takeDamage(Npc *attacker, Item *weapon, float amount, int damag
 
 
 
-    int dodgeChance = (attributes.dexterity*2);
+    float dodgeChance = (attributes.dexterity/2);
     int dodgeRoll = random(0,100);
     if(dodgeRoll <= dodgeChance && amount > 0)
     {
