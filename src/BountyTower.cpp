@@ -4251,6 +4251,40 @@ void renderItemHotBarRMBMenu(baseMenu &menu)
     Item * weapon = selectedItem->varItemPtr;
 
 
+
+
+    { // Put Item In Storage
+        sf::Vector2f storeButtPos(menuStartPos.x+115,menuStartPos.y+10);
+        int storeButt = shapes.createImageButton(storeButtPos,texturemanager.getTexture("ArrowButton.png"),"",0,&gvars::hudView);
+        shapes.shapes.back().layer = layer+Button;
+
+        bool canStore = false;
+        if(bountytower::currentTower->name == towers[0].name) // TODO: || Npc On Balcony for Air Drops (Maybe) || Carrying Storage Portal
+        {
+            canStore = true;
+        }
+
+        if(weapon->user->isSquaddie && shapes.shapeHovered(storeButt))
+        {
+            if(canStore)
+                textList.createText(gvars::mousePos.x+10,gvars::mousePos.y,10,sf::Color::White,"Put In Storage");
+            else
+                textList.createText(gvars::mousePos.x+10,gvars::mousePos.y,10,sf::Color::Red,"Put In Storage \n Can only be done in the tavern.");
+            gvars::hovering += 3;
+            if(inputState.lmbTime == 1 && canStore)
+            {
+                itemStorage.push_back(*weapon);
+                weapon->remove();
+                menu.toDelete = true;
+                return;
+            }
+
+        }
+    }
+
+
+
+
     if(weapon->type == itemTypes.getTypeID("Gun").num)
     {
 
@@ -4385,7 +4419,6 @@ void renderItemHotBarRMBMenu(baseMenu &menu)
 
             }
         }
-
 
 
 
