@@ -49,6 +49,7 @@
 [name:Simple Barrel][type:PartBarrel][DurabilityCost:5][BarrelCount:1][Dispersion:5][DamageMultiplier:0.2][BulletSpeedMultiplier:1][Recoil:10]		[Pickupable:true][image:GunPart.png][baseid:400][value:550]
 [name:Long Rifled Barrel][type:PartBarrel][DurabilityCost:20][BarrelCount:1][Dispersion:5][DamageMultiplier:2][BulletSpeedMultiplier:5][Recoil:30]		[Pickupable:true][image:GunPart.png][baseid:401][value:550]
 [name:Octuple Barrel][type:PartBarrel][DurabilityCost:1][BarrelCount:8][Dispersion:5][DamageMultiplier:-0.5][BulletSpeedMultiplier:1][Recoil:0]		[Pickupable:true][image:GunPart.png][baseid:402][value:550]
+[name:Duckfoot Barrel][type:PartBarrel][DurabilityCost:5][BarrelCount:5][Dispersion:90][DamageMultiplier:0.2][BulletSpeedMultiplier:1][Recoil:10]		[Pickupable:true][image:GunPart.png][baseid:403][value:550]
 
 [name:Simple Magazine][type:PartMagazine][AmmoCapacity:10][ReloadTime:180][ReloadAmount:5][Recoil:5]	[Pickupable:true][image:GunPart.png][baseid:500][value:550]
 [name:Rotary Magazine][type:PartMagazine][AmmoCapacity:50][ReloadTime:300][ReloadAmount:50][Recoil:10]	[Pickupable:true][image:GunPart.png][baseid:501][value:550]
@@ -56,6 +57,7 @@
 [name:Belt Feed][type:PartMagazine][AmmoCapacity:3][ReloadTime:0][ReloadAmount:3][Recoil:0]	[Pickupable:true][image:GunPart.png][baseid:503][value:550]
 [name:Breech Loader][type:PartMagazine][AmmoCapacity:1][ReloadTime:60][ReloadAmount:1][Recoil:0][Durability:10000]	[Pickupable:true][image:GunPart.png][baseid:504][value:550]
 //Breech Loader has increased durability, due to Missiles costing ALOT of durability
+[name:Portal Magazine][type:PartMagazine][AmmoCapacity:50][ReloadTime:-50][ReloadAmount:50]	[Pickupable:true][image:GunPart.png][baseid:500][value:550]
 
 [name:Simple Grip][type:PartGrip][RecoilReduction:15]	[Pickupable:true][image:GunPart.png][baseid:600][value:550]
 

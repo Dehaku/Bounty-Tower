@@ -793,13 +793,16 @@ Item::Item()
     stackSize = 1;
     //stacks = false;
 
-    // 0 = none/melee, 6 = small bullet, 7 = large bullet
     ammotype = 0;
     mindam = 1;
     maxdam = 2;
 
     stackSize = 1;
     produces = false;
+
+
+
+
 }
 
 int Item::getBarrelCount()
