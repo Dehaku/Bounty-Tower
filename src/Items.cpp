@@ -1390,8 +1390,24 @@ void durabilityReduction(Item &item)
     if(item.durabilityCounter < 0)
         item.durabilityCounter = 0;
 
+
+    if(item.durabilityCounter <= 0)
+    {
+        RandomWeightList qualityNames;
+        qualityNames.addEntry("Piece of Junk", 100);
+        qualityNames.addEntry("Crap Sack", 100);
+        qualityNames.addEntry("Scrap Iron", 100);
+        qualityNames.addEntry("Crowning Crap", 100);
+        qualityNames.addEntry("Jedi Turd", 1);
+        qualityNames.addEntry("Illuminati Confirmed", 1);
+        qualityNames.addEntry("Boomstick", 100);
+        qualityNames.addEntry("Quality Scrap", 100);
+
+        chatBox.addChat(item.user->name + "'s " + item.name + " has broken! Get that " + qualityNames.getRandomName() + " fixed!");
+    }
+
+
     float percentHealth = item.durabilityCounter / item.getDurability();
-    std::cout << "Percent Health: " << percentHealth << std::endl;
 
     if(percentHealth <= 0.5)
     { // Perform a Jamming check if it's below half health.
@@ -1399,10 +1415,16 @@ void durabilityReduction(Item &item)
         float healthRoll = 100-healthAmount;
 
         float jamCheck = random(0,healthRoll);
-        if(jamCheck > 70)
-        { // 30% chance at worst durability, per shot, to jam.
-            item.jammed = true;
+        if(jamCheck > 50)
+        { // 50% chance at worst durability, per shot, to jam.
+            //item.jammed = true;
             chatBox.addChat(item.user->name + "'s " + item.name + " has jammed! Unloading weapon now...");
+
+            //TODO: Add a skill check here for nearby engineers to prevent jamming.
+
+            unloadAmmo(&item,&item.user->inventory);
+
+
         }
     }
 
@@ -1559,6 +1581,12 @@ std::string Item::gunThing(Vec3f vPos)
     Item * itemptr = getItemType(internalitems,ammotype);
     if(itemptr == nullptr || itemptr->amount <= 0)
         return "No Ammo";
+
+    if(durabilityCounter <= 0)
+    {
+        return "Broken!";
+        //TODO: Add notification to HUD about this that gets deleted on right click.
+    }
 
     if(!user->isSquaddie)
     {
