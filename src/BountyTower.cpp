@@ -6185,6 +6185,8 @@ void makeBlood()
 
 void corpsesBleed()
 { // Such a friendly title.
+
+
     for(auto &npc : npclist)
     {
         //Alive? Get outta here!
@@ -6794,7 +6796,7 @@ void bountyTowerLoop()
     checkDoors();
     NPCbuttons();
     layHints();
-    corpsesBleed();
+    //corpsesBleed();
     chasePriorityFunction();
     showItemProgressCone();
 

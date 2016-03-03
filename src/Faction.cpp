@@ -3018,8 +3018,11 @@ std::string Npc::onDeath(Npc *attacker, Item *weapon, float amount, int damageTy
         explosion(getPos(),200,exploDamage,this,&victims);
     }
 
+
     if(race != "BTTurret")
     { // Blood stuffs
+
+        /*
         Shape splatter;
         splatter.startPos = sf::Vector2f(xpos-30,ypos-30);
         splatter.endPos = sf::Vector2f(xpos+30,ypos+30);
@@ -3032,6 +3035,8 @@ std::string Npc::onDeath(Npc *attacker, Item *weapon, float amount, int damageTy
         splatter.texture = &texturemanager.getTexture("Blood"+str(bloodNum)+".png");
         shapes.shapes.push_back(splatter);
         shapes.shapes.back().layer += random(1,100);
+        */
+
 
         img.setColor(sf::Color(255,255,255,255));
         img.setRotation(0);
@@ -3040,6 +3045,7 @@ std::string Npc::onDeath(Npc *attacker, Item *weapon, float amount, int damageTy
 
         img.setTexture(texturemanager.getTexture("MeatCorpsev2.png"));
     }
+
 
     if(tags.find("[DeleteOnDeath:1]") != std::string::npos)
         toDelete = true;
