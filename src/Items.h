@@ -58,6 +58,7 @@ public:
     bool firstPickup;
     bool slotted;
     Item **currentSlot;
+    std::string imgName;
     sf::Sprite img;
     int id;
     int cbaseid;
@@ -247,6 +248,7 @@ public:
     Item();
 };
 
+std::string makeStringFromItem(Item item);
 Item makeItemFromString(std::string line);
 
 extern Item * mouseItem;

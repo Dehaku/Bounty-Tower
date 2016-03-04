@@ -980,6 +980,168 @@ void ItemManager::addItems()
     addedItems.clear();
 }
 
+std::string makeStringFromItem(Item item)
+{
+    std::string line;
+
+    line.append("[name:" + item.name + "]");
+
+    line.append("[value:" + str(item.value) + "]");
+
+    line.append("[stackSize:" + str(item.stackSize) + "]");
+    line.append("[amount:" + str(item.amount) + "]");
+
+    line.append("[hungervalue:" + str(item.hungervalue) + "]");
+    line.append("[thirstvalue:" + str(item.thirstvalue) + "]");
+
+    line.append("[Rarity:" + str(item.rarity) + "]");
+
+    line.append("[Spread:" + str(item.spread) + "]");
+    line.append("[Projectiles:" + str(item.projectiles) + "]");
+    line.append("[radius:" + str(item.radius) + "]");
+    line.append("[penetration:" + str(item.penetration) + "]");
+    line.append("[richochets:" + str(item.richochets) + "]");
+    line.append("[knockback:" + str(item.knockback) + "]");
+    line.append("[HealAmount:" + str(item.healAmount) + "]");
+    line.append("[DamageType:" + damageTypes.getString(item.damageType) + "]");
+    line.append("[CanFireSemi:" + str(item.canFireSemi) + "]");
+    line.append("[CanFireBurst:" + str(item.canFireBurst) + "]");
+    line.append("[CanFireAuto:" + str(item.canFireAuto) + "]");
+
+    line.append("[BarrelCount:" + str(item.barrelCount) + "]");
+    line.append("[DamageMultiplier:" + str(item.damageMultiplier) + "]");
+    line.append("[Dispersion:" + str(item.dispersion) + "]");
+    line.append("[AimTime:" + str(item.aimTime) + "]");
+    line.append("[Recoil:" + str(item.recoil) + "]");
+    line.append("[RecoilReduction:" + str(item.recoilReduction) + "]");
+    line.append("[FireDelay:" + str(item.fireDelay) + "]");
+    line.append("[BurstCount:" + str(item.burstCount) + "]");
+    line.append("[ReloadTime:" + str(item.reloadTime) + "]");
+    line.append("[AmmoCapacity:" + str(item.ammoCapacity) + "]");
+    line.append("[BulletSpeedMultiplier:" + str(item.bulletSpeedMultiplier) + "]");
+    line.append("[Durability:" + str(item.durability) + "]");
+    line.append("[DurabilityCost:" + str(item.durabilityCost) + "]");
+
+    line.append("[Speed:" + str(item.speed) + "]");
+
+    line.append("[MassGlass:" + str(item.massGlass) + "]");
+    line.append("[MassFlesh:" + str(item.massFlesh) + "]");
+    line.append("[MassMetal:" + str(item.massMetal) + "]");
+    line.append("[MassOil:" + str(item.massOil) + "]");
+    line.append("[MassPlastic:" + str(item.massPlastic) + "]");
+    line.append("[MassVeggy:" + str(item.massVeggy) + "]");
+    line.append("[MassWater:" + str(item.massWater) + "]");
+
+    line.append("[Size:" + str(item.size) + "]");
+    line.append("[Pickupable:" + str(item.pickupable) + "]");
+
+    line.append("[type:" + itemTypes.getTypeID(item.type).str + "]");
+
+    line.append("[ammotype:" + str(item.ammotype) + "]");
+    line.append("[baseid:" + str(item.cbaseid) + "]");
+    line.append("[produces:" + str(item.produces) + "]");
+    line.append("[prodrate:" + str(item.prodrate) + "]");
+    line.append("[produce:" + item.produce + "]");
+
+    line.append("[mindam:" + str(item.mindam) + "]");
+    line.append("[maxdam:" + str(item.maxdam) + "]");
+
+    line.append("[range:" + str(item.range) + "]");
+
+    line.append("[activaterategrowth:" + str(item.activaterategrowth) + "]");
+    line.append("[activateratemax:" + str(item.activateratemax) + "]");
+    line.append("[IsWeapon:" + str(item.isWeapon) + "]");
+
+    line.append("[image:" + item.imgName + "]");
+
+    for(auto status : item.statusEffects)
+    {
+        line.append("{StatusEffect:");
+        line.append("[Name:" + status.name + "]");
+        line.append("[Rank:" + status.rank + "]");
+
+        line.append("[Duration:" + str(status.duration) + "]");
+        line.append("[AuraRadius:" + str(status.auraRadius) + "]");
+
+        line.append("[AuraAllies:" + str(status.auraAffectsAllies) + "]");
+        line.append("[AuraEnemies:" + str(status.auraAffectsEnemies) + "]");
+        line.append("[AuraNeutrals:" + str(status.auraAffectsNeutrals) + "]");
+
+
+        for(auto aspect : status.aspects)
+        {
+            line.append("[Aspect:");
+            line.append(str(aspect.name));
+            line.append(":");
+            line.append(str(aspect.potency));
+            line.append(":");
+            line.append(aspect.type);
+            line.append("]");
+
+        }
+        line.append("}");
+    }
+
+    for(auto status : item.statusEffectsInflict)
+    {
+        line.append("{StatusEffectInflict:");
+        line.append("[Name:" + status.name + "]");
+        line.append("[Rank:" + status.rank + "]");
+
+        line.append("[Duration:" + str(status.duration) + "]");
+        line.append("[AuraRadius:" + str(status.auraRadius) + "]");
+
+        line.append("[AuraAllies:" + str(status.auraAffectsAllies) + "]");
+        line.append("[AuraEnemies:" + str(status.auraAffectsEnemies) + "]");
+        line.append("[AuraNeutrals:" + str(status.auraAffectsNeutrals) + "]");
+
+
+        for(auto aspect : status.aspects)
+        {
+            line.append("[Aspect:");
+            line.append(str(aspect.name));
+            line.append(":");
+            line.append(str(aspect.potency));
+            line.append(":");
+            line.append(aspect.type);
+            line.append("]");
+
+        }
+        line.append("}");
+    }
+
+    for(auto status : item.statusEffectsCarried)
+    {
+        line.append("{StatusEffectCarried:");
+        line.append("[Name:" + status.name + "]");
+        line.append("[Rank:" + status.rank + "]");
+
+        line.append("[Duration:" + str(status.duration) + "]");
+        line.append("[AuraRadius:" + str(status.auraRadius) + "]");
+
+        line.append("[AuraAllies:" + str(status.auraAffectsAllies) + "]");
+        line.append("[AuraEnemies:" + str(status.auraAffectsEnemies) + "]");
+        line.append("[AuraNeutrals:" + str(status.auraAffectsNeutrals) + "]");
+
+
+        for(auto aspect : status.aspects)
+        {
+            line.append("[Aspect:");
+            line.append(str(aspect.name));
+            line.append(":");
+            line.append(str(aspect.potency));
+            line.append(":");
+            line.append(aspect.type);
+            line.append("]");
+
+        }
+        line.append("}");
+    }
+
+    return line;
+}
+
+
 Item makeItemFromString(std::string line)
 {
     Item item;
@@ -1047,7 +1209,6 @@ Item makeItemFromString(std::string line)
     item.massPlastic = stringFindNumber(line, "[MassPlastic:");
     item.massVeggy = stringFindNumber(line, "[MassVeggy:");
     item.massWater = stringFindNumber(line, "[MassWater:");
-    item.ammoCapacity = stringFindNumber(line, "[AmmoCapacity:");
 
     item.size = 0;
     item.size = stringFindNumber(line, "[Size:");
@@ -1114,6 +1275,7 @@ Item makeItemFromString(std::string line)
 
 
     std::string imagery = stringFindString(line, "[image:");
+    item.imgName = imagery;
     for (auto const &image : texturemanager.textures)
     {
         if (image.name == imagery)
