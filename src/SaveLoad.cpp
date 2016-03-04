@@ -77,91 +77,13 @@ void saveGame(std::string profileName)
             for(auto item : critter.inventory)
             {
                 file << "[owner:" << critter.name << "]"
-                "[name:" << item.name << "]"
-                "[amount:" << item.amount << "]";
-                for(auto status : item.statusEffects)
-                {
-                    file << "{StatusEffect:"
-                    << "[Name:" << status.name << "]"
-                    << "[Rank:" << status.rank << "]"
-                    << "[Duration:" << status.duration << "]"
-                    << "[AuraRadius:" << status.auraRadius << "]"
-
-                    << "[AuraAllies:" << status.auraAffectsAllies << "]"
-                    << "[AuraEnemies:" << status.auraAffectsEnemies << "]"
-                    << "[AuraNeutrals:" << status.auraAffectsNeutrals << "]";
-                    for(auto aspect : status.aspects)
-                        file << "[Aspect:" << aspect.name << ":" << aspect.potency << ":" << aspect.type << "]" ;
-                    file << "}";
-                }
-                for(auto status : item.statusEffectsInflict)
-                {
-                    file << "{StatusEffectInflict:"
-                    << "[Name:" << status.name << "]"
-                    << "[Rank:" << status.rank << "]"
-                    << "[Duration:" << status.duration << "]"
-                    << "[AuraRadius:" << status.auraRadius << "]"
-
-                    << "[AuraAllies:" << status.auraAffectsAllies << "]"
-                    << "[AuraEnemies:" << status.auraAffectsEnemies << "]"
-                    << "[AuraNeutrals:" << status.auraAffectsNeutrals << "]";
-                    for(auto aspect : status.aspects)
-                        file << "[Aspect:" << aspect.name << ":" << aspect.potency << ":" << aspect.type << "]" ;
-                    file << "}";
-                }
-                for(auto status : item.statusEffectsCarried)
-                {
-                    file << "{StatusEffectCarried:"
-                    << "[Name:" << status.name << "]"
-                    << "[Rank:" << status.rank << "]"
-                    << "[Duration:" << status.duration << "]"
-                    << "[AuraRadius:" << status.auraRadius << "]"
-
-                    << "[AuraAllies:" << status.auraAffectsAllies << "]"
-                    << "[AuraEnemies:" << status.auraAffectsEnemies << "]"
-                    << "[AuraNeutrals:" << status.auraAffectsNeutrals << "]";
-                    for(auto aspect : status.aspects)
-                        file << "[Aspect:" << aspect.name << ":" << aspect.potency << ":" << aspect.type << "]" ;
-                    file << "}";
-                }
-
-
+                << makeStringFromItem(item);
                 file << std::endl;
+
                 for(auto invItem : item.internalitems)
                 {
                     file << "[InternalItem]"
-                    "[name:" << invItem.name << "]"
-                    "[amount:" << invItem.amount << "]";
-                    for(auto status : invItem.statusEffects)
-                    {
-                        file << "{StatusEffect:"
-                        << "[Name:" << status.name << "]"
-                        << "[Rank:" << status.rank << "]"
-                        << "[Duration:" << status.duration << "]"
-                        << "[AuraRadius:" << status.auraRadius << "]"
-
-                        << "[AuraAllies:" << status.auraAffectsAllies << "]"
-                        << "[AuraEnemies:" << status.auraAffectsEnemies << "]"
-                        << "[AuraNeutrals:" << status.auraAffectsNeutrals << "]";
-                        for(auto aspect : status.aspects)
-                            file << "[Aspect:" << aspect.name << ":" << aspect.potency << ":" << aspect.type << "]" ;
-                        file << "}";
-                    }
-                    for(auto status : invItem.statusEffectsInflict)
-                    {
-                        file << "{StatusEffectInflict:"
-                        << "[Name:" << status.name << "]"
-                        << "[Rank:" << status.rank << "]"
-                        << "[Duration:" << status.duration << "]"
-                        << "[AuraRadius:" << status.auraRadius << "]"
-
-                        << "[AuraAllies:" << status.auraAffectsAllies << "]"
-                        << "[AuraEnemies:" << status.auraAffectsEnemies << "]"
-                        << "[AuraNeutrals:" << status.auraAffectsNeutrals << "]";
-                        for(auto aspect : status.aspects)
-                            file << "[Aspect:" << aspect.name << ":" << aspect.potency << ":" << aspect.type << "]" ;
-                        file << "}";
-                    }
+                    << makeStringFromItem(invItem);
                     file << std::endl;
                 }
             }
@@ -280,8 +202,10 @@ void loadGame(std::string profileName)
             std::cout << "This line doesn't have a name! Invalid. \n";
             continue;
         }
-        con("Getting item: " + itemName);
-        item = *getGlobalItem(itemName);
+        //con("Getting item: " + itemName);
+        //item = *getGlobalItem(itemName);
+
+        item = makeItemFromString(line);
 
         //Clearing status effects so that loading a preexisting item doesn't dupe the statuses.
         item.statusEffects.clear();
