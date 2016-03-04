@@ -980,6 +980,166 @@ void ItemManager::addItems()
     addedItems.clear();
 }
 
+Item makeItemFromString(std::string line)
+{
+    Item item;
+    item.name = "Debuggery";
+    std::string itemName = stringFindString(line, "[name:");
+    if(itemName != "")
+        item.name = itemName;
+
+    item.value = stringFindNumber(line, "[value:");
+    if(item.value == 0)
+        item.value = -1;
+
+    int stackSize = stringFindNumber(line, "[stackSize:");
+    //std::cout << item.name << ", " << stackSize << std::endl;
+    if(stackSize == 0)
+        item.stackSize = 1;
+    else
+        item.stackSize = stackSize;
+
+    item.hungervalue = stringFindNumber(line, "[hungervalue:");
+    item.thirstvalue = stringFindNumber(line, "[thirstvalue:");
+
+    item.rarity = stringFindNumber(line, "[Rarity:");
+
+    item.spread = stringFindNumber(line, "[Spread:");
+    item.projectiles = stringFindNumber(line, "[Projectiles:");
+    item.radius = stringFindNumber(line, "[radius:");
+    item.penetration = stringFindNumber(line, "[penetration:");
+    item.richochets = stringFindNumber(line, "[richochets:");
+    item.knockback = stringFindNumber(line, "[knockback:");
+    item.healAmount = stringFindNumber(line, "[HealAmount:");
+    std::string damageString = stringFindString(line, "[DamageType:");
+    if(damageString != "")
+        item.damageType = damageTypes.getNum(damageString);
+
+
+    item.canFireSemi = booleanize(stringFindNumber(line, "[CanFireSemi:"));
+    item.canFireBurst = booleanize(stringFindNumber(line, "[CanFireBurst:"));
+    item.canFireAuto = booleanize(stringFindNumber(line, "[CanFireAuto:"));
+
+    item.barrelCount = stringFindNumber(line, "[BarrelCount:");
+    item.damageMultiplier = stringFindNumber(line, "[DamageMultiplier:");
+    item.dispersion = stringFindNumber(line, "[Dispersion:");
+    item.aimTime = stringFindNumber(line, "[AimTime:");
+    item.recoil = stringFindNumber(line, "[Recoil:");
+    item.recoilReduction = stringFindNumber(line, "[RecoilReduction:");
+    item.fireDelay = stringFindNumber(line, "[FireDelay:");
+    item.burstCount = stringFindNumber(line, "[BurstCount:");
+    item.reloadTime = stringFindNumber(line, "[ReloadTime:");
+    item.reloadAmount = stringFindNumber(line, "[ReloadAmount:");
+    item.ammoCapacity = stringFindNumber(line, "[AmmoCapacity:");
+    item.bulletSpeedMultiplier = stringFindNumber(line, "[BulletSpeedMultiplier:");
+    item.durability = stringFindNumber(line, "[Durability:");
+    item.durabilityCost = stringFindNumber(line, "[DurabilityCost:");
+
+    item.speed = stringFindNumber(line, "[Speed:");
+
+
+
+
+    item.massGlass = stringFindNumber(line, "[MassGlass:");
+    item.massFlesh = stringFindNumber(line, "[MassFlesh:");
+    item.massMetal = stringFindNumber(line, "[MassMetal:");
+    item.massOil = stringFindNumber(line, "[MassOil:");
+    item.massPlastic = stringFindNumber(line, "[MassPlastic:");
+    item.massVeggy = stringFindNumber(line, "[MassVeggy:");
+    item.massWater = stringFindNumber(line, "[MassWater:");
+    item.ammoCapacity = stringFindNumber(line, "[AmmoCapacity:");
+
+    item.size = 0;
+    item.size = stringFindNumber(line, "[Size:");
+
+    item.pickupable =
+        booleanize(stringFindNumber(line, "[Pickupable:"));
+
+    //item.type = stringFindNumber(line, "[type:");
+    std::string typeString = stringFindString(line, "[type:");
+    if(typeString != "")
+        item.type = itemTypes.getTypeID(typeString).num;
+
+
+    item.ammotype = stringFindNumber(line, "[ammotype:");
+    item.cbaseid = stringFindNumber(line, "[baseid:");
+    item.produces = booleanize(stringFindNumber(line, "[produces:"));
+    item.prodrate = stringFindNumber(line, "[prodrate:");
+    item.produce = stringFindString(line, "[produce:");
+    item.mindam = stringFindNumber(line, "[mindam:");
+    item.maxdam = stringFindNumber(line, "[maxdam:");
+
+    item.range = stringFindNumber(line, "[range:");
+    item.activaterate = 0 ; //stringFindNumber(line, "[range:");
+    item.activaterategrowth = stringFindNumber(line, "[activaterategrowth:");
+    item.activateratemax = stringFindNumber(line, "[activateratemax:");
+    item.isWeapon = booleanize(stringFindNumber(line, "[IsWeapon:"));
+
+    std::vector<std::string> statusEffects = stringFindVectorChaos(line,"[CarryStatusEffect:","]");
+    if(!statusEffects.empty())
+        for(auto &status : statusEffects)
+        {
+            StatusEffect actualStatus = globalStatusEffects.getStatusEffect(status);
+            actualStatus.duration = 1;
+            item.statusEffectsCarried.push_back(actualStatus);
+        }
+
+
+    statusEffects.clear();
+    statusEffects = stringFindVectorChaos(line,"[InflictStatusEffect:","]");
+    if(!statusEffects.empty())
+        for(auto &status : statusEffects)
+            item.statusEffectsInflict.push_back(globalStatusEffects.getStatusEffect(status));
+
+
+    statusEffects.clear();
+    statusEffects = stringFindVectorChaos(line,"[StatusEffect:","]");
+    if(!statusEffects.empty())
+        for(auto &status : statusEffects)
+        {
+            StatusEffect actualStatus = globalStatusEffects.getStatusEffect(status);
+            actualStatus.duration = 1;
+            item.statusEffects.push_back(actualStatus);
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+    std::string imagery = stringFindString(line, "[image:");
+    for (auto const &image : texturemanager.textures)
+    {
+        if (image.name == imagery)
+        {
+            item.img.setTexture(image.texture);
+            sf::IntRect tempz = item.img.getTextureRect();
+            sf::Vector2f size(tempz.height, tempz.width);
+            if (gvars::debug)
+            {
+                std::cout << "TextRect: " << tempz.height << ":"
+                          << tempz.width << std::endl;
+            }
+            item.img.setOrigin(size.x / 2, size.y / 2);
+        }
+    }
+    if (item.name != "Debuggery")
+    {
+        con("Adding Item: " + item.name);
+        return item;
+        //globalItems.push_back(item);
+    }
+    item.name = "ERROR";
+    return item;
+
+}
+
 void ItemManager::initializeItems()
 {
     // TODO: Have this read from an Items folder, and read from
@@ -991,154 +1151,9 @@ void ItemManager::initializeItems()
         {
             std::string line;
             getline(input, line);
-            Item item;
-            item.name = "Debuggery";
-            std::string itemName = stringFindString(line, "[name:");
-            if(itemName != "")
-                item.name = itemName;
+            Item item = makeItemFromString(line);
 
-            item.value = stringFindNumber(line, "[value:");
-            if(item.value == 0)
-                item.value = -1;
-
-            int stackSize = stringFindNumber(line, "[stackSize:");
-            //std::cout << item.name << ", " << stackSize << std::endl;
-            if(stackSize == 0)
-                item.stackSize = 1;
-            else
-                item.stackSize = stackSize;
-
-            item.hungervalue = stringFindNumber(line, "[hungervalue:");
-            item.thirstvalue = stringFindNumber(line, "[thirstvalue:");
-
-            item.rarity = stringFindNumber(line, "[Rarity:");
-
-            item.spread = stringFindNumber(line, "[Spread:");
-            item.projectiles = stringFindNumber(line, "[Projectiles:");
-            item.radius = stringFindNumber(line, "[radius:");
-            item.penetration = stringFindNumber(line, "[penetration:");
-            item.richochets = stringFindNumber(line, "[richochets:");
-            item.knockback = stringFindNumber(line, "[knockback:");
-            item.healAmount = stringFindNumber(line, "[HealAmount:");
-            std::string damageString = stringFindString(line, "[DamageType:");
-            if(damageString != "")
-                item.damageType = damageTypes.getNum(damageString);
-
-
-            item.canFireSemi = booleanize(stringFindNumber(line, "[CanFireSemi:"));
-            item.canFireBurst = booleanize(stringFindNumber(line, "[CanFireBurst:"));
-            item.canFireAuto = booleanize(stringFindNumber(line, "[CanFireAuto:"));
-
-            item.barrelCount = stringFindNumber(line, "[BarrelCount:");
-            item.damageMultiplier = stringFindNumber(line, "[DamageMultiplier:");
-            item.dispersion = stringFindNumber(line, "[Dispersion:");
-            item.aimTime = stringFindNumber(line, "[AimTime:");
-            item.recoil = stringFindNumber(line, "[Recoil:");
-            item.recoilReduction = stringFindNumber(line, "[RecoilReduction:");
-            item.fireDelay = stringFindNumber(line, "[FireDelay:");
-            item.burstCount = stringFindNumber(line, "[BurstCount:");
-            item.reloadTime = stringFindNumber(line, "[ReloadTime:");
-            item.reloadAmount = stringFindNumber(line, "[ReloadAmount:");
-            item.ammoCapacity = stringFindNumber(line, "[AmmoCapacity:");
-            item.bulletSpeedMultiplier = stringFindNumber(line, "[BulletSpeedMultiplier:");
-            item.durability = stringFindNumber(line, "[Durability:");
-            item.durabilityCost = stringFindNumber(line, "[DurabilityCost:");
-
-            item.speed = stringFindNumber(line, "[Speed:");
-
-
-
-
-            item.massGlass = stringFindNumber(line, "[MassGlass:");
-            item.massFlesh = stringFindNumber(line, "[MassFlesh:");
-            item.massMetal = stringFindNumber(line, "[MassMetal:");
-            item.massOil = stringFindNumber(line, "[MassOil:");
-            item.massPlastic = stringFindNumber(line, "[MassPlastic:");
-            item.massVeggy = stringFindNumber(line, "[MassVeggy:");
-            item.massWater = stringFindNumber(line, "[MassWater:");
-            item.ammoCapacity = stringFindNumber(line, "[AmmoCapacity:");
-
-            item.size = 0;
-            item.size = stringFindNumber(line, "[Size:");
-
-            item.pickupable =
-                booleanize(stringFindNumber(line, "[Pickupable:"));
-
-            //item.type = stringFindNumber(line, "[type:");
-            std::string typeString = stringFindString(line, "[type:");
-            if(typeString != "")
-                item.type = itemTypes.getTypeID(typeString).num;
-
-
-            item.ammotype = stringFindNumber(line, "[ammotype:");
-            item.cbaseid = stringFindNumber(line, "[baseid:");
-            item.produces = booleanize(stringFindNumber(line, "[produces:"));
-            item.prodrate = stringFindNumber(line, "[prodrate:");
-            item.produce = stringFindString(line, "[produce:");
-            item.mindam = stringFindNumber(line, "[mindam:");
-            item.maxdam = stringFindNumber(line, "[maxdam:");
-
-            item.range = stringFindNumber(line, "[range:");
-            item.activaterate = 0 ; //stringFindNumber(line, "[range:");
-            item.activaterategrowth = stringFindNumber(line, "[activaterategrowth:");
-            item.activateratemax = stringFindNumber(line, "[activateratemax:");
-            item.isWeapon = booleanize(stringFindNumber(line, "[IsWeapon:"));
-
-            std::vector<std::string> statusEffects = stringFindVectorChaos(line,"[CarryStatusEffect:","]");
-            if(!statusEffects.empty())
-                for(auto &status : statusEffects)
-                {
-                    StatusEffect actualStatus = globalStatusEffects.getStatusEffect(status);
-                    actualStatus.duration = 1;
-                    item.statusEffectsCarried.push_back(actualStatus);
-                }
-
-
-            statusEffects.clear();
-            statusEffects = stringFindVectorChaos(line,"[InflictStatusEffect:","]");
-            if(!statusEffects.empty())
-                for(auto &status : statusEffects)
-                    item.statusEffectsInflict.push_back(globalStatusEffects.getStatusEffect(status));
-
-
-            statusEffects.clear();
-            statusEffects = stringFindVectorChaos(line,"[StatusEffect:","]");
-            if(!statusEffects.empty())
-                for(auto &status : statusEffects)
-                {
-                    StatusEffect actualStatus = globalStatusEffects.getStatusEffect(status);
-                    actualStatus.duration = 1;
-                    item.statusEffects.push_back(actualStatus);
-                }
-
-
-
-
-
-
-
-
-
-
-
-
-            std::string imagery = stringFindString(line, "[image:");
-            for (auto const &image : texturemanager.textures)
-            {
-                if (image.name == imagery)
-                {
-                    item.img.setTexture(image.texture);
-                    sf::IntRect tempz = item.img.getTextureRect();
-                    sf::Vector2f size(tempz.height, tempz.width);
-                    if (gvars::debug)
-                    {
-                        std::cout << "TextRect: " << tempz.height << ":"
-                                  << tempz.width << std::endl;
-                    }
-                    item.img.setOrigin(size.x / 2, size.y / 2);
-                }
-            }
-            if (item.name != "Debuggery")
+            if (item.name != "ERROR")
             {
                 con("Adding Item: " + item.name);
                 globalItems.push_back(item);

@@ -247,6 +247,8 @@ public:
     Item();
 };
 
+Item makeItemFromString(std::string line);
+
 extern Item * mouseItem;
 
 Item *getGlobalItem(std::string strtype);
