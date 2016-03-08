@@ -11,7 +11,7 @@ std::string hitTarget(Bullet &bullet)
             if(i->id == t->id)
                 alreadyHit = true;
 
-        if(dist <= i->size/2 && !alreadyHit && i->alive)
+        if(dist <= i->size/2 && !alreadyHit && i->functional())
         {
 
             std::string atkStatus = bullet.owner->dealDamage(i,&bullet.weapon,bullet.damage,bullet.ammo.damageType);

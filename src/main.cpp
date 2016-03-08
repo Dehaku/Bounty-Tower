@@ -1167,8 +1167,18 @@ void critterPathFind(Npc &npc, std::list<Npc> &container)
 
 void overheadOverlay(Npc &npc)
 {
-    if(!menus.empty())
-        return;
+    //if(!menus.empty())
+    //    return;
+
+    if(npc.disabled)
+    {
+        shapes.createImageButton(npc.getPos2d(),texturemanager.getTexture("Stars.png"),"",-(gvars::constantRotation*2) );
+        shapes.shapes.back().layer = 30;
+    }
+
+
+
+
     //Overhead Healthbar.
     float remainingHealth = npc.health / npc.getMaxHealth();
     /*
@@ -1250,6 +1260,7 @@ void overheadOverlay(Npc &npc)
         testString.append(" Health: " + str(static_cast<int>(npc.health)) + "/" + str(static_cast<int>(npc.getMaxHealth())));
 
     shapes.createText(npc.xpos-30,npc.ypos-55,10,sf::Color::White,testString);
+    shapes.shapes.back().layer = 30;
 
 }
 
@@ -1266,7 +1277,7 @@ Npc * critterDetectNearestEnemy(Npc &npc, std::list<Npc> &container)
             {
                 for (auto &i : npc.factionPtr->factRelations)
                 {
-                    if(enemys.faction == i.faction && i.appeal < 1000 && enemys.alive)
+                    if(enemys.faction == i.faction && i.appeal < 1000 && enemys.functional())
                     {
                         //std::cout << "ZE ENEMY HAS BEEN SPOTTED AT " << enemys.xpos << "/" << enemys.ypos << std::endl;
                         enemyPtrs.push_back(&enemys);
@@ -1322,8 +1333,11 @@ void critterBrain(Npc &npc, std::list<Npc> &container)
 
     npc.handleStatusEffects();
 
-    // All functions before this point will run whether dead or alive.
     if(!npc.alive)
+        npc.disabled = false;
+
+    // All functions before this point will run whether dead or alive.
+    if(!npc.alive || npc.disabled)
         return;
 
     if(npc.mods.freezeMod > 0)

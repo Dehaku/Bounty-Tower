@@ -289,6 +289,9 @@ public:
     std::string name;
 
     bool alive;
+    bool disabled;
+    bool functional();
+
     unsigned int ticksalive;
 
     bool canmove;

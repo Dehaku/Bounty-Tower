@@ -1660,6 +1660,8 @@ Npc::Npc()
     isSquaddie = false;
     isBoss = false;
 
+    disabled = false;
+
     factionPtr = nullptr;
 
     level = 0;
@@ -3287,11 +3289,29 @@ std::string Npc::takeDamage(Npc *attacker, Item *weapon, float amount, int damag
     }
 
     if(modhealth(-amount) == false) // modhealth returns false on death.
-        onDeath(attacker, weapon, amount, damageType, crit);
+    {
+        int knockoutChance = 50;
+        if(isSquaddie)
+            disabled = true;
+        else if(faction == "Towerlings" && random(1,100) < knockoutChance)
+            disabled = true;
+        else
+            onDeath(attacker, weapon, amount, damageType, crit);
+    }
+
 
     if(lastHitFrames > 30)
         lastHitFrames = 0;
     return "Hit";
+}
+
+bool Npc::functional()
+{
+    if(!alive)
+        return false;
+    if(disabled)
+        return false;
+    return true;
 }
 
 std::string Npc::dealDamage(Npc *victim, Item *weapon, float amount, int damageType)
