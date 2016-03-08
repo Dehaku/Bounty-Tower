@@ -2892,7 +2892,7 @@ std::string Npc::onDeath(Npc *attacker, Item *weapon, float amount, int damageTy
 
         for(auto &npc : npclist)
         {
-            if(!npc.alive)
+            if(!npc.functional())
                 continue;
             if(npc.faction != conFact->name)
                 continue;
@@ -5625,7 +5625,7 @@ void Npc::handleStatusEffects()
             shapes.shapes.back().layer = 15;
             for(auto &npc : npclist)
             {
-                if(!npc.alive)
+                if(!npc.functional())
                     continue;
 
 
@@ -5926,7 +5926,7 @@ void drawNPCs(std::list<Npc> &container)
             bool withinField = aabb(npc.xpos,npc.ypos,gvars::topLeft.x,gvars::topRight.x,gvars::topLeft.y,gvars::bottomRight.y);
             if(bountytower::towerVictory || withinField && CritterZ == gvars::currentz)
             {
-                if(npc.alive)
+                if(npc.functional())
                     drawEquippedItems(npc);
 
 

@@ -675,7 +675,7 @@ void towerTransition()
 
         if(!npc.isSquaddie)
             npc.toDelete = true;
-        if(!npc.alive)
+        if(!npc.functional())
             npc.toDelete = true;
 
     }
@@ -4415,7 +4415,7 @@ void renderItemHotBarRMBMenu(baseMenu &menu)
             gvars::hovering += 3;
             if(inputState.lmbTime == 1)
             {
-                if(weapon->user->alive == false)
+                if(weapon->user->functional() == false)
                     chatBox.addChat("He's dead, Jim.", sf::Color::Green);
                 else
                 {
@@ -4444,7 +4444,7 @@ void renderItemHotBarRMBMenu(baseMenu &menu)
             gvars::hovering += 3;
             if(inputState.lmbTime == 1)
             {
-                if(weapon->user->alive == false)
+                if(weapon->user->functional() == false)
                     chatBox.addChat("He's dead, Jim.", sf::Color::Green);
                 else if(weapon->user->getInventoryMax() >= 22)
                 {
@@ -5048,7 +5048,7 @@ int getLivingFactionMemberCount(std::string faction)
 {
     int livingCount = 0;
     for(auto &npc : npclist)
-        if(npc.faction == faction && npc.alive)
+        if(npc.faction == faction && npc.functional())
             livingCount++;
     return livingCount;
 }
@@ -5727,7 +5727,7 @@ void bossLoop()
         if(npc.isBoss)
         {
             bosses++;
-            if(!npc.alive)
+            if(!npc.functional())
                 bossesDead++;
         }
     }
@@ -6113,7 +6113,7 @@ void checkFloorCleared()
         if(npc.faction == "Towerlings")
         {
             enemies++;
-            if(!npc.alive)
+            if(!npc.functional())
                 deadEnemies++;
         }
     }
@@ -6296,7 +6296,7 @@ void showItemProgressCone()
 {
     for(auto &npc : npclist)
     {
-        if(!npc.alive)
+        if(!npc.functional())
             continue;
 
         for(int i = 0; i != 2; i++)

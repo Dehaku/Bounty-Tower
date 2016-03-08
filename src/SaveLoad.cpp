@@ -33,7 +33,7 @@ void saveGame(std::string profileName)
     {
 
         Npc critter = *squaddie;
-        if(!critter.alive)
+        if(!critter.functional())
             continue;
 
         outputFile << "[name:" << critter.name << "]"

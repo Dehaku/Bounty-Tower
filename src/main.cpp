@@ -972,7 +972,7 @@ void assaultDesire(Npc &npc, std::list<Npc> &container, Npc * closEnmy, bool &ha
         {
 
             //Enemy needs to be alive to be worth a threat, and their faction cannot be ours...
-            if(enemy.alive && enemy.faction != npc.faction)
+            if(enemy.functional() && enemy.faction != npc.faction)
             {
                 //Find out if the 'enemy' faction is actually our enemy, If not, continue on!
                 if(npc.factionPtr->getFactionRelations(enemy.faction) > -1000)
@@ -1337,7 +1337,7 @@ void critterBrain(Npc &npc, std::list<Npc> &container)
         npc.disabled = false;
 
     // All functions before this point will run whether dead or alive.
-    if(!npc.alive || npc.disabled)
+    if(!npc.functional())
         return;
 
     if(npc.mods.freezeMod > 0)
@@ -1391,7 +1391,7 @@ void critterBrain(Npc &npc, std::list<Npc> &container)
 
         for(auto &enemy : npclist)
         {
-            if(!npc.alive)
+            if(!npc.functional())
                 continue;
             if(npc.factionPtr->getFactionRelations(enemy.faction) > -1000)
                 continue;
@@ -2728,7 +2728,7 @@ void acquireSelectedNPCs()
             {
                 if (inbetween(S.y, E.y, i.ypos) == true)
                 {
-                    if(i.alive)
+                    if(i.functional())
                     {
                         std::cout << i.name << std::endl;
                         //gvars::selected.push_back(i.id);
@@ -2749,7 +2749,7 @@ void acquireSelectedNPCs()
         for (auto &npc : npclist)
         {
 
-            if(npc.alive && aabb(npc.getPos2d(),gvars::heldClickPos.x,gvars::mousePos.x,gvars::heldClickPos.y,gvars::mousePos.y))
+            if(npc.functional() && aabb(npc.getPos2d(),gvars::heldClickPos.x,gvars::mousePos.x,gvars::heldClickPos.y,gvars::mousePos.y))
             {
                 shapes.createImageButton(npc.getPos2d(),texturemanager.getTexture("SelectionCircle.png"));
             }
