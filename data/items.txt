@@ -23,6 +23,7 @@
 [name:Scrap][Rarity:20000][value:30][stackSize:30][DamageType:Blunt][Pickupable:true][image:BTScrap.png][type:Pickups][baseid:7772987][produces:false]
 [name:Cash][Pickupable:true][stackSize:250][DamageType:Slash]Dangerous papercuts[image:FaceonMoney.png][type:Pickups][baseid:636636][produces:false]
 [name:Healing Juices][Pickupable:true][image:healingJuicesSuper.png][DamageType:Blunt][type:Consumable][baseid:623624][value:500][InflictStatusEffect:Healing Surge]
+[name:Resuscitation Kit][Pickupable:true][image:Medkit.png][type:Consumable][DamageType:Blunt][baseid:623638][value:1500][InflictStatusEffect:Insta-Revive]
 [name:Lucky Chug][Pickupable:true][image:healingJuices.png][type:Consumable][DamageType:Blunt][baseid:623627][value:500][InflictStatusEffect:Magic Find]
 [name:Students Tears][Pickupable:true][image:healingJuices.png][type:Consumable][DamageType:Blunt][baseid:623628][value:500][InflictStatusEffect:Students Drive]
 [name:Hermes Sweat][Pickupable:true][image:healingJuices.png][type:Consumable][DamageType:Blunt][baseid:623629][value:500][InflictStatusEffect:Haste]

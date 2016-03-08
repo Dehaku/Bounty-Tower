@@ -5826,7 +5826,7 @@ void Npc::handleStatusEffects()
                     worlditems.push_back(spawn);
                 }
 
-                if(aspect.name == StatusAspect::Revive && !alive && aspect.potency > 0)
+                if(aspect.name == StatusAspect::Revive && !functional() && aspect.potency > 0)
                 {
                     aspect.potency--;
                     alive = true;
