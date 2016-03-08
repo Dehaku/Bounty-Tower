@@ -5840,14 +5840,22 @@ void NPCbuttons()
 
         }
 
-        sf::Vector2f storagePos(1950,3090);
-        int storageButt = shapes.createImageButton(storagePos,texturemanager.getTexture("StorageChest.png"));
-        if(shapes.shapeHovered(storageButt))
-            shapes.createText(gvars::mousePos,15,sf::Color::Yellow,"    Item Storage \n(Left Mouse Button)");
+        if(bountytower::currentTower != nullptr && bountytower::currentTower->name == towers[0].name)
+        {
+            if(gvars::currentz == 1)
+            {
+                sf::Vector2f storagePos(1950,3090);
+                int storageButt = shapes.createImageButton(storagePos,texturemanager.getTexture("StorageChest.png"));
+                if(shapes.shapeHovered(storageButt))
+                    shapes.createText(gvars::mousePos,15,sf::Color::Yellow,"    Item Storage \n(Left Mouse Button)");
 
-        Vec3f storageDropPos(storagePos.x+GRID_SIZE,storagePos.y+random(-30,30),gvars::currentz*GRID_SIZE);
-        if(shapes.shapeClicked(storageButt))
-            storageMenu(storageDropPos);
+                Vec3f storageDropPos(storagePos.x+GRID_SIZE,storagePos.y+random(-30,30),gvars::currentz*GRID_SIZE);
+                if(shapes.shapeClicked(storageButt))
+                    storageMenu(storageDropPos);
+            }
+        }
+
+
 
 
     }
