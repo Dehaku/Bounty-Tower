@@ -1994,13 +1994,14 @@ void drawSquadHud()
 
 
             shapes.createSquare(spritePos.x,spritePos.y,spritePos.x+200,spritePos.y+55,sf::Color(0,50,50,100),outLine,highlightColor,&gvars::hudView);
-
+            shapes.shapes.back().layer -= 2;
 
             if(npc.skillpoints > 0)
             {
                 sf::Vector2f skilltextPos = spritePos;
                 skilltextPos.x += 205;
                 shapes.createText(skilltextPos,10,gvars::cycleGreen,"Unspent Skillpoints!", &gvars::hudView);
+                shapes.shapes.back().layer += 2;
             }
 
 
