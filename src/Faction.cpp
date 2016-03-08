@@ -5449,6 +5449,12 @@ void Npc::setupAnimations()
 
 void Npc::handleStatusEffects()
 {
+
+    { // This is done to simplify conditions of returning to normal form.
+        race = originalRace;
+        racialAbility = originalRacialAbility;
+    }
+
     Item * heldItem;
     for(int i = 0; i != 2; i++)
     { // Applying held item status effects to the carrier.
@@ -5605,10 +5611,7 @@ void Npc::handleStatusEffects()
 
     }
 
-    { // This is done to simplify conditions of returning to normal form.
-        race = originalRace;
-        racialAbility = originalRacialAbility;
-    }
+
 
     for(auto &status : statusEffects)
     {
@@ -5827,6 +5830,7 @@ void Npc::handleStatusEffects()
                 {
                     aspect.potency--;
                     alive = true;
+                    disabled = false;
                     health = getMaxHealth();
                     img = getGlobalCritter(race)->img;
                 }
@@ -5866,14 +5870,17 @@ void Npc::handleStatusEffects()
         if(status.duration <= 0)
         {
             status.toDelete = true;
+            /*
             for(auto &status : statusEffects)
-            if(status.auraRadius == 0)
-                for(auto &aspect : status.aspects)
-                    if(aspect.name == StatusAspect::ChangeRace)
+                if(status.auraRadius == 0)
+                    for(auto &aspect : status.aspects)
+                        if(aspect.name == StatusAspect::ChangeRace)
             { // This is done to simplify conditions of returning to normal form.
-                race = originalRace;
-                racialAbility = originalRacialAbility;
+                //race = originalRace;
+                //racialAbility = originalRacialAbility;
             }
+
+            */
         }
 
 
