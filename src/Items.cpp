@@ -1165,6 +1165,7 @@ Item makeItemFromString(std::string line)
     item.thirstvalue = stringFindNumber(line, "[thirstvalue:");
 
     item.rarity = stringFindNumber(line, "[Rarity:");
+    item.desc = stringFindString(line, "[Desc:");
 
     item.spread = stringFindNumber(line, "[Spread:");
     item.projectiles = stringFindNumber(line, "[Projectiles:");

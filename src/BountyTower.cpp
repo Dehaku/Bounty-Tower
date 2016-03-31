@@ -2644,6 +2644,13 @@ void renderMerchantMenu(baseMenu &menu)
                 chatBox.addChat("You purchased a "+item.name+" for "+str(getSquadDiscount(item.value))+"!", sf::Color::White);
             }
         }
+        if(shapes.shapeHovered(itemButt) && menu.age > 30)
+        {
+            sf::Vector2f mouseDis = gvars::mousePos;
+            mouseDis.y += 10;
+            shapes.createText(mouseDis,10,sf::Color::White,item.desc);
+            shapes.shapes.back().layer = layer+Text;
+        }
 
 
 
@@ -6809,6 +6816,7 @@ void bountyTowerLoop()
     showItemProgressCone();
 
     enchantGlow();
+
 
     colorTest();
 

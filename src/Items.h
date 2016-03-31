@@ -66,6 +66,9 @@ public:
     std::string name;
     std::string inventor;
     std::string contains;
+
+    std::string desc;
+
     enum fireMode
     {
         None,
