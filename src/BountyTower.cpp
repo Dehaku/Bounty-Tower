@@ -919,6 +919,53 @@ void randomizeGunModderInventory()
 {
     gunModMerchantInventory.clear();
     gunModMerchantInventory.push_back(itemmanager.globalItems.at(random(0,itemmanager.globalItems.size()-1)));
+
+
+    int genAmount = random(4,10);
+    for(int i = 0; i != genAmount; i++)
+    {
+        Item weaponMod;
+        { // Hack
+            weaponMod = *getGlobalItem("Simple Grip");
+            weaponMod.recoilReduction = 0;
+        }
+
+
+
+        RandomWeightList modType;
+        modType.addEntry("PartBody",100);
+        modType.addEntry("PartBarrel",100);
+        modType.addEntry("PartMagazine",100);
+        modType.addEntry("PartGrip",100);
+        modType.addEntry("PartStock",100);
+        modType.addEntry("PartSight",100);
+        modType.addEntry("PartAccessory",100);
+
+        std::string gennedType = modType.getRandomName();
+        weaponMod.type = itemTypes.getTypeID(gennedType).num;
+        std::cout << "Genned: " << gennedType << ": " << weaponMod.type << std::endl;
+
+        weaponMod.value = random(100,10000);
+
+        if(gennedType == "PartBarrel")
+        {
+            // Three types
+            // Type 1, High Recoil, High Damage
+            // Type 2, Multiple Barrels, Low Damage.
+            // Type 3, High Durability Cost, High Damage.
+            // All variables should be caluclated BEFORE Damage, for Damage will scale.
+
+
+        }
+
+        weaponMod.name = gennedType;
+
+
+        gunModMerchantInventory.push_back(weaponMod);
+
+    }
+
+
 }
 
 void merchantModderMenu(Vec3f creationPos)
