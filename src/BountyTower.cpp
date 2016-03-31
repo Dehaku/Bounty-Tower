@@ -36,6 +36,7 @@ std::list<Npc> leftBehind;
 std::list<Npc> recruitables;
 std::list<Item> enchantedItems;
 std::list<Item> itemStorage;
+std::list<Item> gunModMerchantInventory;
 
 bool onScreen(sf::Vector2f vPos)
 {
@@ -911,6 +912,27 @@ void merchantMenu(Vec3f creationPos)
     sMenu.name = "Merchant Menu";
     sMenu.Pos = sf::Vector2f(screen.x()/2,screen.y()/2);
     sMenu.makePos = creationPos;
+    menus.push_back(sMenu);
+}
+
+void randomizeGunModderInventory()
+{
+    gunModMerchantInventory.clear();
+    gunModMerchantInventory.push_back(itemmanager.globalItems.at(random(0,itemmanager.globalItems.size()-1)));
+}
+
+void merchantModderMenu(Vec3f creationPos)
+{
+    for(auto menu : menus)
+        if(menu.name == "Merchant Modder Menu")
+            return;
+    baseMenu sMenu;
+    sMenu.name = "Merchant Modder Menu";
+    sMenu.Pos = sf::Vector2f(screen.x()/2,screen.y()/2);
+    sMenu.makePos = creationPos;
+
+    randomizeGunModderInventory();
+
     menus.push_back(sMenu);
 }
 
@@ -2662,6 +2684,267 @@ void renderMerchantMenu(baseMenu &menu)
         }
     }
 }
+
+void renderMerchantModderMenu(baseMenu &menu)
+{ // Layer 19500
+    int layer = 19500;
+    enum
+    {
+        BackPanel,
+        Shapes,
+        Button,
+        Text,
+        FrontPanel
+    };
+
+    sf::Vector2f menuStartPos(100,100);
+    sf::Vector2f menuEndPos(screen.x()-100,screen.y()-100);
+    sf::Color menuColor(150,150,0);
+
+    shapes.createSquare(menuStartPos.x,menuStartPos.y,menuEndPos.x,menuEndPos.y,menuColor,5,sf::Color::White,&gvars::hudView);
+    shapes.shapes.back().layer = layer+BackPanel;
+
+    shapes.createSquare(menuStartPos.x,menuStartPos.y,menuEndPos.x,menuStartPos.y+60,menuColor,0,sf::Color::White,&gvars::hudView);
+    shapes.shapes.back().layer = layer+FrontPanel;
+
+    shapes.createSquare(menuStartPos.x,menuEndPos.y-60,menuEndPos.x,menuEndPos.y,menuColor,0,sf::Color::White,&gvars::hudView);
+    shapes.shapes.back().layer = layer+FrontPanel;
+    //Close Button
+    int exitButt = shapes.createImageButton(sf::Vector2f(screen.x()-100,100),texturemanager.getTexture("ExitButton.png"),"",0,&gvars::hudView);
+    shapes.shapes.back().layer = layer+FrontPanel+1;
+    if(shapes.shapeClicked(exitButt))
+        menu.toDelete = true;
+
+
+    shapes.createText(menuStartPos,10,sf::Color::White,"Squad Charisma Discount: %" + str(100-getSquadDiscount(100)),&gvars::hudView);
+    shapes.shapes.back().layer = layer+FrontPanel+1;
+
+    sf::Vector2f upScrollButtPos(percentPos(10,menuStartPos.x,menuEndPos.x),percentPos(75,menuStartPos.y,menuEndPos.y));
+    sf::Vector2f downScrollButtPos(percentPos(10,menuStartPos.x,menuEndPos.x),percentPos(85,menuStartPos.y,menuEndPos.y));
+    int upScrollButt = shapes.createImageButton(upScrollButtPos,texturemanager.getTexture("ArrowButton.png"),"",0,&gvars::hudView);
+    shapes.shapes.back().layer = layer+Button;
+    int downScrollButt = shapes.createImageButton(downScrollButtPos,texturemanager.getTexture("ArrowButton.png"),"",180,&gvars::hudView);
+    shapes.shapes.back().layer = layer+Button;
+
+    if(shapes.shapeClicked(upScrollButt))
+    {
+        menu.scrollOne++;
+        if(menu.scrollOne > 0)
+            menu.scrollOne = 0;
+    }
+
+    if(shapes.shapeClicked(downScrollButt))
+        menu.scrollOne--;
+
+
+    dynamicVariable * currentType = menu.getVar("currentType");
+    { // Current Item Type Selection
+        if(!menu.hasVar("currentType"))
+        {
+            dynamicVariable var;
+            var.name = "currentType";
+            var.varString = "All";
+
+            menu.vars.push_back(var);
+        }
+        if(inputState.key[Key::LShift])
+            std::cout << "Menu: " << menu.name << " has " << menu.vars.size() << " dynamic vars. \n";
+        int yOffset = 0;
+
+
+        // Types: All, Weapons, Ammo, Aid, Misc
+        const int totalTypes = 7;
+        std::string types[totalTypes] = {"All", "Weapons", "Ammo", "Magic", "Engineer", "Aid", "Misc"};
+
+
+        for(int i = 0; i != totalTypes; i++)
+        {
+            sf::Vector2f drawPos(152,150+(yOffset*60));
+            int skillTreeButt = shapes.createImageButton(drawPos,texturemanager.getTexture("blankLargeButton.png"),"",0,&gvars::hudView);
+            shapes.shapes.back().layer = layer+75;
+
+
+            if(shapes.shapeClicked(skillTreeButt))
+            {
+                menu.scrollOne = 0;
+                if(currentType != nullptr)
+                    currentType->varString = types[i];
+            }
+            sf::Color highlightColor = sf::Color::White;
+            if(shapes.shapeHovered(skillTreeButt))
+                highlightColor = sf::Color::Cyan;
+
+            sf::Vector2f textPos(drawPos.x-45, drawPos.y);
+            shapes.createText(textPos,10,highlightColor,types[i],&gvars::hudView);
+            shapes.shapes.back().layer = layer+76;
+
+            yOffset++;
+        }
+    }
+
+
+    int xOffset = 0;
+    int yOffset = 0;
+    for(auto item : gunModMerchantInventory)
+    {
+        if(item.value == -1)
+            continue;
+        if(currentType == nullptr)
+            continue;
+
+        if(currentType->varString != "All")
+        {
+            if(item.type == 1 || item.type == 2)
+            {
+                if(currentType->varString != "Weapons")
+                    continue;
+            }
+            else if(item.type == 3 || item.type == 4 || item.type == 5)
+            {
+                if(currentType->varString != "Ammo")
+                    continue;
+            }
+            else if(item.type == 23)
+            {
+                if(currentType->varString != "Magic")
+                    continue;
+            }
+            else if(item.type == 12)
+            {
+                if(currentType->varString != "Engineer")
+                    continue;
+            }
+            else if(item.type == 42)
+            {
+                if(currentType->varString != "Aid")
+                    continue;
+            }
+            else if(item.type == 69)
+            {
+                if(currentType->varString != "Misc")
+                    continue;
+            }
+            else
+                continue;
+
+        }
+
+
+        int posX = 250+(xOffset*300);
+        int posY = 150+(yOffset*60);
+
+        posY += (menu.scrollOne+3)*15;
+
+        if(posY < menuStartPos.y+30 || posY > menuEndPos.y-30 )
+        {
+            xOffset++;
+            if(xOffset > 1)
+            {
+                xOffset = 0;
+                yOffset++;
+            }
+            continue;
+        }
+
+
+
+
+        shapes.createSquare(posX-30,posY-30,posX+30,posY+30,sf::Color::Black,0,sf::Color::Cyan, &gvars::hudView);
+        shapes.shapes.back().layer = layer+Shapes;
+
+        sf::Vector2f vPos(posX,posY);
+        int itemButt = shapes.createImageButton(vPos,*item.img.getTexture(),"",0,&gvars::hudView);
+        shapes.shapes.back().layer = layer+Button;
+
+        sf::Color highlightColor = sf::Color::White;
+        if(shapes.shapeHovered(itemButt))
+            highlightColor = sf::Color::Cyan;
+
+        vPos.y -= 30;
+        vPos.x += 30;
+        std::string outPut = item.name;
+
+
+        shapes.createText(vPos,15,highlightColor,outPut,&gvars::hudView);
+        shapes.shapes.back().layer = layer+Text;
+        vPos.y += 15;
+        shapes.createText(vPos,10,highlightColor,"$" + str(getSquadDiscount(item.value)),&gvars::hudView);
+        shapes.shapes.back().layer = layer+Text;
+        vPos.y += 15;
+        std::string stats = "Dam: " + str(item.mindam) + "/" + str(item.maxdam);
+        if(item.type == 1 || item.type == 2 || item.type == 23)
+            stats.append(", AtkDelay: " + str(static_cast<int>(item.activateratemax / item.activaterategrowth)));
+        if(item.type == 3 || item.type == 4 || item.type == 5)
+            stats.append(", Knockback: " + str(static_cast<int>(item.getKnockback())));
+
+        stats.append("\nRange:" + str(item.range));
+
+
+        if(item.type == 2)
+        {
+            stats.append(", Mag: " + str(item.getAmmoCapacity()));
+            if(item.ammotype == 3)
+                stats.append(", Bullet");
+            if(item.ammotype == 4)
+                stats.append(", Shell");
+            if(item.ammotype == 5)
+                stats.append(", Missile");
+        }
+        else if(item.type == 3)
+        {
+            stats.append(", Pierce:" + str(item.penetration));
+            stats.append(", Richochets:" + str(item.richochets));
+        }
+
+
+        if(item.stackSize > 1)
+            stats.append("\nStack: " + str(item.stackSize));
+        shapes.createText(vPos,10,highlightColor,stats,&gvars::hudView);
+        shapes.shapes.back().layer = layer+Text;
+
+
+
+        if(shapes.shapeClicked(itemButt) && menu.age > 30)
+        {
+            if(conFact->credits < getSquadDiscount(item.value))
+                chatBox.addChat("You do not have enough cash for "+item.name+"!", sf::Color::White);
+            else
+            {
+                conFact->credits -= getSquadDiscount(item.value);
+                Item soldItem = item;
+                soldItem.id = gvars::globalid++;
+                soldItem.xpos = menu.makePos.x+(randz(-90,90));
+                soldItem.ypos = menu.makePos.y+90;
+                soldItem.zpos = menu.makePos.z;
+                soldItem.amount = soldItem.stackSize;
+
+                worlditems.push_back(soldItem);
+
+                int soundRan = random(1,3);
+                soundmanager.playSound("CashPickup"+str(soundRan)+".ogg");
+
+                chatBox.addChat("You purchased a "+item.name+" for "+str(getSquadDiscount(item.value))+"!", sf::Color::White);
+            }
+        }
+        if(shapes.shapeHovered(itemButt) && menu.age > 30)
+        {
+            sf::Vector2f mouseDis = gvars::mousePos;
+            mouseDis.y += 10;
+            shapes.createText(mouseDis,10,sf::Color::White,item.desc);
+            shapes.shapes.back().layer = layer+Text;
+        }
+
+
+
+        xOffset++;
+        if(xOffset > 1)
+        {
+            xOffset = 0;
+            yOffset++;
+        }
+    }
+}
+
 
 void renderRecruiterMenu(baseMenu &menu)
 {// Layer 20000
@@ -5029,6 +5312,8 @@ void drawMenus()
             renderSkillMenu(menu);
         if(menu.name == "Merchant Menu")
             renderMerchantMenu(menu);
+        if(menu.name == "Merchant Modder Menu")
+            renderMerchantModderMenu(menu);
         if(menu.name == "Recruitment Menu")
             renderRecruiterMenu(menu);
         if(menu.name == "Tower Menu")
@@ -5236,18 +5521,29 @@ void loadTavern()
     barPatron.tags = backupTags;
     barPatron.tags.append("[WeaponDealer:1]");
     npclist.push_back(barPatron);
+
     barPatron.name = "The Recruiter";
     barPatron.xpos = 3600;
     barPatron.ypos = 2970;
     barPatron.tags = backupTags;
     barPatron.tags.append("[Recruiter:1]");
     npclist.push_back(barPatron);
+
     barPatron.name = "The Enchanter";
     barPatron.xpos = 2010;
     barPatron.ypos = 3690;
     barPatron.tags = backupTags;
     barPatron.tags.append("[Enchanter:1]");
     npclist.push_back(barPatron);
+
+    barPatron.name = "The Modder";
+    barPatron.xpos = 2330;
+    barPatron.ypos = 2970;
+    barPatron.tags = backupTags;
+    barPatron.tags.append("[Modder:1]");
+    npclist.push_back(barPatron);
+
+
 
     gCtrl.phase = "Lobby";
 }
@@ -5846,6 +6142,16 @@ void NPCbuttons()
                 enchantMenu(npc.getPos());
 
         }
+        else if(npc.tags.find("[Modder:1]") != npc.tags.npos)
+        {
+            int dealerButt = shapes.createImageButton(npc.getPos2d(),texturemanager.getTexture("SelectionCircle.png"));
+            if(shapes.shapeHovered(dealerButt))
+                shapes.createText(gvars::mousePos,15,sf::Color::Yellow,"    Nothing better than a fresh change. \n(Left Mouse Button)");
+            if(shapes.shapeClicked(dealerButt))
+                merchantModderMenu(npc.getPos());
+
+        }
+
 
         if(bountytower::currentTower != nullptr && bountytower::currentTower->name == towers[0].name)
         {

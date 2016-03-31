@@ -1317,6 +1317,7 @@ Npc * critterDetectNearestEnemy(Npc &npc, std::list<Npc> &container)
     return closEnmy;
 }
 
+void BehaviorTree(Npc &npc, std::list<Npc> &container)
 {
     // https://web.archive.org/web/20140402204854/http://www.altdevblogaday.com/2011/02/24/introduction-to-behavior-trees/
     // https://www.smu.edu/~/media/Site/guildhall/Documents/Theses/Delmer_Stephan_Thesis_Final.ashx?la=en
