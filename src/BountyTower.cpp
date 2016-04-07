@@ -74,9 +74,11 @@ void renderScreenShake()
 void setupItemStorage()
 {
 
+    /*
     for(auto gItem: itemmanager.globalItems)
         if(gItem.cbaseid < 10000)
             itemStorage.push_back(gItem);
+    */
 
 }
 
@@ -952,8 +954,51 @@ void randomizeGunModderInventory()
             // Three types
             // Type 1, High Recoil, High Damage
             // Type 2, Multiple Barrels, Low Damage.
-            // Type 3, High Durability Cost, High Damage.
-            // All variables should be caluclated BEFORE Damage, for Damage will scale.
+            // Type 3, High Durability Cost, Very High Damage, Slow Bullet.
+            // All variables should be caluclated BEFORE 'Final' Damage, for Damage will scale.
+
+
+            int ranType = random(1,3);
+            if(ranType == 1)
+            {
+                weaponMod.barrelCount = 1;
+                weaponMod.damageMultiplier = random(10,50)*0.1;
+                weaponMod.recoil = random(10,30);
+                weaponMod.dispersion = random(1,5);
+                weaponMod.durabilityCost = weaponMod.damageMultiplier * random(1,5);
+                weaponMod.bulletSpeedMultiplier = random(1,3);
+            }
+            if(ranType == 2)
+            {
+                RandomWeightList barrelCount;
+                {
+                    barrelCount.addEntry("2",1000);
+                    barrelCount.addEntry("3",100);
+                    barrelCount.addEntry("4",50);
+                    barrelCount.addEntry("5",25);
+                    barrelCount.addEntry("6",10);
+                    barrelCount.addEntry("20",1);
+                }
+
+
+                weaponMod.barrelCount = std::stoi(barrelCount.getRandomName());
+                weaponMod.damageMultiplier = random(2,10)*0.1;
+                weaponMod.recoil = random(10,30);
+                weaponMod.dispersion = weaponMod.barrelCount*5;
+                weaponMod.durabilityCost = weaponMod.barrelCount * random(1,5);
+                weaponMod.bulletSpeedMultiplier = random(1,3);
+            }
+            if(ranType == 3)
+            {
+                weaponMod.barrelCount = 1;
+                weaponMod.damageMultiplier = random(50,200)*0.1;
+                weaponMod.recoil = random(10,30);
+                weaponMod.dispersion = random(1,3);
+                weaponMod.durabilityCost = weaponMod.damageMultiplier * random(20,50);
+                weaponMod.bulletSpeedMultiplier = (random(3,6)*0.1);
+            }
+
+
 
 
         }

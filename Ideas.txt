@@ -47,6 +47,11 @@ Galaxy Magic
 Mana will be channeled into spells to increase their power, Each Npc will have a Mana Conduit type variable that controls how fast they absorb mana.
 Random event to have a grand elder appear, making it known that an Npc is an Epic Conduit, increasing their Mana Intake by 9000%
 
+Magic Towers
+Buildings built up vast pillars containing rare and ancient magic from the gods before, The pillar must be climbed up, or technology high enough to simply fly up.
+
+
+
 Galaxy Building Weardown
 As time goes on, Buildings/machines will slowly lose condition(durability/quality), They can be maintained with oil and spare parts.
 If the condition is above half, it only needs oil/lubrication.
