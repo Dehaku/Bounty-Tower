@@ -1155,6 +1155,39 @@ void randomizeGunModderInventory()
             }
         }
 
+        else if(gennedType == "PartSight")
+        {
+            RandomWeightList partQuality;
+            partQuality.addEntry("Iron Sight", 1000);
+            partQuality.addEntry("Holo Sight", 250);
+            partQuality.addEntry("Scope", 250);
+
+            std::string partRoll = partQuality.getRandomName();
+
+            if(partRoll == "Iron Sight")
+            {
+                weaponMod.aimTime = -random(5,15);
+                weaponMod.value = 100*1;
+                weaponMod.name = weaponMod.name + " Iron";
+            }
+
+            else if(partRoll == "Holo Sight")
+            {
+                weaponMod.aimTime = -random(10,20);
+                weaponMod.durabilityCost = random(5,10);
+                weaponMod.value = 100*3;
+                weaponMod.name = weaponMod.name + " Holo";
+            }
+            else if(partRoll == "Scope")
+            {
+                weaponMod.aimTime = random(90,360);
+                weaponMod.durabilityCost = random(20,40);
+                weaponMod.damageMultiplier = random(10,60)*0.1;
+                weaponMod.value = 100*5;
+                weaponMod.name = std::to_string(random(2,10)) + "x " + partRoll;
+            }
+        }
+
 
 
 
