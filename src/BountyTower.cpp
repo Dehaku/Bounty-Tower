@@ -1062,6 +1062,63 @@ void randomizeGunModderInventory()
 
         }
 
+        else if(gennedType == "PartMagazine")
+        {
+            RandomWeightList partQuality;
+            partQuality.addEntry("Magazine", 1000);
+            partQuality.addEntry("Rotary Magazine", 250);
+            partQuality.addEntry("PA Loader", 250);
+            partQuality.addEntry("Breech Loader", 250);
+
+            std::string partRoll = partQuality.getRandomName();
+
+            if(partRoll == "Magazine")
+            {
+                weaponMod.ammoCapacity = random(1,4)*5;
+                weaponMod.reloadTime = random(3,9)*30;
+                weaponMod.reloadAmount = weaponMod.ammoCapacity;
+                weaponMod.recoil = random(1,2)*5;
+
+                weaponMod.value = random(1,4)*50;
+                weaponMod.name = "Simple Mag";
+            }
+
+            else if(partRoll == "Rotary Magazine")
+            {
+                weaponMod.ammoCapacity = random(1,4)*25;
+                weaponMod.reloadTime = random(7,14)*30;
+                weaponMod.reloadAmount = weaponMod.ammoCapacity;
+                weaponMod.recoil = random(1,4)*5;
+                weaponMod.durabilityCost = random(5,10)*2;
+
+                weaponMod.value = random(1,6)*100;
+                weaponMod.name = "Rotary Mag";
+            }
+            else if(partRoll == "PA Loader")
+            {
+                weaponMod.ammoCapacity = random(1,6)*2;
+                weaponMod.reloadTime = random(1,4)*15;
+                weaponMod.reloadAmount = random(1,2);
+                weaponMod.durabilityCost = random(5,10)*2;
+
+                weaponMod.value = random(1,6)*100;
+                weaponMod.name = "Pump Loader";
+            }
+            else if(partRoll == "Breech Loader")
+            {
+                weaponMod.ammoCapacity = 1;
+                weaponMod.reloadTime = 30+(random(1,4)*15);
+                weaponMod.reloadAmount = 1;
+                weaponMod.durability = random(1,8)*2500;
+
+                weaponMod.value = random(1,6)*1000;
+                weaponMod.name = "Breech Loader";
+            }
+        }
+
+
+
+
         else if(gennedType == "PartGrip")
         {
             RandomWeightList gripQuality;
@@ -1187,7 +1244,6 @@ void randomizeGunModderInventory()
                 weaponMod.name = std::to_string(random(2,10)) + "x " + partRoll;
             }
         }
-
 
 
 
