@@ -50,6 +50,12 @@ Random event to have a grand elder appear, making it known that an Npc is an Epi
 Magic Towers
 Buildings built up vast pillars containing rare and ancient magic from the gods before, The pillar must be climbed up, or technology high enough to simply fly up.
 
+Projectile Expansion
+3:28 PM - Dehaku: I'm thinking about screwing with the bullets some more...
+3:28 PM - Dehaku: If I change out the simple speed variable for a vector containing a direction/speed AND a duration...
+3:28 PM - Dehaku: I could make like... direction changing bullets.
+3:29 PM - Dehaku: Like... You could go pew, and then two bullets would shoot behind you, then spread out at an angle shooting infront of you.
+3:30 PM - Dehaku: Could even make things like those missiles that shoot out of subs, then blast horizontally with it.
 
 
 Galaxy Building Weardown

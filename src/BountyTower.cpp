@@ -947,11 +947,70 @@ void randomizeGunModderInventory()
         weaponMod.type = itemTypes.getTypeID(gennedType).num;
         std::cout << "Genned: " << gennedType << ": " << weaponMod.type << std::endl;
 
+        weaponMod.name = gennedType;
         weaponMod.value = random(100,10000);
 
-        if(gennedType == "PartBarrel")
+        if(gennedType == "PartBody")
         {
-            // Three types
+            // Type 1, Tactical Body, Small Burst, Tiny Fire Delay, No Auto, Low recoil
+            // Type 2, Automatic Body, Large Burst, Small Fire Delay, Automatic, Medium Damage, Decent Recoil.
+            // Type 3, Sturdy Body, Semi Only, Large Durability
+            // Type 4, Assault Body, All Fire Modes, Medium Fire Delay, Medium Damage, Low Durability.
+
+
+            int ranType = random(1,3);
+            if(ranType == 1)
+            { // Tactical
+                weaponMod.aimTime = 60;
+                weaponMod.durability = 10000;
+                weaponMod.durabilityCost = random(10,20);
+                weaponMod.fireDelay = (3,7);
+                weaponMod.recoil = random(3,7);
+
+                weaponMod.canFireSemi = true;
+                weaponMod.canFireBurst = true;
+
+                weaponMod.burstCount = random(2,5);
+
+                weaponMod.damageMultiplier = random(10,30)*0.1;
+
+            }
+            if(ranType == 2)
+            { // Automatic
+                weaponMod.aimTime = 60;
+                weaponMod.durability = 10000;
+                weaponMod.durabilityCost = random(15,30);
+                weaponMod.fireDelay = (3,7);
+                weaponMod.recoil = random(5,10);
+
+                weaponMod.canFireSemi = true;
+                //weaponMod.canFireBurst = true;
+                weaponMod.canFireAuto = true;
+
+                //weaponMod.burstCount = random(3,6);
+
+                weaponMod.damageMultiplier = random(10,20)*0.1;
+
+            }
+            if(ranType == 3)
+            { // Sturdy
+                weaponMod.aimTime = 60;
+                weaponMod.durability = random(2,5) * 5000;
+                weaponMod.durabilityCost = random(5,10);
+                weaponMod.fireDelay = (15,25);
+                weaponMod.recoil = random(5,15);
+
+                weaponMod.canFireSemi = true;
+
+                weaponMod.damageMultiplier = random(10,20)*0.1;
+
+            }
+
+        }
+
+        else if(gennedType == "PartBarrel")
+        {
+
             // Type 1, High Recoil, High Damage
             // Type 2, Multiple Barrels, Low Damage.
             // Type 3, High Durability Cost, Very High Damage, Slow Bullet.
@@ -1003,7 +1062,53 @@ void randomizeGunModderInventory()
 
         }
 
-        weaponMod.name = gennedType;
+        else if(gennedType == "PartGrip")
+        {
+            RandomWeightList gripQuality;
+            gripQuality.addEntry("Poor", 1000);
+            gripQuality.addEntry("Decent", 1000);
+            gripQuality.addEntry("Good", 500);
+            gripQuality.addEntry("Great", 100);
+            gripQuality.addEntry("Legendary", 10);
+
+            std::string gripRoll = gripQuality.getRandomName();
+
+            if(gripRoll == "Poor")
+            {
+                weaponMod.recoilReduction = random(1,5);
+                weaponMod.value = 100*1;
+                weaponMod.name = weaponMod.name + " " + gripRoll;
+            }
+
+            else if(gripRoll == "Decent")
+            {
+                weaponMod.recoilReduction = random(5,10);
+                weaponMod.value = 100*3;
+                weaponMod.name = weaponMod.name + " " + gripRoll;
+            }
+            else if(gripRoll == "Good")
+            {
+                weaponMod.recoilReduction = random(10,15);
+                weaponMod.value = 100*5;
+                weaponMod.name = weaponMod.name + " " + gripRoll;
+            }
+            else if(gripRoll == "Great")
+            {
+                weaponMod.recoilReduction = random(15,20);
+                weaponMod.value = 100*10;
+                weaponMod.name = weaponMod.name + " " + gripRoll;
+            }
+            else if(gripRoll == "Legendary")
+            {
+                weaponMod.recoilReduction = random(30,50);
+                weaponMod.value = 100*50;
+                weaponMod.name = weaponMod.name + " " + gripRoll;
+            }
+        }
+
+
+
+
 
 
         gunModMerchantInventory.push_back(weaponMod);
