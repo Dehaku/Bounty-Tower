@@ -1106,6 +1106,55 @@ void randomizeGunModderInventory()
             }
         }
 
+        else if(gennedType == "PartStock")
+        {
+            RandomWeightList partQuality;
+            partQuality.addEntry("Poor", 1000);
+            partQuality.addEntry("Decent", 1000);
+            partQuality.addEntry("Good", 500);
+            partQuality.addEntry("Great", 100);
+            partQuality.addEntry("Legendary", 10);
+
+            std::string partRoll = partQuality.getRandomName();
+
+            if(partRoll == "Poor")
+            {
+                weaponMod.recoilReduction = random(1,5);
+                weaponMod.recoil = -random(1,5);
+                weaponMod.value = 100*1;
+                weaponMod.name = weaponMod.name + " " + partRoll;
+            }
+
+            else if(partRoll == "Decent")
+            {
+                weaponMod.recoilReduction = random(5,10);
+                weaponMod.recoil = -random(5,10);
+                weaponMod.value = 100*3;
+                weaponMod.name = weaponMod.name + " " + partRoll;
+            }
+            else if(partRoll == "Good")
+            {
+                weaponMod.recoilReduction = random(10,15);
+                weaponMod.recoil = -random(10,15);
+                weaponMod.value = 100*5;
+                weaponMod.name = weaponMod.name + " " + partRoll;
+            }
+            else if(partRoll == "Great")
+            {
+                weaponMod.recoilReduction = random(15,20);
+                weaponMod.recoil = -random(15,20);
+                weaponMod.value = 100*10;
+                weaponMod.name = weaponMod.name + " " + partRoll;
+            }
+            else if(partRoll == "Legendary")
+            {
+                weaponMod.recoilReduction = random(30,50);
+                weaponMod.recoil = -random(30,50);
+                weaponMod.value = 100*50;
+                weaponMod.name = weaponMod.name + " " + partRoll;
+            }
+        }
+
 
 
 
