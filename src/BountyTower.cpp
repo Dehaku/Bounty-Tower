@@ -2809,6 +2809,10 @@ void renderMerchantMenu(baseMenu &menu)
         FrontPanel
     };
 
+    int offTavernMultipler = 1;
+    if(bountytower::currentTower->name != towers[0].name)
+        offTavernMultipler = 4;
+
     sf::Vector2f menuStartPos(100,100);
     sf::Vector2f menuEndPos(screen.x()-100,screen.y()-100);
     sf::Color menuColor(150,150,0);
@@ -2980,7 +2984,7 @@ void renderMerchantMenu(baseMenu &menu)
         shapes.createText(vPos,15,highlightColor,outPut,&gvars::hudView);
         shapes.shapes.back().layer = layer+Text;
         vPos.y += 15;
-        shapes.createText(vPos,10,highlightColor,"$" + str(getSquadDiscount(item.value)),&gvars::hudView);
+        shapes.createText(vPos,10,highlightColor,"$" + str(getSquadDiscount(item.value*offTavernMultipler)),&gvars::hudView);
         shapes.shapes.back().layer = layer+Text;
         vPos.y += 15;
         std::string stats = "Dam: " + str(item.mindam) + "/" + str(item.maxdam);
@@ -3018,15 +3022,15 @@ void renderMerchantMenu(baseMenu &menu)
 
         if(shapes.shapeClicked(itemButt) && menu.age > 30)
         {
-            if(conFact->credits < getSquadDiscount(item.value))
+            if(conFact->credits < getSquadDiscount(item.value*offTavernMultipler))
                 chatBox.addChat("You do not have enough cash for "+item.name+"!", sf::Color::White);
             else
             {
-                conFact->credits -= getSquadDiscount(item.value);
+                conFact->credits -= getSquadDiscount(item.value*offTavernMultipler);
                 Item soldItem = item;
                 soldItem.id = gvars::globalid++;
                 soldItem.xpos = menu.makePos.x+(randz(-90,90));
-                soldItem.ypos = menu.makePos.y+90;
+                soldItem.ypos = menu.makePos.y+45;
                 soldItem.zpos = menu.makePos.z;
                 soldItem.amount = soldItem.stackSize;
 
@@ -3035,7 +3039,7 @@ void renderMerchantMenu(baseMenu &menu)
                 int soundRan = random(1,3);
                 soundmanager.playSound("CashPickup"+str(soundRan)+".ogg");
 
-                chatBox.addChat("You purchased a "+item.name+" for "+str(getSquadDiscount(item.value))+"!", sf::Color::White);
+                chatBox.addChat("You purchased a "+item.name+" for "+str(getSquadDiscount(item.value*offTavernMultipler))+"!", sf::Color::White);
             }
         }
         if(shapes.shapeHovered(itemButt) && menu.age > 30)
