@@ -655,6 +655,10 @@ void debugTileMode()
     if(shapes.shapeClicked(goodietileButt))
         debugTileKeeper.useTile.BTgoodietile();
 
+    int airdroptileButt = shapes.createImageButton(sf::Vector2f(menuEdgeL+30+60+60+60,menuEdgeU+30+60+60+60+60+60),texturemanager.getTexture("BTAirdropTile.png"));
+    if(shapes.shapeClicked(airdroptileButt))
+        debugTileKeeper.useTile.BTairdroptile();
+
 }
 
 void towerTransition()
@@ -7477,6 +7481,20 @@ void colorTest()
     window.draw(text);
 }
 
+void airdropMenuChecker()
+{
+    for(auto squaddie : Squaddies)
+    {
+        if(tiles[squaddie->xpos/60][squaddie->ypos/60][squaddie->zpos/60].id == 3850)
+        {
+            sf::Vector2f buttPos(screen.x()/2,100);
+            int shopButt = shapes.createImageButton(buttPos,texturemanager.getTexture("ShopButton.png"),"",0,&gvars::hudView);
+            if(shapes.shapeClicked(shopButt))
+                merchantMenu(squaddie->getPos());
+        }
+    }
+}
+
 void bountyTowerLoop()
 { // Game Loop
 
@@ -7484,6 +7502,7 @@ void bountyTowerLoop()
     bossLoop();
     checkDoors();
     NPCbuttons();
+    airdropMenuChecker();
     layHints();
     //corpsesBleed();
     chasePriorityFunction();

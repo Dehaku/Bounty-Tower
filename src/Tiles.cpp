@@ -1517,6 +1517,14 @@ void Tile::BTgoodietile()
     walkable = true;
 }
 
+void Tile::BTairdroptile()
+{ // 3850
+    id = 3850;
+    worldColor = sf::Color(150, 0, 0);
+    img.setTexture(texturemanager.getTexture("BTAirdropTile.png"));
+    transparent = true;
+    walkable = true;
+}
 
 void Tile::BTsky()
 { // 2700
@@ -1581,6 +1589,8 @@ void Tile::setTilebyID(int ID)
         BTsky();
     else if(ID == 3750)
         BTgoodietile();
+    else if(ID == 3850)
+        BTairdroptile();
 
 
 
