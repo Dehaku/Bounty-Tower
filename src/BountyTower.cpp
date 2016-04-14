@@ -920,7 +920,7 @@ void merchantMenu(Vec3f creationPos)
 void randomizeGunModderInventory()
 {
     gunModMerchantInventory.clear();
-    gunModMerchantInventory.push_back(itemmanager.globalItems.at(random(0,itemmanager.globalItems.size()-1)));
+    //gunModMerchantInventory.push_back(itemmanager.globalItems.at(random(0,itemmanager.globalItems.size()-1)));
 
 
     int genAmount = random(4,10);
