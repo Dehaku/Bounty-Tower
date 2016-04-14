@@ -1245,7 +1245,40 @@ void randomizeGunModderInventory()
             }
         }
 
+        else if (gennedType == "PartAccessory")
+        {
+            RandomWeightList partQuality;
+            partQuality.addEntry("Laser Attachment", 1000);
+            partQuality.addEntry("Gyrostablizer", 250);
+            partQuality.addEntry("Barrel Rifling", 250);
 
+            std::string partRoll = partQuality.getRandomName();
+
+            if(partRoll == "Laser Attachment")
+            {
+                weaponMod.aimTime = -random(5,15);
+                weaponMod.dispersion = random(1,3);
+                weaponMod.value = 100*1;
+                weaponMod.name = partRoll;
+            }
+
+            if(partRoll == "Gyrostablizer")
+            {
+                weaponMod.recoil = -random(5,15);
+                weaponMod.value = 100*1;
+                weaponMod.name = partRoll;
+            }
+
+            if(partRoll == "Barrel Rifling")
+            {
+                float randomRoll = random(10,30);
+                weaponMod.bulletSpeedMultiplier = randomRoll*0.1;
+                weaponMod.damageMultiplier = randomRoll*0.1;
+                weaponMod.durabilityCost = random(1,30);
+                weaponMod.value = 100*1;
+                weaponMod.name = partRoll;
+            }
+        }
 
 
 
