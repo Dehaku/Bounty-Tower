@@ -424,10 +424,37 @@ Shapes shapes;
 
 void Shapes::drawShapes()
 {
+
+    if(inputState.key[Key::LShift] && inputState.key[Key::Z])
+    {
+        createCircle(gvars::mousePos.x,gvars::mousePos.y,30,sf::Color::Red);
+        shapes.back().layer = 55;
+
+        createCircle(gvars::mousePos.x+60,gvars::mousePos.y,30,sf::Color::Blue);
+        shapes.back().layer = 155;
+    }
+
+
     layerSortAlpha();
+
+
+
+
+    int lastLayer = 0;
+    bool drawnNPCstuffs = false;
 
     for(auto &shape : shapes)
     {
+        if(shape.layer > 100 && drawnNPCstuffs == false)
+        {
+            drawnNPCstuffs = true;
+
+            drawNPCs(npclist);
+            drawSelectedCritterHUD();
+        }
+
+
+
         sf::View oldView = window.getView();
         window.setView(*shape.drawView);
 
