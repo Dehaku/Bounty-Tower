@@ -64,7 +64,12 @@ If the condition is above half, it only needs oil/lubrication.
 If the condition is below half, It will need spare parts to raise the condition, and the building/machine will take damage over time.
 
 
-
+Galaxy Magic Gauging/Growth
+At any time, a creature can attempt to see how powerful it is by placing it's hands infront of themselves, and focusing all of their arcane/inner might
+into a sphere, As time goes on, the sphere gets bigger and bigger until it hits their power limit, Sustaining it at this point will drain some of their power, but has a small chance to increase their overall
+power storage.
+For most, it's a tiny sphere, but for some, It's as big as a building, or even larger.
+Bonus points if this can be fired off.
 
 Galaxy Genetics
 Creatures will be built up by Genes, each gene will possess information and stats of a body part, with special traits.
