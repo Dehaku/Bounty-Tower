@@ -1430,9 +1430,9 @@ void critterBrain(Npc &npc, std::list<Npc> &container)
         }
     }
 
-    if(npc.faction == "The Titanium Grip")
+    if(npc.isSquaddie) // npc.faction == "The Titanium Grip"
         scrapPickup(npc,container);
-    if(npc.faction == "The Titanium Grip")
+    if(npc.isSquaddie) // npc.faction == "The Titanium Grip"
         cashPickup(npc,container);
 
     int alph = 255;

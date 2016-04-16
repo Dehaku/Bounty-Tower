@@ -12,9 +12,14 @@ Scrap needs to be more common.
 Need passive growls for the enemies.
 Need an elevator floor transition effect.
 
-Turret shouldn't be able to pickup scrap.
 Turret's gun needs it's recoil removed and fire speed slowed down.
 
 Biggest source of lag is the bodies, Over time, turn the bodies into an effect or some such.
 
 Need a shop button for when standing on airdrop pads.
+
+
+
+
+====Done====
+Turret shouldn't be able to pickup scrap.
