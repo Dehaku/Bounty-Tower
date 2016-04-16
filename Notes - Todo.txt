@@ -1,3 +1,5 @@
+Improve Zooming in and Out.
+Fix Zooming out not revealing more.
 Enchanter needs to ignore PDA's
 Merchent Menus need to allow you to click them to examine, before purchasing.
 Merchant Menus need display stats overhaul to handle new gun componants and such.
@@ -7,11 +9,10 @@ Belt Hud draws ontop of mouse item.
 Tavern needs some chill ambient music.
 Need some form of impact effect when someone takes damage or gets shot, Feels hollow right now, Perhaps a flash of color or some such?
 Need passive growls for the enemies.
-Need an elevator floor transition effect.
+
 
 Biggest source of lag is the bodies, Over time, turn the bodies into an effect or some such.
 
-Need a shop button for when standing on airdrop pads.
 
 Add fetch quest random NPC to towers goodie spots, An item spawns somewhere on the floor, invisible, Once a squaddie comes within one tile of it, it is revealed, Drop the item within one tile of the NPC and you'll be rewarded cash, gun parts, a level up orb, or a status effect chip.
 Add Levelup Orb to Goodie Spawns, the item instantly levels up the person holding it.
@@ -24,3 +25,5 @@ Turret's gun needs it's recoil removed and fire speed slowed down.
 Scrap needs to be more common.
 Enemies are incapped too often.
 Long Range bullet is pointless now, though it is the only one with pierce and richochet
+Need an elevator floor transition effect.
+Need a shop button for when standing on airdrop pads.

@@ -686,6 +686,15 @@ void towerTransition()
             npc.toDelete = true;
 
     }
+
+    for(int i = 0; i != 30; i++)
+    {
+        shapes.createSquare(0,0,1400,1400,sf::Color(0,0,0,25),0,sf::Color::Transparent,&gvars::hudView);
+        shapes.shapes.back().duration = 60-i;
+        shapes.shapes.back().layer = 10000000;
+
+    }
+
 }
 
 void towerMenu()
@@ -5956,6 +5965,14 @@ void nextFloorTransition()
     if(gvars::currentz > bountytower::currentTower->floors)
         loadTavern();
 
+    for(int i = 0; i != 30; i++)
+    {
+        shapes.createSquare(0,0,1400,1400,sf::Color(0,0,0,25),0,sf::Color::Transparent,&gvars::hudView);
+        shapes.shapes.back().duration = 60-i;
+        shapes.shapes.back().layer = 10000000;
+
+    }
+
 
 }
 
@@ -7493,8 +7510,14 @@ void airdropMenuChecker()
         {
             sf::Vector2f buttPos(screen.x()/2,100);
             int shopButt = shapes.createImageButton(buttPos,texturemanager.getTexture("ShopButton.png"),"",0,&gvars::hudView);
+            shapes.shapes.back().layer = 150000;
             if(shapes.shapeClicked(shopButt))
                 merchantMenu(squaddie->getPos());
+            if(shapes.shapeHovered(shopButt))
+            {
+                shapes.createText(gvars::mousePos.x,gvars::mousePos.y,12,sf::Color::White,"Call in Airdrop Resources");
+                shapes.shapes.back().layer = 150001;
+            }
         }
     }
 }
