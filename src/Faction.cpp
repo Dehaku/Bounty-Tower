@@ -996,6 +996,8 @@ void buildTurret(Npc &npc, std::list<Npc> &container)
                 Item gun = *getGlobalItem("Gun");
                 gun.maxdam = 25*turretSkill->ranks;
                 gun.mindam = gun.maxdam/2;
+                gun.recoilReduction = 10000;
+                gun.fireDelay = 10;
 
                 gun.range += ammo.range;
                 ammo.range = 0;
@@ -2912,7 +2914,7 @@ std::string Npc::onDeath(Npc *attacker, Item *weapon, float amount, int damageTy
 
 
     if(faction == "Towerlings")
-    {
+    { // Item Drops
 
 
         int dropRate = random(0,100);
@@ -2925,7 +2927,7 @@ std::string Npc::onDeath(Npc *attacker, Item *weapon, float amount, int damageTy
         std::cout << " Droprate: " << dropRate << std::endl;
         if(dropRate > 50)
         {
-            int scrapAmount = random(0,5);
+            int scrapAmount = random(1,5);
             for(int i = 0; i != scrapAmount; i++)
             {
                 Item scrap = *getGlobalItem("Scrap");
@@ -2933,7 +2935,7 @@ std::string Npc::onDeath(Npc *attacker, Item *weapon, float amount, int damageTy
                 scrap.ypos = ypos+random(0,30);
                 scrap.zpos = zpos;
 
-                scrap.amount = 1;
+                scrap.amount = random(1,3);
                 worlditems.push_back(scrap);
             }
         }
@@ -3290,7 +3292,7 @@ std::string Npc::takeDamage(Npc *attacker, Item *weapon, float amount, int damag
 
     if(modhealth(-amount) == false) // modhealth returns false on death.
     {
-        int knockoutChance = 50;
+        int knockoutChance = 5;
         if(isSquaddie)
             disabled = true;
         else if(faction == "Towerlings" && random(1,100) < knockoutChance)
