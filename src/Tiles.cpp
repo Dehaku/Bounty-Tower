@@ -731,12 +731,25 @@ void drawNewTiles()
     highcapX = math::clamp(highcapX,0,GRIDS-1);
     highcapY = math::clamp(highcapY,0,GRIDS-1);
 
+
+    shapes.createCircle(lowcapX+1*GRID_SIZE,lowcapY+1*GRID_SIZE,10,sf::Color::Yellow);
+    shapes.shapes.back().offscreenRender = true;
+    //Shape.offscreenRender
+
+    shapes.createCircle(highcapX-1*GRID_SIZE,highcapY-1*GRID_SIZE,10,sf::Color::Red);
+    shapes.shapes.back().offscreenRender = true;
+
+    //sf::Vector2f worldPos = window.mapPixelToCoords(sf::Mouse::getPosition(window), gvars::hudView);
+
+    if(inputState.key[Key::Space])
+        lowcapX = lowcapX+10;
+
     for (int i = lowcapX; i != highcapX; i++)
     {
         for (int t = lowcapY; t != highcapY; t++)
         {
-            if (aabb(i * GRID_SIZE, t * GRID_SIZE, gvars::topLeft.x - GRID_SIZE, gvars::topRight.x,
-                     gvars::topLeft.y - GRID_SIZE, gvars::bottomRight.y))
+            //if (aabb(i * GRID_SIZE, t * GRID_SIZE, gvars::topLeft.x - GRID_SIZE, gvars::topRight.x,
+            //         gvars::topLeft.y - GRID_SIZE, gvars::bottomRight.y))
             {
                 tiles[i][t][gvars::currentz].img.setPosition(i * GRID_SIZE, t * GRID_SIZE);
                 if(gvars::currentz != 0 && (tiles[i][t][gvars::currentz].id == 1700 || tiles[i][t][gvars::currentz].id == 2700) )

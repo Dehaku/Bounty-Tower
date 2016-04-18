@@ -1730,10 +1730,19 @@ void critterBrain(std::list<Npc> &npcs)
 
 void drawItems()
 {
+    int lowcapX = (gvars::view1.getCenter().x - (gvars::view1.getSize().x/2));
+    int lowcapY = (gvars::view1.getCenter().y - (gvars::view1.getSize().y/2));
+    int highcapX = ((gvars::view1.getCenter().x + (gvars::view1.getSize().x/2)));
+    int highcapY = ((gvars::view1.getCenter().y + (gvars::view1.getSize().y/2)));
+
     for (auto &worlditem : worlditems)
     {
         int itemZ = worlditem.zpos/GRID_SIZE;
-        if(aabb(worlditem.xpos,worlditem.ypos,gvars::topLeft.x,gvars::topRight.x,gvars::topLeft.y,gvars::bottomRight.y) && itemZ == gvars::currentz)
+        //bool withinfield = aabb(worlditem.xpos,worlditem.ypos,gvars::topLeft.x,gvars::topRight.x,gvars::topLeft.y,gvars::bottomRight.y);
+        bool withinfield = aabb(worlditem.xpos,worlditem.ypos,lowcapX,highcapX,lowcapY,highcapY);
+
+
+        if( withinfield && itemZ == gvars::currentz)
         {
             worlditem.img.setColor(sf::Color(255, 255, 255, 255));
             worlditem.img.setScale(gvars::scalex, gvars::scaley);

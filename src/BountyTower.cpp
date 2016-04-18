@@ -40,7 +40,14 @@ std::list<Item> gunModMerchantInventory;
 
 bool onScreen(sf::Vector2f vPos)
 {
-    if(aabb(vPos,gvars::centerScreen.x-(screen.x()/2),gvars::centerScreen.x+(screen.x()/2),gvars::centerScreen.y-(screen.y()/2),gvars::centerScreen.y+(screen.y()/2)))
+    int lowcapX = (gvars::view1.getCenter().x - (gvars::view1.getSize().x/2));
+    int lowcapY = (gvars::view1.getCenter().y - (gvars::view1.getSize().y/2));
+    int highcapX = ((gvars::view1.getCenter().x + (gvars::view1.getSize().x/2)));
+    int highcapY = ((gvars::view1.getCenter().y + (gvars::view1.getSize().y/2)));
+    // TODO: Set these variables only once per frame.
+
+
+    if(aabb(vPos,lowcapX,highcapX,lowcapY,highcapY))
         return true;
 
     return false;
@@ -7515,7 +7522,7 @@ void airdropMenuChecker()
                 merchantMenu(squaddie->getPos());
             if(shapes.shapeHovered(shopButt))
             {
-                shapes.createText(gvars::mousePos.x,gvars::mousePos.y,12,sf::Color::White,"Call in Airdrop Resources");
+                shapes.createText(gvars::mousePos.x,gvars::mousePos.y,12,sf::Color::White,"\n Call in Airdrop Resources");
                 shapes.shapes.back().layer = 150001;
             }
         }

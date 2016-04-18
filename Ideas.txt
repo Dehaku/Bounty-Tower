@@ -8,6 +8,13 @@ Vehicle Pathfinding is also extremely important!
 
 
 
+Damage Collection
+Instead of having a health variable that is drained, Reference the health using a getHealth() function.
+Whenever a critter takes damage, They have an array of a structure Damage, Which contains an amount, and type.
+The getHealth() function will then iterate through the Damage array, pooling up total damage, then returning the health, minus total damage.
+This has many benefits, Including allowing specific damage resistences, Typed Regeneration, Healing capabilities that can only restore specific damages, and so on.
+
+
 Critter Abilities
 Vision Evasion Invisibility - Whenever this creature is within a specific degree of angle of vision, they turn invisible
 	Only able to be seen when critters are not directly looking at them.

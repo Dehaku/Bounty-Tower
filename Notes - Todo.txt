@@ -1,5 +1,4 @@
 Improve Zooming in and Out.
-Fix Zooming out not revealing more.
 Enchanter needs to ignore PDA's
 Merchent Menus need to allow you to click them to examine, before purchasing.
 Merchant Menus need display stats overhaul to handle new gun componants and such.
@@ -27,3 +26,5 @@ Enemies are incapped too often.
 Long Range bullet is pointless now, though it is the only one with pierce and richochet
 Need an elevator floor transition effect.
 Need a shop button for when standing on airdrop pads.
+
+Fix Zooming out not revealing more.

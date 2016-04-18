@@ -5928,11 +5928,23 @@ void drawNPCs(std::list<Npc> &container)
     for(auto &ani : animationmanager.animations)
         ani.animation.update(sf::milliseconds(10));
 
+    int lowcapX = (gvars::view1.getCenter().x - (gvars::view1.getSize().x/2));
+    int lowcapY = (gvars::view1.getCenter().y - (gvars::view1.getSize().y/2));
+    int highcapX = ((gvars::view1.getCenter().x + (gvars::view1.getSize().x/2)));
+    int highcapY = ((gvars::view1.getCenter().y + (gvars::view1.getSize().y/2)));
+
     for (auto &npc : container)
     {
         {
             int CritterZ = npc.zpos/GRID_SIZE;
-            bool withinField = aabb(npc.xpos,npc.ypos,gvars::topLeft.x,gvars::topRight.x,gvars::topLeft.y,gvars::bottomRight.y);
+            //bool withinField = aabb(npc.xpos,npc.ypos,gvars::topLeft.x,gvars::topRight.x,gvars::topLeft.y,gvars::bottomRight.y);
+
+
+            bool withinField = aabb(npc.xpos,npc.ypos,lowcapX,highcapX,lowcapY,highcapY);
+
+
+
+
             if(bountytower::towerVictory || withinField && CritterZ == gvars::currentz)
             {
                 if(npc.functional())
@@ -5940,155 +5952,155 @@ void drawNPCs(std::list<Npc> &container)
 
 
                 if (npc.name == "Azabul")
-            {
-                sf::Vector2f ta1 = npc.tentArm1;
-                sf::Vector2f ta2 = npc.tentArm2;
-                sf::Vector2f te1 = npc.tentEnd1;
-                sf::Vector2f te2 = npc.tentEnd2;
+                {
+                    sf::Vector2f ta1 = npc.tentArm1;
+                    sf::Vector2f ta2 = npc.tentArm2;
+                    sf::Vector2f te1 = npc.tentEnd1;
+                    sf::Vector2f te2 = npc.tentEnd2;
 
-                shapes.createLine(npc.xpos, npc.ypos, ta1.x + npc.xpos,
-                                   ta1.y + npc.ypos, 2, sf::Color(0, 200, 200),
-                                   1, sf::Color(0, 255, 255));
-                shapes.createLine(npc.xpos, npc.ypos, ta2.x + npc.xpos,
-                                   ta2.y + npc.ypos, 2, sf::Color(0, 200, 200),
-                                   1, sf::Color(0, 255, 255));
-                shapes.createLine(
-                    ta1.x + npc.xpos, ta1.y + npc.ypos,
-                    te1.x + ta1.x + npc.xpos, te1.y + ta1.y + npc.ypos, 2,
-                    sf::Color(0, 200, 200), 1, sf::Color(0, 255, 255));
-                shapes.createLine(
-                    ta2.x + npc.xpos, ta2.y + npc.ypos,
-                    te2.x + ta2.x + npc.xpos, te2.y + ta2.y + npc.ypos, 2,
-                    sf::Color(0, 200, 200), 1, sf::Color(0, 255, 255));
-                //shapes.drawEffects();
-            }
+                    shapes.createLine(npc.xpos, npc.ypos, ta1.x + npc.xpos,
+                                       ta1.y + npc.ypos, 2, sf::Color(0, 200, 200),
+                                       1, sf::Color(0, 255, 255));
+                    shapes.createLine(npc.xpos, npc.ypos, ta2.x + npc.xpos,
+                                       ta2.y + npc.ypos, 2, sf::Color(0, 200, 200),
+                                       1, sf::Color(0, 255, 255));
+                    shapes.createLine(
+                        ta1.x + npc.xpos, ta1.y + npc.ypos,
+                        te1.x + ta1.x + npc.xpos, te1.y + ta1.y + npc.ypos, 2,
+                        sf::Color(0, 200, 200), 1, sf::Color(0, 255, 255));
+                    shapes.createLine(
+                        ta2.x + npc.xpos, ta2.y + npc.ypos,
+                        te2.x + ta2.x + npc.xpos, te2.y + ta2.y + npc.ypos, 2,
+                        sf::Color(0, 200, 200), 1, sf::Color(0, 255, 255));
+                    //shapes.drawEffects();
+                }
 
-            int aniAngle = npc.angle;
-            int angMod = 45-90; // To help with the odd directionals.
+                int aniAngle = npc.angle;
+                int angMod = 45-90; // To help with the odd directionals.
 
-            std::string Direction;
-            if(inbetween(-1,91,math::constrainAngle(aniAngle+angMod)))
-                Direction = "LeftWalk";
-            if(inbetween(89,181,math::constrainAngle(aniAngle+angMod)))
-                Direction = "UpWalk";
-            if(inbetween(-181,-89,math::constrainAngle(aniAngle+angMod)))
-                Direction = "RightWalk";
-            if(inbetween(-91,1,math::constrainAngle(aniAngle+angMod)))
-                Direction = "DownWalk";
+                std::string Direction;
+                if(inbetween(-1,91,math::constrainAngle(aniAngle+angMod)))
+                    Direction = "LeftWalk";
+                if(inbetween(89,181,math::constrainAngle(aniAngle+angMod)))
+                    Direction = "UpWalk";
+                if(inbetween(-181,-89,math::constrainAngle(aniAngle+angMod)))
+                    Direction = "RightWalk";
+                if(inbetween(-91,1,math::constrainAngle(aniAngle+angMod)))
+                    Direction = "DownWalk";
 
-            bool performanceLowDueToAnimationIteration = false;
+                bool performanceLowDueToAnimationIteration = false;
 
-            if(performanceLowDueToAnimationIteration && npc.isSquaddie)
-            { // TODO: This is for when adding in more clothing and races bloats the animiation loop too much.
+                if(performanceLowDueToAnimationIteration && npc.isSquaddie)
+                { // TODO: This is for when adding in more clothing and races bloats the animiation loop too much.
+
+                    /*
+                    if(inputState.key[Key::H])
+                    {
+                        npc.bodyAnimation.aniDownWalk.setSpriteSheet(texturemanager.getTexture("SpriteSheetBTNoirves.png"));
+                        npc.bodyAnimation.spriteDownWalk.setAnimation(npc.bodyAnimation.aniDownWalk);
+                    }
+
+                    else if(inputState.key[Key::LShift])
+                    {
+                        npc.bodyAnimation.aniDownWalk.setSpriteSheet(texturemanager.getTexture("SpriteSheetBTHuman.png"));
+                        npc.bodyAnimation.spriteDownWalk.setAnimation(npc.bodyAnimation.aniDownWalk);
+                    }
+
+                    AnimatedSprite * spriteWalk = nullptr;
+
+                    if(Direction == "LeftWalk")
+                        spriteWalk = &npc.bodyAnimation.spriteLeftWalk;
+                    else if(Direction == "DownWalk")
+                        spriteWalk = &npc.bodyAnimation.spriteDownWalk;
+                    else if(Direction == "RightWalk")
+                        spriteWalk = &npc.bodyAnimation.spriteRightWalk;
+                    else if(Direction == "UpWalk")
+                        spriteWalk = &npc.bodyAnimation.spriteUpWalk;
+
+
+                    spriteWalk->update(sf::milliseconds(10));
+                    spriteWalk->setPosition(npc.getPos2d());
+                    window.draw(*spriteWalk, &shadermanager.shockwaveShader);
+                    */
+                }
+                bool hasAnimations = false;
+                if(npc.alive)
+                {
+                    for(auto &ani : animationmanager.animations)
+                    {
+                        bool drawMe = false;
+                        bool allowedHat = false;
+                        if(npc.isSquaddie)
+                            allowedHat = true;
+                        else if(npc.tags.find("[WearsHat:1]") != npc.tags.npos)
+                            allowedHat = true;
+
+                        if(ani.name.find(Direction) != ani.name.npos)
+                        {
+                            if(ani.name.find(npc.race) != ani.name.npos)
+                            {
+                                drawMe = true;
+                                hasAnimations = true;
+                            }
+
+                            if(ani.name.find("HatBasic") != ani.name.npos)
+                                if(npc.isSquaddie || npc.tags.find("[WearsHat:1]") != npc.tags.npos)
+                                    drawMe = true;
+                            if(ani.name.find("BootsLeather") != ani.name.npos)
+                                if(npc.tags.find("[WearsBoots:1]") != npc.tags.npos)
+                                    drawMe = true;
+                            if(ani.name.find("GlovesLeather") != ani.name.npos)
+                                if(npc.tags.find("[WearsGloves:1]") != npc.tags.npos)
+                                    drawMe = true;
+
+                        }
+                        if(drawMe)
+                        {
+
+
+                            if(npc.race == "BTNoirves")
+                            {
+                                ani.animation.setScale(0.75,0.75);
+
+                                if(ani.name.find("LeftWalk") != ani.name.npos)
+                                    ani.animation.scale(-1,1);
+                            }
+                            else if(npc.name == "The Hardened Criminal")
+                            {
+                                ani.animation.setScale(1.25,1.25);
+
+                                if(ani.name.find("LeftWalk") != ani.name.npos)
+                                    ani.animation.scale(-1,1);
+                            }
+                            else
+                            {
+                                ani.animation.setScale(1,1);
+
+                                if(ani.name.find("LeftWalk") != ani.name.npos)
+                                    ani.animation.scale(-1,1);
+                            }
+
+
+                            ani.animation.setPosition(npc.xpos,npc.ypos);
+                            window.draw(ani.animation, &shadermanager.shockwaveShader);
+                        }
+                    }
+                }
+                else if(!npc.alive)
+                {
+                    npc.drawImg();
+                }
+                if(!hasAnimations)
+                    npc.drawImg();
+
 
                 /*
-                if(inputState.key[Key::H])
-                {
-                    npc.bodyAnimation.aniDownWalk.setSpriteSheet(texturemanager.getTexture("SpriteSheetBTNoirves.png"));
-                    npc.bodyAnimation.spriteDownWalk.setAnimation(npc.bodyAnimation.aniDownWalk);
-                }
-
-                else if(inputState.key[Key::LShift])
-                {
-                    npc.bodyAnimation.aniDownWalk.setSpriteSheet(texturemanager.getTexture("SpriteSheetBTHuman.png"));
-                    npc.bodyAnimation.spriteDownWalk.setAnimation(npc.bodyAnimation.aniDownWalk);
-                }
-
-                AnimatedSprite * spriteWalk = nullptr;
-
-                if(Direction == "LeftWalk")
-                    spriteWalk = &npc.bodyAnimation.spriteLeftWalk;
-                else if(Direction == "DownWalk")
-                    spriteWalk = &npc.bodyAnimation.spriteDownWalk;
-                else if(Direction == "RightWalk")
-                    spriteWalk = &npc.bodyAnimation.spriteRightWalk;
-                else if(Direction == "UpWalk")
-                    spriteWalk = &npc.bodyAnimation.spriteUpWalk;
+                sf::Color shadow(255,50,50,50);
 
 
-                spriteWalk->update(sf::milliseconds(10));
-                spriteWalk->setPosition(npc.getPos2d());
-                window.draw(*spriteWalk, &shadermanager.shockwaveShader);
+                if(!npc.alive) // To simulate blood.
+                    shapes.createCircle(npc.xpos, npc.ypos, npc.size, shadow);
                 */
-            }
-            bool hasAnimations = false;
-            if(npc.alive)
-            {
-                for(auto &ani : animationmanager.animations)
-                {
-                    bool drawMe = false;
-                    bool allowedHat = false;
-                    if(npc.isSquaddie)
-                        allowedHat = true;
-                    else if(npc.tags.find("[WearsHat:1]") != npc.tags.npos)
-                        allowedHat = true;
-
-                    if(ani.name.find(Direction) != ani.name.npos)
-                    {
-                        if(ani.name.find(npc.race) != ani.name.npos)
-                        {
-                            drawMe = true;
-                            hasAnimations = true;
-                        }
-
-                        if(ani.name.find("HatBasic") != ani.name.npos)
-                            if(npc.isSquaddie || npc.tags.find("[WearsHat:1]") != npc.tags.npos)
-                                drawMe = true;
-                        if(ani.name.find("BootsLeather") != ani.name.npos)
-                            if(npc.tags.find("[WearsBoots:1]") != npc.tags.npos)
-                                drawMe = true;
-                        if(ani.name.find("GlovesLeather") != ani.name.npos)
-                            if(npc.tags.find("[WearsGloves:1]") != npc.tags.npos)
-                                drawMe = true;
-
-                    }
-                    if(drawMe)
-                    {
-
-
-                        if(npc.race == "BTNoirves")
-                        {
-                            ani.animation.setScale(0.75,0.75);
-
-                            if(ani.name.find("LeftWalk") != ani.name.npos)
-                                ani.animation.scale(-1,1);
-                        }
-                        else if(npc.name == "The Hardened Criminal")
-                        {
-                            ani.animation.setScale(1.25,1.25);
-
-                            if(ani.name.find("LeftWalk") != ani.name.npos)
-                                ani.animation.scale(-1,1);
-                        }
-                        else
-                        {
-                            ani.animation.setScale(1,1);
-
-                            if(ani.name.find("LeftWalk") != ani.name.npos)
-                                ani.animation.scale(-1,1);
-                        }
-
-
-                        ani.animation.setPosition(npc.xpos,npc.ypos);
-                        window.draw(ani.animation, &shadermanager.shockwaveShader);
-                    }
-                }
-            }
-            else if(!npc.alive)
-            {
-                npc.drawImg();
-            }
-            if(!hasAnimations)
-                npc.drawImg();
-
-
-            /*
-            sf::Color shadow(255,50,50,50);
-
-
-            if(!npc.alive) // To simulate blood.
-                shapes.createCircle(npc.xpos, npc.ypos, npc.size, shadow);
-            */
             }
         }
     }
