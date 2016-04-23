@@ -6,7 +6,6 @@ Gun Parts need to be sorted in merchent menu tabs
 I don't think bullet minimum damage is used anymore, remove it from displays
 Belt Hud draws ontop of mouse item.
 Tavern needs some chill ambient music.
-Need some form of impact effect when someone takes damage or gets shot, Feels hollow right now, Perhaps a flash of color or some such?
 Need passive growls for the enemies.
 
 
@@ -14,9 +13,8 @@ Biggest source of lag is the bodies, Over time, turn the bodies into an effect o
 
 
 Add fetch quest random NPC to towers goodie spots, An item spawns somewhere on the floor, invisible, Once a squaddie comes within one tile of it, it is revealed, Drop the item within one tile of the NPC and you'll be rewarded cash, gun parts, a level up orb, or a status effect chip.
-Add Levelup Orb to Goodie Spawns, the item instantly levels up the person holding it.
-Add Experience Orb to Goodie Spawns, The item instantly gives a certain amount of experience, depending on the area's difficulty.
 
+DOORS
 
 ====Done====
 Turret shouldn't be able to pickup scrap.
@@ -28,3 +26,6 @@ Need an elevator floor transition effect.
 Need a shop button for when standing on airdrop pads.
 
 Fix Zooming out not revealing more.
+Add Levelup Orb to Goodie Spawns, the item instantly levels up the person holding it.
+Add Experience Orb to Goodie Spawns, The item instantly gives a certain amount of experience, depending on the area's difficulty.
+Need some form of impact effect when someone takes damage or gets shot, Feels hollow right now, Perhaps a flash of color or some such?

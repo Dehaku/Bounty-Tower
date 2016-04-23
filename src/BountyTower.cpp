@@ -2869,15 +2869,16 @@ void renderMerchantMenu(baseMenu &menu)
 
     sf::Vector2f menuStartPos(100,100);
     sf::Vector2f menuEndPos(screen.x()-100,screen.y()-100);
-    sf::Color menuColor(150,150,0);
+    //sf::Color menuColor(150,150,0);
+    sf::Color menuColor(sf::Color::Black);
 
-    shapes.createSquare(menuStartPos.x,menuStartPos.y,menuEndPos.x,menuEndPos.y,menuColor,5,sf::Color::White,&gvars::hudView);
+    shapes.createSquare(menuStartPos.x,menuStartPos.y,menuEndPos.x,menuEndPos.y,menuColor,5,sf::Color::Cyan,&gvars::hudView);
     shapes.shapes.back().layer = layer+BackPanel;
 
-    shapes.createSquare(menuStartPos.x,menuStartPos.y,menuEndPos.x,menuStartPos.y+60,menuColor,0,sf::Color::White,&gvars::hudView);
+    shapes.createSquare(menuStartPos.x,menuStartPos.y,menuEndPos.x,menuStartPos.y+60,menuColor,0,sf::Color::Cyan,&gvars::hudView);
     shapes.shapes.back().layer = layer+FrontPanel;
 
-    shapes.createSquare(menuStartPos.x,menuEndPos.y-60,menuEndPos.x,menuEndPos.y,menuColor,0,sf::Color::White,&gvars::hudView);
+    shapes.createSquare(menuStartPos.x,menuEndPos.y-60,menuEndPos.x,menuEndPos.y,menuColor,0,sf::Color::Cyan,&gvars::hudView);
     shapes.shapes.back().layer = layer+FrontPanel;
     //Close Button
     int exitButt = shapes.createImageButton(sf::Vector2f(screen.x()-100,100),texturemanager.getTexture("ExitButton.png"),"",0,&gvars::hudView);
@@ -2929,7 +2930,7 @@ void renderMerchantMenu(baseMenu &menu)
 
         for(int i = 0; i != totalTypes; i++)
         {
-            sf::Vector2f drawPos(152,150+(yOffset*60));
+            sf::Vector2f drawPos(152,150+(yOffset*30));
             int skillTreeButt = shapes.createImageButton(drawPos,texturemanager.getTexture("blankLargeButton.png"),"",0,&gvars::hudView);
             shapes.shapes.back().layer = layer+75;
 
@@ -3911,12 +3912,12 @@ void renderEnchantMenu(baseMenu &menu)
 
     sf::Vector2f menuStartPos(100,100);
     sf::Vector2f menuEndPos(screen.x()-100,screen.y()-100);
-    sf::Color menuColor(150,150,0);
+    sf::Color menuColor(sf::Color::Black);
 
-    shapes.createSquare(menuStartPos.x,menuStartPos.y,menuEndPos.x,menuEndPos.y,menuColor,5,sf::Color::White,&gvars::hudView);
+    shapes.createSquare(menuStartPos.x,menuStartPos.y,menuEndPos.x,menuEndPos.y,menuColor,5,sf::Color::Cyan,&gvars::hudView);
     shapes.shapes.back().layer = layer+BackPanel;
 
-    shapes.createSquare(menuStartPos.x,menuStartPos.y,menuEndPos.x,menuStartPos.y+60,menuColor,0,sf::Color::White,&gvars::hudView);
+    shapes.createSquare(menuStartPos.x,menuStartPos.y,menuEndPos.x,menuStartPos.y+60,menuColor,0,sf::Color::Cyan,&gvars::hudView);
     shapes.shapes.back().layer = layer+FrontPanel;
 
     shapes.createSquare(percentPos(12,menuStartPos.x,menuEndPos.x),percentPos(60,menuStartPos.y,menuEndPos.y),menuEndPos.x,menuEndPos.y,sf::Color::Black,0,sf::Color::White,&gvars::hudView);
@@ -3981,7 +3982,7 @@ void renderEnchantMenu(baseMenu &menu)
 
         for(int i = 0; i != totalTypes; i++)
         {
-            sf::Vector2f drawPos(152,150+(yOffset*60));
+            sf::Vector2f drawPos(152,150+(yOffset*31));
             int skillTreeButt = shapes.createImageButton(drawPos,texturemanager.getTexture("blankLargeButton.png"),"",0,&gvars::hudView);
             shapes.shapes.back().layer = layer+75;
 
@@ -3996,7 +3997,7 @@ void renderEnchantMenu(baseMenu &menu)
             if(shapes.shapeHovered(skillTreeButt))
                 highlightColor = sf::Color::Cyan;
 
-            sf::Vector2f textPos(drawPos.x-45, drawPos.y);
+            sf::Vector2f textPos(drawPos.x-40, drawPos.y-5);
             shapes.createText(textPos,10,highlightColor,types[i],&gvars::hudView);
             shapes.shapes.back().layer = layer+76;
 
