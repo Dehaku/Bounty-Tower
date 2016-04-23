@@ -2851,6 +2851,7 @@ void renderSquaddieMenu(baseMenu &menu)
 
 }
 
+
 void renderMerchantMenu(baseMenu &menu)
 { // Layer 19000
     int layer = 19000;
@@ -2869,7 +2870,6 @@ void renderMerchantMenu(baseMenu &menu)
 
     sf::Vector2f menuStartPos(100,100);
     sf::Vector2f menuEndPos(screen.x()-100,screen.y()-100);
-    //sf::Color menuColor(150,150,0);
     sf::Color menuColor(sf::Color::Black);
 
     shapes.createSquare(menuStartPos.x,menuStartPos.y,menuEndPos.x,menuEndPos.y,menuColor,5,sf::Color::Cyan,&gvars::hudView);
@@ -2878,13 +2878,24 @@ void renderMerchantMenu(baseMenu &menu)
     shapes.createSquare(menuStartPos.x,menuStartPos.y,menuEndPos.x,menuStartPos.y+60,menuColor,0,sf::Color::Cyan,&gvars::hudView);
     shapes.shapes.back().layer = layer+FrontPanel;
 
-    shapes.createSquare(menuStartPos.x,menuEndPos.y-60,menuEndPos.x,menuEndPos.y,menuColor,0,sf::Color::Cyan,&gvars::hudView);
+    shapes.createSquare(percentPos(12,menuStartPos.x,menuEndPos.x),percentPos(60,menuStartPos.y,menuEndPos.y),menuEndPos.x,menuEndPos.y,sf::Color::Black,0,sf::Color::White,&gvars::hudView);
     shapes.shapes.back().layer = layer+FrontPanel;
     //Close Button
     int exitButt = shapes.createImageButton(sf::Vector2f(screen.x()-100,100),texturemanager.getTexture("ExitButton.png"),"",0,&gvars::hudView);
     shapes.shapes.back().layer = layer+FrontPanel+1;
     if(shapes.shapeClicked(exitButt))
         menu.toDelete = true;
+
+    /*
+    int renewButt = shapes.createImageButton(sf::Vector2f(screen.x()-200,150),texturemanager.getTexture("ExitButton.png"),"",0,&gvars::hudView);
+    shapes.shapes.back().layer = layer+FrontPanel+1;
+    if(shapes.shapeClicked(renewButt))
+    {
+        enchantedItems.clear();
+        generateEnchantedItems();
+    }
+    */
+
 
 
     shapes.createText(menuStartPos,10,sf::Color::White,"Squad Charisma Discount: %" + str(100-getSquadDiscount(100)),&gvars::hudView);
@@ -2927,10 +2938,9 @@ void renderMerchantMenu(baseMenu &menu)
         const int totalTypes = 7;
         std::string types[totalTypes] = {"All", "Weapons", "Ammo", "Magic", "Engineer", "Aid", "Misc"};
 
-
         for(int i = 0; i != totalTypes; i++)
         {
-            sf::Vector2f drawPos(152,150+(yOffset*30));
+            sf::Vector2f drawPos(152,150+(yOffset*31));
             int skillTreeButt = shapes.createImageButton(drawPos,texturemanager.getTexture("blankLargeButton.png"),"",0,&gvars::hudView);
             shapes.shapes.back().layer = layer+75;
 
@@ -2945,7 +2955,7 @@ void renderMerchantMenu(baseMenu &menu)
             if(shapes.shapeHovered(skillTreeButt))
                 highlightColor = sf::Color::Cyan;
 
-            sf::Vector2f textPos(drawPos.x-45, drawPos.y);
+            sf::Vector2f textPos(drawPos.x-40, drawPos.y-5);
             shapes.createText(textPos,10,highlightColor,types[i],&gvars::hudView);
             shapes.shapes.back().layer = layer+76;
 
@@ -2953,10 +2963,12 @@ void renderMerchantMenu(baseMenu &menu)
         }
     }
 
+    dynamicVariable * selectedItem = menu.getVar("selectedItem");
 
     int xOffset = 0;
     int yOffset = 0;
-    for(auto item : itemmanager.globalItems)
+
+    for(auto &item : itemmanager.globalItems)
     {
         if(item.value == -1)
             continue;
@@ -3039,7 +3051,7 @@ void renderMerchantMenu(baseMenu &menu)
         shapes.createText(vPos,15,highlightColor,outPut,&gvars::hudView);
         shapes.shapes.back().layer = layer+Text;
         vPos.y += 15;
-        shapes.createText(vPos,10,highlightColor,"$" + str(getSquadDiscount(item.value*offTavernMultipler)),&gvars::hudView);
+        shapes.createText(vPos,10,highlightColor,"$" + str(getSquadDiscount(item.value)),&gvars::hudView);
         shapes.shapes.back().layer = layer+Text;
         vPos.y += 15;
         std::string stats = "Dam: " + str(item.mindam) + "/" + str(item.maxdam);
@@ -3075,17 +3087,34 @@ void renderMerchantMenu(baseMenu &menu)
 
 
 
-        if(shapes.shapeClicked(itemButt) && menu.age > 30)
+        if(shapes.shapeClicked(itemButt) && menu.age > 30 && gvars::hovering == 0)
         {
-            if(conFact->credits < getSquadDiscount(item.value*offTavernMultipler))
+            if(selectedItem == nullptr)
+            {
+                dynamicVariable var;
+                var.name = "selectedItem";
+                var.varItemPtr = &item;
+                menu.vars.push_back(var);
+                selectedItem = &menu.vars.back();
+            }
+            else
+            {
+                selectedItem->varItemPtr = &item;
+            }
+
+
+
+            /*
+
+            if(conFact->credits < getSquadDiscount(item.value))
                 chatBox.addChat("You do not have enough cash for "+item.name+"!", sf::Color::White);
             else
             {
-                conFact->credits -= getSquadDiscount(item.value*offTavernMultipler);
+                conFact->credits -= getSquadDiscount(item.value);
                 Item soldItem = item;
                 soldItem.id = gvars::globalid++;
                 soldItem.xpos = menu.makePos.x+(randz(-90,90));
-                soldItem.ypos = menu.makePos.y+45;
+                soldItem.ypos = menu.makePos.y+90;
                 soldItem.zpos = menu.makePos.z;
                 soldItem.amount = soldItem.stackSize;
 
@@ -3094,16 +3123,13 @@ void renderMerchantMenu(baseMenu &menu)
                 int soundRan = random(1,3);
                 soundmanager.playSound("CashPickup"+str(soundRan)+".ogg");
 
-                chatBox.addChat("You purchased a "+item.name+" for "+str(getSquadDiscount(item.value*offTavernMultipler))+"!", sf::Color::White);
+                chatBox.addChat("You purchased a "+item.name+" for "+str(getSquadDiscount(item.value))+"!", sf::Color::White);
             }
+
+            */
         }
-        if(shapes.shapeHovered(itemButt) && menu.age > 30)
-        {
-            sf::Vector2f mouseDis = gvars::mousePos;
-            mouseDis.y += 10;
-            shapes.createText(mouseDis,10,sf::Color::White,item.desc);
-            shapes.shapes.back().layer = layer+Text;
-        }
+
+
 
 
 
@@ -3114,6 +3140,273 @@ void renderMerchantMenu(baseMenu &menu)
             yOffset++;
         }
     }
+
+    if(selectedItem == nullptr)
+        return;
+
+    Item * item = selectedItem->varItemPtr;
+
+    sf::Vector2f statusPos(percentPos(12,menuStartPos.x,menuEndPos.x),percentPos(65,menuStartPos.y,menuEndPos.y));
+    shapes.createText(statusPos,10,sf::Color::White,item->name + ", Total Status Effects: " + std::to_string(item->statusEffects.size()+item->statusEffectsInflict.size()+item->statusEffectsCarried.size()),&gvars::hudView);
+    shapes.shapes.back().layer = layer+FrontPanel+1;
+
+
+
+    { // Purchase Item
+        sf::Vector2f randomEnchantPos(percentPos(15,menuStartPos.x,menuEndPos.x), percentPos(62,menuStartPos.y,menuEndPos.y));
+        int randomEnchantButt = shapes.createImageButton(randomEnchantPos,texturemanager.getTexture("blankButton.png"),"",0,&gvars::hudView);
+        shapes.shapes.back().layer = layer+FrontPanel+Button;
+        randomEnchantPos.x -= 28;
+        randomEnchantPos.y -= 10;
+        textList.createText(randomEnchantPos,9,sf::Color::White,"Purchase \nItem",gvars::hudView);
+        shapes.shapes.back().layer = layer+FrontPanel+Text;
+
+        if(shapes.shapeHovered(randomEnchantButt))
+        {
+            int randomEnchantCost = getSquadDiscount(item->value*offTavernMultipler);
+            textList.createText(gvars::mousePos,10,sf::Color::White,"   $"+str(randomEnchantCost)+", Pay for the item, Receive it instantly, Capitalism!.");
+            shapes.shapes.back().layer = 99999999;
+            gvars::hovering = 3;
+
+
+            if(inputState.lmbTime == 1)
+            {
+                if(conFact->credits < getSquadDiscount(item->value*offTavernMultipler))
+                    chatBox.addChat("You do not have enough cash for "+item->name+"!", sf::Color::White);
+                else
+                {
+                    conFact->credits -= getSquadDiscount(item->value*offTavernMultipler);
+                    Item soldItem = *item;
+                    soldItem.id = gvars::globalid++;
+                    soldItem.xpos = menu.makePos.x+(randz(-90,90));
+                    soldItem.ypos = menu.makePos.y+45;
+                    soldItem.zpos = menu.makePos.z;
+                    soldItem.amount = soldItem.stackSize;
+
+                    worlditems.push_back(soldItem);
+
+                    int soundRan = random(1,3);
+                    soundmanager.playSound("CashPickup"+str(soundRan)+".ogg");
+
+                    chatBox.addChat("You purchased a "+item->name+" for "+str(getSquadDiscount(item->value*offTavernMultipler))+"!", sf::Color::White);
+                }
+
+
+
+            }
+        }
+    }
+
+    /*
+
+    {   // Remove Last Status Effect
+        sf::Vector2f randomEnchantPos(percentPos(21,menuStartPos.x,menuEndPos.x), percentPos(62,menuStartPos.y,menuEndPos.y));
+        int randomEnchantButt = shapes.createImageButton(randomEnchantPos,texturemanager.getTexture("blankButton.png"),"",0,&gvars::hudView);
+        shapes.shapes.back().layer = layer+FrontPanel+Button;
+        randomEnchantPos.x -= 28;
+        randomEnchantPos.y -= 10;
+        textList.createText(randomEnchantPos,9,sf::Color::White,"Remove \nSelf",gvars::hudView);
+        shapes.shapes.back().layer = layer+FrontPanel+Text;
+
+        if(shapes.shapeHovered(randomEnchantButt))
+        {
+            int removeEnchantCost = getSquadDiscount(250);
+            textList.createText(gvars::mousePos,10,sf::Color::White,"   $"+str(removeEnchantCost)+", Removes the last Self Enchant on the item.");
+            shapes.shapes.back().layer = 99999999;
+
+            if(inputState.lmbTime == 1)
+            {
+                if(item->statusEffects.empty())
+                    chatBox.addChat("There's no Self Enchants to remove!",sf::Color::White);
+                else if(conFact->credits < removeEnchantCost)
+                    chatBox.addChat("You do not have enough money!",sf::Color::White);
+                else
+                {
+                    soundmanager.playSound("enchantSound.ogg");
+                    conFact->credits -= removeEnchantCost;
+                    item->statusEffects.back().toDelete = true;
+                    AnyDeletes(item->statusEffects);
+
+
+                }
+            }
+        }
+    }
+    {   // Remove Last Status Effect Inflict
+        sf::Vector2f randomEnchantPos(percentPos(27,menuStartPos.x,menuEndPos.x), percentPos(62,menuStartPos.y,menuEndPos.y));
+        int randomEnchantButt = shapes.createImageButton(randomEnchantPos,texturemanager.getTexture("blankButton.png"),"",0,&gvars::hudView);
+        shapes.shapes.back().layer = layer+FrontPanel+Button;
+        randomEnchantPos.x -= 28;
+        randomEnchantPos.y -= 10;
+        textList.createText(randomEnchantPos,9,sf::Color::White,"Remove \nInflict",gvars::hudView);
+        shapes.shapes.back().layer = layer+FrontPanel+Text;
+
+        if(shapes.shapeHovered(randomEnchantButt))
+        {
+            int removeEnchantCost = getSquadDiscount(250);
+            textList.createText(gvars::mousePos,10,sf::Color::White,"   $"+str(removeEnchantCost)+", Removes the last Inflict Enchant on the item.");
+            shapes.shapes.back().layer = 99999999;
+
+            if(inputState.lmbTime == 1)
+            {
+                if(item->statusEffectsInflict.empty())
+                    chatBox.addChat("There's no Inflict Enchants to remove!",sf::Color::White);
+                else if(conFact->credits < removeEnchantCost)
+                    chatBox.addChat("You do not have enough money!",sf::Color::White);
+                else
+                {
+                    soundmanager.playSound("enchantSound.ogg");
+                    conFact->credits -= removeEnchantCost;
+                    item->statusEffectsInflict.back().toDelete = true;
+                    AnyDeletes(item->statusEffectsInflict);
+
+                }
+            }
+        }
+    }
+    {   // Swap Last Self Enchant
+        sf::Vector2f randomEnchantPos(percentPos(33,menuStartPos.x,menuEndPos.x), percentPos(62,menuStartPos.y,menuEndPos.y));
+        int randomEnchantButt = shapes.createImageButton(randomEnchantPos,texturemanager.getTexture("blankButton.png"),"",0,&gvars::hudView);
+        shapes.shapes.back().layer = layer+FrontPanel+Button;
+        randomEnchantPos.x -= 28;
+        randomEnchantPos.y -= 10;
+        textList.createText(randomEnchantPos,9,sf::Color::White,"Swap \nSelf",gvars::hudView);
+        shapes.shapes.back().layer = layer+FrontPanel+Text;
+
+        if(shapes.shapeHovered(randomEnchantButt))
+        {
+            int removeEnchantCost = getSquadDiscount(250);
+            textList.createText(gvars::mousePos,10,sf::Color::White,"   $"+str(removeEnchantCost)+", Turns last Self enchant into an Inflict enchant.");
+            shapes.shapes.back().layer = 99999999;
+
+            if(inputState.lmbTime == 1)
+            {
+                if(item->statusEffects.empty())
+                    chatBox.addChat("There's no Self Enchants to move!",sf::Color::White);
+                else if(conFact->credits < removeEnchantCost)
+                    chatBox.addChat("You do not have enough money!",sf::Color::White);
+                else
+                {
+
+                    conFact->credits -= removeEnchantCost;
+                    item->statusEffectsInflict.push_back(item->statusEffects.back());
+                    item->statusEffectsInflict.back().duration = 180;
+                    item->statusEffects.back().toDelete = true;
+                    AnyDeletes(item->statusEffects);
+
+                }
+            }
+        }
+    }
+    {   // Swap Last Inflict Enchant
+        sf::Vector2f randomEnchantPos(percentPos(39,menuStartPos.x,menuEndPos.x), percentPos(62,menuStartPos.y,menuEndPos.y));
+        int randomEnchantButt = shapes.createImageButton(randomEnchantPos,texturemanager.getTexture("blankButton.png"),"",0,&gvars::hudView);
+        shapes.shapes.back().layer = layer+FrontPanel+Button;
+        randomEnchantPos.x -= 28;
+        randomEnchantPos.y -= 10;
+        textList.createText(randomEnchantPos,9,sf::Color::White,"Swap \nInflict",gvars::hudView);
+        shapes.shapes.back().layer = layer+FrontPanel+Text;
+
+        if(shapes.shapeHovered(randomEnchantButt))
+        {
+            int removeEnchantCost = getSquadDiscount(250);
+            textList.createText(gvars::mousePos,10,sf::Color::White,"   $"+str(removeEnchantCost)+", Turns last Inflict enchant into a self enchant.");
+            shapes.shapes.back().layer = 99999999;
+
+            if(inputState.lmbTime == 1)
+            {
+                if(item->statusEffectsInflict.empty())
+                    chatBox.addChat("There's no Inflict Enchants to remove!",sf::Color::White);
+                else if(conFact->credits < removeEnchantCost)
+                    chatBox.addChat("You do not have enough money!",sf::Color::White);
+                else
+                {
+                    conFact->credits -= removeEnchantCost;
+                    item->statusEffects.push_back(item->statusEffectsInflict.back());
+                    item->statusEffects.back().duration = 1;
+                    item->statusEffectsInflict.back().toDelete = true;
+                    AnyDeletes(item->statusEffectsInflict);
+
+                }
+            }
+        }
+    }
+
+    */
+
+    yOffset = 1;
+    for(auto &status : item->statusEffects)
+    {
+        std::string outPut = "Equip:";
+        outPut.append("[" + status.name + ", Duration: " + str(status.duration) + "f]");
+        for(auto &aspect : status.aspects)
+        {
+            if(aspectNum[aspect.name].find("Condition") != std::string::npos)
+                outPut.append("\n   ");
+            outPut.append("[" + aspectNum[aspect.name] + ",Potency:" + str(static_cast<int>(aspect.potency)));
+            if(aspect.type != "")
+                outPut.append(",Type:" + aspect.type);
+            outPut.append("]");
+        }
+
+        sf::Vector2f vPos = statusPos;
+        vPos.y += 10*yOffset;
+        shapes.createText(vPos,8,sf::Color::Cyan,outPut,&gvars::hudView);
+        shapes.shapes.back().layer = layer+FrontPanel+1;
+
+        yOffset++;
+        yOffset++;
+        yOffset++;
+    }
+    for(auto &status : item->statusEffectsInflict)
+    {
+        std::string outPut = "Inflict:";
+
+        outPut.append("[" + status.name + ", Duration: " + str(status.duration) + "f]");
+        for(auto &aspect : status.aspects)
+        {
+            if(aspectNum[aspect.name].find("Condition") != std::string::npos)
+                outPut.append("\n   ");
+            outPut.append("[" + aspectNum[aspect.name] + ",Potency:" + str(static_cast<int>(aspect.potency)));
+            if(aspect.type != "")
+                outPut.append(",Type:" + aspect.type);
+            outPut.append("]");
+        }
+
+        sf::Vector2f vPos = statusPos;
+        vPos.y += 10*yOffset;
+        shapes.createText(vPos,8,sf::Color(255,150,150),outPut,&gvars::hudView);
+        shapes.shapes.back().layer = layer+FrontPanel+1;
+
+        yOffset++;
+        yOffset++;
+        yOffset++;
+    }
+    for(auto &status : item->statusEffectsCarried)
+    {
+        std::string outPut = "Carry:";
+
+        outPut.append("[" + status.name + ", Duration: " + str(status.duration) + "f]");
+        for(auto &aspect : status.aspects)
+        {
+            if(aspectNum[aspect.name].find("Condition") != std::string::npos)
+                outPut.append("\n   ");
+            outPut.append("[" + aspectNum[aspect.name] + ",Potency:" + str(static_cast<int>(aspect.potency)));
+            if(aspect.type != "")
+                outPut.append(",Type:" + aspect.type);
+            outPut.append("]");
+        }
+
+        sf::Vector2f vPos = statusPos;
+        vPos.y += 10*yOffset;
+        shapes.createText(vPos,8,sf::Color::Yellow,outPut,&gvars::hudView);
+        shapes.shapes.back().layer = layer+FrontPanel+1;
+
+        yOffset++;
+        yOffset++;
+        yOffset++;
+    }
+
 }
 
 void renderMerchantModderMenu(baseMenu &menu)
