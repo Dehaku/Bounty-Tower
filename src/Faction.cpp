@@ -1666,6 +1666,8 @@ Npc::Npc()
 
     factionPtr = nullptr;
 
+    framesSinceLastDamage = 0;
+
     level = 0;
     xp = 0;
     skillpoints = 5;
@@ -2030,7 +2032,26 @@ bool Npc::hasItemType(int type)
 void Npc::drawImg()
 {
     img.setPosition(xpos, ypos);
-    window.draw(img);
+    if(framesSinceLastDamage < 12)
+    {
+        sf::Color oldColor = img.getColor();
+        if(framesSinceLastDamage < 3)
+        {
+            img.setColor(sf::Color(255,0,0));
+        }
+        else if(framesSinceLastDamage < 9)
+        {
+            img.setColor(sf::Color(255,0,0));
+        }
+        window.draw(img);
+        img.setColor(oldColor);
+    }
+    else
+        window.draw(img);
+
+
+
+
 }
 
 
@@ -3304,6 +3325,7 @@ std::string Npc::takeDamage(Npc *attacker, Item *weapon, float amount, int damag
 
     if(lastHitFrames > 30)
         lastHitFrames = 0;
+    framesSinceLastDamage = 0;
     return "Hit";
 }
 

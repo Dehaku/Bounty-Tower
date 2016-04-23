@@ -7780,7 +7780,7 @@ void bountyTowerLoop()
     }
 
     if(inputState.key[Key::A].time == 1 && inputState.key[Key::LShift])
-    { // Spawn Scrap
+    { // Spawn XP Eggs
         Item item = *getGlobalItem("Level Egg");
         item.xpos = gvars::mousePos.x;
         item.ypos = gvars::mousePos.y;

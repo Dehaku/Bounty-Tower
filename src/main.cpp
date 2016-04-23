@@ -1714,6 +1714,8 @@ ReDesire:
 
     // This is to help with overlay Spam.
     npc.lastHitFrames++;
+
+    npc.framesSinceLastDamage++;
 }
 
 void critterBrain(std::list<Npc> &npcs)

@@ -211,6 +211,7 @@ public:
 
     unsigned int deadFrames;
     unsigned int lastHitFrames;
+    unsigned int framesSinceLastDamage;
 
     std::list<StatusEffect> statusEffects;
     void handleStatusEffects();
