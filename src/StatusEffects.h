@@ -102,8 +102,12 @@ public:
         // Potency, Simply acts as an On/Off.
         AutoDodge, // Type: Damages. This aspect causes the carrier to automatically avoid a source of damage equal to it's type.
         // Potency, Acts as a counter, 5 Potency, Five automatic dodges.
-        ChangeRace // Type: Direct Race Name.
+        ChangeRace, // Type: Direct Race Name.
         // Potency, Acts as a duration, If set to -1, It lasts for the duration of the status effect.
+        GrantXP, // Type: Raw, Gives potency as direct XP values. Level, Gives potency percent of current level's worth of XP. (50 would give 50% of current level's xp)
+        // Potency: Amount to be granted.
+        GrantLevel //
+        // Potency: Amount of levels, Though for the most part, this should always be 1.
 
 
 

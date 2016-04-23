@@ -7741,6 +7741,30 @@ void bountyTowerLoop()
         worlditems.push_back(item);
     }
 
+    if(inputState.key[Key::A].time == 1 && inputState.key[Key::LShift])
+    { // Spawn Scrap
+        Item item = *getGlobalItem("Level in a Bottle");
+        item.xpos = gvars::mousePos.x;
+        item.ypos = gvars::mousePos.y;
+        item.zpos = gvars::currentz*GRID_SIZE;
+        item.amount = 1;
+
+        worlditems.push_back(item);
+
+        item = *getGlobalItem("Half a Bottle");
+        item.xpos = gvars::mousePos.x - 60;
+        item.ypos = gvars::mousePos.y;
+        item.zpos = gvars::currentz*GRID_SIZE;
+        worlditems.push_back(item);
+
+        item = *getGlobalItem("Experience Essence");
+        item.xpos = gvars::mousePos.x + 60;
+        item.ypos = gvars::mousePos.y;
+        item.zpos = gvars::currentz*GRID_SIZE;
+        worlditems.push_back(item);
+
+    }
+
     if(inputState.key[Key::B].time == 1 && inputState.key[Key::LShift])
     { // Spawn Cash
         Item item = *getGlobalItem("Cash");

@@ -40,3 +40,6 @@ OverlayImage, filename.png, If this is added to a status effect, the image will 
 [Name:Test Two][Rank:Gamma][Duration:1200][Aspect:ConditionHealth:75:Below][Aspect:ChangeRace:-1:BTRockkid]
 [Name:Fireball][Rank:Alpha][Duration:1][Aspect:CauseExplosion:200]
 [Name:Insta-Revive][Rank:Beta][Duration:2][Aspect:Revive:1]
+[Name:LevelUp][Rank:Epsilon][Duration:1][Aspect:GrantLevel:1]
+[Name:HalfLevel][Rank:Epsilon][Duration:1][Aspect:GrantXP:25:Level]
+[Name:XPBank][Rank:Epsilon][Duration:1][Aspect:GrantXP:10000:Raw]

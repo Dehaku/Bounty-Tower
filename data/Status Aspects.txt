@@ -75,6 +75,11 @@ AutoDodge is quite wonderful, It forces a dodge of DamageType automatically, up 
 [Aspect:ChangeRace:Duration:Race]
 ChangeRace causes the carrier to take on the traits of the specified 'Race' for 'Duration' frames. Side Note: Duration can be set to -1 for permanent race change(For as long as the status effect lasts, at least.)
 
+[Aspect:GrantXP:Amount:Type]
+GrantXP gives the carrier a specified amount of XP depending on the type, Type Raw: Amount is directly given. Type Level: Amount is used as a percentage, giving XP based on the current level up requirement's XP, so 25 would give 25% of the XP requried to get to the next level.
+
+[Aspect:GrantLevel:Amount]
+GrantLevel gives the carrier 'Amount' of levels instantly, Though this should be used rarely, and really shouldn't be above 1.
 
 
 Conditional Aspects - These don't do anything for the carrier, they simply restrict the status effect for more variety and interesting flavors, Like adding gravy to your potatos, or chili... now I'm drooling.

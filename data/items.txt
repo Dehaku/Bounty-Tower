@@ -28,8 +28,17 @@
 [name:Phoenix Urine][Pickupable:true][image:healingJuices.png][type:Consumable][DamageType:Blunt][baseid:623630][value:500][InflictStatusEffect:Phoenix Urine Flame][InflictStatusEffect:Phoenix Urine Revive]
 [name:Taste of Paragon][Pickupable:true][image:healingJuices.png][type:Consumable][DamageType:Blunt][baseid:623625][value:2000][InflictStatusEffect:Taste of Paragon]
 [name:Rockanthropy][Pickupable:true][image:healingJuices.png][type:Consumable][DamageType:Blunt][baseid:623626][value:1000][InflictStatusEffect:Rockanthropy]
+
+[name:Level in a Bottle][Pickupable:true][image:healingJuices.png][type:Consumable][DamageType:Blunt][baseid:623700][value:500000][InflictStatusEffect:LevelUp]
+[name:Half a Bottle][Pickupable:true][image:healingJuices.png][type:Consumable][DamageType:Blunt][baseid:623701][value:250000][InflictStatusEffect:HalfLevel]
+[name:Experience Essence][Pickupable:true][image:healingJuices.png][type:Consumable][DamageType:Blunt][baseid:623702][value:10000][InflictStatusEffect:XPBank]
+
+
+
 [name:Inventory Slot Unlocker][Pickupable:true][image:InventorySlotUpgrade.png][type:InventorySlotUnlocker][DamageType:Blunt][baseid:623669][value:1000]
 [name:Charm][Pickupable:true][image:Charm.png][type:Pickups][DamageType:Blunt][baseid:800000]
+
+
 
 
 

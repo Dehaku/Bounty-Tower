@@ -102,6 +102,10 @@ void insertAspects()
     aspectNum.push_back(aspectName);
     aspectName = "ChangeRace";
     aspectNum.push_back(aspectName);
+    aspectName = "GrantXP";
+    aspectNum.push_back(aspectName);
+    aspectName = "GrantLevel";
+    aspectNum.push_back(aspectName);
 }
 
 int getAspectNum(std::string aspect)

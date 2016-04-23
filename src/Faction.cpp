@@ -5862,7 +5862,24 @@ void Npc::handleStatusEffects()
                     if(aspect.potency > 0)
                         aspect.potency--;
                 }
-
+                if(aspect.name == StatusAspect::GrantXP)
+                {
+                    if(aspect.type == "Raw")
+                    {
+                        xp += aspect.potency;
+                    }
+                    if(aspect.type == "Level")
+                    {
+                        int xpAmount = nextLevelXpRequired(level);
+                        int grantedXP = xpAmount * (aspect.potency*0.01);
+                        xp += grantedXP;
+                    }
+                }
+                if(aspect.name == StatusAspect::GrantLevel)
+                {
+                    level += aspect.potency;
+                    // Insert xp formula here.
+                }
 
             }
         }
