@@ -390,6 +390,7 @@ void generateHiddenGoodies()
         RandomWeightList goodieType;
         goodieType.addEntry("Cash",1000);
         goodieType.addEntry("Equipment",1000);
+        goodieType.addEntry("Orb",100);
         goodieType.addEntry("Event",10);
 
         std::string goodie = goodieType.getRandomName();
@@ -462,6 +463,43 @@ void generateHiddenGoodies()
             lootItem.zpos = zPos;
 
             worlditems.push_back(lootItem);
+        }
+        else if(goodie == "Orb")
+        {
+            RandomWeightList orbType;
+            orbType.addEntry("Level",1);
+            orbType.addEntry("Quarter",10);
+            orbType.addEntry("Bank",100);
+            std::string orbby = orbType.getRandomName();
+
+            if(orbby == "Level")
+            {
+                Item genOrb = *getGlobalItem("Level Egg");
+                genOrb.xpos = xPos+random(0,30);
+                genOrb.ypos = yPos+random(0,30);
+                genOrb.zpos = zPos;
+                worlditems.push_back(genOrb);
+            }
+
+            if(orbby == "Quarter")
+            {
+                Item genOrb = *getGlobalItem("Quarter Level Egg");
+                genOrb.xpos = xPos+random(0,30);
+                genOrb.ypos = yPos+random(0,30);
+                genOrb.zpos = zPos;
+                worlditems.push_back(genOrb);
+            }
+
+            if(orbby == "Bank")
+            {
+                Item genOrb = *getGlobalItem("Experience Essence Egg");
+                genOrb.xpos = xPos+random(0,30);
+                genOrb.ypos = yPos+random(0,30);
+                genOrb.zpos = zPos;
+                worlditems.push_back(genOrb);
+            }
+
+
         }
         else if(goodie == "Event")
         {
@@ -7743,7 +7781,7 @@ void bountyTowerLoop()
 
     if(inputState.key[Key::A].time == 1 && inputState.key[Key::LShift])
     { // Spawn Scrap
-        Item item = *getGlobalItem("Level in a Bottle");
+        Item item = *getGlobalItem("Level Egg");
         item.xpos = gvars::mousePos.x;
         item.ypos = gvars::mousePos.y;
         item.zpos = gvars::currentz*GRID_SIZE;
@@ -7751,13 +7789,13 @@ void bountyTowerLoop()
 
         worlditems.push_back(item);
 
-        item = *getGlobalItem("Half a Bottle");
+        item = *getGlobalItem("Quarter Level Egg");
         item.xpos = gvars::mousePos.x - 60;
         item.ypos = gvars::mousePos.y;
         item.zpos = gvars::currentz*GRID_SIZE;
         worlditems.push_back(item);
 
-        item = *getGlobalItem("Experience Essence");
+        item = *getGlobalItem("Experience Essence Egg");
         item.xpos = gvars::mousePos.x + 60;
         item.ypos = gvars::mousePos.y;
         item.zpos = gvars::currentz*GRID_SIZE;
