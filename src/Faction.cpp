@@ -684,8 +684,8 @@ void critterWallCheck(Npc &npc, std::list<Npc> &container)
 
 void critterLevelUp(Npc &npc, std::list<Npc> &container)
 {
-    if(inputState.key[Key::Q].time == 1)
-        npc.xp += 50;
+    //if(inputState.key[Key::Q].time == 1)
+    //    npc.xp += 50;
 
     if(inputState.key[Key::Q].time == 1 && inputState.key[Key::LShift])
         npc.xp += 5000;
@@ -1753,6 +1753,8 @@ Npc::Npc()
     consumeFlesh = false;
     consumeVeggy = false;
     consumeWater = false;
+
+    blockTime = 0;
 
     zpos = 30*20;
 
@@ -3079,6 +3081,26 @@ std::string Npc::onDeath(Npc *attacker, Item *weapon, float amount, int damageTy
 
 std::string Npc::takeDamage(Npc *attacker, Item *weapon, float amount, int damageType, critScore *crit)
 {
+
+    // Immunity Status Effect
+    if(blockTime > 0)
+    {
+        {// Dodge Popup Code
+            Shape text;
+            text.shape = text.Text;
+            text.duration = 60;
+            text.fades = true;
+            text.maincolor = sf::Color::White;
+            text.size = 20;
+            sf::Vector2f textPos(xpos-15,(ypos-50)-random(0,50));
+            text.startPos = textPos;
+            text.text = "Blocked!";
+            shapes.shapes.push_back(text);
+
+            soundmanager.playSound("Block.ogg");
+        }
+        return "userBlock";
+    }
 
     // Immunity Status Effect
     for(auto &immunity : mods.immunityMod)

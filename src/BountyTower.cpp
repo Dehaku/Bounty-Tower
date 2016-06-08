@@ -7861,6 +7861,33 @@ void airdropMenuChecker()
     }
 }
 
+void userBlock()
+{ // The player can press Q at any time to attempt to intercept all strikes for a short amount of time.
+    static int lastBlock = 0;
+    int userBlockRate = 60;
+    lastBlock = math::clamp(lastBlock+1,0,99999999);
+
+
+    for(auto Squad : Squaddies)
+        Squad->blockTime = math::clamp(Squad->blockTime-1,0,99999999);
+
+
+
+    int blockTime = 30;
+    if(inputState.key[Key::Q].time == 1 && lastBlock > userBlockRate)
+    {
+        //soundmanager.playSound("Block.ogg");
+
+        lastBlock = 0;
+        for(auto Squad : Squaddies)
+        {
+            shapes.createImageButton(Squad->getPos2d(),texturemanager.getTexture("userBlock.png"));
+            shapes.shapes.back().duration = blockTime;
+            Squad->blockTime = blockTime;
+        }
+    }
+}
+
 void bountyTowerLoop()
 { // Game Loop
 
@@ -7873,6 +7900,8 @@ void bountyTowerLoop()
     //corpsesBleed();
     chasePriorityFunction();
     showItemProgressCone();
+
+    userBlock();
 
     enchantGlow();
 

@@ -345,6 +345,8 @@ public:
     float thirst;
     int credits;
 
+    float blockTime;
+
     sf::Vector2f tentArm1;
     sf::Vector2f tentArm2;
     sf::Vector2f tentEnd1;
