@@ -3086,11 +3086,11 @@ std::string Npc::onDeath(Npc *attacker, Item *weapon, float amount, int damageTy
 
 
         img.setColor(sf::Color(255,255,255,255));
-        img.setRotation(0);
-        angle = 0;
-        img.setOrigin(30,30);
+        //img.setRotation(0);
+        //angle = 0;
+        //img.setOrigin(30,30);
 
-        img.setTexture(texturemanager.getTexture("MeatCorpsev2.png"));
+        //img.setTexture(texturemanager.getTexture("MeatCorpsev2.png"));
     }
 
 
