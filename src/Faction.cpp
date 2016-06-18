@@ -2040,11 +2040,11 @@ void Npc::drawImg()
     float offsetX = 0;
     float offsetY = 0;
     bool walking = (framesSinceLastMove < 3);
-    if(walking)
+    if(walking && functional())
     {
         float cosWave = cos(fpsKeeper.startTime.getElapsedTime().asSeconds()*5 );
 
-        sf::Vector2f leftPos = math::angleCalc(getPos2d(),angle,1*cosWave);
+        sf::Vector2f leftPos = math::angleCalc(getPos2d(),angle,3*cosWave);
         offsetX = leftPos.x-xpos;
         offsetY = leftPos.y-ypos;
     }
