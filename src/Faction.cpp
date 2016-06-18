@@ -1682,6 +1682,7 @@ Npc::Npc()
     additionalSlots = 0;
 
     deadFrames = 0;
+    framesSinceLastMove = 0;
 
     hasPath = false;
     needsPath = false;
@@ -2038,7 +2039,7 @@ void Npc::drawImg()
 
     float offsetX = 0;
     float offsetY = 0;
-    bool walking = true;
+    bool walking = (framesSinceLastMove < 3);
     if(walking)
     {
         float cosWave = cos(fpsKeeper.startTime.getElapsedTime().asSeconds()*5 );

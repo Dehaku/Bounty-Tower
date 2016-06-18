@@ -335,6 +335,9 @@ public:
     int rypos;
     int rxpos;
 
+    sf::Vector2f lastPos;
+    int framesSinceLastMove;
+
     float maxhealth;
     float health;
 

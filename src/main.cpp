@@ -1323,6 +1323,16 @@ void BehaviorTree(Npc &npc, std::list<Npc> &container)
     // https://www.smu.edu/~/media/Site/guildhall/Documents/Theses/Delmer_Stephan_Thesis_Final.ashx?la=en
 }
 
+void critterLastMove(Npc &npc, std::list<Npc> &container)
+{
+    if(npc.lastPos != npc.getPos2d())
+        npc.framesSinceLastMove = 0;
+    else
+        npc.framesSinceLastMove++;
+
+    npc.lastPos = npc.getPos2d();
+}
+
 void critterBrain(Npc &npc, std::list<Npc> &container)
 {
 
@@ -1357,6 +1367,8 @@ void critterBrain(Npc &npc, std::list<Npc> &container)
     critterSkillRefresh(npc,container);
 
     critterLevelUp(npc,container);
+
+    critterLastMove(npc,container);
 
     heldRecoilReduction(npc);
 
