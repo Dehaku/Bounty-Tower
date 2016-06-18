@@ -1024,6 +1024,8 @@ void buildTurret(Npc &npc, std::list<Npc> &container)
                 if(npc.skills.getSkill("Explosive Deconstruction")->ranks > 0)
                     turret.skills.getSkill("Explosive Deconstruction")->ranks = -1;
 
+                turret.tags.append("[DeleteOnDeath:1]");
+
                 npclist.push_back(turret);
             }
         }
