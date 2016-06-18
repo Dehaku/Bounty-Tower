@@ -2036,8 +2036,20 @@ void Npc::drawImg()
     img.setRotation(angle);
 
 
+    float offsetX = 0;
+    float offsetY = 0;
+    bool walking = true;
+    if(walking)
+    {
+        float cosWave = cos(fpsKeeper.startTime.getElapsedTime().asSeconds()*5 );
 
-    img.setPosition(xpos, ypos);
+        sf::Vector2f leftPos = math::angleCalc(getPos2d(),angle,1*cosWave);
+        offsetX = leftPos.x-xpos;
+        offsetY = leftPos.y-ypos;
+    }
+
+
+    img.setPosition(xpos+offsetX, ypos+offsetY);
 
 
 
