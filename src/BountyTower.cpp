@@ -7876,7 +7876,6 @@ void userBlock()
     int blockTime = 30;
     if(inputState.key[Key::Q].time == 1 && lastBlock > userBlockRate)
     {
-        //soundmanager.playSound("Block.ogg");
 
         lastBlock = 0;
         for(auto Squad : Squaddies)

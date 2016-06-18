@@ -2033,7 +2033,14 @@ bool Npc::hasItemType(int type)
 
 void Npc::drawImg()
 {
+    img.setRotation(angle);
+
+
+
     img.setPosition(xpos, ypos);
+
+
+
     if(framesSinceLastDamage < 12)
     {
         sf::Color oldColor = img.getColor();
@@ -5957,37 +5964,11 @@ AnimationHolder * aniHold = nullptr;
 
 void drawNPCs(std::list<Npc> &container)
 {
-    if(inputState.key[Key::M])
-        for(int i = 0; i != animationmanager.animations.size(); i++)
-        {
-            if(animationmanager.animations[i].name.find("BTHuman") != animationmanager.animations[i].name.npos)
-            {
-                aniHold = &animationmanager.animations[i];
-                std::cout << "Found one!" << animationmanager.animations[i].name << " \n";
-            }
-
-        }
 
 
-    if(inputState.lmb && aniHold != nullptr)
-    {
-        std::cout << "Name: " << aniHold->name << std::endl;
-        aniHold->animation.setPosition(gvars::mousePos);
-        window.draw(aniHold->animation);
-    }
 
-
-    if(inputState.key[Key::I].time == 1)
-    {
-        for(auto &ani : animationmanager.animations)
-        {
-            std::cout << ani.name << std::endl;
-        }
-    }
-
-
-    for(auto &ani : animationmanager.animations)
-        ani.animation.update(sf::milliseconds(10));
+    //for(auto &ani : animationmanager.animations)
+    //    ani.animation.update(sf::milliseconds(10));
 
     int lowcapX = (gvars::view1.getCenter().x - (gvars::view1.getSize().x/2));
     int lowcapY = (gvars::view1.getCenter().y - (gvars::view1.getSize().y/2));
@@ -6084,8 +6065,10 @@ void drawNPCs(std::list<Npc> &container)
                     window.draw(*spriteWalk, &shadermanager.shockwaveShader);
                     */
                 }
+                /*
+
                 bool hasAnimations = false;
-                if(npc.alive)
+                if(true == false && npc.alive)
                 {
                     for(auto &ani : animationmanager.animations)
                     {
@@ -6153,6 +6136,11 @@ void drawNPCs(std::list<Npc> &container)
                 }
                 if(!hasAnimations)
                     npc.drawImg();
+                */
+
+
+
+                npc.drawImg();
 
 
                 /*
