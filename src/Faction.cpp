@@ -979,7 +979,7 @@ void buildTurret(Npc &npc, std::list<Npc> &container)
                 }
 
 
-                Npc turret = *getGlobalCritter("BTTurret");
+                Npc turret = *getGlobalCritter("Turret");
                 turret.xpos = sX+(GRID_SIZE/2);
                 turret.ypos = sY+(GRID_SIZE/2);
                 turret.zpos = npc.zpos;
@@ -1183,7 +1183,7 @@ void placeExplosive(Npc &npc, std::list<Npc> &container)
                 }
 
 
-                Npc turret = *getGlobalCritter("BTTurret");
+                Npc turret = *getGlobalCritter("Turret");
                 turret.xpos = sX+(GRID_SIZE/2);
                 turret.ypos = sY+(GRID_SIZE/2);
                 turret.zpos = npc.zpos;
@@ -2659,7 +2659,7 @@ std::string Npc::addItem(Item &item)
 int Npc::getInventoryMax()
 {
     /*
-    if(race == "BTNoirves")
+    if(race == "Noirves")
         return 10;
     */
 
@@ -3066,7 +3066,7 @@ std::string Npc::onDeath(Npc *attacker, Item *weapon, float amount, int damageTy
     }
 
 
-    if(race != "BTTurret")
+    if(race != "Turret")
     { // Blood stuffs
 
         /*
@@ -3891,7 +3891,7 @@ void NpcManager::initializeCritters()
 
             // Critter Bodies
             {
-                if(critter.race == "BTHuman" || critter.race == "BTBlankBody")
+                if(critter.race == "Human" || critter.race == "BlankBody")
                 {
 
                     critter.body.bodyParts =
@@ -4759,7 +4759,7 @@ void addMembers(int amount, std::string faction)
             for(int i = 0; i != amount; i++)
             {
                 Npc member;
-                member = *getGlobalCritter("BTHuman");
+                member = *getGlobalCritter("Human");
                 member.faction = faction;
                 member.factionPtr = &fact;
                 member.xpos = ((GRIDS*GRID_SIZE)/2)+randz(-80,80);
@@ -6115,7 +6115,7 @@ void drawNPCs(std::list<Npc> &container)
                         {
 
 
-                            if(npc.race == "BTNoirves")
+                            if(npc.race == "Noirves")
                             {
                                 ani.animation.setScale(0.75,0.75);
 

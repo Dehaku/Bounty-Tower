@@ -1452,18 +1452,15 @@ void critterBrain(Npc &npc, std::list<Npc> &container)
     npc.img.setScale(gvars::scalex, gvars::scaley);
     npc.img.setOrigin(npc.img.getTextureRect().width / 2,
     npc.img.getTextureRect().height / 2);
-    if (npc.getRace() == "Human")
-    {
-        npc.img.setScale(0.5, 0.5);
-    }
 
 
-    if(npc.name == "BTBlankBody" && randz(1,1000) == 1000)
+
+    if(npc.name == "BlankBody" && randz(1,1000) == 1000)
         soundmanager.playSound("AngryWallabee.ogg");
 
 
 
-    if(npc.name != "BTTurret")
+    if(npc.name != "Turret")
         npc.img.setRotation(0);
     else
         npc.img.setRotation(npc.angle);

@@ -504,7 +504,7 @@ void generateHiddenGoodies()
         else if(goodie == "Event")
         {
             Npc spawn;
-            spawn = *getGlobalCritter("BTInfider");
+            spawn = *getGlobalCritter("Infider");
             spawn.xpos = xPos;
             spawn.ypos = yPos;
             spawn.zpos = zPos;
@@ -1694,7 +1694,7 @@ StatusAspect generateRandomStatusAspectConstant(int rankNum)
         RandomWeightList raceList;
         {
             for(auto npc : npcmanager.globalCritter)
-                if(npc.race != "BTTurret")
+                if(npc.race != "Turret")
                     raceList.addEntry(npc.race,10000);
         }
         aspect.type = raceList.getRandomName();
@@ -1796,7 +1796,7 @@ StatusAspect generateRandomStatusAspectOnce(int rankNum)
         RandomWeightList raceList;
         {
             for(auto npc : npcmanager.globalCritter)
-                if(npc.race != "BTTurret")
+                if(npc.race != "Turret")
                     raceList.addEntry(npc.race,10000);
         }
         aspect.type = raceList.getRandomName();
@@ -2033,7 +2033,7 @@ Each Status Effect will be...
             RandomWeightList raceList;
             {
                 for(auto npc : npcmanager.globalCritter)
-                    if(npc.race != "BTTurret")
+                    if(npc.race != "Turret")
                         raceList.addEntry(npc.race,10000);
             }
             aspect.type = raceList.getRandomName();
@@ -2072,7 +2072,7 @@ Each Status Effect will be...
             RandomWeightList raceList;
             {
                 for(auto npc : npcmanager.globalCritter)
-                    if(npc.race != "BTTurret")
+                    if(npc.race != "Turret")
                         raceList.addEntry(npc.race,10000);
             }
             aspect.type = raceList.getRandomName();
@@ -3718,9 +3718,6 @@ void renderRecruiterMenu(baseMenu &menu)
             continue;
         int critterCost = 100;
 
-        if(npc.getRace() == "BTRockkid")
-            critterCost = 1000;
-
         critterCost = npc.value;
 
         int posX = 150+(xOffset*300);
@@ -3732,7 +3729,7 @@ void renderRecruiterMenu(baseMenu &menu)
 
         sf::Vector2f vPos(posX,posY);
 
-        int npcButt = shapes.createImageButton(vPos,texturemanager.getTexture("Frame"+npc.getRace()+".png"),"",0,&gvars::hudView);
+        int npcButt = shapes.createImageButton(vPos,texturemanager.getTexture(npc.getRace()+".png"),"",0,&gvars::hudView);
         shapes.shapes.back().layer = layer+Button;
         // hehe... npc butt.
         sf::Color highlightColor = sf::Color::White;
@@ -6095,7 +6092,7 @@ void spawnBoss()
 
     if(bountytower::currentTower->name == "FantasyModern")
     {
-        boss = *getGlobalCritter("BTRockkid");
+        boss = *getGlobalCritter("Rockkid");
         //Stats
         boss.level = 10;
         boss.maxhealth = 10000;
@@ -6116,7 +6113,7 @@ void spawnBoss()
 
     if(bountytower::currentTower->name == "Necromancer Tower")
     {
-        boss = *getGlobalCritter("BTSamurai");
+        boss = *getGlobalCritter("Samurai");
         //Stats
         boss.level = 10;
         boss.maxhealth = 10000;
@@ -6136,7 +6133,7 @@ void spawnBoss()
 
     if(bountytower::currentTower->name == "Powerhouse Tower")
     {
-        boss = *getGlobalCritter("BTPsylin");
+        boss = *getGlobalCritter("Psylin");
         //Stats
         boss.level = 10;
         boss.maxhealth = 10000;
@@ -6222,7 +6219,7 @@ void loadTavern()
     for(auto &npc : npclist)
         npc.momentum = sf::Vector2f(0,0);
 
-    Npc barPatron = *getGlobalCritter("BTHuman");
+    Npc barPatron = *getGlobalCritter("Human");
     barPatron.maxhealth = 100000;
     barPatron.health = barPatron.getMaxHealth();
     barPatron.canmove = false;
@@ -6429,25 +6426,25 @@ void spawnEnemies()
         debug("V");
 
         RandomWeightList RandomEnemy;
-        RandomEnemy.addEntry("BTBlankBody",10000);
+        RandomEnemy.addEntry("BlankBody",10000);
         if(bountytower::currentTower->name == "FantasyModern")
         {
-            RandomEnemy.addEntry("BTOgre",2500);
-            RandomEnemy.addEntry("BTArmoredOgre",1000);
-            RandomEnemy.addEntry("BTGoblin",10000);
+            RandomEnemy.addEntry("Ogre",2500);
+            RandomEnemy.addEntry("ArmoredOgre",1000);
+            RandomEnemy.addEntry("Goblin",10000);
         }
         if(bountytower::currentTower->name == "Necromancer Tower")
         {
-            RandomEnemy.addEntry("BTSkeleton",2500);
-            RandomEnemy.addEntry("BTSkeletonArmored",1000);
-            RandomEnemy.addEntry("BTRat",5000);
+            RandomEnemy.addEntry("Skeleton",2500);
+            RandomEnemy.addEntry("SkeletonArmored",1000);
+            RandomEnemy.addEntry("Rat",5000);
         }
         if(bountytower::currentTower->name == "Powerhouse Tower")
         {
-            RandomEnemy.addEntry("BTSimpleRobot",2500);
-            RandomEnemy.addEntry("BTDroneHover",1000);
-            RandomEnemy.addEntry("BTDroneSpider",2500);
-            RandomEnemy.addEntry("BTDroneTank",100);
+            RandomEnemy.addEntry("SimpleRobot",2500);
+            RandomEnemy.addEntry("DroneHover",1000);
+            RandomEnemy.addEntry("DroneSpider",2500);
+            RandomEnemy.addEntry("DroneTank",100);
         }
 
         std::string chosenRace = RandomEnemy.getRandomName();
@@ -6457,7 +6454,7 @@ void spawnEnemies()
             StatusEffect status;
             status.duration = 1000000000;
             bool giveTemplate = false;
-            if(chosenRace == "BTSkeleton" || chosenRace == "BTSkeletonArmored")
+            if(chosenRace == "Skeleton" || chosenRace == "SkeletonArmored")
             {
                 giveTemplate = true;
                 status.name = "Skeleton Template";
@@ -6466,13 +6463,13 @@ void spawnEnemies()
                 status.addAspect(StatusAspect::Armor,100,"Poison");
                 status.addAspect(StatusAspect::Armor,100,"Cold");
             }
-            if(chosenRace == "BTSkeletonArmored" || chosenRace == "BTArmoredOgre")
+            if(chosenRace == "SkeletonArmored" || chosenRace == "ArmoredOgre")
             {
                 giveTemplate = true;
                 status.addAspect(StatusAspect::Armor,50,"Blunt");
             }
 
-            if(chosenRace == "BTDroneHover" || chosenRace == "BTDroneSpider" || chosenRace == "BTDroneTank" || chosenRace == "BTSimpleRobot")
+            if(chosenRace == "DroneHover" || chosenRace == "DroneSpider" || chosenRace == "DroneTank" || chosenRace == "SimpleRobot")
             {
                 giveTemplate = true;
                 status.name = "Drone Template";
@@ -6486,7 +6483,7 @@ void spawnEnemies()
                 member.statusEffects.push_back(status);
         }
 
-        //member = *getGlobalCritter("BTBlankBody");
+        //member = *getGlobalCritter("BlankBody");
         debug("X");
         member.faction = "Towerlings";
         debug("Y");
@@ -6738,7 +6735,7 @@ void bossLoop()
     {
         for(int i = 0; i != 10; i++)
         {
-            Npc corpse = *getGlobalCritter("BTBlankBody");
+            Npc corpse = *getGlobalCritter("BlankBody");
             corpse.alive = random(0,1);
 
             if(random(1,5) == 1)
@@ -7252,7 +7249,7 @@ void corpsesBleed()
             continue;
 
         //Robot? Get outta here!
-        if(npc.getRace() == "BTTurret")
+        if(npc.getRace() == "Turret")
             continue;
         //Too soon? Get outta here!
         if((gvars::framesPassed % 5) != 0)
@@ -8036,7 +8033,7 @@ void bountyTowerLoop()
 
     if(inputState.key[Key::T].time == 10 && inputState.key[Key::LShift])
     {
-        Npc boss = *getGlobalCritter("BTRockkid");
+        Npc boss = *getGlobalCritter("Rockkid");
         boss.xpos = gvars::mousePos.x;
         boss.ypos = gvars::mousePos.y;
         boss.zpos = gvars::currentz*GRID_SIZE;
