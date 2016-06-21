@@ -7,6 +7,7 @@
 #include <chrono>
 #include <iostream>
 #include <list>
+#include <cmath>
 
 #include <SFML/System.hpp>
 

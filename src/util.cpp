@@ -1,6 +1,8 @@
 
 #include "util.h"
 
+#include <random>
+
 std::string str(int num)
 {
     return std::to_string(num);

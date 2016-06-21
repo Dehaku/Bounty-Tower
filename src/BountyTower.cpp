@@ -3,6 +3,7 @@
 #include "RichText.hpp"
 
 #include <iomanip>
+#include <cmath>
 
 /*
 
