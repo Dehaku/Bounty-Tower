@@ -106,7 +106,10 @@ StringFloat ItemTypes::getTypeID(int id)
     for(auto checker : list)
         if(checker.num == id)
             return checker;
-    throw std::runtime_error("Couldn't find Item Type Entry ID: " + id);
+
+    std::ostringstream msg;
+    msg << "Couldn't find Item Type Entry ID: " << id;
+    throw std::runtime_error(msg.str());
 }
 
 StringFloat ItemTypes::getTypeID(std::string name)
@@ -2348,6 +2351,3 @@ void explosion(Vec3f vPos, int radius, float damage, Npc *attacker, std::vector<
 
     }
 }
-
-
-
