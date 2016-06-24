@@ -724,11 +724,13 @@ void towerTransition()
         npc.hasPath = false;
         npc.needsPath = false;
         npc.momentum = sf::Vector2f(0,0);
+        npc.dragging = nullptr;
+        npc.draggedBy = nullptr;
         npc.chaseDefendPos = Vec3(npc.xpos,npc.ypos,npc.zpos);
 
         if(!npc.isSquaddie)
             npc.toDelete = true;
-        if(!npc.functional())
+        if(!npc.alive)//if(!npc.functional())
             npc.toDelete = true;
 
     }
@@ -6218,7 +6220,12 @@ void loadTavern()
     gvars::currenty = xview/1.4;
 
     for(auto &npc : npclist)
+    {
         npc.momentum = sf::Vector2f(0,0);
+        npc.draggedBy = nullptr;
+        npc.dragging = nullptr;
+    }
+
 
     Npc barPatron = *getGlobalCritter("Human");
     barPatron.maxhealth = 100000;
@@ -6274,13 +6281,16 @@ void loadTavern()
 
 void nextFloorTransition()
 {
-
     for(auto &npc : npclist)
     {
         npc.storedPath.clear();
         npc.endPos = Vec3();
         npc.hasPath = false;
         npc.needsPath = false;
+
+        npc.draggedBy = nullptr;
+        npc.dragging = nullptr;
+
         npc.chaseDefendPos = Vec3(npc.xpos,npc.ypos,npc.zpos);
         //!npc.alive
         if(gvars::currentz != abs_to_index(npc.zpos/GRID_SIZE))
