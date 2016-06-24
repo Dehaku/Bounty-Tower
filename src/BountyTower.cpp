@@ -7892,15 +7892,17 @@ void dragging()
         Npc * draggy = npc.draggedBy;
         if(draggy != nullptr)
         {
-            shapes.createLine(npc.xpos,npc.ypos,draggy->xpos,draggy->ypos,3,sf::Color::Yellow);
+            if(draggy->dragging == nullptr)
+            {
+                npc.draggedBy = nullptr;
+                std::cout << "No longer being dragged! \n";
+                continue;
+            }
+            sf::Color ropeColor(170,170,0);
 
+            shapes.createLine(npc.xpos,npc.ypos,draggy->xpos,draggy->ypos,3,ropeColor);
             sf::Vector2f momPos( -math::clamp(npc.xpos-draggy->xpos,-5,5), -math::clamp(npc.ypos-draggy->ypos,-5,5) );
-
             npc.momentum += momPos;
-
-            shapes.createText(gvars::mousePos.x,gvars::mousePos.y,10,sf::Color::White,str(momPos.x) + "/" + str(momPos.y));
-
-            //Npc.momentum
         }
     }
 }
@@ -7927,6 +7929,18 @@ void bountyTowerLoop()
     {
         Squaddies[0]->dragging = Squaddies[1];
         Squaddies[1]->draggedBy = Squaddies[0];
+    }
+
+    if(inputState.key[Key::L].time == 1 && inputState.key[Key::LShift])
+    {
+        Squaddies[0]->dragging = nullptr;
+        Squaddies[1]->draggedBy = nullptr;
+    }
+
+    if(inputState.key[Key::O].time == 1)
+    {
+        Squaddies[0]->dragging = nullptr;
+        //Squaddies[1]->draggedBy = Squaddies[0];
     }
 
 
