@@ -419,6 +419,12 @@ void critterPush(Npc &npc, std::list<Npc> &container)
         int dist = math::distance(npc.getPos(),critters.getPos());
         if(dist <= npc.size && npc.id != critters.id && critters.canmove)
         {
+
+            if(npc.draggedBy != nullptr && critters.dragging != nullptr)
+            {
+                if(npc.draggedBy == &critters && critters.dragging == &npc)
+                    continue;
+            }
             critters.momentum += sf::Vector2f( -(  (npc.getPos().x-critters.getPos().x)*0.25  ),
                                                -(  (npc.getPos().y-critters.getPos().y)*0.25  ) );
         }
@@ -1660,6 +1666,9 @@ Npc::Npc()
 {
     hasJob = false;
     jobPtr = nullptr;
+
+    draggedBy = nullptr;
+    dragging = nullptr;
 
     isSquaddie = false;
     isBoss = false;

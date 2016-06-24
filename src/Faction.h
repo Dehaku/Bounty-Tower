@@ -188,7 +188,8 @@ public:
 
     float getMaxHealth();
 
-
+    Npc * dragging;
+    Npc * draggedBy;
 
     std::string originalRacialAbility;
     std::string racialAbility;

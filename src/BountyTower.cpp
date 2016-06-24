@@ -7885,6 +7885,26 @@ void userBlock()
     }
 }
 
+void dragging()
+{
+    for(auto &npc : npclist)
+    {
+        Npc * draggy = npc.draggedBy;
+        if(draggy != nullptr)
+        {
+            shapes.createLine(npc.xpos,npc.ypos,draggy->xpos,draggy->ypos,3,sf::Color::Yellow);
+
+            sf::Vector2f momPos( -math::clamp(npc.xpos-draggy->xpos,-5,5), -math::clamp(npc.ypos-draggy->ypos,-5,5) );
+
+            npc.momentum += momPos;
+
+            shapes.createText(gvars::mousePos.x,gvars::mousePos.y,10,sf::Color::White,str(momPos.x) + "/" + str(momPos.y));
+
+            //Npc.momentum
+        }
+    }
+}
+
 void bountyTowerLoop()
 { // Game Loop
 
@@ -7901,6 +7921,13 @@ void bountyTowerLoop()
     userBlock();
 
     enchantGlow();
+    dragging();
+
+    if(inputState.key[Key::L].time == 1)
+    {
+        Squaddies[0]->dragging = Squaddies[1];
+        Squaddies[1]->draggedBy = Squaddies[0];
+    }
 
 
     colorTest();
