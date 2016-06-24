@@ -7905,6 +7905,26 @@ void dragging()
             npc.momentum += momPos;
         }
     }
+
+    for(auto &squad : Squaddies)
+    {
+        if(squad->dragging == nullptr)
+            continue;
+
+        sf::Vector2f buttPos = squad->getPos2d();
+        buttPos.y -= 30;
+        int ropeButt = shapes.createImageButton(buttPos,texturemanager.getTexture("ExitButton.png"));
+
+        if(shapes.shapeHovered(ropeButt))
+        {
+            shapes.createText(gvars::mousePos.x,gvars::mousePos.y,10,sf::Color::White,"    Sever Rope!");
+            if(inputState.lmbTime == 1)
+            {
+                squad->dragging->draggedBy = nullptr;
+                squad->dragging = nullptr;
+            }
+        }
+    }
 }
 
 void bountyTowerLoop()
@@ -7941,6 +7961,14 @@ void bountyTowerLoop()
     {
         Squaddies[0]->dragging = nullptr;
         //Squaddies[1]->draggedBy = Squaddies[0];
+    }
+    if(inputState.key[Key::M].time == 1)
+    {
+        for(auto &npc : npclist)
+        {
+            //npc.skills
+            npc.skills.getSkill("Rope")->ranks = 1;
+        }
     }
 
 

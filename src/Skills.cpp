@@ -510,6 +510,18 @@ Skills::Skills()
     */
 
 
+    skill.tree = "Misc";
+
+
+    skill.name = "Rope";
+    skill.desc = "Active - Activate to drag a target.";
+    skill.level = 0;
+    skill.active = true;
+    skill.ranksmax = 1;
+    list.push_back(skill);
+    skill.ranksmax = 5;
+
+
 
 }
 
