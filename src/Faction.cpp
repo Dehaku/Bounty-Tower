@@ -1219,19 +1219,33 @@ void useRope(Npc &npc, std::list<Npc> &container)
         {
             //std::string ropeText = "Rope: ";
 
+            shapes.createCircle(npc.xpos,npc.ypos,100,sf::Color::Transparent,2,sf::Color::Cyan);
+
             for(auto &target : npclist)
             {
                 if(target.id == npc.id) // Make sure it's not the same creature.
                     continue;
 
-                int dist = math::closeish(target.getPos2d(),sKI->usePos);
-                if(dist > 10) // Making sure it's close to the mouse.
+                if(!target.alive) // No point in dragging corpses.
                     continue;
+
+                int critterDist = math::closeish(target.getPos2d(),npc.getPos2d());
+                if(critterDist > 100) // Check if the critters are close.
+                    continue;
+
+                int mouseDist = math::closeish(target.getPos2d(),sKI->usePos);
+                if(mouseDist > 10) // Making sure it's close to the mouse.
+                    continue;
+
+
+
+
 
                 if(inputState.lmbTime == 1)
                 {
                     npc.dragging = &target;
                     target.draggedBy = &npc;
+                    sKI->toDelete = true;
                 }
             }
 
