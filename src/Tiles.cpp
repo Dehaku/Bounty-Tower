@@ -1453,8 +1453,8 @@ void Tile::BTstairs()
     img.setTexture(texturemanager.getTexture("CautionTile.png"));
     transparent = true;
     walkable = true;
-    goesUp = true;
-    goesDown = true;
+    //goesUp = true;
+    //goesDown = true;
 }
 
 

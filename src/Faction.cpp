@@ -1217,8 +1217,6 @@ void useRope(Npc &npc, std::list<Npc> &container)
         Skill * ropeSkill = npc.skills.getSkill("Rope");
         if(ropeSkill != nullptr && ropeSkill->ranks > 0 && ropeSkill->cooldown <= 0)
         {
-            //std::string ropeText = "Rope: ";
-
             shapes.createCircle(npc.xpos,npc.ypos,100,sf::Color::Transparent,2,sf::Color::Cyan);
 
             for(auto &target : npclist)

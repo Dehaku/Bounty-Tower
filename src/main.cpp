@@ -1014,10 +1014,135 @@ void assaultDesire(Npc &npc, std::list<Npc> &container, Npc * closEnmy, bool &ha
     }
     debug("0");
 
-    //This makes it so Towerlings defending switches will start chasing once they get hurt.
+    // This makes it so Towerlings defending switches will start chasing once they get hurt.
     if(npc.faction != conFact->name && npc.chasePriority == "Defend")
         if(npc.health != npc.getMaxHealth())
             npc.chasePriority = "Assault";
+
+
+
+
+    // For roping and running off with unconscious squaddies.
+    if(npc.faction != conFact->name && npc.chasePriority == "Assault")
+    {
+        if(npc.dragging != nullptr)
+        {
+
+            if(math::distance(npc.chaseDefendPos,npc.getPos()) < 40)
+            {
+                std::cout << "A squaddie was killed! \n";
+            }
+
+            /*
+
+            npc.chasePriority = "Defend";
+            for(int x = 0; x != GRIDS; x++)
+                for(int y = 0; y != GRIDS; y++)
+                    if(tiles[x][y][gvars::currentz].id == 2031)
+                    {
+                        npc.chaseDefendPos = Vec3f(x*GRID_SIZE,y*GRID_SIZE,gvars::currentz*GRID_SIZE);
+                        break;
+                    }
+
+
+                    */
+        }
+
+
+        //Find someone to rope!
+        if(npc.dragging == false)
+        {
+            for(auto &squad : Squaddies)
+            {
+                if(squad->functional())
+                    continue;
+                if(squad->draggedBy != nullptr)
+                    continue;
+                Vec3f ughPos = squad->getPos();
+
+
+                npc.endPos = Vec3(ughPos.x,ughPos.y,ughPos.z);
+
+                int critterDist = math::closeish(npc.getPos2d(),squad->getPos2d());
+                if(critterDist > 60)
+                    continue;
+
+                npc.dragging = squad;
+                squad->draggedBy = &npc;
+
+
+                for(int x = 0; x != GRIDS; x++)
+                    for(int y = 0; y != GRIDS; y++)
+                        if(tiles[x][y][gvars::currentz].id == 2031)
+                        {
+                            //npc.chaseDefendPos = Vec3f(x*GRID_SIZE,y*GRID_SIZE,gvars::currentz*GRID_SIZE);
+                            //hasPath = true;
+                            npc.endPos = Vec3(x*GRID_SIZE+30,y*GRID_SIZE+30,npc.zpos);
+                            //std::cout << npc.name << " is looking for killzone! \n";
+                            //npc.chasePriority = "Defend";
+                            npc.chaseDefendPos = Vec3f(x*GRID_SIZE+30,y*GRID_SIZE+30,gvars::currentz*GRID_SIZE);
+                            //break;
+                        }
+
+
+                /*
+                npc.endPos = Vec3();
+                npc.hasPath = false;
+                npc.needsPath = false;
+                npc.pathGrid = Vec3();
+
+                */
+
+                //npc.chasePriority = "Dragging";
+                //hasPath = false;
+
+
+                /*
+
+                npc.chasePriority = "Defend";
+                for(int x = 0; x != GRIDS; x++)
+                    for(int y = 0; y != GRIDS; y++)
+                        if(tiles[x][y][gvars::currentz].id == 2031)
+                        {
+                            npc.chaseDefendPos = Vec3f(x*GRID_SIZE,y*GRID_SIZE,gvars::currentz*GRID_SIZE);
+                            npc.hasPath = true;
+                            npc.endPos = Vec3(x*GRID_SIZE,y*GRID_SIZE,gvars::currentz*GRID_SIZE);
+                            break;
+                        }
+
+                        */
+
+
+
+            }
+        }
+    }
+
+
+
+
+    if(npc.faction != conFact->name && npc.dragging != nullptr)
+    {
+        //hasPath = true;
+        //endPos = Vec3(gvars::mousePos.x,gvars::mousePos.y,gvars::currentz*GRID_SIZE);
+
+
+
+        for(int x = 0; x != GRIDS; x++)
+            for(int y = 0; y != GRIDS; y++)
+                if(tiles[x][y][gvars::currentz].id == 2031)
+                {
+                    npc.chaseDefendPos = Vec3f(x*GRID_SIZE+30,y*GRID_SIZE+30,gvars::currentz*GRID_SIZE);
+                    //hasPath = true;
+                    endPos = Vec3(x*GRID_SIZE+30,y*GRID_SIZE+30,npc.zpos);
+
+                    //break;
+                }
+
+
+
+    }
+
 
     handsOffense(npc,container,closEnmy,hasPath,endPos);
 
@@ -1070,10 +1195,15 @@ void critterPathFind(Npc &npc, std::list<Npc> &container)
         {
 
             npc.storedPath.clear();
+
+            shapes.createLine(npc.xpos,npc.ypos,npc.endPos.x,npc.endPos.y,1,sf::Color::Red,1,sf::Color::Yellow);
+            shapes.createCircle(npc.endPos.x,npc.endPos.y,10,sf::Color::Red,1,sf::Color::Yellow);
+
             npc.endPos = Vec3();
             npc.hasPath = false;
             npc.needsPath = false;
             chatBox.addChat("There's no way to get there!", sf::Color::White);
+
         }
 
         if(!pathCon.storedPath.empty())

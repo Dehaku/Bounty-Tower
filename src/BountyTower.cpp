@@ -7899,6 +7899,12 @@ void dragging()
 {
     for(auto &npc : npclist)
     {
+        if(npc.dragging != nullptr)
+        {
+            shapes.createLine(npc.xpos,npc.ypos,npc.endPos.x,npc.endPos.y,1,sf::Color::Cyan,1,sf::Color::Blue);
+            shapes.createCircle(npc.endPos.x,npc.endPos.y,10,sf::Color::Cyan,1,sf::Color::Blue);
+        }
+
         Npc * draggy = npc.draggedBy;
         if(draggy != nullptr)
         {
@@ -7916,7 +7922,7 @@ void dragging()
         }
     }
 
-    for(auto &squad : Squaddies)
+    for(auto &squad : Squaddies) // Sever rope button
     {
         if(squad->dragging == nullptr)
             continue;
