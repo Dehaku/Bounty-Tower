@@ -3636,6 +3636,10 @@ Item * Npc::getItemTypeInHands(int type)
 
 float Npc::getMoveSpeed()
 {
+    //Nice and slow, prevents oddities with dragging, and makes the game easier on the players.
+    if(dragging != nullptr)
+        return 2; //One doesn't allow them to move for some reason.
+
     float totalMoveSpeed = moveSpeed;
     totalMoveSpeed += mods.moveSpeedMod;
     // Don't want critters walking backwards.
