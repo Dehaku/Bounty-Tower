@@ -39,6 +39,14 @@ std::list<Item> enchantedItems;
 std::list<Item> itemStorage;
 std::list<Item> gunModMerchantInventory;
 
+std::string itemDescription(Item item)
+{
+    std::string returns = "";
+
+
+    return returns;
+}
+
 bool onScreen(sf::Vector2f vPos)
 {
     int lowcapX = (gvars::view1.getCenter().x - (gvars::view1.getSize().x/2));
@@ -2855,6 +2863,8 @@ void renderSquaddieMenu(baseMenu &menu)
 }
 
 
+
+
 void renderMerchantMenu(baseMenu &menu)
 { // Layer 19000
     int layer = 19000;
@@ -2881,11 +2891,13 @@ void renderMerchantMenu(baseMenu &menu)
     shapes.createSquare(menuStartPos.x,menuStartPos.y,menuEndPos.x,menuStartPos.y+60,menuColor,0,sf::Color::Cyan,&gvars::hudView);
     shapes.shapes.back().layer = layer+FrontPanel;
 
-    shapes.createSquare(percentPos(12,menuStartPos.x,menuEndPos.x),percentPos(60,menuStartPos.y,menuEndPos.y),menuEndPos.x,menuEndPos.y,sf::Color::Black,0,sf::Color::White,&gvars::hudView);
-    shapes.shapes.back().layer = layer+FrontPanel;
+
+
+    shapes.createSquare(percentPos(60,menuStartPos.x,menuEndPos.x),percentPos(0,menuStartPos.y,menuEndPos.y),menuEndPos.x,menuEndPos.y,sf::Color::Black,1,sf::Color::White,&gvars::hudView);
+    shapes.shapes.back().layer = layer+FrontPanel+1;
     //Close Button
     int exitButt = shapes.createImageButton(sf::Vector2f(screen.x()-100,100),texturemanager.getTexture("ExitButton.png"),"",0,&gvars::hudView);
-    shapes.shapes.back().layer = layer+FrontPanel+1;
+    shapes.shapes.back().layer = layer+FrontPanel+2;
     if(shapes.shapeClicked(exitButt))
         menu.toDelete = true;
 
@@ -2904,8 +2916,10 @@ void renderMerchantMenu(baseMenu &menu)
     shapes.createText(menuStartPos,10,sf::Color::White,"Squad Charisma Discount: %" + str(100-getSquadDiscount(100)),&gvars::hudView);
     shapes.shapes.back().layer = layer+FrontPanel+1;
 
-    sf::Vector2f upScrollButtPos(percentPos(10,menuStartPos.x,menuEndPos.x),percentPos(75,menuStartPos.y,menuEndPos.y));
+    /* Old buttons, just don't fit.
+    sf::Vector2f upScrollButtPos(percentPos(xMod,menuStartPos.x,menuEndPos.x),percentPos(yMod,menuStartPos.y,menuEndPos.y));
     sf::Vector2f downScrollButtPos(percentPos(10,menuStartPos.x,menuEndPos.x),percentPos(85,menuStartPos.y,menuEndPos.y));
+
     int upScrollButt = shapes.createImageButton(upScrollButtPos,texturemanager.getTexture("ArrowButton.png"),"",0,&gvars::hudView);
     shapes.shapes.back().layer = layer+Button;
     int downScrollButt = shapes.createImageButton(downScrollButtPos,texturemanager.getTexture("ArrowButton.png"),"",180,&gvars::hudView);
@@ -2920,6 +2934,8 @@ void renderMerchantMenu(baseMenu &menu)
 
     if(shapes.shapeClicked(downScrollButt))
         menu.scrollOne--;
+
+    */
 
 
     dynamicVariable * currentType = menu.getVar("currentType");
@@ -3051,7 +3067,7 @@ void renderMerchantMenu(baseMenu &menu)
         std::string outPut = item.name;
 
 
-        shapes.createText(vPos,15,highlightColor,outPut,&gvars::hudView);
+        shapes.createText(vPos,12,highlightColor,outPut,&gvars::hudView);
         shapes.shapes.back().layer = layer+Text;
         vPos.y += 15;
         shapes.createText(vPos,10,highlightColor,"$" + str(getSquadDiscount(item.value)),&gvars::hudView);
@@ -3085,8 +3101,8 @@ void renderMerchantMenu(baseMenu &menu)
 
         if(item.stackSize > 1)
             stats.append("\nStack: " + str(item.stackSize));
-        shapes.createText(vPos,10,highlightColor,stats,&gvars::hudView);
-        shapes.shapes.back().layer = layer+Text;
+        //shapes.createText(vPos,10,highlightColor,stats,&gvars::hudView);
+        //shapes.shapes.back().layer = layer+Text;
 
 
 
@@ -3149,14 +3165,17 @@ void renderMerchantMenu(baseMenu &menu)
 
     Item * item = selectedItem->varItemPtr;
 
-    sf::Vector2f statusPos(percentPos(12,menuStartPos.x,menuEndPos.x),percentPos(65,menuStartPos.y,menuEndPos.y));
-    shapes.createText(statusPos,10,sf::Color::White,item->name + ", Total Status Effects: " + std::to_string(item->statusEffects.size()+item->statusEffectsInflict.size()+item->statusEffectsCarried.size()),&gvars::hudView);
-    shapes.shapes.back().layer = layer+FrontPanel+1;
+    sf::Vector2f statusPos(percentPos(61,menuStartPos.x,menuEndPos.x),percentPos(5,menuStartPos.y,menuEndPos.y));
+    std::string itemDesc = itemDescription(*item);
+    //shapes.createText(statusPos,10,sf::Color::White,item->name + ", Total Status Effects: " + std::to_string(item->statusEffects.size()+item->statusEffectsInflict.size()+item->statusEffectsCarried.size()),&gvars::hudView);
+    shapes.createText(statusPos,10,sf::Color::White,itemDesc,&gvars::hudView);
+    shapes.shapes.back().layer = layer+FrontPanel+4;
 
 
 
     { // Purchase Item
-        sf::Vector2f randomEnchantPos(percentPos(15,menuStartPos.x,menuEndPos.x), percentPos(62,menuStartPos.y,menuEndPos.y));
+
+        sf::Vector2f randomEnchantPos(percentPos(63,menuStartPos.x,menuEndPos.x), percentPos(97,menuStartPos.y,menuEndPos.y));
         int randomEnchantButt = shapes.createImageButton(randomEnchantPos,texturemanager.getTexture("blankButton.png"),"",0,&gvars::hudView);
         shapes.shapes.back().layer = layer+FrontPanel+Button;
         randomEnchantPos.x -= 28;
@@ -3167,7 +3186,7 @@ void renderMerchantMenu(baseMenu &menu)
         if(shapes.shapeHovered(randomEnchantButt))
         {
             int randomEnchantCost = getSquadDiscount(item->value*offTavernMultipler);
-            textList.createText(gvars::mousePos,10,sf::Color::White,"   $"+str(randomEnchantCost)+", Pay for the item, Receive it instantly, Capitalism!.");
+            textList.createText(gvars::mousePos,10,sf::Color::White,"   $"+str(randomEnchantCost)+", Pay for the item, Receive it instantly, Capitalism!");
             shapes.shapes.back().layer = 99999999;
             gvars::hovering = 3;
 
@@ -3355,7 +3374,7 @@ void renderMerchantMenu(baseMenu &menu)
         sf::Vector2f vPos = statusPos;
         vPos.y += 10*yOffset;
         shapes.createText(vPos,8,sf::Color::Cyan,outPut,&gvars::hudView);
-        shapes.shapes.back().layer = layer+FrontPanel+1;
+        shapes.shapes.back().layer = layer+FrontPanel+4;
 
         yOffset++;
         yOffset++;
@@ -3379,7 +3398,7 @@ void renderMerchantMenu(baseMenu &menu)
         sf::Vector2f vPos = statusPos;
         vPos.y += 10*yOffset;
         shapes.createText(vPos,8,sf::Color(255,150,150),outPut,&gvars::hudView);
-        shapes.shapes.back().layer = layer+FrontPanel+1;
+        shapes.shapes.back().layer = layer+FrontPanel+4;
 
         yOffset++;
         yOffset++;
@@ -3403,7 +3422,7 @@ void renderMerchantMenu(baseMenu &menu)
         sf::Vector2f vPos = statusPos;
         vPos.y += 10*yOffset;
         shapes.createText(vPos,8,sf::Color::Yellow,outPut,&gvars::hudView);
-        shapes.shapes.back().layer = layer+FrontPanel+1;
+        shapes.shapes.back().layer = layer+FrontPanel+4;
 
         yOffset++;
         yOffset++;
