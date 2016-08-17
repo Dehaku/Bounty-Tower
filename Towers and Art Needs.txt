@@ -25,6 +25,55 @@ Closed state only, the chest will simply vanish once opened.
 
 Total Image Per Tower Count: 15
 
+Nine Towers
+=================================
+=1st Tower: Fantasy Modern Tower 
+Theme: Dark stone, run downed, cob webbed tower.
+
+=2nd Tower: Technology Powerhouse
+Theme: White&Grey/Clean, Wires visible through panels, Power sockets common on walls.
+White & Grey floor tiles, With a metalic great that you can see wires through, Trigger tile could be a blue console screen or some such.
+
+=3rd Tower: Necromancer Tower
+Theme: Dark boney walls, Fleshy floor, Bulb of flesh for the chest, Perhaps a box of sinew and bone for the trigger tile?
+
+===
+=4th Tower: Grassland Hill
+Theme: Upright hollowed out hill cover in flora, Pretty grass floors with flowers, Dirt walls, light brown wheat-like doors.
+
+=5th Tower: Factory Tower
+Theme: Gritty Metalic industrial building, Dark and rusty.
+Additionally: Two frames of a conveyer belt(Just one direction will do), And two frames of a factory machine, both 60x60
+
+=6th Tower: Skycloud Tower
+Theme: Magically reinforced clouds stiffed together to make solid surfaces
+Different shades of cloud make the various floor, walls and furniture, Lil puddles for detail, if plain clouds are too bland for the floor, Golden puffs of cloud for chests.
+
+===
+
+=7th Tower: Lava Tower
+Theme: Floors are dark obsidian lined with faintly glowing lines of lava, Walls may simply be dark obsidian.
+Additionally: Two lava tiles, Maybe more if you're into making it animated, though I could simply scale up and down it's brightness.
+
+=8th Tower: Spaceship Tower
+Theme: Grey and Red walls, Grey floor with yellow hollow squares, Bulky and Space-like chests.
+Yellow Squares should not touch the edges of the tile.
+This tower will also need the following;
+Medical room floor and walls, (Two walls, One fake, Four floor tiles.)
+Preferably white with blue trim theme, to constrast the normal Red and Yellow.
+
+=9th Tower: Atlantean Tower
+Theme: Blue and Gold decorated walls, Coral and kelp line the floors, sandy beach against elevator.
+Additionally: Two water tiles, Don't worry about transparency, I can do that in code.
+
+===
+=?10th Tower: Grey Goo Tower
+Theme: Extremely simply dark grey with a slight shine, Walls, Floor, Simple dark grey.
+Walls should be a little darker, without any shine, to allow easier differination of the floor.
+
+
+
+
 Fifteen Towers, 225 Total Base Images.
 =================================
 
