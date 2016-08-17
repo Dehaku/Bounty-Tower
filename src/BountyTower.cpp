@@ -42,6 +42,9 @@ std::list<Item> gunModMerchantInventory;
 std::string itemDescription(Item item)
 {
     std::string returns = "";
+    returns.append(item.name + "\n");
+    returns.append("Damage: " + str(item.getMaxDamage()) + "\n");
+    returns.append("Ammo Capacity: " + str(item.getAmmoCapacity()) + "\n");
 
 
     return returns;
