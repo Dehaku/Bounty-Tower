@@ -39,6 +39,95 @@ std::list<Item> enchantedItems;
 std::list<Item> itemStorage;
 std::list<Item> gunModMerchantInventory;
 
+
+
+std::string modPartDescription(Item item)
+{
+
+    std::string returns = "";
+
+    /*
+
+
+
+    outPut.append(itemTypes.getTypeID(weapon->type).str + ": " + weapon->name + "\n");
+
+        std::ostringstream num;
+        num << std::setprecision(5);
+        num << weapon->getBarrelCount();
+        outPut.append("Barrel Count: " + num.str() + "\n");
+        num.str(std::string());
+        num.clear();
+
+        num << weapon->getDamageMultiplier();
+        outPut.append("Damage Multiplier: " + num.str() + "\n");
+        num.str(std::string());
+        num.clear();
+
+        num << weapon->getDispersion();
+        outPut.append("Dispersion: " + num.str() + "\n");
+        num.str(std::string());
+        num.clear();
+
+        num << weapon->getAimTime()/60;
+        outPut.append("Aim Time: " + num.str() + "s\n");
+        num.str(std::string());
+        num.clear();
+
+        num << weapon->getRecoil();
+        outPut.append("Recoil: " + num.str() + "\n");
+        num.str(std::string());
+        num.clear();
+
+        num << weapon->getRecoilReduction();
+        outPut.append("Recoil Reduction: " + num.str() + "\n");
+        num.str(std::string());
+        num.clear();
+
+        num << weapon->getFireDelay();
+        outPut.append("Fire Delay: " + num.str() + "\n");
+        num.str(std::string());
+        num.clear();
+
+        num << weapon->getBurstCount();
+        outPut.append("Burst Count: " + num.str() + "\n");
+        num.str(std::string());
+        num.clear();
+
+        num << weapon->getAmmoCapacity();
+        outPut.append("Ammo Capacity: " + num.str() + "\n");
+        num.str(std::string());
+        num.clear();
+
+        num << weapon->getReloadTime()/60;
+        outPut.append("Reload Time: " + num.str() + "s\n");
+        num.str(std::string());
+        num.clear();
+
+
+
+        num << weapon->getBulletSpeedMultiplier();
+        outPut.append("Bullet Speed Multiplier: " + num.str() + "\n");
+        num.str(std::string());
+        num.clear();
+
+        num << weapon->getDurability();
+        outPut.append("Durability: " + num.str() + "\n");
+        num.str(std::string());
+        num.clear();
+
+        num << weapon->getDurabilityCost();
+        outPut.append("Durability Cost: " + num.str() + "\n");
+        num.str(std::string());
+        num.clear();
+
+    */
+
+    return returns;
+}
+
+
+
 std::string itemDescription(Item item)
 {
     std::string returns = "";
@@ -46,6 +135,60 @@ std::string itemDescription(Item item)
     returns.append("Damage: " + str(item.getMaxDamage()) + "\n");
     returns.append("Ammo Capacity: " + str(item.getAmmoCapacity()) + "\n");
 
+
+
+    returns.append("\n"); // Status effects!
+
+    int totalEffects = item.statusEffects.size() + item.statusEffectsInflict.size() + item.statusEffectsCarried.size();
+    if(totalEffects < 1) // No point in continuing!
+        return returns;
+
+    returns.append("*Effects* \n");
+
+    for(auto &status : item.statusEffects)
+    {
+        returns.append("* (Equip)" + status.name + " \n");
+
+        for(auto &aspect : status.aspects)
+        {
+            if(aspectNum[aspect.name].find("Condition") != std::string::npos)
+                returns.append("---(Con)" + status.name + " \n");
+            returns.append("[" + aspectNum[aspect.name] + ",Potency:" + str(static_cast<int>(aspect.potency)));
+            if(aspect.type != "")
+                returns.append(",Type:" + aspect.type);
+            returns.append(" \n");
+        }
+
+
+    }
+    for(auto &status : item.statusEffectsInflict)
+    {
+        returns.append("*(Inflict) " + status.name + " \n");
+
+        for(auto &aspect : status.aspects)
+        {
+            if(aspectNum[aspect.name].find("Condition") != std::string::npos)
+                returns.append("-(Con) ");
+            returns.append("[" + aspectNum[aspect.name] + ",Potency:" + str(static_cast<int>(aspect.potency)));
+            if(aspect.type != "")
+                returns.append(",Type:" + aspect.type);
+            returns.append("] \n");
+        }
+    }
+    for(auto &status : item.statusEffectsCarried)
+    {
+        returns.append("* (Carried)" + status.name + " \n");
+
+        for(auto &aspect : status.aspects)
+        {
+            if(aspectNum[aspect.name].find("Condition") != std::string::npos)
+                returns.append("-(Con) ");
+            returns.append("[" + aspectNum[aspect.name] + ",Potency:" + str(static_cast<int>(aspect.potency)));
+            if(aspect.type != "")
+                returns.append(",Type:" + aspect.type);
+            returns.append("] \n");
+        }
+    }
 
     return returns;
 }
@@ -3360,6 +3503,8 @@ void renderMerchantMenu(baseMenu &menu)
     */
 
     yOffset = 1;
+    /*
+
     for(auto &status : item->statusEffects)
     {
         std::string outPut = "Equip:";
@@ -3431,6 +3576,8 @@ void renderMerchantMenu(baseMenu &menu)
         yOffset++;
         yOffset++;
     }
+
+    */
 
 }
 
