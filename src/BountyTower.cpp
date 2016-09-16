@@ -41,10 +41,87 @@ std::list<Item> gunModMerchantInventory;
 
 
 
-std::string modPartDescription(Item item)
+std::string modPartDescription(Item weapon, bool hideZeros = false)
 {
 
     std::string returns = "";
+
+    returns.append(itemTypes.getTypeID(weapon.type).str + ": " + weapon.name + "\n");
+
+    std::ostringstream num;
+    num << std::setprecision(5);
+    num << weapon.getBarrelCount();
+    returns.append("Barrel Count: " + num.str() + "\n");
+    num.str(std::string());
+    num.clear();
+
+    num << weapon.getDamageMultiplier();
+    returns.append("Damage Multiplier: " + num.str() + "\n");
+    num.str(std::string());
+    num.clear();
+
+    num << weapon.getDispersion();
+    returns.append("Dispersion: " + num.str() + "\n");
+    num.str(std::string());
+    num.clear();
+
+    num << weapon.getAimTime()/60;
+    returns.append("Aim Time: " + num.str() + "s\n");
+    num.str(std::string());
+    num.clear();
+
+    num << weapon.getRecoil();
+    returns.append("Recoil: " + num.str() + "\n");
+    num.str(std::string());
+    num.clear();
+
+    num << weapon.getRecoilReduction();
+    returns.append("Recoil Reduction: " + num.str() + "\n");
+    num.str(std::string());
+    num.clear();
+
+    num << weapon.getFireDelay();
+    returns.append("Fire Delay: " + num.str() + "\n");
+    num.str(std::string());
+    num.clear();
+
+    num <<
+    weapon.getBurstCount();
+    returns.append("Burst Count: " + num.str() + "\n");
+    num.str(std::string());
+    num.clear();
+
+    num <<
+
+    weapon.getAmmoCapacity();
+    returns.append("Ammo Capacity: " + num.str() + "\n");
+    num.str(std::string());
+    num.clear();
+
+    num <<
+    weapon.getReloadTime()/60;
+    returns.append("Reload Time: " + num.str() + "s\n");
+    num.str(std::string());
+    num.clear();
+
+
+
+    num <<
+    weapon.getBulletSpeedMultiplier();
+    returns.append("Bullet Speed Multiplier: " + num.str() + "\n");
+    num.str(std::string());
+    num.clear();
+
+    num << weapon.getDurability();
+    returns.append("Durability: " + num.str() + "\n");
+    num.str(std::string());
+    num.clear();
+
+    num << weapon.getDurabilityCost();
+    returns.append("Durability Cost: " + num.str() + "\n");
+    num.str(std::string());
+    num.clear();
+
 
     /*
 
@@ -132,8 +209,44 @@ std::string itemDescription(Item item)
 {
     std::string returns = "";
     returns.append(item.name + "\n");
-    returns.append("Damage: " + str(item.getMaxDamage()) + "\n");
-    returns.append("Ammo Capacity: " + str(item.getAmmoCapacity()) + "\n");
+
+    if(item.type == 1) // Melee
+    {
+        returns.append(" \n");
+        returns.append("* Melee Stats * \n");
+        returns.append("Damage: " + str(item.getMaxDamage()) + "\n");
+        returns.append("Attack Delay: " + str(item.activateratemax / item.activaterategrowth) + "\n");
+        returns.append("Range: " + str(item.getRange()) + "\n");
+        returns.append("Knockback: " + str(item.getKnockback()) + "\n");
+
+    }
+
+    if(item.type == itemTypes.getTypeID("Bullet").num || item.type == itemTypes.getTypeID("Shell").num || item.type == itemTypes.getTypeID("Missile").num) // Boolet
+    {
+        returns.append(" \n");
+        returns.append("* Projectile Stats * \n");
+        returns.append("Raw Damage: " + str(item.getMaxDamage()) + "\n");
+        returns.append("Projectiles: " + str(item.projectiles) + "\n");
+        returns.append("Penetration: " + str(item.penetration) + "\n");
+        returns.append("Richochets: " + str(item.richochets) + "\n");
+        returns.append("Knockback: " + str(item.getKnockback()) + "\n");
+    }
+
+    if(!item.internalitems.empty())
+    {
+        returns.append(" \n");
+        returns.append("* Gun Stats *  \n");
+        returns.append(modPartDescription(item) + "\n");
+    }
+
+    if(item.type > 90)
+    {
+        returns.append(" \n");
+        returns.append("* Gun Part Stats *  \n");
+        returns.append(modPartDescription(item) + "\n");
+        // TODO: use HideZero's in modPartDecription for gun parts to be read easier.
+    }
+
 
 
 
